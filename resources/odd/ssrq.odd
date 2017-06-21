@@ -75,6 +75,13 @@
                         <param name="alternate" value="text{'Abkürzung'}"/>
                     </model>
                 </elementSpec>
+                <elementSpec ident="sic" mode="change">
+                    <model predicate="parent::choice and count(parent::*/*) gt 1" behaviour="inline"/>
+                    <model behaviour="inline">
+                        <outputRendition scope="after">content: ' [sic]';</outputRendition>
+                    </model>
+                </elementSpec>
+
             </schemaSpec>
         </body>
     </text>
