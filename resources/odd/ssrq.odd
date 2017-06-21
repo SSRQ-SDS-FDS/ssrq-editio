@@ -54,8 +54,8 @@
                         <param name="alternate" value="expan[1]"/>
                     </model>
                     <model predicate="orig and reg" behaviour="alternate">
-                        <param name="default" value="reg[1]"/>
-                        <param name="alternate" value="orig[1]"/>
+                        <param name="default" value="orig[1]"/>
+                        <param name="alternate" value="reg[1]"/>
                     </model>
                 </elementSpec>
             </schemaSpec>
