@@ -64,6 +64,17 @@
                     </model>
                     <model behaviour="inline"/>
                 </elementSpec>
+                <elementSpec ident="abbr" mode="change">
+                    <model predicate="parent::choice" behaviour="inline"/>
+                    <model predicate="unclear" behaviour="alternate">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Abkürzung, unsichere Lesung'}"/>
+                    </model>
+                    <model behaviour="alternate">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Abkürzung'}"/>
+                    </model>
+                </elementSpec>
             </schemaSpec>
         </body>
     </text>
