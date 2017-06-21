@@ -18,6 +18,24 @@
     <text>
         <body>
             <schemaSpec start="TEI teiCorpus" source="teipublisher.odd" ident="ssrq">
+                <elementSpec ident="lb" mode="change">
+                    <model predicate="not(preceding-sibling::lb)" behaviour="omit"/>
+                    <modelSequence predicate="@break='no'">
+                        <model behaviour="inline">
+                            <outputRendition scope="before">content: '-';</outputRendition>
+                        </model>
+                        <model behaviour="break">
+                            <param name="type" value="'page'"/>
+                            <param name="label" value="@n"/>
+                            <outputRendition>display: block;</outputRendition>
+                        </model>
+                    </modelSequence>
+                  <model behaviour="break">
+                    <param name="type" value="'line'"/>
+                    <param name="label" value="@n"/>
+                  </model>
+                </elementSpec>
+
             </schemaSpec>
         </body>
     </text>
