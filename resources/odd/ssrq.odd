@@ -46,8 +46,8 @@
                         <param name="content" value="reg[1]"/>
                     </model>
                     <model predicate="sic and corr" behaviour="alternate">
-                        <param name="default" value="corr[1]"/>
-                        <param name="alternate" value="sic[1]"/>
+                        <param name="default" value="sic[1]"/>
+                        <param name="alternate" value="corr[1]"/>
                     </model>
                     <model predicate="abbr and expan" behaviour="alternate">
                         <param name="default" value="abbr[1]"/>
@@ -75,8 +75,18 @@
                         <param name="alternate" value="text{'Abkürzung'}"/>
                     </model>
                 </elementSpec>
+                <elementSpec ident="corr" mode="change">
+                    <model predicate="parent::choice" behaviour="inline">
+                        <outputRendition scope="before">content: 'Korrigiert: ';</outputRendition>
+                    </model>
+                    <model behaviour="inline"/>
+                </elementSpec>
                 <elementSpec ident="sic" mode="change">
                     <model predicate="parent::choice and count(parent::*/*) gt 1" behaviour="inline"/>
+                    <model behaviour="alternate">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Abkürzung'}"/>
+                    </model>
                     <model behaviour="inline">
                         <outputRendition scope="after">content: ' [sic]';</outputRendition>
                     </model>
