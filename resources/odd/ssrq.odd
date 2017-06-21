@@ -35,7 +35,29 @@
                     <param name="label" value="@n"/>
                   </model>
                 </elementSpec>
-
+                <elementSpec ident="choice" mode="change">
+                    <model output="plain" predicate="sic and corr" behaviour="inline">
+                        <param name="content" value="corr[1]"/>
+                    </model>
+                    <model output="plain" predicate="abbr and expan" behaviour="inline">
+                        <param name="content" value="expan[1]"/>
+                    </model>
+                    <model output="plain" predicate="orig and reg" behaviour="inline">
+                        <param name="content" value="reg[1]"/>
+                    </model>
+                    <model predicate="sic and corr" behaviour="alternate">
+                        <param name="default" value="corr[1]"/>
+                        <param name="alternate" value="sic[1]"/>
+                    </model>
+                    <model predicate="abbr and expan" behaviour="alternate">
+                        <param name="default" value="abbr[1]"/>
+                        <param name="alternate" value="expan[1]"/>
+                    </model>
+                    <model predicate="orig and reg" behaviour="alternate">
+                        <param name="default" value="reg[1]"/>
+                        <param name="alternate" value="orig[1]"/>
+                    </model>
+                </elementSpec>
             </schemaSpec>
         </body>
     </text>
