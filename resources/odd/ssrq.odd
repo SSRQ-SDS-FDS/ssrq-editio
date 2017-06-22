@@ -107,7 +107,12 @@
                         <param name="alternate" value="text{'Ausstellungsort'}"/>
                     </model>
                 </elementSpec>
-
+                <elementSpec ident="origDate" mode="add">
+                    <model behaviour="alternate">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Originaldatierung'}"/>
+                    </model>
+                </elementSpec>
             </schemaSpec>
         </body>
     </text>
