@@ -101,6 +101,12 @@
                         <outputRendition scope="after">content: ' [sic]';</outputRendition>
                     </model>
                 </elementSpec>
+                <elementSpec ident="origPlace" mode="add">
+                    <model behaviour="alternate">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Ausstellungsort'}"/>
+                    </model>
+                </elementSpec>
 
             </schemaSpec>
         </body>
