@@ -79,7 +79,10 @@
                     <model predicate="parent::choice" behaviour="inline">
                         <outputRendition scope="before">content: 'Korrigiert: ';</outputRendition>
                     </model>
-                    <model behaviour="inline"/>
+                    <model behaviour="alternate">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Korrektur}"/>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="sic" mode="change">
                     <model predicate="parent::choice and count(parent::*/*) gt 1" behaviour="inline"/>
