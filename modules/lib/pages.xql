@@ -244,12 +244,12 @@ declare function pages:process-content($xml as element()*, $root as element()*, 
         <div class="{$config:css-content-class} {$class}">
         {
             $body,
-            if ($html//li[@class="footnote"]) then
+            if ($html//li[contains(@class, "footnote")]) then
                 <div class="footnotes">
                     <ol>
                     {
-                        for $note in $html//li[@class="footnote"]
-                        order by number($note/@value)
+                        for $note in $html//li[contains(@class, "footnote")]
+                        order by $note/@type descending, number($note/@value)
                         return
                             $note
                     }
@@ -266,7 +266,7 @@ declare function pages:clean-footnotes($nodes as node()*) {
     return
         typeswitch($node)
             case element(li) return
-                if ($node/@class = "footnote") then
+                if (contains($node/@class, "footnote")) then
                     ()
                 else
                     element { node-name($node) } {
