@@ -192,7 +192,7 @@ declare variable $config:app-root :=
         substring-before($modulePath, "/modules")
 ;
 
-declare variable $config:data-root := "/db/apps/ssrq-data/";
+declare variable $config:data-root := "/db/apps/ssrq-data/data";
 
 declare variable $config:odd := "ssrq.odd";
 
