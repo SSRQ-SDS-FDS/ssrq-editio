@@ -40,3 +40,21 @@ function app:short-header($node as node(), $model as map(*)) {
             "doc": $relPath || "?odd=" || $model?config?odd || "&amp;view=" || $view
         }, $model?config?odd)
 };
+
+declare 
+    %templates:wrap
+function app:keywords($node as node(), $model as map(*)) {
+    let $work := $model("work")/ancestor-or-self::tei:TEI
+    let $keywords := $work/tei:teiHeader//tei:keywords/tei:term
+    return
+        if ($keywords) then
+            map { "keywords": $keywords }
+        else
+            ()
+};
+
+declare
+    %templates:wrap
+function app:keyword($node as node(), $model as map(*)) {
+    $model?keyword/text()
+};

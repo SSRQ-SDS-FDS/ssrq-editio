@@ -75,7 +75,7 @@
                                             <i class="material-icons">navigate_before</i>
                                         </a>
                                     </div>
-                                    <div class="col-md-10 col-sm-12">
+                                    <div class="col-md-8 col-sm-12">
                                         <div class="navigation-top row">
                                             <div class="hidden-md hidden-lg btn-group-sm">
                                                 <a data-template="pages:navigation-link" data-template-direction="previous" class="nav-prev page-nav btn btn-primary btn-fab" title="i18n(previous-page)">
@@ -109,6 +109,28 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <aside id="sidebar-right" class="col-md-2 hidden-xs hidden-sm">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">Verweise</div>
+                                            <div class="panel-body">
+                                                <p>Kein Verweise vorhanden</p>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">Ähnliche Quellen</div>
+                                            <div class="panel-body">
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default" data-template="app:keywords">
+                                            <div class="panel-heading">Schlagworte</div>
+                                            <div class="panel-body">
+                                                <ul class="list-group" data-template="templates:each" data-template-from="keywords"
+                                                    data-template-to="keyword">
+                                                    <li class="list-group-item" data-template="app:keyword"/>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </aside>
                                     <div class="col-md-1 hidden-xs hidden-sm">
                                         <a data-template="pages:navigation-link" data-template-direction="next" class="nav-next page-nav btn btn-primary btn-fab" title="i18n(next-page)">
                                             <i class="material-icons">navigate_next</i>

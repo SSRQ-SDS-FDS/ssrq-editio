@@ -156,6 +156,14 @@
 /* Do not modify other .less files except this one                   */
 /*********************************************************************/
 
+#sidebar-right div {
+    margin-top: 20px;
+}
+
+#main-container {
+    max-width: inherit;
+}
+
 .panel-title {
     margin-bottom: 1em;
     font-family: @font-family-body-default;
@@ -171,7 +179,7 @@
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: @screen-sm) {
     .navigation-top {
         border: 0;
     }
