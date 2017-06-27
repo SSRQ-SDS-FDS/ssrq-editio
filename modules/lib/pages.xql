@@ -150,7 +150,7 @@ declare function pages:get-document($idOrName as xs:string) {
 declare function pages:back-link($node as node(), $model as map(*)) {
     element { node-name($node) } {
         attribute href {
-            $pages:app-root || "/works/"
+            $pages:app-root || "/"
         },
         $node/@*,
         $node/node()
