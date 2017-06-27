@@ -8,6 +8,8 @@ import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
+declare variable $app:single-body-div-max := 7;
+
 declare
     %templates:wrap
 function app:comment($node as node(), $model as map(*)) {
@@ -16,3 +18,25 @@ function app:comment($node as node(), $model as map(*)) {
         $pm-config:web-transform($back, map { "root": $back }, $config:odd)
 };
 
+declare
+    %templates:wrap
+function app:short-header($node as node(), $model as map(*)) {
+    let $work := $model("work")/ancestor-or-self::tei:TEI
+    let $view :=
+        (: Switch to paginated view if we have more than $app:single-body-div-max divs :)
+        if (count($work//tei:body//tei:div) > $app:single-body-div-max) then
+            (: Navigate by page if there are pb :)
+            if ($work//tei:body//tei:pb) then
+                "page"
+            else
+                "div"
+        (: Otherwise show the entire body :)
+        else
+            "body"
+    let $relPath := config:get-identifier($work)
+    return
+        $pm-config:web-transform($work/tei:teiHeader, map {
+            "header": "short",
+            "doc": $relPath || "?odd=" || $model?config?odd || "&amp;view=" || $view
+        }, $model?config?odd)
+};

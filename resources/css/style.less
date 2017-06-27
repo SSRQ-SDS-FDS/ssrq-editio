@@ -157,8 +157,9 @@
 /*********************************************************************/
 
 .panel-title {
-    display: block;
+    margin-bottom: 1em;
     font-family: @font-family-body-default;
+    color: @color-primary-light;
 }
 
 .comment:extend(#content-inner) {
@@ -169,7 +170,17 @@
     }
 }
 
+@media (min-width: 768px) {
+    .navigation-top {
+        border: 0;
+    }
+}
+
 #content-inner {
+    padding-top: 1em;
+    margin-top: 1em;
+    border-top: @default-border-style;
+    
   .content h1,
   .content h2,
   .content h3,
@@ -229,9 +240,8 @@
     }
 
     &>*>section {
-      border-top: @default-border-style;
-      margin: 2.5em 0;
-      padding-top: 2em;
+    //   border-top: @default-border-style;
+      margin: 0 0 2.5em 0;
     }
   }
 

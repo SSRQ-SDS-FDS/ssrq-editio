@@ -26,7 +26,7 @@ declare function nav:get-next($config as map(*), $div as element(), $view as xs:
         case "page" return
             $div/following::tei:pb[1]
         case "body" return
-            ($div/following-sibling::*, $div/../following-sibling::*)[1]
+            ()
         default return
             nav:get-next($config, $div)
 };
@@ -47,7 +47,7 @@ declare function nav:get-previous($config as map(*), $div as element(), $view as
         case "page" return
             $div/preceding::tei:pb[1]
         case "body" return
-            ($div/preceding-sibling::*, $div/../preceding-sibling::*)[1]
+            ()
         default return
             nav:get-previous-div($config, $div)
 };
