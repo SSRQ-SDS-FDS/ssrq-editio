@@ -111,7 +111,7 @@ declare function pages:load-xml($view as xs:string?, $root as xs:string?, $doc a
                             return
                                 $node/ancestor-or-self::tei:div[count(ancestor::tei:div) < $config:pagination-depth][1]
                         else
-                            let $div := ($data//tei:div)[1]
+                            let $div := ($data//tei:body)[1]
                             return
                                 if ($div) then
                                     $div
