@@ -164,7 +164,7 @@
                     <modelSequence>
                         <model behaviour="alternate" cssClass="text-critical">
                             <param name="default" value="text{'...'}"/>
-                            <param name="alternate" value="text{'Lücke in der Vorlage ('} | @quantity | text{' '} | @unit | text{')'}"/>
+                            <param name="alternate" value="(text{'Lücke in der Vorlage ('} , @quantity , text{' '} , @unit , text{')'})"/>
                             <outputRendition>text-decoration: underline;</outputRendition>
                         </model>
                         <model behaviour="note">
