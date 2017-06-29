@@ -247,6 +247,13 @@
                         <param name="alternate" value="text{'Ort'}"/>
                     </model>
                 </elementSpec> 
+                <elementSpec ident="num" mode="change">
+                    <model behaviour="alternate" cssClass="semantic">
+                        <desc>Display number in tooltip and highlight text with color</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="(text{'Menge: '}, @value)"/>
+                    </model>
+                </elementSpec>
             </schemaSpec>
         </body>
     </text>
