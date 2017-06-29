@@ -240,6 +240,13 @@
                         <param name="alternate" value="text{'Organisation'}"/>
                     </model>
                 </elementSpec> 
+                <elementSpec ident="placeName" mode="add">
+                    <model behaviour="alternate" cssClass="semantic">
+                        <desc>Semantic highlighting of place names with tooltip and blue text color</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Ort'}"/>
+                    </model>
+                </elementSpec> 
             </schemaSpec>
         </body>
     </text>
