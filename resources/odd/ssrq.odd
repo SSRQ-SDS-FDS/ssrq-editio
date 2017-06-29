@@ -226,6 +226,13 @@
                         <outputRendition>color: #b5221f;</outputRendition>
                     </model>
                 </elementSpec>
+                <elementSpec ident="persName" mode="add">
+                    <model behaviour="alternate" cssClass="semantic">
+                        <desc>Semantic highlighting of person names with tooltip and blue text color</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Person'}"/>
+                    </model>
+                </elementSpec>
             </schemaSpec>
         </body>
     </text>
