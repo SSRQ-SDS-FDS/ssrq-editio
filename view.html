@@ -139,9 +139,11 @@
                                         <div class="panel panel-default" data-template="app:keywords">
                                             <div class="panel-heading">Schlagworte</div>
                                             <div class="panel-body">
-                                                <ul class="list-group" data-template="templates:each" data-template-from="keywords"
+                                                <ul>
+                                                    <li data-template="templates:each" data-template-from="keywords"
                                                     data-template-to="keyword">
-                                                    <li class="list-group-item" data-template="app:keyword"/>
+                                                        <span data-template="app:keyword"/>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
