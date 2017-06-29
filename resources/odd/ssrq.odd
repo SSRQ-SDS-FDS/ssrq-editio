@@ -137,6 +137,29 @@
                         <param name="type" value="'note'"/>
                     </model>
                 </elementSpec> 
+                <elementSpec ident="hi" mode="change">
+                    <model predicate="@rend='sup'" behaviour="inline" cssClass="text-critical">
+                        <outputRendition>font-size: 80%; vertical-align: top;</outputRendition>
+                    </model>
+                    <modelSequence predicate="@rend='underline'">
+                        <model behaviour="alternate" cssClass="text-critical">
+                            <param name="default" value="."/>
+                            <param name="alternate" value="text{'Unterstrichen'}"/>
+                            <outputRendition>text-decoration: underline;</outputRendition>
+                        </model>
+                        <model behaviour="note">
+                            <param name="place" value="&#34;footnote&#34;"/>
+                            <param name="content" value="'Unterstrichen'"/>
+                            <param name="type" value="'text-critical'"/>
+                        </model>
+                    </modelSequence>
+                    <model predicate="@rendition" behaviour="inline" useSourceRendition="true">
+                        <outputRendition>font-style: italic;</outputRendition>
+                    </model>
+                    <model predicate="not(@rendition)" behaviour="inline">
+                        <outputRendition>font-style: italic;</outputRendition>
+                    </model>
+                </elementSpec>
             </schemaSpec>
         </body>
     </text>
