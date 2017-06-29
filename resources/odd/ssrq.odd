@@ -220,7 +220,12 @@
                         <outputRendition scope="before">content: '[...]';</outputRendition>
                     </model>
                 </elementSpec>
-
+                <elementSpec ident="term" mode="change">
+                    <model behaviour="inline" cssClass="semantic">
+                        <desc>Semantic highlighting of keywords and lemmata with dark-red text color</desc>
+                        <outputRendition>color: #b5221f;</outputRendition>
+                    </model>
+                </elementSpec>
             </schemaSpec>
         </body>
     </text>
