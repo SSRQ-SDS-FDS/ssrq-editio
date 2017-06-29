@@ -160,6 +160,20 @@
                         <outputRendition>font-style: italic;</outputRendition>
                     </model>
                 </elementSpec>
+                <elementSpec ident="space" mode="change">
+                    <modelSequence>
+                        <model behaviour="alternate" cssClass="text-critical">
+                            <param name="default" value="text{'...'}"/>
+                            <param name="alternate" value="text{'Lücke in der Vorlage ('} | @quantity | text{' '} | @unit | text{')'}"/>
+                            <outputRendition>text-decoration: underline;</outputRendition>
+                        </model>
+                        <model behaviour="note">
+                            <param name="place" value="&#34;footnote&#34;"/>
+                            <param name="content" value="'Lücke in der Vorlage (' || @quantity || ' ' || @unit || ')'"/>
+                            <param name="type" value="'text-critical'"/>
+                        </model>
+                    </modelSequence>
+                </elementSpec>
             </schemaSpec>
         </body>
     </text>
