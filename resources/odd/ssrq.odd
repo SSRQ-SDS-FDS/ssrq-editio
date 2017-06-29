@@ -118,7 +118,7 @@
                 <elementSpec ident="origDate" mode="add">
                     <model behaviour="alternate">
                         <param name="default" value="."/>
-                        <param name="alternate" value="text{'Originaldatierung: '} | @when"/>
+                        <param name="alternate" value="(text{'Originaldatierung: '}, @when)"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="del" mode="change">
