@@ -271,6 +271,13 @@
                         <param name="alternate" value="text{'Zeit'}"/>
                     </model>
                 </elementSpec>
+                <elementSpec ident="measure" mode="change">
+                    <model behaviour="alternate" cssClass="semantic">
+                        <desc>Display measurement with given parameters in tooltip and highlight text with color</desc>
+                        <param name="default" value="."/>
+                       <param name="alternate" value="(@type, text{': '}, @quantity, text{' '}, @origin, text{' '}, @unit, text{' '}, @commodity)"/>
+                    </model>
+                </elementSpec>
             </schemaSpec>
         </body>
     </text>
