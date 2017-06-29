@@ -254,6 +254,23 @@
                         <param name="alternate" value="(text{'Menge: '}, @value)"/>
                     </model>
                 </elementSpec>
+                <elementSpec ident="time" mode="change">
+                    <model predicate="@period" behaviour="alternate" cssClass="semantic">
+                        <desc>Display time with given parameter in tooltip and highlight text with color</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="(text{'Zeit: '}, @period)"/>
+                    </model>
+                    <model predicate="@when" behaviour="alternate" cssClass="semantic">
+                        <desc>Display time with given parameter in tooltip and highlight text with color</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="(text{'Zeit: '}, @when)"/>
+                    </model>
+                    <model behaviour="alternate" cssClass="semantic">
+                        <desc>Display time in tooltip and highlight text with color</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Zeit'}"/>
+                    </model>
+                </elementSpec>
             </schemaSpec>
         </body>
     </text>
