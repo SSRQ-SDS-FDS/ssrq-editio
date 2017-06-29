@@ -27,7 +27,7 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 $.material.init();
-                
+
                 // keyboard shortcuts: press "left" key for previous page, "right" for next
                 $(document).keydown(function(ev) {
                     switch (ev.which) {
@@ -72,7 +72,7 @@
                             <div class="container-fluid">
                                 <section class="row" data-template="pages:navigation">
                                     <div class="col-md-1 hidden-xs hidden-sm">
-                                        <a class="btn btn-primary btn-fab toc-toggle" data-toggle="offcanvas" data-target="#sidebar" data-canvas="#main-container">
+                                        <a class="btn btn-primary btn-fab toc-toggle" data-toggle="offcanvas" data-target="#sidebar" data-canvas="#main-container" data-template="app:show-toc">
                                             <i class="material-icons">view_list</i>
                                         </a>
                                         <a data-template="pages:navigation-link" data-template-direction="previous" class="nav-prev page-nav btn btn-primary btn-fab" title="i18n(previous-page)">
@@ -88,7 +88,9 @@
                                             </div>
                                             <!-- Document title -->
                                             <div class="hidden-xs hidden-sm col-md-12 col-lg-12 col-title">
-                                                <h5 data-template="pages:navigation-title"/>
+                                                <h4 data-template="pages:navigation-title"/>
+                                                <h4 data-template="app:idno"/>
+                                                <h4 data-template="app:header-short"/>
                                             </div>
                                             <div class="hidden-md hidden-lg btn-group-sm">
                                                 <a data-template="pages:navigation-link" data-template-direction="next" class="nav-next page-nav btn btn-primary btn-fab" title="i18n(next-page)">
@@ -96,14 +98,23 @@
                                                 </a>
                                             </div>
                                         </div>
-                                        <div class="comment">
+                                        <div class="comment" data-template="app:regest">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" href="#regest" aria-expanded="false"
+                                                    aria-controls="regest">
+                                                    <span class="material-icons">chevron_right</span> Regest
+                                                </a>
+                                            </h4>
+                                            <div id="regest" class="collapse" data-template="app:display-data"/>
+                                        </div>
+                                        <div class="comment" data-template="app:comment">
                                             <h4 class="panel-title">
                                                 <a role="button" data-toggle="collapse" href="#comment" aria-expanded="false"
                                                     aria-controls="comment">
                                                     <span class="material-icons">chevron_right</span> Kommentar
                                                 </a>
                                             </h4>
-                                            <div id="comment" class="collapse" data-template="app:comment"/>
+                                            <div id="comment" class="collapse" data-template="app:display-data"/>
                                         </div>
                                         <!-- Document pane -->
                                         <div id="content-inner">

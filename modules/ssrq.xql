@@ -10,13 +10,64 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 declare variable $app:single-body-div-max := 7;
 
-declare
-    %templates:wrap
-function app:comment($node as node(), $model as map(*)) {
+declare %private function app:show-if-exists($node as node(), $test as element()*, $func as function(*)) {
+    if ($test and normalize-space($test/string()) != "") then
+        element { node-name($node) } {
+            $node/@*,
+            $func()
+        }
+    else
+        ()
+};
+
+declare function app:header-short($node as node(), $model as map(*)) {
+    let $head := root($model?data)//tei:teiHeader//tei:msDesc/tei:head
+    return
+        app:show-if-exists($node, $head, function() {
+            $pm-config:web-transform($head, map { "root": $head }, $config:odd)
+        })
+};
+
+
+declare function app:idno($node as node(), $model as map(*)) {
+    let $idno := root($model?data)//tei:teiHeader//tei:msIdentifier/tei:idno
+    return
+        app:show-if-exists($node, $idno, function() { $idno/string() })
+};
+
+declare function app:comment($node as node(), $model as map(*)) {
     let $back := root($model?data)//tei:back
     return
-        $pm-config:web-transform($back, map { "root": $back }, $config:odd)
+        app:show-if-exists($node, $back, function() {
+            templates:process($node/node(), map:merge(($model, map { "data": $back })))
+        })
 };
+
+declare function app:regest($node as node(), $model as map(*)) {
+    let $regest := root($model?data)//tei:teiHeader//tei:msContents/tei:summary
+    return
+        app:show-if-exists($node, $regest, function() {
+            templates:process($node/node(), map:merge(($model, map { "data": $regest })))
+        })
+};
+
+declare
+    %templates:wrap
+function app:display-data($node as node(), $model as map(*)) {
+    $pm-config:web-transform($model?data, map { "root": $model?data }, $config:odd)
+};
+
+
+declare function app:show-toc($node as node(), $model as map(*), $view as xs:string?) {
+    if ($view = "body") then
+        ()
+    else
+        element { node-name($node) } {
+            $node/@*,
+            templates:process($node/node(), $model)
+        }
+};
+
 
 declare
     %templates:wrap
@@ -41,7 +92,7 @@ function app:short-header($node as node(), $model as map(*)) {
         }, $model?config?odd)
 };
 
-declare 
+declare
     %templates:wrap
 function app:keywords($node as node(), $model as map(*)) {
     let $work := $model("work")/ancestor-or-self::tei:TEI

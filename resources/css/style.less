@@ -166,14 +166,14 @@
 
 .panel-title {
     margin-bottom: 1em;
-    font-family: @font-family-body-default;
-    font-size: @font-size-content-inner;
+    // font-family: @font-family-body-default;
+    // font-size: @font-size-content-inner;
     color: @color-primary-light;
 }
 
 .comment:extend(#content-inner) {
     min-height: auto;
-    
+
     > a {
         margin-bottom: 10px;
     }
@@ -182,6 +182,10 @@
 @media (min-width: @screen-sm) {
     .navigation-top {
         border: 0;
+
+        h4 {
+            text-align: left;
+        }
     }
 }
 
@@ -189,7 +193,7 @@
     padding-top: 1em;
     margin-top: 1em;
     border-top: @default-border-style;
-    
+
   .content h1,
   .content h2,
   .content h3,
