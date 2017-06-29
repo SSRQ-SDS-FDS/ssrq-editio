@@ -174,6 +174,45 @@
                         </model>
                     </modelSequence>
                 </elementSpec>
+                <elementSpec ident="gap" mode="change">
+                    <modelSequence predicate="@reason='illegible'">
+                        <model behaviour="alternate" cssClass="text-critical">
+                            <param name="default" value="text{'[...]'}"/>
+                            <param name="alternate" value="(text{'Unlesbar ('} , @quantity , text{' '} , @unit , text{')'})"/>
+                            <outputRendition>text-decoration: underline;</outputRendition>
+                        </model>
+                        <model behaviour="note">
+                            <param name="place" value="&#34;footnote&#34;"/>
+                            <param name="content" value="'Unlesbar (' || @quantity || ' ' || @unit || ')'"/>
+                            <param name="type" value="'text-critical'"/>
+                        </model>
+                    </modelSequence>
+                    <modelSequence predicate="@source">
+                        <model behaviour="alternate" cssClass="text-critical">
+                            <param name="default" value="."/>
+                            <param name="alternate" value="(text{'Vgl. '}, @source)"/>
+                            <outputRendition>text-decoration: underline;</outputRendition>
+                        </model>
+                        <model behaviour="note">
+                            <param name="place" value="&#34;footnote&#34;"/>
+                            <param name="content" value="'Vgl. ' || @source"/>
+                            <param name="type" value="'text-critical'"/>
+                        </model>
+                    </modelSequence>
+                    <model predicate="desc" behaviour="inline">
+                        <outputRendition>color: grey;</outputRendition>
+                    </model>
+                    <model predicate="@extent" behaviour="inline">
+                        <param name="content" value="@extent"/>
+                        <outputRendition scope="before">content: '[..';</outputRendition>
+                        <outputRendition scope="after">content: '..]';</outputRendition>
+                        <outputRendition>color: grey;</outputRendition>
+                    </model>
+                    <model behaviour="inline">
+                        <outputRendition scope="before">content: '[...]';</outputRendition>
+                    </model>
+                </elementSpec>
+
             </schemaSpec>
         </body>
     </text>
