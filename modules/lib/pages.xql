@@ -31,9 +31,8 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "../c
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../pm-config.xql";
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
 import module namespace search="http://www.tei-c.org/tei-simple/search" at "search.xql";
-import module namespace odd="http://www.tei-c.org/tei-simple/odd2odd";
-import module namespace pmu="http://www.tei-c.org/tei-simple/xquery/util";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
+import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "../navigation.xql";
 
 declare variable $pages:app-root := request:get-context-path() || substring-after($config:app-root, "/db");
 
@@ -111,7 +110,7 @@ declare function pages:load-xml($view as xs:string?, $root as xs:string?, $doc a
                             return
                                 $node/ancestor-or-self::tei:div[count(ancestor::tei:div) < $config:pagination-depth][1]
                         else
-                            let $div := ($data//tei:div)[1]
+                            let $div := ($data//tei:body)[1]
                             return
                                 if ($div) then
                                     $div
@@ -150,7 +149,7 @@ declare function pages:get-document($idOrName as xs:string) {
 declare function pages:back-link($node as node(), $model as map(*)) {
     element { node-name($node) } {
         attribute href {
-            $pages:app-root || "/works/"
+            $pages:app-root || "/"
         },
         $node/@*,
         $node/node()
@@ -244,17 +243,8 @@ declare function pages:process-content($xml as element()*, $root as element()*, 
         <div class="{$config:css-content-class} {$class}">
         {
             $body,
-            if ($html//li[@class="footnote"]) then
-                <div class="footnotes">
-                    <ol>
-                    {
-                        for $note in $html//li[@class="footnote"]
-                        order by number($note/@value)
-                        return
-                            $note
-                    }
-                    </ol>
-                </div>
+            if ($html//li[@class = "footnote"]) then
+                nav:output-footnotes($html//li[@class = "footnote"])
             else
                 ()
         }

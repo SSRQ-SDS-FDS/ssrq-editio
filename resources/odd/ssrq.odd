@@ -45,9 +45,7 @@
                     <model output="plain" predicate="orig and reg" behaviour="inline">
                         <param name="content" value="reg[1]"/>
                     </model>
-                    <model predicate="sic and corr" behaviour="alternate">
-                        <param name="default" value="sic[1]"/>
-                        <param name="alternate" value="corr[1]"/>
+                    <model predicate="sic and corr" behaviour="inline">
                     </model>
                     <model predicate="abbr and expan" behaviour="alternate">
                         <param name="default" value="abbr[1]"/>
@@ -83,8 +81,10 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="corr" mode="change">
-                    <model predicate="parent::choice" behaviour="inline">
-                            <outputRendition scope="before">content: 'Korrigiert: ';</outputRendition>
+                    <model predicate="parent::choice" behaviour="note">
+                        <param name="place" value="&#34;footnote&#34;"/>
+                        <param name="type" value="'text-critical'"/>
+                        <outputRendition scope="before">content: 'Korrigiert: ';</outputRendition>
                     </model>
                     <model behaviour="alternate">
                         <param name="default" value="."/>
@@ -113,6 +113,30 @@
                         <param name="alternate" value="text{'Originaldatierung: '} | @when"/>
                     </model>
                 </elementSpec>
+                <elementSpec ident="del" mode="change">
+                    <model predicate="@rend" behaviour="note">
+                        <param name="place" value="&#34;footnote&#34;"/>
+                        <param name="content" value="@rend || ': ' || . "/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
+                    <model predicate="not(@*)" behaviour="note">
+                        <param name="place" value="&#34;footnote&#34;"/>
+                        <param name="type" value="'text-critical'"/>
+                        <outputRendition scope="before">
+                            content: 'Streichung: ';
+                        </outputRendition>
+                    </model>
+                    <model behaviour="omit"/>
+                </elementSpec>
+                <elementSpec ident="note" mode="change">
+                    <model predicate="@place" behaviour="note">
+                        <param name="place" value="@place"/>
+                        <param name="label" value="@n"/>
+                    </model>
+                    <model behaviour="note">
+                        <param name="type" value="'note'"/>
+                    </model>
+                </elementSpec> 
             </schemaSpec>
         </body>
     </text>

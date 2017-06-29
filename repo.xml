@@ -9,6 +9,5 @@
     <target>ssrq</target>
     <prepare>pre-install.xql</prepare>
     <finish>post-install.xql</finish>
-    <permissions user="ssrq" group="tei" mode="rw-rw-r--"/>
-<deployed>2017-06-21T12:27:28.612+01:00</deployed>
+    <permissions user="ssrq" group="tei" password="ssrq" mode="rw-rw-r--"/>
 </meta>
