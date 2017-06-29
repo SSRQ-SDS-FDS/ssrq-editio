@@ -75,10 +75,18 @@
                 </elementSpec>
                 <elementSpec ident="unclear" mode="change">
                     <model predicate="parent::damage or parent::del or parent::abbr" behaviour="inline"/>
-                    <model behaviour="alternate">
-                        <param name="default" value="."/>
-                        <param name="alternate" value="text{'Unsichere Lesung'}"/>
-                    </model>
+                    <modelSequence>
+                        <model behaviour="alternate" cssClass="text-critical">
+                            <param name="default" value="."/>
+                            <param name="alternate" value="text{'Unsichere Lesung'}"/>
+                        </model>
+                        <model behaviour="note">
+                            <param name="place" value="&#34;footnote&#34;"/>
+                            <param name="content" value="'Unsichere Lesung'"/>
+                            <param name="type" value="'text-critical'"/>
+                        </model>
+
+                    </modelSequence>
                 </elementSpec>
                 <elementSpec ident="corr" mode="change">
                     <model predicate="parent::choice" behaviour="note">
