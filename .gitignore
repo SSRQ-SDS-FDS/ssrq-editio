@@ -1,3 +1,4 @@
 build
 transform/*.xql
 transform/ssrq.css
+.idea/*
