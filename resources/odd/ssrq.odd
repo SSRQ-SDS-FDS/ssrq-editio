@@ -118,7 +118,7 @@
                 <elementSpec ident="origDate" mode="add">
                     <model behaviour="alternate">
                         <param name="default" value="."/>
-                        <param name="alternate" value="text{'Originaldatierung: '} | @when"/>
+                        <param name="alternate" value="(text{'Originaldatierung: '}, @when)"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="del" mode="change">
@@ -220,7 +220,64 @@
                         <outputRendition scope="before">content: '[...]';</outputRendition>
                     </model>
                 </elementSpec>
-
+                <elementSpec ident="term" mode="change">
+                    <model behaviour="inline" cssClass="semantic">
+                        <desc>Semantic highlighting of keywords and lemmata with dark-red text color</desc>
+                        <outputRendition>color: #b5221f;</outputRendition>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="persName" mode="add">
+                    <model behaviour="alternate" cssClass="semantic">
+                        <desc>Semantic highlighting of person names with tooltip and blue text color</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Person'}"/>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="orgName" mode="add">
+                    <model behaviour="alternate" cssClass="semantic">
+                        <desc>Semantic highlighting of organization names with tooltip and blue text color</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Organisation'}"/>
+                    </model>
+                </elementSpec> 
+                <elementSpec ident="placeName" mode="add">
+                    <model behaviour="alternate" cssClass="semantic">
+                        <desc>Semantic highlighting of place names with tooltip and blue text color</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Ort'}"/>
+                    </model>
+                </elementSpec> 
+                <elementSpec ident="num" mode="change">
+                    <model behaviour="alternate" cssClass="semantic">
+                        <desc>Display number in tooltip and highlight text with color</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="(text{'Menge: '}, @value)"/>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="time" mode="change">
+                    <model predicate="@period" behaviour="alternate" cssClass="semantic">
+                        <desc>Display time with given parameter in tooltip and highlight text with color</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="(text{'Zeit: '}, @period)"/>
+                    </model>
+                    <model predicate="@when" behaviour="alternate" cssClass="semantic">
+                        <desc>Display time with given parameter in tooltip and highlight text with color</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="(text{'Zeit: '}, @when)"/>
+                    </model>
+                    <model behaviour="alternate" cssClass="semantic">
+                        <desc>Display time in tooltip and highlight text with color</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Zeit'}"/>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="measure" mode="change">
+                    <model behaviour="alternate" cssClass="semantic">
+                        <desc>Display measurement with given parameters in tooltip and highlight text with color</desc>
+                        <param name="default" value="."/>
+                       <param name="alternate" value="(@type, text{': '}, @quantity, text{' '}, @origin, text{' '}, @unit, text{' '}, @commodity)"/>
+                    </model>
+                </elementSpec>
             </schemaSpec>
         </body>
     </text>
