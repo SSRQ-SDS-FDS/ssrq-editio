@@ -85,7 +85,6 @@
                             <param name="content" value="'Unsichere Lesung'"/>
                             <param name="type" value="'text-critical'"/>
                         </model>
-
                     </modelSequence>
                 </elementSpec>
                 <elementSpec ident="corr" mode="change">
@@ -218,6 +217,13 @@
                     </model>
                     <model behaviour="inline">
                         <outputRendition scope="before">content: '[...]';</outputRendition>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="foreign" mode="change">
+                    <model behaviour="alternate" cssClass="text-critical">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="@xml:lang"/>
+                        <outputRendition>font-style:italic;</outputRendition>
                     </model>
                 </elementSpec>
                 <elementSpec ident="term" mode="change">
