@@ -307,6 +307,11 @@
                         <param name="label" value="@n"/>
                     </model>
                 </elementSpec>
+                <elementSpec ident="q" mode="change">
+                    <model behaviour="inline" useSourceRendition="true" cssClass="quote-inline">
+                        <desc>Add css class for quotes</desc>
+                    </model>
+                </elementSpec>
             </schemaSpec>
         </body>
     </text>

@@ -359,3 +359,13 @@
     }
 }
 
+// Display <q> tags in guillemets
+.quote-inline {
+    &:before {
+        content:"\00AB";
+    }
+    &:after {
+        content:"\00BB";
+    }
+}
+
