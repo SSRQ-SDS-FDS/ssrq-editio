@@ -281,33 +281,35 @@
                     <model predicate="not(preceding::pb[ancestor::text])" behaviour="omit">
                         <desc>Hide the very first pagebreak in a document</desc>
                     </model>
-                    <modelSequence>
-                        <model predicate="not(@*)" behaviour="alternate">
-                            <desc>Show tooltip on pagebreaks that do not contain attributes</desc>
-                            <param name="default" value="."/>
-                            <param name="alternate" value="text{'Seitenumbruch'}"/>
-                        </model>
-                        <model predicate="matches(@n, '\d+')" behaviour="break">
-                            <desc>Show pagebreak with a label, if pb contains a @n attribute and its value only contains a number</desc>
-                            <param name="type" value="'page'"/>
-                            <param name="label" value="@n"/>
-                            <outputRendition>display: block;</outputRendition>
-                            <outputRendition>font-style: italic; color: #808080;</outputRendition>
-                            <outputRendition scope="before">content:"ǁ [S. ";</outputRendition>
-                            <outputRendition scope="after">content:" ]";</outputRendition>
-                        </model>
-                        <model predicate="matches(@n, '\d+\w+')" behaviour="break">
-                            <desc>Show pagebreak with a label, if pb contains a @n attribute and its value contains a number+string combination</desc>
-                            <param name="type" value="'page'"/>
-                            <param name="label" value="@n"/>
-                            <outputRendition>display: block;</outputRendition>
-                            <outputRendition>font-style: italic; color: #808080;</outputRendition>
-                            <outputRendition scope="before">content:"ǁ [fol. ";</outputRendition>
-                            <outputRendition scope="after">content:" ]";</outputRendition>
-                        </model>
-                    </modelSequence>
+                    <model predicate="preceding::pb[ancestor::text]" behaviour="omit">
+                        <desc>Hide the very first pagebreak in a document</desc>
+                    </model>
+                    <model predicate="not(@*)" behaviour="alternate">
+                        <desc>Show tooltip on pagebreaks that don't contain attributes</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Seitenumbruch'}"/>
+                    </model>
+                    <model predicate="matches(@n, '\d+')" behaviour="break">
+                        <desc>Show pagebreak with a label, if pb contains a @n attribute and its value only contains a number</desc>
+                        <param name="type" value="'page'"/>
+                        <param name="label" value="@n"/>
+                        <outputRendition>display: block;</outputRendition>
+                        <outputRendition>font-style: italic; color: #808080;</outputRendition>
+                        <outputRendition scope="before">content:"ǁ [S. ";</outputRendition>
+                        <outputRendition scope="after">content:" ]";</outputRendition>
+                    </model>
+                    <model predicate="matches(@n, '\d+\w+')" behaviour="break">
+                        <desc>Show pagebreak with a label, if pb contains a @n attribute and its value contains a number+string combination</desc>
+                        <param name="type" value="'page'"/>
+                        <param name="label" value="@n"/>
+                        <outputRendition>display: block;</outputRendition>
+                        <outputRendition>font-style: italic; color: #808080;</outputRendition>
+                        <outputRendition scope="before">content:"ǁ [fol. ";</outputRendition>
+                        <outputRendition scope="after">content:" ]";</outputRendition>
+                    </model>
                 </elementSpec>
             </schemaSpec>
         </body>
     </text>
+</TEI>
 </TEI>
