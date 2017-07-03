@@ -288,9 +288,6 @@
                     <model predicate="not(preceding::pb[ancestor::text])" behaviour="omit">
                         <desc>Hide the very first pagebreak in a document</desc>
                     </model>
-                    <model predicate="preceding::pb[ancestor::text]" behaviour="omit">
-                        <desc>Hide the very first pagebreak in a document</desc>
-                    </model>
                     <model predicate="not(@*)" behaviour="alternate">
                         <desc>Show tooltip on pagebreaks that don't contain attributes</desc>
                         <param name="default" value="."/>
