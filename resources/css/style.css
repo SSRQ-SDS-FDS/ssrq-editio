@@ -830,3 +830,19 @@ body.tei-text {
 #content-inner .pb:before {
   content: '[p. ' !important;
 }
+.pb-pagination,
+.pb-foliation {
+  font-style: italic;
+  color: #808080;
+  display: block;
+}
+.pb-pagination:after,
+.pb-foliation:after {
+  content: " ] ";
+}
+.pb-pagination:before {
+  content: "ǁ [S. ";
+}
+.pb-foliation:before {
+  content: "ǁ [fol. ";
+}

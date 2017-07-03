@@ -296,21 +296,15 @@
                         <param name="default" value="."/>
                         <param name="alternate" value="text{'Seitenumbruch'}"/>
                     </model>
-                    <model predicate="matches(@n, '\d+')" behaviour="break">
+                    <model predicate="matches(@n, '\d+')" behaviour="break" cssClass="pb-pagination">
                         <desc>Show pagebreak with a label, if pb contains a @n attribute and its value only contains a number</desc>
                         <param name="type" value="'page'"/>
                         <param name="label" value="@n"/>
-                        <outputRendition>display: block; font-style: italic; color: #808080;</outputRendition>
-                        <outputRendition scope="before">content:"ǁ [S. ";</outputRendition>
-                        <outputRendition scope="after">content:" ]";</outputRendition>
                     </model>
-                    <model predicate="matches(@n, '\d+\w+')" behaviour="break">
+                    <model predicate="matches(@n, '\d+\w+')" behaviour="break" cssClass="pb-foliation">
                         <desc>Show pagebreak with a label, if pb contains a @n attribute and its value contains a number+string combination</desc>
                         <param name="type" value="'page'"/>
                         <param name="label" value="@n"/>
-                        <outputRendition>display: block; font-style: italic; color: #808080;</outputRendition>
-                        <outputRendition scope="before">content:"ǁ [fol. ";</outputRendition>
-                        <outputRendition scope="after">content:" ]";</outputRendition>
                     </model>
                 </elementSpec>
             </schemaSpec>

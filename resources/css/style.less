@@ -335,3 +335,27 @@
     content: '[p. ' !important;
   }
 }
+
+// Custom pagebreaks in documents
+.pb-pagination,
+.pb-foliation {
+    font-style: italic; 
+    color: #808080;
+    display: block;
+    &:after {
+        content:" ] ";
+    }
+}
+
+.pb-pagination {
+    &:before {
+    content:"ǁ [S. ";
+    }
+}
+
+.pb-foliation {
+    &:before {
+    content:"ǁ [fol. ";
+    }
+}
+
