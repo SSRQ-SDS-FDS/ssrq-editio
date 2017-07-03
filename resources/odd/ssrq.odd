@@ -307,6 +307,56 @@
                         <param name="label" value="@n"/>
                     </model>
                 </elementSpec>
+                <elementSpec ident="supplied" mode="change">
+                    <model predicate="parent::choice" behaviour="inline"/>
+                    <modelSequence predicate="@resp">
+                        <model behaviour="alternate" cssClass="text-critical">
+                            <param name="default" value="."/>
+                            <param name="alternate" value="text{'Sinngemäss ergänzt'}"/>
+                            <outputRendition scope="before">content:"[";</outputRendition>
+                            <outputRendition scope="after">content:"]";</outputRendition>
+                        </model>
+                        <model behaviour="note">
+                            <param name="place" value="&#34;footnote&#34;"/>
+                            <param name="content" value="'Sinngemäss ergänzt'"/>
+                            <param name="type" value="'text-critical'"/>
+                        </model>
+                    </modelSequence>
+                    <modelSequence predicate="@source and @reason">
+                        <model behaviour="alternate" cssClass="text-critical">
+                            <param name="default" value="."/>
+                            <param name="alternate" value="(@reason, text{'ergänzt nach '}, @source)"/>
+    )"/&gt;
+                            <outputRendition scope="before">content:"[";</outputRendition>
+                            <outputRendition scope="after">content:"]";</outputRendition>
+                        </model>
+                        <model behaviour="note">
+                            <param name="place" value="&#34;footnote&#34;"/>
+                            <param name="content" value="'Sinngemäss ergänzt'"/>
+                            <param name="type" value="'text-critical'"/>
+                        </model>
+                    </modelSequence>
+                    <modelSequence predicate="@source">
+                        <model behaviour="alternate" cssClass="text-critical">
+                            <param name="default" value="."/>
+                            <param name="alternate" value="(text{'Ergänzt nach '}, @source)"/>
+    )"/&gt;
+                            <outputRendition scope="before">content:"[";</outputRendition>
+                            <outputRendition scope="after">content:"]";</outputRendition>
+                        </model>
+                        <model behaviour="note">
+                            <param name="place" value="&#34;footnote&#34;"/>
+                            <param name="content" value="'Sinngemäss ergänzt'"/>
+                            <param name="type" value="'text-critical'"/>
+                        </model>
+                    </modelSequence>
+                    <model behaviour="inline">
+                        <outputRendition scope="before">content:"[";</outputRendition>
+                        <outputRendition scope="after">content:"]";</outputRendition>
+                    </model>
+                </elementSpec>
+
+
             </schemaSpec>
         </body>
     </text>
