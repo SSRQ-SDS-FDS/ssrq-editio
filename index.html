@@ -73,9 +73,152 @@
                 </div>
             </section>
             <section class="col-md-9 col-md-pull-3">
-                <div>
-                    <div class="row">
-                        <div data-template="templates:include" data-template-path="templates/doc-table.html"/>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <i18n:text key="documents">Documents</i18n:text>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <table id="kantone" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="2">Kanton</th>
+                                            <th>Abteilung</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-template="app:kanton-auswahl">
+                                        <tr>
+                                            <td><img src="resources/images/kantone/ZH.png"/></td>
+                                            <td>ZH</td>
+                                            <td>I. Abteilung: Die Rechtsquellen des Kantons Zürich</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/BE.png"/></td>
+                                            <td>BE</td>
+                                            <td>II. Abteilung: Die Rechtsquellen des Kantons Bern</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/LU.png"/></td>
+                                            <td>LU</td>
+                                            <td>III. Abteilung: Die Rechtsquellen des Kantons Luzern</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/UR.png"/></td>
+                                            <td>UR</td>
+                                            <td>IV. Abteilung: Die Rechtsquellen des Kantons Uri</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/SZ.png"/></td>
+                                            <td>SZ</td>
+                                            <td>V. Abteilung: Die Rechtsquellen des Kantons Schwyz</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <img src="resources/images/kantone/OW.png"/>
+                                                <img src="resources/images/kantone/NW.png"/></td>
+                                            <td>OW/NW</td>
+                                            <td>VI. Abteilung: Die Rechtsquellen des Kantons Unterwalden</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/GL.png"/></td>
+                                            <td>GL</td>
+                                            <td>VII. Abteilung: Die Rechtsquellen des Kantons Glarus</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/ZG.png"/></td>
+                                            <td>ZG</td>
+                                            <td>VIII. Abteilung: Die Rechtsquellen des Kantons Zug</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/FR.png"/></td>
+                                            <td>FR</td>
+                                            <td>IXe partie : Les sources du droit du canton de Fribourg<br/>
+                                                IX. Abteilung: Die Rechtsquellen des Kantons Freiburg</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/SO.png"/></td>
+                                            <td>SO</td>
+                                            <td>X. Abteilung: Die Rechtsquellen des Kantons Solothurn</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/BS.png"/>
+                                            <img src="resources/images/kantone/BL.png"/></td>
+                                            <td>BS/BL</td>
+                                            <td>XI. Abteilung: Die Rechtsquellen der Kantone Basel</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/SH.png"/></td>
+                                            <td>SH</td>
+                                            <td>XII. Abteilung: Die Rechtsquellen des Kantons Schaffhausen</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/AR.png"/><img src="resources/images/kantone/AI.png"/></td>
+                                            <td>AR/AI</td>
+                                            <td>XIII. Abteilung: Die Rechtsquellen der Kantone Appenzell</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/SG.png"/></td>
+                                            <td>SG</td>
+                                            <td>XIV. Abteilung: Die Rechtsquellen des Kantons St. Gallen</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/GR.png"/></td>
+                                            <td>GR</td>
+                                            <td>XV. Abteilung: Die Rechtsquellen des Kantons Graubünden<br/>
+                                            XV. partiziun: Las funtaunas da dretg dal chantun Grischun<br/>
+                                            XV sezione: Le fonti del diritto del cantone dei Grigioni</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/AG.png"/></td>
+                                            <td>AG</td>
+                                            <td>XVI. Abteilung: Die Rechtsquellen des Kantons Aargau</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/TG.png"/></td>
+                                            <td>TG</td>
+                                            <td>XVII. Abteilung: Die Rechtsquellen des Kantons Thurgau</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/TI.png"/></td>
+                                            <td>TI</td>
+                                            <td>XVIII sezione: Le fonti del diritto del cantone Ticino</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/VD.png"/></td>
+                                            <td>VD</td>
+                                            <td>XIXe partie : Les sources du droit du canton de Vaud</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/VS.png"/></td>
+                                            <td>VS</td>
+                                            <td>XXe partie : Les sources du droit du canton du Valais
+XX. Abteilung: Die Rechtsquellen des Kantons Wallis</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/NE.png"/></td>
+                                            <td>NE</td>
+                                            <td>XXIe partie : Les sources du droit du canton de Neuchâtel</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/GE.png"/></td>
+                                            <td>GE</td>
+                                            <td>XXIIe partie : Les sources du droit du canton de Genève</td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="resources/images/kantone/JU.png"/></td>
+                                            <td>JU</td>
+                                            <td>XXIIIe partie : Les sources du droit du canton du Jura</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-8">
+                                <div data-template="templates:include" data-template-path="templates/doc-table.html"/>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

@@ -10,6 +10,78 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 declare variable $app:single-body-div-max := 7;
 
+(:~
+ :
+ :)
+declare
+    %templates:wrap
+function app:kanton-auswahl($node as node(), $model as map(*), $kanton as xs:string?) {
+    for $tr in $node/tr
+    let $class := if ($tr/td[2]/string() = $kanton) then 'active' else ()
+    return
+        <tr class="{$class}">
+            { templates:process(subsequence($tr/td, 1, 2), $model) }
+            <td>
+            {
+                let $current := $tr/td[2]
+                let $docs := collection($config:data-root)/tei:TEI
+                    [starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $current || "_")]
+                return
+                    if (exists($docs)) then
+                        <span>
+                            <a href="?kanton={$current}">{$tr/td[3]/text()} </a>
+                            <span class="badge">{count($docs)}</span>
+                        </span>
+                    else
+                        $tr/td[3]/text()
+            }
+            </td>
+        </tr>
+};
+
+
+(:~
+ : Ausgabe der Stücke nach Kanton und ggf. Filter
+ :)
+declare function app:list-works($node as node(), $model as map(*), $filter as xs:string?, $kanton as xs:string?, $browse as xs:string?) {
+    let $kanton := ($kanton, session:get-attribute("kanton"), "ZH")[1]
+    let $sessionData :=
+        if (
+            (empty($filter) or $filter = session:get-attribute("filter")) and
+            ($kanton = session:get-attribute("kanton"))
+        ) then
+            session:get-attribute("simple.works")
+        else
+            ()
+    let $filtered :=
+        if ($sessionData) then
+            $sessionData
+        else if ($filter) then
+            let $ordered :=
+                for $item in
+                    ft:search($config:data-root, $browse || ":" || $filter, ("author", "title"))/search
+                let $author := $item/field[@name = "author"]
+                order by $author[1], $author[2], $author[3]
+                return
+                    $item
+            for $doc in $ordered
+            return
+                doc($doc/@uri)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $kanton || "_")]
+        else
+            collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $kanton || "_")]
+    return (
+        session:set-attribute("simple.works", $filtered),
+        session:set-attribute("browse", $browse),
+        session:set-attribute("filter", $filter),
+        session:set-attribute("kanton", $kanton),
+        map {
+            "all" : $filtered,
+            "mode": "browse"
+        }
+    )
+};
+
+
 declare %private function app:show-if-exists($node as node(), $test as element()*, $func as function(*)) {
     if ($test and normalize-space($test/string()) != "") then
         element { node-name($node) } {

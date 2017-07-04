@@ -11,6 +11,7 @@ declare function local:index() {
         $doc//tei:sourceDesc/tei:biblFull/tei:titleStmt,
         $doc//tei:fileDesc/tei:titleStmt
     )
+    let $kanton := replace($doc/tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, "^([^_]+)_.*$", "$1")
     let $index :=
         <doc>
             {

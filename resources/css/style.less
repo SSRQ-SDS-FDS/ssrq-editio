@@ -164,11 +164,21 @@
     max-width: inherit;
 }
 
-.panel-title {
-    margin-bottom: 1em;
-    // font-family: @font-family-body-default;
-    // font-size: @font-size-content-inner;
+#kantone {
+    .badge {
+        margin-left: 1em;
+    }
+}
+
+.block-title {
+    font-family: @font-sans-serif !important;
+    font-size: 18px !important;
     color: @color-primary-light;
+    margin-bottom: 1em;
+
+    a, a:link {
+        color: @color-primary-light;
+    }
 }
 
 .comment:extend(#content-inner) {
@@ -186,6 +196,15 @@
         h4 {
             text-align: left;
         }
+    }
+}
+
+.list-works {
+    .form-group {
+        margin-top: 0;
+    }
+    .pagination {
+        margin-top: 0;
     }
 }
 
@@ -339,7 +358,7 @@
 // Custom pagebreaks in documents
 .pb-pagination,
 .pb-foliation {
-    font-style: italic; 
+    font-style: italic;
     color: #808080;
     display: block;
     &:after {
@@ -368,4 +387,3 @@
         content:"\00BB";
     }
 }
-
