@@ -304,6 +304,11 @@
                         <param name="label" value="@n"/>
                     </model>
                 </elementSpec>
+                <elementSpec ident="q" mode="change">
+                    <model behaviour="inline" useSourceRendition="true" cssClass="quote-inline">
+                        <desc>Add css class for quotes</desc>
+                    </model>
+                </elementSpec>    
                 <elementSpec ident="supplied" mode="change">
                     <model predicate="parent::choice" behaviour="inline"/>
                     <modelSequence predicate="@resp">
@@ -323,8 +328,6 @@
                         <model behaviour="alternate" cssClass="text-critical">
                             <param name="default" value="."/>
                             <param name="alternate" value="(ext-common:translate('supplied', 'reason', @reason, 'de', 'uppercase'), text{' ergänzt nach '}, @source)"/>
-    )"/&gt;
-    
                             <outputRendition scope="before">content:"[";</outputRendition>
                             <outputRendition scope="after">content:"]";</outputRendition>
                         </model>
