@@ -176,7 +176,7 @@ $(document).ready(function() {
         }
         load(url, this.className.split(" ")[0]);
     }
-    
+
     function tocLoaded() {
         $("#toc a[data-toggle='collapse']").click(function(ev) {
             var icon = $(this).find("span").text();
@@ -187,10 +187,10 @@ $(document).ready(function() {
         });
         $(".toc-link").click(initLinks);
     }
-    
+
     resize();
     $(".page-nav").click(initLinks);
-    
+
     $("#zoom-in").click(function(ev) {
         ev.preventDefault();
         var size = getFontSize();
@@ -214,7 +214,7 @@ $(document).ready(function() {
         ev.preventDefault();
         window.location.search = window.location.search + "&logout=true";
     });
-    
+
     $(".toc-toggle").click( function(ev) {
         $("#toc-loading").each(function() {
             console.log("Loading toc...");
@@ -323,4 +323,14 @@ $(document).ready(function() {
     $(".eXide-open").click(eXide);
 
     initContent();
+
+    // initialize popups for comment section
+    $("#comment .alternate").each(function() {
+        $(this).popover({
+            content: $(this).find(".altcontent").html(),
+            trigger: "hover",
+            html: true,
+            container: "#comment"
+        });
+    });
 });
