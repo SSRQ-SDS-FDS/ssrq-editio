@@ -3727,6 +3727,7 @@
                                 </valItem>
                                 <valItem ident="line">
                                     <desc xml:lang="de">Zeile</desc>
+                                    <desc xml:lang="de" type="plural">Zeilen</desc>
                                 </valItem>
                                 <valItem ident="word">
                                     <desc xml:lang="de">Wort</desc>
