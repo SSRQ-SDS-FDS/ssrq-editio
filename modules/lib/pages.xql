@@ -135,7 +135,7 @@ declare function pages:load-xml($view as xs:string?, $root as xs:string?, $doc a
                         if ($root) then
                             util:node-by-id($data, $root)
                         else
-                            $data/tei:TEI/tei:text
+                            $data/tei:TEI//tei:body[1]
         }
 };
 

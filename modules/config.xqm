@@ -198,6 +198,8 @@ declare variable $config:odd := "ssrq.odd";
 
 declare variable $config:odd-root := $config:app-root || "/resources/odd";
 
+declare variable $config:schema-odd := doc($config:odd-root || "/TEI_Schema_SSRQ.odd")/*;
+
 declare variable $config:output := "transform";
 
 declare variable $config:output-root := $config:app-root || "/" || $config:output;
