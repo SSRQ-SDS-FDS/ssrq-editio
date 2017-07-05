@@ -115,6 +115,10 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="origDate" mode="add">
+                    <model predicate="$parameters?header='short'" behaviour="inline">
+                        <desc>Called to output the sigle of a document</desc>
+                        <param name="content" value="format-date(xs:date(@when), '[Y] [MNn] [D01]')"/>
+                    </model>
                     <model behaviour="alternate">
                         <param name="default" value="."/>
                         <param name="alternate" value="(text{'Originaldatierung: '}, @when)"/>
@@ -353,6 +357,37 @@
                     <model behaviour="inline">
                         <outputRendition scope="before">content:"[";</outputRendition>
                         <outputRendition scope="after">content:"]";</outputRendition>
+                    </model>
+                </elementSpec>
+                <elementSpec mode="change" ident="fileDesc">
+                    <modelSequence predicate="$parameters?header='short'">
+                        <desc>Output a short header to be used in document listings</desc>
+                        <model behaviour="block" cssClass="header-short">
+                            <param name="content" value="titleStmt"/>
+                        </model>
+                        <model behaviour="block" cssClass="header-short">
+                            <param name="content" value="(seriesStmt, ' ', sourceDesc/msDesc/history/origin/origDate/@when, '(prov.)')"/>
+                        </model>
+                        <model behaviour="block" cssClass="header-short">
+                            <param name="content" value="sourceDesc/msDesc/head"/>
+                        </model>
+                        <model behaviour="block" cssClass="header-short">
+                            <param name="content" value="sourceDesc/msDesc/history/origin/origDate"/>
+                        </model>
+                        <model behaviour="block" cssClass="header-short">
+                            <param name="content" value="editionStmt"/>
+                        </model>
+                        <model behaviour="block" cssClass="header-short">
+                            <param name="content" value="publicationStmt"/>
+                        </model>
+                    </modelSequence>
+                    <model behaviour="title">
+                        <param name="content" value="titleStmt"/>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="seriesStmt" mode="add">
+                    <model predicate="$parameters?header='short'" behaviour="inline">
+                        <param name="content" value="ext-common:display-sigle(idno/@xml:id)"/>
                     </model>
                 </elementSpec>
             </schemaSpec>
