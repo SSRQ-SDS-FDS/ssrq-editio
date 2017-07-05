@@ -215,7 +215,7 @@ XX. Abteilung: Die Rechtsquellen des Kantons Wallis</td>
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-8" id="documents-panel">
                                 <div data-template="templates:include" data-template-path="templates/doc-table.html"/>
                             </div>
                         </div>
@@ -242,7 +242,10 @@ XX. Abteilung: Die Rechtsquellen des Kantons Wallis</td>
                 $.each(data.result.files, function (index, file) {
                     var tr = document.createElement("tr");
                     var td = document.createElement("td");
-                    td.appendChild(document.createTextNode(file.name));
+                    var link = document.createElement("a");
+                    link.href = file.path;
+                    link.appendChild(document.createTextNode(file.path));
+                    td.appendChild(link);
                     tr.appendChild(td);
                     $("#files").append(tr);
                 });
