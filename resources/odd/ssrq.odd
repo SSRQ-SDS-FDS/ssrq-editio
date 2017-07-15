@@ -390,6 +390,26 @@
                         <param name="content" value="ext-common:display-sigle(idno/@xml:id)"/>
                     </model>
                 </elementSpec>
+                <elementSpec ident="back" mode="change">
+                    <desc>back contains the commentary, which should appear as a numbered list</desc>
+                    <model behaviour="list" predicate="div/@n">
+                        <param name="type" value="'ordered'"/>
+                    </model>
+                    <model behaviour="block"/>
+                </elementSpec>
+                <elementSpec ident="div" mode="change">
+                    <model behaviour="listItem" predicate="parent::back">
+                        <desc>output as list item if in commentary</desc>
+                    </model>
+                    <model behaviour="section" predicate="parent::body or parent::front or parent::back"/>
+                    <model behaviour="block"/>
+                </elementSpec>
+                <elementSpec ident="ab" mode="change">
+                    <model behaviour="block" predicate="@place">
+                        <param name="content" value="('[' || string-join((ext-common:translate('ab', 'type', @type, 'de', 'lowercase'),ext-common:translate('ab', 'place', @place, 'de', 'lowercase'),ext-common:translate('ab', 'hand', @hand, 'de', 'lowercase')), ' ') || ':] ', node())"/>
+                    </model>
+                    <model behaviour="paragraph"/>
+                </elementSpec>
             </schemaSpec>
         </body>
     </text>
