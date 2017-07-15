@@ -5,6 +5,7 @@ module namespace app="http://existsolutions.com/ssrq/app";
 import module namespace templates="http://exist-db.org/xquery/templates";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xql";
+import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "/db/apps/ssrq/modules/ext-common.xql";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
@@ -82,7 +83,7 @@ declare function app:list-works($node as node(), $model as map(*), $filter as xs
 };
 
 
-declare %private function app:show-if-exists($node as node(), $test as element()*, $func as function(*)) {
+declare %private function app:show-if-exists($node as node(), $test as node()*, $func as function(*)) {
     if ($test and normalize-space($test/string()) != "") then
         element { node-name($node) } {
             $node/@*,
@@ -102,10 +103,26 @@ declare function app:header-short($node as node(), $model as map(*)) {
 
 
 declare function app:idno($node as node(), $model as map(*)) {
-    let $idno := root($model?data)//tei:teiHeader//tei:msIdentifier/tei:idno
+    let $header := root($model?data)//tei:teiHeader
+    let $idno := $header/tei:fileDesc/tei:seriesStmt/tei:idno/@xml:id
     return
-        app:show-if-exists($node, $idno, function() { $idno/string() })
+        app:show-if-exists($node, $idno, function() {
+            common:display-sigle($idno),
+            $header/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@when/string(),
+            "(provisorisch)"
+        })
 };
+
+declare function app:origDate($node as node(), $model as map(*)) {
+    let $header := root($model?data)//tei:teiHeader
+    let $origDate := $header/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@when
+    return
+        app:show-if-exists($node, $origDate, function() {
+            format-date(xs:date($origDate), '[Y] [MNn] [D01]')
+        })
+};
+
+
 
 declare function app:comment($node as node(), $model as map(*)) {
     let $back := root($model?data)//tei:back
@@ -145,23 +162,28 @@ declare
     %templates:wrap
 function app:short-header($node as node(), $model as map(*)) {
     let $work := $model("work")/ancestor-or-self::tei:TEI
-    let $view :=
-        (: Switch to paginated view if we have more than $app:single-body-div-max divs :)
-        if (count($work//tei:body//tei:div) > $app:single-body-div-max) then
-            (: Navigate by page if there are pb :)
-            if ($work//tei:body//tei:pb) then
-                "page"
-            else
-                "div"
-        (: Otherwise show the entire body :)
-        else
-            "body"
-    let $relPath := config:get-identifier($work)
     return
-        $pm-config:web-transform($work/tei:teiHeader, map {
-            "header": "short",
-            "doc": $relPath || "?odd=" || $model?config?odd || "&amp;view=" || $view
-        }, $model?config?odd)
+        if ($work) then
+            let $view :=
+                (: Switch to paginated view if we have more than $app:single-body-div-max divs :)
+                if (count($work//tei:body//tei:div) > $app:single-body-div-max) then
+                    (: Navigate by page if there are pb :)
+                    if ($work//tei:body//tei:pb) then
+                        "page"
+                    else
+                        "div"
+                (: Otherwise show the entire body :)
+                else
+                    "body"
+            let $relPath := config:get-identifier($work)
+            return
+                $pm-config:web-transform($work/tei:teiHeader, map {
+                    "header": "short",
+                    "doc": $relPath || "?odd=" || $model?config?odd || "&amp;view=" || $view,
+                    "root": $work
+                }, $model?config?odd)
+        else
+            <p>Could not read {util:document-name($model?work)}</p>
 };
 
 declare
