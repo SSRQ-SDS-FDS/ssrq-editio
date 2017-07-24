@@ -1523,18 +1523,22 @@
                             <valList type="closed">
                                 <valItem ident="character">
                                     <desc xml:lang="de">Buchstabe</desc>
+                                    <desc xml:lang="de" type="plural">Buchstaben</desc>
                                     <desc xml:lang="fr">lettre</desc>
                                 </valItem>
                                 <valItem ident="cm">
                                     <desc xml:lang="de">cm</desc>
+                                    <desc xml:lang="de" type="plural">cm</desc>
                                     <desc xml:lang="fr">cm</desc>
                                 </valItem>
                                 <valItem ident="line">
                                     <desc xml:lang="de">Zeile</desc>
+                                    <desc xml:lang="de" type="plural">Zeilen</desc>
                                     <desc xml:lang="fr">ligne</desc>
                                 </valItem>
                                 <valItem ident="word">
                                     <desc xml:lang="de">Wort</desc>
+                                    <desc xml:lang="de" type="plural">Wörter</desc>
                                     <desc xml:lang="fr">mot</desc>
                                 </valItem>
                             </valList>
@@ -2550,15 +2554,19 @@
                             <valList type="closed">
                                 <valItem ident="character">
                                     <desc xml:lang="de">Buchstabe</desc>
+                                    <desc xml:lang="de" type="plural">Buchstaben</desc>
                                 </valItem>
                                 <valItem ident="cm">
                                     <desc xml:lang="de">cm</desc>
+                                    <desc xml:lang="de" type="plural">cm</desc>
                                 </valItem>
                                 <valItem ident="line">
                                     <desc xml:lang="de">Zeile</desc>
+                                    <desc xml:lang="de" type="plural">Zeilen</desc>
                                 </valItem>
                                 <valItem ident="word">
                                     <desc xml:lang="de">Wort</desc>
+                                    <desc xml:lang="de" type="plural">Wörter</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -3721,9 +3729,11 @@
                             <valList type="closed">
                                 <valItem ident="character">
                                     <desc xml:lang="de">Buchstabe</desc>
+                                    <desc xml:lang="de">Buchstaben</desc>
                                 </valItem>
                                 <valItem ident="cm">
                                     <desc xml:lang="de">cm</desc>
+                                    <desc xml:lang="de" type="plural">cm</desc>
                                 </valItem>
                                 <valItem ident="line">
                                     <desc xml:lang="de">Zeile</desc>
@@ -3731,6 +3741,7 @@
                                 </valItem>
                                 <valItem ident="word">
                                     <desc xml:lang="de">Wort</desc>
+                                    <desc xml:lang="de" type="plural">Wörter</desc>
                                 </valItem>
                             </valList>
                         </attDef>
