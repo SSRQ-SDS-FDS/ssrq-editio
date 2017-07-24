@@ -224,8 +224,7 @@
                 <elementSpec ident="foreign" mode="change">
                     <model behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="@xml:lang"/>
-                        <outputRendition>font-style:italic;</outputRendition>
+                        <param name="alternate" value="text{'Sprachwechsel'}"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="term" mode="change">
