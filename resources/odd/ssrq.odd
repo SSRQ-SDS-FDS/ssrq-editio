@@ -137,6 +137,17 @@
                 </elementSpec>            
                 <elementSpec ident="add" mode="change">
                     <model predicate="parent::subst" behaviour="inline"/>
+                    <modelSequence predicate="@place">
+                        <model behaviour="alternate" cssClass="text-critical">
+                            <param name="default" value="text{'⚓'}"/>
+                            <param name="alternate" value="(ext-common:translate('add', 'place', @place, 'de', 0, 'uppercase'),                             if (@hand) then text{' ' || ext-common:translate('add', 'hand', @hand, 'de', 0, 'lowercase')} else (),                             if (@rend) then text{' ' || ext-common:translate('add', 'rend', @rend, 'de', 0, 'lowercase')} else (),                             text{': '},                             .)"/>
+                        </model>
+                        <model behaviour="note">
+                            <param name="place" value="&#34;footnote&#34;"/>
+                            <param name="content" value="(ext-common:translate('add', 'place', @place, 'de', 0, 'uppercase'),                             if (@hand) then text{' ' || ext-common:translate('add', 'hand', @hand, 'de', 0, 'lowercase')} else (),                             if (@rend) then text{' ' || ext-common:translate('add', 'rend', @rend, 'de', 0, 'lowercase')} else (),                             text{': '},                             .)"/>
+                            <param name="type" value="'text-critical'"/>
+                        </model>
+                    </modelSequence>
                     <model behaviour="inline">
                         <outputRendition>color: green; text-decoration: underline;</outputRendition>
                     </model>
