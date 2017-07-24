@@ -3848,6 +3848,9 @@
                                 <valItem ident="omitted line">
                                     <desc xml:lang="de">Zeilensprung</desc>
                                 </valItem>
+                                <valItem ident="illegible">
+                                    <desc xml:lang="de">unleserlich</desc>
+                                </valItem>
                             </valList>
                         </attDef>
                         <attDef ident="cert" mode="delete"/>
