@@ -3729,7 +3729,7 @@
                             <valList type="closed">
                                 <valItem ident="character">
                                     <desc xml:lang="de">Buchstabe</desc>
-                                    <desc xml:lang="de">Buchstaben</desc>
+                                    <desc xml:lang="de" type="plural">Buchstaben</desc>
                                 </valItem>
                                 <valItem ident="cm">
                                     <desc xml:lang="de">cm</desc>
