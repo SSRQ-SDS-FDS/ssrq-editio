@@ -268,8 +268,10 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="term" mode="change">
-                    <model behaviour="inline" cssClass="semantic">
+                    <model behaviour="alternate" cssClass="semantic">
                         <desc>Semantic highlighting of keywords and lemmata with dark-red text color</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Begriff'}"/>
                         <outputRendition>color: #b5221f;</outputRendition>
                     </model>
                 </elementSpec>
