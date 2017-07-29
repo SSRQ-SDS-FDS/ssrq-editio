@@ -132,7 +132,7 @@
                     </model>
                     <model behaviour="alternate">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(text{'Originaldatierung: '}, @when)"/>
+                        <param name="alternate" value="(text{'Originaldatierung: '}, format-date(@when, '[D01].[M01].[Y0001])"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="add" mode="change">
