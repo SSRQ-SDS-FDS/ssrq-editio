@@ -305,12 +305,17 @@
                     <model predicate="@period" behaviour="alternate" cssClass="semantic">
                         <desc>Display time with given parameter in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
-                        <param name="alternate" value="(text{'Zeit: '}, @period)"/>
+                        <param name="alternate" value="text{'Zeit: ', ext-common:translate('time', 'period', @period, 'de', 0, ())}"/>
                     </model>
                     <model predicate="@when" behaviour="alternate" cssClass="semantic">
                         <desc>Display time with given parameter in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
-                        <param name="alternate" value="(text{'Zeit: '}, @when)"/>
+                        <param name="alternate" value="text{'Zeit: ', @when}"/>
+                    </model>
+                    <model predicate="@dur" behaviour="alternate" cssClass="semantic">
+                        <desc>Display time in tooltip and highlight text with color</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Zeitspanne: ', ext-common:format-duration(@dur)}"/>
                     </model>
                     <model behaviour="alternate" cssClass="semantic">
                         <desc>Display time in tooltip and highlight text with color</desc>
@@ -487,24 +492,24 @@
                 </elementSpec>
                 <elementSpec ident="date" mode="change">
                     <model output="web" predicate="@when and @type"
-                        behaviour="alternate">
+                        behaviour="alternate" cssClass="semantic">
                         <param name="default" value="."/>
                         <param name="alternate" value="text{'Datum: ', ext-common:format-date(@when), ' (', ext-common:translate('date', 'type', @type, 'de', 0, ()), ')'}"/>
                     </model>
                     <model output="web" predicate="@when"
-                        behaviour="alternate">
+                        behaviour="alternate" cssClass="semantic">
                         <param name="default" value="."/>
                         <param name="alternate" value="text{'Datum: ', ext-common:format-date(@when)}"/>
                     </model>
-                    <model output="web" predicate="@period" behaviour="alternate">
+                    <model output="web" predicate="@period" behaviour="alternate" cssClass="semantic">
                         <param name="default" value="."/>
                         <param name="alternate" value="text{'Zeitspanne: ', ext-common:translate('date', 'period', @period, 'de', 0, ())}"/>
                     </model>
-                    <model output="web" predicate="@dur" behaviour="alternate">
+                    <model output="web" predicate="@dur" behaviour="alternate" cssClass="semantic">
                         <param name="default" value="."/>
                         <param name="alternate" value="text{'Zeitspanne: ', ext-common:format-duration(@dur)}"/>
                     </model>
-                    <model predicate="text()" behaviour="inline"/>
+                    <model predicate="text()" behaviour="inline" cssClass="semantic"/>
                 </elementSpec>
             </schemaSpec>
         </body>
