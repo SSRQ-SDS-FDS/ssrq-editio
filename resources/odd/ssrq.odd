@@ -19,7 +19,7 @@
         <body>
             <schemaSpec start="TEI teiCorpus" source="teipublisher.odd" ident="ssrq">
                 <elementSpec ident="lb" mode="change">
-                    <model predicate="not(preceding-sibling::lb)" behaviour="omit"/>
+                    <model predicate="parent::div and not(preceding-sibling::lb)" behaviour="omit"/>
                     <modelSequence predicate="@break='no'">
                         <model behaviour="inline">
                             <outputRendition scope="before">content: '-';</outputRendition>
@@ -134,7 +134,7 @@
                         <param name="default" value="."/>
                         <param name="alternate" value="(text{'Originaldatierung: '}, @when)"/>
                     </model>
-                </elementSpec>            
+                </elementSpec>
                 <elementSpec ident="add" mode="change">
                     <model predicate="parent::subst" behaviour="inline"/>
                     <modelSequence predicate="@place">
@@ -176,7 +176,7 @@
                     <model behaviour="note">
                         <param name="type" value="'note'"/>
                     </model>
-                </elementSpec> 
+                </elementSpec>
                 <elementSpec ident="hi" mode="change">
                     <model predicate="@rend='sup'" behaviour="inline" cssClass="text-critical">
                         <outputRendition>font-size: 80%; vertical-align: top;</outputRendition>
@@ -286,14 +286,14 @@
                         <param name="default" value="."/>
                         <param name="alternate" value="text{'Organisation'}"/>
                     </model>
-                </elementSpec> 
+                </elementSpec>
                 <elementSpec ident="placeName" mode="add">
                     <model behaviour="alternate" cssClass="semantic">
                         <desc>Semantic highlighting of place names with tooltip and blue text color</desc>
                         <param name="default" value="."/>
                         <param name="alternate" value="text{'Ort'}"/>
                     </model>
-                </elementSpec> 
+                </elementSpec>
                 <elementSpec ident="num" mode="change">
                     <model behaviour="alternate" cssClass="semantic">
                         <desc>Display number in tooltip and highlight text with color</desc>
@@ -349,7 +349,7 @@
                     <model behaviour="inline" useSourceRendition="true" cssClass="quote-inline">
                         <desc>Add css class for quotes</desc>
                     </model>
-                </elementSpec>    
+                </elementSpec>
                 <elementSpec ident="supplied" mode="change">
                     <model predicate="parent::choice" behaviour="inline"/>
                     <modelSequence predicate="@resp">
@@ -485,7 +485,27 @@
                     </modelSequence>
                     <model behaviour="inline"/>
                 </elementSpec>
-
+                <elementSpec ident="date" mode="change">
+                    <model output="web" predicate="@when and @type"
+                        behaviour="alternate">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Datum: ', ext-common:format-date(@when), ' (', ext-common:translate('date', 'type', @type, 'de', 0, ()), ')'}"/>
+                    </model>
+                    <model output="web" predicate="@when"
+                        behaviour="alternate">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Datum: ', ext-common:format-date(@when)}"/>
+                    </model>
+                    <model output="web" predicate="@period" behaviour="alternate">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Zeitspanne: ', ext-common:translate('date', 'period', @period, 'de', 0, ())}"/>
+                    </model>
+                    <model output="web" predicate="@dur" behaviour="alternate">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Zeitspanne: ', ext-common:format-duration(@dur)}"/>
+                    </model>
+                    <model predicate="text()" behaviour="inline"/>
+                </elementSpec>
             </schemaSpec>
         </body>
     </text>

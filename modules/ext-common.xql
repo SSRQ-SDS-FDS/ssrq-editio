@@ -28,3 +28,44 @@ declare function pmf:display-sigle($id as xs:string) {
     return
         $components[1] || " " || $components[2] || "/" || $components[3]
 };
+
+declare function pmf:format-date($when as xs:string) {
+    text {
+        try {
+            if (matches($when, "^--\d+-\d+")) then
+                format-date(xs:date(replace($when, "^-(.*)$", "1900$1")), "[D01]. [MNn]")
+            else if (matches($when, "^--\d+")) then
+                format-date(xs:date(replace($when, "^-(.*)$", "1900$1-01")), "[MNn]")
+            else if (matches($when, "^\d+$")) then
+                @when
+            else
+                format-date(xs:date($when), "[D01].[M01].[Y0001]")
+        } catch * {
+            @when
+        }
+    }
+};
+
+declare function pmf:format-duration($duration as xs:string) {
+    try {
+        let $duration := xs:duration($duration)
+        let $components := map {
+            "Jahre": years-from-duration($duration),
+            "Monate": months-from-duration($duration),
+            "Tage": days-from-duration($duration),
+            "Stunden": hours-from-duration($duration)
+        }
+        return
+            string-join(
+                map:for-each-entry($components, function($key, $value) {
+                    if ($value > 0) then
+                        $value || " " || $key
+                    else
+                        ()
+                }),
+                " "
+            )
+    } catch * {
+        $duration
+    }
+};
