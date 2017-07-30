@@ -455,7 +455,7 @@
                     <model behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="div" mode="change">
-                    <model behaviour="listItem" predicate="parent::back">
+                    <model behaviour="listItem" predicate="parent::back and @n">
                         <desc>output as list item if in commentary</desc>
                     </model>
                     <model behaviour="section" predicate="parent::body or parent::front or parent::back"/>
