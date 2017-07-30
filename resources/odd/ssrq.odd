@@ -19,7 +19,7 @@
         <body>
             <schemaSpec start="TEI teiCorpus" source="teipublisher.odd" ident="ssrq">
                 <elementSpec ident="lb" mode="change">
-                    <model predicate="parent::div and not(preceding-sibling::lb)" behaviour="omit"/>
+                    <model predicate=". is (./ancestor::div[1]//lb[1])" behaviour="omit"/>
                     <modelSequence predicate="@break='no'">
                         <model behaviour="inline">
                             <outputRendition scope="before">content: '-';</outputRendition>
