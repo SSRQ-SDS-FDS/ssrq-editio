@@ -268,7 +268,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="term" mode="change">
-                    <model behaviour="alternate" cssClass="semantic">
+                    <model behaviour="alternate" cssClass="semantic term">
                         <desc>Semantic highlighting of keywords and lemmata with dark-red text color</desc>
                         <param name="default" value="."/>
                         <param name="alternate" value="text{'Begriff'}"/>
@@ -276,24 +276,27 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="persName" mode="add">
-                    <model behaviour="alternate" cssClass="semantic">
+                    <model behaviour="alternate" cssClass="semantic person">
                         <desc>Semantic highlighting of person names with tooltip and blue text color</desc>
                         <param name="default" value="."/>
                         <param name="alternate" value="text{'Person'}"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="orgName" mode="add">
-                    <model behaviour="alternate" cssClass="semantic">
+                    <model behaviour="alternate" cssClass="semantic organization">
                         <desc>Semantic highlighting of organization names with tooltip and blue text color</desc>
                         <param name="default" value="."/>
                         <param name="alternate" value="text{'Organisation'}"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="placeName" mode="add">
-                    <model behaviour="alternate" cssClass="semantic">
-                        <desc>Semantic highlighting of place names with tooltip and blue text color</desc>
+                    <model behaviour="alternate" cssClass="semantic place">
+                        <desc>Semantic highlighting of place names with tooltip and green text color</desc>
                         <param name="default" value="."/>
                         <param name="alternate" value="text{'Ort'}"/>
+                        <outputRendition>
+                            color: #007e00;
+                        </outputRendition>
                     </model>
                 </elementSpec>
                 <elementSpec ident="num" mode="change">
