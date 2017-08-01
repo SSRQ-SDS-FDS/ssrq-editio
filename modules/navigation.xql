@@ -81,10 +81,18 @@ declare %private function nav:get-previous-recursive($config as map(*), $div as 
 declare function nav:output-footnotes($footnotes as element()*) {
     <div class="footnotes">
         <h4 class="block-title">Anmerkungen</h4>
+        <ol class="textcritical">
+        {
+            for $note in $footnotes[@type="a"]
+            order by number($note/@value)
+            return
+                $note
+        }
+        </ol>
         <ol>
         {
-            for $note in $footnotes
-            order by $note/@type descending, number($note/@value)
+            for $note in $footnotes[@type="1"]
+            order by number($note/@value)
             return
                 $note
         }
