@@ -107,24 +107,24 @@ declare variable $config:fop-config :=
                     {
                         if ($fontsDir) then (
                             <font kerning="yes"
-                                embed-url="file:{$fontsDir}/Junicode.ttf"
+                                embed-url="file:{$fontsDir}/LexiaFontes_Rg.ttf"
                                 encoding-mode="single-byte">
-                                <font-triplet name="Junicode" style="normal" weight="normal"/>
+                                <font-triplet name="Lexia Fontes" style="normal" weight="normal"/>
                             </font>,
                             <font kerning="yes"
-                                embed-url="file:{$fontsDir}/Junicode-Bold.ttf"
+                                embed-url="file:{$fontsDir}/LexiaFontes_Bd.ttf"
                                 encoding-mode="single-byte">
-                                <font-triplet name="Junicode" style="normal" weight="700"/>
+                                <font-triplet name="Lexia Fontes" style="normal" weight="700"/>
                             </font>,
                             <font kerning="yes"
-                                embed-url="file:{$fontsDir}/Junicode-Italic.ttf"
+                                embed-url="file:{$fontsDir}/LexiaFontes_It.ttf"
                                 encoding-mode="single-byte">
-                                <font-triplet name="Junicode" style="italic" weight="normal"/>
+                                <font-triplet name="Lexia Fontes" style="italic" weight="normal"/>
                             </font>,
                             <font kerning="yes"
-                                embed-url="file:{$fontsDir}/Junicode-BoldItalic.ttf"
+                                embed-url="file:{$fontsDir}/LexiaFontes_BdIt.ttf"
                                 encoding-mode="single-byte">
-                                <font-triplet name="Junicode" style="italic" weight="700"/>
+                                <font-triplet name="Lexia Fontes" style="italic" weight="700"/>
                             </font>
                         ) else
                             ()
@@ -159,10 +159,10 @@ declare variable $config:tex-command := function($file) {
              "odd": $properties?odd,
              "output-root": $config:odd-root,
              "fonts": [
-                 $config:app-root || "/resources/fonts/Junicode.ttf",
-                 $config:app-root || "/resources/fonts/Junicode-Bold.ttf",
-                 $config:app-root || "/resources/fonts/Junicode-BoldItalic.ttf",
-                 $config:app-root || "/resources/fonts/Junicode-Italic.ttf"
+                 $config:app-root || "/resources/fonts/LexiaFontes_Rg.ttf",
+                 $config:app-root || "/resources/fonts/LexiaFontes_Bd.ttf",
+                 $config:app-root || "/resources/fonts/LexiaFontes_BdIt.ttf",
+                 $config:app-root || "/resources/fonts/LexiaFontes_It.ttf"
              ]
          }
  };

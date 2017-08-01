@@ -1,21 +1,21 @@
 /*********************** Fonts ***********************/
 
 @font-face {
-  src: url('Fonts/Junicode.ttf') format('truetype');
+  src: url('Fonts/LexiaFontes_Rg.ttf') format('truetype');
 }
 @font-face {
-  src: url('Fonts/Junicode-Bold.ttf') format('truetype');
+  src: url('Fonts/LexiaFontes_Bd.ttf') format('truetype');
 }
 @font-face {
-  src: url('Fonts/Junicode-Italic.ttf') format('truetype');
+  src: url('Fonts/LexiaFontes_It.ttf') format('truetype');
 }
 @font-face {
-  src: url('Fonts/Junicode-BoldItalic.ttf') format('truetype');
+  src: url('Fonts/LexiaFontes_BdIt.ttf') format('truetype');
 }
 
 /*********************** Base ***********************/
 body {
-  font-family: "Junicode", Georgia, "Times New Roman", serif;
+  font-family: "Lexia Fontes", Georgia, "Times New Roman", serif;
   hyphens: auto;
   -epub-hyphens: auto;
 }
