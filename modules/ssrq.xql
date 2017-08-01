@@ -142,6 +142,14 @@ declare function app:regest($node as node(), $model as map(*)) {
 
 declare
     %templates:wrap
+function app:source-description($node as node(), $model as map(*)) {
+    let $msDesc := root($model?data)//tei:teiHeader//tei:fileDesc/tei:sourceDesc/tei:msDesc
+    return
+        templates:process($node/node(), map:merge(($model, map { "data": $msDesc })))
+};
+
+declare
+    %templates:wrap
 function app:display-data($node as node(), $model as map(*)) {
     $pm-config:web-transform($model?data, map { "root": $model?data }, $config:odd)
 };

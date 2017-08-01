@@ -321,12 +321,11 @@ $(document).ready(function() {
     initContent();
 
     // initialize popups for comment section
-    $("#comment .alternate").each(function() {
+    $("#comment .alternate, #sourceDesc .alternate").each(function() {
         $(this).popover({
             content: $(this).find(".altcontent").html(),
             trigger: "hover",
-            html: true,
-            container: "#comment"
+            html: true
         });
     });
 });

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="en">
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" xml:lang="en">
     <teiHeader>
         <fileDesc>
             <titleStmt>
@@ -512,6 +512,75 @@
                         <param name="alternate" value="text{'Zeitspanne: ', ext-common:format-duration(@dur)}"/>
                     </model>
                     <model predicate="text()" behaviour="inline" cssClass="semantic"/>
+                </elementSpec>
+                <elementSpec ident="msDesc" mode="add">
+                    <desc>Stückbeschreibung ausgeben</desc>
+                    <model behaviour="list">
+                        <param name="content" value="(msIdentifier,msContents/msItem,physDesc/objectDesc/supportDesc,physDesc/sealDesc)"/>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="msIdentifier">
+                    <model behaviour="listItem">
+                        <param name="content" value="idno"/>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="msItem">
+                    <model behaviour="listItem">
+                        <param name="content" value="filiation"/>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="idno">
+                    <model behaviour="alternate">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Signatur'}"/>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="filiation">
+                    <model behaviour="alternate">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Überlieferung'}"/>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="supportDesc">
+                    <modelSequence>
+                        <model behaviour="listItem">
+                            <param name="content" value="support/material"/>
+                        </model>
+                        <model behaviour="listItem">
+                            <param name="content" value="extent/dimensions"/>
+                        </model>
+                    </modelSequence>
+                </elementSpec>
+                <elementSpec ident="material">
+                    <model behaviour="alternate">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Beschreibstoff'}"/>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="dimensions">
+                    <model behaviour="inline">
+                        <param name="content" value="string-join((width/@quantity,height/@quantity), 'x')"/>
+                        <outputRendition scope="before">
+                            content: 'Format B x H (cm): ';
+                        </outputRendition>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="sealDesc">
+                    <model behaviour="listItem">
+                        <modelSequence>
+                            <model behaviour="paragraph">
+                                <param name="content" value="count(seal) || ' Siegel:'"/>
+                            </model>
+                            <model behaviour="list">
+                                <param name="type" value="'ordered'"/>
+                            </model>
+                        </modelSequence>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="seal">
+                    <model behaviour="listItem">
+                        <param name="content" value="(persName|orgName, if (persName|orgName) then ', ' else (), string-join((@nontei:material,@nontei:shape,@nontei:extent,@nontei:attachment,@nontei:condition) ! ext-common:translate('seal', ., 'de', (), ()), ', '))"/>
+                    </model>
                 </elementSpec>
             </schemaSpec>
         </body>
