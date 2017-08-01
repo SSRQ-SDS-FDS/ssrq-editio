@@ -339,7 +339,10 @@
                     <model predicate="not(preceding::pb[ancestor::text])" behaviour="omit">
                         <desc>Hide the very first pagebreak in a document</desc>
                     </model>
-                    <model predicate="not(@*)" behaviour="alternate">
+                    <model behaviour="inline">
+                        <param name="content" value="'/'"/>
+                    </model>
+                    <!--model predicate="not(@*)" behaviour="alternate">
                         <desc>Show tooltip on pagebreaks that don't contain attributes</desc>
                         <param name="default" value="."/>
                         <param name="alternate" value="text{'Seitenumbruch'}"/>
@@ -353,7 +356,7 @@
                         <desc>Show pagebreak with a label, if pb contains a @n attribute and its value contains a number+string combination</desc>
                         <param name="type" value="'page'"/>
                         <param name="label" value="@n"/>
-                    </model>
+                    </model-->
                 </elementSpec>
                 <elementSpec ident="q" mode="change">
                     <model behaviour="inline" useSourceRendition="true" cssClass="quote-inline">
