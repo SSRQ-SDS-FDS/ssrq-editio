@@ -11,6 +11,45 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 declare variable $app:single-body-div-max := 7;
 
+declare
+    %templates:wrap
+function app:list-places($node as node(), $model as map(*)) {
+    for $place in root($model?data)//tei:placeName[@ref]
+    group by $ref := $place/@ref
+    return
+        <li data-ref="{$ref}">
+            <a target="_new" href="https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$ref}">{$place[1]/string()}</a>
+        </li>
+};
+
+declare
+    %templates:wrap
+function app:list-keys($node as node(), $model as map(*)) {
+    for $lemma in root($model?data)//tei:term[starts-with(@ref, 'key')]
+    group by $ref := $lemma/@ref
+    return
+        <li data-ref="{$ref}" class="key">
+            <a href="https://www.ssrq-sds-fds.ch/lemma-db/views/view-keyword.xq?id={$ref}"
+                class="tei-term term" target="_new">
+            {$lemma[1]/string()}
+            </a>
+        </li>
+};
+
+declare
+    %templates:wrap
+function app:list-lemmata($node as node(), $model as map(*)) {
+    for $lemma in root($model?data)//tei:term[starts-with(@ref, 'lem')]
+    group by $ref := $lemma/@ref
+    return
+        <li data-ref="{$ref}" class="lemma">
+            <a class="tei-term lemma" target="_new"
+                href="https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-lemma.xq?id={$ref}">
+                {$lemma[1]/string()}
+            </a>
+        </li>
+};
+
 (:~
  :
  :)

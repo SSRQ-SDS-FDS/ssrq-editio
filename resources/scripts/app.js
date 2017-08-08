@@ -86,10 +86,12 @@ $(document).ready(function() {
         });
         $(".content .alternate").each(function() {
             $(this).popover({
-                content: $(this).find(".altcontent").html(),
+                content: $(this).children(".altcontent").html(),
                 trigger: "hover",
                 html: true,
-                container: "#document-wrapper"
+                container: "#document-wrapper",
+                viewport: "#document-pane",
+                placement: "auto top"
             });
         });
         $("#document-pane img.facs").each(function(ev) {
@@ -323,7 +325,7 @@ $(document).ready(function() {
     // initialize popups for comment section
     $("#comment .alternate, #sourceDesc .alternate").each(function() {
         $(this).popover({
-            content: $(this).find(".altcontent").html(),
+            content: $(this).children(".altcontent").html(),
             trigger: "hover",
             html: true
         });

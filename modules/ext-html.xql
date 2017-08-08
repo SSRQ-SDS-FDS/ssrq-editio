@@ -19,6 +19,17 @@ declare function pmf:prepare($config as map(*), $node as node()*) {
     )[5]
 };
 
+declare function pmf:reference($config as map(*), $node as element(), $class as xs:string+, $content,
+    $ref, $label) {
+    <span class="reference {$class}">
+    <span>{$config?apply-children($config, $node, $content)}</span>
+    <span class="altcontent">
+        {$label, if (empty($ref)) then () else <span class="ref" data-ref="{$ref}"/>}
+    </span>
+    </span>
+};
+
+
 declare function pmf:note($config as map(*), $node as element(), $class as xs:string+, $content, $place, $label, $type) {
     switch ($place)
         case "margin" return
