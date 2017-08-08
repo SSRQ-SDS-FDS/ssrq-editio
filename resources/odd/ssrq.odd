@@ -268,6 +268,13 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="term" mode="change">
+                    <model output="web" behaviour="reference" cssClass="semantic term">
+                        <desc>Semantic highlighting of keywords and lemmata with dark-red text color</desc>
+                        <param name="content" value="."/>
+                        <param name="ref" value="@ref"/>
+                        <param name="label" value="'Begriff'"/>
+                        <outputRendition>color: #b5221f;</outputRendition>
+                    </model>
                     <model behaviour="alternate" cssClass="semantic term">
                         <desc>Semantic highlighting of keywords and lemmata with dark-red text color</desc>
                         <param name="default" value="."/>
@@ -290,6 +297,15 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="placeName" mode="add">
+                    <model output="web" behaviour="reference" cssClass="semantic place">
+                        <desc>Semantic highlighting of place names with tooltip and green text color</desc>
+                        <param name="content" value="."/>
+                        <param name="label" value="'Ort'"/>
+                        <param name="ref" value="@ref"/>
+                        <outputRendition>
+                            color: #007e00;
+                        </outputRendition>
+                    </model>
                     <model behaviour="alternate" cssClass="semantic place">
                         <desc>Semantic highlighting of place names with tooltip and green text color</desc>
                         <param name="default" value="."/>

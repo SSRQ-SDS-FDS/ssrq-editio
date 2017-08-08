@@ -17,7 +17,7 @@
                             <span id="toc-loading">Loading ...</span>
                         </div>
                     </nav>
-                    <main id="main-wrapper" data-template="pages:navigation">
+                    <main id="main-wrapper" class="col-md-10" data-template="pages:navigation">
                         <div class="tp-document-title-wrapper tp-row">
                             <div class="tp-column">
                                 <!-- Document title -->
@@ -71,6 +71,14 @@
                             </div>
                         </section>
                     </main>
+                    <aside id="aside" class="col-md-2">
+                        <h3><i18n:text key="people">Orte</i18n:text></h3>
+                        <ul class="places" data-template="app:list-places"/>
+                        <h3><i18n:text key="people">Schlagworte</i18n:text></h3>
+                        <ul class="keywords" data-template="app:list-keys"/>
+                        <h3><i18n:text key="people">Lemmata</i18n:text></h3>
+                        <ul class="lemmata" data-template="app:list-lemmata"/>
+                    </aside>
                 </section>
                 <div data-template="templates:include" data-template-path="templates/footer-navigation.html"/>
             </div>
