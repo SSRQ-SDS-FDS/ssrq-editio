@@ -214,6 +214,11 @@
 #aside {
     margin-top: 100px;
 
+    .places, .keywords, .lemmata {
+        list-style: none;
+        padding: 0;
+    }
+    
     .places {
         .location::before {
             content: ' (';
@@ -492,25 +497,30 @@
   }
 
   // Custom pagebreaks in documents
+  .pb-empty,
   .pb-pagination,
   .pb-foliation {
       font-style: italic;
       color: #808080;
       display: block;
+  }
+  
+  .pb-pagination,
+  .pb-foliation {
       &:after {
-          content:" ] ";
+          content:"] ";
       }
   }
 
   .pb-pagination {
       &:before {
-      content:"ǁ [S. ";
+      content:"| [S. ";
       }
   }
 
   .pb-foliation {
       &:before {
-      content:"ǁ [fol. ";
+      content:"| [fol. ";
       }
   }
 

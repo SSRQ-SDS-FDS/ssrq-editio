@@ -9,6 +9,7 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 import module namespace html="http://www.tei-c.org/tei-simple/xquery/functions";
 import module namespace counter="http://exist-db.org/xquery/counter" at "java:org.exist.xquery.modules.counter.CounterModule";
+import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 
 declare function pmf:prepare($config as map(*), $node as node()*) {
     (
@@ -76,4 +77,20 @@ declare function pmf:note($config as map(*), $node as element(), $class as xs:st
                     <a class="fn-back" href="#fnref:{$id}">↩</a>
                 </li>
             )
+};
+
+declare function pmf:copy($config as map(*), $node as element(), $class as xs:string+, $content) {
+    $content ! $config?apply($config, pmf:copy(.))
+};
+
+declare %private function pmf:copy($nodes as node()*) {
+    for $node in $nodes
+    return
+        typeswitch($node)
+            case element() return
+                element { node-name($node) } {
+                    $node/@*,
+                    pmf:copy($node/node())
+                }
+            default return $node
 };

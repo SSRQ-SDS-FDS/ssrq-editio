@@ -19,6 +19,7 @@
         <body>
             <schemaSpec start="TEI teiCorpus" source="teipublisher.odd" ident="ssrq">
                 <elementSpec ident="lb" mode="change">
+                    <model predicate="preceding-sibling::node()[1][self::pb]" behaviour="omit"/>
                     <model predicate=". is (./ancestor::div[1]//lb[1])" behaviour="omit"/>
                     <modelSequence predicate="@break='no'">
                         <model behaviour="inline">
@@ -352,27 +353,28 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="pb" mode="change">
-                    <model predicate="not(preceding::pb[ancestor::text])" behaviour="omit">
+                    <model predicate="ancestor::text and not(preceding::pb[ancestor::text])" behaviour="omit">
                         <desc>Hide the very first pagebreak in a document</desc>
                     </model>
-                    <model behaviour="inline">
-                        <param name="content" value="'/'"/>
+                    <model predicate="following-sibling::node()[1][self::lb]" behaviour="copy">
+                        <desc>If followed by an lb, process the lb first, then the pb</desc>
+                        <param name="content" value="let $pb := . return (following-sibling::lb[1], $pb)"/>
                     </model>
-                    <!--model predicate="not(@*)" behaviour="alternate">
+                    <model predicate="not(@*)" behaviour="alternate" cssClass="pb-empty">
                         <desc>Show tooltip on pagebreaks that don't contain attributes</desc>
-                        <param name="default" value="."/>
+                        <param name="default" value="'|'"/>
                         <param name="alternate" value="text{'Seitenumbruch'}"/>
                     </model>
-                    <model predicate="matches(@n, '\d+')" behaviour="break" cssClass="pb-pagination">
+                    <model predicate="number(@n) gt 0" behaviour="alternate" cssClass="pb-pagination">
                         <desc>Show pagebreak with a label, if pb contains a @n attribute and its value only contains a number</desc>
-                        <param name="type" value="'page'"/>
-                        <param name="label" value="@n"/>
+                        <param name="default" value="@n"/>
+                        <param name="alternate" value="text{'Seitenumbruch'}"/>
                     </model>
-                    <model predicate="matches(@n, '\d+\w+')" behaviour="break" cssClass="pb-foliation">
+                    <model behaviour="alternate" cssClass="pb-foliation">
                         <desc>Show pagebreak with a label, if pb contains a @n attribute and its value contains a number+string combination</desc>
-                        <param name="type" value="'page'"/>
-                        <param name="label" value="@n"/>
-                    </model-->
+                        <param name="default" value="@n"/>
+                        <param name="alternate" value="text{'Seitenumbruch'}"/>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="q" mode="change">
                     <model behaviour="inline" useSourceRendition="true" cssClass="quote-inline">
