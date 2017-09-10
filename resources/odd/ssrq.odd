@@ -129,11 +129,11 @@
                 <elementSpec ident="origDate" mode="add">
                     <model predicate="$parameters?header='short'" behaviour="inline">
                         <desc>Called to output the sigle of a document</desc>
-                        <param name="content" value="format-date(xs:date(@when), '[Y] [MNn] [D01]')"/>
+                        <param name="content" value="format-date(xs:date(@when), '[Y] [MNn] [D01]', 'de_CH', (), ())"/>
                     </model>
                     <model behaviour="alternate">
                         <param name="default" value="."/>
-                        <param name="alternate" value="text{'Originaldatierung: ', ext-common:format-date(@when)}"/>
+                        <param name="alternate" value="text{'Originaldatierung: ', ext-common:format-date(@when, 'de_CH')}"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="add" mode="change">
@@ -520,12 +520,12 @@
                     <model output="web" predicate="@when and @type"
                         behaviour="alternate" cssClass="semantic">
                         <param name="default" value="."/>
-                        <param name="alternate" value="text{'Datum: ', ext-common:format-date(@when), ' (', ext-common:translate('date', 'type', @type, 'de', 0, ()), ')'}"/>
+                        <param name="alternate" value="text{'Datum: ', ext-common:format-date(@when, 'de_CH'), ' (', ext-common:translate('date', 'type', @type, 'de', 0, ()), ')'}"/>
                     </model>
                     <model output="web" predicate="@when"
                         behaviour="alternate" cssClass="semantic">
                         <param name="default" value="."/>
-                        <param name="alternate" value="text{'Datum: ', ext-common:format-date(@when)}"/>
+                        <param name="alternate" value="text{'Datum: ', ext-common:format-date(@when, 'de_CH')}"/>
                     </model>
                     <model output="web" predicate="@period" behaviour="alternate" cssClass="semantic">
                         <param name="default" value="."/>
@@ -554,15 +554,13 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="idno">
-                    <model behaviour="alternate">
-                        <param name="default" value="."/>
-                        <param name="alternate" value="text{'Signatur'}"/>
+                    <model behaviour="inline">
+                        <param name="content" value="(text { 'Signatur: '}, .)"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="filiation">
-                    <model behaviour="alternate">
-                        <param name="default" value="."/>
-                        <param name="alternate" value="text{'Überlieferung'}"/>
+                    <model behaviour="inline">
+                        <param name="content" value="(text { 'Überlieferung: '}, .)"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="supportDesc">
@@ -576,23 +574,25 @@
                     </modelSequence>
                 </elementSpec>
                 <elementSpec ident="material">
-                    <model behaviour="alternate">
-                        <param name="default" value="."/>
-                        <param name="alternate" value="text{'Beschreibstoff'}"/>
+                    <model behaviour="inline">
+                        <param name="content" value="(text { 'Beschreibstoff: '}, .)"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="dimensions">
-                    <model behaviour="inline">
+                    <model predicate="@type = 'leaves'" behaviour="inline">
                         <param name="content" value="string-join((width/@quantity,height/@quantity), 'x')"/>
                         <outputRendition scope="before">
                             content: 'Format B x H (cm): ';
                         </outputRendition>
                     </model>
+                    <model predicate="@type = 'plica'" behaviour="inline">
+                        <param name="content" value="' (Plica: ' || width/@quantity || ')'"/>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="sealDesc">
                     <model behaviour="listItem">
                         <modelSequence>
-                            <model behaviour="paragraph">
+                            <model behaviour="inline">
                                 <param name="content" value="count(seal) || ' Siegel:'"/>
                             </model>
                             <model behaviour="list">
