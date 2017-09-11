@@ -538,6 +538,10 @@
                         <param name="default" value="."/>
                         <param name="alternate" value="text{'Zeitspanne: ', ext-common:format-duration(@dur)}"/>
                     </model>
+                    <model predicate="@type" behaviour="alternate" cssClass="semantic">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Datum (', ext-common:translate('date', 'type', @type, 'de', 0, ()), ')'}"/>
+                    </model>
                     <model predicate="text()" behaviour="inline" cssClass="semantic"/>
                 </elementSpec>
                 <elementSpec ident="msDesc" mode="add">
