@@ -68,17 +68,4 @@ $(document).ready(function() {
             }
         });
     });
-
-    $('.reference').
-        popover({
-            content: function() {
-                console.log(this);
-                return $(this).find(".altcontent").html();
-            },
-            html: true,
-            trigger: 'hover',
-            container: "#document-wrapper",
-            viewport: "#document-pane",
-            placement: "auto top"
-        });
 });
