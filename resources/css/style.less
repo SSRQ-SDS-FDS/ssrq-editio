@@ -211,14 +211,18 @@
 /* Do not modify other .less files except this one                   */
 /*********************************************************************/
 
+@color-places: #007e00;
+@color-terms: #b5221f;
+
 #aside {
     margin-top: 100px;
 
-    .places, .keywords, .lemmata {
+    .places, .keywords, .lemmata, .persons, .organizations {
+        font-family: @font-serif;
         list-style: none;
         padding: 0;
     }
-    
+
     .places {
         .location::before {
             content: ' (';
@@ -228,6 +232,15 @@
         }
         .type::before {
             content: ', ';
+        }
+    }
+
+    .persons, .organizations {
+        .dates::before {
+            content: ' (';
+        }
+        .dates::after {
+            content: ')';
         }
     }
 }
@@ -310,13 +323,13 @@
     }
 }
 
-.alternate.term {
+.term {
     color: #b5221f;
 }
-.alternate.place {
+.place {
     color: #007e00;
 }
-.alternate.person,.alternate.organization {
+.person,.organization {
     color: #4478b5;
 }
 
@@ -504,7 +517,7 @@
       color: #808080;
       display: block;
   }
-  
+
   .pb-pagination,
   .pb-foliation {
       &:after {

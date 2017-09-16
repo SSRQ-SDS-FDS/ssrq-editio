@@ -15,7 +15,7 @@ declare function app:list-places($node as node(), $model as map(*)) {
     let $places := root($model?data)//tei:placeName[@ref]
     where exists($places)
     return (
-        <h3>Orte</h3>,
+        <h3 class="place">Orte</h3>,
         <ul class="places">
         {
             for $place in $places
@@ -33,15 +33,16 @@ declare function app:list-keys($node as node(), $model as map(*)) {
     let $keywords := root($model?data)//tei:term[starts-with(@ref, 'key')]
     where exists($keywords)
     return (
-        <h3>Schlagworte</h3>,
+        <h3 class="term">Schlagworte</h3>,
         <ul class="keywords">
         {
             for $lemma in $keywords
             group by $ref := $lemma/@ref
+            order by $lemma[1]/string()
             return
-                <li data-ref="{$ref}" class="key">
+                <li data-ref="{$ref}">
                     <a href="https://www.ssrq-sds-fds.ch/lemma-db/views/view-keyword.xq?id={$ref}"
-                        class="tei-term term" target="_new">
+                        target="_new">
                     {$lemma[1]/string()}
                     </a>
                 </li>
@@ -53,16 +54,56 @@ declare function app:list-lemmata($node as node(), $model as map(*)) {
     let $lemmata := root($model?data)//tei:term[starts-with(@ref, 'lem')]
     where exists($lemmata)
     return (
-        <h3>Lemmata</h3>,
+        <h3 class="term">Lemmata</h3>,
         <ul class="lemmata">
         {
             for $lemma in $lemmata
             group by $ref := $lemma/@ref
             return
-                <li data-ref="{$ref}" class="lemma">
-                    <a class="tei-term lemma" target="_new"
+                <li data-ref="{$ref}">
+                    <a target="_new"
                         href="https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-lemma.xq?id={$ref}">
                         {$lemma[1]/string()}
+                    </a>
+                </li>
+        }</ul>
+    )
+};
+
+declare function app:list-persons($node as node(), $model as map(*)) {
+    let $persons := root($model?data)//tei:persName[@ref]
+    where exists($persons)
+    return (
+        <h3 class="person">Personen</h3>,
+        <ul class="persons">
+        {
+            for $person in $persons
+            group by $ref := $person/@ref
+            return
+                <li data-ref="{$ref}">
+                    <a target="_new"
+                        href="https://www.ssrq-sds-fds.ch/persons-db/?query={$ref}">
+                        {$person[1]/text()}
+                    </a>
+                </li>
+        }</ul>
+    )
+};
+
+declare function app:list-organizations($node as node(), $model as map(*)) {
+    let $organizations := root($model?data)//tei:orgName[@ref]
+    where exists($organizations)
+    return (
+        <h3 class="organization">Organisationen</h3>,
+        <ul class="organizations">
+        {
+            for $organization in $organizations
+            group by $ref := $organization/@ref
+            return
+                <li data-ref="{$ref}">
+                    <a target="_new"
+                        href="https://www.ssrq-sds-fds.ch/persons-db/?query={$ref}">
+                        {$organization[1]/text()}
                     </a>
                 </li>
         }</ul>
