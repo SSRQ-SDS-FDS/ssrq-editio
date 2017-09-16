@@ -6,6 +6,10 @@ $(document).ready(function() {
     var LEMMA_API = HOST + "/lemma-db-edit/views/get-lem-info.xq";
     var PERSON_API = HOST + "/persons-db-api/";
 
+    function updateSpans(key, label) {
+        $("span[data-ref='" + key + "']").text(label);
+    }
+
     $(".places li").each(function() {
         var elem = $(this);
         var key = elem.attr("data-ref");
@@ -25,7 +29,7 @@ $(document).ready(function() {
 
                     var label = entry.stdName['#text'] + ' (' + entry.location + '), ' +
                         entry.type;
-                    $("#document-pane span[data-ref='" + key + "']").text(label);
+                    updateSpans(key, label);
                 }
             }
         });
@@ -47,8 +51,7 @@ $(document).ready(function() {
                         elem.append($('<span class="dates"></span>').text(entry.dates));
                     }
 
-                    var label = entry.name + ' (' + entry.dates + ')';
-                    $("#document-pane span[data-ref='" + key + "']").text(label);
+                    updateSpans(key, entry.name + ' (' + entry.dates + ')');
                 }
             }
         });
@@ -70,8 +73,7 @@ $(document).ready(function() {
                         elem.append($('<span class="dates"></span>').text(entry.type));
                     }
 
-                    var label = entry.name + ' (' + entry.type + ')';
-                    $("#document-pane span[data-ref='" + key + "']").text(label);
+                    updateSpans(key, entry.name + ' (' + entry.type + ')');
                 }
             }
         });
@@ -91,7 +93,7 @@ $(document).ready(function() {
                     elem.find("a").text(entry.name['#text']);
                 }
 
-                $("#document-pane span[data-ref='" + key + "']").text(entry.name['#text']);
+                updateSpans(key, entry.name['#text']);
             }
         });
     });
@@ -113,7 +115,7 @@ $(document).ready(function() {
                     if (entry.definition) {
                         elem.append($('<span class="dates"></span>').text(': ' + entry.definition['#text']));
                     }
-                    $("#document-pane span[data-ref='" + key + "']").text(label);
+                    updateSpans(key, label);
                 }
             }
         });
