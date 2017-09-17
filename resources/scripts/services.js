@@ -8,27 +8,13 @@ $(document).ready(function() {
 
     function updateSpans(key, label) {
         $("span[data-ref='" + key + "']").text(label);
-    }
-
-    function updatePlace(elem, entry) {
-        var key = elem.attr("data-ref");
-        if (entry.type) {
-            elem.find("a").text(entry.stdName['#text']);
-            if (entry.location) {
-                elem.append($('<span class="location"></span>').text(entry.location));
-            }
-            elem.append($('<span class="type"></span>').text(entry.type));
-
-            var label = entry.stdName['#text'] + ' (' + entry.location + '), ' +
-                entry.type;
-            updateSpans(key, label);
-        }
+        $("span[data-ref^='" + key + ".']").text(label);
     }
 
     function query(uri, param, list, callback) {
         var head = list.shift();
         if (head) {
-            var key = $(head).attr("data-ref");
+            var key = $(head).attr("data-ref").replace(/^([^\.]+).*$/, "$1");
             var params = {};
             params[param] = key;
             $.ajax({
@@ -38,20 +24,35 @@ $(document).ready(function() {
                 success: function(data) {
                     query(uri, param, list, callback);
                     callback($(head), data);
+                },
+                error: function() {
+                    query(uri, param, list, callback);
                 }
             });
         }
     }
 
-    query(PLACES_API, "id", $(".places li").toArray(), updatePlace);
+    query(PLACES_API, "id", $(".places li").toArray(), function(elem, entry) {
+        if (entry.type) {
+            elem.find("a").text(entry.stdName['#text']);
+            if (entry.location) {
+                elem.append($('<span class="location"></span>').text(entry.location));
+            }
+            elem.append($('<span class="type"></span>').text(entry.type));
+
+            var label = entry.stdName['#text'] + ' (' + entry.location + '), ' +
+                entry.type;
+            updateSpans(elem.attr("data-ref"), label);
+        }
+    });
+
     query(PERSON_API, "query", $(".persons li").toArray(), function(elem, entry) {
         if (entry.name) {
             elem.find("a").text(entry.name);
             if (entry.dates) {
                 elem.append($('<span class="info"></span>').text(entry.dates));
             }
-
-            updateSpans(key, entry.name + ' (' + entry.dates + ')');
+            updateSpans(elem.attr("data-ref"), entry.name + ' (' + entry.dates + ')');
         }
     });
     query(PERSON_API, "query", $(".organizations li").toArray(), function(elem, entry) {
@@ -61,7 +62,7 @@ $(document).ready(function() {
                 elem.append($('<span class="info"></span>').text(entry.type));
             }
 
-            updateSpans(key, entry.name + ' (' + entry.type + ')');
+            updateSpans(elem.attr("data-ref"), entry.name + ' (' + entry.type + ')');
         }
     });
 
@@ -74,7 +75,7 @@ $(document).ready(function() {
             }
         }
 
-        updateSpans(key, entry.name['#text']);
+        updateSpans(elem.attr("data-ref"), entry.name['#text']);
     });
 
     query(LEMMA_API, "id", $(".lemmata li").toArray(), function(elem, entry) {
@@ -85,7 +86,7 @@ $(document).ready(function() {
             if (entry.definition) {
                 elem.append($('<span class="info"></span>').text(': ' + entry.definition['#text']));
             }
-            updateSpans(key, label);
+            updateSpans(elem.attr("data-ref"), label);
         }
     });
 });

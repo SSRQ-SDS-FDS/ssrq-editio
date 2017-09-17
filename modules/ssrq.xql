@@ -19,7 +19,7 @@ declare function app:list-places($node as node(), $model as map(*)) {
         <ul class="places">
         {
             for $place in $places
-            group by $ref := $place/@ref
+            group by $ref := replace($place/@ref, "^([^\.]+).*$", "$1")
             return
                 <li data-ref="{$ref}">
                     <a target="_new" href="https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$ref}">{$place[1]/string()}</a>
@@ -37,7 +37,7 @@ declare function app:list-keys($node as node(), $model as map(*)) {
         <ul class="keywords">
         {
             for $lemma in $keywords
-            group by $ref := $lemma/@ref
+            group by $ref := replace($lemma/@ref, "^([^\.]+).*$", "$1")
             order by $lemma[1]/string()
             return
                 <li data-ref="{$ref}">
@@ -58,7 +58,7 @@ declare function app:list-lemmata($node as node(), $model as map(*)) {
         <ul class="lemmata">
         {
             for $lemma in $lemmata
-            group by $ref := $lemma/@ref
+            group by $ref := replace($lemma/@ref, "^([^\.]+).*$", "$1")
             return
                 <li data-ref="{$ref}">
                     <a target="_new"
@@ -78,7 +78,7 @@ declare function app:list-persons($node as node(), $model as map(*)) {
         <ul class="persons">
         {
             for $person in $persons
-            group by $ref := $person/@ref
+            group by $ref := replace($person/@ref, "^([^\.]+).*$", "$1")
             return
                 <li data-ref="{$ref}">
                     <a target="_new"
@@ -98,7 +98,7 @@ declare function app:list-organizations($node as node(), $model as map(*)) {
         <ul class="organizations">
         {
             for $organization in $organizations
-            group by $ref := $organization/@ref
+            group by $ref := replace($organization/@ref, "^([^\.]+).*$", "$1")
             return
                 <li data-ref="{$ref}">
                     <a target="_new"
