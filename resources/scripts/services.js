@@ -7,8 +7,8 @@ $(document).ready(function() {
     var PERSON_API = HOST + "/persons-db-api/";
 
     function updateSpans(key, label) {
-        $("span[data-ref='" + key + "']").text(label);
-        $("span[data-ref^='" + key + ".']").text(label);
+        $("span[data-ref='" + key + "']").text(': ' + label);
+        $("span[data-ref^='" + key + ".']").text(': ' + label);
     }
 
     function query(uri, param, list, callback) {
