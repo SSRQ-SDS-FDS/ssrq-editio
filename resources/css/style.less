@@ -292,6 +292,21 @@
     }
 }
 
+.accordion-toggle:hover, .accordion-toggle:link {
+    text-decoration: none;
+}
+
+.accordion-toggle:before {
+    /* symbol for "opening" panels */
+    font-family: 'Material Icons';  /* essential for enabling glyphicon */
+    content: "\e313";    /* adjust as needed, taken from bootstrap.css */
+}
+.accordion-toggle.collapsed:before {
+    /* symbol for "collapsed" panels */
+    font-family: 'Material Icons';  /* essential for enabling glyphicon */
+    content: "\e315";    /* adjust as needed, taken from bootstrap.css */
+}
+
 #sourceDesc ul {
     list-style: none;
     padding-left: 0;
