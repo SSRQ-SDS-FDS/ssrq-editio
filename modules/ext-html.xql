@@ -63,7 +63,7 @@ declare function pmf:note($config as map(*), $node as element(), $class as xs:st
                     {
                         switch($type)
                             case "text-critical" return
-                                codepoints-to-string(string-to-codepoints("a") - 1 + $nr)
+                                pmf:footnote-label($nr)
                             default return
                                 $nr
                     }
@@ -77,6 +77,22 @@ declare function pmf:note($config as map(*), $node as element(), $class as xs:st
                     <a class="fn-back" href="#fnref:{$id}">↩</a>
                 </li>
             )
+};
+
+declare %private function pmf:footnote-label($nr as xs:int) {
+    string-join(reverse(pmf:footnote-label-recursive($nr)))
+};
+
+
+declare %private function pmf:footnote-label-recursive($nr as xs:int) {
+    if ($nr > 0) then
+        let $nr := $nr - 1
+        return (
+            codepoints-to-string(string-to-codepoints("a") + $nr mod 26),
+            pmf:footnote-label($nr div 26)
+        )
+    else
+        ()
 };
 
 declare function pmf:copy($config as map(*), $node as element(), $class as xs:string+, $content) {
