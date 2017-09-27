@@ -218,6 +218,13 @@
                         <param name="content" value="('Alternative Lesung in ', @wit, ': ', .)"/>
                     </model>
                 </elementSpec>
+                <elementSpec ident="handShift">
+                    <model behaviour="note">
+                        <param name="place" value="'footnote'"/>
+                        <param name="type" value="'text-critical'"/>
+                        <param name="content" value="'Handwechsel'"/>
+                    </model>
+                </elementSpec>
                 <elementSpec ident="note" mode="change">
                     <model predicate="@place" behaviour="note">
                         <param name="place" value="@place"/>
