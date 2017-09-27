@@ -46,17 +46,11 @@
                     <model output="plain" predicate="orig and reg" behaviour="inline">
                         <param name="content" value="reg[1]"/>
                     </model>
-                    <modelSequence predicate="sic and corr">
-                        <model behaviour="alternate" cssClass="text-critical">
-                            <param name="default" value="sic"/>
-                            <param name="alternate" value="('Korrigiert: ', corr)"/>
-                        </model>
-                        <model behaviour="note">
-                            <param name="place" value="&#34;footnote&#34;"/>
-                            <param name="content" value="('Korrigiert: ', corr)"/>
-                            <param name="type" value="'text-critical'"/>
-                        </model>
-                    </modelSequence>
+                    <model predicate="sic and corr" behaviour="alternote" cssClass="text-critical">
+                        <param name="content" value="sic"/>
+                        <param name="alternate" value="('Korrigiert: ', corr)"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
                     <model predicate="abbr and expan" behaviour="alternate">
                         <param name="default" value="abbr[1]"/>
                         <param name="alternate" value="expan[1]"/>
@@ -86,28 +80,16 @@
                 </elementSpec>
                 <elementSpec ident="unclear" mode="change">
                     <model predicate="parent::del or parent::abbr or parent::corr" behaviour="inline"/>
-                    <modelSequence predicate="parent::damage">
-                        <model behaviour="alternate" cssClass="text-critical">
-                            <param name="default" value="."/>
-                            <param name="alternate" value="(ext-common:translate('damage', parent::damage/@agent, 'de', 0, 'uppercase'), text{', unsichere Lesung'})"/>
-                        </model>
-                        <model behaviour="note">
-                            <param name="place" value="&#34;footnote&#34;"/>
-                            <param name="content" value="(ext-common:translate('damage', parent::damage/@agent, 'de', 0, 'uppercase'), text{', unsichere Lesung.'})"/>
-                            <param name="type" value="'text-critical'"/>
-                        </model>
-                    </modelSequence>
-                    <modelSequence>
-                        <model behaviour="alternate" cssClass="text-critical">
-                            <param name="default" value="."/>
-                            <param name="alternate" value="'Unsichere Lesung'"/>
-                        </model>
-                        <model behaviour="note">
-                            <param name="place" value="&#34;footnote&#34;"/>
-                            <param name="content" value="'Unsichere Lesung'"/>
-                            <param name="type" value="'text-critical'"/>
-                        </model>
-                    </modelSequence>
+                    <model predicate="parent::damage" behaviour="alternote" cssClass="text-critical">
+                        <param name="content" value="."/>
+                        <param name="alternate" value="(ext-common:translate('damage', parent::damage/@agent, 'de', 0, 'uppercase'), text{', unsichere Lesung'})"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
+                    <model behaviour="alternote" cssClass="text-critical">
+                        <param name="content" value="."/>
+                        <param name="alternate" value="'Unsichere Lesung'"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="corr" mode="change">
                     <model predicate="parent::choice" behaviour="inline"/>
@@ -146,18 +128,12 @@
                         <param name="content" value="(ext-common:translate('add', @place, 'de', 0, 'uppercase'), ' ', ext-common:translate('add', @hand, 'de', 0, 'lowercase'), if (@rend) then text{' ' || ext-common:translate('add', @rend, 'de', 0, 'lowercase')} else (), text{': '}, .)"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
-                    <modelSequence predicate="@place">
+                    <model predicate="@place" behaviour="alternote">
                         <desc>@place without @hand: show alternate and footnote</desc>
-                        <model behaviour="alternate">
-                            <param name="default" value="."/>
-                            <param name="alternate" value="ext-common:translate('add', @place, 'de', 0, 'uppercase')"/>
-                        </model>
-                        <model behaviour="note">
-                            <param name="place" value="&#34;footnote&#34;"/>
-                            <param name="alternate" value="ext-common:translate('add', @place, 'de', 0, 'uppercase')"/>
-                            <param name="type" value="'text-critical'"/>
-                        </model>
-                    </modelSequence>
+                        <param name="content" value="."/>
+                        <param name="alternate" value="ext-common:translate('add', @place, 'de', 0, 'uppercase')"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
                     <model behaviour="inline">
                         <outputRendition>color: green; text-decoration: underline;</outputRendition>
                     </model>
@@ -197,17 +173,11 @@
                     <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="app">
-                    <modelSequence>
-                        <model behaviour="alternate">
-                            <param name="default" value="lem"/>
-                            <param name="alternate" value="rdg"/>
-                        </model>
-                        <model behaviour="note">
-                            <param name="place" value="'footnote'"/>
-                            <param name="type" value="'text-critical'"/>
-                            <param name="content" value="rdg"/>
-                        </model>
-                    </modelSequence>
+                    <model behaviour="alternote">
+                        <param name="content" value="lem"/>
+                        <param name="alternate" value="rdg"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="lem">
                     <model behaviour="inline"/>
@@ -245,18 +215,12 @@
                     <model predicate="@rend='sup'" behaviour="inline" cssClass="text-critical">
                         <outputRendition>font-size: 80%; vertical-align: top;</outputRendition>
                     </model>
-                    <modelSequence predicate="@rend='underline'">
-                        <model behaviour="alternate" cssClass="text-critical">
-                            <param name="default" value="."/>
-                            <param name="alternate" value="text{'Unterstrichen'}"/>
-                            <outputRendition>text-decoration: underline;</outputRendition>
-                        </model>
-                        <model behaviour="note">
-                            <param name="place" value="&#34;footnote&#34;"/>
-                            <param name="content" value="'Unterstrichen.'"/>
-                            <param name="type" value="'text-critical'"/>
-                        </model>
-                    </modelSequence>
+                    <model predicate="@rend='underline'" behaviour="alternote" cssClass="text-critical">
+                        <param name="content" value="."/>
+                        <param name="alternate" value="text{'Unterstrichen'}"/>
+                        <param name="type" value="'text-critical'"/>
+                        <outputRendition>text-decoration: underline;</outputRendition>
+                    </model>
                     <model predicate="@rendition" behaviour="inline" useSourceRendition="true">
                         <outputRendition>font-style: italic;</outputRendition>
                     </model>
@@ -265,53 +229,29 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="space" mode="change">
-                    <modelSequence>
-                        <model behaviour="alternate" cssClass="text-critical">
-                            <param name="default" value="text{'...'}"/>
-                            <param name="alternate" value="(text{'Lücke in der Vorlage ('} , @quantity , text{' '} , ext-common:translate('space', @unit, 'de', @quantity, 'lowercase'), text{')'})"/>
-                            <outputRendition>text-decoration: underline;</outputRendition>
-                        </model>
-                        <model behaviour="note">
-                            <param name="place" value="&#34;footnote&#34;"/>
-                            <param name="content" value="'Lücke in der Vorlage (' || @quantity || ' ' || ext-common:translate('space', @unit, 'de', @quantity, 'lowercase') || ')'"/>
-                            <param name="type" value="'text-critical'"/>
-                        </model>
-                    </modelSequence>
+                    <model behaviour="alternote" cssClass="text-critical">
+                        <param name="content" value="text{'...'}"/>
+                        <param name="alternate" value="(text{'Lücke in der Vorlage ('} , @quantity , text{' '} , ext-common:translate('space', @unit, 'de', @quantity, 'lowercase'), text{')'})"/>
+                        <param name="type" value="'text-critical'"/>
+                        <outputRendition>text-decoration: underline;</outputRendition>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="gap" mode="change">
-                    <modelSequence predicate="parent::damage">
-                        <model behaviour="alternate" cssClass="text-critical">
-                            <param name="default" value="text{'[...]'}"/>
-                            <param name="alternate" value="(                             ext-common:translate('damage', parent::damage/@agent, 'de', 0, 'lowercase'),                             text{' mit Textverlust ('},                             @quantity,                             text{' '},                             ext-common:translate('gap', @unit, 'de', @quantity, 'lowercase'),                             text{')'}                             )"/>
-                        </model>
-                        <model behaviour="note">
-                            <param name="place" value="&#34;footnote&#34;"/>
-                            <param name="content" value="(                             ext-common:translate('damage', parent::damage/@agent, 'de', 0, 'lowercase'),                             text{' mit Textverlust ('},                             @quantity,                             text{' '},                             ext-common:translate('gap', @unit, 'de', @quantity, 'lowercase'),                             text{')'}, text{'.'})                            "/>
-                            <param name="type" value="'text-critical'"/>
-                        </model>
-                    </modelSequence>
-                    <modelSequence predicate="@reason='illegible'">
-                        <model behaviour="alternate" cssClass="text-critical">
-                            <param name="default" value="text{'[...]'}"/>
-                            <param name="alternate" value="(text{'Unlesbar ('} , @quantity , text{' '} , ext-common:translate('gap', @unit, 'de', @quantity, 'lowercase'), text{')'})"/>
-                        </model>
-                        <model behaviour="note">
-                            <param name="place" value="&#34;footnote&#34;"/>
-                            <param name="content" value="'Unlesbar (' || @quantity || ' ' || ext-common:translate('gap', @unit, 'de', @quantity, 'lowercase') || ')' || '.'"/>
-                            <param name="type" value="'text-critical'"/>
-                        </model>
-                    </modelSequence>
-                    <modelSequence predicate="@source">
-                        <model behaviour="alternate" cssClass="text-critical">
-                            <param name="default" value="text{'[...]'}"/>
-                            <param name="alternate" value="(text{'Vgl. '}, @source)"/>
-                        </model>
-                        <model behaviour="note">
-                            <param name="place" value="&#34;footnote&#34;"/>
-                            <param name="content" value="'Vgl. ' || @source || '.'"/>
-                            <param name="type" value="'text-critical'"/>
-                        </model>
-                    </modelSequence>
+                    <model predicate="parent::damage" behaviour="alternote" cssClass="text-critical">
+                        <param name="content" value="text{'[...]'}"/>
+                        <param name="alternate" value="(                             ext-common:translate('damage', parent::damage/@agent, 'de', 0, 'lowercase'),                             text{' mit Textverlust ('},                             @quantity,                             text{' '},                             ext-common:translate('gap', @unit, 'de', @quantity, 'lowercase'),                             text{')'}                             )"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
+                    <model predicate="@reason='illegible'" behaviour="alternote" cssClass="text-critical">
+                        <param name="content" value="text{'[...]'}"/>
+                        <param name="alternate" value="(text{'Unlesbar ('} , @quantity , text{' '} , ext-common:translate('gap', @unit, 'de', @quantity, 'lowercase'), text{')'})"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
+                    <model predicate="@source" behaviour="alternote" cssClass="text-critical">
+                        <param name="content" value="text{'[...]'}"/>
+                        <param name="alternate" value="(text{'Vgl. '}, @source)"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
                     <model predicate="desc" behaviour="inline">
                         <outputRendition>color: grey;</outputRendition>
                     </model>
@@ -458,58 +398,36 @@
                 </elementSpec>
                 <elementSpec ident="supplied" mode="change">
                     <model predicate="parent::choice" behaviour="inline"/>
-                    <modelSequence predicate="@resp">
-                        <model behaviour="alternate" cssClass="text-critical">
-                            <param name="default" value="."/>
-                            <param name="alternate" value="text{'Sinngemäss ergänzt'}"/>
-                            <outputRendition scope="before">content:"[";</outputRendition>
-                            <outputRendition scope="after">content:"]";</outputRendition>
-                        </model>
-                        <model behaviour="note">
-                            <param name="place" value="&#34;footnote&#34;"/>
-                            <param name="content" value="'Sinngemäss ergänzt.'"/>
-                            <param name="type" value="'text-critical'"/>
-                        </model>
-                    </modelSequence>
-                    <modelSequence predicate="parent::damage and @source">
-                        <model behaviour="alternate" cssClass="text-critical">
-                            <param name="default" value="."/>
-                            <param name="alternate" value="(ext-common:translate('damage', parent::damage/@agent, 'de', 0, 'uppercase'), text{', '}, if (@reason) then text{ext-common:translate('supplied', @reason, 'de', 0, 'lowercase') || ', '} else (), text{' ergänzt nach '}, @source)"/>
-                            <outputRendition scope="before">content:"[";</outputRendition>
-                            <outputRendition scope="after">content:"]";</outputRendition>
-                        </model>
-                        <model behaviour="note">
-                            <param name="place" value="&#34;footnote&#34;"/>
-                            <param name="content" value="(ext-common:translate('damage', parent::damage/@agent, 'de', 0, 'uppercase'), text{', '}, if (@reason) then text{ext-common:translate('supplied', @reason, 'de', 0, 'lowercase') || ', '} else (), text{' ergänzt nach '}, @source, text{'.'})"/>
-                            <param name="type" value="'text-critical'"/>
-                        </model>
-                    </modelSequence>
-                    <modelSequence predicate="@source and @reason">
-                        <model behaviour="alternate" cssClass="text-critical">
-                            <param name="default" value="."/>
-                            <param name="alternate" value="(ext-common:translate('supplied', @reason, 'de', 0, 'uppercase'), text{' ergänzt nach '}, @source)"/>
-                            <outputRendition scope="before">content:"[";</outputRendition>
-                            <outputRendition scope="after">content:"]";</outputRendition>
-                        </model>
-                        <model behaviour="note">
-                            <param name="place" value="&#34;footnote&#34;"/>
-                            <param name="content" value="(ext-common:translate('supplied', @reason, 'de', 0, 'uppercase'), text{' ergänzt nach '}, @source, text{'.'})"/>
-                            <param name="type" value="'text-critical'"/>
-                        </model>
-                    </modelSequence>
-                    <modelSequence predicate="@source">
-                        <model behaviour="alternate" cssClass="text-critical">
-                            <param name="default" value="."/>
-                            <param name="alternate" value="(text{'Ergänzt nach '}, @source)"/>
-                            <outputRendition scope="before">content:"[";</outputRendition>
-                            <outputRendition scope="after">content:"]";</outputRendition>
-                        </model>
-                        <model behaviour="note">
-                            <param name="place" value="&#34;footnote&#34;"/>
-                            <param name="content" value="(text{'Ergänzt nach '}, @source, text{'.'})"/>
-                            <param name="type" value="'text-critical'"/>
-                        </model>
-                    </modelSequence>
+                    <model predicate="@resp" behaviour="alternote" cssClass="text-critical">
+                        <param name="content" value="."/>
+                        <param name="alternate" value="text{'Sinngemäss ergänzt'}"/>
+                        <param name="type" value="'text-critical'"/>
+                        <outputRendition scope="before">content:"[";</outputRendition>
+                        <outputRendition scope="after">content:"]";</outputRendition>
+                    </model>
+                    <model predicate="parent::damage and @source" behaviour="alternote" 
+                        cssClass="text-critical">
+                        <param name="content" value="."/>
+                        <param name="alternate" value="(ext-common:translate('damage', parent::damage/@agent, 'de', 0, 'uppercase'), text{', '}, if (@reason) then text{ext-common:translate('supplied', @reason, 'de', 0, 'lowercase') || ', '} else (), text{' ergänzt nach '}, @source)"/>
+                        <param name="type" value="'text-critical'"/>
+                        <outputRendition scope="before">content:"[";</outputRendition>
+                        <outputRendition scope="after">content:"]";</outputRendition>
+                    </model>
+                    <model predicate="@source and @reason" behaviour="alternote" 
+                        cssClass="text-critical">
+                        <param name="content" value="."/>
+                        <param name="alternate" value="(ext-common:translate('supplied', @reason, 'de', 0, 'uppercase'), text{' ergänzt nach '}, @source)"/>
+                        <param name="type" value="'text-critical'"/>
+                        <outputRendition scope="before">content:"[";</outputRendition>
+                        <outputRendition scope="after">content:"]";</outputRendition>
+                    </model>
+                    <model predicate="@source" behaviour="alternote" cssClass="text-critical">
+                        <param name="content" value="."/>
+                        <param name="alternate" value="(text{'Ergänzt nach '}, @source)"/>
+                        <param name="type" value="'text-critical'"/>
+                        <outputRendition scope="before">content:"[";</outputRendition>
+                        <outputRendition scope="after">content:"]";</outputRendition>
+                    </model>
                     <model behaviour="inline">
                         <outputRendition scope="before">content:"[";</outputRendition>
                         <outputRendition scope="after">content:"]";</outputRendition>
@@ -567,28 +485,16 @@
                     <model behaviour="paragraph"/>
                 </elementSpec>
                 <elementSpec ident="subst" mode="change">
-                    <modelSequence predicate="add/@hand">
-                        <model behaviour="alternate" cssClass="text-critical">
-                            <param name="default" value="del"/>
-                            <param name="alternate" value="(text{'Streichung, ersetzt '}, ext-common:translate('add', add/@place, 'de', 0, 'lowercase'), text{' '}, ext-common:translate('add', add/@hand, 'de', 0, 'lowercase'), text{': '}, add)"/>
-                        </model>
-                        <model behaviour="note">
-                            <param name="place" value="&#34;footnote&#34;"/>
-                            <param name="content" value="(text{'Streichung, ersetzt '}, ext-common:translate('add', add/@place, 'de', 0, 'lowercase'), text{' '}, ext-common:translate('add', add/@hand, 'de', 0, 'lowercase'), text{': '}, add, text{'.'})"/>
-                            <param name="type" value="'text-critical'"/>
-                        </model>
-                    </modelSequence>
-                    <modelSequence predicate="add">
-                        <model behaviour="alternate" cssClass="text-critical">
-                            <param name="default" value="add"/>
-                            <param name="alternate" value="(ext-common:translate('add', add/@place, 'de', 0, 'uppercase'), text{', ersetzt Streichung: '}, del)"/>
-                        </model>
-                        <model behaviour="note">
-                            <param name="place" value="&#34;footnote&#34;"/>
-                            <param name="content" value="(ext-common:translate('add', add/@place, 'de', 0, 'uppercase'), text{', ersetzt Streichung: '}, del, text{'.'})"/>
-                            <param name="type" value="'text-critical'"/>
-                        </model>
-                    </modelSequence>
+                    <model predicate="add/@hand" behaviour="alternote" cssClass="text-critical">
+                        <param name="content" value="del"/>
+                        <param name="alternate" value="(text{'Streichung, ersetzt '}, ext-common:translate('add', add/@place, 'de', 0, 'lowercase'), text{' '}, ext-common:translate('add', add/@hand, 'de', 0, 'lowercase'), text{': '}, add)"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
+                    <model predicate="add" behaviour="alternote" cssClass="text-critical">
+                        <param name="content" value="add"/>
+                        <param name="alternate" value="(ext-common:translate('add', add/@place, 'de', 0, 'uppercase'), text{', ersetzt Streichung: '}, del)"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
                     <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="date" mode="change">

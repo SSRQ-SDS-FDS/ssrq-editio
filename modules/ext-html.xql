@@ -30,6 +30,55 @@ declare function pmf:reference($config as map(*), $node as element(), $class as 
     </span>
 };
 
+declare function pmf:alternote($config as map(*), $node as element(), $class as xs:string+, $content,
+    $label, $type, $alternate) {
+    let $nodeId :=
+        if ($node/@exist:id) then
+            $node/@exist:id
+        else
+            util:node-id($node)
+    let $id := translate($nodeId, "-", "_")
+    let $nr :=
+        switch ($type)
+            case "text-critical" return
+                counter:next-value("text-critical")
+            default return
+                counter:next-value("note")
+    let $alternate := $config?apply-children($config, $node, $alternate)
+    let $label :=
+        switch($type)
+            case "text-critical" return
+                pmf:footnote-label($nr)
+            default return
+                $nr
+    let $enclose := $type = "text-critical" and matches($content, "\w+\s+\w+")
+    let $labelStart := string-join(($label, if ($enclose) then "-" else ()))
+    let $labelEnd := string-join((if ($enclose) then "-" else (), $label))
+    return (
+        if ($enclose) then
+            <a class="note" rel="footnote" href="#fn:{$id}">
+            { $labelStart }
+            </a>
+        else
+            (),
+        <span class="alternate {$class}">
+            <span>{html:apply-children($config, $node, $content)}</span>
+            <span class="altcontent">{$alternate}</span>
+        </span>,
+        <span id="fnref:{$id}">
+            <a class="note" rel="footnote" href="#fn:{$id}">
+            { $labelEnd }
+            </a>
+        </span>,
+        <li class="footnote" id="fn:{$id}" value="{$nr}"
+            type="{if ($type = 'text-critical') then 'a' else '1'}">
+            <span class="fn-content">
+                {$alternate}
+            </span>
+            <a class="fn-back" href="#fnref:{$id}">↩</a>
+        </li>
+    )
+};
 
 declare function pmf:note($config as map(*), $node as element(), $class as xs:string+, $content, $place, $label, $type) {
     switch ($place)
