@@ -9,11 +9,13 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
-declare function pmf:translate($element-name, $attribute, $lang, $plural, $upper) {
-    pmf:translate($element-name, local-name($attribute), $attribute/string(), $lang, $plural, $upper)
+declare function pmf:translate($element-name, $attribute, $lang) {
+    pmf:translate($element-name, $attribute, $lang, 0, "uppercase")
 };
 
-declare function pmf:translate($element-name, $attribute-name, $value, $lang, $plural, $upper) {
+declare function pmf:translate($element-name, $attribute, $lang, $plural, $upper) {
+    let $attribute-name := local-name($attribute)
+    let $value := $attribute/string()
     let $label:=
         if($plural > 1) then
             $config:schema-odd//tei:elementSpec[@ident=$element-name]//tei:attDef[@ident=$attribute-name]//tei:valItem[@ident=$value]/tei:desc[@xml:lang=$lang][@type="plural"]/string()
