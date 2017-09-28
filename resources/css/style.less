@@ -471,7 +471,8 @@
   }
 
   .note,
-  .popover {
+  .popover,
+  .note-wrap {
     font-size: 13px;
   }
 
@@ -491,10 +492,21 @@
       }
   }
 
-  .note {
+  .note-wrap {
     vertical-align: super;
     cursor: pointer;
-    margin-left: .25em;
+  }
+
+  .note-wrap + .note-wrap::before {
+      content: ',';
+  }
+
+  .note-start {
+      margin-right: .1em;
+  }
+
+  .note-end {
+      margin-left: .1em;
   }
 
   .footnotes {
