@@ -224,6 +224,43 @@
                     </model>
                     <model behaviour="omit"/>
                 </elementSpec>
+                <elementSpec ident="damage" mode="add">
+                    <model predicate="gap" behaviour="altnote">
+                        <param name="content" value="'[...]'"/>
+                        <param name="place" value="&#34;footnote&#34;"/>
+                        <param name="type" value="'text-critical'"/>
+                        <param name="alternate" value="(ext-common:translate('damage', @agent, 'de'),' mit Textverlust (', gap/@quantity, ext-common:translate('gap', gap/@unit, 'de'), ')')"/>
+                    </model>
+                    <model predicate="unclear" behaviour="altnote">
+                        <param name="content" value="unclear/node()"/>
+                        <param name="place" value="&#34;footnote&#34;"/>
+                        <param name="type" value="'text-critical'"/>
+                        <param name="content" value="(ext-common:translate('damage', @agent, 'de'),', unsichere Lesung')"/>
+                    </model>
+                    <model predicate="supplied" behaviour="altnote">
+                        <param name="content" value="supplied/node()"/>
+                        <param name="place" value="&#34;footnote&#34;"/>
+                        <param name="type" value="'text-critical'"/>
+                        <param name="alternate" value="concat(ext-common:translate('damage', @agent, 'de'),', ergänzt nach ', supplied/@source)"/>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="damageSpan" mode="add">
+                    <model predicate="gap" behaviour="note">
+                        <param name="place" value="&#34;footnote&#34;"/>
+                        <param name="type" value="'text-critical-start'"/>
+                        <param name="content" value="(ext-common:translate('damage', @agent, 'de'),' mit Textverlust (', gap/@quantity, ext-common:translate('gap', gap/@unit, 'de'), ')')"/>
+                    </model>
+                    <model predicate="unclear" behaviour="note">
+                        <param name="place" value="&#34;footnote&#34;"/>
+                        <param name="type" value="'text-critical-start'"/>
+                        <param name="content" value="(ext-common:translate('damage', @agent, 'de'),', unsichere Lesung')"/>
+                    </model>
+                    <model predicate="supplied" behaviour="note">
+                        <param name="place" value="&#34;footnote&#34;"/>
+                        <param name="type" value="'text-critical-start'"/>
+                        <param name="content" value="concat(ext-common:translate('damage', @agent, 'de'),', ergänzt nach ', supplied/@source)"/>
+                    </model>
+                </elementSpec>
                 <elementSpec ident="anchor" mode="change">
                     <model predicate="exists(root($parameters?root)//*[@spanTo = '#' || $node/@xml:id])" behaviour="notespan-end">
                         <param name="content" value="root($parameters?root)//*[@spanTo = '#' || $node/@xml:id]"/>
