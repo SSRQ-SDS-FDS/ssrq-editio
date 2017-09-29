@@ -63,7 +63,6 @@
                 <elementSpec ident="expan" mode="change">
                     <model predicate="parent::choice" behaviour="inline">
                         <outputRendition scope="before">content: 'Aufgelöste Abkürzung: '</outputRendition>
-                        <outputRendition scope="after">content: '.'</outputRendition>
                     </model>
                     <model behaviour="inline"/>
                 </elementSpec>
@@ -117,7 +116,7 @@
                     </model>
                     <model behaviour="alternate">
                         <param name="default" value="."/>
-                        <param name="alternate" value="text{'Originaldatierung: ', ext-common:format-date(@when, 'de_CH'), '.'}"/>
+                        <param name="alternate" value="text{'Originaldatierung: ', ext-common:format-date(@when, 'de_CH')}"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="add" mode="change">
@@ -470,7 +469,7 @@
                     </model>
                     <model predicate="following-sibling::node()[1][self::lb]" behaviour="copy">
                         <desc>If followed by an lb, process the lb first, then the pb</desc>
-                        <param name="content" value="let $pb := . return (following-sibling::lb[1], $pb)"/>
+                        <param name="content" value="(following-sibling::lb[1], $node)"/>
                     </model>
                     <model predicate="not(@*)" behaviour="alternate" cssClass="pb-empty">
                         <desc>Show tooltip on pagebreaks that don't contain attributes</desc>
@@ -584,12 +583,12 @@
                 <elementSpec ident="subst" mode="change">
                     <model predicate="add/@hand" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="del"/>
-                        <param name="alternate" value="(text{'Streichung, ersetzt '}, ext-common:translate('add', add/@place, 'de', 0, 'lowercase'), text{' '}, ext-common:translate('add', add/@hand, 'de', 0, 'lowercase'), text{': '}, add)"/>
+                        <param name="alternate" value="(text{'Streichung, ersetzt '}, ext-common:translate('add', add/@place, 'de', 0, 'lowercase'), text{' '}, ext-common:translate('add', add/@hand, 'de', 0, 'lowercase'), text{': '}, add/node())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="add" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="add"/>
-                        <param name="alternate" value="(ext-common:translate('add', add/@place, 'de', 0, 'uppercase'), text{', ersetzt Streichung: '}, del)"/>
+                        <param name="alternate" value="(ext-common:translate('add', add/@place, 'de', 0, 'uppercase'), text{', ersetzt Streichung: '}, del/node())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model behaviour="inline"/>

@@ -86,7 +86,7 @@ declare function nav:output-footnotes($footnotes as element()*) {
             for $note in $footnotes[@type="a"]
             order by number($note/@value)
             return
-                $note
+                nav:check-note($note)
         }
         </ol>
         <ol>
@@ -94,8 +94,19 @@ declare function nav:output-footnotes($footnotes as element()*) {
             for $note in $footnotes[@type="1"]
             order by number($note/@value)
             return
-                $note
+                nav:check-note($note)
         }
         </ol>
     </div>
+};
+
+declare function nav:check-note($note as element()) {
+    if (matches($note/span[@class = "fn-content"], "\.\s*$")) then
+        $note
+    else
+        element { node-name($note) } {
+            $note/@*,
+            <span class="fn-content">{ $note/span[@class = "fn-content"]/node() }.</span>,
+            $note/*[not(self::span)]
+        }
 };
