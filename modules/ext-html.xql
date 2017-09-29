@@ -121,7 +121,7 @@ declare function pmf:note($config as map(*), $node as element(), $class as xs:st
                     </a>
                 </span>,
                 <li class="footnote" id="fn:{$id}" value="{$nr}"
-                    type="{if ($type = 'text-critical') then 'a' else '1'}">
+                    type="{if ($type = ('text-critical','text-critical-start')) then 'a' else '1'}">
                     <span class="fn-content">
                         {$content}
                     </span>
