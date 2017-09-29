@@ -17,14 +17,14 @@
         <property name="font-size">"12pt"</property>
         <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ext-common" at="xmldb:exist:///db/apps/ssrq/modules/ext-common.xql"/>
     </output><!-- Add custom module -->
-    <output mode="web" odd="ssrq">
+    <output mode="web">
         <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-web" prefix="ext-html" at="xmldb:exist:///db/apps/ssrq/modules/ext-html.xql"/>
         <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ext-common" at="xmldb:exist:///db/apps/ssrq/modules/ext-common.xql"/>
     </output>
-    <output mode="print" odd="ssrq">
+    <output mode="print">
         <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ext-common" at="xmldb:exist:///db/apps/ssrq/modules/ext-common.xql"/>
     </output>
-    <output mode="epub" odd="ssrq">
+    <output mode="epub">
         <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ext-common" at="xmldb:exist:///db/apps/ssrq/modules/ext-common.xql"/>
     </output>
 </modules>

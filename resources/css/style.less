@@ -533,13 +533,20 @@
   .pb-foliation {
       font-style: italic;
       color: #808080;
-      display: block;
+      display: inline;
+      clear: left;
+      padding-right: .5em;
+  }
+
+  .pb-norm {
+      clear: none;
+      padding-left: .5em;
   }
 
   .pb-pagination,
   .pb-foliation {
       &:after {
-          content:"] ";
+          content:"]";
       }
   }
 

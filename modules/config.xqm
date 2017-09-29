@@ -44,7 +44,7 @@ declare variable $config:search-default := "tei:div";
  : $pagination-depth to 3 to not show the sub-subsections as separate pages.
  : Setting $pagination-depth to 1 would show entire top-level divs on one page.
  :)
-declare variable $config:pagination-depth := 1;
+declare variable $config:pagination-depth := 0;
 
 (:
  : If a div starts with less than $pagination-fill elements before the
@@ -194,7 +194,11 @@ declare variable $config:app-root :=
 
 declare variable $config:data-root := "/db/apps/ssrq-data/data";
 
-declare variable $config:odd := "ssrq.odd";
+declare variable $config:odd := request:get-parameter("odd", $config:odd-diplomatic);
+
+declare variable $config:odd-diplomatic := "ssrq.odd";
+
+declare variable $config:odd-normalized := "ssrq-norm.odd";
 
 declare variable $config:odd-root := $config:app-root || "/resources/odd";
 

@@ -6,10 +6,34 @@ import module namespace templates="http://exist-db.org/xquery/templates";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xql";
 import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "/db/apps/ssrq/modules/ext-common.xql";
+import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
+
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 declare variable $app:single-body-div-max := 7;
+
+declare function app:switch-view($node as node(), $model as map(*), $odd as xs:string?) {
+    element { node-name($node) } {
+        $node/@*,
+        attribute href {
+            if (empty($odd) or $odd = $config:odd-diplomatic) then
+                "?odd=" || $config:odd-normalized
+            else
+                "?odd=" || $config:odd-diplomatic
+        },
+        <i class="material-icons">
+        {
+            if (empty($odd) or $odd = $config:odd-diplomatic) then
+                'check_box_outline_blank'
+            else
+                'check_box'
+        }
+        </i>,
+        $node/text()
+    }
+};
+
 
 declare function app:list-places($node as node(), $model as map(*)) {
     let $places := root($model?data)//tei:placeName[@ref]

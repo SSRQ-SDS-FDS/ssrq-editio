@@ -43,7 +43,8 @@
     <msg key="download-message">La génération d'un fichier à télécharger peut prendre quelques minutes. Merci de patienter. Cette boîte de dialogue se fermera automatiquement à la fin du téléchargement.</msg>
     <msg key="search-results">Résultats de la recherche</msg>
     <msg key="found">Trouvé</msg>
-    <msg key="view-switch">Permuter entre les vues "Page" et "Division"</msg>
+    <msg key="view-switch">Switch between normalized and diplomatic view</msg>
+    <msg key="view-normalized">Normalized</msg>
     <msg key="documentation">Documentation</msg>
     <msg key="app-generator">Générateur d'applications</msg>
     <msg key="presentation">Présentation</msg>
