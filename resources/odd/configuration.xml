@@ -15,16 +15,16 @@
         <property name="class">"article"</property>
         <property name="section-numbers">false()</property>
         <property name="font-size">"12pt"</property>
-        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ext-common" at="xmldb:exist:///db/apps/ssrq/modules/ext-common.xql"/>
+        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ec" at="xmldb:exist:///db/apps/ssrq/modules/ext-common.xql"/>
     </output><!-- Add custom module -->
     <output mode="web">
         <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-web" prefix="ext-html" at="xmldb:exist:///db/apps/ssrq/modules/ext-html.xql"/>
-        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ext-common" at="xmldb:exist:///db/apps/ssrq/modules/ext-common.xql"/>
+        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ec" at="xmldb:exist:///db/apps/ssrq/modules/ext-common.xql"/>
     </output>
     <output mode="print">
-        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ext-common" at="xmldb:exist:///db/apps/ssrq/modules/ext-common.xql"/>
+        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ec" at="xmldb:exist:///db/apps/ssrq/modules/ext-common.xql"/>
     </output>
     <output mode="epub">
-        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ext-common" at="xmldb:exist:///db/apps/ssrq/modules/ext-common.xql"/>
+        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ec" at="xmldb:exist:///db/apps/ssrq/modules/ext-common.xql"/>
     </output>
 </modules>

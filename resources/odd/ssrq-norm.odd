@@ -73,11 +73,11 @@
                         <param name="alternate" value="('In der Vorlage: ', sic/node())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
-                    <model predicate="abbr and expan" behaviour="alternate">
+                    <model predicate="abbr and expan" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="expan[1]"/>
                         <param name="alternate" value="('In der Vorlage: ', abbr[1])"/>
                     </model>
-                    <model predicate="orig and reg" behaviour="alternate">
+                    <model predicate="orig and reg" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="reg[1]"/>
                         <param name="alternate" value="orig[1]"/>
                     </model>
