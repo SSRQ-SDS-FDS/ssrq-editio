@@ -458,7 +458,7 @@
                     <model predicate="@when" behaviour="alternate" cssClass="semantic">
                         <desc>Display time with given parameter in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
-                        <param name="alternate" value="text{'Zeit: ', @when}"/>
+                        <param name="alternate" value="text{'Zeit: ', format-time(@when, '[H]:[m]')}"/>
                     </model>
                     <model predicate="@dur" behaviour="alternate" cssClass="semantic">
                         <desc>Display time in tooltip and highlight text with color</desc>
