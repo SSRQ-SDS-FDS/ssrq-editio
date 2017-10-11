@@ -616,23 +616,31 @@
                 <elementSpec ident="date" mode="change">
                     <model output="web" predicate="@when and @type" behaviour="alternate" cssClass="semantic">
                         <param name="default" value="."/>
-                        <param name="alternate" value="text{'Datum: ', ec:format-date(@when, 'de_CH'), ' (', ec:translate(@type, 'de', 0, ()), ')'}"/>
+                        <param name="alternate" value="('Datum: ', ec:format-date(@when, 'de_CH'), ' (', ec:translate(@type, 'de', 0, ()), ')')"/>
+                    </model>
+                    <model output="web" predicate="@when and @calendar" behaviour="alternate" cssClass="semantic">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="('Datum: ', ec:format-date(@when, 'de_CH'), ' (', ec:translate(@calendar, 'de', 0, ()), ')')"/>
                     </model>
                     <model output="web" predicate="@when" behaviour="alternate" cssClass="semantic">
                         <param name="default" value="."/>
-                        <param name="alternate" value="text{'Datum: ', ec:format-date(@when, 'de_CH')}"/>
+                        <param name="alternate" value="('Datum: ', ec:format-date(@when, 'de_CH'))"/>
                     </model>
                     <model output="web" predicate="@period" behaviour="alternate" cssClass="semantic">
                         <param name="default" value="."/>
-                        <param name="alternate" value="text{'Zeitspanne: ', ec:translate(@period, 'de', 0, ())}"/>
+                        <param name="alternate" value="('Zeitspanne: ', ec:translate(@period, 'de', 0, ()))"/>
+                    </model>
+                    <model output="web" predicate="@dur[starts-with(., 'R/P')]" behaviour="alternate" cssClass="semantic">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="'Wiederholte Zeitspanne'"/>
                     </model>
                     <model output="web" predicate="@dur" behaviour="alternate" cssClass="semantic">
                         <param name="default" value="."/>
-                        <param name="alternate" value="text{'Zeitspanne: ', ec:format-duration(@dur)}"/>
+                        <param name="alternate" value="('Zeitspanne: ', ec:format-duration(@dur))"/>
                     </model>
                     <model predicate="@type" behaviour="alternate" cssClass="semantic">
                         <param name="default" value="."/>
-                        <param name="alternate" value="text{'Datum (', ec:translate(@type, 'de', 0, ()), ')'}"/>
+                        <param name="alternate" value="('Datum (', ec:translate(@type, 'de', 0, ()), ')')"/>
                     </model>
                     <model predicate="text()" behaviour="inline" cssClass="semantic"/>
                 </elementSpec>
