@@ -392,9 +392,15 @@
       font-size: @font-size-h4-inner-content;
     }
 
-    td {
-        padding-right: 10px;
-        padding-bottom: 10px;
+    td, th {
+        padding-left: 8px;
+        padding-top: 8px;
+    }
+    td:first-child {
+        padding-left: 0;
+    }
+    tr:first-child td {
+        padding-top: 0;
     }
 
     .code {
