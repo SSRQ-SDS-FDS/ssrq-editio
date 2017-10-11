@@ -101,7 +101,7 @@ declare function nav:output-footnotes($footnotes as element()*) {
 };
 
 declare function nav:check-note($note as element()) {
-    if (matches($note/span[@class = "fn-content"], "\.\s*$")) then
+    if (matches($note/span[@class = "fn-content"], "[\.!\?]\s*$")) then
         $note
     else
         element { node-name($note) } {
