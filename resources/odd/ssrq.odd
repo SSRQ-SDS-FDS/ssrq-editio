@@ -477,7 +477,7 @@
                     <model behaviour="alternate" cssClass="semantic">
                         <desc>Display measurement with given parameters in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
-                       <param name="alternate" value="(                            ec:translate(@type, 'de', 0, 'uppercase'),                            text{': '},                             @quantity,                             text{' '},                             ec:translate(@origin, 'de', 0, 'lowercase'), text{' '},                             ec:translate(@unit, 'de', @quantity, 'lowercase'),                             text{' '},                             ec:translate(@commodity, 'de', 0, 'lowercase'))"/>
+                       <param name="alternate" value="(ec:translate(@type, 'de', 0, 'uppercase'), text{': '}, @quantity, text{' '}, ec:translate(@origin, 'de', 0, 'lowercase'), text{' '}, ec:translate(@unit, 'de', @quantity, 'lowercase'), text{' '}, ec:translate(@commodity, 'de', 0, 'lowercase'))"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="pb" mode="change">
@@ -704,6 +704,30 @@
                     <model behaviour="listItem">
                         <param name="content" value="(persName|orgName, if (persName|orgName) then ', ' else (), string-join((@nontei:material,@nontei:shape,@nontei:extent,@nontei:attachment,@nontei:condition) ! ec:translate(., 'de', 0, ()), ', '))"/>
                     </model>
+                </elementSpec>
+                <elementSpec ident="head" mode="change">
+                    <model predicate="$parameters?header='short'" behaviour="inline">
+                        <param name="content" value="replace(string-join(.//text()[not(parent::ref)]), '^(.*?)[^\w]*$', '$1')"/>
+                    </model>
+                    <model predicate="parent::figure" behaviour="block">
+                        <outputRendition>font-style: italic;</outputRendition>
+                    </model>
+                    <model predicate="parent::table" behaviour="caption">
+                        <desc>head inside table should be output as caption element</desc>
+                    </model>
+                    <model predicate="parent::lg" behaviour="block">
+                        <outputRendition>font-style: italic;</outputRendition>
+                    </model>
+                    <model predicate="parent::list" behaviour="block">
+                        <outputRendition>font-weight: bold;</outputRendition>
+                    </model>
+                    <model predicate="parent::div" behaviour="heading">
+                        <param name="level" value="count(ancestor::div)"/>
+                    </model>
+                    <model behaviour="block"/>
+                </elementSpec>
+                <elementSpec ident="text()">
+                    <model behaviour="content"/>
                 </elementSpec>
             </schemaSpec>
         </body>

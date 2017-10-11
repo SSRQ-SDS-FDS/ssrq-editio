@@ -196,3 +196,18 @@ declare %private function pmf:copy($nodes as node()*) {
                 }
             default return $node
 };
+
+declare function pmf:caption($config as map(*), $node as element(), $class as xs:string+, $content) {
+    <caption class="{$class}">{html:apply-children($config, $node, $content)}</caption>
+};
+
+
+declare function pmf:content($config as map(*), $node as node(), $class as xs:string+, $content as item()*) {
+    typeswitch($content)
+        case attribute() return
+            text { $content }
+        case text() return
+            $content
+        default return
+            text { $content }
+};
