@@ -328,11 +328,15 @@
                     <model predicate="@rend='sup'" behaviour="inline" cssClass="text-critical">
                         <outputRendition>font-size: 80%; vertical-align: top;</outputRendition>
                     </model>
+                    <model predicate="@rend='underline' and @hand" behaviour="alternote" cssClass="text-critical">
+                        <param name="content" value="."/>
+                        <param name="alternate" value="('Unterstrichen ', ec:translate(@hand, 'de', 0, 'lowercase'))"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
                     <model predicate="@rend='underline'" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="."/>
                         <param name="alternate" value="text{'Unterstrichen'}"/>
                         <param name="type" value="'text-critical'"/>
-                        <outputRendition>text-decoration: underline;</outputRendition>
                     </model>
                     <model predicate="@rendition" behaviour="inline" useSourceRendition="true">
                         <outputRendition>font-style: italic;</outputRendition>
