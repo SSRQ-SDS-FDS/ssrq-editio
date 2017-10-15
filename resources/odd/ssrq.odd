@@ -116,8 +116,9 @@
                 </elementSpec>
                 <elementSpec ident="sic" mode="change">
                     <model predicate="parent::choice and count(parent::*/*) gt 1" behaviour="inline"/>
-                    <model behaviour="inline">
-                        <outputRendition scope="after">content: ' [sic]';</outputRendition>
+                    <model behaviour="alternate">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="'Auffällige Schreibung'"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="origPlace" mode="add">
