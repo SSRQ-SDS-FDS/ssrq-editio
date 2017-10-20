@@ -360,6 +360,11 @@
                         <param name="alternate" value="(                             ec:translate(parent::damage/@agent, 'de', 0, 'lowercase'),                             text{' mit Textverlust ('},                             @quantity,                             text{' '},                             ec:translate(@unit, 'de', @quantity, 'lowercase'),                             text{')'}                             )"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
+                    <model predicate="@reason='irrelevant'" behaviour="alternate" cssClass="text-critical">
+                        <param name="default" value="text{'[...]'}"/>
+                        <param name="alternate" value="text{'Editorisch irrelevant'}"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
                     <model predicate="@reason='illegible'" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="text{'[...]'}"/>
                         <param name="alternate" value="(text{'Unlesbar ('} , @quantity , text{' '} , ec:translate(@unit, 'de', @quantity, 'lowercase'), text{')'})"/>
