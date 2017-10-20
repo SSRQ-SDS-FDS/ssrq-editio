@@ -85,6 +85,7 @@ $(document).ready(function() {
             elem.find("a").text(label);
             if (entry.definition) {
                 elem.append($('<span class="info"></span>').text(': ' + entry.definition['#text']));
+                label += ': ' + entry.definition['#text'];
             }
             updateSpans(elem.attr("data-ref"), label);
         }
