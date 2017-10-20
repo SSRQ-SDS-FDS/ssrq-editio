@@ -53,9 +53,6 @@
                         <desc>output as list item if in commentary</desc>
                     </model>
                     <model behaviour="section" predicate="parent::body or parent::front or parent::back"/>
-                    <model behaviour="block" predicate="@n">
-                        <param name="content" value="(text{'['}, @n, text{'] '}, .)"/>
-                    </model>
                     <model behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="choice" mode="change">
@@ -84,6 +81,56 @@
                 </elementSpec>
                 <elementSpec ident="expan" mode="change">
                     <model behaviour="inline"/>
+                </elementSpec>
+                <elementSpec ident="p" mode="change">
+                    <model predicate="parent::div[@n]/*[1] is ." behaviour="paragraph" useSourceRendition="true">
+                        <param name="content" value="('[', parent::div/@n, '] ', .)"/>
+                        <outputRendition>text-align: justify;</outputRendition>
+                    </model>
+                    <model behaviour="paragraph" useSourceRendition="true">
+                        <outputRendition>text-align: justify;</outputRendition>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="head" mode="change">
+                    <model predicate="$parameters?header='short'" behaviour="inline">
+                        <param name="content" value="replace(string-join(.//text()[not(parent::ref)]), '^(.*?)[^\w]*$', '$1')"/>
+                    </model>
+                    <model predicate="parent::figure" behaviour="block">
+                        <outputRendition>font-style: italic;</outputRendition>
+                    </model>
+                    <model predicate="parent::table" behaviour="caption">
+                        <desc>head inside table should be output as caption element</desc>
+                    </model>
+                    <model predicate="parent::lg" behaviour="block">
+                        <outputRendition>font-style: italic;</outputRendition>
+                    </model>
+                    <model predicate="parent::list" behaviour="block">
+                        <outputRendition>font-weight: bold;</outputRendition>
+                    </model>
+                    <model predicate="@resp" behaviour="heading">
+                        <desc>Supplied heading: output in brackets if @resp</desc>
+                        <param name="level" value="2"/>
+                        <outputRendition scope="before">
+                            content: '[';
+                        </outputRendition>
+                        <outputRendition scope="after">
+                            content: ']';
+                        </outputRendition>
+                    </model>
+                    <model predicate="parent::div[@n][@type=('chapter', 'section')]/*[1] is ." behaviour="heading">
+                        <desc>Show number in front of heading if @n is set on parent</desc>
+                        <param name="content" value="('[', parent::div/@n, '] ', .)"/>
+                        <param name="level" value="1"/>
+                    </model>
+                    <model predicate="parent::div[@n]/*[1] is ." behaviour="heading">
+                        <desc>Show number in front of heading if @n is set on parent</desc>
+                        <param name="content" value="('[', parent::div/@n, '] ', .)"/>
+                        <param name="level" value="if (@type=('chapter','section','title')) then 1 else 2"/>
+                    </model>
+                    <model behaviour="heading">
+                        <desc>All other headings are same size as text</desc>
+                        <param name="level" value="if (@type='title') then 1 else 2"/>
+                    </model>
                 </elementSpec>
             </schemaSpec>
         </body>

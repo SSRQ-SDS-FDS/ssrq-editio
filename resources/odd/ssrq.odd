@@ -734,10 +734,21 @@
                     <model predicate="parent::list" behaviour="block">
                         <outputRendition>font-weight: bold;</outputRendition>
                     </model>
-                    <model predicate="parent::div" behaviour="heading">
-                        <param name="level" value="count(ancestor::div)"/>
+                    <model predicate="@resp" behaviour="heading">
+                        <param name="level" value="2"/>
+                        <outputRendition scope="before">
+                            content: '[';
+                        </outputRendition>
+                        <outputRendition scope="after">
+                            content: ']';
+                        </outputRendition>
                     </model>
-                    <model behaviour="block"/>
+                    <model predicate="@type = 'title'" behaviour="heading">
+                        <param name="level" value="1"/>
+                    </model>
+                    <model behaviour="heading">
+                        <param name="level" value="2"/>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="text()">
                     <model behaviour="content"/>
