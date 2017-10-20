@@ -4813,10 +4813,10 @@ live without God in the world, and only mind earthly things.
               <model behaviour="inline" predicate="not(@target)"/>
               <model predicate="not(text())" behaviour="link">
                 <param name="content" value="@target"/>
-                <param name="uri" value="@target"/>
+                <param name="link" value="@target"/>
               </model>
               <model behaviour="link">
-                <param name="uri" value="@target"/>
+                <param name="link" value="@target"/>
               </model>
             </elementSpec>
             <elementSpec ident="reg" mode="change">
