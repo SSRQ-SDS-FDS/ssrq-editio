@@ -516,6 +516,13 @@
                 </elementSpec>
                 <elementSpec ident="supplied" mode="change">
                     <model predicate="parent::choice" behaviour="inline"/>
+                    <model predicate="@reason" behaviour="alternote" cssClass="text-critical">
+                        <param name="content" value="."/>
+                        <param name="alternate" value="(ec:translate(@reason, 'de', 0, 'uppercase'), ', sinngemäß ergänzt')"/>
+                        <param name="type" value="'text-critical'"/>
+                        <outputRendition scope="before">content:"[";</outputRendition>
+                        <outputRendition scope="after">content:"]";</outputRendition>
+                    </model>
                     <model predicate="@resp" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="."/>
                         <param name="alternate" value="text{'Sinngemäss ergänzt'}"/>
