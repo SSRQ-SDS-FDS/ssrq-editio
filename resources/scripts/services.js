@@ -69,10 +69,9 @@ $(document).ready(function() {
     query(KEYWORD_API, "id", $(".keywords li").toArray(), function(elem, entry) {
         if (entry.name) {
             elem.find("a").text(entry.name['#text']);
-            console.log(entry);
-            if (entry.definition['#text']) {
-                elem.append($('<span class="info"></span>').text(entry.definition['#text']));
-            }
+            // if (entry.definition['#text']) {
+            //     elem.append($('<span class="info"></span>').text(entry.definition['#text']));
+            // }
         }
 
         updateSpans(elem.attr("data-ref"), entry.name['#text']);
