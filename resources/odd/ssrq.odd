@@ -746,20 +746,22 @@
                     <model predicate="parent::list" behaviour="block">
                         <outputRendition>font-weight: bold;</outputRendition>
                     </model>
-                    <model predicate="@resp" behaviour="heading">
-                        <param name="level" value="2"/>
-                        <outputRendition scope="before">
-                            content: '[';
-                        </outputRendition>
-                        <outputRendition scope="after">
-                            content: ']';
-                        </outputRendition>
-                    </model>
                     <model predicate="@type = 'title'" behaviour="heading">
                         <param name="level" value="1"/>
                     </model>
                     <model behaviour="heading">
                         <param name="level" value="2"/>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="ref" mode="change">
+                    <model behaviour="inline" predicate="not(@target)"/>
+                    <model predicate="not(text())" behaviour="link">
+                        <param name="content" value="@target"/>
+                        <param name="link" value="@target"/>
+                    </model>
+                    <model behaviour="link">
+                        <param name="link" value="@target"/>
+                        <param name="target" value="'_new'"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="text()">

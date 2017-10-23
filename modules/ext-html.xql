@@ -20,8 +20,15 @@ declare function pmf:prepare($config as map(*), $node as node()*) {
     )[5]
 };
 
-declare function pmf:link($config as map(*), $node as node(), $class as xs:string+, $content, $link) {
-    <a href="{$link}" class="{$class}" target="_new">{html:apply-children($config, $node, $content)}</a>
+declare function pmf:link($config as map(*), $node as node(), $class as xs:string+, $content, $link, $target) {
+    <a href="{$link}" class="{$class}">
+    {
+        if ($target) then
+            attribute target { $target }
+        else
+            (),
+        html:apply-children($config, $node, $content)
+    }</a>
 };
 
 declare function pmf:reference($config as map(*), $node as element(), $class as xs:string+, $content,

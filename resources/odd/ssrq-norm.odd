@@ -110,12 +110,7 @@
                     <model predicate="@resp" behaviour="heading">
                         <desc>Supplied heading: output in brackets if @resp</desc>
                         <param name="level" value="2"/>
-                        <outputRendition scope="before">
-                            content: '[';
-                        </outputRendition>
-                        <outputRendition scope="after">
-                            content: ']';
-                        </outputRendition>
+                        <param name="content" value="text {'[',.,']'}"/>
                     </model>
                     <model predicate="parent::div[@n][@type=('chapter', 'section')]/*[1] is ." behaviour="heading">
                         <desc>Show number in front of heading if @n is set on parent</desc>
