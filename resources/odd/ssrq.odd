@@ -121,6 +121,9 @@
                         <param name="alternate" value="'Auffällige Schreibung'"/>
                     </model>
                 </elementSpec>
+                <elementSpec ident="orig" mode="change">
+                    <model behaviour="inline" cssClass="orig"/>
+                </elementSpec>
                 <elementSpec ident="origPlace" mode="add">
                     <model behaviour="alternate">
                         <param name="default" value="."/>
