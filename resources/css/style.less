@@ -362,13 +362,13 @@
 
 .orig {
     font-family: @font-family-content-inner;
-}
 
-.orig:before {
-    content: '«';
-}
-.orig:after {
-    content: '»';
+    &:before {
+        content: '«';
+    }
+    &:after {
+        content: '»';
+    }
 }
 
 #document-wrapper {
@@ -452,8 +452,8 @@
 
     &>*>section {
       border-top: @default-border-style;
-      margin: 2.5em 0;
-      padding-top: 2em;
+      margin: .75em 0;
+      padding-top: .25em;
     }
     &>*>section:first-child {
       border-top: 0;
@@ -563,7 +563,6 @@
   .pb-empty,
   .pb-pagination,
   .pb-foliation {
-      font-style: italic;
       color: #808080;
       display: inline;
       clear: left;
