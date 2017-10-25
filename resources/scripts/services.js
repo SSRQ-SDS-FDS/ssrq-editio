@@ -7,8 +7,14 @@ $(document).ready(function() {
     var PERSON_API = HOST + "/persons-db-api/";
 
     function updateSpans(key, label) {
-        $("span[data-ref='" + key + "']").text(': ' + label);
-        $("span[data-ref^='" + key + ".']").text(': ' + label);
+        var spans = $("span[data-ref^='" + key + "']").filter(function(i, span) {
+            var ref = $(span).attr('data-ref');
+            if (ref === key) {
+                return true;
+            }
+            return /^[\.a-zA-Z]/.test(ref.substring(key.length));
+        });
+        spans.text(': ' + label);
     }
 
     function query(uri, param, list, callback) {
@@ -52,6 +58,7 @@ $(document).ready(function() {
             if (entry.dates) {
                 elem.append($('<span class="info"></span>').text(entry.dates));
             }
+
             updateSpans(elem.attr("data-ref"), entry.name + ' (' + entry.dates + ')');
         }
     });
