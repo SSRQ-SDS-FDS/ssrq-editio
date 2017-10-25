@@ -354,7 +354,6 @@
                         <param name="content" value="text{'...'}"/>
                         <param name="alternate" value="(text{'Lücke in der Vorlage ('} , @quantity , text{' '} , ec:translate(@unit, 'de', @quantity, 'lowercase'), text{')'})"/>
                         <param name="type" value="'text-critical'"/>
-                        <outputRendition>text-decoration: underline;</outputRendition>
                     </model>
                 </elementSpec>
                 <elementSpec ident="gap" mode="change">
