@@ -1,0 +1,25 @@
+{
+  "name": "ssrq",
+  "version": "0.3.0",
+  "description": "Schweizerische Rechtsquellen",
+  "main": "gulpfile.js",
+  "scripts": {
+    "update": "npm update && gulp",
+    "start": "npm install --quiet && gulp",
+    "gulp": "gulp default"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.exist-db.org:ssrq/ssrq.git"
+  },
+  "license": "GPL-3.0",
+  "devDependencies": {},
+  "dependencies": {
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-less": "^3.3.2",
+    "gulp-sourcemaps": "^2.6.1",
+    "less-plugin-autoprefix": "^1.5.1",
+    "less-plugin-clean-css": "^1.5.1"
+  }
+}
