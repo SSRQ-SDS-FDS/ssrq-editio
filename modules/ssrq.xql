@@ -44,6 +44,7 @@ declare function app:list-places($node as node(), $model as map(*)) {
         {
             for $place in $places
             group by $ref := replace($place/@ref, "^([^\.]+).*$", "$1")
+            order by $place[1] collation "?lang=de_CH"
             return
                 <li data-ref="{$ref}">
                     <a target="_new" href="https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$ref}">{$place[1]/string()}</a>
@@ -62,7 +63,7 @@ declare function app:list-keys($node as node(), $model as map(*)) {
         {
             for $lemma in $keywords
             group by $ref := replace($lemma/@ref, "^([^\.]+).*$", "$1")
-            order by $lemma[1]/string()
+            order by $lemma[1] collation "?lang=de_CH"
             return
                 <li data-ref="{$ref}">
                     <a href="https://www.ssrq-sds-fds.ch/lemma-db/views/view-keyword.xq?id={$ref}"
@@ -83,6 +84,7 @@ declare function app:list-lemmata($node as node(), $model as map(*)) {
         {
             for $lemma in $lemmata
             group by $ref := replace($lemma/@ref, "^([^\.]+).*$", "$1")
+            order by $lemma[1] collation "?lang=de_CH"
             return
                 <li data-ref="{$ref}">
                     <a target="_new"
@@ -102,11 +104,12 @@ declare function app:list-persons($node as node(), $model as map(*)) {
         <ul class="persons">
         {
             for $person in $persons
-            group by $ref := replace($person/@ref, "^([^\.]+).*$", "$1")
+            group by $ref := replace($person/@ref, "^(per\d+)\w*$", "$1")
+            order by $person[1] collation "?lang=de_CH"
             return
                 <li data-ref="{$ref}">
                     <a target="_new"
-                        href="https://www.ssrq-sds-fds.ch/persons-db/?query={$ref}">
+                        href="https://www.ssrq-sds-fds.ch/persons-db/?query={$person[1]/@ref}">
                         {$person[1]/text()}
                     </a>
                 </li>
@@ -123,6 +126,7 @@ declare function app:list-organizations($node as node(), $model as map(*)) {
         {
             for $organization in $organizations
             group by $ref := replace($organization/@ref, "^([^\.]+).*$", "$1")
+            order by $organization[1] collation "?lang=de_DE"
             return
                 <li data-ref="{$ref}">
                     <a target="_new"
