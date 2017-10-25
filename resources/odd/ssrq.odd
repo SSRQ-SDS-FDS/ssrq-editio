@@ -502,7 +502,7 @@
                     </model>
                     <model predicate="not(@*)" behaviour="alternate" cssClass="pb-empty">
                         <desc>Show tooltip on pagebreaks that don't contain attributes</desc>
-                        <param name="default" value="'||'"/>
+                        <param name="default" value="'|'"/>
                         <param name="alternate" value="text{'Seitenumbruch'}"/>
                     </model>
                     <model predicate="number(@n) gt 0" behaviour="alternate" cssClass="pb-pagination">
