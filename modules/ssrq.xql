@@ -66,7 +66,7 @@ declare function app:list-keys($node as node(), $model as map(*)) {
             order by $lemma[1] collation "?lang=de_CH"
             return
                 <li data-ref="{$ref}">
-                    <a href="https://www.ssrq-sds-fds.ch/lemma-db/views/view-keyword.xq?id={$ref}"
+                    <a href="https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id={$ref}"
                         target="_new">
                     {$lemma[1]/string()}
                     </a>
@@ -109,7 +109,7 @@ declare function app:list-persons($node as node(), $model as map(*)) {
             return
                 <li data-ref="{$ref}">
                     <a target="_new"
-                        href="https://www.ssrq-sds-fds.ch/persons-db/?query={$person[1]/@ref}">
+                        href="https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$person[1]/@ref}">
                         {$person[1]/text()}
                     </a>
                 </li>
@@ -130,7 +130,7 @@ declare function app:list-organizations($node as node(), $model as map(*)) {
             return
                 <li data-ref="{$ref}">
                     <a target="_new"
-                        href="https://www.ssrq-sds-fds.ch/persons-db/?query={$ref}">
+                        href="https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$ref}">
                         {$organization[1]/text()}
                     </a>
                 </li>
