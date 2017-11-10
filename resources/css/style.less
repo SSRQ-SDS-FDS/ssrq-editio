@@ -215,6 +215,15 @@
 @color-places: #007e00;
 @color-terms: #b5221f;
 
+#image-aside {
+    position: relative;
+    margin-top: 120px;
+
+    #image-container {
+        position: fixed;
+    }
+}
+
 #aside {
     margin-top: 100px;
 
@@ -390,6 +399,10 @@
   .content {
     hyphens: auto;
     -webkit-hyphens: auto;
+
+    .description {
+        font-family: @font-sans-serif-default;
+    }
 
     h1 {
       font-size: @font-size-h1-inner-content;

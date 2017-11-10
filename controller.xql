@@ -76,6 +76,7 @@ else if (ends-with($exist:resource, ".xql")) then (
     let $id := xmldb:decode($exist:resource)
     let $path := substring-before($exist:path, $exist:resource)
     let $mode := request:get-parameter("mode", ())
+    let $facsimiles := request:get-parameter("facs", ())
     let $html :=
         if ($exist:resource = "") then
             "index.html"
@@ -83,6 +84,8 @@ else if (ends-with($exist:resource, ".xql")) then (
             "templates/doc-table.html"
         else if ($exist:resource = ("search.html", "toc.html")) then
             $exist:resource
+        else if ($facsimiles) then
+            "view-facs.html"
         else
             "view.html"
     return

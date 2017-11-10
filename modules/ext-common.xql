@@ -9,6 +9,11 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
+declare function pmf:span($content) {
+    <span class="description">{$content}</span>
+};
+
+
 declare function pmf:translate($attribute, $lang) {
     pmf:translate($attribute, $lang, 0, "uppercase")
 };

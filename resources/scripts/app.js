@@ -3,13 +3,38 @@ $(document).ready(function() {
     var appRoot = $("html").data("app");
     var tableOfContents = false;
 
+    var iiifApi = "http://localhost:8182/iiif/2/";
+
+    var seadragon;
+
+    // initialize seadragon for viewing facsimiles
+    if (document.getElementById("image-container")) {
+        console.log("Initializing seadragon...");
+        seadragon = OpenSeadragon({
+            id:                 "image-container",
+            prefixUrl:          "resources/scripts/vendor/images/",
+            preserveViewport:   true,
+            sequenceMode:       true,
+            showZoomControl:    true,
+            showHomeControl:    true,
+            showFullPageControl: true,
+            showNavigator:      true,
+            autoHideControls:   false,
+            visibilityRatio:    1,
+            minZoomLevel:       1,
+            defaultZoomLevel:   1
+        });
+        seadragon.setControlsEnabled(true);
+    }
+
     function resize() {
         if (document.getElementById("image-container")) {
-            $("#document-pane").each(function() {
+            $(".tp-document-title-wrapper").each(function() {
                 var wh = $(window).height();
                 var ot = $(this).offset().top;
-                $(this).height(wh - ot);
+                $("#image-aside").height(wh - ot);
                 $("#image-container").height(wh - ot);
+                $("#image-container").width($("#image-aside").width());
             });
         }
     }
@@ -85,17 +110,19 @@ $(document).ready(function() {
             fn.scrollIntoView();
         });
         $(".content .alternate, .content .reference").each(initAlternate);
-        $("#document-pane img.facs").each(function(ev) {
-            $("#image-container .loading").show();
-            var downloadingImage = new Image();
-            $(downloadingImage).load(function() {
-                $("#facsimile").attr("src", downloadingImage.src);
-                $("#image-container .loading").hide();
-                $("#image-container img").css("display", "");
-            });
-            downloadingImage.src = $(this).attr("src");
-            $(this).remove();
+        var foundFacs = {};
+        var facs = [];
+        $("#document-pane img.facs").each(function() {
+            var src = $(this).attr("src");
+            console.log("image: %s", src);
+            var url = iiifApi + src + "/info.json";
+            if (!foundFacs[url]) {
+                facs.push(url);
+                foundFacs[url] = url;
+            }
+            // seadragon.open(iiifApi + src + "/info.json");
         });
+        seadragon.open(facs);
     }
 
     function showContent(container, animIn, animOut, id) {
