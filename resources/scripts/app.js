@@ -110,19 +110,21 @@ $(document).ready(function() {
             fn.scrollIntoView();
         });
         $(".content .alternate, .content .reference").each(initAlternate);
-        var foundFacs = {};
-        var facs = [];
-        $("#document-pane img.facs").each(function() {
-            var src = $(this).attr("src");
-            console.log("image: %s", src);
-            var url = iiifApi + src + "/info.json";
-            if (!foundFacs[url]) {
-                facs.push(url);
-                foundFacs[url] = url;
-            }
-            // seadragon.open(iiifApi + src + "/info.json");
-        });
-        seadragon.open(facs);
+        if (document.getElementById("image-container")) {
+            var foundFacs = {};
+            var facs = [];
+            $("#document-pane img.facs").each(function() {
+                var src = $(this).attr("src");
+                console.log("image: %s", src);
+                var url = iiifApi + src + "/info.json";
+                if (!foundFacs[url]) {
+                    facs.push(url);
+                    foundFacs[url] = url;
+                }
+                // seadragon.open(iiifApi + src + "/info.json");
+            });
+            seadragon.open(facs);
+        }
     }
 
     function showContent(container, animIn, animOut, id) {
