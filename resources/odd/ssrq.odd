@@ -124,12 +124,6 @@
                 <elementSpec ident="orig" mode="change">
                     <model behaviour="inline" cssClass="orig"/>
                 </elementSpec>
-                <elementSpec ident="origPlace" mode="add">
-                    <model behaviour="alternate">
-                        <param name="default" value="."/>
-                        <param name="alternate" value="text{'Ausstellungsort'}"/>
-                    </model>
-                </elementSpec>
                 <elementSpec ident="origDate" mode="add">
                     <model predicate="$parameters?header='short'" behaviour="inline">
                         <desc>Called to output the sigle of a document</desc>
@@ -471,6 +465,26 @@
                         </outputRendition>
                     </model>
                 </elementSpec>
+                <elementSpec ident="origPlace" mode="add">
+                    <model output="web" behaviour="reference" cssClass="semantic place">
+                        <desc>Semantic highlighting of origPlace names with tooltip and green text color</desc>
+                        <param name="content" value="."/>
+                        <param name="label" value="text{'Ausstellungsort'}"/>
+                        <param name="ref" value="@ref"/>
+                        <outputRendition>
+                            color: #007e00;
+                        </outputRendition>
+                    </model>
+                    <model behaviour="alternate" cssClass="semantic place">
+                        <desc>Semantic highlighting of origPlace names with tooltip and green text color</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="text{'Ausstellungsort: ', . }"/>
+                        <outputRendition>
+                            color: #007e00;
+                        </outputRendition>
+                    </model>
+                </elementSpec>
+                
                 <elementSpec ident="num" mode="change">
                     <model behaviour="alternate" cssClass="semantic">
                         <desc>Display number in tooltip and highlight text with color</desc>

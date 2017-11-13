@@ -36,7 +36,7 @@ declare function app:switch-view($node as node(), $model as map(*), $odd as xs:s
 
 
 declare function app:list-places($node as node(), $model as map(*)) {
-    let $places := root($model?data)//tei:placeName[@ref]
+    let $places := root($model?data)//(tei:placeName[@ref]|tei:origPlace[@ref])
     where exists($places)
     return (
         <h3 class="place">Orte</h3>,
