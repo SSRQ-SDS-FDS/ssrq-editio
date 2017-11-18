@@ -47,6 +47,17 @@ declare variable $pages:EXIDE :=
     return
         replace($path, "/+", "/");
 
+declare variable $pages:EDIT_ODD_LINK :=
+    let $pkg := collection(repo:get-root())//expath:package[@name = "http://existsolutions.com/apps/tei-publisher"]
+    let $appLink :=
+        if ($pkg) then
+            substring-after(util:collection-name($pkg), repo:get-root())
+        else
+            ()
+    let $path := string-join((request:get-context-path(), request:get-attribute("$exist:prefix"), $appLink, "odd-editor.html"), "/")
+    return
+        replace($path, "/+", "/");
+
 declare
     %templates:wrap
 function pages:load($node as node(), $model as map(*), $doc as xs:string, $root as xs:string?,
@@ -160,6 +171,14 @@ declare function pages:single-page-link($node as node(), $model as map(*), $doc 
     element { node-name($node) } {
         $node/@* except $node/@href,
         attribute href { "?view=plain&amp;odd=" || $config:odd },
+        $node/node()
+    }
+};
+
+declare function pages:edit-odd-link($node as node(), $model as map(*)) {
+    element { node-name($node) } {
+        $node/@* except $node/@href,
+        attribute href { $pages:EDIT_ODD_LINK || "?odd=" || $config:odd || "&amp;root=" || $config:odd-root },
         $node/node()
     }
 };
