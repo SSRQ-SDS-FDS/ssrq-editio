@@ -671,7 +671,9 @@
                     <model behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="seg" mode="change">
-                    <model behaviour="omit"/>
+                    <model behaviour="inline">
+                        <param name="content" value="."/>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="ab" mode="change">
                     <model behaviour="block" predicate="@place">
