@@ -92,9 +92,10 @@
                     <model output="plain" predicate="orig and reg" behaviour="inline">
                         <param name="content" value="reg[1]"/>
                     </model>
+                    
                     <model predicate="sic and corr" behaviour="alternote" cssClass="text-critical">
-                        <param name="content" value="corr"/>
-                        <param name="alternate" value="('In der Vorlage: ', sic/node())"/>
+                        <param name="content" value="sic"/>
+                        <param name="alternate" value="('Korrigiert: ', corr)"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="abbr and expan" behaviour="alternate" cssClass="text-critical">
@@ -105,6 +106,19 @@
                         <param name="default" value="reg[1]"/>
                         <param name="alternate" value="orig[1]"/>
                     </model>
+                </elementSpec>
+                <elementSpec ident="subst" mode="change">
+                    <model predicate="add/@hand" behaviour="alternote" cssClass="text-critical">
+                        <param name="content" value="del"/>
+                        <param name="alternate" value="(text{'Streichung, ersetzt '}, ec:translate(add/@place, 'de', 0, 'lowercase'), text{' '}, ec:translate(add/@hand, 'de', 0, 'lowercase'), text{': '}, add/node())"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
+                    <model predicate="add" behaviour="alternote" cssClass="text-critical">
+                        <param name="content" value="add"/>
+                        <param name="alternate" value="(ec:translate(add/@place, 'de', 0, 'uppercase'), text{', ersetzt Streichung: '}, del/node())"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
+                    <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="expan" mode="change">
                     <model behaviour="inline"/>
