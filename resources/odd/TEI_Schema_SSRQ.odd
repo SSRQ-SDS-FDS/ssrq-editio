@@ -4512,6 +4512,124 @@
                     </attList>
                 </elementSpec>
                 <!--END ELEMENT SPECIFICATIONS-->
+                <dataSpec ident="ssrq.labels">
+                    <valList>
+                        <valItem ident="abbr-expanded">
+                            <desc xml:lang="de">Aufgelöste Abkürzung</desc>
+                        </valItem>
+                        <valItem ident="abbr-unclear">
+                            <desc xml:lang="de">Abkürzung, unsichere Lesung</desc>
+                        </valItem>
+                        <valItem ident="abbr">
+                            <desc xml:lang="de">Abkürzung</desc>
+                        </valItem>
+                        <valItem ident="unclear-rdg">
+                            <desc xml:lang="de">unsichere Lesung</desc>
+                        </valItem>
+                        <valItem ident="corr">
+                            <desc xml:lang="de">Korrektur</desc>
+                        </valItem>
+                        <valItem ident="sic">
+                            <desc xml:lang="de">Auffällige Schreibung</desc>
+                        </valItem>
+                        <valItem ident="origDate">
+                            <desc xml:lang="de">Originaldatierung</desc>
+                        </valItem>
+                        <valItem ident="add">
+                            <desc xml:lang="de">Hinzufügung</desc>
+                        </valItem>
+                        <valItem ident="del-gap">
+                            <desc xml:lang="de">mit Textverlust</desc>
+                        </valItem>
+                        <valItem ident="del">
+                            <desc xml:lang="de">Streichung</desc>
+                        </valItem>
+                        <valItem ident="supplied">
+                            <desc xml:lang="de">ergänzt nach</desc>
+                        </valItem>
+                        <valItem ident="unreadable">
+                            <desc xml:lang="de">unlesbar</desc>
+                        </valItem>
+                        <valItem ident="added-in">
+                            <desc xml:lang="de">Zusatz in</desc>
+                        </valItem>
+                        <valItem ident="alt-rdg-in">
+                            <desc xml:lang="de">Alternative Lesung in</desc>
+                        </valItem>
+                        <valItem ident="handswitch">
+                            <desc xml:lang="de">Handwechsel</desc>
+                        </valItem>
+                        <valItem ident="underlined">
+                            <desc xml:lang="de">Unterstrichen</desc>
+                        </valItem>
+                        <valItem ident="gap-in-orig">
+                            <desc xml:lang="de">Lücke in der Vorlage</desc>
+                        </valItem>
+                        <valItem ident="irrelevant">
+                            <desc xml:lang="de">Editorisch irrelevant</desc>
+                        </valItem>
+                        <valItem ident="lang-switch">
+                            <desc xml:lang="de">Sprachwechsel</desc>
+                        </valItem>
+                        <valItem ident="term">
+                            <desc xml:lang="de">Begriff</desc>
+                        </valItem>
+                        <valItem ident="person">
+                            <desc xml:lang="de">Person</desc>
+                        </valItem>
+                        <valItem ident="organisation">
+                            <desc xml:lang="de">Organisation</desc>
+                        </valItem>
+                        <valItem ident="place">
+                            <desc xml:lang="de">Ort</desc>
+                        </valItem>
+                        <valItem ident="origPlace">
+                            <desc xml:lang="de">Ausstellungsort</desc>
+                        </valItem>
+                        <valItem ident="amount">
+                            <desc xml:lang="de">Menge</desc>
+                        </valItem>
+                        <valItem ident="time">
+                            <desc xml:lang="de">Zeit</desc>
+                        </valItem>
+                        <valItem ident="duration">
+                            <desc xml:lang="de">Zeitspanne</desc>
+                        </valItem>
+                        <valItem ident="pb">
+                            <desc xml:lang="de">Seitenumbruch</desc>
+                        </valItem>
+                        <valItem ident="supplied">
+                            <desc xml:lang="de">sinngemäss ergänzt</desc>
+                        </valItem>
+                        <valItem ident="supplied-after">
+                            <desc xml:lang="de">ergänzt nach</desc>
+                        </valItem>
+                        <valItem ident="replace">
+                            <desc xml:lang="de">ersetzt</desc>
+                        </valItem>
+                        <valItem ident="date">
+                            <desc xml:lang="de">Datum</desc>
+                        </valItem>
+                        <valItem ident="repeated-duration">
+                            <desc xml:lang="de">Wiederholte Zeitspanne</desc>
+                        </valItem>
+                        <valItem ident="signature">
+                            <desc xml:lang="de">Signatur</desc>
+                        </valItem>
+                        <valItem ident="other-source">
+                            <desc xml:lang="de">Überlieferung</desc>
+                        </valItem>
+                        <valItem ident="surface">
+                            <desc xml:lang="de">Beschreibstoff</desc>
+                        </valItem>
+                        <valItem ident="format">
+                            <desc xml:lang="de">Format B x H</desc>
+                        </valItem>
+                        <valItem ident="sigle">
+                            <desc xml:lang="de">Siegel</desc>
+                        </valItem>
+                    </valList>
+                </dataSpec>
             </schemaSpec>
             <!--END ODD SCHEMA SPEC-->
         </body>
