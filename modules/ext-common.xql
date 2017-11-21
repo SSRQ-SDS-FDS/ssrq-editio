@@ -20,13 +20,14 @@ declare function pmf:label($id as xs:string) {
 
 declare function pmf:label($id as xs:string, $upper as xs:boolean) {
     let $label := $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = 'de']
-    let $label :=
-        if ($upper) then
-            upper-case(substring($label, 1, 1)) || substring($label, 2)
-        else
-            lower-case(substring($label, 1, 1)) || substring($label, 2)
     return
-        text { ($label, "[Nicht übersetzt]")[1] }
+        if ($label) then
+            if ($upper) then
+                upper-case(substring($label, 1, 1)) || substring($label, 2)
+            else
+                lower-case(substring($label, 1, 1)) || substring($label, 2)
+        else
+            "[Nicht übersetzt]"
 };
 
 declare function pmf:translate($attribute, $lang) {
