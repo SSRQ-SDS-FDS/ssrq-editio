@@ -5,6 +5,7 @@ module namespace app="http://existsolutions.com/ssrq/app";
 import module namespace templates="http://exist-db.org/xquery/templates";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xql";
+import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
 import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "/db/apps/ssrq/modules/ext-common.xql";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 
@@ -299,22 +300,12 @@ function app:short-header($node as node(), $model as map(*)) {
     let $work := $model("work")/ancestor-or-self::tei:TEI
     return
         if ($work) then
-            let $view :=
-                (: Switch to paginated view if we have more than $app:single-body-div-max divs :)
-                if (count($work//tei:body//tei:div) > $app:single-body-div-max) then
-                    (: Navigate by page if there are pb :)
-                    if ($work//tei:body//tei:pb) then
-                        "page"
-                    else
-                        "div"
-                (: Otherwise show the entire body :)
-                else
-                    "body"
+            let $config := tpu:parse-pi(root($work), ())
             let $relPath := config:get-identifier($work)
             return
                 $pm-config:web-transform($work/tei:teiHeader, map {
                     "header": "short",
-                    "doc": $relPath || "?odd=" || $model?config?odd || "&amp;view=" || $view,
+                    "doc": $relPath || "?odd=" || $model?config?odd || "&amp;view=" || $config?view,
                     "root": $work
                 }, $model?config?odd)
         else

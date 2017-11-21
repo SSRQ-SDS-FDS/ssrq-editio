@@ -28,7 +28,7 @@ declare variable $config:address-by-id := false();
  : the parameters below for further configuration), or 'page' to browse
  : a document by actual pages determined by TEI pb elements.
  :)
-declare variable $config:default-view := "div";
+declare variable $config:default-view := "body";
 
 (:
  : The element to search by default, either 'tei:div' or 'tei:body'.
