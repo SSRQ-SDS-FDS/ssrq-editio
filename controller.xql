@@ -60,7 +60,9 @@ else if (ends-with($exist:resource, ".xql")) then (
     return
         (: the html page is run through view.xql to expand templates :)
         <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-            <forward url="{$exist:controller}/{$resource}"/>
+            <forward url="{$exist:controller}/{$resource}">
+                <set-header name="Cache-Control" value="no-cache"/>
+            </forward>
             <view>
                 <forward url="{$exist:controller}/modules/view.xql"/>
             </view>
