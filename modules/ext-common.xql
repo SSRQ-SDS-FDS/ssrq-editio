@@ -51,7 +51,7 @@ declare function pmf:translate($attribute, $lang, $plural, $upper) {
             return text{$label}
 };
 
-declare function pmf:display-sigle($id as xs:string) {
+declare function pmf:display-sigle($id as xs:string?) {
     let $components := tokenize($id, "_")
     return
         $components[1] || " " || $components[2] || "/" || $components[3]
