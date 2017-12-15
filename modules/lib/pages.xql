@@ -33,6 +33,7 @@ import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/ut
 import module namespace search="http://www.tei-c.org/tei-simple/search" at "search.xql";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "../navigation.xql";
+import module namespace query="http://existsolutions.com/ssrq/search" at "../ssrq-search.xql";
 
 declare variable $pages:app-root := request:get-context-path() || substring-after($config:app-root, "/db");
 
@@ -217,7 +218,7 @@ declare function pages:xml-link($node as node(), $model as map(*), $source as xs
 
 declare
     %templates:default("action", "browse")
-function pages:view($node as node(), $model as map(*), $action as xs:string) {
+function pages:view($node as node(), $model as map(*), $action as xs:string, $type as xs:string, $subtype as xs:string*) {
     let $view := pages:determine-view($model?config?view, $model?data)
     let $data :=
         if ($action = "search" and exists(session:get-attribute("apps.simple.query"))) then
@@ -235,8 +236,7 @@ function pages:view($node as node(), $model as map(*), $action as xs:string) {
             let $expanded :=
                 util:expand(
                     (
-                        search:query-default-view($div, $query),
-                        $div[.//tei:head[ft:query(., $query)]]
+                        query:default-view($div, $query, $type, $subtype)
                     ), "add-exist-id=all"
                 )
             return

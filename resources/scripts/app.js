@@ -378,3 +378,18 @@ $(document).ready(function() {
     // initialize popups for comment section
     $("#comment .alternate, #sourceDesc .alternate, #comment .reference, #sourceDesc .reference").each(initAlternate);
 });
+
+$(window).load(function () {
+    /*
+     * Scroll the window to move anchor targets with hash under the topnav bar
+     * https://github.com/twitter/bootstrap/issues/1768
+     */
+    var offset = $("#main-wrapper").offset().top;
+    var shiftWindow = function() {
+        scrollBy(0, -offset)
+    };
+    if (location.hash) {
+        setTimeout(shiftWindow, 1);
+    }
+    window.addEventListener("hashchange", shiftWindow);
+});

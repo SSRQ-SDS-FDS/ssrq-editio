@@ -18,7 +18,7 @@ import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions
 
 declare
     %templates:default("type", "text")
-function query:query($node as node()*, $model as map(*), $type as xs:string, $query as xs:string?, $doc as xs:string*) as map(*) {
+function query:query($node as node()*, $model as map(*), $type as xs:string, $subtype as xs:string*, $query as xs:string?, $doc as xs:string*) as map(*) {
         (:If there is no query string, fill up the map with existing values:)
         if (empty($query))
         then
@@ -30,17 +30,10 @@ function query:query($node as node()*, $model as map(*), $type as xs:string, $qu
             }
         else
             (:Otherwise, perform the query.:)
-            (: Here the actual query commences. This is split into two parts, the first for a Lucene query and the second for an ngram query. :)
-            (:The query passed to a Luecene query in ft:query is an XML element <query> containing one or two <bool>. The <bool> contain the original query and the transliterated query, as indicated by the user in $query-scripts.:)
             let $hits :=
                 switch ($type)
                     case "text" return
-                        map {
-                            "hits":
-                                for $hit in collection($config:data-root)//tei:body[ft:query(., $query)]
-                                order by ft:score($hit) descending
-                                return $hit
-                        }
+                        query:query-texts($subtype, $query)
                     default return
                         query:query-api($type, $query)
             let $hitCount := count($hits?hits)
@@ -62,6 +55,35 @@ function query:query($node as node()*, $model as map(*), $type as xs:string, $qu
                     "docs": $doc
                 }
 };
+
+declare function query:query-texts($subtypes as xs:string*, $query as xs:string) {
+    let $hits :=
+        for $subtype in $subtypes
+        return
+            switch ($subtype)
+                case "title" return
+                    collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:head[ft:query(., $query)]
+                case "regest" return
+                    collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:msContents[ft:query(., $query)]
+                case "comment" return
+                    collection($config:data-root)//tei:back[ft:query(., $query)]
+                case "notes" return
+                    collection($config:data-root)//tei:body//tei:note[ft:query(., $query)] |
+                    collection($config:data-root)//tei:back//tei:note[ft:query(., $query)]
+                (: Editionstext: body + orig in Kommentar und Fussnoten :)
+                default return
+                    collection($config:data-root)//tei:body[ft:query(., $query)] |
+                    collection($config:data-root)//tei:back//tei:orig[ft:query(., $query)] |
+                    collection($config:data-root)//tei:body//tei:note//tei:orig[ft:query(., $query)]
+    return
+        map {
+            "hits":
+                for $hit in $hits
+                order by ft:score($hit) descending
+                return $hit
+        }
+};
+
 
 declare function query:query-api($type as xs:string, $query as xs:string) as map(*) {
     let $url :=
@@ -100,6 +122,39 @@ declare function query:query-api($type as xs:string, $query as xs:string) as map
             ()
 };
 
+declare function query:default-view($context as element()*, $query as xs:string, $type as xs:string, $subtype as xs:string*) {
+    console:log("Query: " || $query || "; type=" || $type || "; subtype=" || string-join($subtype, ", ")),
+    let $hits :=
+        switch ($type)
+            case "text" return
+                query:highlight-texts($context, $subtype, $query)
+            default return
+                $context
+    let $log := console:log(("hits: ", $hits))
+    return
+        $hits
+};
+
+declare function query:highlight-texts($context as element()*, $subtypes as xs:string*, $query as xs:string) {
+    for $subtype in $subtypes
+    return
+        switch ($subtype)
+            case "title" return
+                $context[./descendant-or-self::tei:teiHeader//tei:msDesc/tei:head[ft:query(., $query)]]
+            case "regest" return
+                $context[./descendant-or-self::tei:teiHeader//tei:msDesc/tei:msContents[ft:query(., $query)]]
+            case "comment" return
+                $context[./descendant-or-self::tei:back[ft:query(., $query)]]
+            case "notes" return
+                $context[./descendant-or-self::tei:body//tei:note[ft:query(., $query)]] |
+                $context[./descendant-or-self::tei:back//tei:note[ft:query(., $query)]]
+            (: Editionstext: body + orig in Kommentar und Fussnoten :)
+            default return
+                $context[./descendant-or-self::tei:body[ft:query(., $query)]] |
+                $context[./descendant-or-self::tei:back//tei:orig[ft:query(., $query)]] |
+                $context[./descendant-or-self::tei:body//tei:note//tei:orig[ft:query(., $query)]]
+};
+
 (:~
     Output the actual search result as a div, using the kwic module to summarize full text matches.
 :)
@@ -107,7 +162,8 @@ declare
     %templates:wrap
     %templates:default("start", 1)
     %templates:default("per-page", 10)
-function query:show-hits($node as node()*, $model as map(*), $start as xs:integer, $per-page as xs:integer, $view as xs:string?) {
+function query:show-hits($node as node()*, $model as map(*), $start as xs:integer, $per-page as xs:integer, $view as xs:string?,
+    $type as xs:string, $subtype as xs:string*) {
     console:log("docs: " || count($model?docs)),
     for $hit at $p in subsequence($model("hits"), $start, $per-page)
     let $parent := ($hit/self::tei:body, $hit/ancestor-or-self::tei:div[1])[1]
@@ -162,7 +218,8 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
             else
                 util:node-id($div)
         let $action := if (exists($model?ids)) then "" else "search"
-        let $config := <config width="60" table="yes" link="{$docId}?root={$docLink}&amp;action={$action}&amp;view={$config?view}&amp;odd={$config?odd}#{$matchId}"/>
+        let $config := <config width="60" table="yes"
+            link="{$docId}?root={$docLink}&amp;action={$action}&amp;view={$config?view}&amp;odd={$config?odd}&amp;type={$type}&amp;subtype={$subtype}#{$matchId}"/>
         return
             kwic:get-summary($expanded, $match, $config)
     )
@@ -211,7 +268,7 @@ declare %private function query:get-current($config as map(*), $div as element()
         ()
     else
         if ($div instance of element(tei:teiHeader)) then
-        $div
+            $div
         else
             if (
                 empty($div/preceding-sibling::tei:div)  (: first div in section :)

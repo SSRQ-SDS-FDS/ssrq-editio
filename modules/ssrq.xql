@@ -173,15 +173,18 @@ function app:kanton-auswahl($node as node(), $model as map(*), $kanton as xs:str
  : Ausgabe der Stücke nach Kanton und ggf. Filter
  :)
 declare function app:list-works($node as node(), $model as map(*), $filter as xs:string?, $kanton as xs:string?, $browse as xs:string?) {
-    let $kanton := ($kanton, session:get-attribute("kanton"), "ZH")[1]
+    let $useSession := (empty($filter) or $filter = session:get-attribute("filter")) and $kanton = session:get-attribute("kanton")
+    let $log := console:log("Use session: " || $useSession || "; kanton=" || $kanton || "; session=" || session:get-attribute("kanton"))
+    let $kanton :=
+        if ($useSession) then
+            session:get-attribute("kanton")
+        else
+            ($kanton, "ZH")[1]
     let $sessionData :=
-        if (
-            (empty($filter) or $filter = session:get-attribute("filter")) and
-            ($kanton = session:get-attribute("kanton"))
-        ) then
+        if ($useSession) then
             session:get-attribute("simple.works")
         else
-            ()
+            session:clear()
     let $filtered :=
         if ($sessionData) then
             $sessionData
