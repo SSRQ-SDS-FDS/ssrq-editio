@@ -179,8 +179,7 @@ declare function pages:single-page-link($node as node(), $model as map(*), $doc 
 declare function pages:edit-odd-link($node as node(), $model as map(*)) {
     element { node-name($node) } {
         $node/@* except $node/@href,
-        attribute href { $pages:EDIT_ODD_LINK || "?odd=" || $config:odd || "&amp;root=" || $config:odd-root ||
-            "&amp;output-root=" || $config:output-root || "&amp;output=" || $config:output },
+        attribute href { $pages:EDIT_ODD_LINK || "?odd=" || $config:odd || "&amp;root=" || $config:odd-root },
         $node/node()
     }
 };
@@ -218,11 +217,10 @@ declare function pages:xml-link($node as node(), $model as map(*), $source as xs
 
 declare
     %templates:default("action", "browse")
-function pages:view($node as node(), $model as map(*), $action as xs:string, $type as xs:string, $subtype as xs:string*) {
+function pages:view($node as node(), $model as map(*), $action as xs:string) {
     let $view := pages:determine-view($model?config?view, $model?data)
     let $data :=
         if ($action = "search" and exists(session:get-attribute("apps.simple.query"))) then
-            let $query := session:get-attribute("apps.simple.query")
             let $div :=
                 if ($model?data instance of element(tei:pb)) then
                     let $nextPage := $model?data/following::tei:pb[1]
@@ -233,12 +231,7 @@ function pages:view($node as node(), $model as map(*), $action as xs:string, $ty
                             ($model?data/ancestor::tei:div, $model?data/ancestor::tei:body)[1]
                 else
                     $model?data
-            let $expanded :=
-                util:expand(
-                    (
-                        query:default-view($div, $query, $type, $subtype)
-                    ), "add-exist-id=all"
-                )
+            let $expanded := query:highlight($action, $div)
             return
                 if ($model?data instance of element(tei:pb)) then
                     $expanded//tei:pb[@exist:id = util:node-id($model?data)]

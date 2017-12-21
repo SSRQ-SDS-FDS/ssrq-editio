@@ -8,6 +8,7 @@ import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
 import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "/db/apps/ssrq/modules/ext-common.xql";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
+import module namespace query="http://existsolutions.com/ssrq/search" at "ssrq-search.xql";
 
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
@@ -255,19 +256,19 @@ declare function app:origDate($node as node(), $model as map(*)) {
 
 
 
-declare function app:comment($node as node(), $model as map(*)) {
+declare function app:comment($node as node(), $model as map(*), $action as xs:string?) {
     let $back := root($model?data)//tei:back
     return
         app:show-if-exists($node, $back, function() {
-            templates:process($node/node(), map:merge(($model, map { "data": $back })))
+            templates:process($node/node(), map:merge(($model, map { "data": query:highlight($action, $back) })))
         })
 };
 
-declare function app:regest($node as node(), $model as map(*)) {
+declare function app:regest($node as node(), $model as map(*), $action as xs:string?) {
     let $regest := root($model?data)//tei:teiHeader//tei:msContents/tei:summary
     return
         app:show-if-exists($node, $regest, function() {
-            templates:process($node/node(), map:merge(($model, map { "data": $regest })))
+            templates:process($node/node(), map:merge(($model, map { "data": query:highlight($action, $regest) })))
         })
 };
 

@@ -43,6 +43,8 @@ function query:query($node as node()*, $model as map(*), $type as xs:string, $su
                 session:set-attribute("apps.simple", $hitsToShow),
                 session:set-attribute("apps.simple.hitCount", $hitCount),
                 session:set-attribute("apps.simple.query", $query),
+                session:set-attribute("apps.simple.type", $type),
+                session:set-attribute("apps.simple.subtype", $subtype),
                 session:set-attribute("apps.simple.docs", $doc)
             )
             return
@@ -64,7 +66,7 @@ declare function query:query-texts($subtypes as xs:string*, $query as xs:string)
                 case "title" return
                     collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:head[ft:query(., $query)]
                 case "regest" return
-                    collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:msContents[ft:query(., $query)]
+                    collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:msContents/tei:summary[ft:query(., $query)]
                 case "comment" return
                     collection($config:data-root)//tei:back[ft:query(., $query)]
                 case "notes" return
@@ -92,15 +94,20 @@ declare function query:query-api($type as xs:string, $query as xs:string) as map
                 "https://www.ssrq-sds-fds.ch/places-db-edit/views/loc-search.xq?query="
             case "lemma" return
                 "https://www.ssrq-sds-fds.ch/lemma-db-edit/views/lem-search.xq?query="
+            case "person" return
+                "https://www.ssrq-sds-fds.ch/persons-db-api/?per_search="
+            case "organisation" return
+                "https://www.ssrq-sds-fds.ch/persons-db-api/?org_search="
             default return
                 "https://www.ssrq-sds-fds.ch/lemma-db-edit/views/key-search.xq?query="
+    let $log := console:log("Request: " || $url || encode-for-uri($query))
     let $request :=
-        <http:request method="GET" href="{$url}{$query}"/>
+        <http:request method="GET" href="{$url}{encode-for-uri($query)}"/>
     let $response := http:send-request($request)
     return
         if ($response[1]/@status = "200") then
             let $json := parse-json(util:binary-to-string(xs:base64Binary($response[2])))
-            let $log := console:log($json)
+            let $log := console:log(($response, $json))
             let $ids :=
                 if ($json?results instance of map()) then
                     $json?results?id
@@ -116,23 +123,31 @@ declare function query:query-api($type as xs:string, $query as xs:string) as map
                         return
                             collection($config:data-root)//tei:placeName[@ref = $id] |
                             collection($config:data-root)//tei:term[@ref = $id] |
-                            collection($config:data-root)//tei:persName[@ref = $id]
+                            collection($config:data-root)//tei:persName[@ref = $id] |
+                            collection($config:data-root)//tei:orgName[@ref = $id]
                 }
         else
-            ()
+            console:log($response[1])
 };
 
-declare function query:default-view($context as element()*, $query as xs:string, $type as xs:string, $subtype as xs:string*) {
-    console:log("Query: " || $query || "; type=" || $type || "; subtype=" || string-join($subtype, ", ")),
-    let $hits :=
-        switch ($type)
-            case "text" return
-                query:highlight-texts($context, $subtype, $query)
-            default return
+declare function query:highlight($action as xs:string?, $context as element()*) {
+    if ($action = "search") then
+        let $query := session:get-attribute("apps.simple.query")
+        let $type := session:get-attribute("apps.simple.type")
+        let $subtype := session:get-attribute("apps.simple.subtype")
+        let $hits :=
+            switch ($type)
+                case "text" return
+                    query:highlight-texts($context, $subtype, $query)
+                default return
+                    $context
+        return
+            if (exists($hits)) then
+                util:expand($hits, "add-exist-id=all")
+            else
                 $context
-    let $log := console:log(("hits: ", $hits))
-    return
-        $hits
+    else
+        $context
 };
 
 declare function query:highlight-texts($context as element()*, $subtypes as xs:string*, $query as xs:string) {
@@ -141,10 +156,8 @@ declare function query:highlight-texts($context as element()*, $subtypes as xs:s
         switch ($subtype)
             case "title" return
                 $context[./descendant-or-self::tei:teiHeader//tei:msDesc/tei:head[ft:query(., $query)]]
-            case "regest" return
-                $context[./descendant-or-self::tei:teiHeader//tei:msDesc/tei:msContents[ft:query(., $query)]]
-            case "comment" return
-                $context[./descendant-or-self::tei:back[ft:query(., $query)]]
+            case "regest" case "comment" return
+                $context[ft:query(., $query)]
             case "notes" return
                 $context[./descendant-or-self::tei:body//tei:note[ft:query(., $query)]] |
                 $context[./descendant-or-self::tei:back//tei:note[ft:query(., $query)]]
@@ -219,7 +232,7 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
                 util:node-id($div)
         let $action := if (exists($model?ids)) then "" else "search"
         let $config := <config width="60" table="yes"
-            link="{$docId}?root={$docLink}&amp;action={$action}&amp;view={$config?view}&amp;odd={$config?odd}&amp;type={$type}&amp;subtype={$subtype}#{$matchId}"/>
+            link="{$docId}?root={$docLink}&amp;action={$action}&amp;view={$config?view}&amp;odd={$config?odd}#{$matchId}"/>
         return
             kwic:get-summary($expanded, $match, $config)
     )
@@ -246,7 +259,7 @@ declare function query:expand($nodes as node()*, $ids as xs:string+) {
     for $node in $nodes
     return
         typeswitch($node)
-            case element(tei:term) | element(tei:placeName) | element(tei:persName) return
+            case element(tei:term) | element(tei:placeName) | element(tei:persName) | element(tei:orgName) return
                 element { node-name($node) } {
                     $node/@*,
                     if ($node/@ref = $ids) then
