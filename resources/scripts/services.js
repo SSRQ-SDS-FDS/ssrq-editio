@@ -52,7 +52,7 @@ $(document).ready(function() {
         }
     });
 
-    query(PERSON_API, "query", $(".persons li").toArray(), function(elem, entry) {
+    query(PERSON_API, "id_search", $(".persons li").toArray(), function(elem, entry) {
         if (entry.name) {
             elem.find("a").text(entry.name);
             if (entry.dates) {
@@ -62,7 +62,7 @@ $(document).ready(function() {
             updateSpans(elem.attr("data-ref"), entry.name + ' (' + entry.dates + ')');
         }
     });
-    query(PERSON_API, "query", $(".organizations li").toArray(), function(elem, entry) {
+    query(PERSON_API, "id_search", $(".organizations li").toArray(), function(elem, entry) {
         if (entry.name) {
             elem.find("a").text(entry.name);
             if (entry.type) {
