@@ -225,11 +225,11 @@ declare %private function app:show-if-exists($node as node(), $test as node()*, 
         ()
 };
 
-declare function app:header-short($node as node(), $model as map(*)) {
+declare function app:header-short($node as node(), $model as map(*), $action as xs:string?) {
     let $head := root($model?data)//tei:teiHeader//tei:msDesc/tei:head
     return
         app:show-if-exists($node, $head, function() {
-            $pm-config:web-transform($head, map { "root": $head }, $config:odd)
+            $pm-config:web-transform(query:highlight($action, $head), map { "root": $head }, $config:odd)
         })
 };
 

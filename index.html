@@ -37,7 +37,6 @@
                                         </button>
                                     </span>
                                 </span>
-                                <input type="hidden" name="field" value="text"/>
                                 <input type="hidden" name="doc" data-template="search:form-current-doc"/>
                             </div>
                         </div>
@@ -51,31 +50,31 @@
                                     <ul>
                                         <li>
                                             <label class="form-check-label">
-                                                <input class="form-check-input" name="subtype" type="checkbox" value="title"/>
+                                                <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="title"/>
                                                 Titel (des Stücks)
                                             </label>
                                         </li>
                                         <li>
                                             <label class="form-check-label">
-                                                <input class="form-check-input" name="subtype" type="checkbox" value="regest"/>
+                                                <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="regest"/>
                                                 Regest (im teiHeader)
                                             </label>
                                         </li>
                                         <li>
                                             <label class="form-check-label">
-                                                <input class="form-check-input" name="subtype" type="checkbox" value="comment"/>
+                                                <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="comment"/>
                                                 Kommentar (im back)
                                             </label>
                                         </li>
                                         <li>
                                             <label class="form-check-label">
-                                                <input class="form-check-input" name="subtype" type="checkbox" value="notes"/>
+                                                <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="notes"/>
                                                 Anmerkungen (notes)
                                             </label>
                                         </li>
                                         <li>
                                             <label class="form-check-label">
-                                                <input class="form-check-input" name="subtype" type="checkbox" value="sigle"/>
+                                                <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="sigle"/>
                                                 Siegel
                                             </label>
                                         </li>
@@ -412,6 +411,16 @@ XX. Abteilung: Die Rechtsquellen des Kantons Wallis</td>
     <script type="text/javascript">
     $(function () {
         'use strict';
+
+        $('#bearbeitungstext').on('change', function() {
+            var checked = $(this).prop('checked');
+            if (checked) {
+                $(".bearbeitungstext").prop('checked', true);
+            }
+        });
+        $('.bearbeitungstext').on('change', function() {
+            $('#bearbeitungstext').prop('checked', false);
+        });
 
         function reloadDocTable() {
             $("#documents-panel").load("templates/doc-table.html");

@@ -72,6 +72,9 @@ declare function query:query-texts($subtypes as xs:string*, $query as xs:string)
                 case "notes" return
                     collection($config:data-root)//tei:body//tei:note[ft:query(., $query)] |
                     collection($config:data-root)//tei:back//tei:note[ft:query(., $query)]
+                case "sigle" return
+                    (: Todo :)
+                    ()
                 (: Editionstext: body + orig in Kommentar und Fussnoten :)
                 default return
                     collection($config:data-root)//tei:body[ft:query(., $query)] |
@@ -155,7 +158,7 @@ declare function query:highlight-texts($context as element()*, $subtypes as xs:s
     return
         switch ($subtype)
             case "title" return
-                $context[./descendant-or-self::tei:teiHeader//tei:msDesc/tei:head[ft:query(., $query)]]
+                $context[ft:query(., $query)]
             case "regest" case "comment" return
                 $context[ft:query(., $query)]
             case "notes" return
