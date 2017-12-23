@@ -380,6 +380,9 @@ $(document).ready(function() {
 });
 
 $(window).load(function () {
+    if ($("#main-wrapper").length == 0) {
+        return;
+    }
     /*
      * Scroll the window to move anchor targets with hash under the topnav bar
      * https://github.com/twitter/bootstrap/issues/1768

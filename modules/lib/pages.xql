@@ -231,7 +231,7 @@ function pages:view($node as node(), $model as map(*), $action as xs:string) {
                             ($model?data/ancestor::tei:div, $model?data/ancestor::tei:body)[1]
                 else
                     $model?data
-            let $expanded := query:highlight($action, $div)
+            let $expanded := query:highlight($action, $div, ())
             return
                 if ($model?data instance of element(tei:pb)) then
                     $expanded//tei:pb[@exist:id = util:node-id($model?data)]

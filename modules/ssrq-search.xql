@@ -133,20 +133,32 @@ declare function query:query-api($type as xs:string, $query as xs:string) as map
             console:log($response[1])
 };
 
-declare function query:highlight($action as xs:string?, $context as element()*) {
+declare function query:highlight($action as xs:string?, $context as element()*, $subtype as xs:string?) {
     if ($action = "search") then
         let $query := session:get-attribute("apps.simple.query")
         let $type := session:get-attribute("apps.simple.type")
-        let $subtype := session:get-attribute("apps.simple.subtype")
-        let $hits :=
-            switch ($type)
-                case "text" return
-                    query:highlight-texts($context, $subtype, $query)
-                default return
-                    $context
+        let $subtypes := session:get-attribute("apps.simple.subtype")
+        let $subtype :=
+            if ($subtype) then
+                if (index-of($subtypes, $subtype)) then
+                    $subtype
+                else
+                    ()
+            else
+                $subtypes
         return
-            if (exists($hits)) then
-                util:expand($hits, "add-exist-id=all")
+            if ($subtype) then
+                let $hits :=
+                    switch ($type)
+                        case "text" return
+                            query:highlight-texts($context, $subtype, $query)
+                        default return
+                            $context
+                return
+                    if (exists($hits)) then
+                        util:expand($hits, "add-exist-id=all")
+                    else
+                        $context
             else
                 $context
     else
@@ -154,6 +166,7 @@ declare function query:highlight($action as xs:string?, $context as element()*) 
 };
 
 declare function query:highlight-texts($context as element()*, $subtypes as xs:string*, $query as xs:string) {
+    console:log($subtypes),
     for $subtype in $subtypes
     return
         switch ($subtype)
@@ -165,10 +178,12 @@ declare function query:highlight-texts($context as element()*, $subtypes as xs:s
                 $context[./descendant-or-self::tei:body//tei:note[ft:query(., $query)]] |
                 $context[./descendant-or-self::tei:back//tei:note[ft:query(., $query)]]
             (: Editionstext: body + orig in Kommentar und Fussnoten :)
-            default return
+            case "edition" return
                 $context[./descendant-or-self::tei:body[ft:query(., $query)]] |
                 $context[./descendant-or-self::tei:back//tei:orig[ft:query(., $query)]] |
                 $context[./descendant-or-self::tei:body//tei:note//tei:orig[ft:query(., $query)]]
+            default return
+                ()
 };
 
 (:~
@@ -198,9 +213,13 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
                     {query:header-breadcrumb($work, $parent-id)}
                     {
                         for $parentDiv in $hit/ancestor-or-self::tei:div[tei:head]
-                        let $id := util:node-id(
-                            if ($config?view = "page") then $parentDiv/preceding::tei:pb[1] else $parentDiv
-                        )
+                        let $id :=
+                            if ($hit/ancestor-or-self::tei:back) then
+                                ()
+                            else
+                                util:node-id(
+                                    if ($config?view = "page") then $parentDiv/preceding::tei:pb[1] else $parentDiv
+                                )
                         return
                             <li>
                                 <a href="{$parent-id}?action=search&amp;root={$id}&amp;view={$config?view}&amp;odd={$config?odd}">{$parentDiv/tei:head/string()}</a>
@@ -226,7 +245,9 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
         for $match in subsequence($expanded//exist:match, 1, 5)
         let $matchId := $match/../@exist:id
         let $docLink :=
-            if ($config?view = "page") then
+            if ($hit/ancestor-or-self::tei:back) then
+                ()
+            else if ($config?view = "page") then
                 let $contextNode := util:node-by-id($div, $matchId)
                 let $page := $contextNode/preceding::tei:pb[1]
                 return
@@ -294,4 +315,35 @@ declare %private function query:get-current($config as map(*), $div as element()
                 nav:get-previous-div($config, $div/..)
             else
                 $div
+};
+
+declare function query:period-range($node as node(), $model as map(*)) {
+    let $context :=
+        if ($model?hits) then
+            $model?hits ! root(.)
+        else
+            collection($config:data-root)
+    let $dates :=
+        for $when in $context//tei:teiHeader//tei:history/tei:origin/tei:origDate/@when
+        return
+            year-from-date(xs:date($when))
+    return
+        map {
+            "min": min($dates),
+            "max": max($dates)
+        }
+};
+
+declare
+    %templates:wrap
+function query:condition-select($node as node(), $model as map(*)) {
+    <option></option>,
+    let $context :=
+        if ($model?hits) then
+            $model?hits ! root(.)
+        else
+            collection($config:data-root)
+    for $condition in distinct-values($context//tei:teiHeader//tei:msDesc/tei:physDesc/tei:objectDesc/tei:supportDesc/tei:condition)
+    return
+        <option>{$condition}</option>
 };

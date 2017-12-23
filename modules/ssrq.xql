@@ -229,7 +229,7 @@ declare function app:header-short($node as node(), $model as map(*), $action as 
     let $head := root($model?data)//tei:teiHeader//tei:msDesc/tei:head
     return
         app:show-if-exists($node, $head, function() {
-            $pm-config:web-transform(query:highlight($action, $head), map { "root": $head }, $config:odd)
+            $pm-config:web-transform(query:highlight($action, $head, "title"), map { "root": $head }, $config:odd)
         })
 };
 
@@ -260,7 +260,7 @@ declare function app:comment($node as node(), $model as map(*), $action as xs:st
     let $back := root($model?data)//tei:back
     return
         app:show-if-exists($node, $back, function() {
-            templates:process($node/node(), map:merge(($model, map { "data": query:highlight($action, $back) })))
+            templates:process($node/node(), map:merge(($model, map { "data": query:highlight($action, $back, "comment") })))
         })
 };
 
@@ -268,7 +268,7 @@ declare function app:regest($node as node(), $model as map(*), $action as xs:str
     let $regest := root($model?data)//tei:teiHeader//tei:msContents/tei:summary
     return
         app:show-if-exists($node, $regest, function() {
-            templates:process($node/node(), map:merge(($model, map { "data": query:highlight($action, $regest) })))
+            templates:process($node/node(), map:merge(($model, map { "data": query:highlight($action, $regest, "regest") })))
         })
 };
 
@@ -332,4 +332,32 @@ declare
     %templates:wrap
 function app:keyword($node as node(), $model as map(*)) {
     $model?keyword/text()
+};
+
+declare function app:parse-params($node as node(), $model as map(*)) {
+    element { node-name($node) } {
+        for $attr in $node/@*
+        return
+            if (matches($attr, "\$\{[^\}]+\}")) then
+                attribute { node-name($attr) } {
+                    string-join(
+                        let $parsed := analyze-string($attr, "\$\{([^\}]+?)(?::([^\}]+))?\}")
+                        for $token in $parsed/node()
+                        return
+                            typeswitch($token)
+                                case element(fn:non-match) return $token/string()
+                                case element(fn:match) return
+                                    let $paramName := $token/fn:group[1]
+                                    let $default := $token/fn:group[2]
+                                    return (
+                                        request:get-parameter($paramName, $default),
+                                        $model($paramName)
+                                    )
+                                default return $token
+                    )
+                }
+            else
+                $attr,
+        templates:process($node/node(), $model)
+    }
 };
