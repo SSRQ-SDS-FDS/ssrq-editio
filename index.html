@@ -93,7 +93,7 @@
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">Zeitraum: </label>
                                                 <div class="col-sm-9" data-template="query:period-range">
-                                                    <input type="number" value="${min}" data-template="app:parse-params" class="col-sm-4"/>
+                                                    <input type="number" name="filter-period" value="${min}" data-template="app:parse-params" class="col-sm-4"/>
                                                     <span class="col-sm-1">-</span> 
                                                     <input type="number" value="${max}" data-template="app:parse-params" class="col-sm-4"/>
                                                 </div>
@@ -103,7 +103,7 @@
                                             <div class="form-group">
                                                 <label class="col-sm-4 control-label">Sprache: </label>
                                                 <div class="col-sm-8">
-                                                    <select name="language" class="form-control">
+                                                    <select name="filter-language" class="form-control">
                                                         <option></option>
                                                         <option>de</option>
                                                         <option>fr</option>
@@ -115,31 +115,31 @@
                                         </li>
                                         <li>
                                             <label class="form-check-label">
-                                                <input class="form-check-input" name="subfield" type="checkbox" value=""/>
+                                                <input class="form-check-input" name="filter-archive" type="checkbox" value=""/>
                                                 Archiv (mit Scrollliste), mit oder ohne Signatur
                                             </label>
                                         </li>
                                         <li>
                                             <label class="form-check-label">
-                                                <input class="form-check-input" name="subfield" type="checkbox" value=""/>
+                                                <input class="form-check-input" name="filter-pubplace" type="checkbox" value=""/>
                                                 Ausstellungsort (ja/nein: gibt es einen Ausstellungsort?)
                                             </label>
                                         </li>
                                         <li>
                                             <label class="form-check-label">
-                                                <input class="form-check-input" name="subfield" type="checkbox" value=""/>
+                                                <input class="form-check-input" name="filter-writer" type="checkbox" value=""/>
                                                 Schreiber (ja/nein: gibt es einen Schreiber?)
                                             </label>
                                         </li>
                                         <li>
                                             <label class="form-check-label">
-                                                <input class="form-check-input" name="subfield" type="checkbox" value=""/>
+                                                <input class="form-check-input" name="filter-sigle" type="checkbox" value=""/>
                                                 Siegel (ja/nein)
                                             </label>
                                         </li>
                                          <li>
                                             <label class="form-check-label">
-                                                <input class="form-check-input" name="subfield" type="checkbox" value=""/>
+                                                <input class="form-check-input" name="filter-other" type="checkbox" value=""/>
                                                 Überlieferung (mit Scrollliste)
                                             </label>
                                         </li>
@@ -147,7 +147,7 @@
                                             <div class="form-group">
                                                 <label class="col-sm-4 control-label">Trägermaterial: </label>
                                                 <div class="col-sm-8">
-                                                    <select name="material" class="form-control">
+                                                    <select name="filter-material" class="form-control">
                                                         <option></option>
                                                         <option>Papier</option>
                                                         <option>Pergament</option>
@@ -159,7 +159,7 @@
                                             <div class="form-group">
                                                 <label class="col-sm-4 control-label">Erhaltungszustand: </label>
                                                 <div class="col-sm-8">
-                                                    <select name="material" class="form-control" data-template="query:condition-select">
+                                                    <select name="filter-condition" class="form-control" data-template="query:condition-select">
                                                     </select>
                                                 </div>
                                             </div>
@@ -168,7 +168,7 @@
                                             <div class="form-group">
                                                 <label class="col-sm-4 control-label">Editionseinheit: </label>
                                                 <div class="col-sm-8">
-                                                    <select name="material" class="form-control">
+                                                    <select name="filter-kanton" class="form-control">
                                                         <option></option>
                                                         <option value="ZH">I. Abteilung: Die Rechtsquellen des Kantons Zürich</option>
                                                     </select>
@@ -179,7 +179,7 @@
                                             <div class="form-group">
                                                 <label class="col-sm-4 control-label">Publikationsdatum: </label>
                                                 <div class="col-sm-8">
-                                                    <input type="number" name="pubdate" class="form-control" data-template="templates:form-control"/>
+                                                    <input type="number" name="filter-pubdate" class="form-control" data-template="templates:form-control"/>
                                                 </div>
                                             </div>
                                         </li>
