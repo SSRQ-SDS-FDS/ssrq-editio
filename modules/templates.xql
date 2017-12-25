@@ -156,7 +156,7 @@ declare %private function templates:get-instructions($class as xs:string?) as xs
         $name
 };
 
-declare %private function templates:get-configuration($model as map(*), $func as xs:string) {
+declare function templates:get-configuration($model as map(*), $func as xs:string) {
     if (not(map:contains($model, $templates:CONFIGURATION))) then
         error($templates:CONFIGURATION_ERROR, "Configuration map not found in model. Tried to call: " || $func)
     else

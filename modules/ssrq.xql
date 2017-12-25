@@ -349,10 +349,15 @@ declare function app:parse-params($node as node(), $model as map(*)) {
                                 case element(fn:match) return
                                     let $paramName := $token/fn:group[1]
                                     let $default := $token/fn:group[2]
-                                    return (
+                                    let $found := [
                                         request:get-parameter($paramName, $default),
-                                        $model($paramName)
-                                    )
+                                        $model($paramName),
+                                        templates:get-configuration($model, "templates:form-control")($templates:CONFIG_PARAM_RESOLVER)($paramName)
+                                    ]
+                                    return
+                                        array:fold-right($found, (), function($in, $value) {
+                                            if (exists($in)) then $in else $value
+                                        })
                                 default return $token
                     )
                 }

@@ -25,8 +25,16 @@ declare option output:method "html5";
 declare option output:media-type "text/html";
 
 let $config := map {
-    $templates:CONFIG_APP_ROOT := $config:app-root,
-    $templates:CONFIG_STOP_ON_ERROR := true()
+    $templates:CONFIG_APP_ROOT : $config:app-root,
+    $templates:CONFIG_STOP_ON_ERROR : true(),
+    $templates:CONFIG_PARAM_RESOLVER : function($param) {
+        let $pval := request:get-parameter($param, ())
+        return
+            if (exists($pval)) then
+                $pval
+            else
+                session:get-attribute("ssrq." || $param)
+    }
 }
 (:
  : We have to provide a lookup function to templates:apply to help it
