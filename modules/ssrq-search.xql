@@ -16,6 +16,9 @@ import module namespace app="http://existsolutions.com/ssrq/app" at "/db/apps/ss
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "/db/apps/ssrq/modules/pm-config.xql";
 import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "/db/apps/ssrq/modules/ext-common.xql";
 
+(:~
+ : Execute query. Dispatches the query to either query:query-texts or query:query-api depending on $type.
+ :)
 declare
     %templates:default("type", "text")
 function query:query($node as node()*, $model as map(*), $type as xs:string, $subtype as xs:string*, $query as xs:string?, $doc as xs:string*) as map(*) {
@@ -25,7 +28,7 @@ function query:query($node as node()*, $model as map(*), $type as xs:string, $su
                 case "text" return
                     query:query-texts($subtype, $query)
                 default return
-                    query:query-api($type, $query)
+                    query:query-api($type, $subtype, $query)
         else map {
             "hits": query:filter(collection($config:data-root)/tei:TEI//tei:body)
         }
@@ -83,7 +86,7 @@ declare function query:query-texts($subtypes as xs:string*, $query as xs:string)
 };
 
 
-declare function query:query-api($type as xs:string, $query as xs:string) as map(*) {
+declare function query:query-api($type as xs:string, $subtypes as xs:string*, $query as xs:string) as map(*) {
     let $url :=
         switch ($type)
             case "places" return
@@ -115,17 +118,46 @@ declare function query:query-api($type as xs:string, $query as xs:string) as map
                 map {
                     "id": $ids,
                     "hits":
-                        for $id in $ids
-                        return
-                            collection($config:data-root)//tei:placeName[@ref = $id] |
-                            collection($config:data-root)//tei:term[@ref = $id] |
-                            collection($config:data-root)//tei:persName[@ref = $id] |
-                            collection($config:data-root)//tei:orgName[@ref = $id]
+                        query:filter(
+                            query:api-filter-subtype($ids, $subtypes)
+                        )
                 }
         else
             console:log($response[1])
 };
 
+declare function query:api-filter-subtype($id as xs:string*, $subtypes as xs:string*) {
+    for $subtype in $subtypes
+    return
+        switch ($subtype)
+            case "title" return
+                collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:head/
+                    (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[@ref = $id]
+            case "regest" return
+                collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:msContents/tei:summary/
+                    (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[@ref = $id]
+            case "comment" return
+                collection($config:data-root)//tei:back/
+                    (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[@ref = $id]
+            case "notes" return
+                collection($config:data-root)/(descendant::tei:body|descendant::tei:back)//tei:note/
+                    (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[@ref = $id]
+            case "sigle" return
+                ()
+            (: Editionstext: body + orig in Kommentar und Fussnoten :)
+            default return
+                collection($config:data-root)//tei:body/
+                    (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[@ref = $id] |
+                collection($config:data-root)//tei:back//tei:orig/
+                    (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[@ref = $id] |
+                collection($config:data-root)//tei:body//tei:note//tei:orig/
+                    (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[@ref = $id]
+};
+
+
+(:~
+ : Apply filters to the query result.
+ :)
 declare function query:filter($hits as element()*) {
     fold-right(request:get-parameter-names()[starts-with(., 'filter-')], $hits, function($filter, $context) {
         let $value := request:get-parameter($filter, ())
@@ -182,7 +214,7 @@ declare function query:highlight($action as xs:string?, $context as element()*, 
             else
                 $subtypes
         return
-            if ($subtype) then
+            if (exists($subtype)) then
                 let $hits :=
                     switch ($type)
                         case "text" return
@@ -241,28 +273,11 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
     let $config := tpu:parse-pi(root($work), $view)
     let $div := query:get-current($config, $parent)
     let $loc :=
-        <tr class="reference">
-            <td colspan="3">
-                <span class="number">{$start + $p - 1}</span>
-                <ol class="headings breadcrumb">
-                    {query:header-breadcrumb($work, $parent-id)}
-                    {
-                        for $parentDiv in $hit/ancestor-or-self::tei:div[tei:head]
-                        let $id :=
-                            if ($hit/ancestor-or-self::tei:back) then
-                                ()
-                            else
-                                util:node-id(
-                                    if ($config?view = "page") then $parentDiv/preceding::tei:pb[1] else $parentDiv
-                                )
-                        return
-                            <li>
-                                <a href="{$parent-id}?action=search&amp;root={$id}&amp;view={$config?view}&amp;odd={$config?odd}">{$parentDiv/tei:head/string()}</a>
-                            </li>
-                    }
-                </ol>
-            </td>
-        </tr>
+        <div class="reference">
+            <span class="number">{$start + $p - 1}</span>
+            <h5>Kanton: {query:view-kanton($work)}, Stück: {query:view-idno($work)}, Datum: {query:view-origDate($work)}</h5>
+            <h4>{query:view-header($work, $parent-id)}</h4>
+        </div>
     let $expanded :=
         if (exists($model?ids)) then
             (: Suche in Sachregister, $hit ist placeName :)
@@ -290,29 +305,39 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
             else
                 util:node-id($div)
         let $action := if (exists($model?ids)) then "" else "search"
-        let $config := <config width="60" table="yes"
+        let $config := <config width="60" table="no"
             link="{$docId}?root={$docLink}&amp;action={$action}&amp;view={$config?view}&amp;odd={$config?odd}#{$matchId}"/>
         return
             kwic:get-summary($expanded, $match, $config)
     )
 };
 
-declare function query:header-breadcrumb($work as element(), $parent-id as xs:string) {
+declare function query:view-header($work as element(), $parent-id as xs:string) {
+    let $header := $work//tei:teiHeader
+    let $head := ($header//tei:msDesc/tei:head/node(), $header//tei:titleStmt/tei:title/node())[1]
+    return
+        <a href="{$parent-id}">{$pm-config:web-transform($head, map { "root": $head }, $config:odd)}</a>
+};
+
+declare function query:view-kanton($work as element()) {
+    replace($work//tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, "^([^_]+).*$", "$1")
+};
+
+declare function query:view-idno($work as element()) {
     let $header := $work//tei:teiHeader
     let $idno := $header/tei:fileDesc/tei:seriesStmt/tei:idno/@xml:id
-    let $idno := <span>{
+    return (
         common:display-sigle($idno),
         $header/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@when/string(),
         "(provisorisch)"
-    }</span>
-    let $head := ($header//tei:msDesc/tei:head/node(), $header//tei:titleStmt/tei:title/node())[1]
-    return
-        <li>
-            { $idno }:
-            <a href="{$parent-id}">{$pm-config:web-transform($head, map { "root": $head }, $config:odd)}</a>
-        </li>
+    )
 };
 
+declare function query:view-origDate($work as element()) {
+    let $origDate := $work//tei:teiHeader/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@when
+    return
+        format-date(xs:date($origDate), '[Y] [MNn] [D01]')
+};
 
 declare function query:expand($nodes as node()*, $ids as xs:string+) {
     for $node in $nodes

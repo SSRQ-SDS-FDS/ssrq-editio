@@ -2,7 +2,7 @@
     <div class="well well-sm" data-template="i18n:translate" data-catalogues="resources/i18n">
         <div class="form-group">
             <div class="col-md-12 col-xs-12">
-                <select name="type" class="form-control">
+                <select name="type" class="form-control" data-template="templates:form-control">
                     <option value="text">Volltext</option>
                     <option value="person">Personen</option>
                     <option value="organisation">Organisationen</option>
@@ -16,8 +16,8 @@
         <div class="form-group">
             <div class="col-md-12 col-xs-12">
                 <span class="input-group">
-                    <input name="query" type="search" class="templates:form-control form-control typeahead-search"
-                        placeholder="i18n(search-query-attr)" autocomplete="off"/>
+                    <input name="query" type="search" class="form-control typeahead-search"
+                        placeholder="i18n(search-query-attr)" autocomplete="off" data-template="templates:form-control"/>
                     <span class="input-group-btn">
                         <button id="f-btn-search" type="submit" class="btn btn-primary">
                             <span class="material-icons">search</span>
@@ -72,10 +72,10 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Zeitraum: </label>
                     <div class="col-sm-9" data-template="query:period-range">
-                        <input type="number" name="filter-period-min" placeholder="${min}" min="${min}" max="${max}"
+                        <input type="number" name="filter-period-min" placeholder="${min}" min="${min}" max="${max}" value="${filter-period-min}"
                             data-template="app:parse-params" class="col-sm-4"/>
                         <span class="col-sm-1">-</span>
-                        <input type="number" name="filter-period-max" placeholder="${max}" min="${min}" max="${max}"
+                        <input type="number" name="filter-period-max" placeholder="${max}" min="${min}" max="${max}" value="${filter-period-max}"
                             data-template="app:parse-params" class="col-sm-4"/>
                     </div>
                 </div>
