@@ -1,0 +1,206 @@
+<form xmlns:i18n="http://exist-db.org/xquery/i18n" action="search.html" class="form form-horizontal advanced-search">
+    <div class="well well-sm" data-template="i18n:translate" data-catalogues="resources/i18n">
+        <div class="form-group">
+            <div class="col-md-12 col-xs-12">
+                <select name="type" class="form-control">
+                    <option value="text">Volltext</option>
+                    <option value="person">Personen</option>
+                    <option value="organisation">Organisationen</option>
+                    <option value="places">Orte</option>
+                    <option value="lemma">Lemma</option>
+                    <option value="keywords">Schlagworte</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-12 col-xs-12">
+                <span class="input-group">
+                    <input name="query" type="search" class="templates:form-control form-control typeahead-search"
+                        placeholder="i18n(search-query-attr)" autocomplete="off"/>
+                    <span class="input-group-btn">
+                        <button id="f-btn-search" type="submit" class="btn btn-primary">
+                            <span class="material-icons">search</span>
+                        </button>
+                    </span>
+                </span>
+                <input type="hidden" name="doc" data-template="search:form-current-doc"/>
+            </div>
+        </div>
+        <h4>Textgattung:</h4>
+        <ul class="control-list">
+            <li>
+                <label class="form-check-label">
+                    <input id="bearbeitungstext" class="form-check-input" type="checkbox" value=""/> durchsuche Bearbeitungstext </label>
+                <ul>
+                    <li>
+                        <label class="form-check-label">
+                            <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="title"
+                                data-template="templates:form-control"/> Titel </label>
+                    </li>
+                    <li>
+                        <label class="form-check-label">
+                            <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="regest"
+                                data-template="templates:form-control"/> Regest </label>
+                    </li>
+                    <li>
+                        <label class="form-check-label">
+                            <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="comment"
+                                data-template="templates:form-control"/> Kommentar </label>
+                    </li>
+                    <li>
+                        <label class="form-check-label">
+                            <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="notes"
+                                data-template="templates:form-control"/> Anmerkungen </label>
+                    </li>
+                    <li>
+                        <label class="form-check-label">
+                            <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="sigle"
+                                data-template="templates:form-control"/> Siegel </label>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <label class="form-check-label">
+                    <input class="form-check-input" name="subtype" type="checkbox" value="edition" checked="checked" data-template="templates:form-control"/>
+                    durchsuche Editionstext </label>
+            </li>
+        </ul>
+        <h4>Felder und Facetten:</h4>
+        <ul class="control-list">
+            <li>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Zeitraum: </label>
+                    <div class="col-sm-9" data-template="query:period-range">
+                        <input type="number" name="filter-period-min" placeholder="${min}" min="${min}" max="${max}"
+                            data-template="app:parse-params" class="col-sm-4"/>
+                        <span class="col-sm-1">-</span>
+                        <input type="number" name="filter-period-max" placeholder="${max}" min="${min}" max="${max}"
+                            data-template="app:parse-params" class="col-sm-4"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Sprache: </label>
+                    <div class="col-sm-8">
+                        <select name="filter-language" class="form-control" data-template="templates:form-control">
+                            <option/>
+                            <option>de</option>
+                            <option>fr</option>
+                            <option>it</option>
+                            <option>la</option>
+                        </select>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <label class="form-check-label">
+                    <input class="form-check-input" name="filter-archive" type="checkbox" value=""/> Archiv (mit Scrollliste), mit oder ohne
+                    Signatur </label>
+            </li>
+            <li>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Ausstellungsort: </label>
+                    <div class="col-sm-8">
+                        <select name="filter-pubplace" class="form-control" data-template="templates:form-control">
+                            <option/>
+                            <option value="yes">ja</option>
+                            <option value="no">nein</option>
+                        </select>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Schreiber: </label>
+                    <div class="col-sm-8">
+                        <select name="filter-author" class="form-control" data-template="templates:form-control">
+                            <option/>
+                            <option value="yes">ja</option>
+                            <option value="no">nein</option>
+                        </select>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Siegel: </label>
+                    <div class="col-sm-8">
+                        <select name="filter-seal" class="form-control" data-template="templates:form-control">
+                            <option/>
+                            <option value="yes">ja</option>
+                            <option value="no">nein</option>
+                        </select>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <label class="form-check-label">
+                    <input class="form-check-input" name="filter-other" type="checkbox" value=""/> Überlieferung (mit Scrollliste) </label>
+            </li>
+            <li>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Trägermaterial: </label>
+                    <div class="col-sm-8">
+                        <select name="filter-material" class="form-control" data-template="templates:form-control">
+                            <option/>
+                            <option>Papier</option>
+                            <option>Pergament</option>
+                        </select>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Erhaltungszustand: </label>
+                    <div class="col-sm-8">
+                        <select name="filter-condition" class="form-control" data-template="query:condition-select"> </select>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Editionseinheit: </label>
+                    <div class="col-sm-8">
+                        <select name="filter-kanton" class="form-control" data-template="templates:form-control">
+                            <option/>
+                            <option value="ZH">I. Abteilung: Die Rechtsquellen des Kantons Zürich</option>
+                            <option value="BE">II. Abteilung: Die Rechtsquellen des Kantons Bern</option>
+                            <option value="LU">III. Abteilung: Die Rechtsquellen des Kantons Luzern </option>
+                            <option value="UR">IV. Abteilung: Die Rechtsquellen des Kantons Uri </option>
+                            <option value="SZ">V. Abteilung: Die Rechtsquellen des Kantons Schwyz</option>
+                            <option value="OW/NW">VI. Abteilung: Die Rechtsquellen des Kantons Unterwalden</option>
+                            <option value="GL">VII. Abteilung: Die Rechtsquellen des Kantons Glarus</option>
+                            <option value="ZG">VIII. Abteilung: Die Rechtsquellen des Kantons Zug</option>
+                            <option value="FR">IX. Abteilung: Die Rechtsquellen des Kantons Freiburg</option>
+                            <option value="SO">X. Abteilung: Die Rechtsquellen des Kantons Solothurn</option>
+                            <option value="BS/BL">XI. Abteilung: Die Rechtsquellen der Kantone Basel</option>
+                            <option value="SH">XII. Abteilung: Die Rechtsquellen des Kantons Schaffhausen</option>
+                            <option value="AR/AI">XIII. Abteilung: Die Rechtsquellen der Kantone Appenzell</option>
+                            <option value="SG">XIV. Abteilung: Die Rechtsquellen des Kantons St. Gallen</option>
+                            <option value="GR">XV. Abteilung: Die Rechtsquellen des Kantons Graubünden</option>
+                            <option value="AG">XVI. Abteilung: Die Rechtsquellen des Kantons Aargau</option>
+                            <option value="TG">XVII. Abteilung: Die Rechtsquellen des Kantons Thurgau</option>
+                            <option value="TI">XVIII sezione: Le fonti del diritto del cantone Ticino</option>
+                            <option value="VD">XIXe partie : Les sources du droit du canton de Vaud</option>
+                            <option value="VS">XXe partie : Les sources du droit du canton du Valais</option>
+                            <option value="NE">XXIe partie : Les sources du droit du canton de Neuchâtel</option>
+                            <option value="GE">XXIIe partie : Les sources du droit du canton de Genève</option>
+                            <option value="JU">XXIIIe partie : Les sources du droit du canton du Jura</option>
+                        </select>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Publikationsdatum: </label>
+                    <div class="col-sm-8">
+                        <input type="number" name="filter-pubdate" class="form-control" data-template="templates:form-control"/>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <script type="text/javascript" src="resources/scripts/search.js"/>
+</form>

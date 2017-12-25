@@ -10,205 +10,7 @@
         </header>
         <main class="row">
             <section class="col-md-3 col-md-push-9">
-                <form action="search.html" class="form form-horizontal advanced-search">
-                    <div class="well well-sm">
-                        <div class="form-group">
-                            <div class="col-md-12 col-xs-12">
-                                <select name="type" class="form-control">
-                                    <option value="text">Volltext</option>
-                                    <option value="person">Personen</option>
-                                    <option value="organisation">Organisationen</option>
-                                    <option value="places">Orte</option>
-                                    <option value="lemma">Lemma</option>
-                                    <option value="keywords">Schlagworte</option>
-                                </select>
-                            </div>
-                        </div>
-
-
-                        <div class="form-group">
-                            <div class="col-md-12 col-xs-12">
-                                <span class="input-group">
-                                    <input name="query" type="search" class="templates:form-control form-control typeahead-search" placeholder="i18n(search-query-attr)" autocomplete="off"/>
-                                    <span class="input-group-btn">
-                                        <button id="f-btn-search" type="submit" class="btn btn-primary">
-                                            <span class="material-icons">search</span>
-                                        </button>
-                                    </span>
-                                </span>
-                                <input type="hidden" name="doc" data-template="search:form-current-doc"/>
-                            </div>
-                        </div>
-                        <h4>Textgattung:</h4>
-                        <ul class="control-list">
-                                <li>
-                                    <label class="form-check-label">
-                                        <input id="bearbeitungstext" class="form-check-input" type="checkbox" value=""/>
-                                                durchsuche Bearbeitungstext
-                                        </label>
-                                    <ul>
-                                        <li>
-                                            <label class="form-check-label">
-                                                <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="title"/>
-                                                Titel
-                                            </label>
-                                        </li>
-                                        <li>
-                                            <label class="form-check-label">
-                                                <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="regest"/>
-                                                Regest
-                                            </label>
-                                        </li>
-                                        <li>
-                                            <label class="form-check-label">
-                                                <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="comment"/>
-                                                Kommentar
-                                            </label>
-                                        </li>
-                                        <li>
-                                            <label class="form-check-label">
-                                                <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="notes"/>
-                                                Anmerkungen
-                                            </label>
-                                        </li>
-                                        <li>
-                                            <label class="form-check-label">
-                                                <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="sigle"/>
-                                                Siegel
-                                            </label>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" name="subtype" type="checkbox" value="edition"/>
-                                        durchsuche Editionstext
-                                    </label>
-                                </li>
-                            </ul>
-                        <h4>Felder und Facetten:</h4>
-                        <ul class="control-list">
-                                        <li>
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label">Zeitraum: </label>
-                                                <div class="col-sm-9" data-template="query:period-range">
-                                                    <input type="number" name="filter-period" value="${min}" data-template="app:parse-params" class="col-sm-4"/>
-                                                    <span class="col-sm-1">-</span> 
-                                                    <input type="number" value="${max}" data-template="app:parse-params" class="col-sm-4"/>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="form-group">
-                                                <label class="col-sm-4 control-label">Sprache: </label>
-                                                <div class="col-sm-8">
-                                                    <select name="filter-language" class="form-control">
-                                                        <option/>
-                                                        <option>de</option>
-                                                        <option>fr</option>
-                                                        <option>it</option>
-                                                        <option>la</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" name="filter-archive" type="checkbox" value=""/>
-                                                Archiv (mit Scrollliste), mit oder ohne Signatur
-                                            </label>
-                                        </li>
-                                        <li>
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" name="filter-pubplace" type="checkbox" value=""/>
-                                                Ausstellungsort (ja/nein: gibt es einen Ausstellungsort?)
-                                            </label>
-                                        </li>
-                                        <li>
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" name="filter-writer" type="checkbox" value=""/>
-                                                Schreiber (ja/nein: gibt es einen Schreiber?)
-                                            </label>
-                                        </li>
-                                        <li>
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" name="filter-sigle" type="checkbox" value=""/>
-                                                Siegel (ja/nein)
-                                            </label>
-                                        </li>
-                                         <li>
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" name="filter-other" type="checkbox" value=""/>
-                                                Überlieferung (mit Scrollliste)
-                                            </label>
-                                        </li>
-                                        <li>
-                                            <div class="form-group">
-                                                <label class="col-sm-4 control-label">Trägermaterial: </label>
-                                                <div class="col-sm-8">
-                                                    <select name="filter-material" class="form-control">
-                                                        <option/>
-                                                        <option>Papier</option>
-                                                        <option>Pergament</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="form-group">
-                                                <label class="col-sm-4 control-label">Erhaltungszustand: </label>
-                                                <div class="col-sm-8">
-                                                    <select name="filter-condition" class="form-control" data-template="query:condition-select">
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="form-group">
-                                                <label class="col-sm-4 control-label">Editionseinheit: </label>
-                                                <div class="col-sm-8">
-                                                    <select name="filter-kanton" class="form-control">
-                                                        <option/>
-                                                        <option value="ZH">I. Abteilung: Die Rechtsquellen des Kantons Zürich</option>
-                                                        <option value="BE">II. Abteilung: Die Rechtsquellen des Kantons Bern</option>
-                                                        <option value="LU">III. Abteilung: Die Rechtsquellen des Kantons Luzern </option>
-                                                        <option value="UR">IV. Abteilung: Die Rechtsquellen des Kantons Uri </option>
-                                                        <option value="SZ">V. Abteilung: Die Rechtsquellen des Kantons Schwyz</option>
-                                                        <option value="OW/NW">VI. Abteilung: Die Rechtsquellen des Kantons Unterwalden</option>
-                                                        <option value="GL">VII. Abteilung: Die Rechtsquellen des Kantons Glarus</option> 
-                                                        <option value="ZG">VIII. Abteilung: Die Rechtsquellen des Kantons Zug</option>
-                                                        <option value="FR">IX. Abteilung: Die Rechtsquellen des Kantons Freiburg</option>
-                                                        <option value="SO">X. Abteilung: Die Rechtsquellen des Kantons Solothurn</option>
-                                                        <option value="BS/BL">XI. Abteilung: Die Rechtsquellen der Kantone Basel</option>
-                                                        <option value="SH">XII. Abteilung: Die Rechtsquellen des Kantons Schaffhausen</option>
-                                                        <option value="AR/AI">XIII. Abteilung: Die Rechtsquellen der Kantone Appenzell</option>
-                                                        <option value="SG">XIV. Abteilung: Die Rechtsquellen des Kantons St. Gallen</option>
-                                                        <option value="GR">XV. Abteilung: Die Rechtsquellen des Kantons Graubünden</option>
-                                                        <option value="AG">XVI. Abteilung: Die Rechtsquellen des Kantons Aargau</option>
-                                                        <option value="TG">XVII. Abteilung: Die Rechtsquellen des Kantons Thurgau</option>
-                                                        <option value="TI">XVIII sezione: Le fonti del diritto del cantone Ticino</option>
-                                                        <option value="VD">XIXe partie : Les sources du droit du canton de Vaud</option>
-                                                        <option value="VS">XXe partie : Les sources du droit du canton du Valais</option>
-                                                        <option value="NE">XXIe partie : Les sources du droit du canton de Neuchâtel</option>
-                                                        <option value="GE">XXIIe partie : Les sources du droit du canton de Genève</option>
-                                                        <option value="JU">XXIIIe partie : Les sources du droit du canton du Jura</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="form-group">
-                                                <label class="col-sm-4 control-label">Publikationsdatum: </label>
-                                                <div class="col-sm-8">
-                                                    <input type="number" name="filter-pubdate" class="form-control" data-template="templates:form-control"/>
-                                                </div>
-                                            </div>
-                                        </li>
-
-                            </ul>
-                    </div>
-                </form>
-
+                <div data-template="templates:include" data-template-path="templates/search.html"/>
                 <div class="panel panel-info" data-template="browse:show-if-logged-in">
                     <div class="panel-heading">
                         <h3 class="panel-title">
@@ -217,9 +19,9 @@
                     </div>
 
                     <div class="panel-body">
-                    <p>
+                        <p>
                             <i18n:text key="upload-files"/>
-                    </p>
+                        </p>
 
 
                         <span class="btn btn-success btn-block fileinput-button">
@@ -228,10 +30,12 @@
                                 <i18n:text key="select-files"/>
                             </span>
                             <input id="fileupload" type="file" name="files[]" multiple="multiple"/>
-                        </span><!-- The global progress bar -->
+                        </span>
+                        <!-- The global progress bar -->
                         <div id="progress" class="progress">
                             <div class="progress-bar progress-bar-success"/>
-                        </div><!-- The container for the uploaded files -->
+                        </div>
+                        <!-- The container for the uploaded files -->
                         <table id="files-table" class="files table table-striped">
                             <thead>
                                 <th colspan="2">
@@ -323,8 +127,8 @@
                                                 <img src="resources/images/kantone/FR.png"/>
                                             </td>
                                             <td>FR</td>
-                                            <td>IXe partie : Les sources du droit du canton de Fribourg<br/>
-                                                IX. Abteilung: Die Rechtsquellen des Kantons Freiburg</td>
+                                            <td>IXe partie : Les sources du droit du canton de Fribourg<br/> IX. Abteilung: Die Rechtsquellen des Kantons
+                                                Freiburg</td>
                                         </tr>
                                         <tr>
                                             <td>
@@ -336,7 +140,7 @@
                                         <tr>
                                             <td>
                                                 <img src="resources/images/kantone/BS.png"/>
-                                            <img src="resources/images/kantone/BL.png"/>
+                                                <img src="resources/images/kantone/BL.png"/>
                                             </td>
                                             <td>BS/BL</td>
                                             <td>XI. Abteilung: Die Rechtsquellen der Kantone Basel</td>
@@ -368,9 +172,8 @@
                                                 <img src="resources/images/kantone/GR.png"/>
                                             </td>
                                             <td>GR</td>
-                                            <td>XV. Abteilung: Die Rechtsquellen des Kantons Graubünden<br/>
-                                            XV. partiziun: Las funtaunas da dretg dal chantun Grischun<br/>
-                                            XV sezione: Le fonti del diritto del cantone dei Grigioni</td>
+                                            <td>XV. Abteilung: Die Rechtsquellen des Kantons Graubünden<br/> XV. partiziun: Las funtaunas da dretg dal chantun
+                                                Grischun<br/> XV sezione: Le fonti del diritto del cantone dei Grigioni</td>
                                         </tr>
                                         <tr>
                                             <td>
@@ -405,8 +208,7 @@
                                                 <img src="resources/images/kantone/VS.png"/>
                                             </td>
                                             <td>VS</td>
-                                            <td>XXe partie : Les sources du droit du canton du Valais
-XX. Abteilung: Die Rechtsquellen des Kantons Wallis</td>
+                                            <td>XXe partie : Les sources du droit du canton du Valais XX. Abteilung: Die Rechtsquellen des Kantons Wallis</td>
                                         </tr>
                                         <tr>
                                             <td>
@@ -444,60 +246,42 @@ XX. Abteilung: Die Rechtsquellen des Kantons Wallis</td>
     <script type="text/javascript" src="resources/scripts/vendor/jquery.ui.widget.js"/>
     <script type="text/javascript" src="resources/scripts/vendor/jquery.iframe-transport.js"/>
     <script type="text/javascript" src="resources/scripts/vendor/jquery.fileupload.js"/>
-    <script type="text/javascript">
-    $(function () {
-        'use strict';
-
-        $('#bearbeitungstext').on('change', function() {
-            var checked = $(this).prop('checked');
-            if (checked) {
-                $(".bearbeitungstext").prop('checked', true);
-            } else {
-                $(".bearbeitungstext").prop('checked', false);
-            }
-        });
-        $('.bearbeitungstext').on('change', function() {
-            $('#bearbeitungstext').prop('checked', false);
-        });
-
-        function reloadDocTable() {
-            $("#documents-panel").load("templates/doc-table.html");
-        }
-
-        $('#fileupload').fileupload({
-            url: "modules/lib/upload.xql",
-            dataType: 'json',
-            done: function (e, data) {
-                $.each(data.result.files, function (index, file) {
-                    var tr = document.createElement("tr");
-                    var td = document.createElement("td");
-                    var link = document.createElement("a");
-                    link.href = file.path;
-                    link.target = "_blank";
-                    var icon = document.createElement("span");
-                    icon.className = "material-icons";
-                    icon.appendChild(document.createTextNode("open_in_new"));
-                    link.appendChild(icon);
-                    td.appendChild(link);
-                    tr.appendChild(td);
-
-                    td = document.createElement("td");
-                    td.appendChild(document.createTextNode(file.path));
-                    tr.appendChild(td);
-
-                    $("#files").append(tr);
-                });
-                reloadDocTable();
-            },
-            progressall: function (e, data) {
-                var progress = parseInt(data.loaded / data.total * 100, 10);
-                $('#progress .progress-bar').css(
-                    'width',
-                    progress + '%'
-                );
-            }
-        }).prop('disabled', !$.support.fileInput)
-            .parent().addClass($.support.fileInput ? undefined : 'disabled');
-    });
+    <script type="text/javascript"> 
+        $(function () { 
+            'use strict';
+            
+            function reloadDocTable() {
+                $("#documents-panel").load("templates/doc-table.html"); 
+            } 
+            $('#fileupload').fileupload({ 
+                url: "modules/lib/upload.xql", 
+                dataType: 'json', 
+                done: function(e, data) { 
+                    $.each(data.result.files, function (index, file) { 
+                        var tr = document.createElement("tr"); 
+                        var td = document.createElement("td"); 
+                        var link = document.createElement("a"); 
+                        link.href = file.path; 
+                        link.target = "_blank"; 
+                        var icon = document.createElement("span"); 
+                        icon.className = "material-icons"; 
+                        icon.appendChild(document.createTextNode("open_in_new")); 
+                        link.appendChild(icon); 
+                        td.appendChild(link); 
+                        tr.appendChild(td); 
+                        td = document.createElement("td"); 
+                        td.appendChild(document.createTextNode(file.path)); 
+                        tr.appendChild(td); 
+                        $("#files").append(tr); 
+                    }); 
+                    reloadDocTable(); 
+                },
+                progressall: function (e, data) { 
+                    var progress = parseInt(data.loaded / data.total * 100, 10); 
+                    $('#progress .progress-bar').css( 'width', progress + '%' ); 
+                }
+            }).prop('disabled', !$.support.fileInput)
+                .parent().addClass($.support.fileInput ? undefined : 'disabled'); 
+        }); 
     </script>
 </div>

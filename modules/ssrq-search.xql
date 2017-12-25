@@ -19,43 +19,36 @@ import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions
 declare
     %templates:default("type", "text")
 function query:query($node as node()*, $model as map(*), $type as xs:string, $subtype as xs:string*, $query as xs:string?, $doc as xs:string*) as map(*) {
-        (:If there is no query string, fill up the map with existing values:)
-        if (empty($query))
-        then
-            map {
-                "hits" : session:get-attribute("apps.simple"),
-                "hitCount" : session:get-attribute("apps.simple.hitCount"),
-                "query" : session:get-attribute("apps.simple.query"),
-                "docs" : session:get-attribute("apps.simple.docs")
-            }
-        else
-            (:Otherwise, perform the query.:)
-            let $hits :=
-                switch ($type)
-                    case "text" return
-                        query:query-texts($subtype, $query)
-                    default return
-                        query:query-api($type, $query)
-            let $hitCount := count($hits?hits)
-            let $hitsToShow := if ($hitCount > 1000) then subsequence($hits?hits, 1, 1000) else $hits?hits
-            (:Store the result in the session.:)
-            let $store := (
-                session:set-attribute("apps.simple", $hitsToShow),
-                session:set-attribute("apps.simple.hitCount", $hitCount),
-                session:set-attribute("apps.simple.query", $query),
-                session:set-attribute("apps.simple.type", $type),
-                session:set-attribute("apps.simple.subtype", $subtype),
-                session:set-attribute("apps.simple.docs", $doc)
-            )
-            return
-                (: The hits are not returned directly, but processed by the nested templates :)
-                map {
-                    "hits" : $hitsToShow,
-                    "ids": $hits?id,
-                    "hitCount" : $hitCount,
-                    "query" : $query,
-                    "docs": $doc
-                }
+    let $hits :=
+        if ($query) then
+            switch ($type)
+                case "text" return
+                    query:query-texts($subtype, $query)
+                default return
+                    query:query-api($type, $query)
+        else map {
+            "hits": query:filter(collection($config:data-root)/tei:TEI//tei:body)
+        }
+    let $hitCount := count($hits?hits)
+    let $hitsToShow := if ($hitCount > 1000) then subsequence($hits?hits, 1, 1000) else $hits?hits
+    (:Store the result in the session.:)
+    let $store := (
+        session:set-attribute("apps.simple", $hitsToShow),
+        session:set-attribute("apps.simple.hitCount", $hitCount),
+        session:set-attribute("apps.simple.query", $query),
+        session:set-attribute("apps.simple.type", $type),
+        session:set-attribute("apps.simple.subtype", $subtype),
+        session:set-attribute("apps.simple.docs", $doc)
+    )
+    return
+        (: The hits are not returned directly, but processed by the nested templates :)
+        map {
+            "hits" : $hitsToShow,
+            "ids": $hits?id,
+            "hitCount" : $hitCount,
+            "query" : $query,
+            "docs": $doc
+        }
 };
 
 declare function query:query-texts($subtypes as xs:string*, $query as xs:string) {
@@ -83,7 +76,7 @@ declare function query:query-texts($subtypes as xs:string*, $query as xs:string)
     return
         map {
             "hits":
-                for $hit in $hits
+                for $hit in query:filter($hits)
                 order by ft:score($hit) descending
                 return $hit
         }
@@ -132,6 +125,48 @@ declare function query:query-api($type as xs:string, $query as xs:string) as map
         else
             console:log($response[1])
 };
+
+declare function query:filter($hits as element()*) {
+    fold-right(request:get-parameter-names()[starts-with(., 'filter-')], $hits, function($filter, $context) {
+        let $value := request:get-parameter($filter, ())
+        return
+            if ($value) then
+                switch ($filter)
+                    case "filter-period-min" return
+                        let $dateMin := xs:date($value || "-01-01")
+                        return
+                            $context[ancestor-or-self::tei:TEI//tei:history/tei:origin/tei:origDate/@when >= $dateMin]
+                    case "filter-period-max" return
+                        let $dateMax := xs:date($value || "-12-31")
+                        return
+                            $context[ancestor-or-self::tei:TEI//tei:history/tei:origin/tei:origDate/@when <= $dateMax]
+                    case "filter-language" return
+                        $context[ancestor-or-self::tei:TEI/@xml:lang = $value]
+                    case "filter-condition" return
+                        $context[ancestor-or-self::tei:TEI//tei:supportDesc/tei:condition = $value]
+                    case "filter-material" return
+                        $context[ancestor-or-self::tei:TEI//tei:support/tei:material = $value]
+                    case "filter-seal" return
+                        if ($value = "yes") then
+                            $context[ancestor-or-self::tei:TEI//tei:sealDesc/tei:seal]
+                        else
+                            $context[not(ancestor-or-self::tei:TEI//tei:sealDesc/tei:seal)]
+                    case "filter-author" return
+                        if ($value = "yes") then
+                            $context[ancestor-or-self::tei:TEI//tei:msContents/tei:msItem/tei:author/@role = 'scribe']
+                        else
+                            $context[not(ancestor-or-self::tei:TEI//tei:msContents/tei:msItem/tei:author/@role = 'scribe')]
+                    case "filter-kanton" return
+                        $context[ancestor-or-self::tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $value || "_")]]
+                    case "filter-pubdate" return
+                        $context[starts-with(ancestor-or-self::tei:TEI//tei:publicationStmt/tei:date[@type='electronic']/@when, $value)]
+                    default return
+                        $context
+            else
+                $context
+    })
+};
+
 
 declare function query:highlight($action as xs:string?, $context as element()*, $subtype as xs:string?) {
     if ($action = "search") then
@@ -336,7 +371,7 @@ declare function query:period-range($node as node(), $model as map(*)) {
 
 declare
     %templates:wrap
-function query:condition-select($node as node(), $model as map(*)) {
+function query:condition-select($node as node(), $model as map(*), $filter-condition as xs:string?) {
     <option></option>,
     let $context :=
         if ($model?hits) then
@@ -345,5 +380,13 @@ function query:condition-select($node as node(), $model as map(*)) {
             collection($config:data-root)
     for $condition in distinct-values($context//tei:teiHeader//tei:msDesc/tei:physDesc/tei:objectDesc/tei:supportDesc/tei:condition)
     return
-        <option>{$condition}</option>
+        <option>
+        {
+            if ($condition = $filter-condition) then
+                attribute selected { "selected" }
+            else
+                (),
+            $condition
+        }
+        </option>
 };
