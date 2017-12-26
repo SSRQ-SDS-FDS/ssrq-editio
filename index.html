@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <div xmlns:i18n="http://exist-db.org/xquery/i18n" data-template="templates:surround" data-template-with="templates/page.html" data-template-at="content">
     <div data-template="templates:include" data-template-path="templates/menu.html"/>
     <section class="container-fluid">
@@ -60,8 +61,12 @@
                                 <table id="kantone" class="table">
                                     <thead>
                                         <tr>
-                                            <th colspan="2">Kanton</th>
-                                            <th>Abteilung</th>
+                                            <th colspan="2">
+                                                <i18n:text key="canton"/>
+                                            </th>
+                                            <th>
+                                                <i18n:text key="section"/>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody data-template="app:kanton-auswahl">
@@ -246,42 +251,42 @@
     <script type="text/javascript" src="resources/scripts/vendor/jquery.ui.widget.js"/>
     <script type="text/javascript" src="resources/scripts/vendor/jquery.iframe-transport.js"/>
     <script type="text/javascript" src="resources/scripts/vendor/jquery.fileupload.js"/>
-    <script type="text/javascript"> 
-        $(function () { 
+    <script type="text/javascript">
+        $(function () {
             'use strict';
-            
+
             function reloadDocTable() {
-                $("#documents-panel").load("templates/doc-table.html"); 
-            } 
-            $('#fileupload').fileupload({ 
-                url: "modules/lib/upload.xql", 
-                dataType: 'json', 
-                done: function(e, data) { 
-                    $.each(data.result.files, function (index, file) { 
-                        var tr = document.createElement("tr"); 
-                        var td = document.createElement("td"); 
-                        var link = document.createElement("a"); 
-                        link.href = file.path; 
-                        link.target = "_blank"; 
-                        var icon = document.createElement("span"); 
-                        icon.className = "material-icons"; 
-                        icon.appendChild(document.createTextNode("open_in_new")); 
-                        link.appendChild(icon); 
-                        td.appendChild(link); 
-                        tr.appendChild(td); 
-                        td = document.createElement("td"); 
-                        td.appendChild(document.createTextNode(file.path)); 
-                        tr.appendChild(td); 
-                        $("#files").append(tr); 
-                    }); 
-                    reloadDocTable(); 
+                $("#documents-panel").load("templates/doc-table.html");
+            }
+            $('#fileupload').fileupload({
+                url: "modules/lib/upload.xql",
+                dataType: 'json',
+                done: function(e, data) {
+                    $.each(data.result.files, function (index, file) {
+                        var tr = document.createElement("tr");
+                        var td = document.createElement("td");
+                        var link = document.createElement("a");
+                        link.href = file.path;
+                        link.target = "_blank";
+                        var icon = document.createElement("span");
+                        icon.className = "material-icons";
+                        icon.appendChild(document.createTextNode("open_in_new"));
+                        link.appendChild(icon);
+                        td.appendChild(link);
+                        tr.appendChild(td);
+                        td = document.createElement("td");
+                        td.appendChild(document.createTextNode(file.path));
+                        tr.appendChild(td);
+                        $("#files").append(tr);
+                    });
+                    reloadDocTable();
                 },
-                progressall: function (e, data) { 
-                    var progress = parseInt(data.loaded / data.total * 100, 10); 
-                    $('#progress .progress-bar').css( 'width', progress + '%' ); 
+                progressall: function (e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    $('#progress .progress-bar').css( 'width', progress + '%' );
                 }
             }).prop('disabled', !$.support.fileInput)
-                .parent().addClass($.support.fileInput ? undefined : 'disabled'); 
-        }); 
+                .parent().addClass($.support.fileInput ? undefined : 'disabled');
+        });
     </script>
 </div>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<catalogue xml:lang="de">
+<catalogue xml:lang="it">
     <msg key="home">Start</msg>
     <msg key="download">Download</msg>
     <msg key="pdf-fo">PDF (FO Version)</msg>
@@ -84,10 +84,11 @@
     <msg key="notes">Anmerkungen</msg>
     <msg key="searchEdition">durchsuche Editionstext</msg>
     <msg key="filters">Felder und Facetten</msg>
-    <msg key="canton">Kanton</msg>
-    <msg key="section">Abteilung</msg>
+    <msg key="canton">Cantone</msg>
+    <msg key="section">Sezione</msg>
     <msg key="loading">es wird geladen</msg>
     <msg key="describe">Stückbeschreibung</msg>
     <msg key="addFill">Weiter Überlieferungen</msg>
     <msg key="editionText">Editionstext</msg>
+    
 </catalogue>

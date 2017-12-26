@@ -3,12 +3,24 @@
         <div class="form-group">
             <div class="col-md-12 col-xs-12">
                 <select name="type" class="form-control" data-template="templates:form-control">
-                    <option value="text">Volltext</option>
-                    <option value="person">Personen</option>
-                    <option value="organisation">Organisationen</option>
-                    <option value="places">Orte</option>
-                    <option value="lemma">Lemma</option>
-                    <option value="keywords">Schlagworte</option>
+                  <option value="text">
+                      <i18n:text key="text"/>
+                  </option>
+                  <option value="person">
+                      <i18n:text key="person"/>
+                  </option>
+                  <option value="organisation">
+                      <i18n:text key="organisation"/>
+                  </option>
+                  <option value="places">
+                      <i18n:text key="places"/>
+                  </option>
+                  <option value="lemma">
+                      <i18n:text key="lemma"/>
+                  </option>
+                  <option value="keywords">
+                      <i18n:text key="keywords"/>
+                  </option>
                 </select>
             </div>
         </div>
@@ -27,50 +39,52 @@
                 <input type="hidden" name="doc" data-template="search:form-current-doc"/>
             </div>
         </div>
-        <h4>Textgattung:</h4>
+        <h4><i18n:text key="genre"/>:</h4>
         <ul class="control-list">
             <li>
                 <label class="form-check-label">
-                    <input id="bearbeitungstext" class="form-check-input" type="checkbox" value=""/> durchsuche Bearbeitungstext </label>
+                    <input id="bearbeitungstext" class="form-check-input" type="checkbox" value=""/>
+                    <i18n:text key="searchText"/>
+                  </label>
                 <ul>
                     <li>
                         <label class="form-check-label">
                             <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="title"
-                                data-template="templates:form-control"/> Titel </label>
+                                data-template="templates:form-control"/> <i18n:text key="title"/></label>
                     </li>
                     <li>
                         <label class="form-check-label">
                             <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="regest"
-                                data-template="templates:form-control"/> Regest </label>
+                                data-template="templates:form-control"/> <i18n:text key="regest"/></label>
                     </li>
                     <li>
                         <label class="form-check-label">
                             <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="comment"
-                                data-template="templates:form-control"/> Kommentar </label>
+                                data-template="templates:form-control"/> <i18n:text key="comment"/> </label>
                     </li>
                     <li>
                         <label class="form-check-label">
                             <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="notes"
-                                data-template="templates:form-control"/> Anmerkungen </label>
+                                data-template="templates:form-control"/> <i18n:text key="notes"/> </label>
                     </li>
                     <li>
                         <label class="form-check-label">
                             <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="seal"
-                                data-template="templates:form-control"/> Siegel </label>
+                                data-template="templates:form-control"/> <i18n:text key="seal"/> </label>
                     </li>
                 </ul>
             </li>
             <li>
                 <label class="form-check-label">
                     <input class="form-check-input" name="subtype" type="checkbox" value="edition" checked="checked" data-template="templates:form-control"/>
-                    durchsuche Editionstext </label>
+                    <i18n:text key="searchEdition"/> </label>
             </li>
         </ul>
-        <h4>Felder und Facetten:</h4>
+        <h4><i18n:text key="filters"/>:</h4>
         <ul class="control-list">
             <li>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">Zeitraum: </label>
+                    <label class="col-sm-3 control-label"><i18n:text key="period"/>: </label>
                     <div class="col-sm-9" data-template="query:period-range">
                         <input type="number" name="filter-period-min" placeholder="${min}" min="${min}" max="${max}" value="${filter-period-min}"
                             data-template="app:parse-params" class="col-sm-4"/>
@@ -82,7 +96,7 @@
             </li>
             <li>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">Sprache: </label>
+                    <label class="col-sm-4 control-label"><i18n:text key="language"/>: </label>
                     <div class="col-sm-8">
                         <select name="filter-language" class="form-control" data-template="templates:form-control">
                             <option/>
@@ -96,12 +110,11 @@
             </li>
             <li>
                 <label class="form-check-label">
-                    <input class="form-check-input" name="filter-archive" type="checkbox" value=""/> Archiv (mit Scrollliste), mit oder ohne
-                    Signatur </label>
+                    <input class="form-check-input" name="filter-archive" type="checkbox" value=""/> <i18n:text key="archive"/> </label>
             </li>
             <li>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">Ausstellungsort: </label>
+                    <label class="col-sm-4 control-label"><i18n:text key="origPlace"/>: </label>
                     <div class="col-sm-8">
                         <select name="filter-pubplace" class="form-control" data-template="templates:form-control">
                             <option/>
@@ -113,7 +126,7 @@
             </li>
             <li>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">Schreiber: </label>
+                    <label class="col-sm-4 control-label"><i18n:text key="scribe"/>: </label>
                     <div class="col-sm-8">
                         <select name="filter-author" class="form-control" data-template="templates:form-control">
                             <option/>
@@ -125,7 +138,7 @@
             </li>
             <li>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">Siegel: </label>
+                    <label class="col-sm-4 control-label"><i18n:text key="seal"/>: </label>
                     <div class="col-sm-8">
                         <select name="filter-seal" class="form-control" data-template="templates:form-control">
                             <option/>
@@ -137,23 +150,23 @@
             </li>
             <li>
                 <label class="form-check-label">
-                    <input class="form-check-input" name="filter-other" type="checkbox" value=""/> Überlieferung (mit Scrollliste) </label>
+                    <input class="form-check-input" name="filter-other" type="checkbox" value=""/> <i18n:text key="filliation"/></label>
             </li>
             <li>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">Trägermaterial: </label>
+                    <label class="col-sm-4 control-label"><i18n:text key="material"/>: </label>
                     <div class="col-sm-8">
                         <select name="filter-material" class="form-control" data-template="templates:form-control">
                             <option/>
-                            <option>Papier</option>
-                            <option>Pergament</option>
+                            <option><i18n:text key="paper"/></option>
+                            <option><i18n:text key="parchment"/></option>
                         </select>
                     </div>
                 </div>
             </li>
             <li>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">Erhaltungszustand: </label>
+                    <label class="col-sm-4 control-label"><i18n:text key="condition"/>: </label>
                     <div class="col-sm-8">
                         <select name="filter-condition" class="form-control" data-template="query:condition-select"> </select>
                     </div>
@@ -161,7 +174,7 @@
             </li>
             <li>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">Editionseinheit: </label>
+                    <label class="col-sm-4 control-label"><i18n:text key="volume"/>: </label>
                     <div class="col-sm-8">
                         <select name="filter-kanton" class="form-control" data-template="templates:form-control">
                             <option/>
@@ -194,7 +207,7 @@
             </li>
             <li>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">Publikationsdatum: </label>
+                    <label class="col-sm-4 control-label"><i18n:text key="pubdate"/>: </label>
                     <div class="col-sm-8">
                         <input type="number" name="filter-pubdate" class="form-control" data-template="templates:form-control"/>
                     </div>

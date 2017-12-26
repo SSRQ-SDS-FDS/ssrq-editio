@@ -56,4 +56,39 @@
     <msg key="delete-confirmation">Are you sure you would like to delete <span id="docs-to-delete"/> resources?</msg>
     <msg key="yes">Yes</msg>
     <msg key="no">No</msg>
+    <msg key="pubdate">Publication Date</msg>
+    <msg key="condition">Condition</msg>
+    <msg key="volume">Volume</msg>
+    <msg key="material">Material</msg>
+    <msg key="language">Language</msg>
+    <msg key="period">Period</msg>
+    <msg key="archive">Archive</msg>
+    <msg key="origPlace">Place of Issue</msg>
+    <msg key="scribe">Scribe</msg>
+    <msg key="seal">Seal</msg>
+    <msg key="filliation">Filliation</msg>
+    <msg key="paper">Paper</msg>
+    <msg key="parchment">Parchment</msg>
+    <msg key="text">Full Text</msg>
+    <msg key="person">Persons</msg>
+    <msg key="organisation">Organisations</msg>
+    <msg key="places">Places</msg>
+    <msg key="lemma">Lemma</msg>
+    <msg key="keywords">Keywords</msg>
+    <msg key="genre">Genre</msg>
+    <msg key="searchText">search Bearbeitungstext</msg>
+    <msg key="title">Title</msg>
+    <msg key="regest">Regest</msg>
+    <msg key="comment">Comments</msg>
+    <msg key="notes">Notes</msg>
+    <msg key="searchEdition">search Editionstext</msg>
+    <msg key="filters">Filters and Facetts</msg>
+    <msg key="canton">Kanton</msg>
+    <msg key="section">Section</msg>
+    <msg key="loading">loading</msg>
+    <msg key="describe">Stückbeschreibung</msg>
+    <msg key="addFill">Additional Filliations</msg>
+    <msg key="editionText">Text of Edition</msg>
+
+
 </catalogue>

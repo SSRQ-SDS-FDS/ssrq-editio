@@ -12,9 +12,11 @@
                 <section id="tp-canvas">
                     <!-- Table of contents -->
                     <nav id="sidebar" class="toc offcanvas">
-                        <h3><i18n:text key="contents">Contents</i18n:text></h3>
+                        <h3>
+                            <i18n:text key="contents">Contents</i18n:text>
+                        </h3>
                         <div id="toc">
-                            <span id="toc-loading">Loading ...</span>
+                            <span id="toc-loading"> <i18n:text key="loading"/> ...</span>
                         </div>
                     </nav>
                     <main id="main-wrapper" class="col-md-10" data-template="pages:navigation">
@@ -29,9 +31,8 @@
                         <div class="comment tp-row" data-template="app:regest">
                             <div class="tp-column">
                                 <h4 class="block-title">
-                                    <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#regest" aria-expanded="false"
-                                        aria-controls="regest">
-                                        Regest
+                                    <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#regest" aria-expanded="false" aria-controls="regest">
+                                        <i18n:text key="regest"/>
                                     </a>
                                 </h4>
                                 <div id="regest" class="collapse" data-template="app:display-data"/>
@@ -40,9 +41,9 @@
                         <div class="comment tp-row" data-template="app:source-description">
                             <div class="tp-column">
                                 <h4 class="block-title">
-                                    <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#sourceDesc" aria-expanded="false"
-                                        aria-controls="regest">
-                                        Stückbeschreibung
+                                    <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#sourceDesc" aria-expanded="false" aria-controls="regest">
+                                        <i18n:text key="describe"/>
+                                       
                                     </a>
                                 </h4>
                                 <div id="sourceDesc" class="collapse" data-template="app:display-data"/>
@@ -51,17 +52,28 @@
                         <div class="comment tp-row" data-template="app:comment">
                             <div class="tp-column">
                                 <h4 class="block-title">
-                                    <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#comment" aria-expanded="false"
-                                        aria-controls="comment">
-                                        Kommentar
+                                    <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#comment" aria-expanded="false" aria-controls="comment">
+                                        <i18n:text key="comment"/>
                                     </a>
                                 </h4>
                                 <div id="comment" class="collapse" data-template="app:display-data"/>
                             </div>
                         </div>
+                        <div class="comment tp-row" data-template="app:additionalSource">
+                            <div class="tp-column">
+                                <h4 class="block-title">
+                                    <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#additional" aria-expanded="false" aria-controls="additonal">
+                                        <i18n:text key="addFill"/>
+                                    </a>
+                                </h4>
+                                <div id="additional" class="collapse" data-template="app:display-data"/>
+                            </div>
+                        </div>
                         <section class="tp-row">
                             <div class="tp-column">
-                                <h4 class="block-title">Editionstext</h4>
+                                <h4 class="block-title">
+                                    <i18n:text key="editionText"/>
+                                </h4>
                                 <div id="document-wrapper">
                                     <!-- Document pane -->
                                     <div id="document-pane">
