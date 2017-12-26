@@ -11,11 +11,16 @@ $(function () {
         $('#bearbeitungstext').prop('checked', false);
     });
 
-    var checked = $(".bearbeitungstext:checked").length;
-    if (checked === 0 || checked === 5) {
+    var val = $('#bearbeitungstext').prop('value');
+    if (val && val.length > 0) {
+        var checked = $(".bearbeitungstext:checked").length;
+        if (checked === 5) {
+            $('#bearbeitungstext').prop('checked', true);
+        } else {
+            $('#bearbeitungstext').prop('checked', false);
+        }
+    } else {
         $('#bearbeitungstext').prop('checked', true);
         $(".bearbeitungstext").prop('checked', true);
-    } else {
-        $('#bearbeitungstext').prop('checked', false);
     }
 });

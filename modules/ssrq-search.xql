@@ -72,7 +72,7 @@ declare function query:query-texts($subtypes as xs:string*, $query as xs:string)
                 case "title" return
                     collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:head[ft:query(., $query)]
                 case "regest" return
-                    collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:msContents/tei:summary[ft:query(., $query)]
+                    collection($config:data-root)//tei:teiHeader//tei:msContents/tei:summary[ft:query(., $query)]
                 case "comment" return
                     collection($config:data-root)//tei:back[ft:query(., $query)]
                 case "notes" return
@@ -83,8 +83,8 @@ declare function query:query-texts($subtypes as xs:string*, $query as xs:string)
                 (: Editionstext: body + orig in Kommentar und Fussnoten :)
                 default return
                     collection($config:data-root)//tei:body[ft:query(., $query)] |
-                    collection($config:data-root)//tei:back//tei:orig[ft:query(., $query)] |
-                    collection($config:data-root)//tei:body//tei:note//tei:orig[ft:query(., $query)]
+                    collection($config:data-root)//tei:back[.//tei:orig[ft:query(., $query)]] |
+                    collection($config:data-root)//tei:body[.//tei:note//tei:orig[ft:query(., $query)]]
     return
         map {
             "hits":
@@ -149,8 +149,8 @@ declare function query:api-filter-subtype($id as xs:string*, $type as xs:string,
                     collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:msContents/tei:summary/
                         (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[@ref = $id]
                 case "comment" return
-                    collection($config:data-root)//tei:back/
-                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[@ref = $id]
+                    collection($config:data-root)//tei:back[
+                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)/@ref = $id]
                 case "notes" return
                     collection($config:data-root)/(descendant::tei:body|descendant::tei:back)//tei:note/
                         (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[@ref = $id]
@@ -158,12 +158,12 @@ declare function query:api-filter-subtype($id as xs:string*, $type as xs:string,
                     collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:physDesc/tei:sealDesc/tei:seal/tei:persName[@ref = $id]
                 (: Editionstext: body + orig in Kommentar und Fussnoten :)
                 default return
-                    collection($config:data-root)//tei:body/
-                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[@ref = $id] |
-                    collection($config:data-root)//tei:back//tei:orig/
-                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[@ref = $id] |
-                    collection($config:data-root)//tei:body//tei:note//tei:orig/
-                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[@ref = $id]
+                    collection($config:data-root)//tei:body[
+                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)/@ref = $id] |
+                    collection($config:data-root)//tei:back[.//tei:orig/
+                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)/@ref = $id] |
+                    collection($config:data-root)//tei:body[.//tei:note//tei:orig/
+                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)/@ref = $id]
 };
 
 (:~
@@ -211,7 +211,7 @@ declare function query:filter($hits as element()*) {
 };
 
 
-declare function query:highlight($action as xs:string?, $context as element()*, $subtype as xs:string?) {
+declare function query:highlight($action as xs:string?, $context as element()*, $subtype as xs:string?, $sr as xs:string*) {
     if ($action = "search") then
         let $query := session:get-attribute("ssrq.query")
         let $type := session:get-attribute("ssrq.type")
@@ -226,17 +226,14 @@ declare function query:highlight($action as xs:string?, $context as element()*, 
                 $subtypes
         return
             if (exists($subtype)) then
-                let $hits :=
-                    switch ($type)
-                        case "text" return
-                            query:highlight-texts($context, $subtype, $query)
-                        default return
-                            $context
-                return
-                    if (exists($hits)) then
-                        util:expand($hits, "add-exist-id=all")
-                    else
-                        $context
+                switch ($type)
+                    case "text" return
+                        util:expand(query:highlight-texts($context, $subtype, $query), "add-exist-id=all")
+                    default return
+                        let $highlighted := query:highlight-annotations($context, $sr)
+                        let $log := console:log($highlighted)
+                        return
+                            $highlighted
             else
                 $context
     else
@@ -244,7 +241,6 @@ declare function query:highlight($action as xs:string?, $context as element()*, 
 };
 
 declare function query:highlight-texts($context as element()*, $subtypes as xs:string*, $query as xs:string) {
-    console:log($subtypes),
     for $subtype in $subtypes
     return
         switch ($subtype)
@@ -264,6 +260,27 @@ declare function query:highlight-texts($context as element()*, $subtypes as xs:s
                 ()
 };
 
+declare function query:highlight-annotations($nodes as node()*, $ids as xs:string*) {
+    for $node in $nodes
+    return
+        typeswitch($node)
+            case element(tei:persName) | element(tei:placeName) | element(tei:orgName) | element(tei:term) return
+                element { node-name($node) } {
+                    $node/@*,
+                    if ($node/@ref = $ids) then
+                        <exist:match exist:id="{util:node-id($node)}">{ query:highlight-annotations($node/node(), $ids) }</exist:match>
+                    else
+                        query:highlight-annotations($node/node(), $ids)
+                }
+            case element() return
+                element { node-name($node) } {
+                    $node/@*,
+                    query:highlight-annotations($node/node(), $ids)
+                }
+            default return $node
+};
+
+
 (:~
     Output the actual search result as a div, using the kwic module to summarize full text matches.
 :)
@@ -272,7 +289,6 @@ declare
     %templates:default("start", 1)
     %templates:default("per-page", 10)
 function query:show-hits($node as node()*, $model as map(*), $start as xs:integer, $per-page as xs:integer, $view as xs:string?) {
-    console:log("docs: " || count($model?docs)),
     for $hit at $p in subsequence($model("hits"), $start, $per-page)
     let $parent := ($hit/self::tei:body, $hit/ancestor-or-self::tei:div[1])[1]
     let $parent := ($parent, $hit/ancestor-or-self::tei:teiHeader, $hit)[1]
@@ -284,8 +300,11 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
     let $div := query:get-current($config, $parent)
     let $loc :=
         <div class="reference">
-            <h5><span class="number">{$start + $p - 1}</span> Kanton: <span>{query:view-kanton($work)}</span>,
-                Stück: <span>{query:view-idno($work)}</span>, Datum: <span>{query:view-origDate($work)}</span></h5>
+            <h5><span class="number">{$start + $p - 1}</span>
+                <span class="badge">{query:category($hit)}</span>
+                Kanton: <span>{query:view-kanton($work)}</span>,
+                Stück: <span>{query:view-idno($work)}</span>, Datum: <span>{query:view-origDate($work)}</span>
+            </h5>
             <h4>{query:view-header($work, $parent-id)}</h4>
         </div>
     let $expanded :=
@@ -315,12 +334,30 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
             else
                 util:node-id($div)
         let $action := if (exists($model?ids)) then "" else "search"
-        let $config := <config width="60" table="no"
-            link="{$docId}?root={$docLink}&amp;action={$action}&amp;view={$config?view}&amp;odd={$config?odd}#{$matchId}"/>
+        let $config :=
+            if (exists($model?ids)) then
+                let $idList := string-join(for $id in $model?ids return "sr=" || $id, "&amp;")
+                return
+                    <config width="60" table="no"
+                        link="{$docId}?view={$config?view}&amp;action=search&amp;odd={$config?odd}&amp;{$idList}#{$matchId}"/>
+            else
+                <config width="60" table="no"
+                    link="{$docId}?root={$docLink}&amp;action=search&amp;view={$config?view}&amp;odd={$config?odd}#{$matchId}"/>
         return
             kwic:get-summary($expanded, $match, $config)
     )
 };
+
+declare function query:category($hit as element()) {
+    typeswitch($hit)
+        case element(tei:head) return "Titel"
+        case element(tei:summary) return "Regest"
+        case element(tei:note) return "Anmerkung"
+        case element(tei:back) return "Kommentar"
+        case element(tei:seal) return "Siegel"
+        default return "Editionstext"
+};
+
 
 declare function query:view-header($work as element(), $parent-id as xs:string) {
     let $header := $work//tei:teiHeader
@@ -356,9 +393,10 @@ declare function query:expand($nodes as node()*, $ids as xs:string+) {
             case element(tei:term) | element(tei:placeName) | element(tei:persName) | element(tei:orgName) return
                 element { node-name($node) } {
                     $node/@*,
-                    if ($node/@ref = $ids) then
+                    if ($node/@ref = $ids) then (
+                        attribute exist:id { util:node-id($node) },
                         <exist:match>{ query:expand($node/node(), $ids) }</exist:match>
-                    else
+                    ) else
                         query:expand($node/node(), $ids)
                 }
             case element() return

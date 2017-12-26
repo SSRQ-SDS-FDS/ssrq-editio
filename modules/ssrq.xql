@@ -225,11 +225,11 @@ declare %private function app:show-if-exists($node as node(), $test as node()*, 
         ()
 };
 
-declare function app:header-short($node as node(), $model as map(*), $action as xs:string?) {
+declare function app:header-short($node as node(), $model as map(*), $action as xs:string?, $sr as xs:string*) {
     let $head := root($model?data)//tei:teiHeader//tei:msDesc/tei:head
     return
         app:show-if-exists($node, $head, function() {
-            $pm-config:web-transform(query:highlight($action, $head, "title"), map { "root": $head }, $config:odd)
+            $pm-config:web-transform(query:highlight($action, $head, "title", $sr), map { "root": $head }, $config:odd)
         })
 };
 
@@ -256,19 +256,19 @@ declare function app:origDate($node as node(), $model as map(*)) {
 
 
 
-declare function app:comment($node as node(), $model as map(*), $action as xs:string?) {
+declare function app:comment($node as node(), $model as map(*), $action as xs:string?, $sr as xs:string*) {
     let $back := root($model?data)//tei:back
     return
         app:show-if-exists($node, $back, function() {
-            templates:process($node/node(), map:merge(($model, map { "data": query:highlight($action, $back, "comment") })))
+            templates:process($node/node(), map:merge(($model, map { "data": query:highlight($action, $back, "comment", $sr) })))
         })
 };
 
-declare function app:regest($node as node(), $model as map(*), $action as xs:string?) {
+declare function app:regest($node as node(), $model as map(*), $action as xs:string?, $sr as xs:string*) {
     let $regest := root($model?data)//tei:teiHeader//tei:msContents/tei:summary
     return
         app:show-if-exists($node, $regest, function() {
-            templates:process($node/node(), map:merge(($model, map { "data": query:highlight($action, $regest, "regest") })))
+            templates:process($node/node(), map:merge(($model, map { "data": query:highlight($action, $regest, "regest", $sr) })))
         })
 };
 

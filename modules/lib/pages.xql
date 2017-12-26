@@ -217,10 +217,10 @@ declare function pages:xml-link($node as node(), $model as map(*), $source as xs
 
 declare
     %templates:default("action", "browse")
-function pages:view($node as node(), $model as map(*), $action as xs:string) {
+function pages:view($node as node(), $model as map(*), $action as xs:string, $sr as xs:string*) {
     let $view := pages:determine-view($model?config?view, $model?data)
     let $data :=
-        if ($action = "search" and exists(session:get-attribute("apps.simple.query"))) then
+        if ($action = "search" and exists(session:get-attribute("ssrq.query"))) then
             let $div :=
                 if ($model?data instance of element(tei:pb)) then
                     let $nextPage := $model?data/following::tei:pb[1]
@@ -231,7 +231,7 @@ function pages:view($node as node(), $model as map(*), $action as xs:string) {
                             ($model?data/ancestor::tei:div, $model?data/ancestor::tei:body)[1]
                 else
                     $model?data
-            let $expanded := query:highlight($action, $div, ())
+            let $expanded := query:highlight($action, $div, "edition", $sr)
             return
                 if ($model?data instance of element(tei:pb)) then
                     $expanded//tei:pb[@exist:id = util:node-id($model?data)]
