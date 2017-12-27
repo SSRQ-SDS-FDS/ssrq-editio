@@ -61,6 +61,10 @@ declare function pmf:display-sigle($id as xs:string?) {
         $components[1] || " " || $components[2] || "/" || $components[3]
 };
 
+declare function pmf:format-date($when as xs:string) {
+    pmf:format-date($when, (session:get-attribute("ssrq.lang"), "de")[1] || "_CH")
+};
+
 declare function pmf:format-date($when as xs:string, $language as xs:string?) {
     text {
         try {

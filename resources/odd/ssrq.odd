@@ -127,11 +127,11 @@
                 <elementSpec ident="origDate" mode="add">
                     <model predicate="$parameters?header='short'" behaviour="inline">
                         <desc>Called to output the sigle of a document</desc>
-                        <param name="content" value="format-date(xs:date(@when), '[Y] [MNn] [D01]', 'de_CH', (), ())"/>
+                        <param name="content" value="format-date(xs:date(@when), '[Y] [MNn] [D01]', (session:get-attribute('ssrq.lang'), 'de')[1] || '_CH', (), ())"/>
                     </model>
                     <model behaviour="alternate">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('origDate'), ': ', ec:format-date(@when, 'de_CH'))"/>
+                        <param name="alternate" value="(ec:label('origDate'), ': ', ec:format-date(@when))"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="add" mode="change">
@@ -703,16 +703,16 @@
                 <elementSpec ident="date" mode="change">
                     <model output="web" predicate="@when and @type" behaviour="alternate" cssClass="semantic">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('date'), ': ', ec:format-date(@when, 'de_CH'), ' (', ec:translate(@type, 0, ()), ')')"/>
+                        <param name="alternate" value="(ec:label('date'), ': ', ec:format-date(@when), ' (', ec:translate(@type, 0, ()), ')')"/>
 
                     </model>
                     <model output="web" predicate="@when and @calendar" behaviour="alternate" cssClass="semantic">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('date'), ': ', ec:format-date(@when, 'de_CH'), ' (', ec:translate(@calendar, 0, ()), ')')"/>
+                        <param name="alternate" value="(ec:label('date'), ': ', ec:format-date(@when), ' (', ec:translate(@calendar, 0, ()), ')')"/>
                     </model>
                     <model output="web" predicate="@when" behaviour="alternate" cssClass="semantic">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('date'), ': ', ec:format-date(@when, 'de_CH'))"/>
+                        <param name="alternate" value="(ec:label('date'), ': ', ec:format-date(@when))"/>
                     </model>
                     <model output="web" predicate="@period" behaviour="alternate" cssClass="semantic">
                         <param name="default" value="."/>
