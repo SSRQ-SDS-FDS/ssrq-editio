@@ -40,10 +40,8 @@ declare function app:switch-view($node as node(), $model as map(*), $odd as xs:s
 declare function app:list-places($node as node(), $model as map(*)) {
     let $places := root($model?data)//(tei:placeName[@ref]|tei:origPlace[@ref])
     where exists($places)
-    return (
-        <h3 class="place">Orte</h3>,
-        <ul class="places">
-        {
+    return map {
+        "items":
             for $place in $places
             group by $ref := replace($place/@ref, "^([^\.]+).*$", "$1")
             order by $place[1] collation "?lang=de_CH"
@@ -51,18 +49,14 @@ declare function app:list-places($node as node(), $model as map(*)) {
                 <li data-ref="{$ref}">
                     <a target="_new" href="https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$ref}">{$place[1]/string()}</a>
                 </li>
-        }
-        </ul>
-    )
+    }
 };
 
 declare function app:list-keys($node as node(), $model as map(*)) {
     let $keywords := root($model?data)//tei:term[starts-with(@ref, 'key')]
     where exists($keywords)
-    return (
-        <h3 class="term">Schlagworte</h3>,
-        <ul class="keywords">
-        {
+    return map {
+        "items":
             for $lemma in $keywords
             group by $ref := replace($lemma/@ref, "^([^\.]+).*$", "$1")
             order by $lemma[1] collation "?lang=de_CH"
@@ -73,17 +67,14 @@ declare function app:list-keys($node as node(), $model as map(*)) {
                     {$lemma[1]/string()}
                     </a>
                 </li>
-        }</ul>
-    )
+    }
 };
 
 declare function app:list-lemmata($node as node(), $model as map(*)) {
     let $lemmata := root($model?data)//tei:term[starts-with(@ref, 'lem')]
     where exists($lemmata)
-    return (
-        <h3 class="term">Lemmata</h3>,
-        <ul class="lemmata">
-        {
+    return map {
+        "items":
             for $lemma in $lemmata
             group by $ref := replace($lemma/@ref, "^([^\.]+).*$", "$1")
             order by $lemma[1] collation "?lang=de_CH"
@@ -94,17 +85,14 @@ declare function app:list-lemmata($node as node(), $model as map(*)) {
                         {$lemma[1]/string()}
                     </a>
                 </li>
-        }</ul>
-    )
+    }
 };
 
 declare function app:list-persons($node as node(), $model as map(*)) {
     let $persons := root($model?data)//tei:persName[@ref]
     where exists($persons)
-    return (
-        <h3 class="person">Personen</h3>,
-        <ul class="persons">
-        {
+    return map {
+        "items":
             for $person in $persons
             group by $ref := replace($person/@ref, "^(per\d+)\w*$", "$1")
             order by $person[1] collation "?lang=de_CH"
@@ -115,17 +103,14 @@ declare function app:list-persons($node as node(), $model as map(*)) {
                         {$person[1]/text()}
                     </a>
                 </li>
-        }</ul>
-    )
+    }
 };
 
 declare function app:list-organizations($node as node(), $model as map(*)) {
     let $organizations := root($model?data)//tei:orgName[@ref]
     where exists($organizations)
-    return (
-        <h3 class="organization">Organisationen</h3>,
-        <ul class="organizations">
-        {
+    return map {
+        "items":
             for $organization in $organizations
             group by $ref := replace($organization/@ref, "^([^\.]+).*$", "$1")
             order by $organization[1] collation "?lang=de_DE"
@@ -136,8 +121,13 @@ declare function app:list-organizations($node as node(), $model as map(*)) {
                         {$organization[1]/text()}
                     </a>
                 </li>
-        }</ul>
-    )
+    }
+};
+
+declare
+    %templates:wrap
+function app:show-list-items($node as node(), $model as map(*)) {
+    $model?items
 };
 
 (:~
@@ -183,7 +173,7 @@ declare function app:list-works($node as node(), $model as map(*), $filter as xs
             ($kanton, "ZH")[1]
     let $sessionData :=
         if ($useSession) then
-            session:get-attribute("simple.works")
+            session:get-attribute("ssrq.works")
         else
             session:clear()
     let $filtered :=
@@ -203,10 +193,10 @@ declare function app:list-works($node as node(), $model as map(*), $filter as xs
         else
             collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $kanton || "_")]
     return (
-        session:set-attribute("simple.works", $filtered),
-        session:set-attribute("browse", $browse),
-        session:set-attribute("filter", $filter),
-        session:set-attribute("kanton", $kanton),
+        session:set-attribute("ssrq.works", $filtered),
+        session:set-attribute("ssrq.browse", $browse),
+        session:set-attribute("ssrq.filter", $filter),
+        session:set-attribute("ssrq.kanton", $kanton),
         map {
             "all" : $filtered,
             "mode": "browse"

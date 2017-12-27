@@ -69,11 +69,11 @@
     <msg key="paper">Papier</msg>
     <msg key="parchment">Pergament</msg>
     <msg key="text">Volltext</msg>
-    <msg key="person">Personen</msg>
-    <msg key="organisation">Organisationen</msg>
-    <msg key="places">Orte</msg>
+    <msg key="person">Personnes</msg>
+    <msg key="organisation">Organisations</msg>
+    <msg key="places">Lieux</msg>
     <msg key="lemma">Lemma</msg>
-    <msg key="keywords">Schlagworte</msg>
+    <msg key="keywords">Termes</msg>
     <msg key="genre">Textgattung</msg>
     <msg key="searchText">durchsuche Bearbeitungstext</msg>
     <msg key="title">Titel</msg>

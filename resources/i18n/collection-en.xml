@@ -63,10 +63,10 @@
     <msg key="language">Language</msg>
     <msg key="period">Period</msg>
     <msg key="archive">Archive</msg>
-    <msg key="origPlace">Place of Issue</msg>
+    <msg key="origPlace">Place of Issuance</msg>
     <msg key="scribe">Scribe</msg>
     <msg key="seal">Seal</msg>
-    <msg key="filliation">Filliation</msg>
+    <msg key="filliation">Filiation</msg>
     <msg key="paper">Paper</msg>
     <msg key="parchment">Parchment</msg>
     <msg key="text">Full Text</msg>
@@ -76,19 +76,19 @@
     <msg key="lemma">Lemma</msg>
     <msg key="keywords">Keywords</msg>
     <msg key="genre">Genre</msg>
-    <msg key="searchText">search Bearbeitungstext</msg>
+    <msg key="searchText">Search Secondary Text</msg>
     <msg key="title">Title</msg>
     <msg key="regest">Regest</msg>
     <msg key="comment">Comments</msg>
     <msg key="notes">Notes</msg>
-    <msg key="searchEdition">search Editionstext</msg>
-    <msg key="filters">Filters and Facetts</msg>
-    <msg key="canton">Kanton</msg>
+    <msg key="searchEdition">Search Edition Text</msg>
+    <msg key="filters">Filters and Facets</msg>
+    <msg key="canton">Canton</msg>
     <msg key="section">Section</msg>
     <msg key="loading">loading</msg>
-    <msg key="describe">Stückbeschreibung</msg>
-    <msg key="addFill">Additional Filliations</msg>
-    <msg key="editionText">Text of Edition</msg>
+    <msg key="describe">Metadata</msg>
+    <msg key="addFill">Additional Filiations</msg>
+    <msg key="editionText">Edition Text</msg>
 
 
 </catalogue>
