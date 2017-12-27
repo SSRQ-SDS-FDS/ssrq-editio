@@ -64,6 +64,9 @@ function query:query($node as node()*, $model as map(*), $type as xs:string, $su
             }
 };
 
+(:~
+ : Editionstext durchsuchen
+ :)
 declare function query:query-texts($subtypes as xs:string*, $query as xs:string) {
     let $hits :=
         for $subtype in $subtypes
@@ -94,7 +97,9 @@ declare function query:query-texts($subtypes as xs:string*, $query as xs:string)
         }
 };
 
-
+(:~
+ : Sachregister durchsuchen über externe API
+ :)
 declare function query:query-api($type as xs:string, $subtypes as xs:string*, $query as xs:string) as map(*) {
     let $url :=
         switch ($type)
@@ -135,6 +140,9 @@ declare function query:query-api($type as xs:string, $subtypes as xs:string*, $q
             console:log($response[1])
 };
 
+(:~
+ : Filter search result depending on subtype. All filters are applied in sequence.
+ :)
 declare function query:api-filter-subtype($id as xs:string*, $type as xs:string, $subtypes as xs:string*) {
     if ($type = "keywords") then
         collection($config:data-root)/tei:TEI[tei:teiHeader/tei:profileDesc/tei:textClass/tei:keywords/tei:term/@ref = $id]//tei:body
@@ -210,7 +218,9 @@ declare function query:filter($hits as element()*) {
     })
 };
 
-
+(:~
+ : Highlight matches when viewing document after search.
+ :)
 declare function query:highlight($action as xs:string?, $context as element()*, $subtype as xs:string?, $sr as xs:string*) {
     if ($action = "search") then
         let $query := session:get-attribute("ssrq.query")
@@ -239,6 +249,9 @@ declare function query:highlight($action as xs:string?, $context as element()*, 
         $context
 };
 
+(:~
+ : Highlight fulltext matches
+ :)
 declare function query:highlight-texts($context as element()*, $subtypes as xs:string*, $query as xs:string) {
     for $subtype in $subtypes
     return
@@ -261,6 +274,9 @@ declare function query:highlight-texts($context as element()*, $subtypes as xs:s
                 ()
 };
 
+(:~
+ : Highlight places, persons, terms ...
+ :)
 declare function query:highlight-annotations($nodes as node()*, $ids as xs:string*) {
     for $node in $nodes
     return
@@ -387,6 +403,10 @@ declare function query:view-origDate($work as element()) {
         format-date(xs:date($origDate), '[Y] [MNn] [D01]')
 };
 
+(:~
+ : Wrap terms, places or persons found via external API search into an exist:match so they are shown
+ : in the kwic display.
+ :)
 declare function query:expand($nodes as node()*, $ids as xs:string+) {
     for $node in $nodes
     return
@@ -441,26 +461,4 @@ declare function query:period-range($node as node(), $model as map(*)) {
             "min": min($dates),
             "max": max($dates)
         }
-};
-
-declare
-    %templates:wrap
-function query:condition-select($node as node(), $model as map(*), $filter-condition as xs:string?) {
-    <option></option>,
-    let $context :=
-        if ($model?hits) then
-            $model?hits ! root(.)
-        else
-            collection($config:data-root)
-    for $condition in distinct-values($context//tei:teiHeader//tei:msDesc/tei:physDesc/tei:objectDesc/tei:supportDesc/tei:condition)
-    return
-        <option>
-        {
-            if ($condition = $filter-condition) then
-                attribute selected { "selected" }
-            else
-                (),
-            $condition
-        }
-        </option>
 };
