@@ -23,4 +23,8 @@ $(function () {
         $('#bearbeitungstext').prop('checked', true);
         $(".bearbeitungstext").prop('checked', true);
     }
+
+    $('mark').each(function() {
+        $(this).parents('.collapse').collapse('show');
+    });
 });
