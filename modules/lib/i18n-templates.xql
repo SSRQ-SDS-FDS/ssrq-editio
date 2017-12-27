@@ -15,10 +15,11 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
  :)
 declare function intl:translate($node as node(), $model as map(*), $lang as xs:string?, $catalogues as xs:string?) {
     let $lang :=
-        if ($model?data) then
-            (root($model?data)/*/@xml:lang, $lang)[1]
-        else
+        if ($lang) then (
+            session:set-attribute("ssrq.lang", $lang),
             $lang
+        ) else
+            (session:get-attribute("ssrq.lang"), "de")[1]
     let $cpath :=
         (: if path to catalogues is relative, resolve it relative to the app root :)
         if (starts-with($catalogues, "/")) then
