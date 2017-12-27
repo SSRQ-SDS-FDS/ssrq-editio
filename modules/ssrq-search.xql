@@ -186,7 +186,7 @@ declare function query:filter($hits as element()*) {
                     case "filter-language" return
                         $context[ancestor-or-self::tei:TEI/@xml:lang = $value]
                     case "filter-condition" return
-                        $context[ancestor-or-self::tei:TEI//tei:supportDesc/tei:condition = $value]
+                        $context[ancestor-or-self::tei:TEI//tei:supportDesc/tei:condition[ft:query(., $value)]]
                     case "filter-material" return
                         $context[ancestor-or-self::tei:TEI//tei:support/tei:material = $value]
                     case "filter-seal" return
