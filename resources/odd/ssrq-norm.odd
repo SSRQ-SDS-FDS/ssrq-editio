@@ -35,17 +35,17 @@
                         <model predicate="not(@*)" behaviour="alternate" cssClass="pb-norm pb-empty">
                             <desc>Show tooltip on pagebreaks that don't contain attributes</desc>
                             <param name="default" value="'|'"/>
-                            <param name="alternate" value="text{'Seitenumbruch'}"/>
+                            <param name="alternate" value="ec:label('pb')"/>
                         </model>
                         <model predicate="number(@n) gt 0" behaviour="alternate" cssClass="pb-norm pb-pagination">
                             <desc>Show pagebreak with a label, if pb contains a @n attribute and its value only contains a number</desc>
                             <param name="default" value="@n"/>
-                            <param name="alternate" value="text{'Seitenumbruch'}"/>
+                            <param name="alternate" value="ec:label('pb')"/>
                         </model>
                         <model behaviour="alternate" cssClass="pb-norm pb-foliation">
                             <desc>Show pagebreak with a label, if pb contains a @n attribute and its value contains a number+string combination</desc>
                             <param name="default" value="@n"/>
-                            <param name="alternate" value="text{'Seitenumbruch'}"/>
+                            <param name="alternate" value="ec:label('pb')"/>
                         </model>
                     </modelSequence>
                     <modelGrp output="print">
@@ -55,17 +55,17 @@
                         <model predicate="not(@*)" behaviour="alternate" cssClass="pb-norm pb-empty">
                             <desc>Show tooltip on pagebreaks that don't contain attributes</desc>
                             <param name="default" value="'|'"/>
-                            <param name="alternate" value="text{'Seitenumbruch'}"/>
+                            <param name="alternate" value="ec:label('pb')"/>
                         </model>
                         <model predicate="number(@n) gt 0" behaviour="alternate" cssClass="pb-norm pb-pagination">
                             <desc>Show pagebreak with a label, if pb contains a @n attribute and its value only contains a number</desc>
                             <param name="default" value="@n"/>
-                            <param name="alternate" value="text{'Seitenumbruch'}"/>
+                            <param name="alternate" value="ec:label('pb')"/>
                         </model>
                         <model behaviour="alternate" cssClass="pb-norm pb-foliation">
                             <desc>Show pagebreak with a label, if pb contains a @n attribute and its value contains a number+string combination</desc>
                             <param name="default" value="@n"/>
-                            <param name="alternate" value="text{'Seitenumbruch'}"/>
+                            <param name="alternate" value="ec:label('pb')"/>
                         </model>
                     </modelGrp>
                 </elementSpec>
@@ -95,12 +95,14 @@
                     
                     <model predicate="sic and corr" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="sic"/>
-                        <param name="alternate" value="('Korrigiert: ', corr)"/>
+<!--                        <param name="alternate" value="('Korrigiert: ', corr)"/>-->
+                        <param name="alternate" value="(( ec:label('corrected'), ': '), corr)"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="abbr and expan" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="expan[1]"/>
-                        <param name="alternate" value="('In der Vorlage: ', abbr[1])"/>
+<!--                        <param name="alternate" value="('In der Vorlage: ', abbr[1])"/>-->
+                        <param name="alternate" value="(ec:label('gap-in-orig'), ': ', abbr[1])"/>
                     </model>
                     <model predicate="orig and reg" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="reg[1]"/>
@@ -110,12 +112,16 @@
                 <elementSpec ident="subst" mode="change">
                     <model predicate="add/@hand" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="del"/>
-                        <param name="alternate" value="(text{'Streichung, ersetzt '}, ec:translate(add/@place, 0, 'lowercase'), text{' '}, ec:translate(add/@hand, 0, 'lowercase'), text{': '}, add/node())"/>
+<!--                        <param name="alternate" value="(text{'Streichung, ersetzt '}, ec:translate(add/@place, 0, 'lowercase'), text{' '}, ec:translate(add/@hand, 0, 'lowercase'), text{': '}, add/node())"/>-->
+                        <param name="alternate" value="(ec:label('replace-del'), ec:translate(add/@place, 0, 'lowercase'), text{' '}, ec:translate(add/@hand, 0, 'lowercase'), text{': '}, add/node())"/>
+
+
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="add" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="add"/>
-                        <param name="alternate" value="(ec:translate(add/@place, 0, 'uppercase'), text{', ersetzt Streichung: '}, del/node())"/>
+<!--    geändert                    -->
+                        <param name="alternate" value="(ec:translate(add/@place, 0, 'uppercase'), text{', '}, ec:label('replace-del'),text{': '}, del/node())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model behaviour="inline"/>
