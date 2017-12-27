@@ -231,7 +231,6 @@ declare function query:highlight($action as xs:string?, $context as element()*, 
                         util:expand(query:highlight-texts($context, $subtype, $query), "add-exist-id=all")
                     default return
                         let $highlighted := query:highlight-annotations($context, $sr)
-                        let $log := console:log($highlighted)
                         return
                             $highlighted
             else
@@ -245,14 +244,16 @@ declare function query:highlight-texts($context as element()*, $subtypes as xs:s
     return
         switch ($subtype)
             case "title" case "seal" return
-                $context[ft:query(., $query)]
+                $context | $context[ft:query(., $query)]
             case "regest" case "comment" return
-                $context[ft:query(., $query)]
+                $context | $context[ft:query(., $query)]
             case "notes" return
+                $context |
                 $context[./descendant-or-self::tei:body//tei:note[ft:query(., $query)]] |
                 $context[./descendant-or-self::tei:back//tei:note[ft:query(., $query)]]
             (: Editionstext: body + orig in Kommentar und Fussnoten :)
             case "edition" return
+                $context |
                 $context[./descendant-or-self::tei:body[ft:query(., $query)]] |
                 $context[./descendant-or-self::tei:back//tei:orig[ft:query(., $query)]] |
                 $context[./descendant-or-self::tei:body//tei:note//tei:orig[ft:query(., $query)]]
