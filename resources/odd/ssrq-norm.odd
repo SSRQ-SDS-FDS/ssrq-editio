@@ -110,12 +110,12 @@
                 <elementSpec ident="subst" mode="change">
                     <model predicate="add/@hand" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="del"/>
-                        <param name="alternate" value="(text{'Streichung, ersetzt '}, ec:translate(add/@place, 'de', 0, 'lowercase'), text{' '}, ec:translate(add/@hand, 'de', 0, 'lowercase'), text{': '}, add/node())"/>
+                        <param name="alternate" value="(text{'Streichung, ersetzt '}, ec:translate(add/@place, 0, 'lowercase'), text{' '}, ec:translate(add/@hand, 0, 'lowercase'), text{': '}, add/node())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="add" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="add"/>
-                        <param name="alternate" value="(ec:translate(add/@place, 'de', 0, 'uppercase'), text{', ersetzt Streichung: '}, del/node())"/>
+                        <param name="alternate" value="(ec:translate(add/@place, 0, 'uppercase'), text{', ersetzt Streichung: '}, del/node())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model behaviour="inline"/>

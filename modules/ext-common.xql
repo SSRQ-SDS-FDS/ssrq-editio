@@ -17,9 +17,12 @@ declare function pmf:label($id as xs:string) {
     pmf:label($id, true())
 };
 
-
 declare function pmf:label($id as xs:string, $upper as xs:boolean) {
-    let $label := $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = 'de']
+    pmf:label($id, $upper, (session:get-attribute("ssrq.lang"), "de")[1])
+};
+
+declare function pmf:label($id as xs:string, $upper as xs:boolean, $lang as xs:string) {
+    let $label := $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang]
     return
         if ($label) then
             if ($upper) then
@@ -30,11 +33,12 @@ declare function pmf:label($id as xs:string, $upper as xs:boolean) {
             "[Nicht übersetzt]"
 };
 
-declare function pmf:translate($attribute, $lang) {
-    pmf:translate($attribute, $lang, 0, "uppercase")
+declare function pmf:translate($attribute) {
+    pmf:translate($attribute, 0, "uppercase")
 };
 
-declare function pmf:translate($attribute, $lang, $plural, $upper) {
+declare function pmf:translate($attribute, $plural, $upper) {
+    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
     let $element-name := local-name($attribute/..)
     let $attribute-name := local-name($attribute)
     let $value := $attribute/string()
