@@ -19,7 +19,28 @@ declare function intl:translate($node as node(), $model as map(*), $lang as xs:s
             session:set-attribute("ssrq.lang", $lang),
             $lang
         ) else
-            (session:get-attribute("ssrq.lang"), "de")[1]
+            let $sessionLang := session:get-attribute("ssrq.lang")
+            return
+                if ($sessionLang) then
+                    $sessionLang
+                else
+                    let $header := request:get-header("Accept-Language")
+                    let $headerLang :=
+                        if ($header != "") then
+                            let $lang := tokenize($header, "\s*,\s*")
+                            return
+                                replace($lang[1], "^([^-;]+).*$", "$1")
+                        else
+                            "de"
+                    let $lang :=
+                        if ($headerLang = ('de', 'fr', 'it')) then
+                            $headerLang
+                        else
+                            "de"
+                    return (
+                        session:set-attribute("ssrq.lang", $lang),
+                        $lang
+                    )
     let $cpath :=
         (: if path to catalogues is relative, resolve it relative to the app root :)
         if (starts-with($catalogues, "/")) then
