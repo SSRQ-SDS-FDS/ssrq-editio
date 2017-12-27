@@ -301,19 +301,25 @@
     }
 }
 
-#results .reference {
-    color: @color-body-text-default;
-    cursor: default;
+#results {
+    .reference {
+        color: @color-body-text-default;
+        cursor: default;
 
-    h5 {
-        font-family: @font-sans-serif;
-        .number {
-            display: inline;
+        h5 {
+            font-family: @font-sans-serif;
+            .number {
+                display: inline;
+            }
+            .badge {
+                display: inline-block;
+                margin-right: 1em;
+            }
         }
-        .badge {
-            display: inline-block;
-            margin-right: 1em;
-        }
+    }
+    .hi {
+        background-color: #FCEA60;
+        padding: 0 4px;
     }
 }
 #documents .toolbar {
