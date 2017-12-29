@@ -23,7 +23,17 @@
                     </div>
                     <div class="panel-body">
                         <div class="query:query">
-                            <p class="main-content">
+                            <form class="form-inline sort-form">
+                                <label for="sort-select">Sortierung: </label>
+                                <select id="sort-select" name="sort">
+                                    <option value=""><i18n:text key="relevance">Relevanz</i18n:text></option>
+                                    <option value="kanton"><i18n:text key="canton">Kanton</i18n:text></option>
+                                    <option value="id"><i18n:text key="work-id">Stücknummer</i18n:text></option>
+                                    <option value="date"><i18n:text key="orig-date">Datum</i18n:text></option>
+                                    <option value="title"><i18n:text key="title">Titel</i18n:text></option>
+                                </select>
+                            </form>
+                            <p>
                                 <i18n:text key="found">Found</i18n:text>: <span id="hit-count" data-template="browse:hit-count"/>
                             </p><!-- pagination for small device -->
                             <div class="hidden-md hidden-lg hidden-sm">

@@ -76,7 +76,7 @@
     <msg key="keywords">Termes</msg>
     <msg key="genre">Textgattung</msg>
     <msg key="searchText">durchsuche Bearbeitungstext</msg>
-    <msg key="title">Titel</msg>
+    <msg key="title">Titre</msg>
     <msg key="regest">Regest</msg>
     <msg key="comment">Kommentar</msg>
     <msg key="notes">Anmerkungen</msg>
@@ -86,6 +86,9 @@
     <msg key="section">Partie</msg>
     <msg key="loading">es wird geladen</msg>
     <msg key="describe">Stückbeschreibung</msg>
-    <msg key="addFill">Weiter Überlieferungen</msg>
+    <msg key="addFill">Weitere Überlieferungen</msg>
     <msg key="editionText">Editionstext</msg>
+    <msg key="relevance">Relevanz</msg>
+    <msg key="work-id">Stücknummer</msg>
+    <msg key="orig-date">Datation</msg>
 </catalogue>

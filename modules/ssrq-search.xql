@@ -21,15 +21,24 @@ import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions
  :)
 declare
     %templates:default("type", "text")
-function query:query($node as node()*, $model as map(*), $type as xs:string, $subtype as xs:string*, $query as xs:string?, $doc as xs:string*) as map(*) {
+function query:query($node as node()*, $model as map(*), $type as xs:string, $subtype as xs:string*, $query as xs:string?, $doc as xs:string*,
+    $sort as xs:string?) as map(*) {
     if (empty($subtype)) then
-        map {
-            "hits" : session:get-attribute("ssrq"),
-            "ids": session:get-attribute("ssrq.ids"),
-            "hitCount" : session:get-attribute("ssrq.hitCount"),
-            "query" : session:get-attribute("ssrq.query"),
-            "docs": session:get-attribute("ssrq.docs")
-        }
+        let $sortOrder := session:get-attribute("ssrq.sort")
+        return
+            map {
+                "hits" :
+                    if (empty($sort) or $sortOrder = $sort) then
+                        session:get-attribute("ssrq.sort")
+                    else (
+                        query:sort(session:get-attribute("ssrq"), $sort),
+                        session:set-attribute("ssrq.sort", $sort)
+                ),
+                "ids": session:get-attribute("ssrq.ids"),
+                "hitCount" : session:get-attribute("ssrq.hitCount"),
+                "query" : session:get-attribute("ssrq.query"),
+                "docs": session:get-attribute("ssrq.docs")
+            }
     else
         let $hits :=
             if ($query) then
@@ -42,7 +51,7 @@ function query:query($node as node()*, $model as map(*), $type as xs:string, $su
                 "hits": query:filter(collection($config:data-root)/tei:TEI//tei:body)
             }
         let $hitCount := count($hits?hits)
-        let $hitsToShow := if ($hitCount > 1000) then subsequence($hits?hits, 1, 1000) else $hits?hits
+        let $hitsToShow := query:sort($hits?hits, $sort)
         (:Store the result in the session.:)
         let $store := (
             session:set-attribute("ssrq", $hitsToShow),
@@ -51,6 +60,7 @@ function query:query($node as node()*, $model as map(*), $type as xs:string, $su
             session:set-attribute("ssrq.type", $type),
             session:set-attribute("ssrq.subtype", $subtype),
             session:set-attribute("ssrq.docs", $doc),
+            session:set-attribute("ssrq.sort", $sort),
             request:get-parameter-names()[starts-with(., 'filter-')] ! session:set-attribute("ssrq." || ., request:get-parameter(., ()))
         )
         return
@@ -375,6 +385,29 @@ declare function query:category($hit as element()) {
         default return "Editionstext"
 };
 
+declare function query:sort($result as element()*, $sortBy as xs:string?) {
+    let $fn := query:sort-value(?, $sortBy)
+    for $item in $result
+    order by $fn($item)
+    return
+        $item
+};
+
+declare function query:sort-value($item as element(), $sortBy as xs:string?) {
+    switch($sortBy)
+        case "kanton" return
+            replace(root($item)//tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, "^([^_]+).*$", "$1")
+        case "title" return
+            let $header := root($item)//tei:teiHeader
+            return
+                ($header//tei:msDesc/tei:head/string(), $header//tei:titleStmt/tei:title/string())[1]
+        case "id" return
+            root($item)//tei:teiHeader/tei:fileDesc/tei:seriesStmt/tei:idno/@xml:id
+        case "date" return
+            root($item)//tei:teiHeader/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@when/xs:date(.)
+        default return
+            ft:score($item)
+};
 
 declare function query:view-header($work as element(), $parent-id as xs:string) {
     let $header := $work//tei:teiHeader

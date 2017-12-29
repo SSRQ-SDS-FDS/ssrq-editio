@@ -89,6 +89,8 @@
     <msg key="describe">Metadata</msg>
     <msg key="addFill">Additional Filiations</msg>
     <msg key="editionText">Edition Text</msg>
-
+    <msg key="relevance">Relevance</msg>
+    <msg key="work-id">Work id</msg>
+    <msg key="orig-date">Date</msg>
 
 </catalogue>

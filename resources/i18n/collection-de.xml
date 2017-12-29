@@ -90,4 +90,7 @@
     <msg key="describe">Stückbeschreibung</msg>
     <msg key="addFill">Weiter Überlieferungen</msg>
     <msg key="editionText">Editionstext</msg>
+    <msg key="relevance">Relevanz</msg>
+    <msg key="work-id">Stücknummer</msg>
+    <msg key="orig-date">Datum</msg>
 </catalogue>

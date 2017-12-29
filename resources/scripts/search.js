@@ -24,7 +24,16 @@ $(function () {
         $(".bearbeitungstext").prop('checked', true);
     }
 
+    // if there are highlighted search results in the page,
+    // open the corresponding collapsible to make them visible to the user
     $('mark').each(function() {
         $(this).parents('.collapse').collapse('show');
+    });
+
+    $('#sort-select').on('change', function() {
+        var sortBy = $(this).val();
+        console.log("sorting by %s", sortBy);
+        var href = window.location.href.replace(/&sort=\w+/, '');
+        window.location.replace(href + '&sort=' + sortBy);
     });
 });
