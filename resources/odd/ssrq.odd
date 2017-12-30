@@ -742,7 +742,7 @@
                 <elementSpec ident="msDesc" mode="add">
                     <desc>Stückbeschreibung ausgeben</desc>
                     <model behaviour="list">
-                        <param name="content" value="(msIdentifier,msContents/msItem,physDesc/objectDesc/supportDesc,physDesc/sealDesc)"/>
+                        <param name="content" value="(msIdentifier,msContents/msItem,physDesc/objectDesc/supportDesc,physDesc)"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="msIdentifier">
@@ -765,6 +765,11 @@
                         <param name="content" value="(ec:label('other-source'), ': ', .)"/>
                     </model>
                 </elementSpec>
+                <elementSpec ident="physDesc">
+                    <model behaviour="listItem">
+                        <param name="content" value="sealDesc"/>
+                    </model>
+                </elementSpec>
                 <elementSpec ident="supportDesc">
                     <modelSequence>
                         <model behaviour="listItem">
@@ -782,7 +787,7 @@
                 </elementSpec>
                 <elementSpec ident="dimensions">
                     <model predicate="@type = 'leaves'" behaviour="inline">
-                        <param name="content" value="(ec:label('format'), '(cm)', string-join((width/@quantity,height/@quantity), 'x') )"/>
+                        <param name="content" value="(ec:label('format'), ' (cm) ', string-join((width/@quantity,height/@quantity), 'x') )"/>
                         
                     </model>
                     <model predicate="@type = 'plica'" behaviour="inline">
@@ -790,16 +795,14 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="sealDesc">
-                    <model behaviour="listItem">
-                        <modelSequence>
-                            <model behaviour="inline">
-                                <param name="content" value="(count(seal), ' ', ec:label('sigle'), ':')"/>
-                            </model>
-                            <model behaviour="list">
-                                <param name="type" value="'ordered'"/>
-                            </model>
-                        </modelSequence>
-                    </model>
+                    <modelSequence>
+                        <model behaviour="inline">
+                            <param name="content" value="(count(seal), ' ', ec:label('sigle'), ':')"/>
+                        </model>
+                        <model behaviour="list">
+                            <param name="type" value="'ordered'"/>
+                        </model>
+                    </modelSequence>
                 </elementSpec>
                 <elementSpec ident="seal">
                     <model behaviour="listItem">
