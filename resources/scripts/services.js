@@ -7,13 +7,16 @@ $(document).ready(function() {
     var PERSON_API = HOST + "/persons-db-api/";
 
     function updateSpans(key, label) {
-        var spans = $("span[data-ref^='" + key + "']").filter(function(i, span) {
+        function filterSpan(i, span) {
             var ref = $(span).attr('data-ref');
             if (ref === key) {
                 return true;
             }
             return /^[\.a-zA-Z]/.test(ref.substring(key.length));
-        });
+        }
+        var scribeSpans = $(".scribe[data-ref^='" + key + "']").filter(filterSpan);
+        var spans = $(".ref[data-ref^='" + key + "']").filter(filterSpan);
+        scribeSpans.text(' ' + label);
         spans.text(': ' + label);
     }
 

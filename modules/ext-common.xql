@@ -9,6 +9,22 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
+declare function pmf:scribe($scribe as attribute()?) {
+    if ($scribe) then
+        if (starts-with($scribe, 'per')) then
+            <span class="scribe" data-ref="{$scribe}"/>
+        else
+            let $n := number($scribe)
+            return
+                if ($n = 1) then
+                    ' ' || pmf:label('scribe1')
+                else
+                    ' ' || pmf:label('scribe2') || ' ' || $n - 1
+    else
+        ()
+};
+
+
 declare function pmf:span($content) {
     <span class="description">{$content}</span>
 };
@@ -38,21 +54,24 @@ declare function pmf:translate($attribute) {
 };
 
 declare function pmf:translate($attribute, $plural, $upper) {
-    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
-    let $element-name := local-name($attribute/..)
-    let $attribute-name := local-name($attribute)
-    let $value := $attribute/string()
-    let $label:=
-        if($plural > 1) then
-            $config:schema-odd//tei:elementSpec[@ident=$element-name]//tei:attDef[@ident=$attribute-name]//tei:valItem[@ident=$value]/tei:desc[@xml:lang=$lang][@type="plural"]/string()
-        else
-            $config:schema-odd//tei:elementSpec[@ident=$element-name]//tei:attDef[@ident=$attribute-name]//tei:valItem[@ident=$value]/tei:desc[@xml:lang=$lang][1]/string()
-    return
-    switch ($upper)
-        case "uppercase"
-            return text{upper-case(substring($label,1,1)) || substring($label,2)}
-        default
-            return text{$label}
+    if ($attribute) then
+        let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
+        let $element-name := local-name($attribute/..)
+        let $attribute-name := local-name($attribute)
+        let $value := $attribute/string()
+        let $label:=
+            if($plural > 1) then
+                $config:schema-odd//tei:elementSpec[@ident=$element-name]//tei:attDef[@ident=$attribute-name]//tei:valItem[@ident=$value]/tei:desc[@xml:lang=$lang][@type="plural"]/string()
+            else
+                $config:schema-odd//tei:elementSpec[@ident=$element-name]//tei:attDef[@ident=$attribute-name]//tei:valItem[@ident=$value]/tei:desc[@xml:lang=$lang][1]/string()
+        return
+        switch ($upper)
+            case "uppercase"
+                return text{upper-case(substring($label,1,1)) || substring($label,2)}
+            default
+                return text{$label}
+    else
+        ()
 };
 
 declare function pmf:display-sigle($id as xs:string?) {

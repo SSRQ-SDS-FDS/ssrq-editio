@@ -4703,6 +4703,15 @@
                             <desc xml:lang="de">ersetzt Streichung</desc>
                             <desc xml:lang="fr">remplace une suppression</desc>
                         </valItem>
+                        <valItem ident="scribe1">
+                            <desc xml:lang="de">Anlagehand</desc>
+                        </valItem>
+                        <valItem ident="scribe2">
+                            <desc xml:lang="de">Nachtragshand</desc>
+                        </valItem>
+                        <valItem ident="by">
+                            <desc xml:lang="de">von </desc>
+                        </valItem>
                     </valList>
                 </dataSpec>
             </schemaSpec>

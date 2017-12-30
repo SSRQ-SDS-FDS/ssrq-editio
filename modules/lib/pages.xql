@@ -26,7 +26,7 @@ module namespace pages="http://www.tei-c.org/tei-simple/pages";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace expath="http://expath.org/ns/pkg";
 
-import module namespace templates="http://exist-db.org/xquery/templates";
+import module namespace templates="http://exist-db.org/xquery/templates" at "../templates.xql";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../pm-config.xql";
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
@@ -111,6 +111,7 @@ function pages:load($node as node(), $model as map(*), $doc as xs:string, $root 
 declare function pages:load-xml($view as xs:string?, $root as xs:string?, $doc as xs:string) {
     let $data := pages:get-document($doc)
     let $config := tpu:parse-pi(root($data), $view)
+    let $log := console:log("view: " || $config?view)
     return
         map {
             "config": $config,
@@ -122,7 +123,7 @@ declare function pages:load-xml($view as xs:string?, $root as xs:string?, $doc a
                             return
                                 $node/ancestor-or-self::tei:div[count(ancestor::tei:div) < $config:pagination-depth][1]
                         else
-                            let $div := ($data//tei:body)[1]
+                            let $div := ($data//tei:div)[1]
                             return
                                 if ($div) then
                                     $div
@@ -179,7 +180,8 @@ declare function pages:single-page-link($node as node(), $model as map(*), $doc 
 declare function pages:edit-odd-link($node as node(), $model as map(*)) {
     element { node-name($node) } {
         $node/@* except $node/@href,
-        attribute href { $pages:EDIT_ODD_LINK || "?odd=" || $config:odd || "&amp;root=" || $config:odd-root },
+        attribute href { $pages:EDIT_ODD_LINK || "?odd=" || $config:odd || "&amp;root=" || $config:odd-root ||
+            "&amp;output-root=" || $config:output-root },
         $node/node()
     }
 };

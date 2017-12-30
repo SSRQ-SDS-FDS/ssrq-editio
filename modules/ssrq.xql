@@ -2,7 +2,7 @@ xquery version "3.1";
 
 module namespace app="http://existsolutions.com/ssrq/app";
 
-import module namespace templates="http://exist-db.org/xquery/templates";
+import module namespace templates="http://exist-db.org/xquery/templates" at "templates.xql";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xql";
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
@@ -89,18 +89,20 @@ declare function app:list-lemmata($node as node(), $model as map(*)) {
 };
 
 declare function app:list-persons($node as node(), $model as map(*)) {
-    let $persons := root($model?data)//tei:persName[@ref]
+    let $persons :=
+        root($model?data)//tei:persName/@ref |
+        root($model?data)//@scribe[starts-with(., 'per')]
     where exists($persons)
     return map {
         "items":
             for $person in $persons
-            group by $ref := replace($person/@ref, "^(per\d+)\w*$", "$1")
-            order by $person[1] collation "?lang=de_CH"
+            group by $ref := replace($person, "^(per\d+)\w*$", "$1")
+            order by $person[1]/../string() collation "?lang=de_CH"
             return
                 <li data-ref="{$ref}">
                     <a target="_new"
-                        href="https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$person[1]/@ref}">
-                        {$person[1]/text()}
+                        href="https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$person[1]}">
+                        {$person[1]/../text()}
                     </a>
                 </li>
     }
