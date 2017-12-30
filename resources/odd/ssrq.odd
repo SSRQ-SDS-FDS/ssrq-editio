@@ -170,15 +170,22 @@
                         <param name="type" value="'text-critical-start'"/>
                     </model>
                     <model behaviour="inline" cssClass="text-critical">
-                        <outputRendition>color: green; text-decoration: underline;</outputRendition>
+                        <outputRendition>
+                            color: green; text-decoration: underline;
+                        </outputRendition>
                     </model>
                 </elementSpec>
                 <elementSpec ident="del" mode="change">
+                    <model predicate="add" behaviour="note">
+                        <param name="content" value="(ec:label('del-add'), string-join((ec:translate(add/@place, 0, 'lowercase'), ec:translate(add/@hand, 0, 'lowercase'), ec:translate(add/@rend, 0, 'lowercase'), ec:translate(add/@type, 0, 'lowercase')), ' '), text{': '}, add/node())"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
                     <model predicate="parent::subst" behaviour="inline"/>
-                    <model predicate="gap" behaviour="note">
+                    <model predicate="gap" behaviour="alternote">
                         <param name="place" value="&#34;footnote&#34;"/>
                         <param name="type" value="'text-critical'"/>
-                        <param name="content" value="(ec:translate(@rend), ' ', ec:label('del-gap', false()), ' (', gap/@quantity,' ', ec:translate(gap/@unit,0,()),')')"/>
+                        <param name="alternate" value="(ec:translate(@rend), ' ', ec:label('del-gap', false()), ' (', gap/@quantity,' ', ec:translate(gap/@unit,0,()),')')"/>
+                        <param name="content" value="'[...]'"/>
                     </model>
                     <model predicate="unclear" behaviour="note">
                         <param name="place" value="&#34;footnote&#34;"/>
@@ -188,7 +195,7 @@
                     <model predicate="@hand and @rend" behaviour="note">
                         <param name="place" value="&#34;footnote&#34;"/>
                         <param name="type" value="'text-critical'"/>
-                        <param name="content" value="(ec:translate(@rend),ec:translate(@hand),': ',.)"/>
+                        <param name="content" value="(ec:translate(@rend), ', ', ec:translate(@hand, 0, ()),': ',.)"/>
                     </model>
                     <model predicate="@hand" behaviour="note">
                         <param name="place" value="&#34;footnote&#34;"/>

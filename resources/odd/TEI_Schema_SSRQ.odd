@@ -4576,6 +4576,9 @@
                             <desc xml:lang="de">Streichung</desc>
                             <desc xml:lang="fr">Suppression</desc>
                         </valItem>
+                        <valItem ident="del-add">
+                            <desc xml:lang="de">Streichung der Hinzufügung</desc>
+                        </valItem>
                         <valItem ident="unreadable">
                             <desc xml:lang="de">unlesbar</desc>
                             <desc xml:lang="fr">illisible</desc>
