@@ -269,10 +269,10 @@
                     </model>
 <!-- hand and place #68   -->
                      <model predicate="add" behaviour="alternote" cssClass="text-critical">
-                        <param name="content" value="'[...]'"/>
+                        <param name="content" value="add/node()"/>
                         <param name="place" value="&#34;footnote&#34;"/>
                         <param name="type" value="'text-critical'"/>
-                        <param name="alternate" value="ec:translate(@agent)"/>
+                         <param name="alternate" value="(ec:translate(@agent), ', ', ec:span((ec:label('add'), ' ', string-join((ec:translate(add/@place, 0, 'lowercase'), ec:translate(add/@hand, 0, 'lowercase'), ec:translate(add/@rend, 0, 'lowercase'), ec:translate(add/@type, 0, 'lowercase')), ' '))))"/>
                     </model>
                     <model behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="'[...]'"/>
