@@ -199,17 +199,6 @@
                     <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="delSpan" mode="change">
-                    <model predicate="parent::subst" behaviour="inline"/>
-                    <model predicate="gap" behaviour="note">
-                        <param name="place" value="&#34;footnote&#34;"/>
-                        <param name="type" value="'text-critical-start'"/>
-                        <param name="content" value="(ec:translate(@rend),' ', ec:label('del-gap', false()),' (',gap/@quantity,' ', ec:translate(gap/@unit,0,()),')')"/>
-                    </model>
-                    <model predicate="unclear" behaviour="note">
-                        <param name="place" value="&#34;footnote&#34;"/>
-                        <param name="type" value="'text-critical-start'"/>
-                        <param name="content" value="(ec:translate(@rend),', ', ec:label('unclear-rdg', false()))"/>
-                    </model>
                     <model predicate="@hand and @rend" behaviour="note">
                         <param name="place" value="&#34;footnote&#34;"/>
                         <param name="type" value="'text-critical-start'"/>
@@ -230,7 +219,6 @@
                         <param name="type" value="'text-critical-start'"/>
                         <param name="content" value="ec:label('del')"/>
                     </model>
-                    <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="damage" mode="add">
                     <model predicate="gap" behaviour="alternote" cssClass="text-critical">
@@ -270,22 +258,13 @@
                         <param name="alternate" value="ec:translate(@agent)"/>
                     </model>
                 </elementSpec>
-                <elementSpec ident="damageSpan" mode="add">
-                    <model predicate="gap" behaviour="note">
+                <elementSpec ident="damageSpan" mode="change">
+                    <model predicate="@agent" behaviour="note">
                         <param name="place" value="&#34;footnote&#34;"/>
                         <param name="type" value="'text-critical-start'"/>
-                        <param name="content" value="(ec:translate(@agent),' ', ec:label('del-gap', false()), '(', gap/@quantity, ec:translate(gap/@unit), ')')"/>
+                        <param name="content" value="ec:translate(@agent)"/>
                     </model>
-                    <model predicate="unclear" behaviour="note">
-                        <param name="place" value="&#34;footnote&#34;"/>
-                        <param name="type" value="'text-critical-start'"/>
-                        <param name="content" value="(ec:translate(@agent),', ', ec:label('unclear-rdg', false()))"/>
-                    </model>
-                    <model predicate="supplied" behaviour="note">
-                        <param name="place" value="&#34;footnote&#34;"/>
-                        <param name="type" value="'text-critical-start'"/>
-                        <param name="content" value="concat(ec:translate(@agent), ', ', ec:label('supplied-after', false()), ' ', supplied/@source)"/>
-                    </model>
+                    <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="anchor" mode="change">
                     <model predicate="exists(root($parameters?root)//*[@spanTo = '#' || $node/@xml:id])" behaviour="notespan-end">
