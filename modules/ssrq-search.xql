@@ -130,7 +130,6 @@ declare function query:query-api($type as xs:string, $subtypes as xs:string*, $q
     return
         if ($response[1]/@status = "200") then
             let $json := parse-json(util:binary-to-string(xs:base64Binary($response[2])))
-            let $log := console:log(($response, $json))
             let $ids :=
                 if ($json?results instance of map()) then
                     $json?results?id
@@ -151,7 +150,7 @@ declare function query:query-api($type as xs:string, $subtypes as xs:string*, $q
 };
 
 (:~
- : Filter search result depending on subtype. All filters are applied in sequence.
+ : Filter api search result depending on subtype. All filters are applied in sequence.
  :)
 declare function query:api-filter-subtype($id as xs:string*, $type as xs:string, $subtypes as xs:string*) {
     if ($type = "keywords") then
@@ -181,7 +180,8 @@ declare function query:api-filter-subtype($id as xs:string*, $type as xs:string,
                     collection($config:data-root)//tei:back[.//tei:orig/
                         (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)/@ref = $id] |
                     collection($config:data-root)//tei:body[.//tei:note//tei:orig/
-                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)/@ref = $id]
+                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)/@ref = $id] |
+                    collection($config:data-root)//tei:body[.//@scribe = $id]
 };
 
 (:~
@@ -295,6 +295,14 @@ declare function query:highlight-annotations($nodes as node()*, $ids as xs:strin
                 element { node-name($node) } {
                     $node/@*,
                     if ($node/@ref = $ids) then
+                        <exist:match exist:id="{util:node-id($node)}">{ query:highlight-annotations($node/node(), $ids) }</exist:match>
+                    else
+                        query:highlight-annotations($node/node(), $ids)
+                }
+            case element(tei:ab) | element(tei:add) | element(tei:addSpan) | element(tei:handShift) return
+                element { node-name($node) } {
+                    $node/@*,
+                    if ($node/@scribe = $ids) then
                         <exist:match exist:id="{util:node-id($node)}">{ query:highlight-annotations($node/node(), $ids) }</exist:match>
                     else
                         query:highlight-annotations($node/node(), $ids)
@@ -448,6 +456,15 @@ declare function query:expand($nodes as node()*, $ids as xs:string+) {
                 element { node-name($node) } {
                     $node/@*,
                     if ($node/@ref = $ids) then (
+                        attribute exist:id { util:node-id($node) },
+                        <exist:match>{ query:expand($node/node(), $ids) }</exist:match>
+                    ) else
+                        query:expand($node/node(), $ids)
+                }
+            case element(tei:ab) | element(tei:add) | element(tei:addSpan) | element(tei:handShift) return
+                element { node-name($node) } {
+                    $node/@*,
+                    if ($node/@scribe = $ids) then (
                         attribute exist:id { util:node-id($node) },
                         <exist:match>{ query:expand($node/node(), $ids) }</exist:match>
                     ) else
