@@ -16,6 +16,12 @@ import module namespace app="http://existsolutions.com/ssrq/app" at "/db/apps/ss
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "/db/apps/ssrq/modules/pm-config.xql";
 import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "/db/apps/ssrq/modules/ext-common.xql";
 
+declare variable $query:QUERY_OPTIONS :=
+    <options>
+        <leading-wildcard>yes</leading-wildcard>
+        <filter-rewrite>yes</filter-rewrite>
+    </options>;
+
 (:~
  : Execute query. Dispatches the query to either query:query-texts or query:query-api depending on $type.
  :)
@@ -83,21 +89,21 @@ declare function query:query-texts($subtypes as xs:string*, $query as xs:string)
         return
             switch ($subtype)
                 case "title" return
-                    collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:head[ft:query(., $query)]
+                    collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:head[ft:query(., $query, $query:QUERY_OPTIONS)]
                 case "regest" return
-                    collection($config:data-root)//tei:teiHeader//tei:msContents/tei:summary[ft:query(., $query)]
+                    collection($config:data-root)//tei:teiHeader//tei:msContents/tei:summary[ft:query(., $query, $query:QUERY_OPTIONS)]
                 case "comment" return
-                    collection($config:data-root)//tei:back[ft:query(., $query)]
+                    collection($config:data-root)//tei:back[ft:query(., $query, $query:QUERY_OPTIONS)]
                 case "notes" return
-                    collection($config:data-root)//tei:body//tei:note[ft:query(., $query)] |
-                    collection($config:data-root)//tei:back//tei:note[ft:query(., $query)]
+                    collection($config:data-root)//tei:body//tei:note[ft:query(., $query, $query:QUERY_OPTIONS)] |
+                    collection($config:data-root)//tei:back//tei:note[ft:query(., $query, $query:QUERY_OPTIONS)]
                 case "seal" return
-                    collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:physDesc/tei:sealDesc/tei:seal[ft:query(., $query)]
+                    collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:physDesc/tei:sealDesc/tei:seal[ft:query(., $query, $query:QUERY_OPTIONS)]
                 (: Editionstext: body + orig in Kommentar und Fussnoten :)
                 default return
-                    collection($config:data-root)//tei:body[ft:query(., $query)] |
-                    collection($config:data-root)//tei:back[.//tei:orig[ft:query(., $query)]] |
-                    collection($config:data-root)//tei:body[.//tei:note//tei:orig[ft:query(., $query)]]
+                    collection($config:data-root)//tei:body[ft:query(., $query, $query:QUERY_OPTIONS)] |
+                    collection($config:data-root)//tei:back[.//tei:orig[ft:query(., $query, $query:QUERY_OPTIONS)]] |
+                    collection($config:data-root)//tei:body[.//tei:note//tei:orig[ft:query(., $query, $query:QUERY_OPTIONS)]]
     return
         map {
             "hits":
@@ -204,7 +210,7 @@ declare function query:filter($hits as element()*) {
                     case "filter-language" return
                         $context[ancestor-or-self::tei:TEI/@xml:lang = $value]
                     case "filter-condition" return
-                        $context[ancestor-or-self::tei:TEI//tei:supportDesc/tei:condition[ft:query(., $value)]]
+                        $context[ancestor-or-self::tei:TEI//tei:supportDesc/tei:condition[ft:query(., $value, $query:QUERY_OPTIONS)]]
                     case "filter-material" return
                         $context[ancestor-or-self::tei:TEI//tei:support/tei:material = $value]
                     case "filter-seal" return
@@ -267,19 +273,19 @@ declare function query:highlight-texts($context as element()*, $subtypes as xs:s
     return
         switch ($subtype)
             case "title" case "seal" return
-                $context | $context[ft:query(., $query)]
+                $context | $context[ft:query(., $query, $query:QUERY_OPTIONS)]
             case "regest" case "comment" return
-                $context | $context[ft:query(., $query)]
+                $context | $context[ft:query(., $query, $query:QUERY_OPTIONS)]
             case "notes" return
                 $context |
-                $context[./descendant-or-self::tei:body//tei:note[ft:query(., $query)]] |
-                $context[./descendant-or-self::tei:back//tei:note[ft:query(., $query)]]
+                $context[./descendant-or-self::tei:body//tei:note[ft:query(., $query, $query:QUERY_OPTIONS)]] |
+                $context[./descendant-or-self::tei:back//tei:note[ft:query(., $query, $query:QUERY_OPTIONS)]]
             (: Editionstext: body + orig in Kommentar und Fussnoten :)
             case "edition" return
                 $context |
-                $context[./descendant-or-self::tei:body[ft:query(., $query)]] |
-                $context[./descendant-or-self::tei:back//tei:orig[ft:query(., $query)]] |
-                $context[./descendant-or-self::tei:body//tei:note//tei:orig[ft:query(., $query)]]
+                $context[./descendant-or-self::tei:body[ft:query(., $query, $query:QUERY_OPTIONS)]] |
+                $context[./descendant-or-self::tei:back//tei:orig[ft:query(., $query, $query:QUERY_OPTIONS)]] |
+                $context[./descendant-or-self::tei:body//tei:note//tei:orig[ft:query(., $query, $query:QUERY_OPTIONS)]]
             default return
                 ()
 };
