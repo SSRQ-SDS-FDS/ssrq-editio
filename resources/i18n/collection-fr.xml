@@ -91,6 +91,6 @@
     <msg key="relevance">Importance</msg>
     <msg key="work-id">Numéro</msg>
     <msg key="orig-date">Datation</msg>
-    <msg key="filter by">Limiter à</msg>
+    <msg key="filter-by">Limiter à</msg>
     <msg key="Collection of Swiss Law Sources online">Collection des sources du droit suisse online</msg>
 </catalogue>

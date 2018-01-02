@@ -93,4 +93,5 @@
     <msg key="relevance">Relevanz</msg>
     <msg key="work-id">Stücknummer</msg>
     <msg key="orig-date">Datum</msg>
+    <msg key="filter-by">Filtern nach</msg>
 </catalogue>
