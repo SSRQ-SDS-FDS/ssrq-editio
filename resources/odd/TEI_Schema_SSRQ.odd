@@ -4578,6 +4578,7 @@
                         </valItem>
                         <valItem ident="del-add">
                             <desc xml:lang="de">Streichung der Hinzufügung</desc>
+                            <desc xml:lang="fr">Suppression de l'ajout</desc>
                         </valItem>
                         <valItem ident="unreadable">
                             <desc xml:lang="de">unlesbar</desc>
@@ -4703,14 +4704,17 @@
                             <desc xml:lang="de">ersetzt Streichung</desc>
                             <desc xml:lang="fr">remplace une suppression</desc>
                         </valItem>
-                        <valItem ident="scribe1">
+                            <valItem ident="scribe1">
                             <desc xml:lang="de">Anlagehand</desc>
+                            <desc xml:lang="fr">main principale </desc>
                         </valItem>
                         <valItem ident="scribe2">
                             <desc xml:lang="de">Nachtragshand</desc>
+                            <desc xml:lang="fr">main de l'ajout</desc>
                         </valItem>
                         <valItem ident="by">
                             <desc xml:lang="de">von </desc>
+                            <desc xml:lang="fr">de </desc>
                         </valItem>
                     </valList>
                 </dataSpec>
