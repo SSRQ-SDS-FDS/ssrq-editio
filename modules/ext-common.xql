@@ -46,7 +46,7 @@ declare function pmf:label($id as xs:string, $upper as xs:boolean, $lang as xs:s
             else
                 lower-case(substring($label, 1, 1)) || substring($label, 2)
         else
-            "[Nicht übersetzt]"
+            ``[[Nicht übersetzt: `{$id}`, Sprache: `{$lang}`]]``
 };
 
 declare function pmf:translate($attribute) {
@@ -80,25 +80,28 @@ declare function pmf:display-sigle($id as xs:string?) {
         $components[1] || " " || $components[2] || "/" || $components[3]
 };
 
-declare function pmf:format-date($when as xs:string) {
+declare function pmf:format-date($when as xs:string?) {
     pmf:format-date($when, (session:get-attribute("ssrq.lang"), "de")[1] || "_CH")
 };
 
-declare function pmf:format-date($when as xs:string, $language as xs:string?) {
-    text {
-        try {
-            if (matches($when, "^--\d+-\d+")) then
-                format-date(xs:date(replace($when, "^-(.*)$", "1900$1")), "[D01]. [MNn]", $language, (), ())
-            else if (matches($when, "^--\d+")) then
-                format-date(xs:date(replace($when, "^-(.*)$", "1900$1-01")), "[MNn]", $language, (), ())
-            else if (matches($when, "^\d+$")) then
+declare function pmf:format-date($when as xs:string?, $language as xs:string?) {
+    if ($when) then
+        text {
+            try {
+                if (matches($when, "^--\d+-\d+")) then
+                    format-date(xs:date(replace($when, "^-(.*)$", "1900$1")), "[D01]. [MNn]", $language, (), ())
+                else if (matches($when, "^--\d+")) then
+                    format-date(xs:date(replace($when, "^-(.*)$", "1900$1-01")), "[MNn]", $language, (), ())
+                else if (matches($when, "^\d+$")) then
+                    @when
+                else
+                    format-date(xs:date($when), "[D01].[M01].[Y0001]", $language, (), ())
+            } catch * {
                 @when
-            else
-                format-date(xs:date($when), "[D01].[M01].[Y0001]", $language, (), ())
-        } catch * {
-            @when
+            }
         }
-    }
+    else
+        ()
 };
 
 declare function pmf:format-duration($duration as xs:string) {
