@@ -195,9 +195,9 @@ declare function query:api-filter-subtype($id as xs:string*, $type as xs:string,
  :)
 declare function query:filter($hits as element()*) {
     fold-right(request:get-parameter-names()[starts-with(., 'filter-')], $hits, function($filter, $context) {
-        let $value := request:get-parameter($filter, ())
+        let $value := filter(request:get-parameter($filter, ()), function($param) { $param != "" })
         return
-            if ($value) then
+            if (exists($value)) then
                 switch ($filter)
                     case "filter-period-min" return
                         let $dateMin := xs:date($value || "-01-01")
@@ -224,7 +224,9 @@ declare function query:filter($hits as element()*) {
                         else
                             $context[not(ancestor-or-self::tei:TEI//tei:msContents/tei:msItem/tei:author/@role = 'scribe')]
                     case "filter-kanton" return
-                        $context[ancestor-or-self::tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $value || "_")]]
+                        for $v in $value
+                        return
+                            $context[ancestor-or-self::tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $v || "_")]]
                     case "filter-pubdate" return
                         $context[starts-with(ancestor-or-self::tei:TEI//tei:publicationStmt/tei:date[@type='electronic']/@when, $value)]
                     default return
