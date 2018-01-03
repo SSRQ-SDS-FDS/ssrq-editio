@@ -85,6 +85,11 @@ declare function nav:output-footnotes($footnotes as element()*) {
         {
             for $note in $footnotes[@type="a"]
             order by number($note/@value)
+            let $note :=
+                element { node-name($note) } {
+                    $note/@*,
+                    nav:remove-nested-notes($note/node())
+                }
             return
                 nav:check-note($note)
         }
@@ -93,11 +98,34 @@ declare function nav:output-footnotes($footnotes as element()*) {
         {
             for $note in $footnotes[@type="1"]
             order by number($note/@value)
+            let $note :=
+                element { node-name($note) } {
+                    $note/@*,
+                    nav:remove-nested-notes($note/node())
+                }
             return
                 nav:check-note($note)
         }
         </ol>
     </div>
+};
+
+declare function nav:remove-nested-notes($nodes as node()*) {
+    for $node in $nodes
+    return
+        typeswitch($node)
+            case element(li) return
+                if ($node/@class="footnote") then
+                    ()
+                else
+                    $node
+            case element() return
+                element { node-name($node) } {
+                    $node/@*,
+                    nav:remove-nested-notes($node/node())
+                }
+            default return
+                $node
 };
 
 declare function nav:check-note($note as element()) {

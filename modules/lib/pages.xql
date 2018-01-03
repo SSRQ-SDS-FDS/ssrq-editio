@@ -259,7 +259,7 @@ declare function pages:process-content($xml as element()*, $root as element()*, 
         {
             $body,
             if ($html//li[@class = "footnote"]) then
-                nav:output-footnotes($html//li[@class = "footnote"])
+                nav:output-footnotes($html//li[@class = "footnote"][not(ancestor::li[@class = "footnote"])])
             else
                 ()
         }
