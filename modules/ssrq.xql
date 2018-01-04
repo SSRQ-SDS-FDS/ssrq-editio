@@ -148,7 +148,8 @@ function app:kanton-auswahl($node as node(), $model as map(*), $kanton as xs:str
                 let $current := $tr/td[2]
                 let $docs := collection($config:data-root)/tei:TEI
                     [starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $current || "_")]
-                return
+                return (
+                    $tr/td[3]/@*,
                     if (exists($docs)) then
                         <span>
                             <a href="?kanton={$current}">{$tr/td[3]/text()} </a>
@@ -156,6 +157,7 @@ function app:kanton-auswahl($node as node(), $model as map(*), $kanton as xs:str
                         </span>
                     else
                         $tr/td[3]/text()
+                )
             }
             </td>
         </tr>

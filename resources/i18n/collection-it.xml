@@ -94,4 +94,10 @@
     <msg key="work-id">Stücknummer</msg>
     <msg key="orig-date">Datum</msg>
     <msg key="filter-by">Filtern nach</msg>
+    <msg key="doctitel">Collana Fonti del diritto svizzero online</msg>
+    <msg key="kontakt">Kontakt</msg>
+    <msg key="transrichtlinien"> <a href="https://www.ssrq-sds-fds.ch/wiki/Transkriptionsrichtlinien/it">Principes de transcription</a>
+    </msg>
+    <msg key="realisierung">Realisierung</msg>
+    <msg key="firma">Firma</msg>
 </catalogue>
