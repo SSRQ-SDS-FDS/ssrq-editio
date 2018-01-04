@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" xml:lang="en">
     <teiHeader>
         <fileDesc>
@@ -748,7 +747,7 @@
                 <elementSpec ident="msDesc" mode="add">
                     <desc>Stückbeschreibung ausgeben</desc>
                     <model behaviour="list">
-                        <param name="content" value="(msIdentifier,msContents/msItem,physDesc/objectDesc/supportDesc, physDesc/objectDesc/supportDesc/condition, physDesc)"/>
+                        <param name="content" value="(msIdentifier,msContents/msItem, physDesc/objectDesc/supportDesc/condition, physDesc/objectDesc/supportDesc, physDesc, msContents/msItem/author[@role=&#34;scribe&#34;], additional)"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="msIdentifier">
@@ -759,7 +758,7 @@
                         <model behaviour="listItem">
                             <param name="content" value="altIdentifier/idno"/>
                         </model>
-                     </modelSequence>
+                    </modelSequence>
                 </elementSpec>
                 
                 <elementSpec ident="msItem">
@@ -768,7 +767,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="idno">
-                    <model behaviour="inline" predicate="parent::altIdentifier">
+                    <model predicate="parent::altIdentifier" behaviour="inline">
                         <param name="content" value="(ec:label('signatureAlt'), ': ', .)"/>
                     </model>
                     <model behaviour="inline">
@@ -786,9 +785,9 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="physDesc">
-                        <model behaviour="listItem">
-                            <param name="content" value="sealDesc"/>
-                        </model>
+                    <model behaviour="listItem">
+                        <param name="content" value="sealDesc"/>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="supportDesc">
                     <modelSequence>
@@ -811,7 +810,7 @@
                     </model>
                     <model predicate="@type = 'plica'" behaviour="inline">
                         <param name="content" value="' (Plica: ' || width/@quantity || ')'"/>
-                    </model>id
+                    </model>
                 </elementSpec>
                 <elementSpec ident="sealDesc">
                     <modelSequence>
@@ -870,6 +869,34 @@
                 </elementSpec>
                 <elementSpec ident="text()">
                     <model behaviour="content"/>
+                </elementSpec>
+            <elementSpec ident="author" mode="change">
+                    <model behaviour="listItem">
+                        <desc>Ausgabe des Schreibers im Header</desc>
+                        <param name="content" value="(ec:label('scriptor'), ': ', .)"/>
+                    </model>
+                </elementSpec>
+            <elementSpec ident="listBibl" mode="change">
+                    <modelSequence>
+                        <model behaviour="heading">
+                            <desc>Titel des Bibliographieabschnitts</desc>
+                            <param name="content" value="head/node()"/>
+                            <param name="level" value="5"/>
+                            <outputRendition>
+                                margin-top: 1em;
+                            </outputRendition>
+                        </model>
+                        <model behaviour="list">
+                            <desc>Liste der Bibliographieeinträge</desc>
+                            <param name="content" value="bibl"/>
+                        </model>
+                    </modelSequence>
+                </elementSpec>
+                <elementSpec ident="bibl" mode="add">
+                    <model behaviour="listItem"/>
+                </elementSpec>
+                <elementSpec ident="additional" mode="add">
+                    <model behaviour="listItem"/>
                 </elementSpec>
             </schemaSpec>
         </body>
