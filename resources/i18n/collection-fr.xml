@@ -70,7 +70,7 @@
     <msg key="parchment">Parchemin</msg>
     <msg key="text">Recherche plein texte</msg>
     <msg key="person">Personnes</msg>
-    <msg key="organisation">Organisations</msg>
+    <msg key="organisation">Famille/Organisation</msg>
     <msg key="places">Lieux</msg>
     <msg key="lemma">Lemma</msg>
     <msg key="keywords">Termes</msg>

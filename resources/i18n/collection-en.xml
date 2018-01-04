@@ -71,7 +71,7 @@
     <msg key="parchment">Parchment</msg>
     <msg key="text">Full Text</msg>
     <msg key="person">Persons</msg>
-    <msg key="organisation">Organisations</msg>
+    <msg key="organisation">Family/Organisation</msg>
     <msg key="places">Places</msg>
     <msg key="lemma">Lemma</msg>
     <msg key="keywords">Keywords</msg>

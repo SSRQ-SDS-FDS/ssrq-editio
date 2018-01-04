@@ -229,6 +229,8 @@ declare function query:filter($hits as element()*) {
                             $context[ancestor-or-self::tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $v || "_")]]
                     case "filter-pubdate" return
                         $context[starts-with(ancestor-or-self::tei:TEI//tei:publicationStmt/tei:date[@type='electronic']/@when, $value)]
+                    case "filter-archive" return
+                        $context[starts-with(ancestor-or-self::tei:TEI//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno, $value)]
                     default return
                         $context
             else
@@ -519,4 +521,30 @@ declare function query:period-range($node as node(), $model as map(*)) {
             "min": min($dates),
             "max": max($dates)
         }
+};
+
+declare
+    %templates:wrap
+function query:list-archives($node as node(), $model as map(*), $filter-archive as xs:string?) {
+    $node/*,
+    let $context :=
+        if ($model?hits) then
+            $model?hits ! root(.)
+        else
+            collection($config:data-root)
+    for $idno in distinct-values(
+            for-each($context//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno, function($id) {
+                replace($id, "^(\w+).*$", "$1")
+            })
+        )
+    return
+        <option>
+        {
+            if ($idno = $filter-archive) then
+                attribute selected { "selected" }
+            else
+                ()
+        }
+        {$idno}
+        </option>
 };
