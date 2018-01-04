@@ -4696,6 +4696,10 @@
                             <desc xml:lang="de">Korrigiert</desc>
                             <desc xml:lang="fr">Corrigé</desc>
                         </valItem>
+                        <valItem ident="corrected-from">
+                            <desc xml:lang="de">Korrigiert aus</desc>
+                            <desc xml:lang="fr">Corrigé de</desc>
+                        </valItem>
                         <valItem ident="compare">
                             <desc xml:lang="de">Vgl.</desc>
                             <desc xml:lang="fr">Cf.</desc>
