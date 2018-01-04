@@ -210,7 +210,7 @@ declare function app:list-works($node as node(), $model as map(*), $filter as xs
 
 
 declare %private function app:show-if-exists($node as node(), $test as node()*, $func as function(*)) {
-    if ($test and normalize-space($test/string()) != "") then
+    if ($test and normalize-space($test[1]/string()) != "") then
         element { node-name($node) } {
             $node/@*,
             $func()
@@ -266,6 +266,18 @@ declare function app:regest($node as node(), $model as map(*), $action as xs:str
         })
 };
 
+declare 
+     %templates:wrap
+function app:additionalSource($node as node(), $model as map(*)) {
+    let $idno := root($model?data)//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno
+    let $idnoFil := collection($config:data-root)//tei:teiHeader//tei:filiation[contains(tei:idno, $idno)]
+    let $additional := $idnoFil/ancestor::tei:msDesc
+    return
+        app:show-if-exists($node, $additional, function() {
+            templates:process($node/node(), map:merge(($model, map { "data": $additional })))
+        })
+};
+
 declare
     %templates:wrap
 function app:source-description($node as node(), $model as map(*)) {
@@ -277,7 +289,10 @@ function app:source-description($node as node(), $model as map(*)) {
 declare
     %templates:wrap
 function app:display-data($node as node(), $model as map(*)) {
-    $pm-config:web-transform($model?data, map { "root": $model?data }, $config:odd)
+    for $data in $model?data 
+      return
+    $pm-config:web-transform($data, map { "root": $data }, $config:odd)
+    
 };
 
 

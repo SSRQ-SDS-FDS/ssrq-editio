@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" xml:lang="en">
     <teiHeader>
         <fileDesc>
@@ -747,20 +748,29 @@
                 <elementSpec ident="msDesc" mode="add">
                     <desc>Stückbeschreibung ausgeben</desc>
                     <model behaviour="list">
-                        <param name="content" value="(msIdentifier,msContents/msItem,physDesc/objectDesc/supportDesc,physDesc)"/>
+                        <param name="content" value="(msIdentifier,msContents/msItem,physDesc/objectDesc/supportDesc, physDesc/objectDesc/supportDesc/condition, physDesc)"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="msIdentifier">
-                    <model behaviour="listItem">
-                        <param name="content" value="idno"/>
-                    </model>
+                    <modelSequence>
+                        <model behaviour="listItem">
+                            <param name="content" value="idno"/>
+                        </model>
+                        <model behaviour="listItem">
+                            <param name="content" value="altIdentifier/idno"/>
+                        </model>
+                     </modelSequence>
                 </elementSpec>
+                
                 <elementSpec ident="msItem">
                     <model behaviour="listItem">
-                        <param name="content" value="filiation"/>
+                        <param name="content" value="filiation[@type='current']"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="idno">
+                    <model behaviour="inline" predicate="parent::altIdentifier">
+                        <param name="content" value="(ec:label('signatureAlt'), ': ', .)"/>
+                    </model>
                     <model behaviour="inline">
                         <param name="content" value="(ec:label('signature'), ': ', .)"/>
                     </model>
@@ -770,10 +780,15 @@
                         <param name="content" value="(ec:label('other-source'), ': ', .)"/>
                     </model>
                 </elementSpec>
-                <elementSpec ident="physDesc">
+                <elementSpec ident="condition">
                     <model behaviour="listItem">
-                        <param name="content" value="sealDesc"/>
+                        <param name="content" value="(ec:label('condition'), ': ', .)"/>
                     </model>
+                </elementSpec>
+                <elementSpec ident="physDesc">
+                        <model behaviour="listItem">
+                            <param name="content" value="sealDesc"/>
+                        </model>
                 </elementSpec>
                 <elementSpec ident="supportDesc">
                     <modelSequence>
@@ -792,11 +807,11 @@
                 </elementSpec>
                 <elementSpec ident="dimensions">
                     <model predicate="@type = 'leaves'" behaviour="inline">
-                        <param name="content" value="(ec:label('format'), ' (cm) ', string-join((width/@quantity,height/@quantity), 'x') )"/>
+                        <param name="content" value="(ec:label('format'), ' (cm) ', string-join((width/@quantity,height/@quantity), ' x ') )"/>
                     </model>
                     <model predicate="@type = 'plica'" behaviour="inline">
                         <param name="content" value="' (Plica: ' || width/@quantity || ')'"/>
-                    </model>
+                    </model>id
                 </elementSpec>
                 <elementSpec ident="sealDesc">
                     <modelSequence>
