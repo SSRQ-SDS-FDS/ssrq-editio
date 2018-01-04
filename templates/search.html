@@ -106,8 +106,14 @@
                 </div>
             </li>
             <li>
-                <label class="form-check-label">
-                    <input class="form-check-input" name="filter-archive" type="checkbox" value=""/> <i18n:text key="archive"/> </label>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label"><i18n:text key="archive"/>: </label>
+                    <div class="col-sm-8">
+                        <select name="filter-archive" class="form-control" data-template="query:list-archives">
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
             </li>
             <li>
                 <div class="form-group">
