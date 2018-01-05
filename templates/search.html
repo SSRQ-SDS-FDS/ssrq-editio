@@ -152,8 +152,16 @@
                 </div>
             </li>
             <li>
-                <label class="form-check-label">
-                    <input class="form-check-input" name="filter-other" type="checkbox" value=""/> <i18n:text key="filliation"/></label>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label"><i18n:text key="filliation"/>: </label>
+                    <div class="col-sm-8">
+                        <select name="filter-filiation" class="form-control" data-template="templates:form-control">
+                            <option/>
+                            <option value="yes">ja</option>
+                            <option value="no">nein</option>
+                        </select>
+                    </div>
+                </div>
             </li>
             <li>
                 <div class="form-group">
@@ -171,7 +179,11 @@
                 <div class="form-group">
                     <label class="col-sm-4 control-label"><i18n:text key="condition"/>: </label>
                     <div class="col-sm-8">
-                        <input class="form-control" name="filter-condition" data-template="templates:form-control"/>
+                        <select name="filter-condition" class="form-control" data-template="templates:form-control">
+                            <option/>
+                            <option value="yes">ja</option>
+                            <option value="no">nein</option>
+                        </select>
                     </div>
                 </div>
             </li>
@@ -210,8 +222,12 @@
             <li>
                 <div class="form-group">
                     <label class="col-sm-4 control-label"><i18n:text key="pubdate"/>: </label>
-                    <div class="col-sm-8">
-                        <input type="number" name="filter-pubdate" class="form-control" data-template="templates:form-control"/>
+                    <div class="col-sm-8" data-template="query:pubdate-range">
+                        <input type="number" name="filter-pubdate-min" placeholder="${min}" min="${min}" max="${max}" value="${filter-pubdate-min}"
+                            data-template="app:parse-params" class="col-sm-4"/>
+                        <span class="col-sm-1">-</span>
+                        <input type="number" name="filter-pubdate-max" placeholder="${max}" min="${min}" max="${max}" value="${filter-pubdate-max}"
+                            data-template="app:parse-params" class="col-sm-4"/>
                     </div>
                 </div>
             </li>

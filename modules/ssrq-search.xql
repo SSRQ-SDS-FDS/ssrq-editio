@@ -210,7 +210,10 @@ declare function query:filter($hits as element()*) {
                     case "filter-language" return
                         $context[ancestor-or-self::tei:TEI/@xml:lang = $value]
                     case "filter-condition" return
-                        $context[ancestor-or-self::tei:TEI//tei:supportDesc/tei:condition[ft:query(., $value, $query:QUERY_OPTIONS)]]
+                        if ($value = "yes") then
+                            $context[ancestor-or-self::tei:TEI//tei:supportDesc/tei:condition]
+                        else
+                            $context[not(ancestor-or-self::tei:TEI//tei:supportDesc/tei:condition)]
                     case "filter-material" return
                         $context[ancestor-or-self::tei:TEI//tei:support/tei:material = $value]
                     case "filter-seal" return
@@ -227,10 +230,29 @@ declare function query:filter($hits as element()*) {
                         for $v in $value
                         return
                             $context[ancestor-or-self::tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $v || "_")]]
-                    case "filter-pubdate" return
-                        $context[starts-with(ancestor-or-self::tei:TEI//tei:publicationStmt/tei:date[@type='electronic']/@when, $value)]
+                    case "filter-pubdate-min" return
+                        let $dateMin := xs:date($value || "-01-01")
+                        return
+                            $context[ancestor-or-self::tei:TEI//tei:publicationStmt/tei:date[@type='electronic']/@when >= $dateMin]
+                    case "filter-pubdate-max" return
+                        let $dateMax := xs:date($value || "-01-01")
+                        return
+                            $context[ancestor-or-self::tei:TEI//tei:publicationStmt/tei:date[@type='electronic'][@when <= $dateMax]]
                     case "filter-archive" return
                         $context[starts-with(ancestor-or-self::tei:TEI//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno, $value)]
+                    case "filter-filiation" return
+                        for $node in $context
+                        let $idno := $node/ancestor-or-self::tei:TEI//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno
+                        let $filiations :=
+                            collection($config:data-root)//tei:teiHeader//tei:filiation/tei:idno[. = $idno]
+                        let $log := console:log(($idno, count($filiations)))
+                        return
+                            if ($value = "yes" and exists($filiations)) then
+                                $node
+                            else if ($value = "no" and empty($filiations)) then
+                                $node
+                            else
+                                ()
                     default return
                         $context
             else
@@ -522,6 +544,33 @@ declare function query:period-range($node as node(), $model as map(*)) {
             "max": max($dates)
         }
 };
+
+declare
+    %templates:wrap
+function query:pubdate-range($node as node(), $model as map(*)) {
+    let $context :=
+        if ($model?hits) then
+            $model?hits ! root(.)
+        else
+            collection($config:data-root)
+    let $dates :=
+        for $when in $context//tei:teiHeader//tei:publicationStmt/tei:date[@type='electronic']/@when
+        return
+            try {
+                year-from-date(xs:date($when))
+            } catch * {
+                if (matches($when, "^\d+$")) then
+                    number($when)
+                else
+                    ()
+            }
+    return
+        map {
+            "min": min($dates),
+            "max": max($dates)
+        }
+};
+
 
 declare
     %templates:wrap
