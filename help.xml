@@ -17,7 +17,12 @@
   <text>
       <body>
          <div xml:lang="de">
-            <p>Hilfe zur Suche ...</p>
+            <p>Hilfe zur Suche</p>
+            <p>Personen</p>
+            <p>Familien/Organisationen</p>
+            <p>Orte: Ort in Standardschreibweise eingeben. Wildcard wie «*burg» findet alle Komposita von «burg».</p>
+            <p>Lemma</p>
+            <p>Schlagworte</p>
          </div>
          <div xml:lang="fr">
             <p>Hilfe zur Suche in Französisch...</p>
