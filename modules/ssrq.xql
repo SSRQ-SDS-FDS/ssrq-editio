@@ -248,7 +248,7 @@ declare function app:origDate($node as node(), $model as map(*)) {
     return
         app:show-if-exists($node, $origDate, function() {
             string-join((
-                format-date(xs:date($origDate), '[Y] [MNn] [D01]', (session:get-attribute("ssrq.lang"), "de")[1], (), ()),
+                format-date(xs:date($origDate), '[Y] [MNn] [D1]', (session:get-attribute("ssrq.lang"), "de")[1], (), ()),
                 $origPlace
             ), ". ")
         })

@@ -89,13 +89,13 @@ declare function pmf:format-date($when as xs:string?, $language as xs:string?) {
         text {
             try {
                 if (matches($when, "^--\d+-\d+")) then
-                    format-date(xs:date(replace($when, "^-(.*)$", "1900$1")), "[D01]. [MNn]", $language, (), ())
+                    format-date(xs:date(replace($when, "^-(.*)$", "1900$1")), "[D1]. [MNn]", $language, (), ())
                 else if (matches($when, "^--\d+")) then
                     format-date(xs:date(replace($when, "^-(.*)$", "1900$1-01")), "[MNn]", $language, (), ())
                 else if (matches($when, "^\d+$")) then
                     @when
                 else
-                    format-date(xs:date($when), "[D01].[M01].[Y0001]", $language, (), ())
+                    format-date(xs:date($when), "[D1].[M1].[Y0001]", $language, (), ())
             } catch * {
                 @when
             }
