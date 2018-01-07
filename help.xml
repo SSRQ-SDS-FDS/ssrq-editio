@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+  <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title xml:lang="de">Erläuterungen zur Suche</title>
+            <title xml:lang="fr">Erläuterungen zur Suche in Französisch</title>
+         </titleStmt>
+         <publicationStmt>
+            <p>Publication Information</p>
+         </publicationStmt>
+         <sourceDesc>
+            <p>Information about the source</p>
+         </sourceDesc>
+      </fileDesc>
+  </teiHeader>
+  <text>
+      <body>
+         <div xml:lang="de">
+            <p>Hilfe zur Suche ...</p>
+         </div>
+         <div xml:lang="fr">
+            <p>Hilfe zur Suche in Französisch...</p>
+         </div>
+      </body>
+  </text>
+</TEI>

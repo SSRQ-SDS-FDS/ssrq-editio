@@ -349,6 +349,29 @@ function app:keyword($node as node(), $model as map(*)) {
     $model?keyword/text()
 };
 
+declare
+    %templates:wrap
+function app:help($node as node(), $model as map(*)) {
+    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
+    let $helpDoc := doc($config:app-root || "/help.xml")
+    let $helpText := (
+        $helpDoc//tei:div[@xml:lang = $lang],
+        $helpDoc//tei:div[@xml:lang = "de"]
+    )[1]
+    let $helpTitle := $helpDoc//tei:teiHeader//tei:title[@xml:lang = $lang]
+    let $helpTitle := if ($helpTitle) then $helpTitle/node() else $helpDoc//tei:teiHeader//tei:title[@xml:lang = "de"]/node()
+    return map {
+        "body": $helpText,
+        "title": $helpTitle
+    }
+};
+
+declare
+    %templates:wrap
+function app:show-help($node as node(), $model as map(*), $field as xs:string) {
+    $pm-config:web-transform($model($field), (), $config:odd)
+};
+
 declare function app:parse-params($node as node(), $model as map(*)) {
     element { node-name($node) } {
         for $attr in $node/@*
