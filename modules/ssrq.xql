@@ -242,10 +242,15 @@ declare function app:idno($node as node(), $model as map(*)) {
 
 declare function app:origDate($node as node(), $model as map(*)) {
     let $header := root($model?data)//tei:teiHeader
-    let $origDate := $header/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@when
+    let $origin := $header/tei:fileDesc//tei:msDesc/tei:history/tei:origin
+    let $origDate := $origin/tei:origDate/@when
+    let $origPlace := $origin/tei:origPlace
     return
         app:show-if-exists($node, $origDate, function() {
-            format-date(xs:date($origDate), '[Y] [MNn] [D01]')
+            string-join((
+                format-date(xs:date($origDate), '[Y] [MNn] [D01]', (session:get-attribute("ssrq.lang"), "de")[1], (), ()),
+                $origPlace
+            ), ". ")
         })
 };
 
