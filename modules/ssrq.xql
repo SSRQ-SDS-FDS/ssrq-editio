@@ -9,11 +9,65 @@ import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/ut
 import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "/db/apps/ssrq/modules/ext-common.xql";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 import module namespace query="http://existsolutions.com/ssrq/search" at "ssrq-search.xql";
+import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xql";
 
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 declare variable $app:single-body-div-max := 7;
+
+declare
+    %templates:wrap
+function app:load($node as node(), $model as map(*), $doc as xs:string, $root as xs:string?,
+    $id as xs:string?, $view as xs:string?) {
+    let $doc := xmldb:decode($doc)
+    let $data :=
+        if ($id) then
+            let $node := doc($config:data-root || "/" || $doc)/id($id)
+            let $div := $node/ancestor-or-self::tei:div[1]
+            let $config := tpu:parse-pi(root($node), $view)
+            return
+                map {
+                    "config": $config,
+                    "data":
+                        if (empty($div)) then
+                            $node/following-sibling::tei:div[1]
+                        else
+                            $div
+                }
+        else
+            pages:load-xml($view, $root, $doc)
+    let $node :=
+        if ($data?data) then
+            $data?data
+        else
+            <TEI xmlns="http://www.tei-c.org/ns/1.0">
+                <teiHeader>
+                    <fileDesc>
+                        <titleStmt>
+                            <title>Not found</title>
+                        </titleStmt>
+                    </fileDesc>
+                </teiHeader>
+                <text>
+                    <body>
+                        <div>
+                            <head>Failed to load!</head>
+                            <p>Could not load document {$doc}. Maybe it is not valid TEI or not in the TEI namespace?</p>
+                        </div>
+                    </body>
+                </text>
+            </TEI>//tei:div
+    let $hasFacs := exists($node//tei:pb[@facs]) and $data?config?odd = "ssrq.odd"
+    return
+        map {
+            "config": $data?config,
+            "data": $node,
+            "body-class": if ($hasFacs) then 'col-md-6' else 'col-md-10',
+            "facs-class": if ($hasFacs) then 'col-md-6' else 'hidden',
+            "sidebar-class": if ($hasFacs) then 'hidden' else 'col-md-2'
+        }
+};
 
 declare function app:switch-view($node as node(), $model as map(*), $odd as xs:string?) {
     element { node-name($node) } {

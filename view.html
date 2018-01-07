@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html data-template="pages:app-root">
-<head data-template="templates:include" data-template-path="templates/head.html"/>
+    <head data-template="templates:include" data-template-path="templates/head.html"/>
     <body xmlns:i18n="http://exist-db.org/xquery/i18n">
         <div data-template="templates:surround" data-template-with="templates/page.html" data-template-at="content" data-template-using="body">
-            <div data-template="pages:load">
+            <div data-template="app:load">
                 <!-- Navigation -->
                 <div data-template="templates:include" data-template-path="templates/menu.html"/>
                 <!-- Toolbar -->
                 <div data-template="templates:include" data-template-path="templates/toolbar.html"/>
 
-                <section id="tp-canvas">
+                <section id="tp-canvas" data-template="pages:navigation">
                     <!-- Table of contents -->
                     <nav id="sidebar" class="toc offcanvas">
                         <h3>
@@ -19,7 +19,7 @@
                             <span id="toc-loading"> <i18n:text key="loading"/> ...</span>
                         </div>
                     </nav>
-                    <main id="main-wrapper" class="col-md-10" data-template="pages:navigation">
+                    <main id="main-wrapper" class="${body-class}" data-template="app:parse-params">
                         <div class="tp-document-title-wrapper tp-row">
                             <div class="tp-column">
                                 <!-- Document title -->
@@ -83,7 +83,7 @@
                             </div>
                         </section>
                     </main>
-                    <aside id="aside" class="col-md-2">
+                    <aside id="aside" class="${sidebar-class}" data-template="app:parse-params">
                         <div data-template="app:list-places">
                             <h3 class="place">
                                 <i18n:text key="places"/>
@@ -114,6 +114,9 @@
                             </h3>
                             <ul class="lemmata" data-template="app:show-list-items"/>
                         </div>
+                    </aside>
+                    <aside id="image-aside" class="${facs-class}" data-template="app:parse-params">
+                        <div id="image-container" class="openseadragon"/>
                     </aside>
                 </section>
                 <div data-template="templates:include" data-template-path="templates/footer-navigation.html"/>
@@ -147,5 +150,6 @@
             </div>
         </div>
         <script type="text/javascript" src="resources/scripts/search.js"/>
+        <script type="text/javascript" src="resources/scripts/vendor/openseadragon.min.js"/>
     </body>
 </html>

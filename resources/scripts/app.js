@@ -7,6 +7,9 @@ $(document).ready(function() {
 
     var seadragon;
 
+    var facsimiles = [];
+    var pagebreaks = [];
+
     // initialize seadragon for viewing facsimiles
     if (document.getElementById("image-container")) {
         console.log("Initializing seadragon...");
@@ -25,6 +28,34 @@ $(document).ready(function() {
             defaultZoomLevel:   1
         });
         seadragon.setControlsEnabled(true);
+
+        // $(window).scroll(function() {
+        //     // Get container scroll position
+        //     var viewportHeight = $(window).height() / 2;
+        //     var offset = $("#main-wrapper").offset().top;
+        //     var fromTop = $(this).scrollTop() + offset;
+        //     for (var i = 0; i < pagebreaks.length; i++) {
+        //         if ($(pagebreaks[i]).offset().top + viewportHeight > fromTop) {
+        //             viewFacsimile(pagebreaks[i]);
+        //             break;
+        //         }
+        //     }
+        // });
+    }
+
+    function viewFacsimile(pb) {
+        var prev = pb.previousSibling;
+        while (prev) {
+            if ($(prev).hasClass('facs')) {
+                break;
+            }
+            prev = prev.previousSibling;
+        }
+        var src = prev.getAttribute('src');
+        var pos = facsimiles.indexOf(iiifApi + src + "/info.json");
+        if (seadragon.currentPage() !== pos) {
+            seadragon.goToPage(pos);
+        }
     }
 
     function resize() {
@@ -108,18 +139,24 @@ $(document).ready(function() {
         $(".content .alternate, .content .reference").each(initAlternate);
         if (document.getElementById("image-container")) {
             var foundFacs = {};
-            var facs = [];
+            facsimiles = [];
             $("#document-pane img.facs").each(function() {
                 var src = $(this).attr("src");
-                console.log("image: %s", src);
                 var url = iiifApi + src + "/info.json";
                 if (!foundFacs[url]) {
-                    facs.push(url);
+                    facsimiles.push(url);
                     foundFacs[url] = url;
                 }
                 // seadragon.open(iiifApi + src + "/info.json");
             });
-            seadragon.open(facs);
+            seadragon.open(facsimiles);
+
+            pagebreaks = [];
+            $(".pb-pagination, .pb-foliation").each(function() {
+                pagebreaks.push(this);
+            }).on('mouseover', function(ev) {
+                viewFacsimile(this);
+            });
         }
     }
 
