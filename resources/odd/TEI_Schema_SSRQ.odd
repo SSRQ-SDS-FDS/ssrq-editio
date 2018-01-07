@@ -4701,6 +4701,10 @@
                         <valItem ident="condition">
                             <desc xml:lang="de"> Erhaltungszustand</desc>
                         </valItem>
+                        <valItem ident="language">
+                            <desc xml:lang="de">Sprache</desc>
+                            <desc xml:lang="fr">Langue</desc>
+                        </valItem>
                     </valList>
                     
                 </dataSpec>

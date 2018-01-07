@@ -196,6 +196,7 @@ declare function app:list-works($node as node(), $model as map(*), $filter as xs
                 doc($doc/@uri)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $kanton || "_")]
         else
             collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $kanton || "_")]
+                [not(tei:teiHeader//tei:filiation/@type = 'original')]
     return (
         session:set-attribute("ssrq.works", $filtered),
         session:set-attribute("ssrq.browse", $browse),
@@ -266,7 +267,7 @@ declare function app:regest($node as node(), $model as map(*), $action as xs:str
         })
 };
 
-declare 
+declare
      %templates:wrap
 function app:additionalSource($node as node(), $model as map(*)) {
     let $idno := root($model?data)//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno
@@ -288,11 +289,11 @@ function app:source-description($node as node(), $model as map(*)) {
 
 declare
     %templates:wrap
-function app:display-data($node as node(), $model as map(*)) {
-    for $data in $model?data 
+function app:display-data($node as node(), $model as map(*), $mode as xs:string?) {
+    for $data in $model?data
       return
-    $pm-config:web-transform($data, map { "root": $data }, $config:odd)
-    
+    $pm-config:web-transform($data, map { "root": $data, "mode": $mode }, $config:odd)
+
 };
 
 

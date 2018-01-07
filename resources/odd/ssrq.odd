@@ -131,6 +131,10 @@
                         <desc>Called to output the sigle of a document</desc>
                         <param name="content" value="format-date(xs:date(@when), '[Y] [MNn] [D01]', (session:get-attribute('ssrq.lang'), 'de')[1] || '_CH', (), ())"/>
                     </model>
+                    <model predicate="parent::origin" behaviour="listItem">
+                        <desc>Ausgabe in "weitere Überlieferungen"</desc>
+                        <param name="content" value="(ec:label('origDate'), ': ', format-date(xs:date(@when), '[Y] [MNn] [D01]', (session:get-attribute('ssrq.lang'), 'de')[1] || '_CH', (), ()))"/>
+                    </model>
                     <model behaviour="alternate">
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('origDate'), ': ', ec:format-date(@when))"/>
@@ -462,6 +466,9 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="origPlace" mode="add">
+                    <model predicate="parent::origin" behaviour="listItem">
+                        <param name="content" value="(ec:label('origPlace'), ': ', .)"/>
+                    </model>
                     <model output="web" behaviour="reference" cssClass="semantic place">
                         <desc>Semantic highlighting of origPlace names with tooltip and green text color</desc>
                         <param name="content" value="."/>
@@ -747,7 +754,7 @@
                 <elementSpec ident="msDesc" mode="add">
                     <desc>Stückbeschreibung ausgeben</desc>
                     <model behaviour="list">
-                        <param name="content" value="(msIdentifier,msContents/msItem, physDesc/objectDesc/supportDesc/condition, physDesc/objectDesc/supportDesc, physDesc, msContents/msItem/author[@role=&#34;scribe&#34;], additional)"/>
+                        <param name="content" value="(msIdentifier,history/origin/origDate,msContents/msItem/filiation[@type='current'], physDesc/objectDesc/supportDesc/condition, physDesc/objectDesc/supportDesc, physDesc, history/origin/origPlace, msContents/msItem/textLang, msContents/msItem/author[@role=&#34;scribe&#34;], additional)"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="msIdentifier">
@@ -813,7 +820,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="sealDesc">
-                    <modelSequence>
+                    <modelSequence predicate="seal">
                         <model behaviour="inline">
                             <param name="content" value="(count(seal), ' ', ec:label('sigle'), ':')"/>
                         </model>
@@ -821,6 +828,10 @@
                             <param name="type" value="'ordered'"/>
                         </model>
                     </modelSequence>
+                    <model behaviour="listItem">
+                        <desc>sealDesc in "weitere Überlieferungen"</desc>
+                        <param name="content" value="(ec:label('sigle'), ': ', .)"/>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="seal">
                     <model behaviour="listItem">
@@ -877,7 +888,8 @@
                     </model>
                 </elementSpec>
             <elementSpec ident="listBibl" mode="change">
-                    <modelSequence>
+                    <modelSequence predicate="not($parameters?mode = 'filiation')">
+                        <desc>Ausgabe Bibliographie, aber nicht in "weitere Überlieferungen"</desc>
                         <model behaviour="heading">
                             <desc>Titel des Bibliographieabschnitts</desc>
                             <param name="content" value="head/node()"/>
@@ -891,12 +903,19 @@
                             <param name="content" value="bibl"/>
                         </model>
                     </modelSequence>
+                    <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="bibl" mode="add">
                     <model behaviour="listItem"/>
                 </elementSpec>
                 <elementSpec ident="additional" mode="add">
                     <model behaviour="listItem"/>
+                </elementSpec>
+            <elementSpec ident="textLang" mode="add">
+                    <model behaviour="listItem">
+                        <desc>Ausgabe Sprache in "weitere Überlieferungen"</desc>
+                        <param name="content" value="(ec:label('language'), ': ', .)"/>
+                    </model>
                 </elementSpec>
             </schemaSpec>
         </body>
