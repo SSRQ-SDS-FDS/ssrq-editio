@@ -146,8 +146,10 @@ function app:kanton-auswahl($node as node(), $model as map(*), $kanton as xs:str
             <td>
             {
                 let $current := $tr/td[2]
-                let $docs := collection($config:data-root)/tei:TEI
-                    [starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $current || "_")]
+                let $docs :=
+                    collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $current || "_")]
+                        except
+                            collection($config:temp-root)/tei:TEI
                 return (
                     $tr/td[3]/@*,
                     if (exists($docs)) then
@@ -195,8 +197,10 @@ declare function app:list-works($node as node(), $model as map(*), $filter as xs
             return
                 doc($doc/@uri)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $kanton || "_")]
         else
-            collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $kanton || "_")]
-                [not(tei:teiHeader//tei:filiation/@type = 'original')]
+                collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $kanton || "_")]
+                    [not(tei:teiHeader//tei:filiation/@type = 'original')]
+            except
+                collection($config:temp-root)/tei:TEI
     return (
         session:set-attribute("ssrq.works", $filtered),
         session:set-attribute("ssrq.browse", $browse),

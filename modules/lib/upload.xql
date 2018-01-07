@@ -10,9 +10,11 @@ declare function local:upload($root, $paths, $payloads) {
     let $paths :=
         for-each-pair($paths, $payloads, function($path, $data) {
             if (ends-with($path, ".odd")) then
-                xmldb:store($config:odd-root, $path, $data)
-            else
-                xmldb:store($config:data-root || "/" || $root, $path, $data)
+                xmldb:store($config:temp-root, $path, $data)
+            else (
+                xmldb:store($config:temp-root || "/" || $root, $path, $data),
+                sm:chmod(xs:anyURI($config:temp-root || "/" || $root || "/" || $path), "rw-r-----")
+            )
         })
     return
         map {

@@ -45,7 +45,7 @@ declare function local:generate-code($collection as xs:string) {
 xmldb:create-collection($target, "transform"),
 sm:chown(xs:anyURI($target || "/transform"), "ssrq"),
 sm:chgrp(xs:anyURI($target || "/transform"), "tei"),
-sm:chmod(xs:anyURI($target || "/modules/view.xql"), "rwsr-xr-x"),
+(: sm:chmod(xs:anyURI($target || "/modules/view.xql"), "rwsr-xr-x"), :)
 (:sm:chmod(xs:anyURI($target || "/modules/transform.xql"), "rwsr-xr-x"),:)
 sm:chmod(xs:anyURI($target || "/modules/lib/pdf.xql"), "rwsr-xr-x"),
 sm:chmod(xs:anyURI($target || "/modules/lib/get-epub.xql"), "rwsr-xr-x"),
