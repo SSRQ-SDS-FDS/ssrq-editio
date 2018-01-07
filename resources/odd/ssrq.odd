@@ -129,11 +129,11 @@
                 <elementSpec ident="origDate" mode="add">
                     <model predicate="$parameters?header='short'" behaviour="inline">
                         <desc>Called to output the sigle of a document</desc>
-                        <param name="content" value="format-date(xs:date(@when), '[Y] [MNn] [D01]', (session:get-attribute('ssrq.lang'), 'de')[1] || '_CH', (), ())"/>
+                        <param name="content" value="format-date(xs:date(@when), '[Y] [MNn] [D01]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())"/>
                     </model>
                     <model predicate="parent::origin" behaviour="listItem">
                         <desc>Ausgabe in "weitere Überlieferungen"</desc>
-                        <param name="content" value="(ec:label('origDate'), ': ', format-date(xs:date(@when), '[Y] [MNn] [D01]', (session:get-attribute('ssrq.lang'), 'de')[1] || '_CH', (), ()))"/>
+                        <param name="content" value="(ec:label('origDate'), ': ', format-date(xs:date(@when), '[Y] [MNn] [D01]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()))"/>
                     </model>
                     <model behaviour="alternate">
                         <param name="default" value="."/>
