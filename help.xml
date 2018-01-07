@@ -18,7 +18,10 @@
       <body>
          <div xml:lang="de">
             <p>Hilfe zur Suche</p>
-            <p>Personen</p>
+            <p>Personen: 
+            - Nachnamen ohne Namelink
+            - Nachnamen und Vornamen. Namen durch Leerzeichen trennen (z.B.: Schmid Thomas)
+            - Personen ohne Nachnamen. NN Leerzeichen Vorname (z.B.: NN Ulrich)</p>
             <p>Familien/Organisationen</p>
             <p>Orte: Ort in Standardschreibweise eingeben. Wildcard wie «*burg» findet alle Komposita von «burg».</p>
             <p>Lemma</p>
