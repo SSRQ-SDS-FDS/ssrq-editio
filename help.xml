@@ -35,12 +35,16 @@
          <div xml:lang="fr">
             <p>Informations sur la recherche</p>
             <p>Recherche plein texte</p>
-              <lb/>-&#160;Wildcards sont possibles (p.e. wein* ou *haus)
+            <lb/>-&#160;Recherchez-vous un mot ou un groupe de mots
+            <lb/>-&#160;Wildcards sont possibles (p.e. wein* ou *haus)
+            <lb/>-&#160;Platzhalter innerhalb eines Wortes (z.B. r*t; * für mehrere Zeichen; ? für ein Zeichen)
             <p>Recherches dans un champ</p>
             <p>Personnes&#160;:
             <lb/>-&#160;Nom de famille ou namelink
             <lb/>-&#160;Nom de famille et prénom. Les noms doivent être séparés par un espace (p.e.&#160;: Schmid Pierre)
             <lb/>-&#160;Personnes sans nom de famille. NN espace prénom (p.e.&#160;: NN Jean)</p>
+            <p>Familles/organisations; lieux; termes
+            <lb/>-&#160;Standardschreibweise eingeben</p>
             <p><ref target="https://www.ssrq-sds-fds.ch/online/databases_doc.html">Description détaillée</ref> pour la recherche de personnes, organisations, lieux et termes</p>
          </div>
       </body>
