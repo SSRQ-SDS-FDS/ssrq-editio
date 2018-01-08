@@ -4,7 +4,7 @@
       <fileDesc>
          <titleStmt>
             <title xml:lang="de">Erläuterungen zur Suche</title>
-            <title xml:lang="fr">Erläuterungen zur Suche in Französisch</title>
+            <title xml:lang="fr">Informations sur la recherche</title>
          </titleStmt>
          <publicationStmt>
             <p>Publication Information</p>
@@ -35,7 +35,12 @@
          <div xml:lang="fr">
             <p>Informations sur la recherche</p>
             <p>Recherche plein texte</p>
+              <lb/>-&#160;Wildcards sont possibles (p.e. wein* ou *haus)
             <p>Recherches dans un champ</p>
+            <p>Personnes&#160;:
+            <lb/>-&#160;Nom de famille ou namelink
+            <lb/>-&#160;Nom de famille et prénom. Les noms doivent être séparés par un espace (p.e.&#160;: Schmid Pierre)
+            <lb/>-&#160;Personnes sans nom de famille. NN espace prénom (p.e.&#160;: NN Jean)</p>
             <p><ref target="https://www.ssrq-sds-fds.ch/online/databases_doc.html">Description détaillée</ref> pour la recherche de personnes, organisations, lieux et termes</p>
          </div>
       </body>
