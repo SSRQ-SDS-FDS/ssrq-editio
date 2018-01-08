@@ -37,7 +37,7 @@
             <p>Recherche plein texte
             <lb/>-&#160;Recherchez-vous un mot ou un groupe de mots
             <lb/>-&#160;Wildcards sont possibles (p.e. wein* ou *haus)
-            <lb/>-&#160;Recherchez-vous une expression incompLète avec un métacaractère (p.e. c*l&#160;; * pour plusieurs caractères&#160;; ? pour un caractère)</p>
+            <lb/>-&#160;Recherchez-vous une expression incomplète avec un métacaractère (p.e. c*l&#160;; * pour plusieurs caractères&#160;; ? pour un caractère)</p>
             <p>Limiter la recherche à un champ ou une facette</p>
             <p>Personnes&#160;:
             <lb/>-&#160;Nom de famille sans namelink
