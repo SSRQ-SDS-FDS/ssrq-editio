@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 142 $</p>
-                <p>Date of last commit:     $Date: 2018-01-08 10:47:35 +0100 (Mo, 08 Jan 2018) $</p>
+                <p>Revision of last commit: $Rev: 143 $</p>
+                <p>Date of last commit:     $Date: 2018-01-08 10:56:29 +0100 (Mo, 08 Jan 2018) $</p>
                 <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
@@ -1642,6 +1642,10 @@
                                     <desc xml:lang="de">Zeile</desc>
                                     <desc xml:lang="fr">ligne</desc>
                                 </valItem>
+                                <valItem ident="page">
+                                    <desc xml:lang="de">Seite</desc>
+                                    <desc xml:lang="fr">page</desc>
+                                </valItem>
                                 <valItem ident="word">
                                     <desc xml:lang="de">Wort</desc>
                                     <desc xml:lang="fr">mot</desc>
@@ -2791,6 +2795,10 @@
                                 <valItem ident="fold">
                                     <desc xml:lang="de">Falt</desc>
                                     <desc xml:lang="fr">endommagé par un pli</desc>
+                                </valItem>
+                                <valItem ident="glued page">
+                                    <desc xml:lang="de">zusammengeklebte Seiten</desc>
+                                    <desc xml:lang="fr">pages collées</desc>
                                 </valItem>
                                 <valItem ident="hairline">
                                     <desc xml:lang="de">feiner Riss</desc>
