@@ -18,6 +18,11 @@
       <body>
          <div xml:lang="de">
             <p>Hilfe zur Suche</p>
+            <p>Volltextsuche
+            <lb/>-&#160;Exakte Suche eines Wortes oder einer Wortfolge
+            <lb/>-&#160;Wildcards für eine unscharfe Suche (z.B. wein* oder *haus)
+            <lb/>-&#160;Platzhalter innerhalb eines Wortes (z.B. r*t; * für mehrere Zeichen; ? für ein Zeichen)
+            <lb/><!---&#160;Kombination von Suchbegriffen (Operatoren: AND, OR, AND NOT) FUNKTIONIERT NOCH NICHT--></p>
             <p>Personen: 
             - Nachnamen ohne Namelink
             - Nachnamen und Vornamen. Namen durch Leerzeichen trennen (z.B.: Schmid Thomas)
