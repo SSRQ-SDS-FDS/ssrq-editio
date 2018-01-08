@@ -31,9 +31,11 @@
             <p>Orte: Ort in Standardschreibweise eingeben. Wildcard wie «*burg» findet alle Komposita von «burg».</p>
             <p>Lemma</p>
             <p>Schlagworte</p>
+            <p><ref target="https://www.ssrq-sds-fds.ch/online/databases_doc.html">Detaillierter Beschrieb</ref> zur Suche nach Personen, Organisationen, Orten und Begriffen</p>
          </div>
          <div xml:lang="fr">
             <p>Hilfe zur Suche in Französisch...</p>
+            <p><ref target="https://www.ssrq-sds-fds.ch/online/databases.html">Description détaillée</ref> pour la recherche de personnes, organisations, lieux et termes</p>
          </div>
       </body>
   </text>
