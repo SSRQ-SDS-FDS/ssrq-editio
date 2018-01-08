@@ -43,7 +43,7 @@
             <lb/>-&#160;Nom de famille sans namelink
             <lb/>-&#160;Nom de famille et prénom. Les noms doivent être séparés par un espace (p.e.&#160;: Schmid Pierre)
             <lb/>-&#160;Personnes sans nom de famille. NN espace prénom (p.e.&#160;: NN Jean)</p>
-            <p>Familles/organisations&#160;; lieux&#160;; termes&#160;:
+            <p>Familles/organisations&#160;; lieux&#160;; lemmes&#160;; termes&#160;:
             <lb/>-&#160;Recherche par orthographie standard</p>
             <p><ref target="https://www.ssrq-sds-fds.ch/online/databases_doc.html">Description détaillée</ref> pour la recherche de personnes, organisations, lieux et termes</p>
          </div>
