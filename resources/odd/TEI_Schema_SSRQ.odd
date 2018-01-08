@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 139 $</p>
-                <p>Date of last commit:     $Date: 2018-01-04 15:45:50 +0100 (Do, 04 Jan 2018) $</p>
+                <p>Revision of last commit: $Rev: 142 $</p>
+                <p>Date of last commit:     $Date: 2018-01-08 10:47:35 +0100 (Mo, 08 Jan 2018) $</p>
                 <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
@@ -138,7 +138,7 @@
                         <attDef ident="evaluate" mode="delete"/>
                     </attList>
                 </classSpec>
-
+                
                 <classSpec ident="att.global.linking" type="atts" mode="change">
                     <attList>
                         <attDef ident="synch" mode="delete"/>
@@ -150,7 +150,7 @@
                         <attDef ident="select" mode="delete"/>
                     </attList>
                 </classSpec>
-
+                
                 <classSpec ident="att.handFeatures" type="atts" mode="change">
                     <attList>
                         <attDef ident="scribe" mode="replace">
@@ -165,7 +165,7 @@
                         <attDef ident="scriptRef" mode="delete"/>
                     </attList>
                 </classSpec>
-
+                
                 <!--END CHANGES TO ATTRIBUTE CLASSES-->
                 <!---BEGIN GLOBAL SCH CONSTRAINTS-->
 
@@ -195,7 +195,7 @@
                             </sch:rule>
                         </sch:pattern>
                     </constraint>
-                </constraintSpec>
+                </constraintSpec> 
 
                 <!-- wird gar nicht verwendet
                 <constraintSpec scheme="isoschematron" ident="sch-damageSpan">
@@ -324,7 +324,7 @@
                 <elementSpec ident="encodingDesc" module="header" mode="change">
                     <content>
                         <rng:group>
-                                <rng:ref name="editorialDecl"/>
+                                <rng:ref name="editorialDecl"/> 
                         </rng:group>
                     </content>
                 </elementSpec>
@@ -436,7 +436,7 @@
                     </content>
                     <constraintSpec scheme="isoschematron" ident="msId_minimal" mode="delete"/>
                 </elementSpec>
-
+                
                 <elementSpec ident="additional" module="msdescription" mode="change">
                     <content>
                         <rng:oneOrMore>
@@ -444,7 +444,7 @@
                         </rng:oneOrMore>
                     </content>
                 </elementSpec>
-
+                
                 <!-- ebene 4 unterbaum teiHeader/fileDesc/titleStmt -->
                 <elementSpec ident="title" module="core" mode="change">
                     <!-- classes mode="replace">
@@ -958,7 +958,7 @@
                                 <rng:ref name="sic"/>
                                 <rng:ref name="corr"/>
                             </rng:group>
-                            <!--
+                            <!-- 
                             <rng:group>
                                 <rng:ref name="orig"/>
                                 <rng:ref name="reg"/>
@@ -1018,7 +1018,7 @@
                             	<rng:ref name="sic"/>
                                 <rng:ref name="unclear"/>
                                 <rng:ref name="num"/>
-                            </rng:choice>
+                            </rng:choice> 
                         </rng:zeroOrMore>
                     </content>
                     <attList>
@@ -2687,6 +2687,10 @@
                                     <desc xml:lang="de">Falt</desc>
                                     <desc xml:lang="fr">endommagé par un pli</desc>
                                 </valItem>
+                                <valItem ident="glued page">
+                                    <desc xml:lang="de">zusammengeklebte Seiten</desc>
+                                    <desc xml:lang="fr">pages collées</desc>
+                                </valItem>
                                 <valItem ident="hairline">
                                     <desc xml:lang="de">feiner Riss</desc>
                                     <desc xml:lang="fr">légèrement fissuré</desc>
@@ -2729,7 +2733,7 @@
                                 </valItem>
                                 <!-- <valItem ident="rubbing">
                                     <desc xml:lang="de">Rasur</desc>
-                                    DEL verwenden
+                                    DEL verwenden 
                                 </valItem>-->
                                 <valItem ident="smoke">
                                     <desc xml:lang="de">Rauch/Brandschaden</desc>
@@ -2830,7 +2834,7 @@
                                 </valItem>
                                 <!-- <valItem ident="rubbing">
                                     <desc xml:lang="de">Rasur</desc>
-                                    DEL verwenden
+                                    DEL verwenden 
                                 </valItem>-->
                                 <valItem ident="smoke">
                                     <desc xml:lang="de">Rauch/Brandschaden</desc>
@@ -2860,6 +2864,10 @@
                                 <valItem ident="line">
                                     <desc xml:lang="de">Zeile</desc>
                                     <desc xml:lang="fr">ligne</desc>
+                                </valItem>
+                                <valItem ident="page">
+                                    <desc xml:lang="de">Seite</desc>
+                                    <desc xml:lang="fr">page</desc>
                                 </valItem>
                                 <valItem ident="word">
                                     <desc xml:lang="de">Wort</desc>
@@ -2938,8 +2946,8 @@
                                <valItem ident="strikethrough">
                                     <desc xml:lang="de">Streichung durch einfache
                                         Durchstreichung</desc>
-                                    <desc xml:lang="fr">la suppression a été tracée</desc>
-                                </valItem>
+                                    <desc xml:lang="fr">la suppression a été tracée</desc> 
+                                </valItem> 
                                 <valItem ident="subpunction">
                                     <desc xml:lang="de">Streichung durch Punkte unter dem zu
                                         Streichenden</desc>
@@ -3114,7 +3122,7 @@
                                 </valItem>
                                 <valItem ident="framed">
                                     <desc xml:lang="de">umrandet</desc>
-                                    <desc xml:lang="fr">encadré</desc>
+                                    <desc xml:lang="fr">encadré</desc> 
                                 </valItem>
                                 <valItem ident="font change">
                                     <desc xml:lang="de">Schriftwechsel</desc>
@@ -3302,7 +3310,7 @@
                                 <valItem ident="LU">
                                     <desc xml:lang="de">Luzerner</desc>
                                     <desc xml:lang="fr">de Lucerne</desc>
-                                </valItem>
+                                </valItem>         
                                 <valItem ident="Österreich">
                                     <desc xml:lang="de">Österreicher</desc>
                                     <desc xml:lang="fr">d'Autriche</desc>
@@ -3388,7 +3396,7 @@
                             <valItem ident="vegetables">
                             <!-- <desc xml:lang="it">verdura</desc>
                             <desc xml:lang="fr">légume</desc>-->
-                           <desc xml:lang="de">Gemüse</desc>
+                           <desc xml:lang="de">Gemüse</desc> 
                             </valItem>
                                 <valItem ident="barley">
                                     <desc xml:lang="de">Gerste</desc>
@@ -3545,7 +3553,7 @@
                                     <!-- <desc xml:lang="fr"></desc> -->
                                 </valItem>
                                 <valItem ident="wax">
-                                    <desc xml:lang="de">Wachs</desc>
+                                    <desc xml:lang="de">Wachs</desc>    
                                     <!-- <desc xml:lang="fr">cire</desc> -->
                                 </valItem>
                             	<valItem ident="forest">
@@ -3611,7 +3619,7 @@
                                 </valItem>
                             </valList>
                         </attDef>
-                        <!--
+                        <!--  
                         <attDef ident="quantity" mode="replace">
                             <desc/>
                             <valList type="closed">
@@ -3967,7 +3975,7 @@
                                 </valItem>
                                 <!--  -->
                                 <valItem ident="year">
-                                    <desc xml:lang="de">Jahr</desc>
+                                    <desc xml:lang="de">Jahr</desc>     
                                     <desc xml:lang="fr">année</desc>
                                 </valItem>
                             </valList>
@@ -4210,7 +4218,7 @@
                             <rng:choice>
                     		  <rng:text/>
                               <rng:ref name="p"/>
-                              <rng:ref name="macro.defaultContent"/>
+                              <rng:ref name="macro.defaultContent"/>                               
                     	   </rng:choice>
                         </rng:oneOrMore>
                     </content>
@@ -4429,7 +4437,7 @@
                                 <rng:text/>
                             </datatype>
                         </attDef>
-                        <!--
+                        <!--                         
                     <attDef ident="dur"/>
                         <attDef ident="dur" mode="replace">
                             <desc xml:lang="de">Angabe von Zeitperiode oder Zeitpunkt</desc>
@@ -4575,7 +4583,7 @@
                         <valItem ident="del">
                             <desc xml:lang="de">Streichung</desc>
                             <desc xml:lang="fr">Suppression</desc>
-                        </valItem>
+                        </valItem>   
                         <valItem ident="del-add">
                             <desc xml:lang="de">Streichung der Hinzufügung</desc>
                             <desc xml:lang="fr">Suppression de l'ajout</desc>
@@ -4716,24 +4724,10 @@
                             <desc xml:lang="de">von </desc>
                             <desc xml:lang="fr">de </desc>
                         </valItem>
-                        <valItem ident="scriptor">
-                            <desc xml:lang="de">Schreiber</desc>
-                            <desc xml:lang="fr">scripteur</desc>
-                        </valItem>
-                        <valItem ident="signatureAlt">
-                            <desc xml:lang="de">Frühere Überlieferung</desc>
-                        </valItem>
-                        <valItem ident="condition">
-                            <desc xml:lang="de"> Erhaltungszustand</desc>
-                        </valItem>
-                        <valItem ident="language">
-                            <desc xml:lang="de">Sprache</desc>
-                            <desc xml:lang="fr">Langue</desc>
-                        </valItem>
                     </valList>
                 </dataSpec>
             </schemaSpec>
-
+            
             <!--END ODD SCHEMA SPEC-->
         </body>
     </text>
