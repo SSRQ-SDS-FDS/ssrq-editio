@@ -37,14 +37,14 @@
             <p>Recherche plein texte
             <lb/>-&#160;Recherchez-vous un mot ou un groupe de mots
             <lb/>-&#160;Wildcards sont possibles (p.e. wein* ou *haus)
-            <lb/>-&#160;Platzhalter innerhalb eines Wortes (p.e. r*t&#160;; * pour plusieurs caractères; ? pour un caractère)</p>
-            <p>Recherches dans un champ</p>
+            <lb/>-&#160;Recherchez-vous une expression incompLète avec un métacaractère (p.e. c*l&#160;; * pour plusieurs caractères&#160;; ? pour un caractère)</p>
+            <p>Limiter la recherche à un champ ou une facette</p>
             <p>Personnes&#160;:
-            <lb/>-&#160;Nom de famille ou namelink
+            <lb/>-&#160;Nom de famille sans namelink
             <lb/>-&#160;Nom de famille et prénom. Les noms doivent être séparés par un espace (p.e.&#160;: Schmid Pierre)
             <lb/>-&#160;Personnes sans nom de famille. NN espace prénom (p.e.&#160;: NN Jean)</p>
-            <p>Familles/organisations&#160;; lieux&#160;; termes
-            <lb/>-&#160;Standardschreibweise eingeben</p>
+            <p>Familles/organisations&#160;; lieux&#160;; termes&#160;:
+            <lb/>-&#160;Recherche par orthographie standard</p>
             <p><ref target="https://www.ssrq-sds-fds.ch/online/databases_doc.html">Description détaillée</ref> pour la recherche de personnes, organisations, lieux et termes</p>
          </div>
       </body>
