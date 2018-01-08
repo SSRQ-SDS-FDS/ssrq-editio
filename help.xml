@@ -23,6 +23,7 @@
             <lb/>-&#160;Wildcards für eine unscharfe Suche (z.B. wein* oder *haus)
             <lb/>-&#160;Platzhalter innerhalb eines Wortes (z.B. r*t; * für mehrere Zeichen; ? für ein Zeichen)
             <lb/><!---&#160;Kombination von Suchbegriffen (Operatoren: AND, OR, AND NOT) FUNKTIONIERT NOCH NICHT--></p>
+            <p>Erweiterte Suche nach Textgattung, Facetten, Felder</p>
             <p>Personen: 
             <lb/>-&#160;Nachnamen ohne Namelink
             <lb/>-&#160;Nachnamen und Vornamen. Namen durch Leerzeichen trennen (z.B.: Schmid Thomas)
