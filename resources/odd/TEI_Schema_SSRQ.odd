@@ -4732,6 +4732,20 @@
                             <desc xml:lang="de">von </desc>
                             <desc xml:lang="fr">de </desc>
                         </valItem>
+                        <valItem ident="scriptor">
+                            <desc xml:lang="de">Schreiber</desc>
+                            <desc xml:lang="fr">scripteur</desc>
+                        </valItem>
+                        <valItem ident="signatureAlt">
+                            <desc xml:lang="de">Frühere Überlieferung</desc>
+                        </valItem>
+                        <valItem ident="condition">
+                            <desc xml:lang="de"> Erhaltungszustand</desc>
+                        </valItem>
+                        <valItem ident="language">
+                            <desc xml:lang="de">Sprache</desc>
+                            <desc xml:lang="fr">Langue</desc>
+                        </valItem>
                     </valList>
                 </dataSpec>
             </schemaSpec>
