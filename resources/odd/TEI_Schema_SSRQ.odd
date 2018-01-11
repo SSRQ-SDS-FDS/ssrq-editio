@@ -4746,6 +4746,9 @@
                             <desc xml:lang="de">Sprache</desc>
                             <desc xml:lang="fr">Langue</desc>
                         </valItem>
+                        <valItem ident="corrected-from">
+                            <desc xml:lang="de">korrigiert aus</desc>
+                        </valItem>
                     </valList>
                 </dataSpec>
             </schemaSpec>
