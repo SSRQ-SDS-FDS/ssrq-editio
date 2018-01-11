@@ -466,8 +466,11 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="origPlace" mode="add">
-                    <model predicate="parent::origin" behaviour="listItem">
+                    <model predicate="parent::origin and node()" behaviour="listItem">
                         <param name="content" value="(ec:label('origPlace'), ': ', .)"/>
+                    </model>
+                    <model predicate="parent::origin" behaviour="omit">
+                        <desc>Leeres Element im header</desc>
                     </model>
                     <model output="web" behaviour="reference" cssClass="semantic place">
                         <desc>Semantic highlighting of origPlace names with tooltip and green text color</desc>
@@ -782,9 +785,10 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="filiation">
-                    <model behaviour="inline">
+                    <model predicate="text()" behaviour="inline">
                         <param name="content" value="(ec:label('other-source'), ': ', .)"/>
                     </model>
+                    <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="condition">
                     <model behaviour="listItem">
@@ -807,20 +811,20 @@
                     </modelSequence>
                 </elementSpec>
                 <elementSpec ident="material">
-                    <model behaviour="inline">
+                    <model predicate="node() or @*" behaviour="inline">
                         <param name="content" value="(ec:label('surface'), ': ', .)"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="dimensions">
-                    <model predicate="@type = 'leaves'" behaviour="inline">
+                    <model predicate="@type = 'leaves' and (width/@quantity &gt; 0 or height/@quantity &gt; 0)" behaviour="inline">
                         <param name="content" value="(ec:label('format'), ' (cm) ', string-join((width/@quantity,height/@quantity), ' x ') )"/>
                     </model>
-                    <model predicate="@type = 'plica'" behaviour="inline">
+                    <model predicate="@type = 'plica' and width/@quantity &gt; 0" behaviour="inline">
                         <param name="content" value="' (Plica: ' || width/@quantity || ')'"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="sealDesc">
-                    <modelSequence predicate="seal">
+                    <modelSequence predicate="seal and seal/node()">
                         <model behaviour="inline">
                             <param name="content" value="(count(seal), ' ', ec:label('sigle'), ':')"/>
                         </model>
@@ -828,10 +832,11 @@
                             <param name="type" value="'ordered'"/>
                         </model>
                     </modelSequence>
-                    <model behaviour="listItem">
+                    <model predicate="not(seal)" behaviour="listItem">
                         <desc>sealDesc in "weitere Überlieferungen"</desc>
                         <param name="content" value="(ec:label('sigle'), ': ', .)"/>
                     </model>
+                    <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="seal">
                     <model behaviour="listItem">
