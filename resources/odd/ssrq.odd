@@ -524,6 +524,10 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="pb" mode="change">
+                    <model predicate="following-sibling::node()[1][self::lb]" behaviour="copy">
+                        <desc>If followed by an lb, process the lb first, then the pb</desc>
+                        <param name="content" value="(following-sibling::lb[1], $node)"/>
+                    </model>
                     <modelSequence output="web">
                         <model predicate="@facs" behaviour="graphic" cssClass="facs">
                             <desc>Facsimile image links will be extracted via javascript</desc>
@@ -535,10 +539,6 @@
                         <model predicate="ancestor::text and not(preceding::pb[ancestor::text])" behaviour="omit">
                             <desc>Hide the very first pagebreak in a document</desc>
                         </model>
-                        <model predicate="following-sibling::node()[1][self::lb]" behaviour="copy">
-                            <desc>If followed by an lb, process the lb first, then the pb</desc>
-                            <param name="content" value="(following-sibling::lb[1], $node)"/>
-                        </model>
                         <model predicate="not(@*)" behaviour="alternate" cssClass="pb-empty">
                             <desc>Show tooltip on pagebreaks that don't contain attributes</desc>
                             <param name="default" value="'|'"/>
@@ -549,7 +549,7 @@
                             <param name="default" value="@n"/>
                             <param name="alternate" value="ec:label('pb')"/>
                         </model>
-                        <model behaviour="alternate" cssClass="pb-foliation">
+                        <model predicate="not(number(@n) gt 0)" behaviour="alternate" cssClass="pb-foliation">
                             <desc>Show pagebreak with a label, if pb contains a @n attribute and its value contains a number+string combination</desc>
                             <param name="default" value="@n"/>
                             <param name="alternate" value="ec:label('pb')"/>
