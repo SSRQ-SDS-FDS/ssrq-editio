@@ -38,6 +38,7 @@
 
 @application-logo:          '../images/LogoSSRQVecLexia4000.png';
 @application-logo-width:    340px;
+@application-logo-width-small:    280px;
 @application-title-display: none;
 
 /********************* Colors ************************/
@@ -214,6 +215,15 @@
 
 @color-places: #007e00;
 @color-terms: #b5221f;
+
+.logo {
+
+  @media (max-width: 1199px) {
+      width: @application-logo-width-small;
+      background-position: 5px 5px;
+      background-size: auto 40px;
+  }
+}
 
 #image-aside {
     position: relative;
