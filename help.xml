@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TEI xmlns="http://www.tei-c.org/ns/1.0">
-  <teiHeader>
+   <teiHeader>
       <fileDesc>
          <titleStmt>
             <title xml:lang="de">Erläuterungen zur Suche</title>
@@ -13,40 +13,66 @@
             <p>Information about the source</p>
          </sourceDesc>
       </fileDesc>
-  </teiHeader>
-  <text>
+      <encodingDesc>
+         <tagsDecl>
+            <rendition xml:id="heading">font-size: 1.2em;</rendition>
+         </tagsDecl>
+      </encodingDesc>
+   </teiHeader>
+   <text>
       <body>
          <div xml:lang="de">
-            <p>Hilfe zur Suche</p>
-            <p>Volltextsuche
-            <lb/>-&#160;Exakte Suche eines Wortes oder einer Wortfolge
-            <lb/>-&#160;Wildcards für eine unscharfe Suche (z.B. wein* oder *haus)
-            <lb/>-&#160;Platzhalter innerhalb eines Wortes (z.B. r*t; * für mehrere Zeichen; ? für ein Zeichen)
-            <lb/><!---&#160;Kombination von Suchbegriffen (Operatoren: AND, OR, AND NOT) FUNKTIONIERT NOCH NICHT--></p>
-            <p>Erweiterte Suche nach Textgattung, Facetten, Felder</p>
-            <p>Personen: 
-            <lb/>-&#160;Nachnamen ohne Namelink
-            <lb/>-&#160;Nachnamen und Vornamen. Namen durch Leerzeichen trennen (z.B.: Schmid Thomas)
-            <lb/>-&#160;Personen ohne Nachnamen. NN Leerzeichen Vorname (z.B.: NN Ulrich)</p>
-            <p>Familien/Organisationen; Orte; Lemma; Schlagworte:
-            <lb/>-&#160;Standardschreibweise eingeben</p>
-            <p><ref target="https://www.ssrq-sds-fds.ch/online/databases_doc.html">Detaillierter Beschrieb</ref> zur Suche nach Personen, Organisationen, Orten und Begriffen</p>
+            <div>
+               <head rendition="#heading">Volltextsuche</head>
+               <list>
+                  <item>Exakte Suche eines Wortes oder einer Wortfolge</item>
+                  <item>Wildcards für eine unscharfe Suche (z.B. wein* oder *haus)</item>
+                  <item>Platzhalter innerhalb eines Wortes (z.B. r*t; * für mehrere Zeichen; ? für ein Zeichen)</item>
+                  <!--item>Kombination von Suchbegriffen (Operatoren: AND, OR, AND NOT) FUNKTIONIERT NOCH NICHT</item-->
+               </list>
+            </div>
+            <div>
+               <head rendition="#heading">Erweiterte Suche nach Textgattung, Facetten, Felder</head>
+               <p>Personen:</p>
+               <list>
+                  <item>Nachnamen ohne Namelink</item>
+                  <item>Nachnamen und Vornamen. Namen durch Leerzeichen trennen (z.B.: Schmid Thomas)</item>
+                  <item>Personen ohne Nachnamen. NN Leerzeichen Vorname (z.B.: NN Ulrich)</item>
+               </list>
+               <p>Familien/Organisationen; Orte; Lemma; Schlagworte:</p>
+               <list>
+                  <item>Standardschreibweise eingeben</item>
+               </list>
+            </div>
+            <p><ref target="https://www.ssrq-sds-fds.ch/online/databases_doc.html">Detaillierter Beschrieb</ref> zur Suche nach Personen, Organisationen, Orten
+               und Begriffen</p>
          </div>
          <div xml:lang="fr">
-            <p>Informations sur la recherche</p>
-            <p>Recherche plein texte
-            <lb/>-&#160;Recherchez-vous un mot ou un groupe de mots
-            <lb/>-&#160;Wildcards sont possibles (p.e. wein* ou *haus)
-            <lb/>-&#160;Recherchez-vous une expression incomplète avec un métacaractère (p.e. c*l&#160;; * pour plusieurs caractères&#160;; ? pour un caractère)</p>
-            <p>Limiter la recherche à un champ ou une facette</p>
-            <p>Personnes&#160;:
-            <lb/>-&#160;Nom de famille sans namelink
-            <lb/>-&#160;Nom de famille et prénom. Les noms doivent être séparés par un espace (p.e.&#160;: Schmid Pierre)
-            <lb/>-&#160;Personnes sans nom de famille. NN espace prénom (p.e.&#160;: NN Jean)</p>
-            <p>Familles/organisations&#160;; lieux&#160;; lemmes&#160;; termes&#160;:
-            <lb/>-&#160;Recherche par orthographie standard</p>
-            <p><ref target="https://www.ssrq-sds-fds.ch/online/databases_doc.html">Description détaillée</ref> pour la recherche de personnes, organisations, lieux et termes</p>
+            <div>
+               <head rendition="#heading">Recherche plein texte</head>
+               <list>
+                  <item>Recherchez-vous un mot ou un groupe de mots</item>
+                  <item>Wildcards sont possibles (p.e. wein* ou *haus)</item>
+                  <item>Recherchez-vous une expression incomplète avec un métacaractère (p.e. c*l&#160;; * pour plusieurs caractères&#160;; ? pour un
+                     caractère)</item>
+               </list>
+            </div>
+            <div>
+               <head rendition="#heading">Limiter la recherche à un champ ou une facette</head>
+               <p>Personnes:</p>
+               <list>
+                  <item>Nom de famille sans namelink</item>
+                  <item>Nom de famille et prénom. Les noms doivent être séparés par un espace (p.e.&#160;: Schmid Pierre)</item>
+                  <item>Personnes sans nom de famille. NN espace prénom (p.e.&#160;: NN Jean)</item>
+               </list>
+               <p>Familles/organisations; lieux; lemmes; termes:</p>
+               <list>
+                  <item>Recherche par orthographie standard</item>
+               </list>
+            </div>
+            <p><ref target="https://www.ssrq-sds-fds.ch/online/databases_doc.html">Description détaillée</ref> pour la recherche de personnes, organisations,
+               lieux et termes</p>
          </div>
       </body>
-  </text>
+   </text>
 </TEI>
