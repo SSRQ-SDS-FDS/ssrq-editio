@@ -770,7 +770,7 @@
                         </model>
                     </modelSequence>
                 </elementSpec>
-                
+
                 <elementSpec ident="msItem">
                     <model behaviour="listItem">
                         <param name="content" value="filiation[@type='current']"/>
@@ -868,7 +868,7 @@
                     <model predicate="@type = 'title'" behaviour="heading">
                         <param name="level" value="1"/>
                     </model>
-                    <model behaviour="heading">
+                    <model behaviour="heading" useSourceRendition="true">
                         <param name="level" value="2"/>
                     </model>
                 </elementSpec>
