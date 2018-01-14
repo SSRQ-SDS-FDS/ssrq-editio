@@ -34,7 +34,7 @@
     <msg key="browse-title">Titel</msg>
     <msg key="browse-filename">Dateiname</msg>
     <msg key="browsing">Zeige</msg>
-    <msg key="login-message">Bitte einloggen um Dokumente hochzuladen!</msg>
+    <msg key="login-message">Bitte einloggen, um Dokumente hochzuladen!</msg>
     <msg key="contents">Inhalt</msg>
     <msg key="previous-page">Vorherige Seite [Pfeil links auf der Tastatur]</msg>
     <msg key="next-page">Nächste Seite [Pfeil rechts auf der Tastatur]</msg>
@@ -100,4 +100,5 @@
     </msg>
     <msg key="realisierung">Realisierung</msg>
     <msg key="search">Suche</msg>
+    <msq key="lizenz">Lizenz: </msq>
 </catalogue>

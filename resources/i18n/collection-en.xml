@@ -99,4 +99,5 @@
     </msg>
     <msg key="realisierung">Realisation</msg>
     <msg key="search">Search</msg>
+    <msq key="lizenz">License: </msq>
 </catalogue>
