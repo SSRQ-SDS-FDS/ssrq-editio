@@ -191,7 +191,13 @@ function app:show-list-items($node as node(), $model as map(*)) {
  :)
 declare
     %templates:wrap
-function app:kanton-auswahl($node as node(), $model as map(*), $kanton as xs:string?) {
+function app:kanton-auswahl($node as node(), $model as map(*), $filter as xs:string?, $kanton as xs:string?) {
+    let $useSession := (empty($filter) or $filter = session:get-attribute("filter")) and $kanton = session:get-attribute("kanton")
+    let $kanton :=
+        if ($useSession) then
+            session:get-attribute("kanton")
+        else
+            ($kanton, app:select-kanton())[1]
     for $tr in $node/tr
     let $class := if ($tr/td[2]/string() = $kanton) then 'active' else ()
     return
@@ -230,7 +236,7 @@ declare function app:list-works($node as node(), $model as map(*), $filter as xs
         if ($useSession) then
             session:get-attribute("kanton")
         else
-            ($kanton, "ZH")[1]
+            ($kanton, app:select-kanton())[1]
     let $sessionData :=
         if ($useSession) then
             session:get-attribute("ssrq.works")
@@ -267,6 +273,23 @@ declare function app:list-works($node as node(), $model as map(*), $filter as xs
     )
 };
 
+declare function app:select-kanton() {
+    let $first := fold-left(("ZH", "BE", "LU", "UR", "SZ", "OW", "NW", "GL", "ZG", "FR", "SO", "BS", "BL", "SH", "AR", "AI", "SG",
+        "GR", "AG", "TG", "TI", "VD", "VS", "NE", "GE", "JU"), (), function($zero, $kanton) {
+            if ($zero) then
+                $zero
+            else if (exists(
+                collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $kanton || "_")]
+                    except
+                collection($config:temp-root)/tei:TEI
+            )) then
+                $kanton
+            else
+                $zero
+        })
+    return
+        $first
+};
 
 declare %private function app:show-if-exists($node as node(), $test as node()*, $func as function(*)) {
     if ($test and normalize-space($test[1]/string()) != "") then
