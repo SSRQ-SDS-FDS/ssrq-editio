@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<div data-template="templates:surround" data-template-with="templates/page.html" data-template-at="content">
+<div xmlns:i18n="http://exist-db.org/xquery/i18n" data-template="templates:surround" data-template-with="templates/page.html" data-template-at="content">
     <div data-template="templates:include" data-template-path="templates/menu.html"/>
     <section class="container-fluid">
       <header class="row">
           <div class="col-md-12">
               <div class="page-header">
-                  <h1 data-template="config:app-title"/>
+                  <h1><i18n:text key="doctitel"/></h1>
               </div>
           </div>
       </header>
@@ -25,7 +25,7 @@
                         <div class="query:query">
                             <form class="form-inline sort-form">
                                 <label for="sort-select">Sortierung: </label>
-                                <select id="sort-select" name="sort">
+                                <select id="sort-select" name="sort" data-template="templates:form-control">
                                     <option value=""><i18n:text key="relevance">Relevanz</i18n:text></option>
                                     <option value="kanton"><i18n:text key="canton">Kanton</i18n:text></option>
                                     <option value="id"><i18n:text key="work-id">Stücknummer</i18n:text></option>
