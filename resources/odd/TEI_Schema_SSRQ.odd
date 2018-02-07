@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 143 $</p>
-                <p>Date of last commit:     $Date: 2018-01-08 10:56:29 +0100 (Mo, 08 Jan 2018) $</p>
+                <p>Revision of last commit: $Rev: 179 $</p>
+                <p>Date of last commit:     $Date: 2018-01-31 20:28:48 +0100 (Mi, 31 Jan 2018) $</p>
                 <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
@@ -2618,6 +2618,12 @@
                                 <rng:ref name="rdg"/>
                                 <rng:ref name="rdg"/>
                             </rng:group>
+                            <rng:group>
+                                <rng:ref name="lem"/>
+                                <rng:ref name="rdg"/>
+                                <rng:ref name="rdg"/>
+                                <rng:ref name="rdg"/>
+                            </rng:group>
                         </rng:choice>
                     </content>
                     <attList>
@@ -3331,6 +3337,10 @@
                                     <desc xml:lang="de">Sarganser</desc>
                                     <desc xml:lang="fr">de Sargans</desc>
                                 </valItem>
+                                <valItem ident="SZ">
+                                    <desc xml:lang="de">Schwyzer</desc>
+                                    <desc xml:lang="fr">de Schwyz</desc>
+                                </valItem>
                                 <valItem ident="Utrecht">
                                     <desc xml:lang="de">utrischer</desc>
                                     <desc xml:lang="fr">d'Utrecht</desc>
@@ -3354,40 +3364,40 @@
                             <valList type="closed">
                                 <valItem ident="field">
                                     <desc xml:lang="de">Acker</desc>
-                                	<!-- <desc xml:lang="fr">champ</desc> -->
+                                     <desc xml:lang="fr">champ</desc>
                                 </valItem>
                                 <valItem ident="apple">
                                     <desc xml:lang="de">Äpfel</desc>
-                                    <!-- <desc xml:lang="fr">pommes</desc> -->
+                                    <desc xml:lang="fr">pommes</desc>
                                 </valItem>
                                 <valItem ident="pear">
                                     <desc xml:lang="de">Birnen</desc>
-                                    <!-- <desc xml:lang="fr">poire</desc> -->
+                                    <desc xml:lang="fr">poire</desc>
                                 </valItem>
                                 <valItem ident="bean">
                                     <desc xml:lang="de">Bohnen</desc>
-                                    <!-- <desc xml:lang="fr">haricots</desc> -->
+                                    <desc xml:lang="fr">haricots</desc>
                                 </valItem>
                             <valItem ident="bread">
                             <desc xml:lang="de">Brot</desc>
-                            <!-- <desc xml:lang="fr">pain</desc>
-                            <desc xml:lang="it">pane</desc> -->
+                            <desc xml:lang="fr">pain</desc>
+                            <desc xml:lang="it">pane</desc>
                             </valItem>
                                 <valItem ident="butter">
                                     <desc xml:lang="de">Butter</desc>
-                                    <!-- <desc xml:lang="fr">beurre</desc> -->
+                                    <desc xml:lang="fr">beurre</desc> 
                                 </valItem>
                                 <valItem ident="spelt">
                                     <desc xml:lang="de">Dinkel</desc>
-                                    <!-- <desc xml:lang="fr">épeautre</desc> -->
+                                    <desc xml:lang="fr">épeautre</desc>
                                 </valItem>
                                 <valItem ident="dried fruit">
                                     <desc xml:lang="de">Dörrobst</desc>
-                                    <!-- <desc xml:lang="fr">fruit sec</desc> -->
+                                    <desc xml:lang="fr">fruit sec</desc>
                                 </valItem>
                                 <valItem ident="pea">
                                     <desc xml:lang="de">Erbsen</desc>
-                                    <!-- <desc xml:lang="fr">pois</desc> -->
+                                    <desc xml:lang="fr">pois</desc>
                                 </valItem>
                                 <valItem ident="grain_spelt">
                                     <desc xml:lang="de">Fesen und Kernen</desc>
@@ -3395,202 +3405,202 @@
                                 </valItem>
                                 <valItem ident="flax">
                                     <desc xml:lang="de">Flachs</desc>
-                                    <!-- <desc xml:lang="fr">lin</desc> -->
+                                    <desc xml:lang="fr">lin</desc>
                                 </valItem>
                                 <valItem ident="meat">
                                     <desc xml:lang="de">Fleisch</desc>
-                                    <!-- <desc xml:lang="fr">viande</desc> -->
+                                    <desc xml:lang="fr">viande</desc>
                                 </valItem>
                             <valItem ident="vegetables">
-                            <!-- <desc xml:lang="it">verdura</desc>
-                            <desc xml:lang="fr">légume</desc>-->
-                           <desc xml:lang="de">Gemüse</desc> 
+                                <desc xml:lang="de">Gemüse</desc> 
+                            <desc xml:lang="it">verdura</desc>
+                            <desc xml:lang="fr">légume</desc>
                             </valItem>
                                 <valItem ident="barley">
                                     <desc xml:lang="de">Gerste</desc>
-                                    <!-- <desc xml:lang="fr">orge</desc> -->
+                                    <desc xml:lang="fr">orge</desc>
                                 </valItem>
                                 <valItem ident="gold">
                                     <desc xml:lang="de">Gold</desc>
-                                	<!-- <desc xml:lang="fr">or</desc> -->
+                                	<desc xml:lang="fr">or</desc>
                                 </valItem>
                                 <valItem ident="oat">
                                     <desc xml:lang="de">Hafer</desc>
-                                    <!-- <desc xml:lang="fr">avoine</desc> -->
+                                     <desc xml:lang="fr">avoine</desc> 
                                 </valItem>
                                 <valItem ident="hemp">
                                     <desc xml:lang="de">Hanf</desc>
-                                    <!-- <desc xml:lang="fr">chanvre</desc> -->
+                                    <desc xml:lang="fr">chanvre</desc>
                                 </valItem>
                                 <valItem ident="hay">
                                     <desc xml:lang="de">Heu</desc>
-                                    <!-- <desc xml:lang="fr">foin</desc> -->
+                                <desc xml:lang="fr">foin</desc>
                                 </valItem>
                                     <valItem ident="herring">
                                         <desc xml:lang="de">Hering</desc>
-                                        <!-- <desc xml:lang="fr">hareng</desc> -->
+                                         <desc xml:lang="fr">hareng</desc> 
                                     </valItem>
                                 <valItem ident="sorghum">
                                     <desc xml:lang="de">Hirse</desc>
-                                    <!-- <desc xml:lang="fr">millet</desc> -->
+                                    <desc xml:lang="fr">millet</desc>
                                 </valItem>
                                 <valItem ident="wood">
                                     <desc xml:lang="de">Holz</desc>
-                                    <!-- <desc xml:lang="fr">bois</desc> -->
+                                    <desc xml:lang="fr">bois</desc>
                                 </valItem>
                                 <valItem ident="honey">
                                     <desc xml:lang="de">Honig</desc>
-                                    <!-- <desc xml:lang="fr">miel</desc> -->
+                                    <desc xml:lang="fr">miel</desc>
                                 </valItem>
                                 <valItem ident="pulse">
                                     <desc xml:lang="de">Hülsenfrüchte</desc>
-                                    <!-- <desc xml:lang="fr">légumineuses </desc> -->
+                                     <desc xml:lang="fr">légumineuses </desc>
                                 </valItem>
                                 <valItem ident="lime">
                                     <desc xml:lang="de">Kalk</desc>
-                                    <!-- <desc xml:lang="fr">chaux</desc> -->
+                                  <desc xml:lang="fr">chaux</desc> 
                                 </valItem>
                                 <valItem ident="cheese">
                                     <desc xml:lang="de">Käse</desc>
-                                    <!-- <desc xml:lang="fr">fromage</desc> -->
+                                    <desc xml:lang="fr">fromage</desc> 
                                 </valItem>
                                 <valItem ident="merchandise">
                                     <desc xml:lang="de">Kaufmannsgut</desc>
-                                    <!-- <desc xml:lang="fr">marchandise</desc> -->
+                                  <desc xml:lang="fr">marchandise</desc>
                                 </valItem>
                                 <valItem ident="bran">
                                     <desc xml:lang="de">Kleie</desc>
-                                   <!--  <desc xml:lang="fr">son</desc>
-                                    <desc xml:lang="it">crusca</desc> -->
+                                   <desc xml:lang="fr">son</desc>
+                                    <desc xml:lang="it">crusca</desc> 
                                 </valItem>
                                 <valItem ident="grain">
                                     <desc xml:lang="de">Korn</desc>
-                                    <!-- <desc xml:lang="fr">grain</desc> -->
+                                     <desc xml:lang="fr">grain</desc> 
                                 </valItem>
                                 <valItem ident="grain_wheat">
                                     <desc xml:lang="de">Korn und Weizen</desc>
-                                    <!-- <desc xml:lang="fr">grain et blé</desc> -->
+                                    <desc xml:lang="fr">grain et blé</desc> 
                                 </valItem>
                                 <valItem ident="land">
                                     <desc xml:lang="de">Land</desc>
-                                    <!-- <desc xml:lang="fr">pays</desc> -->
+                                    <desc xml:lang="fr">pays</desc>
                                 </valItem>
                                 <valItem ident="electuary">
                                     <desc xml:lang="de">Latwerge</desc>
-                                    <!-- <desc xml:lang="fr">électuaire</desc> -->
+                                    <desc xml:lang="fr">électuaire</desc> 
                                 </valItem>
                                 <valItem ident="lentils">
                                     <desc xml:lang="de">Linsen</desc>
-                                    <!-- <desc xml:lang="fr">lentilles</desc> -->
+                              <desc xml:lang="fr">lentilles</desc> 
                                 </valItem>
                                 <valItem ident="flour">
                                     <desc xml:lang="de">Mehl</desc>
-                                    <!-- <desc xml:lang="fr">farine</desc> -->
+                                     <desc xml:lang="fr">farine</desc>
                                 </valItem>
                                 <valItem ident="milk">
                                     <desc xml:lang="de">Milch</desc>
-                                    <!-- <desc xml:lang="fr">lait</desc> -->
+                                    <desc xml:lang="fr">lait</desc> 
                                 </valItem>
                                 <valItem ident="dung">
                                     <desc xml:lang="de">Mist</desc>
-                                    <!-- <desc xml:lang="fr">fumier</desc> -->
+                                    <desc xml:lang="fr">fumier</desc> 
                                 </valItem>
                                 <valItem ident="must">
                                     <desc xml:lang="de">Most</desc>
-                                    <!-- <desc xml:lang="fr">cidre</desc> -->
+                                    <desc xml:lang="fr">cidre</desc> 
                                 </valItem>
                                 <valItem ident="mush">
                                     <desc xml:lang="de">Mus</desc>
-                                    <!-- <desc xml:lang="fr"></desc> -->
+                                    <desc xml:lang="fr"></desc> 
                                 </valItem>
                                 <valItem ident="nuts">
                                     <desc xml:lang="de">Nüsse</desc>
-                                    <!-- <desc xml:lang="fr">noix</desc> -->
+                                    <desc xml:lang="fr">noix</desc> 
                                 </valItem>
                                 <valItem ident="vineyard">
                                     <desc xml:lang="de">Reben</desc>
-                                    <!-- <desc xml:lang="fr">vigne</desc> -->
+                                    <desc xml:lang="fr">vigne</desc> 
                                 </valItem>
                                 <valItem ident="rice">
                                     <desc xml:lang="de">Reis</desc>
-                                    <!-- <desc xml:lang="fr">riz</desc> -->
+                                  <desc xml:lang="fr">riz</desc> 
                                 </valItem>
                                 <valItem ident="marsh">
                                     <desc xml:lang="de">Ried</desc>
-                                    <!-- <desc xml:lang="fr">marais</desc> -->
+                                   <desc xml:lang="fr">marais</desc> 
                                 </valItem>
                             	<valItem ident="rye">
                             		<desc xml:lang="de">Roggen</desc>
-                            	    <!-- <desc xml:lang="fr">seigel</desc>
-                            		<desc xml:lang="it">segale</desc>-->
+                            	     <desc xml:lang="fr">seigel</desc>
+                            		<desc xml:lang="it">segale</desc>
                             	</valItem>
                                 <valItem ident="salt">
                                     <desc xml:lang="de">Salz</desc>
-                                    <!-- <desc xml:lang="fr"></desc> -->
+                                     <desc xml:lang="fr"></desc> 
                                 </valItem>
                                 <valItem ident="lard">
                                     <desc xml:lang="de">Schmalz</desc>
-                                    <!-- <desc xml:lang="fr">sel</desc> -->
+                                    <desc xml:lang="fr">sel</desc>
                                 </valItem>
                                 <valItem ident="silk">
                                     <desc xml:lang="de">Seide</desc>
-                                    <!-- <desc xml:lang="fr">soie</desc> -->
+                                   <desc xml:lang="fr">soie</desc> 
                                 </valItem>
                                 <valItem ident="silver">
                                     <desc xml:lang="de">Silber</desc>
-                                	<!-- <desc xml:lang="fr">argent</desc> -->
+                                	<desc xml:lang="fr">argent</desc> 
                                 </valItem>
                                 <valItem ident="steel">
                                     <desc xml:lang="de">Stahl</desc>
-                                    <!-- <desc xml:lang="fr">acier</desc> -->
+                                 <desc xml:lang="fr">acier</desc> 
                                 </valItem>
                                 <valItem ident="picket">
                                     <desc xml:lang="de">Stickel</desc>
-                                    <!-- <desc xml:lang="fr">échalas</desc> -->
+                                    <desc xml:lang="fr">échalas</desc> 
                                 </valItem>
                                 <valItem ident="straw">
                                     <desc xml:lang="de">Stroh</desc>
-                                    <!-- <desc xml:lang="fr">paille</desc> -->
+                                   <desc xml:lang="fr">paille</desc> 
                                 </valItem>
                                 <valItem ident="drapery">
                                     <desc xml:lang="de">Tuch</desc>
-                                    <!-- <desc xml:lang="fr">étoffe</desc> -->
+                                     <desc xml:lang="fr">étoffe</desc> 
                                 </valItem>
                                 <valItem ident="tallow">
                                     <desc xml:lang="de">Unschlitt</desc>
-                                    <!-- <desc xml:lang="fr"></desc> -->
+                                    <desc xml:lang="fr"></desc> 
                                 </valItem>
                                 <valItem ident="wax">
                                     <desc xml:lang="de">Wachs</desc>    
-                                    <!-- <desc xml:lang="fr">cire</desc> -->
+                                  <desc xml:lang="fr">cire</desc> 
                                 </valItem>
                             	<valItem ident="forest">
                             		<desc xml:lang="de">Wald</desc>
-                            	    <!-- <desc xml:lang="fr">forêt</desc> -->
+                            	 <desc xml:lang="fr">forêt</desc>
                             	</valItem>
                                 <valItem ident="wine">
                                     <desc xml:lang="de">Wein</desc>
-                                    <!-- <desc xml:lang="fr"></desc> -->
+                                    <desc xml:lang="fr"></desc> 
                                 </valItem>
                                 <valItem ident="wheat">
                                     <desc xml:lang="de">Weizen</desc>
-                                    <!-- <desc xml:lang="fr">vin</desc> -->
+                                   <desc xml:lang="fr">vin</desc> 
                                 </valItem>
                                 <valItem ident="grassland">
                                     <desc xml:lang="de">Wiese</desc>
-                                    <!-- <desc xml:lang="fr">pré</desc> -->
+                                     <desc xml:lang="fr">pré</desc> 
                                 </valItem>
                                 <valItem ident="wool">
                                     <desc xml:lang="de">Wolle</desc>
-                                    <!-- <desc xml:lang="fr">laine</desc> -->
+                                    <desc xml:lang="fr">laine</desc> 
                                 </valItem>
                                 <valItem ident="Ziger">
                                     <desc xml:lang="de">Ziger</desc>
-                                    <!-- <desc xml:lang="fr">ziger</desc> -->
+                                    <desc xml:lang="fr">ziger</desc>
                                 </valItem>
                                 <valItem ident="denim">
                                     <desc xml:lang="de">Zwillich</desc>
-                                    <!-- <desc xml:lang="fr">coutil</desc> -->
+                                     <desc xml:lang="fr">coutil</desc> 
                                 </valItem>
                             </valList>
                         </attDef>
@@ -3648,12 +3658,14 @@
                                 </valItem>
                                 <valItem ident="Garbe">
                                     <desc xml:lang="de">Garbe</desc>
+                                    <desc xml:lang="de" type="plural">Garben</desc>
                                 </valItem>
                                 <valItem ident="Immi">
                                     <desc xml:lang="de">Immi</desc>
                                 </valItem>
                                 <valItem ident="Laib">
                                     <desc xml:lang="de">Laib</desc>
+                                    <desc xml:lang="de" type="plural">Laibe</desc>
                                 </valItem>
                                 <valItem ident="Ledi">
                                     <desc xml:lang="de">Ledi</desc>
@@ -3666,6 +3678,7 @@
                                 </valItem>
                                 <valItem ident="Sack">
                                     <desc xml:lang="de">Sack</desc>
+                                    <desc xml:lang="de" type="plural">Säcke</desc>
                                 </valItem>
                                 <valItem ident="Scheffel">
                                     <desc xml:lang="de">Scheffel</desc>
@@ -3694,9 +3707,11 @@
                                 </valItem>
                                 <valItem ident="Fass">
                                     <desc xml:lang="de">Fass</desc>
+                                    <desc xml:lang="de" type="plural">Fässer</desc>
                                 </valItem>
                                 <valItem ident="Kopf">
                                     <desc xml:lang="de">Kopf</desc>
+                                    <desc xml:lang="de" type="plural">Köpfe</desc>
                                 </valItem>
                                 <valItem ident="Legel">
                                     <desc xml:lang="de">Legel</desc>
@@ -3734,16 +3749,20 @@
                                 </valItem>
                                 <valItem ident="Elle">
                                     <desc xml:lang="de">Elle</desc>
+                                    <desc xml:lang="de" type="plural">Ellen</desc>
                                     <desc xml:lang="fr">aune</desc>
                                 </valItem>
                                 <valItem ident="Fuss">
                                     <desc xml:lang="de">Fuss</desc>
+                                    <desc xml:lang="de" type="plural">Füsse</desc>
                                 </valItem>
                                 <valItem ident="Meile">
                                     <desc xml:lang="de">Meile</desc>
+                                    <desc xml:lang="de" type="plural">Meilen</desc>
                                 </valItem>
                                 <valItem ident="Schuh">
                                     <desc xml:lang="de">Schuh</desc>
+                                    <desc xml:lang="de" type="plural">Schuhe</desc>
                                 </valItem>
                                 <valItem ident="Stab">
                                     <desc xml:lang="de">Stab</desc>
@@ -3752,14 +3771,12 @@
                                     <desc xml:lang="de">Zoll</desc>
                                 </valItem>
                                 <!--  -->
-                                <valItem ident="Fuss">
-                                    <desc xml:lang="de">Fuss</desc>
-                                </valItem>
                             	<valItem ident="Gertel">
                             		<desc xml:lang="de">Gertel</desc>
                             	</valItem>
                                 <valItem ident="Hube">
                                     <desc xml:lang="de">Hube</desc>
+                                    <desc xml:lang="de" type="plural">Huben</desc>
                                 </valItem>
                                 <valItem ident="Juchart">
                                     <desc xml:lang="de">Juchart</desc>
@@ -3769,9 +3786,11 @@
                                 </valItem>
                                 <valItem ident="Kuhsömmerung">
                                     <desc xml:lang="de">Kuhsömmerung</desc>
+                                    <desc xml:lang="de" type="plural">Kuhsömmerungen</desc>
                                 </valItem>
                                 <valItem ident="Kuhwinterung">
                                     <desc xml:lang="de">Kuhwinterung</desc>
+                                    <desc xml:lang="de" type="plural">Kuhwinterungen</desc>
                                 </valItem>
                                 <valItem ident="Mal">
                                     <desc xml:lang="de">Mal</desc>
@@ -3787,15 +3806,15 @@
                                 </valItem>
                                 <valItem ident="Rute">
                                     <desc xml:lang="de">Rute</desc>
+                                    <desc xml:lang="de" type="plural">Ruten</desc>
                                 </valItem>
                                 <valItem ident="Schritt">
                                     <desc xml:lang="de">Schritt</desc>
-                                </valItem>
-                                <valItem ident="Schuh">
-                                    <desc xml:lang="de">Schuh</desc>
+                                    <desc xml:lang="de" type="plural">Schritte</desc>
                                 </valItem>
                                 <valItem ident="Schuppose">
                                     <desc xml:lang="de">Schuppose</desc>
+                                    <desc xml:lang="de" type="plural">Schupposen</desc>
                                 </valItem>
                                 <valItem ident="Staffel">
                                     <desc xml:lang="de">Staffel</desc>
@@ -3832,9 +3851,6 @@
                                     <desc xml:lang="de">Zentner</desc>
                                 </valItem>
                                 <!--  -->
-                                <valItem ident="Fass">
-                                    <desc xml:lang="de">Fass</desc>
-                                </valItem>
                                 <valItem ident="Kröttli">
                                     <desc xml:lang="de">Kröttli</desc>
                                 </valItem>
@@ -3846,6 +3862,7 @@
                                 </valItem>
                                 <valItem ident="Scheibe">
                                     <desc xml:lang="de">Scheibe</desc>
+                                    <desc xml:lang="de" type="plural">Scheiben</desc>
                                 </valItem>
                                 <!--  -->
                                 <valItem ident="Ballen">
@@ -3877,9 +3894,11 @@
                                 </valItem>
                                 <valItem ident="Paar">
                                     <desc xml:lang="de">Paar</desc>
+                                    <desc xml:lang="de" type="plural">Paare</desc>
                                 </valItem>
                                 <valItem ident="Schubkarre">
                                     <desc xml:lang="de">Schubkarre</desc>
+                                    <desc xml:lang="de" type="plural">Schubkarren</desc>
                                 </valItem>
                                 <valItem ident="Seil">
                                     <desc xml:lang="de">Seil</desc>
@@ -3895,9 +3914,11 @@
                                 </valItem>
                                 <valItem ident="Tonne">
                                     <desc xml:lang="de">Tonne</desc>
+                                    <desc xml:lang="de" type="plural">Tonnen</desc>
                                 </valItem>
                                 <valItem ident="Zeine">
                                     <desc xml:lang="de">Zeine</desc>
+                                    <desc xml:lang="de" type="plural">Zeinen</desc>
                                 </valItem>
                                 <!--  -->
                                 <valItem ident="Angster">
@@ -3933,7 +3954,8 @@
                                     <desc xml:lang="fr">denier</desc>
                                 </valItem>
                                 <valItem ident="Dukat">
-                                    <desc xml:lang="de">Dukat/en</desc>
+                                    <desc xml:lang="de">Dukat</desc>
+                                    <desc xml:lang="de" type="plural">Dukaten</desc>
                                     <desc xml:lang="fr">ducat</desc>
                                 </valItem>
                                 <valItem ident="Grossi">
@@ -3946,6 +3968,7 @@
                                 </valItem>
                                 <valItem ident="k">
                                     <desc xml:lang="de">Krone</desc>
+                                    <desc xml:lang="de" type="plural">Kronen</desc>
                                     <desc xml:lang="fr">écu/couronne</desc>
                                 </valItem>
                                 <valItem ident="M">
@@ -3983,7 +4006,8 @@
                                 </valItem>
                                 <!--  -->
                                 <valItem ident="year">
-                                    <desc xml:lang="de">Jahr</desc>     
+                                    <desc xml:lang="de">Jahr</desc> 
+                                    <desc xml:lang="de" type="plural">Jahre</desc>
                                     <desc xml:lang="fr">année</desc>
                                 </valItem>
                             </valList>
@@ -4226,6 +4250,7 @@
                             <rng:choice>
                     		  <rng:text/>
                               <rng:ref name="p"/>
+                                <rng:ref name="anchor"/>
                               <rng:ref name="macro.defaultContent"/>                               
                     	   </rng:choice>
                         </rng:oneOrMore>
@@ -4553,8 +4578,8 @@
                 <dataSpec ident="ssrq.labels">
                     <valList>
                         <valItem ident="abbr-expanded">
-                            <desc xml:lang="de">Aufgelöste Abkürzung</desc>
-                            <desc xml:lang="fr">Résolution d'abbréviation</desc>
+                            <desc xml:lang="de">Aufgelöste Abkürzung:</desc>
+                            <desc xml:lang="fr">Résolution d'abbréviation :</desc>
                         </valItem>
                         <valItem ident="abbr-unclear">
                             <desc xml:lang="de">Abkürzung, unsichere Lesung</desc>
@@ -4722,7 +4747,7 @@
                         </valItem>
                         <valItem ident="scribe1">
                             <desc xml:lang="de">Anlagehand</desc>
-                            <desc xml:lang="fr">main principale </desc>
+                            <desc xml:lang="fr">main principale</desc>
                         </valItem>
                         <valItem ident="scribe2">
                             <desc xml:lang="de">Nachtragshand</desc>
@@ -4731,23 +4756,6 @@
                         <valItem ident="by">
                             <desc xml:lang="de">von </desc>
                             <desc xml:lang="fr">de </desc>
-                        </valItem>
-                        <valItem ident="scriptor">
-                            <desc xml:lang="de">Schreiber</desc>
-                            <desc xml:lang="fr">scripteur</desc>
-                        </valItem>
-                        <valItem ident="signatureAlt">
-                            <desc xml:lang="de">Frühere Überlieferung</desc>
-                        </valItem>
-                        <valItem ident="condition">
-                            <desc xml:lang="de"> Erhaltungszustand</desc>
-                        </valItem>
-                        <valItem ident="language">
-                            <desc xml:lang="de">Sprache</desc>
-                            <desc xml:lang="fr">Langue</desc>
-                        </valItem>
-                        <valItem ident="corrected-from">
-                            <desc xml:lang="de">korrigiert aus</desc>
                         </valItem>
                     </valList>
                 </dataSpec>
