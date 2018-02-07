@@ -214,11 +214,11 @@ function app:kanton-auswahl($node as node(), $model as map(*), $filter as xs:str
                     $tr/td[3]/@*,
                     if (exists($docs)) then
                         <span>
-                            <a href="?kanton={$current}">{$tr/td[3]/text()} </a>
+                            <a href="?kanton={$current}">{$tr/td[3]/node()} </a>
                             <span class="badge">{count($docs)}</span>
                         </span>
                     else
-                        $tr/td[3]/text()
+                        $tr/td[3]/node()
                 )
             }
             </td>

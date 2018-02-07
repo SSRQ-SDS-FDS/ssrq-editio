@@ -52,7 +52,7 @@
                 </elementSpec>
                 <elementSpec ident="signed" mode="change">
                     <model behaviour="block">
-                        <param name="content" value="('[', ec:label('signed'), ':]', .)"/>
+                        <param name="content" value="('[', ec:label('signed'), ':] ', .)"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="choice" mode="change">
@@ -326,12 +326,12 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="hi" mode="change">
-                    <model predicate="@rend='sup'" behaviour="inline" cssClass="text-critical">
+                    <model predicate="@rend='sup'" behaviour="inline">
                         <outputRendition>
                             font-size: 80%; vertical-align: top;
                         </outputRendition>
                     </model>
-                    <model predicate="@rend='underline' and @hand" behaviour="alternote" cssClass="text-critical">
+                    <model predicate="@rend='underline' and @hand" behaviour="alternote">
                         <param name="content" value="."/>
                         <param name="alternate" value="(ec:label('underlined'), ' ', ec:translate(@hand, 0, 'lowercase'))"/>
                         <param name="type" value="'text-critical'"/>
