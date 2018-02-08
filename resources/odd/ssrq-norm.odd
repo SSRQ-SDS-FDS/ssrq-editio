@@ -99,7 +99,7 @@
                     </model>
                     <model predicate="abbr and expan" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="expan[1]"/>
-                        <param name="alternate" value="(ec:label('abbr-expanded'), ': ', abbr[1])"/>
+                        <param name="alternate" value="(ec:label('abbr-nonexpanded'), ': ', abbr[1])"/>
                     </model>
                     <model predicate="orig and reg" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="reg[1]"/>

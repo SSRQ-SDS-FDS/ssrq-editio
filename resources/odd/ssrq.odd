@@ -72,7 +72,7 @@
                     </model>
                     <model predicate="abbr and expan" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="abbr[1]"/>
-                        <param name="alternate" value="expan[1]"/>
+                        <param name="alternate" value="(ec:label('abbr-expanded'), ': ', expan[1])"/>
                     </model>
                     <model predicate="orig and reg" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="orig[1]"/>
@@ -80,9 +80,10 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="expan" mode="change">
-                    <model predicate="parent::choice" behaviour="inline">
+                    <!--<model predicate="parent::choice" behaviour="inline">
                         <param name="content" value="ec:label('abbr-expanded')"/>
                     </model>
+                    -->
                     <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="abbr" mode="change">

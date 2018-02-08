@@ -4551,6 +4551,10 @@
                             <desc xml:lang="de">Aufgelöste Abkürzung</desc>
                             <desc xml:lang="fr">Résolution d'abbréviation</desc>
                         </valItem>
+                        <valItem ident="abbr-nonexpanded">
+                            <desc xml:lang="de">In der Vorlage</desc>
+                            <desc xml:lang="fr">In der Vorlage</desc>
+                        </valItem>
                         <valItem ident="abbr-unclear">
                             <desc xml:lang="de">Abkürzung, unsichere Lesung</desc>
                             <desc xml:lang="fr">Abbréviation, lecture incertaine</desc>
