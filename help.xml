@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <TEI xmlns="http://www.tei-c.org/ns/1.0">
    <teiHeader>
       <fileDesc>
@@ -26,6 +25,7 @@
                <head rendition="#heading">Volltextsuche</head>
                <list>
                   <item>Exakte Suche eines Wortes oder einer Wortfolge</item>
+                  <item>Suche mit den Operatoren AND, OR oder AND NOT</item>
                   <item>Wildcards für eine unscharfe Suche (z.B. wein* oder *haus)</item>
                   <item>Platzhalter innerhalb eines Wortes (z.B. r*t; * für mehrere Zeichen; ? für ein Zeichen)</item>
                   <!--item>Kombination von Suchbegriffen (Operatoren: AND, OR, AND NOT) FUNKTIONIERT NOCH NICHT</item-->
@@ -44,7 +44,8 @@
                   <item>Standardschreibweise eingeben</item>
                </list>
             </div>
-            <p><ref target="https://www.ssrq-sds-fds.ch/online/databases_doc.html">Detaillierter Beschrieb</ref> zur Suche nach Personen, Organisationen, Orten
+            <p>
+                    <ref target="https://www.ssrq-sds-fds.ch/online/databases_doc.html">Detaillierter Beschrieb</ref> zur Suche nach Personen, Organisationen, Orten
                und Begriffen</p>
          </div>
          <div xml:lang="fr">
@@ -52,8 +53,9 @@
                <head rendition="#heading">Recherche plein texte</head>
                <list>
                   <item>Recherchez-vous un mot ou un groupe de mots</item>
+                  <item>Recherchez-vous avec AND, OR ou AND NOT</item>
                   <item>Wildcards sont possibles (p.e. wein* ou *haus)</item>
-                  <item>Recherchez-vous une expression incomplète avec un métacaractère (p.e. c*l&#160;; * pour plusieurs caractères&#160;; ? pour un
+                  <item>Recherchez-vous une expression incomplète avec un métacaractère (p.e. c*l ; * pour plusieurs caractères ; ? pour un
                      caractère)</item>
                </list>
             </div>
@@ -62,15 +64,16 @@
                <p>Personnes:</p>
                <list>
                   <item>Nom de famille sans namelink</item>
-                  <item>Nom de famille et prénom. Les noms doivent être séparés par un espace (p.e.&#160;: Schmid Pierre)</item>
-                  <item>Personnes sans nom de famille. NN espace prénom (p.e.&#160;: NN Jean)</item>
+                  <item>Nom de famille et prénom. Les noms doivent être séparés par un espace (p.e. : Schmid Pierre)</item>
+                  <item>Personnes sans nom de famille. NN espace prénom (p.e. : NN Jean)</item>
                </list>
                <p>Familles/organisations; lieux; lemmes; termes:</p>
                <list>
                   <item>Recherche par orthographie standard</item>
                </list>
             </div>
-            <p><ref target="https://www.ssrq-sds-fds.ch/online/databases_doc.html">Description détaillée</ref> pour la recherche de personnes, organisations,
+            <p>
+                    <ref target="https://www.ssrq-sds-fds.ch/online/databases_doc.html">Description détaillée</ref> pour la recherche de personnes, organisations,
                lieux et termes</p>
          </div>
       </body>
