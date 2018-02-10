@@ -55,12 +55,6 @@
                         <desc xml:lang="it">expand</desc>
                         <desc xml:lang="en">expand</desc>
                     </valItem>
-                    <valItem ident="Unsichere, unaufgelöste Abkürzung, die man aber mit hoher Wahrscheinlichkeit lesen&#xA;         kann">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
-                    </valItem>
                     <valItem ident="W.">
                         <desc xml:lang="de">expand</desc>
                         <desc xml:lang="fr">expand</desc>
@@ -110,12 +104,6 @@
                         <desc xml:lang="en">expand</desc>
                     </valItem>
                     <valItem ident="q">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
-                    </valItem>
-                    <valItem ident="unaufgelöste Abkürzung">
                         <desc xml:lang="de">expand</desc>
                         <desc xml:lang="fr">expand</desc>
                         <desc xml:lang="it">expand</desc>
