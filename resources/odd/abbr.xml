@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title>Abbr-schema for eSSRQ</title>
+                <author>Noëmi Aepli</author>
+                <author>Pascale Sutter</author>
+                <author>Mathias Müller</author>
+                <author>Bernhard Ruef</author>
+            </titleStmt>
+            <publicationStmt>
+                <p>for use by whoever wants it</p>
+            </publicationStmt>
+            <notesStmt>
+                <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
+            </notesStmt>
+            <sourceDesc>
+                <p>Date of last commit:     $Date: 2018-02-10  $</p>
+                <p>Author of last commit:   $Author: sabine $</p>
+            </sourceDesc>
+        </fileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <dataSpec ident="ssrq.abbr">
+                <valList>
+                    <valItem ident=" m g h">
+                        <desc xml:lang="de">expand</desc>
+                        <desc xml:lang="fr">expand</desc>
+                        <desc xml:lang="it">expand</desc>
+                        <desc xml:lang="en">expand</desc>
+                    </valItem>
+                    <valItem ident="J. H.">
+                        <desc xml:lang="de">expand</desc>
+                        <desc xml:lang="fr">expand</desc>
+                        <desc xml:lang="it">expand</desc>
+                        <desc xml:lang="en">expand</desc>
+                    </valItem>
+                    <valItem ident="Jud">
+                        <desc xml:lang="de">expand</desc>
+                        <desc xml:lang="fr">expand</desc>
+                        <desc xml:lang="it">expand</desc>
+                        <desc xml:lang="en">expand</desc>
+                    </valItem>
+                    <valItem ident="L S">
+                        <desc xml:lang="de">expand</desc>
+                        <desc xml:lang="fr">expand</desc>
+                        <desc xml:lang="it">expand</desc>
+                        <desc xml:lang="en">expand</desc>
+                    </valItem>
+                    <valItem ident="Ulr">
+                        <desc xml:lang="de">expand</desc>
+                        <desc xml:lang="fr">expand</desc>
+                        <desc xml:lang="it">expand</desc>
+                        <desc xml:lang="en">expand</desc>
+                    </valItem>
+                    <valItem ident="Unsichere, unaufgelöste Abkürzung, die man aber mit hoher Wahrscheinlichkeit lesen&#xA;         kann">
+                        <desc xml:lang="de">expand</desc>
+                        <desc xml:lang="fr">expand</desc>
+                        <desc xml:lang="it">expand</desc>
+                        <desc xml:lang="en">expand</desc>
+                    </valItem>
+                    <valItem ident="W.">
+                        <desc xml:lang="de">expand</desc>
+                        <desc xml:lang="fr">expand</desc>
+                        <desc xml:lang="it">expand</desc>
+                        <desc xml:lang="en">expand</desc>
+                    </valItem>
+                    <valItem ident="etc">
+                        <desc xml:lang="de">expand</desc>
+                        <desc xml:lang="fr">expand</desc>
+                        <desc xml:lang="it">expand</desc>
+                        <desc xml:lang="en">expand</desc>
+                    </valItem>
+                    <valItem ident="etc.">
+                        <desc xml:lang="de">expand</desc>
+                        <desc xml:lang="fr">expand</desc>
+                        <desc xml:lang="it">expand</desc>
+                        <desc xml:lang="en">expand</desc>
+                    </valItem>
+                    <valItem ident="f">
+                        <desc xml:lang="de">expand</desc>
+                        <desc xml:lang="fr">expand</desc>
+                        <desc xml:lang="it">expand</desc>
+                        <desc xml:lang="en">expand</desc>
+                    </valItem>
+                    <valItem ident="g.">
+                        <desc xml:lang="de">expand</desc>
+                        <desc xml:lang="fr">expand</desc>
+                        <desc xml:lang="it">expand</desc>
+                        <desc xml:lang="en">expand</desc>
+                    </valItem>
+                    <valItem ident="gf">
+                        <desc xml:lang="de">expand</desc>
+                        <desc xml:lang="fr">expand</desc>
+                        <desc xml:lang="it">expand</desc>
+                        <desc xml:lang="en">expand</desc>
+                    </valItem>
+                    <valItem ident="h">
+                        <desc xml:lang="de">expand</desc>
+                        <desc xml:lang="fr">expand</desc>
+                        <desc xml:lang="it">expand</desc>
+                        <desc xml:lang="en">expand</desc>
+                    </valItem>
+                    <valItem ident="lib">
+                        <desc xml:lang="de">expand</desc>
+                        <desc xml:lang="fr">expand</desc>
+                        <desc xml:lang="it">expand</desc>
+                        <desc xml:lang="en">expand</desc>
+                    </valItem>
+                    <valItem ident="q">
+                        <desc xml:lang="de">expand</desc>
+                        <desc xml:lang="fr">expand</desc>
+                        <desc xml:lang="it">expand</desc>
+                        <desc xml:lang="en">expand</desc>
+                    </valItem>
+                    <valItem ident="unaufgelöste Abkürzung">
+                        <desc xml:lang="de">expand</desc>
+                        <desc xml:lang="fr">expand</desc>
+                        <desc xml:lang="it">expand</desc>
+                        <desc xml:lang="en">expand</desc>
+                    </valItem>
+                </valList>
+            </dataSpec>
+        </body>
+    </text>
+</TEI>
