@@ -73,10 +73,10 @@
                 Historische Währungen -->
                 <valList>
                     <valItem ident="m g h">
-                        <desc xml:lang="de">meine gnädigen herren</desc>
-                        <desc xml:lang="fr">meine gnädigen herren</desc>
-                        <desc xml:lang="it">meine gnädigen herren</desc>
-                        <desc xml:lang="en">meine gnädigen herren</desc>
+                        <desc xml:lang="de">mein gnädiger herr, meine gnädigen herren</desc>
+                        <desc xml:lang="fr">mein gnädiger herr, meine gnädigen herren</desc>
+                        <desc xml:lang="it">mein gnädiger herr, meine gnädigen herren</desc>
+                        <desc xml:lang="en">mein gnädiger herr, meine gnädigen herren</desc>
                     </valItem>
                     <valItem ident="J. H.">
                         <desc xml:lang="de">Johann Heinrich?</desc>
@@ -121,10 +121,10 @@
                         <desc xml:lang="en">frau?</desc>
                     </valItem>
                     <valItem ident="g">
-                        <desc xml:lang="de">gnädig(e/r)</desc>
-                        <desc xml:lang="fr">gnädig(e/r)</desc>
-                        <desc xml:lang="it">gnädig(e/r)</desc>
-                        <desc xml:lang="en">gnädig(e/r)</desc>
+                        <desc xml:lang="de">gnädiger, gnädige</desc>
+                        <desc xml:lang="fr">gnädiger, gnädige</desc>
+                        <desc xml:lang="it">gnädiger, gnädige</desc>
+                        <desc xml:lang="en">gnädiger, gnädige</desc>
                     </valItem>
                     <valItem ident="gf">
                         <desc xml:lang="de">gnädige frau</desc>
@@ -133,10 +133,10 @@
                         <desc xml:lang="en">gnädige frau</desc>
                     </valItem>
                     <valItem ident="h">
-                        <desc xml:lang="de">herr</desc>
-                        <desc xml:lang="fr">herr</desc>
-                        <desc xml:lang="it">herr</desc>
-                        <desc xml:lang="en">herr</desc>
+                        <desc xml:lang="de">herr, herren</desc>
+                        <desc xml:lang="fr">herr, herren</desc>
+                        <desc xml:lang="it">herr, herren</desc>
+                        <desc xml:lang="en">herr, herren</desc>
                     </valItem>
                     <valItem ident="lib">
                         <desc xml:lang="de">liber</desc>
