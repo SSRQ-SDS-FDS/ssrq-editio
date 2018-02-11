@@ -21,8 +21,53 @@
     <text>
         <body>
             <dataSpec ident="ssrq.abbr">
-                <!-- Allgemeine Abkürzungen
-                Archive
+                <!-- Allgemeine Abkürzungen -->
+                <valItem ident="Anm.">
+                        <desc xml:lang="de">Anmerkung</desc>
+                    </valItem>
+                       <valItem ident="Art.">
+                        <desc xml:lang="de">Artikel</desc>
+                    </valItem>
+                       <valItem ident="Bd.">
+                        <desc xml:lang="de">Band</desc>
+                    </valItem>
+                       <valItem ident="ca.">
+                        <desc xml:lang="de">circa</desc>
+                    </valItem>
+                       <valItem ident="d. h.">
+                        <desc xml:lang="de">das heisst</desc>
+                    </valItem>
+                       <valItem ident="fol.">
+                        <desc xml:lang="de">Folio</desc>
+                    </valItem>
+                       <valItem ident="Jh.">
+                        <desc xml:lang="de">Jahrhundert</desc>
+                    </valItem>
+                       <valItem ident="Ms.">
+                        <desc xml:lang="de">Manuskript</desc>
+                    </valItem>
+                       <valItem ident="Nr.">
+                        <desc xml:lang="de">Nummer</desc>
+                    </valItem>
+                       <valItem ident="r">
+                        <desc xml:lang="de">recto</desc>
+                    </valItem>
+                       <valItem ident="S.">
+                        <desc xml:lang="de">Seite</desc>
+                    </valItem>
+                     <valItem ident="SSRQ">
+                        <desc xml:lang="de">Sammlung Schweizerischer Rechtsquellen</desc>
+                    </valItem>
+                     <valItem ident="St.">
+                        <desc xml:lang="de">Sankt</desc>
+                    </valItem>
+                     <valItem ident="v">
+                        <desc xml:lang="de">verso</desc>
+                    </valItem>
+                     <valItem ident="vgl.">
+                        <desc xml:lang="de">vergleiche</desc>
+                    </valItem>
+                <!-- Archive
                 Historische Abkürzungen, die mit Sicherheit aufgelöst werden können
                 Historische Abkürzungen, die nicht mit Sicherheit aufgelöst werden können
                 Historische Währungen -->
