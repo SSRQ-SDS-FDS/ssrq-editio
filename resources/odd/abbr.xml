@@ -3,11 +3,8 @@
     <teiHeader>
         <fileDesc>
             <titleStmt>
-                <title>Abbr-schema for eSSRQ</title>
-                <author>Noëmi Aepli</author>
+                <title>Expanded Abbr-schema for eSSRQ</title>
                 <author>Pascale Sutter</author>
-                <author>Mathias Müller</author>
-                <author>Bernhard Ruef</author>
             </titleStmt>
             <publicationStmt>
                 <p>for use by whoever wants it</p>
@@ -25,89 +22,83 @@
         <body>
             <dataSpec ident="ssrq.abbr">
                 <valList>
-                    <valItem ident=" m g h">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                    <valItem ident="m g h">
+                        <desc xml:lang="de">meine gnädigen herren</desc>
+                        <desc xml:lang="fr">meine gnädigen herren</desc>
+                        <desc xml:lang="it">meine gnädigen herren</desc>
+                        <desc xml:lang="en">meine gnädigen herren</desc>
                     </valItem>
                     <valItem ident="J. H.">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                        <desc xml:lang="de">Johann Heinrich?</desc>
+                        <desc xml:lang="fr">Johann Heinrich?</desc>
+                        <desc xml:lang="it">Johann Heinrich?</desc>
+                        <desc xml:lang="en">Johann Heinrich?</desc>
                     </valItem>
                     <valItem ident="Jud">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                        <desc xml:lang="de">Judicatum est</desc>
+                        <desc xml:lang="fr">Judicatum est</desc>
+                        <desc xml:lang="it">Judicatum est</desc>
+                        <desc xml:lang="en">Judicatum est</desc>
                     </valItem>
                     <valItem ident="L S">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                        <desc xml:lang="de">Locus sigilli</desc>
+                        <desc xml:lang="fr">Locus sigilli</desc>
+                        <desc xml:lang="it">Locus sigilli</desc>
+                        <desc xml:lang="en">Locus sigilli</desc>
                     </valItem>
                     <valItem ident="Ulr">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                        <desc xml:lang="de">Ulrich</desc>
+                        <desc xml:lang="fr">Ulrich</desc>
+                        <desc xml:lang="it">Ulrich</desc>
+                        <desc xml:lang="en">Ulrich</desc>
                     </valItem>
-                    <valItem ident="W.">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                    <valItem ident="W">
+                        <desc xml:lang="de">Wilhelm?</desc>
+                        <desc xml:lang="fr">Wilhelm?</desc>
+                        <desc xml:lang="it">Wilhelm?</desc>
+                        <desc xml:lang="en">Wilhelm?</desc>
                     </valItem>
                     <valItem ident="etc">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
-                    </valItem>
-                    <valItem ident="etc.">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                        <desc xml:lang="de">et cetera</desc>
+                        <desc xml:lang="fr">et cetera</desc>
+                        <desc xml:lang="it">et cetera</desc>
+                        <desc xml:lang="en">et cetera</desc>
                     </valItem>
                     <valItem ident="f">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                        <desc xml:lang="de">frau?</desc>
+                        <desc xml:lang="fr">frau?</desc>
+                        <desc xml:lang="it">frau?</desc>
+                        <desc xml:lang="en">frau?</desc>
                     </valItem>
-                    <valItem ident="g.">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                    <valItem ident="g">
+                        <desc xml:lang="de">gnädig(e/r)</desc>
+                        <desc xml:lang="fr">gnädig(e/r)</desc>
+                        <desc xml:lang="it">gnädig(e/r)</desc>
+                        <desc xml:lang="en">gnädig(e/r)</desc>
                     </valItem>
                     <valItem ident="gf">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                        <desc xml:lang="de">gnädige frau</desc>
+                        <desc xml:lang="fr">gnädige frau</desc>
+                        <desc xml:lang="it">gnädige frau</desc>
+                        <desc xml:lang="en">gnädige frau</desc>
                     </valItem>
                     <valItem ident="h">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                        <desc xml:lang="de">herr</desc>
+                        <desc xml:lang="fr">herr</desc>
+                        <desc xml:lang="it">herr</desc>
+                        <desc xml:lang="en">herr</desc>
                     </valItem>
                     <valItem ident="lib">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                        <desc xml:lang="de">liber</desc>
+                        <desc xml:lang="fr">liber</desc>
+                        <desc xml:lang="it">liber</desc>
+                        <desc xml:lang="en">liber</desc>
                     </valItem>
                     <valItem ident="q">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                        <desc xml:lang="de">quart?</desc>
+                        <desc xml:lang="fr">quart?</desc>
+                        <desc xml:lang="it">quart?</desc>
+                        <desc xml:lang="en">quart?</desc>
                     </valItem>
                 </valList>
             </dataSpec>
