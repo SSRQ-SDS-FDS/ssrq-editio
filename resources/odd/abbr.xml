@@ -21,6 +21,11 @@
     <text>
         <body>
             <dataSpec ident="ssrq.abbr">
+                <!-- Allgemeine Abkürzungen
+                Archive
+                Historische Abkürzungen, die mit Sicherheit aufgelöst werden können
+                Historische Abkürzungen, die nicht mit Sicherheit aufgelöst werden können
+                Historische Währungen -->
                 <valList>
                     <valItem ident="m g h">
                         <desc xml:lang="de">meine gnädigen herren</desc>
