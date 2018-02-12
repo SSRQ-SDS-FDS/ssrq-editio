@@ -26,6 +26,7 @@
                 <desc xml:lang="fr">Abréviations</desc>
                 <desc xml:lang="it">Abbreviazione</desc>
                 <desc xml:lang="en">Abbreviations</desc>
+                 <valList>
                 <valItem ident="Anm.">
                         <desc xml:lang="de">Anmerkung</desc>
                     </valItem>
@@ -83,11 +84,13 @@
                      <valItem ident="vgl.">
                         <desc xml:lang="de">vergleiche</desc>
                     </valItem>
+                    </valList>
                 <!-- Archive, deren Kürzel aufgelöst wird -->
                         <desc xml:lang="de">Archive</desc>
                         <desc xml:lang="fr">Archives</desc>
                         <desc xml:lang="it">Archivi</desc>
                         <desc xml:lang="en">Archives</desc>
+                <valList>
                     <valItem ident="AVN">
                         <desc xml:lang="de">Staatsarchiv Neuenburg</desc>
                         <desc xml:lang="fr">Archives de l'État de Neuchâtel</desc>
@@ -136,56 +139,24 @@
                         <desc xml:lang="it">Archivio dell'abbazia di San Gallo</desc>
                         <desc xml:lang="en">Stiftsarchiv St. Gallen</desc>
                     </valItem>
-                <!--Historische Abkürzungen, die in den historischen Texten nur mit abbr ausgezeichnet sind und die im Tooltip aufgelöst werden
-                Historische Währungen -->
+                    </valList>
+                <!--Historische Abkürzungen, die in den historischen Texten nur mit abbr ausgezeichnet sind und die im Tooltip aufgelöst werden -->
+                   <desc xml:lang="de">Historische Abkürzungen</desc>
+                   <desc xml:lang="fr">Abréviations historiques</desc>
+                   <desc xml:lang="it">Abbreviazione storice</desc>
+                   <desc xml:lang="en">Historical Abbreviations</desc>
                 <valList>
-                    <valItem ident="m g h">
-                        <desc xml:lang="de">mein gnädiger herr, meine gnädigen herren</desc>
-                        <desc xml:lang="fr">mein gnädiger herr, meine gnädigen herren</desc>
-                        <desc xml:lang="it">mein gnädiger herr, meine gnädigen herren</desc>
-                        <desc xml:lang="en">mein gnädiger herr, meine gnädigen herren</desc>
-                    </valItem>
-                    <valItem ident="J. H.">
-                        <desc xml:lang="de">Johann Heinrich?</desc>
-                        <desc xml:lang="fr">Johann Heinrich?</desc>
-                        <desc xml:lang="it">Johann Heinrich?</desc>
-                        <desc xml:lang="en">Johann Heinrich?</desc>
-                    </valItem>
-                    <valItem ident="Jud">
-                        <desc xml:lang="de">Judicatum est</desc>
-                        <desc xml:lang="fr">Judicatum est</desc>
-                        <desc xml:lang="it">Judicatum est</desc>
-                        <desc xml:lang="en">Judicatum est</desc>
-                    </valItem>
-                    <valItem ident="L S">
-                        <desc xml:lang="de">Locus sigilli</desc>
-                        <desc xml:lang="fr">Locus sigilli</desc>
-                        <desc xml:lang="it">Locus sigilli</desc>
-                        <desc xml:lang="en">Locus sigilli</desc>
-                    </valItem>
-                    <valItem ident="Ulr">
-                        <desc xml:lang="de">Ulrich</desc>
-                        <desc xml:lang="fr">Ulrich</desc>
-                        <desc xml:lang="it">Ulrich</desc>
-                        <desc xml:lang="en">Ulrich</desc>
-                    </valItem>
-                    <valItem ident="W">
-                        <desc xml:lang="de">Wilhelm?</desc>
-                        <desc xml:lang="fr">Wilhelm?</desc>
-                        <desc xml:lang="it">Wilhelm?</desc>
-                        <desc xml:lang="en">Wilhelm?</desc>
-                    </valItem>
-                    <valItem ident="etc">
+                  <valItem ident="etc">
                         <desc xml:lang="de">et cetera</desc>
                         <desc xml:lang="fr">et cetera</desc>
                         <desc xml:lang="it">et cetera</desc>
                         <desc xml:lang="en">et cetera</desc>
                     </valItem>
                     <valItem ident="f">
-                        <desc xml:lang="de">frau?</desc>
-                        <desc xml:lang="fr">frau?</desc>
-                        <desc xml:lang="it">frau?</desc>
-                        <desc xml:lang="en">frau?</desc>
+                        <desc xml:lang="de">frau</desc>
+                        <desc xml:lang="fr">frau</desc>
+                        <desc xml:lang="it">frau</desc>
+                        <desc xml:lang="en">frau</desc>
                     </valItem>
                     <valItem ident="g">
                         <desc xml:lang="de">gnädiger, gnädige</desc>
@@ -205,11 +176,35 @@
                         <desc xml:lang="it">herr, herren</desc>
                         <desc xml:lang="en">herr, herren</desc>
                     </valItem>
-                    <valItem ident="lib">
+                    <valItem ident="J. H.">
+                        <desc xml:lang="de">Johann Heinrich?</desc>
+                        <desc xml:lang="fr">Johann Heinrich?</desc>
+                        <desc xml:lang="it">Johann Heinrich?</desc>
+                        <desc xml:lang="en">Johann Heinrich?</desc>
+                    </valItem>
+                    <valItem ident="Jud">
+                        <desc xml:lang="de">Judicatum est</desc>
+                        <desc xml:lang="fr">Judicatum est</desc>
+                        <desc xml:lang="it">Judicatum est</desc>
+                        <desc xml:lang="en">Judicatum est</desc>
+                    </valItem>
+                     <valItem ident="lib">
                         <desc xml:lang="de">liber</desc>
                         <desc xml:lang="fr">liber</desc>
                         <desc xml:lang="it">liber</desc>
                         <desc xml:lang="en">liber</desc>
+                    </valItem>
+                    <valItem ident="L S">
+                        <desc xml:lang="de">Locus sigilli</desc>
+                        <desc xml:lang="fr">Locus sigilli</desc>
+                        <desc xml:lang="it">Locus sigilli</desc>
+                        <desc xml:lang="en">Locus sigilli</desc>
+                    </valItem>
+                     <valItem ident="m g h">
+                        <desc xml:lang="de">mein gnädiger herr, meine gnädigen herren</desc>
+                        <desc xml:lang="fr">mein gnädiger herr, meine gnädigen herren</desc>
+                        <desc xml:lang="it">mein gnädiger herr, meine gnädigen herren</desc>
+                        <desc xml:lang="en">mein gnädiger herr, meine gnädigen herren</desc>
                     </valItem>
                     <valItem ident="q">
                         <desc xml:lang="de">quart?</desc>
@@ -217,6 +212,69 @@
                         <desc xml:lang="it">quart?</desc>
                         <desc xml:lang="en">quart?</desc>
                     </valItem>
+                    <valItem ident="Ulr">
+                        <desc xml:lang="de">Ulrich</desc>
+                        <desc xml:lang="fr">Ulrich</desc>
+                        <desc xml:lang="it">Ulrich</desc>
+                        <desc xml:lang="en">Ulrich</desc>
+                    </valItem>
+                    <valItem ident="W">
+                        <desc xml:lang="de">Wilhelm?</desc>
+                        <desc xml:lang="fr">Wilhelm?</desc>
+                        <desc xml:lang="it">Wilhelm?</desc>
+                        <desc xml:lang="en">Wilhelm?</desc>
+                    </valItem>
+                    </valList>
+                    <!-- Historische Abkürzungszeichen wie Währungen etc., hier wird für die Umsetzung die Schrift Lexia Fontes benötigt -->
+                   <desc xml:lang="de">Symbole</desc>
+                   <desc xml:lang="fr">Symboles</desc>
+                   <desc xml:lang="it">Simboli</desc>
+                   <desc xml:lang="en">Symbols</desc>
+                <valList>
+                     <valItem ident="₰">
+                        <desc xml:lang="de">Pfennig / Denar (Währung)</desc>
+                        <desc xml:lang="fr">et cetera</desc>
+                        <desc xml:lang="it">et cetera</desc>
+                        <desc xml:lang="en">et cetera</desc>
+                    </valItem>
+                    <valItem ident="">
+                        <desc xml:lang="de">Florin / Gulden (Währung)</desc>
+                        <desc xml:lang="fr">et cetera</desc>
+                        <desc xml:lang="it">et cetera</desc>
+                        <desc xml:lang="en">et cetera</desc>
+                    </valItem>
+                    <valItem ident="">
+                        <desc xml:lang="de">Gulden (Währung)</desc>
+                        <desc xml:lang="fr">et cetera</desc>
+                        <desc xml:lang="it">et cetera</desc>
+                        <desc xml:lang="en">et cetera</desc>
+                    </valItem>
+                      <valItem ident="ħ">
+                        <desc xml:lang="de">Haller (Währung)</desc>
+                        <desc xml:lang="fr">et cetera</desc>
+                        <desc xml:lang="it">et cetera</desc>
+                        <desc xml:lang="en">et cetera</desc>
+                    </valItem>
+                    <valItem ident="℔">
+                        <desc xml:lang="de">Pfund (Gewicht)</desc>
+                        <desc xml:lang="fr">et cetera</desc>
+                        <desc xml:lang="it">et cetera</desc>
+                        <desc xml:lang="en">et cetera</desc>
+                    </valItem>
+                    <valItem ident="">
+                        <desc xml:lang="de">Pfund (Währung)</desc>
+                        <desc xml:lang="fr">et cetera</desc>
+                        <desc xml:lang="it">et cetera</desc>
+                        <desc xml:lang="en">et cetera</desc>
+                    </valItem>
+    
+                       <valItem ident="">
+                        <desc xml:lang="de">Schilling (Währung)</desc>
+                        <desc xml:lang="fr">et cetera</desc>
+                        <desc xml:lang="it">et cetera</desc>
+                        <desc xml:lang="en">et cetera</desc>
+                    </valItem>
+              
                 </valList>
             </dataSpec>
         </body>
