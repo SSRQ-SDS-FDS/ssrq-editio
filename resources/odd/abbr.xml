@@ -69,8 +69,13 @@
                        <valItem ident="S.">
                         <desc xml:lang="de">Seite</desc>
                     </valItem>
+                       <valItem ident="SDS">
+                        <desc xml:lang="de">Sources du droit suisse</desc>
+                        <desc xml:lang="en">Swiss law sources</desc>
+                    </valItem>
                      <valItem ident="SSRQ">
                         <desc xml:lang="de">Sammlung Schweizerischer Rechtsquellen</desc>
+                        <desc xml:lang="en">Swiss law sources</desc>
                     </valItem>
                      <valItem ident="St.">
                         <desc xml:lang="de">Sankt</desc>
@@ -154,27 +159,27 @@
                     </valItem>
                     <valItem ident="f">
                         <desc xml:lang="de">frau</desc>
-                        <desc xml:lang="fr">frau</desc>
+                       <!--<desc xml:lang="fr">frau</desc>
                         <desc xml:lang="it">frau</desc>
-                        <desc xml:lang="en">frau</desc>
+                        <desc xml:lang="en">frau</desc>-->
                     </valItem>
                     <valItem ident="g">
                         <desc xml:lang="de">gnädiger, gnädige</desc>
-                        <desc xml:lang="fr">gnädiger, gnädige</desc>
+                           <!--<desc xml:lang="fr">gnädiger, gnädige</desc>
                         <desc xml:lang="it">gnädiger, gnädige</desc>
-                        <desc xml:lang="en">gnädiger, gnädige</desc>
+                        <desc xml:lang="en">gnädiger, gnädige</desc>-->
                     </valItem>
                     <valItem ident="gf">
                         <desc xml:lang="de">gnädige frau</desc>
-                        <desc xml:lang="fr">gnädige frau</desc>
+                           <!--<desc xml:lang="fr">gnädige frau</desc>
                         <desc xml:lang="it">gnädige frau</desc>
-                        <desc xml:lang="en">gnädige frau</desc>
+                        <desc xml:lang="en">gnädige frau</desc>-->
                     </valItem>
                     <valItem ident="h">
                         <desc xml:lang="de">herr, herren</desc>
-                        <desc xml:lang="fr">herr, herren</desc>
+                           <!--<desc xml:lang="fr">herr, herren</desc>
                         <desc xml:lang="it">herr, herren</desc>
-                        <desc xml:lang="en">herr, herren</desc>
+                        <desc xml:lang="en">herr, herren</desc>-->
                     </valItem>
                     <valItem ident="J. H.">
                         <desc xml:lang="de">Johann Heinrich?</desc>
@@ -202,9 +207,9 @@
                     </valItem>
                      <valItem ident="m g h">
                         <desc xml:lang="de">mein gnädiger herr, meine gnädigen herren</desc>
-                        <desc xml:lang="fr">mein gnädiger herr, meine gnädigen herren</desc>
+                           <!--<desc xml:lang="fr">mein gnädiger herr, meine gnädigen herren</desc>
                         <desc xml:lang="it">mein gnädiger herr, meine gnädigen herren</desc>
-                        <desc xml:lang="en">mein gnädiger herr, meine gnädigen herren</desc>
+                        <desc xml:lang="en">mein gnädiger herr, meine gnädigen herren</desc>--->
                     </valItem>
                     <valItem ident="q">
                         <desc xml:lang="de">quart?</desc>
