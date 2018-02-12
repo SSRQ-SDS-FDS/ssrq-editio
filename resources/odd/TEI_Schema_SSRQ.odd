@@ -1,4 +1,7 @@
-<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:ssrq="http://ssrq-sds-fds.ch/ns/nonTEI" xmlns:rng="http://relaxng.org/ns/structure/1.0" xml:lang="en">
+<?xml version="1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0"
+    xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:ssrq="http://ssrq-sds-fds.ch/ns/nonTEI"
+    xml:lang="en">
     <teiHeader>
         <fileDesc>
             <titleStmt>
@@ -15,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 179 $</p>
-                <p>Date of last commit:     $Date: 2018-01-31 20:28:48 +0100 (Mi, 31 Jan 2018) $</p>
+                <p>Revision of last commit: $Rev: 186 $</p>
+                <p>Date of last commit:     $Date: 2018-02-12 11:05:12 +0100 (Mo, 12 Feb 2018) $</p>
                 <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
@@ -28,7 +31,8 @@
         <body>
             <p>Beinhaltet alle benötigten TEI-Elemente (auch diejenigen für die
                 Retrodigitalisierung) sowie die Siegel-Erweiterungen. Folgende Elemente sind laut
-                    <ref target="http://www.ssrq-sds-fds.ch/wiki/index.php?title=Hauptseite">Wiki</ref> eingeschränkt: titleStmt, title, respStmt, resp, publicationStmt,
+                    <ref target="http://www.ssrq-sds-fds.ch/wiki/index.php?title=Hauptseite"
+                    >Wiki</ref> eingeschränkt: titleStmt, title, respStmt, resp, publicationStmt,
                 editionStmt, extent, dimensions, seriesStmt, sourceDesc, encodingDesc,
                 editorialDecl, profileDesc, textClass, particDesc, settingDesc, revisionDesc,
                 facsimile, text, sealDesc, seal, time, occupation, damage</p>
@@ -41,14 +45,20 @@
                 <!--BEGIN MODULE REFERENCES AND ELEMENTS THAT ARE INCLUDED-->
 
                 <moduleRef key="tei"/>
-                <moduleRef key="core" include="abbr add author bibl choice corr date del expan foreign gap head hi item label                     lb list listBibl measure measureGrp note num orig p pb q quote ref reg resp respStmt sic term textLang time title unclear"/>
-                <moduleRef key="header" include="textClass profileDesc fileDesc idno editorialDecl encodingDesc extent keywords publicationStmt profileDesc seriesStmt sourceDesc teiHeader textClass titleStmt"/>
+                <moduleRef key="core"
+                    include="abbr add author bibl choice corr date del expan foreign gap head hi item label
+                    lb list listBibl measure measureGrp note num orig p pb q quote ref reg resp respStmt sic term textLang time title unclear"/>
+                <moduleRef key="header"
+                    include="textClass profileDesc fileDesc idno editorialDecl encodingDesc extent keywords publicationStmt profileDesc seriesStmt sourceDesc teiHeader textClass titleStmt"/>
                 <moduleRef key="textstructure" include="TEI back body div front group signed text"/>
                 <moduleRef key="linking" include="ab anchor seg"/>
-                <moduleRef key="msdescription" include="altIdentifier origDate origPlace dimensions height width support material condition msDesc physDesc sealDesc objectDesc supportDesc seal msContents history additional repository msItem filiation msIdentifier summary origin"/>
-                <moduleRef key="transcr" include="addSpan damage damageSpan delSpan facsimile fw handShift space subst supplied"/>
+                <moduleRef key="msdescription"
+                    include="altIdentifier origDate origPlace dimensions height width support material condition msDesc physDesc sealDesc objectDesc supportDesc seal msContents history additional repository msItem filiation msIdentifier summary origin"/>
+                <moduleRef key="transcr"
+                    include="addSpan damage damageSpan delSpan facsimile fw handShift space subst supplied"/>
                 <moduleRef key="textcrit" include="app lem listWit rdg witness"/>
-                <moduleRef key="namesdates" include="listOrg listPerson listPlace orgName persName placeName"/>
+                <moduleRef key="namesdates"
+                    include="listOrg listPerson listPlace orgName persName placeName"/>
                 <moduleRef key="certainty" include="precision"/>
                 <moduleRef key="figures" include="figure table row cell"/>
                 <moduleRef key="corpus" include="particDesc settingDesc"/>
@@ -180,7 +190,8 @@
                     <constraint>
                         <sch:pattern>
                             <sch:rule context="tei:*">
-                                <sch:report test="@scribe[not(matches(.,'^(per\d{6}[abc]?|\d+)$'))]" xml:lang="en">Value of the @scribe attribute on the <sch:name/> element is not a person ID or number.</sch:report>
+                                <sch:report test="@scribe[not(matches(.,'^(per\d{6}[abc]?|\d+)$'))]" xml:lang="en"
+                                    >Value of the @scribe attribute on the <sch:name/> element is not a person ID or number.</sch:report>
                             </sch:rule>
                         </sch:pattern>
                     </constraint>
@@ -441,9 +452,17 @@
                         <memberOf key="model.msQuoteLike"/>
                         <memberOf key="att.global"/>
                     </classes> -->
-                    <content>
+                     <content>
                         <rng:text/>
-                    </content>
+                    </content>   
+                  <!--   <content>
+                        <rng:zeroOrMore>
+                            <rng:choice>
+                                <rng:text/>
+                                <rng:ref name="macro.defaultContent"/>
+                            </rng:choice> 
+                        </rng:zeroOrMore>
+                    </content> hi zulassen-->
                 </elementSpec>
                 <elementSpec ident="respStmt" module="core" mode="change">
                     <content>
@@ -1224,11 +1243,11 @@
                                 </valItem>
                                 <valItem ident="sealed on a cord">
                                     <desc xml:lang="de">angehängt an einer Kordel</desc>
-                                    <desc xml:lang="fr"/>
+                                    <desc xml:lang="fr"></desc>
                                 </valItem>
                                 <valItem ident="sealed on a parchment tag">
                                     <desc xml:lang="de">angehängt an Pergamentstreifen</desc>
-                                    <desc xml:lang="fr"/>
+                                    <desc xml:lang="fr"></desc>
                                 </valItem>
                                 <valItem ident="sealed on a lace">
                                     <desc xml:lang="de">angehängt an Schnur</desc>
@@ -1248,7 +1267,8 @@
                                 </valItem>
                             </valList>
                         </attDef>
-                        <attDef ident="condition" ns="http://ssrq-sds-fds.ch/ns/nonTEI" mode="add" usage="rec"> <!--usage="req"-->
+                        <attDef ident="condition" ns="http://ssrq-sds-fds.ch/ns/nonTEI" mode="add"
+                            usage="rec"> <!--usage="req"-->
                             <desc>condition beschreibt den Erhaltungszustand und Schäden des
                                 Siegels</desc>
                             <valList type="closed">
@@ -1580,7 +1600,9 @@
                                         tei:gap.</sch:report>
                                 </sch:rule>
                                 <sch:rule context="tei:gap[not(parent::tei:damage) and @reason]">
-                                    <sch:report test="@reason = 'illegible' and (not(@unit) or not(@quantity))">If @reason is specified on the <sch:name/> element and its
+                                    <sch:report
+                                        test="@reason = 'illegible' and (not(@unit) or not(@quantity))"
+                                        >If @reason is specified on the <sch:name/> element and its
                                         value is "illegible", @unit and @quantity must be present,
                                         too.</sch:report>
                                     <sch:report test="@source">On the <sch:name/> element, @source
@@ -1858,9 +1880,11 @@
                         <constraint>
                             <sch:pattern>
                                 <sch:rule context="tei:ab">
-                                    <sch:assert test="count(parent::tei:div/tei:ab) = 1" xml:lang="en">There can only be one <sch:name/> element
+                                    <sch:assert test="count(parent::tei:div/tei:ab) = 1"
+                                        xml:lang="en">There can only be one <sch:name/> element
                                         within &lt;div&gt;.</sch:assert>
-                                    <sch:assert test="count(parent::tei:div/*) = 1" xml:lang="en">The <sch:name/> element must be the only element within
+                                    <sch:assert test="count(parent::tei:div/*) = 1" xml:lang="en"
+                                        >The <sch:name/> element must be the only element within
                                         &lt;div&gt;.</sch:assert>
                                     <!--<sch:assert test="name(./../..) = 'body'" xml:lang="en"
                                         >The <sch:name/> element must be the grandchild of body: body/div/<sch:name/>.</sch:assert>-->
@@ -2011,99 +2035,99 @@
                             <valList type="closed">
                                 <valItem ident="hand10c">
                                     <desc xml:lang="de">von Hand des 10. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du X<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du X<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand11c">
                                     <desc xml:lang="de">von Hand des 11. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XI<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XI<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand12c">
                                     <desc xml:lang="de">von Hand des 12. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XII<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand13c">
                                     <desc xml:lang="de">von Hand des 13. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIII<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XIII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand14c">
                                     <desc xml:lang="de">von Hand des 14. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIV<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XIV<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand15c">
                                     <desc xml:lang="de">von Hand des 15. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XV<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XV<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand16c">
                                     <desc xml:lang="de">von Hand des 16. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVI<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XVI<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand17c">
                                     <desc xml:lang="de">von Hand des 17. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVII<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XVII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand18c">
                                     <desc xml:lang="de">von Hand des 18. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVIII<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XVIII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand19c">
                                     <desc xml:lang="de">von Hand des 19. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIX<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XIX<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand20c">
                                     <desc xml:lang="de">von Hand des 20. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XX<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XX<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand21c">
                                     <desc xml:lang="de">von Hand des 21. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XXI<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XXI<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand10c?">
                                     <desc xml:lang="de">von Hand des 10. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du X<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du X<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand11c?">
                                     <desc xml:lang="de">von Hand des 11. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XI<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XI<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand12c?">
                                     <desc xml:lang="de">von Hand des 12. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XII<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand13c?">
                                     <desc xml:lang="de">von Hand des 13. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIII<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XIII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand14c?">
                                     <desc xml:lang="de">von Hand des 14. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIV<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XIV<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand15c?">
                                     <desc xml:lang="de">von Hand des 15. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XV<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XV<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand16c?">
                                     <desc xml:lang="de">von Hand des 16. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVI<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XVI<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand17c?">
                                     <desc xml:lang="de">von Hand des 17. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVII<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XVII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand18c?">
                                     <desc xml:lang="de">von Hand des 18. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVIII<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XVIII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand19c?">
                                     <desc xml:lang="de">von Hand des 19. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIX<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XIX<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand20c?">
                                     <desc xml:lang="de">von Hand des 20. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XX<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XX<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand21c?">
                                     <desc xml:lang="de">von Hand des 21. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XXI<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XXI<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="other hand">
                                     <desc xml:lang="de">von anderer Hand</desc>
@@ -2141,99 +2165,99 @@
                             <valList type="closed">
                                 <valItem ident="hand10c">
                                     <desc xml:lang="de">von Hand des 10. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du X<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du X<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand11c">
                                     <desc xml:lang="de">von Hand des 11. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XI<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XI<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand12c">
                                     <desc xml:lang="de">von Hand des 12. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XII<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand13c">
                                     <desc xml:lang="de">von Hand des 13. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIII<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XIII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand14c">
                                     <desc xml:lang="de">von Hand des 14. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIV<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XIV<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand15c">
                                     <desc xml:lang="de">von Hand des 15. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XV<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XV<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand16c">
                                     <desc xml:lang="de">von Hand des 16. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVI<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XVI<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand17c">
                                     <desc xml:lang="de">von Hand des 17. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVII<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XVII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand18c">
                                     <desc xml:lang="de">von Hand des 18. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVIII<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XVIII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand19c">
                                     <desc xml:lang="de">von Hand des 19. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIX<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XIX<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand20c">
                                     <desc xml:lang="de">von Hand des 20. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XX<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XX<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand21c">
                                     <desc xml:lang="de">von Hand des 21. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XXI<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XXI<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand10c?">
                                     <desc xml:lang="de">von Hand des 10. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du X<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du X<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand11c?">
                                     <desc xml:lang="de">von Hand des 11. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XI<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XI<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand12c?">
                                     <desc xml:lang="de">von Hand des 12. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XII<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand13c?">
                                     <desc xml:lang="de">von Hand des 13. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIII<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XIII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand14c?">
                                     <desc xml:lang="de">von Hand des 14. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIV<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XIV<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand15c?">
                                     <desc xml:lang="de">von Hand des 15. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XV<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XV<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand16c?">
                                     <desc xml:lang="de">von Hand des 16. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVI<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XVI<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand17c?">
                                     <desc xml:lang="de">von Hand des 17. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVII<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XVII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand18c?">
                                     <desc xml:lang="de">von Hand des 18. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVIII<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XVIII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand19c?">
                                     <desc xml:lang="de">von Hand des 19. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIX<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XIX<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand20c?">
                                     <desc xml:lang="de">von Hand des 20. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XX<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XX<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand21c?">
                                     <desc xml:lang="de">von Hand des 21. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XXI<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XXI<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="other hand">
                                     <desc xml:lang="de">von anderer Hand</desc>
@@ -2430,99 +2454,99 @@
                             <valList type="closed">
                                 <valItem ident="hand10c">
                                     <desc xml:lang="de">von Hand des 10. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du X<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du X<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand11c">
                                     <desc xml:lang="de">von Hand des 11. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XI<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XI<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand12c">
                                     <desc xml:lang="de">von Hand des 12. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XII<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand13c">
                                     <desc xml:lang="de">von Hand des 13. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIII<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XIII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand14c">
                                     <desc xml:lang="de">von Hand des 14. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIV<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XIV<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand15c">
                                     <desc xml:lang="de">von Hand des 15. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XV<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XV<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand16c">
                                     <desc xml:lang="de">von Hand des 16. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVI<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XVI<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand17c">
                                     <desc xml:lang="de">von Hand des 17. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVII<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XVII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand18c">
                                     <desc xml:lang="de">von Hand des 18. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVIII<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XVIII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand19c">
                                     <desc xml:lang="de">von Hand des 19. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIX<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XIX<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand20c">
                                     <desc xml:lang="de">von Hand des 20. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XX<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XX<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand21c">
                                     <desc xml:lang="de">von Hand des 21. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XXI<hi rend="sup">e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XXI<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand10c?">
                                     <desc xml:lang="de">von Hand des 10. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du X<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du X<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand11c?">
                                     <desc xml:lang="de">von Hand des 11. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XI<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XI<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand12c?">
                                     <desc xml:lang="de">von Hand des 12. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XII<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand13c?">
                                     <desc xml:lang="de">von Hand des 13. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIII<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XIII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand14c?">
                                     <desc xml:lang="de">von Hand des 14. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIV<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XIV<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand15c?">
                                     <desc xml:lang="de">von Hand des 15. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XV<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XV<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand16c?">
                                     <desc xml:lang="de">von Hand des 16. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVI<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XVI<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand17c?">
                                     <desc xml:lang="de">von Hand des 17. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVII<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XVII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand18c?">
                                     <desc xml:lang="de">von Hand des 18. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVIII<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XVIII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand19c?">
                                     <desc xml:lang="de">von Hand des 19. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIX<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XIX<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand20c?">
                                     <desc xml:lang="de">von Hand des 20. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XX<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XX<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand21c?">
                                     <desc xml:lang="de">von Hand des 21. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XXI<hi rend="sup">e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d'une main du XXI<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="other hand">
                                     <desc xml:lang="de">von anderer Hand</desc>
@@ -3028,51 +3052,51 @@
                             <valList type="closed">
                             <valItem ident="hand10c">
                                 <desc xml:lang="de">von Hand des 10. Jh.</desc>
-                                <desc xml:lang="fr">écrit d'une main du X<hi rend="sup">e</hi> siècle</desc>
+                                <desc xml:lang="fr">écrit d'une main du X<hi rend="sup" >e</hi> siècle</desc>
                             </valItem>
                             <valItem ident="hand11c">
                                 <desc xml:lang="de">von Hand des 11. Jh.</desc>
-                                <desc xml:lang="fr">écrit d'une main du XI<hi rend="sup">e</hi> siècle</desc>
+                                <desc xml:lang="fr">écrit d'une main du XI<hi rend="sup" >e</hi> siècle</desc>
                             </valItem>
                             <valItem ident="hand12c">
                                 <desc xml:lang="de">von Hand des 12. Jh.</desc>
-                                <desc xml:lang="fr">écrit d'une main du XII<hi rend="sup">e</hi> siècle</desc>
+                                <desc xml:lang="fr">écrit d'une main du XII<hi rend="sup" >e</hi> siècle</desc>
                             </valItem>
                             <valItem ident="hand13c">
                                 <desc xml:lang="de">von Hand des 13. Jh.</desc>
-                                <desc xml:lang="fr">écrit d'une main du XIII<hi rend="sup">e</hi> siècle</desc>
+                                <desc xml:lang="fr">écrit d'une main du XIII<hi rend="sup" >e</hi> siècle</desc>
                             </valItem>
                             <valItem ident="hand14c">
                                 <desc xml:lang="de">von Hand des 14. Jh.</desc>
-                                <desc xml:lang="fr">écrit d'une main du XIV<hi rend="sup">e</hi> siècle</desc>
+                                <desc xml:lang="fr">écrit d'une main du XIV<hi rend="sup" >e</hi> siècle</desc>
                             </valItem>
                             <valItem ident="hand15c">
                                 <desc xml:lang="de">von Hand des 15. Jh.</desc>
-                                <desc xml:lang="fr">écrit d'une main du XV<hi rend="sup">e</hi> siècle</desc>
+                                <desc xml:lang="fr">écrit d'une main du XV<hi rend="sup" >e</hi> siècle</desc>
                             </valItem>
                             <valItem ident="hand16c">
                                 <desc xml:lang="de">von Hand des 16. Jh.</desc>
-                                <desc xml:lang="fr">écrit d'une main du XVI<hi rend="sup">e</hi> siècle</desc>
+                                <desc xml:lang="fr">écrit d'une main du XVI<hi rend="sup" >e</hi> siècle</desc>
                             </valItem>
                             <valItem ident="hand17c">
                                 <desc xml:lang="de">von Hand des 17. Jh.</desc>
-                                <desc xml:lang="fr">écrit d'une main du XVII<hi rend="sup">e</hi> siècle</desc>
+                                <desc xml:lang="fr">écrit d'une main du XVII<hi rend="sup" >e</hi> siècle</desc>
                             </valItem>
                             <valItem ident="hand18c">
                                 <desc xml:lang="de">von Hand des 18. Jh.</desc>
-                                <desc xml:lang="fr">écrit d'une main du XVIII<hi rend="sup">e</hi> siècle</desc>
+                                <desc xml:lang="fr">écrit d'une main du XVIII<hi rend="sup" >e</hi> siècle</desc>
                             </valItem>
                             <valItem ident="hand19c">
                                 <desc xml:lang="de">von Hand des 19. Jh.</desc>
-                                <desc xml:lang="fr">écrit d'une main du XIX<hi rend="sup">e</hi> siècle</desc>
+                                <desc xml:lang="fr">écrit d'une main du XIX<hi rend="sup" >e</hi> siècle</desc>
                             </valItem>
                             <valItem ident="hand20c">
                                 <desc xml:lang="de">von Hand des 20. Jh.</desc>
-                                <desc xml:lang="fr">écrit d'une main du XX<hi rend="sup">e</hi> siècle</desc>
+                                <desc xml:lang="fr">écrit d'une main du XX<hi rend="sup" >e</hi> siècle</desc>
                             </valItem>
                             <valItem ident="hand21c">
                                 <desc xml:lang="de">von Hand des 21. Jh.</desc>
-                                <desc xml:lang="fr">écrit d'une main du XXI<hi rend="sup">e</hi> siècle</desc>
+                                <desc xml:lang="fr">écrit d'une main du XXI<hi rend="sup" >e</hi> siècle</desc>
                             </valItem>
                             <valItem ident="other hand">
                                 <desc xml:lang="de">von anderer Hand</desc>
@@ -3124,7 +3148,7 @@
                                 </valItem>
                                 <valItem ident="font change">
                                     <desc xml:lang="de">Schriftwechsel</desc>
-                                    <desc xml:lang="fr"/>
+                                    <desc xml:lang="fr"></desc>
                                 </valItem>
                                 <valItem ident="italic">
                                     <desc xml:lang="de">kursiv</desc>
@@ -3212,36 +3236,50 @@
                             </rng:choice>
                         </rng:zeroOrMore>
                     </content>
-                    <constraintSpec scheme="isoschematron" module="core" ident="sch-measure" mode="change">
+                    <constraintSpec scheme="isoschematron" module="core" ident="sch-measure"
+                        mode="change">
                         <desc>Attributes of tei:measure</desc>
                         <constraint>
                             <sch:pattern>
-                                <sch:rule context="tei:measure[matches(@unit,'^(Ballen|Bürde|Dutzend|Fuder|Gaden|Loden|Maschen|Paar|Schubkarre|Seil|Sester|Stock|Stuck|Zeine)$')]">
+                                <sch:rule
+                                    context="tei:measure[matches(@unit,'^(Ballen|Bürde|Dutzend|Fuder|Gaden|Loden|Maschen|Paar|Schubkarre|Seil|Sester|Stock|Stuck|Zeine)$')]">
                                     <sch:assert test="exists(@type)">If @unit is specified on the
                                         <sch:name/> element, @type must be present,
                                         too.</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='area']">
-                                    <sch:assert test="matches(@unit,'^(Fuss|Gertel|Hube|Juchart|Klafter|Kuhsömmerung|Kuhwinterung|Mal|Mannmad|Mannwerk|Mitmal|Rute|Schritt|Schuh|Schuppose|Staffel|Tagwen|Vierdung|Vierling)$')">kein gültiges Flächenmass</sch:assert>
+                                    <sch:assert
+                                    	test="matches(@unit,'^(Fuss|Gertel|Hube|Juchart|Klafter|Kuhsömmerung|Kuhwinterung|Mal|Mannmad|Mannwerk|Mitmal|Rute|Schritt|Schuh|Schuppose|Staffel|Tagwen|Vierdung|Vierling)$')"
+                                        >kein gültiges Flächenmass</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='currency']">
-                                    <sch:assert test="matches(@unit,'^(Angster|fl|lb|ß|xr|d|Dukat|bz|h|M|plp|Böhmischer Groschen|Grossi|k|Ort|Vierer|Spagürli|S|Taler|L)$')">keine gültige Währung</sch:assert>
+                                    <sch:assert
+                                        test="matches(@unit,'^(Angster|fl|lb|ß|xr|d|Dukat|bz|h|M|plp|Böhmischer Groschen|Grossi|k|Ort|Vierer|Spagürli|S|Taler|L)$')"
+                                        >keine gültige Währung</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='length']">
-                                    <sch:assert test="matches(@unit,'^(Daumen|Elle|Fuss|Klafter|Meile|Schuh|Stab|Vierling|Zoll)$')">kein gültiges Längenmass</sch:assert>
+                                    <sch:assert
+                                        test="matches(@unit,'^(Daumen|Elle|Fuss|Klafter|Meile|Schuh|Stab|Vierling|Zoll)$')"
+                                        >kein gültiges Längenmass</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='volume']">
-                                    <sch:assert test="matches(@unit,'^(Becher|Eimer|Garbe|Immi|Kratten|Ledi|Malter|Mütt|Sack|Scheffel|Sester|Ster|Vierdung|Vierling|Viertel|Brenten|Fass|Kopf|Klafter|Legel|Mass|Quart|Quartane|Saum|Schaffen|Tonne|Viertel|Zuber|Fass|Krötli|Röhrchen|Scheibe|Trinken)$')">kein gültiges Hohlmass</sch:assert>
+                                    <sch:assert
+                                        test="matches(@unit,'^(Becher|Eimer|Garbe|Immi|Kratten|Ledi|Malter|Mütt|Sack|Scheffel|Sester|Ster|Vierdung|Vierling|Viertel|Brenten|Fass|Kopf|Klafter|Legel|Mass|Quart|Quartane|Saum|Schaffen|Tonne|Viertel|Zuber|Fass|Krötli|Röhrchen|Scheibe|Trinken)$')"
+                                        >kein gültiges Hohlmass</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='weight']">
-                                    <sch:assert test="matches(@unit,'^(Biner|Gewäg|Krinne|Lot|Pfund|Rupp|Quentli|Vierling|Unze|Zentner)$')">kein gültiges Gewicht</sch:assert>
+                                    <sch:assert
+                                        test="matches(@unit,'^(Biner|Gewäg|Krinne|Lot|Pfund|Rupp|Quentli|Vierling|Unze|Zentner)$')"
+                                        >kein gültiges Gewicht</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='age']">
                                     <sch:assert test="@unit='year'">keine gültige Einheit für
                                         Alter</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='undefined']">
-                                    <sch:assert test="matches(@unit,'^(Ballen|Bürde|Dutzend|Fuder|Gaden|Kloben|Loden|Maschen|Paar|Riste|Schubkarre|Seil|Sester|Stock|Stuck|Zeine)$')">keine gültige Einheit für ungefähre
+                                    <sch:assert
+                                        test="matches(@unit,'^(Ballen|Bürde|Dutzend|Fuder|Gaden|Kloben|Loden|Maschen|Paar|Riste|Schubkarre|Seil|Sester|Stock|Stuck|Zeine)$')"
+                                        >keine gültige Einheit für ungefähre
                                         Masse/Gewichte</sch:assert>
                                 </sch:rule>
                             </sch:pattern>
@@ -3481,7 +3519,7 @@
                                 </valItem>
                                 <valItem ident="mush">
                                     <desc xml:lang="de">Mus</desc>
-                                    <desc xml:lang="fr"/> 
+                                    <desc xml:lang="fr"></desc> 
                                 </valItem>
                                 <valItem ident="nuts">
                                     <desc xml:lang="de">Nüsse</desc>
@@ -3506,7 +3544,7 @@
                             	</valItem>
                                 <valItem ident="salt">
                                     <desc xml:lang="de">Salz</desc>
-                                     <desc xml:lang="fr"/> 
+                                     <desc xml:lang="fr"></desc> 
                                 </valItem>
                                 <valItem ident="lard">
                                     <desc xml:lang="de">Schmalz</desc>
@@ -3538,7 +3576,7 @@
                                 </valItem>
                                 <valItem ident="tallow">
                                     <desc xml:lang="de">Unschlitt</desc>
-                                    <desc xml:lang="fr"/> 
+                                    <desc xml:lang="fr"></desc> 
                                 </valItem>
                                 <valItem ident="wax">
                                     <desc xml:lang="de">Wachs</desc>    
@@ -3550,7 +3588,7 @@
                             	</valItem>
                                 <valItem ident="wine">
                                     <desc xml:lang="de">Wein</desc>
-                                    <desc xml:lang="fr"/> 
+                                    <desc xml:lang="fr"></desc> 
                                 </valItem>
                                 <valItem ident="wheat">
                                     <desc xml:lang="de">Weizen</desc>
@@ -4553,7 +4591,7 @@
                         </valItem>
                         <valItem ident="abbr-nonexpanded">
                             <desc xml:lang="de">In der Vorlage</desc>
-                            <desc xml:lang="fr">In der Vorlage</desc>
+                            <desc xml:lang="fr">À l'original</desc>
                         </valItem>
                         <valItem ident="abbr-unclear">
                             <desc xml:lang="de">Abkürzung, unsichere Lesung</desc>
@@ -4630,38 +4668,51 @@
                         <valItem ident="term">
                             <desc xml:lang="de">Begriff</desc>
                             <desc xml:lang="fr">Terme</desc>
+                            <desc xml:lang="it">Termine</desc>
+                            <desc xml:lang="en">Term</desc>
                         </valItem>
                         <valItem ident="person">
                             <desc xml:lang="de">Person</desc>
                             <desc xml:lang="fr">Personne</desc>
+                            <desc xml:lang="it">Persona</desc>
+                            <desc xml:lang="en">Person</desc>
                         </valItem>
                         <valItem ident="organisation">
                             <desc xml:lang="de">Organisation</desc>
                             <desc xml:lang="fr">Organisation</desc>
+                            <desc xml:lang="it">Organizzazione</desc>
+                            <desc xml:lang="en">Organisation</desc>
                         </valItem>
                         <valItem ident="place">
                             <desc xml:lang="de">Ort</desc>
                             <desc xml:lang="fr">Lieu</desc>
+                            <desc xml:lang="it">Luogo</desc>
+                            <desc xml:lang="en">Place</desc>
                         </valItem>
                         <valItem ident="origPlace">
                             <desc xml:lang="de">Ausstellungsort</desc>
                             <desc xml:lang="fr">Lieu d'origine</desc>
+                            <desc xml:lang="en">Origin place</desc>
                         </valItem>
                         <valItem ident="amount">
                             <desc xml:lang="de">Menge</desc>
                             <desc xml:lang="fr">Quantité</desc>
+                            <desc xml:lang="en">Amount</desc>
                         </valItem>
                         <valItem ident="time">
                             <desc xml:lang="de">Zeit</desc>
                             <desc xml:lang="fr">Heure</desc>
+                            <desc xml:lang="en">Time</desc>
                         </valItem>
                         <valItem ident="duration">
                             <desc xml:lang="de">Zeitspanne</desc>
                             <desc xml:lang="fr">Durée</desc>
+                            <desc xml:lang="en">Duration</desc>
                         </valItem>
                         <valItem ident="pb">
                             <desc xml:lang="de">Seitenumbruch</desc>
                             <desc xml:lang="fr">Saut de page</desc>
+                            <desc xml:lang="en">Page break</desc>
                         </valItem>
                         <valItem ident="supplied">
                             <desc xml:lang="de">sinngemäss ergänzt</desc>
@@ -4678,6 +4729,7 @@
                         <valItem ident="date">
                             <desc xml:lang="de">Datum</desc>
                             <desc xml:lang="fr">Datation</desc>
+                            <desc xml:lang="en">Date</desc>
                         </valItem>
                         <valItem ident="repeated-duration">
                             <desc xml:lang="de">Wiederholte Zeitspanne</desc>
@@ -4686,6 +4738,7 @@
                         <valItem ident="signature">
                             <desc xml:lang="de">Signatur</desc>
                             <desc xml:lang="fr">Cote</desc>
+                            <desc xml:lang="en">Signature</desc>
                         </valItem>
                         <valItem ident="other-source">
                             <desc xml:lang="de">Überlieferung</desc>
@@ -4694,14 +4747,27 @@
                         <valItem ident="surface">
                             <desc xml:lang="de">Beschreibstoff</desc>
                             <desc xml:lang="fr">Support d‘écrituret</desc>
+                            <desc xml:lang="en">Surface</desc>
+                        </valItem>
+                        <valItem ident="condition">
+                            <desc xml:lang="de">Erhaltungszustand</desc>
+                            <desc xml:lang="fr">État de conservation</desc>
+                            <desc xml:lang="en">Condition</desc>
+                        </valItem>
+                        <valItem ident="language">
+                            <desc xml:lang="de">Sprache</desc>
+                            <desc xml:lang="fr">Langue</desc>
+                            <desc xml:lang="en">Language</desc>
                         </valItem>
                         <valItem ident="format">
                             <desc xml:lang="de">Format B × H</desc>
                             <desc xml:lang="fr">Dimensions l × h</desc>
+                            <desc xml:lang="en">Format h × w</desc>
                         </valItem>
                         <valItem ident="sigle">
                             <desc xml:lang="de">Siegel</desc>
                             <desc xml:lang="fr">Sceau</desc>
+                            <desc xml:lang="en">sigle</desc>
                         </valItem>
                         <valItem ident="signed">
                             <desc xml:lang="de">Unterschrift</desc>

@@ -3,14 +3,11 @@
     <teiHeader>
         <fileDesc>
             <titleStmt>
-                <title>Abbr-schema for eSSRQ</title>
-                <author>Noëmi Aepli</author>
+                <title>Expanded Abbr-schema for eSSRQ</title>
                 <author>Pascale Sutter</author>
-                <author>Mathias Müller</author>
-                <author>Bernhard Ruef</author>
             </titleStmt>
             <publicationStmt>
-                <p>for use by whoever wants it</p>
+                <p>Page: Abbreviations</p>
             </publicationStmt>
             <notesStmt>
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
@@ -24,90 +21,263 @@
     <text>
         <body>
             <dataSpec ident="ssrq.abbr">
+                <!-- Allgemeine Abkürzungen, die nur auf der Seite Abkürzungen aufgelöst werden. Je nach Sprache werden andere aufgelistet. -->
+                <desc xml:lang="de">Abkürzungen</desc>
+                <desc xml:lang="fr">Abréviations</desc>
+                <desc xml:lang="it">Abbreviazione</desc>
+                <desc xml:lang="en">Abbreviations</desc>
+                 <valList>
+                <valItem ident="Anm.">
+                        <desc xml:lang="de">Anmerkung</desc>
+                    </valItem>
+                       <valItem ident="Art.">
+                        <desc xml:lang="de">Artikel</desc>
+                    </valItem>
+                       <valItem ident="art.">
+                        <desc xml:lang="de">article</desc>
+                    </valItem>
+                       <valItem ident="Bd.">
+                        <desc xml:lang="de">Band</desc>
+                    </valItem>
+                       <valItem ident="ca.">
+                        <desc xml:lang="de">circa</desc>
+                    </valItem>
+                       <valItem ident="d. h.">
+                        <desc xml:lang="de">das heisst</desc>
+                    </valItem>
+                       <valItem ident="fol.">
+                        <desc xml:lang="de">Folio</desc>
+                        <desc xml:lang="fr">folio</desc>
+                        <desc xml:lang="it">folio</desc>
+                        <desc xml:lang="en">folio</desc>
+                    </valItem>
+                       <valItem ident="Jh.">
+                        <desc xml:lang="de">Jahrhundert</desc>
+                    </valItem>
+                       <valItem ident="Ms.">
+                        <desc xml:lang="de">Manuskript</desc>
+                    </valItem>
+                       <valItem ident="Nr.">
+                        <desc xml:lang="de">Nummer</desc>
+                    </valItem>
+                       <valItem ident="r">
+                        <desc xml:lang="de">recto</desc>
+                        <desc xml:lang="fr">recto</desc>
+                        <desc xml:lang="it">recto</desc>
+                        <desc xml:lang="en">recto</desc>
+                    </valItem>
+                       <valItem ident="S.">
+                        <desc xml:lang="de">Seite</desc>
+                    </valItem>
+                       <valItem ident="SDS">
+                        <desc xml:lang="de">Sources du droit suisse</desc>
+                        <desc xml:lang="en">Swiss law sources</desc>
+                    </valItem>
+                     <valItem ident="SSRQ">
+                        <desc xml:lang="de">Sammlung Schweizerischer Rechtsquellen</desc>
+                        <desc xml:lang="en">Swiss law sources</desc>
+                    </valItem>
+                     <valItem ident="St.">
+                        <desc xml:lang="de">Sankt</desc>
+                    </valItem>
+                     <valItem ident="v">
+                        <desc xml:lang="de">verso</desc>
+                        <desc xml:lang="fr">verso</desc>
+                        <desc xml:lang="it">verso</desc>
+                        <desc xml:lang="en">verso</desc>
+                    </valItem>
+                     <valItem ident="vgl.">
+                        <desc xml:lang="de">vergleiche</desc>
+                    </valItem>
+                    </valList>
+                <!-- Archive, deren Kürzel aufgelöst wird -->
+                        <desc xml:lang="de">Archive</desc>
+                        <desc xml:lang="fr">Archives</desc>
+                        <desc xml:lang="it">Archivi</desc>
+                        <desc xml:lang="en">Archives</desc>
                 <valList>
-                    <valItem ident=" m g h">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                    <valItem ident="AVN">
+                        <desc xml:lang="de">Staatsarchiv Neuenburg</desc>
+                        <desc xml:lang="fr">Archives de l'État de Neuchâtel</desc>
+                        <desc xml:lang="it">Archives de l'État de Neuchâtel</desc>
+                        <desc xml:lang="en">State Archives of Neuchâtel</desc> 
+                    </valItem>                    
+                    <valItem ident="Fürstl.">
+                        <desc xml:lang="de">Fürstlich Fürstenbergisches Archiv Donaueschingen</desc>
+                        <desc xml:lang="fr">Fürstlich Fürstenbergisches Archiv Donaueschingen</desc>
+                        <desc xml:lang="it">Fürstlich Fürstenbergisches Archiv Donaueschingen</desc>
+                        <desc xml:lang="en">Fürstlich Fürstenbergisches Archiv Donaueschingen</desc>
                     </valItem>
-                    <valItem ident="J. H.">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                       <valItem ident="KA">
+                        <desc xml:lang="de">Kirchenarchiv</desc>
+                        <desc xml:lang="fr">Kirchenarchiv</desc>
+                        <desc xml:lang="it">Kirchenarchiv</desc>
+                        <desc xml:lang="en">Kirchenarchiv</desc>
                     </valItem>
-                    <valItem ident="Jud">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                    <valItem ident="StAFR">
+                        <desc xml:lang="de">Staatsarchiv Freiburg</desc>
+                        <desc xml:lang="fr">Archives de l'État de Fribourg</desc>
+                        <desc xml:lang="it">Staatsarchiv Freiburg</desc>
+                        <desc xml:lang="en">State Archives of Fribourg</desc>
                     </valItem>
-                    <valItem ident="L S">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                    <valItem ident="StASG">
+                        <desc xml:lang="de">Staatsarchiv St. Gallen</desc>
+                        <desc xml:lang="fr">Archives de l'État de St.-Gall</desc>
+                        <desc xml:lang="it">Staatsarchiv St. Gallen</desc>
+                        <desc xml:lang="en">State Archives of St. Gall</desc>
                     </valItem>
-                    <valItem ident="Ulr">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                    <valItem ident="StASZ">
+                        <desc xml:lang="de">Staatsarchiv Schwyz</desc>
+                        <desc xml:lang="fr">Archives de l'État de Schwyz</desc>
+                        <desc xml:lang="it">Staatsarchiv Schwyz</desc>
+                        <desc xml:lang="en">State Archives of Schwyz</desc>
                     </valItem>
-                    <valItem ident="W.">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                    <valItem ident="StiAPf">
+                        <desc xml:lang="de">Stiftsarchiv Pfäfers</desc>
+                        <desc xml:lang="fr">Archives abbatiales de Pfäfers</desc>
+                        <desc xml:lang="it">Archivio dell'abbazia di Pfäfers</desc>
+                        <desc xml:lang="en">Stiftsarchiv Pfäfers</desc>
                     </valItem>
-                    <valItem ident="etc">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                     <valItem ident="StiSG">
+                        <desc xml:lang="de">Stiftsarchiv St. Gallen</desc>
+                        <desc xml:lang="fr">Archives abbatiales de Saint-Gall</desc>
+                        <desc xml:lang="it">Archivio dell'abbazia di San Gallo</desc>
+                        <desc xml:lang="en">Stiftsarchiv St. Gallen</desc>
                     </valItem>
-                    <valItem ident="etc.">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                    </valList>
+                <!--Historische Abkürzungen, die in den historischen Texten nur mit abbr ausgezeichnet sind und die im Tooltip aufgelöst werden -->
+                   <desc xml:lang="de">Historische Abkürzungen</desc>
+                   <desc xml:lang="fr">Abréviations historiques</desc>
+                   <desc xml:lang="it">Abbreviazione storice</desc>
+                   <desc xml:lang="en">Historical Abbreviations</desc>
+                <valList>
+                  <valItem ident="etc">
+                        <desc xml:lang="de">et cetera</desc>
+                        <desc xml:lang="fr">et cetera</desc>
+                        <desc xml:lang="it">et cetera</desc>
+                        <desc xml:lang="en">et cetera</desc>
                     </valItem>
                     <valItem ident="f">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                        <desc xml:lang="de">frau</desc>
+                       <!--<desc xml:lang="fr">frau</desc>
+                        <desc xml:lang="it">frau</desc>
+                        <desc xml:lang="en">frau</desc>-->
                     </valItem>
-                    <valItem ident="g.">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                    <valItem ident="g">
+                        <desc xml:lang="de">gnädiger, gnädige</desc>
+                           <!--<desc xml:lang="fr">gnädiger, gnädige</desc>
+                        <desc xml:lang="it">gnädiger, gnädige</desc>
+                        <desc xml:lang="en">gnädiger, gnädige</desc>-->
                     </valItem>
                     <valItem ident="gf">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                        <desc xml:lang="de">gnädige frau</desc>
+                           <!--<desc xml:lang="fr">gnädige frau</desc>
+                        <desc xml:lang="it">gnädige frau</desc>
+                        <desc xml:lang="en">gnädige frau</desc>-->
                     </valItem>
                     <valItem ident="h">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                        <desc xml:lang="de">herr, herren</desc>
+                           <!--<desc xml:lang="fr">herr, herren</desc>
+                        <desc xml:lang="it">herr, herren</desc>
+                        <desc xml:lang="en">herr, herren</desc>-->
                     </valItem>
-                    <valItem ident="lib">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                    <valItem ident="J. H.">
+                        <desc xml:lang="de">Johann Heinrich?</desc>
+                        <desc xml:lang="fr">Johann Heinrich?</desc>
+                        <desc xml:lang="it">Johann Heinrich?</desc>
+                        <desc xml:lang="en">Johann Heinrich?</desc>
+                    </valItem>
+                    <valItem ident="Jud">
+                        <desc xml:lang="de">Judicatum est</desc>
+                        <desc xml:lang="fr">Judicatum est</desc>
+                        <desc xml:lang="it">Judicatum est</desc>
+                        <desc xml:lang="en">Judicatum est</desc>
+                    </valItem>
+                     <valItem ident="lib">
+                        <desc xml:lang="de">liber</desc>
+                        <desc xml:lang="fr">liber</desc>
+                        <desc xml:lang="it">liber</desc>
+                        <desc xml:lang="en">liber</desc>
+                    </valItem>
+                    <valItem ident="L S">
+                        <desc xml:lang="de">Locus sigilli</desc>
+                        <desc xml:lang="fr">Locus sigilli</desc>
+                        <desc xml:lang="it">Locus sigilli</desc>
+                        <desc xml:lang="en">Locus sigilli</desc>
+                    </valItem>
+                     <valItem ident="m g h">
+                        <desc xml:lang="de">mein gnädiger herr, meine gnädigen herren</desc>
+                           <!--<desc xml:lang="fr">mein gnädiger herr, meine gnädigen herren</desc>
+                        <desc xml:lang="it">mein gnädiger herr, meine gnädigen herren</desc>
+                        <desc xml:lang="en">mein gnädiger herr, meine gnädigen herren</desc>--->
                     </valItem>
                     <valItem ident="q">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
+                        <desc xml:lang="de">quart?</desc>
+                        <desc xml:lang="fr">quart?</desc>
+                        <desc xml:lang="it">quart?</desc>
+                        <desc xml:lang="en">quart?</desc>
+                    </valItem>
+                    <valItem ident="Ulr">
+                        <desc xml:lang="de">Ulrich</desc>
+                        <desc xml:lang="fr">Ulrich</desc>
+                        <desc xml:lang="it">Ulrich</desc>
+                        <desc xml:lang="en">Ulrich</desc>
+                    </valItem>
+                    <valItem ident="W">
+                        <desc xml:lang="de">Wilhelm?</desc>
+                        <desc xml:lang="fr">Wilhelm?</desc>
+                        <desc xml:lang="it">Wilhelm?</desc>
+                        <desc xml:lang="en">Wilhelm?</desc>
+                    </valItem>
+                    </valList>
+                    <!-- Historische Abkürzungszeichen wie Währungen etc., hier wird für die Umsetzung die Schrift Lexia Fontes benötigt -->
+                   <desc xml:lang="de">Symbole</desc>
+                   <desc xml:lang="fr">Symboles</desc>
+                   <desc xml:lang="it">Simboli</desc>
+                   <desc xml:lang="en">Symbols</desc>
+                <valList>
+                     <valItem ident="₰">
+                        <desc xml:lang="de">Denar / Pfennig (Währung)</desc>
+                        <desc xml:lang="fr">Denier (unité monétaire)</desc>
+                        <desc xml:lang="it">Denaro (valuta)</desc>
+                        <desc xml:lang="en">Denarius (currency)</desc>
+                    </valItem>
+                    <valItem ident="">
+                        <desc xml:lang="de">Florin / Gulden (Währung)</desc>
+                        <desc xml:lang="fr">Florin (unité monétaire)</desc>
+                        <desc xml:lang="it">Fiorino (valuta)</desc>
+                        <desc xml:lang="en">Florin (currency)</desc>
+                    </valItem>
+                    <valItem ident="">
+                        <desc xml:lang="de">Gulden (Währung)</desc>
+                        <desc xml:lang="fr">Gulden (unité monétaire)</desc>
+                        <desc xml:lang="it">Gulden (valuta)</desc>
+                        <desc xml:lang="en">Gulden (currency)</desc>
+                    </valItem>
+                      <valItem ident="ħ">
+                        <desc xml:lang="de">Haller (Währung)</desc>
+                        <desc xml:lang="fr">Haller (unité monétaire)</desc>
+                        <desc xml:lang="it">Haller (valuta)</desc>
+                        <desc xml:lang="en">Haller (currency)</desc>
+                    </valItem>
+                    <valItem ident="℔">
+                        <desc xml:lang="de">Pfund (Gewicht)</desc>
+                        <desc xml:lang="fr">Livre (masse)</desc>
+                        <desc xml:lang="it">Libbra (misura)</desc>
+                        <desc xml:lang="en">Pound (measure)</desc>
+                    </valItem>
+                    <valItem ident="">
+                        <desc xml:lang="de">Pfund (Währung)</desc>
+                        <desc xml:lang="fr">Livre (unité monétaire)</desc>
+                        <desc xml:lang="it">Libbra (valuta)</desc>
+                        <desc xml:lang="en">Pound (currency)</desc>
+                    </valItem>
+    
+                       <valItem ident="">
+                        <desc xml:lang="de">Schilling (Währung)</desc>
+                        <desc xml:lang="fr">Schilling (unité monétaire)</desc>
+                        <desc xml:lang="it">Schilling (valuta)</desc>
+                        <desc xml:lang="en">Schilling (currency)</desc>
                     </valItem>
 <!--  aus dem Archiv                  -->
                     <valItem ident="AG">
