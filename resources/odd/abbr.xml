@@ -92,31 +92,49 @@
                         <desc xml:lang="de">Staatsarchiv Neuenburg</desc>
                         <desc xml:lang="fr">Archives de l'État de Neuchâtel</desc>
                         <desc xml:lang="it">Archives de l'État de Neuchâtel</desc>
-                        <desc xml:lang="en">State Archives of Neuchâtel</desc>
+                        <desc xml:lang="en">State Archives of Neuchâtel</desc> 
+                    </valItem>                    
+                    <valItem ident="Fürstl.">
+                        <desc xml:lang="de">Fürstlich Fürstenbergisches Archiv Donaueschingen</desc>
+                        <desc xml:lang="fr">Fürstlich Fürstenbergisches Archiv Donaueschingen</desc>
+                        <desc xml:lang="it">Fürstlich Fürstenbergisches Archiv Donaueschingen</desc>
+                        <desc xml:lang="en">Fürstlich Fürstenbergisches Archiv Donaueschingen</desc>
                     </valItem>
-                           <valItem ident="AVN">
-                        <desc xml:lang="de">Staatsarchiv Neuenburg</desc>
-                        <desc xml:lang="fr">Archives de l'État de Neuchâtel</desc>
-                        <desc xml:lang="it">Archives de l'État de Neuchâtel</desc>
-                        <desc xml:lang="en">State Archives of Neuchâtel</desc>
+                       <valItem ident="KA">
+                        <desc xml:lang="de">Kirchenarchiv</desc>
+                        <desc xml:lang="fr">Kirchenarchiv</desc>
+                        <desc xml:lang="it">Kirchenarchiv</desc>
+                        <desc xml:lang="en">Kirchenarchiv</desc>
                     </valItem>
-                           <valItem ident="AVN">
-                        <desc xml:lang="de">Staatsarchiv Neuenburg</desc>
-                        <desc xml:lang="fr">Archives de l'État de Neuchâtel</desc>
-                        <desc xml:lang="it">Archives de l'État de Neuchâtel</desc>
-                        <desc xml:lang="en">State Archives of Neuchâtel</desc>
+                    <valItem ident="StAFR">
+                        <desc xml:lang="de">Staatsarchiv Freiburg</desc>
+                        <desc xml:lang="fr">Archives de l'État de Fribourg</desc>
+                        <desc xml:lang="it">Staatsarchiv Freiburg</desc>
+                        <desc xml:lang="en">State Archives of Fribourg</desc>
                     </valItem>
-                           <valItem ident="AVN">
-                        <desc xml:lang="de">Staatsarchiv Neuenburg</desc>
-                        <desc xml:lang="fr">Archives de l'État de Neuchâtel</desc>
-                        <desc xml:lang="it">Archives de l'État de Neuchâtel</desc>
-                        <desc xml:lang="en">State Archives of Neuchâtel</desc>
+                    <valItem ident="StASG">
+                        <desc xml:lang="de">Staatsarchiv St. Gallen</desc>
+                        <desc xml:lang="fr">Archives de l'État de St.-Gall</desc>
+                        <desc xml:lang="it">Staatsarchiv St. Gallen</desc>
+                        <desc xml:lang="en">State Archives of St. Gall</desc>
                     </valItem>
-                           <valItem ident="AVN">
-                        <desc xml:lang="de">Staatsarchiv Neuenburg</desc>
-                        <desc xml:lang="fr">Archives de l'État de Neuchâtel</desc>
-                        <desc xml:lang="it">Archives de l'État de Neuchâtel</desc>
-                        <desc xml:lang="en">State Archives of Neuchâtel</desc>
+                    <valItem ident="StASZ">
+                        <desc xml:lang="de">Staatsarchiv Schwyz</desc>
+                        <desc xml:lang="fr">Archives de l'État de Schwyz</desc>
+                        <desc xml:lang="it">Staatsarchiv Schwyz</desc>
+                        <desc xml:lang="en">State Archives of Schwyz</desc>
+                    </valItem>
+                    <valItem ident="StiAPf">
+                        <desc xml:lang="de">Stiftsarchiv Pfäfers</desc>
+                        <desc xml:lang="fr">Archives abbatiales de Pfäfers</desc>
+                        <desc xml:lang="it">Archivio dell'abbazia di Pfäfers</desc>
+                        <desc xml:lang="en">Stiftsarchiv Pfäfers</desc>
+                    </valItem>
+                     <valItem ident="StiSG">
+                        <desc xml:lang="de">Stiftsarchiv St. Gallen</desc>
+                        <desc xml:lang="fr">Archives abbatiales de Saint-Gall</desc>
+                        <desc xml:lang="it">Archivio dell'abbazia di San Gallo</desc>
+                        <desc xml:lang="en">Stiftsarchiv St. Gallen</desc>
                     </valItem>
                 <!--Historische Abkürzungen, die in den historischen Texten nur mit abbr ausgezeichnet sind und die im Tooltip aufgelöst werden
                 Historische Währungen -->
