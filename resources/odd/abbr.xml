@@ -32,6 +32,9 @@
                        <valItem ident="Art.">
                         <desc xml:lang="de">Artikel</desc>
                     </valItem>
+                       <valItem ident="art.">
+                        <desc xml:lang="de">article</desc>
+                    </valItem>
                        <valItem ident="Bd.">
                         <desc xml:lang="de">Band</desc>
                     </valItem>
@@ -43,6 +46,9 @@
                     </valItem>
                        <valItem ident="fol.">
                         <desc xml:lang="de">Folio</desc>
+                        <desc xml:lang="fr">folio</desc>
+                        <desc xml:lang="it">folio</desc>
+                        <desc xml:lang="en">folio</desc>
                     </valItem>
                        <valItem ident="Jh.">
                         <desc xml:lang="de">Jahrhundert</desc>
@@ -78,6 +84,40 @@
                         <desc xml:lang="de">vergleiche</desc>
                     </valItem>
                 <!-- Archive, deren Kürzel aufgelöst wird -->
+                        <desc xml:lang="de">Archive</desc>
+                        <desc xml:lang="fr">Archives</desc>
+                        <desc xml:lang="it">Archivi</desc>
+                        <desc xml:lang="en">Archives</desc>
+                    <valItem ident="AVN">
+                        <desc xml:lang="de">Staatsarchiv Neuenburg</desc>
+                        <desc xml:lang="fr">Archives de l'État de Neuchâtel</desc>
+                        <desc xml:lang="it">Archives de l'État de Neuchâtel</desc>
+                        <desc xml:lang="en">State Archives of Neuchâtel</desc>
+                    </valItem>
+                           <valItem ident="AVN">
+                        <desc xml:lang="de">Staatsarchiv Neuenburg</desc>
+                        <desc xml:lang="fr">Archives de l'État de Neuchâtel</desc>
+                        <desc xml:lang="it">Archives de l'État de Neuchâtel</desc>
+                        <desc xml:lang="en">State Archives of Neuchâtel</desc>
+                    </valItem>
+                           <valItem ident="AVN">
+                        <desc xml:lang="de">Staatsarchiv Neuenburg</desc>
+                        <desc xml:lang="fr">Archives de l'État de Neuchâtel</desc>
+                        <desc xml:lang="it">Archives de l'État de Neuchâtel</desc>
+                        <desc xml:lang="en">State Archives of Neuchâtel</desc>
+                    </valItem>
+                           <valItem ident="AVN">
+                        <desc xml:lang="de">Staatsarchiv Neuenburg</desc>
+                        <desc xml:lang="fr">Archives de l'État de Neuchâtel</desc>
+                        <desc xml:lang="it">Archives de l'État de Neuchâtel</desc>
+                        <desc xml:lang="en">State Archives of Neuchâtel</desc>
+                    </valItem>
+                           <valItem ident="AVN">
+                        <desc xml:lang="de">Staatsarchiv Neuenburg</desc>
+                        <desc xml:lang="fr">Archives de l'État de Neuchâtel</desc>
+                        <desc xml:lang="it">Archives de l'État de Neuchâtel</desc>
+                        <desc xml:lang="en">State Archives of Neuchâtel</desc>
+                    </valItem>
                 <!--Historische Abkürzungen, die in den historischen Texten nur mit abbr ausgezeichnet sind und die im Tooltip aufgelöst werden
                 Historische Währungen -->
                 <valList>
