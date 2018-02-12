@@ -232,47 +232,47 @@
                    <desc xml:lang="en">Symbols</desc>
                 <valList>
                      <valItem ident="₰">
-                        <desc xml:lang="de">Pfennig / Denar (Währung)</desc>
-                        <desc xml:lang="fr">et cetera</desc>
-                        <desc xml:lang="it">et cetera</desc>
-                        <desc xml:lang="en">et cetera</desc>
+                        <desc xml:lang="de">Denar / Pfennig (Währung)</desc>
+                        <desc xml:lang="fr">Denier (unité monétaire)</desc>
+                        <desc xml:lang="it">Denaro (valuta)</desc>
+                        <desc xml:lang="en">Denarius (currency)</desc>
                     </valItem>
                     <valItem ident="">
                         <desc xml:lang="de">Florin / Gulden (Währung)</desc>
-                        <desc xml:lang="fr">et cetera</desc>
-                        <desc xml:lang="it">et cetera</desc>
-                        <desc xml:lang="en">et cetera</desc>
+                        <desc xml:lang="fr">Florin (unité monétaire)</desc>
+                        <desc xml:lang="it">Fiorino (valuta)</desc>
+                        <desc xml:lang="en">Florin (currency)</desc>
                     </valItem>
                     <valItem ident="">
                         <desc xml:lang="de">Gulden (Währung)</desc>
-                        <desc xml:lang="fr">et cetera</desc>
-                        <desc xml:lang="it">et cetera</desc>
-                        <desc xml:lang="en">et cetera</desc>
+                        <desc xml:lang="fr">Gulden (unité monétaire)</desc>
+                        <desc xml:lang="it">Gulden (valuta)</desc>
+                        <desc xml:lang="en">Gulden (currency)</desc>
                     </valItem>
                       <valItem ident="ħ">
                         <desc xml:lang="de">Haller (Währung)</desc>
-                        <desc xml:lang="fr">et cetera</desc>
-                        <desc xml:lang="it">et cetera</desc>
-                        <desc xml:lang="en">et cetera</desc>
+                        <desc xml:lang="fr">Haller (unité monétaire)</desc>
+                        <desc xml:lang="it">Haller (valuta)</desc>
+                        <desc xml:lang="en">Haller (currency)</desc>
                     </valItem>
                     <valItem ident="℔">
                         <desc xml:lang="de">Pfund (Gewicht)</desc>
-                        <desc xml:lang="fr">et cetera</desc>
-                        <desc xml:lang="it">et cetera</desc>
-                        <desc xml:lang="en">et cetera</desc>
+                        <desc xml:lang="fr">Livre (masse)</desc>
+                        <desc xml:lang="it">Libbra (misura)</desc>
+                        <desc xml:lang="en">Pound (measure)</desc>
                     </valItem>
                     <valItem ident="">
                         <desc xml:lang="de">Pfund (Währung)</desc>
-                        <desc xml:lang="fr">et cetera</desc>
-                        <desc xml:lang="it">et cetera</desc>
-                        <desc xml:lang="en">et cetera</desc>
+                        <desc xml:lang="fr">Livre (unité monétaire)</desc>
+                        <desc xml:lang="it">Libbra (valuta)</desc>
+                        <desc xml:lang="en">Pound (currency)</desc>
                     </valItem>
     
                        <valItem ident="">
                         <desc xml:lang="de">Schilling (Währung)</desc>
-                        <desc xml:lang="fr">et cetera</desc>
-                        <desc xml:lang="it">et cetera</desc>
-                        <desc xml:lang="en">et cetera</desc>
+                        <desc xml:lang="fr">Schilling (unité monétaire)</desc>
+                        <desc xml:lang="it">Schilling (valuta)</desc>
+                        <desc xml:lang="en">Schilling (currency)</desc>
                     </valItem>
               
                 </valList>
