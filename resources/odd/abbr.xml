@@ -7,7 +7,7 @@
                 <author>Pascale Sutter</author>
             </titleStmt>
             <publicationStmt>
-                <p>for use by whoever wants it</p>
+                <p>Page: Abbreviations</p>
             </publicationStmt>
             <notesStmt>
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
@@ -21,7 +21,11 @@
     <text>
         <body>
             <dataSpec ident="ssrq.abbr">
-                <!-- Allgemeine Abkürzungen -->
+                <!-- Allgemeine Abkürzungen, die nur auf der Seite Abkürzungen aufgelöst werden. Je nach Sprache werden andere aufgelistet. -->
+                <desc xml:lang="de">Abkürzungen</desc>
+                <desc xml:lang="fr">Abréviations</desc>
+                <desc xml:lang="it">Abbreviazione</desc>
+                <desc xml:lang="en">Abbreviations</desc>
                 <valItem ident="Anm.">
                         <desc xml:lang="de">Anmerkung</desc>
                     </valItem>
@@ -51,6 +55,9 @@
                     </valItem>
                        <valItem ident="r">
                         <desc xml:lang="de">recto</desc>
+                        <desc xml:lang="fr">recto</desc>
+                        <desc xml:lang="it">recto</desc>
+                        <desc xml:lang="en">recto</desc>
                     </valItem>
                        <valItem ident="S.">
                         <desc xml:lang="de">Seite</desc>
@@ -63,13 +70,15 @@
                     </valItem>
                      <valItem ident="v">
                         <desc xml:lang="de">verso</desc>
+                        <desc xml:lang="fr">verso</desc>
+                        <desc xml:lang="it">verso</desc>
+                        <desc xml:lang="en">verso</desc>
                     </valItem>
                      <valItem ident="vgl.">
                         <desc xml:lang="de">vergleiche</desc>
                     </valItem>
-                <!-- Archive
-                Historische Abkürzungen, die mit Sicherheit aufgelöst werden können
-                Historische Abkürzungen, die nicht mit Sicherheit aufgelöst werden können
+                <!-- Archive, deren Kürzel aufgelöst wird -->
+                <!--Historische Abkürzungen, die in den historischen Texten nur mit abbr ausgezeichnet sind und die im Tooltip aufgelöst werden
                 Historische Währungen -->
                 <valList>
                     <valItem ident="m g h">
