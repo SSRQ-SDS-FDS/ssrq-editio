@@ -279,61 +279,6 @@
                         <desc xml:lang="it">Schilling (valuta)</desc>
                         <desc xml:lang="en">Schilling (currency)</desc>
                     </valItem>
-<!--  aus dem Archiv                  -->
-                    <valItem ident="AG">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
-                    </valItem>
-                    <valItem ident="AVN">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
-                    </valItem>
-                    <valItem ident="Churburg">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
-                    </valItem>
-                    <valItem ident="Fürstl">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
-                    </valItem>
-                    <valItem ident="KA">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
-                    </valItem>
-                    <valItem ident="Privatbesitz">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
-                    </valItem>
-                    <valItem ident="StAFR">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
-                    </valItem>
-                    <valItem ident="StASZ">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
-                    </valItem>
-                    <valItem ident="StiAPf">
-                        <desc xml:lang="de">expand</desc>
-                        <desc xml:lang="fr">expand</desc>
-                        <desc xml:lang="it">expand</desc>
-                        <desc xml:lang="en">expand</desc>
-                    </valItem>
                 </valList>
             </dataSpec>
         </body>
