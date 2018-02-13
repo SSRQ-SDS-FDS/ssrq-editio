@@ -63,8 +63,8 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
             default return
                 $nr
     let $enclose := $type = "text-critical" and matches($content, "\w+\s+\w+")
-    let $labelStart := string-join(($label, if ($enclose) then "-" else ()))
-    let $labelEnd := string-join((if ($enclose) then "-" else (), $label))
+    let $labelStart := string-join(($label, if ($enclose) then "–" else ()))
+    let $labelEnd := string-join((if ($enclose) then "–" else (), $label))
     return (
         if ($enclose) then
             <span class="note-wrap">
@@ -128,7 +128,7 @@ declare function pmf:note($config as map(*), $node as element(), $class as xs:st
             return (
                 <span id="fnref:{$id}" class="note-wrap">
                     <a class="note" rel="footnote" href="#fn:{$id}" data-label="{$n}">
-                    { if ($type = "text-critical-start") then $n || "-" else $n }
+                    { if ($type = "text-critical-start") then $n || "–" else $n }
                     </a>
                 </span>,
                 <li class="footnote" id="fn:{$id}" value="{$nr}"
@@ -163,7 +163,7 @@ declare function pmf:finish($config as map(*), $input as node()*) {
                         <a>
                         {
                             $node/@*,
-                            "-" || $start/@data-label
+                            "–" || $start/@data-label
                         }
                         </a>
                     </span>
