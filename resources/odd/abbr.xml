@@ -42,6 +42,12 @@
                        <valItem ident="ca.">
                         <desc xml:lang="de">circa</desc>
                     </valItem>
+                        <valItem ident="Cod.">
+                        <desc xml:lang="de">Codex</desc>
+                         <desc xml:lang="fr">Codex</desc>
+                          <desc xml:lang="it">Codex</desc>
+                           <desc xml:lang="en">Codex</desc>
+                    </valItem>
                        <valItem ident="d. h.">
                         <desc xml:lang="de">das heisst</desc>
                     </valItem>
