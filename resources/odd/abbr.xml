@@ -86,6 +86,9 @@
                      <valItem ident="St.">
                         <desc xml:lang="de">Sankt</desc>
                     </valItem>
+                          <valItem ident="Urk.">
+                        <desc xml:lang="de">Urkunde</desc>
+                    </valItem>
                      <valItem ident="v">
                         <desc xml:lang="de">verso</desc>
                         <desc xml:lang="fr">verso</desc>
