@@ -27,6 +27,9 @@
                 <desc xml:lang="it">Abbreviazione</desc>
                 <desc xml:lang="en">Abbreviations</desc>
                  <valList>
+                        <valItem ident="Abt.">
+                        <desc xml:lang="de">Abteilung</desc>
+                    </valItem>
                 <valItem ident="Anm.">
                         <desc xml:lang="de">Anmerkung</desc>
                     </valItem>
