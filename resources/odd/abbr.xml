@@ -126,6 +126,18 @@
                         <desc xml:lang="it">Kirchenarchiv</desc>
                         <desc xml:lang="en">Kirchenarchiv</desc>
                     </valItem>
+                            <valItem ident="LAGL">
+                        <desc xml:lang="de">Landesarchiv Glarus</desc>
+                        <desc xml:lang="fr">Archives de l'État de Glaris</desc>
+                        <desc xml:lang="it">Landesarchiv Glarus</desc>
+                        <desc xml:lang="en">State Archives of Glarus</desc>
+                    </valItem>
+                             <valItem ident="OGA">
+                        <desc xml:lang="de">Ortsgemeindearchiv</desc>
+                        <desc xml:lang="fr">Ortsgemeindearchiv</desc>
+                        <desc xml:lang="it">Ortsgemeindearchiv</desc>
+                        <desc xml:lang="en">Ortsgemeindearchiv</desc>
+                    </valItem>
                     <valItem ident="StAFR">
                         <desc xml:lang="de">Staatsarchiv Freiburg</desc>
                         <desc xml:lang="fr">Archives de l'État de Fribourg</desc>
