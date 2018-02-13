@@ -132,11 +132,17 @@
                         <desc xml:lang="it">Landesarchiv Glarus</desc>
                         <desc xml:lang="en">State Archives of Glarus</desc>
                     </valItem>
-                             <valItem ident="OGA">
+                    <valItem ident="OGA">
                         <desc xml:lang="de">Ortsgemeindearchiv</desc>
                         <desc xml:lang="fr">Ortsgemeindearchiv</desc>
                         <desc xml:lang="it">Ortsgemeindearchiv</desc>
                         <desc xml:lang="en">Ortsgemeindearchiv</desc>
+                    </valItem>
+                    <valItem ident="PGA">
+                        <desc xml:lang="de">Archiv der politischen Gemeinde</desc>
+                        <desc xml:lang="fr">Archiv der politischen Gemeinde</desc>
+                        <desc xml:lang="it">Archiv der politischen Gemeinde</desc>
+                        <desc xml:lang="en">Archiv der politischen Gemeinde</desc>
                     </valItem>
                     <valItem ident="StAFR">
                         <desc xml:lang="de">Staatsarchiv Freiburg</desc>
