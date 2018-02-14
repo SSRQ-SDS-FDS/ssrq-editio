@@ -113,7 +113,13 @@
                         <desc xml:lang="fr">Archives de l'État de Neuchâtel</desc>
                         <desc xml:lang="it">Archives de l'État de Neuchâtel</desc>
                         <desc xml:lang="en">State Archives of Neuchâtel</desc> 
-                    </valItem>                    
+                    </valItem>       
+                    <valItem ident="BAC">
+                        <desc xml:lang="de">Bischöfliches Archiv Chur</desc>
+                        <desc xml:lang="fr">Archives de l'Évêche de Chur</desc>
+                        <desc xml:lang="it">Bischöfliches Archiv Chur</desc>
+                        <desc xml:lang="en">Dicocese Archive of Chur</desc> 
+                    </valItem>   
                     <valItem ident="Fürstl.">
                         <desc xml:lang="de">Fürstlich Fürstenbergisches Archiv Donaueschingen</desc>
                         <desc xml:lang="fr">Fürstlich Fürstenbergisches Archiv Donaueschingen</desc>
