@@ -156,6 +156,12 @@
                         <desc xml:lang="it">Archiv der politischen Gemeinde</desc>
                         <desc xml:lang="en">Archiv der politischen Gemeinde</desc>
                     </valItem>
+                    <valItem ident="StadtA">
+                        <desc xml:lang="de">Stadtarchiv</desc>
+                        <desc xml:lang="fr">Archives de la ville</desc>
+                        <desc xml:lang="it">Archivio cittadino</desc>
+                        <desc xml:lang="en">Town Archives</desc>
+                    </valItem>
                     <valItem ident="StAFR">
                         <desc xml:lang="de">Staatsarchiv Freiburg</desc>
                         <desc xml:lang="fr">Archives de l'État de Fribourg</desc>
