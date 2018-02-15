@@ -301,6 +301,12 @@
                         <desc xml:lang="it">mein gnädiger herr, meine gnädigen herren</desc>
                         <desc xml:lang="en">mein gnädiger herr, meine gnädigen herren</desc>-->
                     </valItem>
+                    <valItem ident="mmp">
+                        <desc xml:lang="de">manu propria (eigenhändig)</desc>
+                        <desc xml:lang="fr">manu propria</desc>
+                        <desc xml:lang="it">manu propria</desc>
+                        <desc xml:lang="en">manu propria</desc>
+                    </valItem>
                     <valItem ident="q">
                         <desc xml:lang="de">quart?</desc>
                         <desc xml:lang="fr">quart?</desc>
