@@ -119,7 +119,13 @@
                         <desc xml:lang="fr">Archives de l'Évêche de Chur</desc>
                         <desc xml:lang="it">Bischöfliches Archiv Chur</desc>
                         <desc xml:lang="en">Dicocese Archive of Chur</desc> 
-                    </valItem>   
+                    </valItem>
+                     <valItem ident="BASG">
+                        <desc xml:lang="de">Bischöfliches Archiv St. Gallen</desc>
+                        <desc xml:lang="fr">Archives de l'Évêche de St.-Gall</desc>
+                        <desc xml:lang="it">Bischöfliches Archiv St. Gallen</desc>
+                        <desc xml:lang="en">Dicocese Archive of St. Gall</desc> 
+                    </valItem>
                     <valItem ident="EKGA">
                         <desc xml:lang="de">Evangelisches Kirchgemeindearchiv</desc>
                         <desc xml:lang="fr">Evangelisches Kirchgemeindearchiv</desc>
