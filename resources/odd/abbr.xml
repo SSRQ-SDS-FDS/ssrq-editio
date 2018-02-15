@@ -217,6 +217,12 @@
                    <desc xml:lang="it">Abbreviazione storice</desc>
                    <desc xml:lang="en">Historical Abbreviations</desc>
                 <valList>
+                      <valItem ident="ao">
+                        <desc xml:lang="de">anno</desc>
+                        <desc xml:lang="fr">anno</desc>
+                        <desc xml:lang="it">anno</desc>
+                        <desc xml:lang="en">anno</desc>
+                    </valItem>
                   <valItem ident="etc">
                         <desc xml:lang="de">et cetera</desc>
                         <desc xml:lang="fr">et cetera</desc>
