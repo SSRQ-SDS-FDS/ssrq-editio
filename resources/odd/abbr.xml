@@ -144,13 +144,19 @@
                         <desc xml:lang="it">Gemeindearchiv</desc>
                         <desc xml:lang="en">Gemeindearchiv</desc>
                     </valItem>
-                       <valItem ident="KA">
+                    <valItem ident="KA">
                         <desc xml:lang="de">Kirchenarchiv</desc>
                         <desc xml:lang="fr">Kirchenarchiv</desc>
                         <desc xml:lang="it">Kirchenarchiv</desc>
                         <desc xml:lang="en">Kirchenarchiv</desc>
                     </valItem>
-                            <valItem ident="LAGL">
+                    <valItem ident="KKGA">
+                        <desc xml:lang="de">Katholisches Kirchgemeindearchiv</desc>
+                        <desc xml:lang="fr">Katholisches Kirchgemeindearchiv</desc>
+                        <desc xml:lang="it">Katholisches Kirchgemeindearchiv</desc>
+                        <desc xml:lang="en">Katholisches Kirchgemeindearchiv</desc>
+                    </valItem>
+                    <valItem ident="LAGL">
                         <desc xml:lang="de">Landesarchiv Glarus</desc>
                         <desc xml:lang="fr">Archives de l'État de Glaris</desc>
                         <desc xml:lang="it">Landesarchiv Glarus</desc>
