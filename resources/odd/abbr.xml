@@ -162,6 +162,12 @@
                         <desc xml:lang="it">Archivio cittadino</desc>
                         <desc xml:lang="en">Town Archives</desc>
                     </valItem>
+                    <valItem ident="StAGR">
+                        <desc xml:lang="de">Staatsarchiv Graubünden</desc>
+                        <desc xml:lang="fr">Archives de l'État de Grisons</desc>
+                        <desc xml:lang="it">Staatsarchiv Graubünden</desc>
+                        <desc xml:lang="en">State Archives of Graubünden</desc>
+                    </valItem>
                     <valItem ident="StAFR">
                         <desc xml:lang="de">Staatsarchiv Freiburg</desc>
                         <desc xml:lang="fr">Archives de l'État de Fribourg</desc>
