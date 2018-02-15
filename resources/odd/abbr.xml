@@ -216,6 +216,12 @@
                         <desc xml:lang="it">Biblioteca abbaziale</desc>
                         <desc xml:lang="en">Abbey Library</desc>
                     </valItem>
+                    <valItem ident="VLA">
+                        <desc xml:lang="de">Vorarlberger Landesarchiv</desc>
+                        <desc xml:lang="fr">Vorarlberger Landesarchiv</desc>
+                        <desc xml:lang="it">Vorarlberger Landesarchiv</desc>
+                        <desc xml:lang="en">Vorarlberger Landesarchiv</desc>
+                    </valItem>
                     </valList>
                 <!--Historische Abkürzungen, die in den historischen Texten nur mit abbr ausgezeichnet sind und die im Tooltip aufgelöst werden -->
                    <desc xml:lang="de">Historische Abkürzungen</desc>
