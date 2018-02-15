@@ -131,6 +131,12 @@
                         <desc xml:lang="fr">Fürstlich Fürstenbergisches Archiv Donaueschingen</desc>
                         <desc xml:lang="it">Fürstlich Fürstenbergisches Archiv Donaueschingen</desc>
                         <desc xml:lang="en">Fürstlich Fürstenbergisches Archiv Donaueschingen</desc>
+                     </valItem>
+                     <valItem ident="GA">
+                        <desc xml:lang="de">Gemeindearchiv</desc>
+                        <desc xml:lang="fr">Gemeindearchiv</desc>
+                        <desc xml:lang="it">Gemeindearchiv</desc>
+                        <desc xml:lang="en">Gemeindearchiv</desc>
                     </valItem>
                        <valItem ident="KA">
                         <desc xml:lang="de">Kirchenarchiv</desc>
