@@ -883,6 +883,11 @@
                             font-weight: bold;
                         </outputRendition>
                     </model>
+                    <model predicate="@resp" behaviour="heading">
+                        <desc>Supplied heading: output in brackets if @resp</desc>
+                        <param name="level" value="2"/>
+                        <param name="content" value="text {'[',.,']'}"/>
+                    </model>
                     <model predicate="@type = 'title'" behaviour="heading">
                         <param name="level" value="1"/>
                     </model>
