@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 190 $</p>
-                <p>Date of last commit:     $Date: 2018-02-12 17:00:50 +0100 (Mo, 12 Feb 2018) $</p>
+                <p>Revision of last commit: $Rev: 206 $</p>
+                <p>Date of last commit:     $Date: 2018-02-22 11:27:37 +0100 (Do, 22 Feb 2018) $</p>
                 <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
@@ -169,7 +169,7 @@
                 <!--END CHANGES TO ATTRIBUTE CLASSES-->
                 <!---BEGIN GLOBAL SCH CONSTRAINTS-->
 
-                <constraintSpec scheme="isoschematron" module="core" ident="sch-gl-1" mode="change">
+                <constraintSpec scheme="schematron" module="core" ident="sch-gl-1" mode="change">
                     <desc>Mutually dependent for all elements: @unit and @quantity</desc>
                     <constraint>
                         <sch:pattern>
@@ -185,7 +185,7 @@
                     </constraint>
                 </constraintSpec>
 
-               <constraintSpec scheme="isoschematron" module="core" ident="sch-gl-2" mode="change">
+               <constraintSpec scheme="schematron" module="core" ident="sch-gl-2" mode="change">
                     <desc>Value of @scribe attribute</desc>
                     <constraint>
                         <sch:pattern>
@@ -1590,7 +1590,7 @@
                     <content>
                         <rng:empty/>
                     </content>
-                    <constraintSpec scheme="isoschematron" ident="sch-gap">
+                    <constraintSpec scheme="schematron" ident="sch-gap">
                         <desc>Attributes of tei:gap</desc>
                         <constraint>
                             <sch:pattern>
@@ -1883,7 +1883,7 @@
                             </rng:choice>
                         </rng:zeroOrMore>
                     </content>
-                    <constraintSpec scheme="isoschematron" ident="sch-ab">
+                    <constraintSpec scheme="schematron" ident="sch-ab">
                         <desc>number of ab elements within div</desc>
                         <constraint>
                             <sch:pattern>
@@ -2604,7 +2604,7 @@
                     <content>
                         <rng:empty/>
                     </content>
-                    <constraintSpec scheme="isoschematron" ident="sch-anchor">
+                    <constraintSpec scheme="schematron" ident="sch-anchor">
                         <desc>Attributes of tei:anchor</desc>
                         <constraint>
                             <sch:pattern>
@@ -2678,7 +2678,7 @@
                             </rng:choice>
                         </rng:zeroOrMore>
                     </content>
-                    <constraintSpec scheme="isoschematron" ident="sch-damage">
+                    <constraintSpec scheme="schematron" ident="sch-damage">
                         <desc>Attributes of tei:damage</desc>
                         <constraint>
                             <sch:pattern>
@@ -3253,7 +3253,7 @@
                             </rng:choice>
                         </rng:zeroOrMore>
                     </content>
-                    <constraintSpec scheme="isoschematron" module="core" ident="sch-measure"
+                    <constraintSpec scheme="schematron" module="core" ident="sch-measure"
                         mode="change">
                         <desc>Attributes of tei:measure</desc>
                         <constraint>
@@ -3276,7 +3276,7 @@
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='length']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Daumen|Elle|Fuss|Klafter|Meile|Schuh|Stab|Vierling|Zoll)$')"
+                                        test="matches(@unit,'^(Daumen|Elle|Fuss|Klafter|Linie|Meile|Schuh|Stab|Vierling|Zoll)$')"
                                         >kein gültiges Längenmass</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='volume']">
@@ -3431,6 +3431,11 @@
                                 <valItem ident="grain_spelt">
                                     <desc xml:lang="de">Fesen und Kernen</desc>
                                     <!-- <desc xml:lang="fr"></desc> -->
+                                </valItem>
+                                <valItem ident="fish">
+                                    <desc xml:lang="de">Fisch</desc>
+                                    <desc xml:lang="fr">poisson</desc>
+                                    <desc xml:lang="it">pesce</desc>
                                 </valItem>
                                 <valItem ident="flax">
                                     <desc xml:lang="de">Flachs</desc>
@@ -3707,6 +3712,12 @@
                                 <valItem ident="Ledi">
                                     <desc xml:lang="de">Ledi</desc>
                                     <desc xml:lang="fr">ledi</desc>
+                                </valItem>
+                                <valItem ident="Linie">
+                                    <desc xml:lang="de">Linie</desc>
+                                    <desc xml:lang="de" type="plural">Linien</desc>
+                                    <desc xml:lang="fr">ligne</desc>
+                                    <desc xml:lang="fr" type="plural">lignes</desc>
                                 </valItem>
                                 <valItem ident="Malter">
                                     <desc xml:lang="de">Malter</desc>
@@ -4482,7 +4493,7 @@
                             </rng:choice>
                         </rng:zeroOrMore>
                     </content>
-                    <constraintSpec scheme="isoschematron" ident="sch-supplied">
+                    <constraintSpec scheme="schematron" ident="sch-supplied">
                         <desc>Attributes of tei:supplied</desc>
                         <constraint>
                             <sch:pattern>
@@ -4868,6 +4879,12 @@
                         <valItem ident="corrected">
                             <desc xml:lang="de">Korrigiert</desc>
                             <desc xml:lang="fr">Corrigé</desc>
+                            <desc xml:lang="fr">Corrected</desc>
+                        </valItem>
+                        <valItem ident="corrected-from">
+                            <desc xml:lang="de">korrigiert aus</desc>
+                            <desc xml:lang="fr">corrigé de</desc>
+                            <desc xml:lang="en">corrected from</desc>
                         </valItem>
                         <valItem ident="compare">
                             <desc xml:lang="de">Vgl.</desc>
@@ -4888,6 +4905,14 @@
                         <valItem ident="by">
                             <desc xml:lang="de">von </desc>
                             <desc xml:lang="fr">de </desc>
+                        </valItem>
+                        <valItem ident="scriptor">
+                            <desc xml:lang="de">Schreiber</desc>
+                            <desc xml:lang="fr">scripteur</desc>
+                        </valItem>
+                        <valItem ident="signatureAlt">
+                            <desc xml:lang="de">Frühere Überlieferung</desc>
+                            <desc xml:lang="fr">Ancienne cote</desc>
                         </valItem>
                     </valList>
                 </dataSpec>
