@@ -86,7 +86,7 @@ declare function app:switch-view($node as node(), $model as map(*), $odd as xs:s
                 'check_box'
         }
         </i>,
-        $node/text()
+        $node/span
     }
 };
 
