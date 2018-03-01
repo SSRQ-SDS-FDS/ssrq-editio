@@ -21,7 +21,7 @@
                     <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="pb" mode="change">
-                    <modelSequence output="web">
+                    <modelGrp output="web">
                         <model predicate="@facs" behaviour="graphic" cssClass="facs">
                             <desc>Facsimile image links will be extracted via javascript</desc>
                             <param name="url" value="@facs || '.ptif'"/>
@@ -47,7 +47,7 @@
                             <param name="default" value="@n"/>
                             <param name="alternate" value="ec:label('pb')"/>
                         </model>
-                    </modelSequence>
+                    </modelGrp>
                     <modelGrp output="print">
                         <model predicate="ancestor::text and not(preceding::pb[ancestor::text])" behaviour="omit">
                             <desc>Hide the very first pagebreak in a document</desc>
@@ -161,10 +161,16 @@
                             font-weight: bold;
                         </outputRendition>
                     </model>
-                    <model predicate="@resp" behaviour="heading">
+                    <model predicate="@resp" behaviour="omit">
                         <desc>Supplied heading: output in brackets if @resp</desc>
                         <param name="level" value="2"/>
-                        <param name="content" value="text {'[',.,']'}"/>
+                        <param name="content" value="."/>
+                        <outputRendition scope="before">
+                            content: '[';
+                        </outputRendition>
+                        <outputRendition scope="after">
+                            content: ']';
+                        </outputRendition>
                     </model>
                     <model predicate="parent::div[@n][@type=('chapter', 'section')]/*[1] is ." behaviour="heading">
                         <desc>Show number in front of heading if @n is set on parent</desc>
