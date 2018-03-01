@@ -758,7 +758,7 @@
                     </model>
                     <model output="web" predicate="@dur[starts-with(., 'R/P')]" behaviour="alternate" cssClass="semantic">
                         <param name="default" value="."/>
-                        <param name="alternate" value="ec:label('repeated-duration')"/>
+                        <param name="alternate" value="(ec:label('repeated-duration'), ': ', ec:format-duration(substring-after(@dur, 'R/')))"/>
                     </model>
                     <model output="web" predicate="@dur" behaviour="alternate" cssClass="semantic">
                         <param name="default" value="."/>
