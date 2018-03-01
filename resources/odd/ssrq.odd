@@ -886,7 +886,13 @@
                     <model predicate="@resp" behaviour="heading">
                         <desc>Supplied heading: output in brackets if @resp</desc>
                         <param name="level" value="2"/>
-                        <param name="content" value="text {'[',.,']'}"/>
+                        <param name="content" value="."/>
+                        <outputRendition scope="before">
+                            content: '[';
+                        </outputRendition>
+                        <outputRendition scope="after">
+                            content: ']';
+                        </outputRendition>
                     </model>
                     <model predicate="@type = 'title'" behaviour="heading">
                         <param name="level" value="1"/>
