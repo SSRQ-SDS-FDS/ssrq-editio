@@ -181,7 +181,7 @@
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="add" behaviour="note">
-                        <param name="content" value="(ec:label('del-add'), string-join((ec:translate(add/@place, 0, 'lowercase'), ec:translate(add/@hand, 0, 'lowercase'), ec:translate(add/@rend, 0, 'lowercase'), ec:translate(add/@type, 0, 'lowercase')), ' '), text{': '}, add/node())"/>
+                        <param name="content" value="(ec:label('del-add'), ' ', string-join((ec:translate(add/@place, 0, 'lowercase'), ec:translate(add/@hand, 0, 'lowercase'), ec:translate(add/@rend, 0, 'lowercase'), ec:translate(add/@type, 0, 'lowercase')), ' '), text{': '}, add/node())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="parent::subst" behaviour="inline"/>
