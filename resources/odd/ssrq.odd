@@ -18,6 +18,7 @@
         <body>
             <schemaSpec start="TEI teiCorpus" ident="ssrq" source="teipublisher.odd">
                 <elementSpec ident="lb" mode="change">
+                    <model predicate="ancestor::orig" behaviour="omit"/>
                     <model predicate="preceding-sibling::node()[1][self::pb]" behaviour="omit"/>
                     <model predicate=". is (./ancestor::div[1]//lb[1])" behaviour="omit"/>
                     <modelSequence predicate="@break='no'">
@@ -80,10 +81,6 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="expan" mode="change">
-                    <!--<model predicate="parent::choice" behaviour="inline">
-                        <param name="content" value="ec:label('abbr-expanded')"/>
-                    </model>
-                    -->
                     <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="abbr" mode="change">
@@ -178,6 +175,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="del" mode="change">
+                    <model predicate="ancestor::orig" behaviour="omit"/>
                     <model predicate="add/@type='catchword'" behaviour="note">
                         <param name="content" value="(ec:label('del-add'), string-join((ec:translate(add/@place, 0, 'lowercase'), ', ', ec:translate(add/@type, 0, 'lowercase')), ''), text{': '}, add/node())"/>
                         <param name="type" value="'text-critical'"/>
@@ -883,7 +881,7 @@
                             font-weight: bold;
                         </outputRendition>
                     </model>
-                    <model predicate="@resp" behaviour="heading">
+                    <model predicate="@resp" behaviour="omit">
                         <desc>Supplied heading: output in brackets if @resp</desc>
                         <param name="level" value="2"/>
                         <param name="content" value="."/>
