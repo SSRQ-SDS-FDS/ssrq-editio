@@ -21,6 +21,10 @@
                     <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="pb" mode="change">
+                    <model predicate="following-sibling::node()[1][self::lb]" behaviour="copy">
+                        <desc>If followed by an lb, process the lb first, then the pb</desc>
+                        <param name="content" value="(following-sibling::lb[1], $node)"/>
+                    </model>
                     <modelGrp output="web">
                         <model predicate="@facs" behaviour="graphic" cssClass="facs">
                             <desc>Facsimile image links will be extracted via javascript</desc>

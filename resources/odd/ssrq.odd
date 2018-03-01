@@ -547,7 +547,7 @@
                         <desc>If followed by an lb, process the lb first, then the pb</desc>
                         <param name="content" value="(following-sibling::lb[1], $node)"/>
                     </model>
-                    <modelSequence output="web">
+                    <modelGrp output="web">
                         <model predicate="@facs" behaviour="graphic" cssClass="facs">
                             <desc>Facsimile image links will be extracted via javascript</desc>
                             <param name="url" value="@facs || '.ptif'"/>
@@ -573,7 +573,7 @@
                             <param name="default" value="@n"/>
                             <param name="alternate" value="ec:label('pb')"/>
                         </model>
-                    </modelSequence>
+                    </modelGrp>
                     <modelGrp output="print">
                         <model predicate="ancestor::text and not(preceding::pb[ancestor::text])" behaviour="omit">
                             <desc>Hide the very first pagebreak in a document</desc>
