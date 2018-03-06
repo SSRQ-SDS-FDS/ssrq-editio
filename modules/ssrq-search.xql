@@ -537,7 +537,11 @@ declare function query:period-range($node as node(), $model as map(*)) {
     let $dates :=
         for $when in $context//tei:teiHeader//tei:history/tei:origin/tei:origDate/@when
         return
-            year-from-date(xs:date($when))
+            try {
+                year-from-date(xs:date($when))
+            } catch * {
+                console:log("Invalid date: " || document-uri(root($when)))
+            }
     return
         map {
             "min": min($dates),
