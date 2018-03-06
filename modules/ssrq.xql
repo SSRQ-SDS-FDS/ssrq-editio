@@ -207,9 +207,10 @@ function app:kanton-auswahl($node as node(), $model as map(*), $filter as xs:str
             {
                 let $current := $tr/td[2]
                 let $docs :=
-                    collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $current || "_")]
-                        except
-                            collection($config:temp-root)/tei:TEI
+                    (collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $current || "_")]
+                    | collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, "SSRQ_" || $current || "_")])
+                    except
+                        collection($config:temp-root)/tei:TEI
                 return (
                     $tr/td[3]/@*,
                     if (exists($docs)) then
@@ -255,12 +256,16 @@ declare function app:list-works($node as node(), $model as map(*), $filter as xs
                     $item
             for $doc in $ordered
             return
-                doc($doc/@uri)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $kanton || "_")]
+                doc($doc/@uri)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, "SSRQ_" || $kanton || "_")]
         else
+            (
                 collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $kanton || "_")]
+                    [not(tei:teiHeader//tei:filiation/@type = 'original')],
+                collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, "SSRQ_" || $kanton || "_")]
                     [not(tei:teiHeader//tei:filiation/@type = 'original')]
+            )
             except
-                collection($config:temp-root)/tei:TEI
+            collection($config:temp-root)/tei:TEI
     return (
         session:set-attribute("ssrq.works", $filtered),
         session:set-attribute("ssrq.browse", $browse),
@@ -312,7 +317,10 @@ declare function app:header-short($node as node(), $model as map(*), $action as 
 
 declare function app:idno($node as node(), $model as map(*)) {
     let $header := root($model?data)//tei:teiHeader
-    let $idno := $header/tei:fileDesc/tei:seriesStmt/tei:idno/@xml:id
+    let $idno := (
+        $header/tei:fileDesc/tei:seriesStmt/tei:idno,
+        $header/tei:fileDesc/tei:seriesStmt/tei:idno/@xml:id
+    )[1]
     return
         app:show-if-exists($node, $idno, function() {
             common:display-sigle($idno),

@@ -698,7 +698,7 @@
                 </elementSpec>
                 <elementSpec ident="seriesStmt" mode="add">
                     <model predicate="$parameters?header='short'" behaviour="inline">
-                        <param name="content" value="ec:display-sigle(idno/@xml:id)"/>
+                        <param name="content" value="ec:display-sigle((idno, idno/@xml:id)[1])"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="back" mode="change">
