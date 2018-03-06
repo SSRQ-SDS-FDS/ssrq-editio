@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 206 $</p>
-                <p>Date of last commit:     $Date: 2018-02-22 11:27:37 +0100 (Do, 22 Feb 2018) $</p>
+                <p>Revision of last commit: $Rev: 255 $</p>
+                <p>Date of last commit:     $Date: 2018-03-05 10:05:06 +0100 (Mon, 05 Mar 2018) $</p>
                 <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
@@ -1801,6 +1801,10 @@
                                     <desc xml:lang="de">Verweiszeichen</desc>
                                     <desc xml:lang="fr">signe de renvoi </desc>
                                 </valItem>
+                                <valItem ident="stamp">
+                                    <desc xml:lang="de">Stempel</desc>
+                                    <desc xml:lang="fr">tampon</desc>
+                                </valItem>
                             	<valItem ident="woodcut">
 				<desc xml:lang="de">Holzschnitt</desc>
                             	    <desc xml:lang="fr">gravure sur bois</desc>
@@ -3281,7 +3285,7 @@
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='volume']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Becher|Eimer|Garbe|Immi|Kratten|Ledi|Malter|Mütt|Sack|Scheffel|Sester|Ster|Vierdung|Vierling|Viertel|Brenten|Fass|Kopf|Klafter|Legel|Mass|Quart|Quartane|Saum|Schaffen|Tonne|Viertel|Zuber|Fass|Krötli|Röhrchen|Scheibe|Trinken)$')"
+                                        test="matches(@unit,'^(Becher|Eimer|Garbe|Immi|Kratten|Ledi|Malter|Mütt|Sack|Scheffel|Sester|Ster|Vierdung|Vierling|Viertel|Brenten|Fass|Kopf|Klafter|Legel|Mass|Mässli|Quart|Quartane|Saum|Schaffen|Tonne|Viertel|Zuber|Fass|Krötli|Röhrchen|Scheibe|Trinken)$')"
                                         >kein gültiges Hohlmass</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='weight']">
@@ -3780,6 +3784,10 @@
                                 <valItem ident="Mass">
                                     <desc xml:lang="de">Mass</desc>
                                     <desc xml:lang="fr">pot</desc>
+                                </valItem>
+                                <valItem ident="Mässli">
+                                    <desc xml:lang="de">Mässli</desc>
+                                    <desc xml:lang="fr">Mässli</desc>
                                 </valItem>
                                 <valItem ident="Quart">
                                     <desc xml:lang="de">Quart</desc>
@@ -4806,6 +4814,11 @@
                             <desc xml:lang="de">Zeit</desc>
                             <desc xml:lang="fr">Heure</desc>
                             <desc xml:lang="en">Time</desc>
+                        </valItem>
+                        <valItem ident="damage">
+                            <desc xml:lang="de">Beschädigung</desc>
+                            <desc xml:lang="fr">Dommages</desc>
+                            <desc xml:lang="en">Damage</desc>
                         </valItem>
                         <valItem ident="duration">
                             <desc xml:lang="de">Zeitspanne</desc>
