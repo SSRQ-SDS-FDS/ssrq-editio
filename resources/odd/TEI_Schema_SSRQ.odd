@@ -18,9 +18,9 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 255 $</p>
-                <p>Date of last commit:     $Date: 2018-03-05 10:05:06 +0100 (Mon, 05 Mar 2018) $</p>
-                <p>Author of last commit:   $Author: pascale $</p>
+                <p>Revision of last commit: $Rev: 275 $</p>
+                <p>Date of last commit:     $Date: 2018-03-08 11:14:41 +0100 (Thu, 08 Mar 2018) $</p>
+                <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
     </teiHeader>
@@ -2715,7 +2715,7 @@
                                 </valItem>
                                 <valItem ident="fold">
                                     <desc xml:lang="de">Falt</desc>
-                                    <desc xml:lang="fr">endommagé par un pli</desc>
+                                    <desc xml:lang="fr">pli</desc>
                                 </valItem>
                                 <valItem ident="glued page">
                                     <desc xml:lang="de">zusammengeklebte Seiten</desc>
@@ -2735,7 +2735,7 @@
                                 </valItem>
                                 <valItem ident="ink hole">
                                     <desc xml:lang="de">Tintenfrass</desc>
-                                    <desc xml:lang="fr">endommagé par l'acidité de l'encre</desc>
+                                    <desc xml:lang="fr">acidité de l'encre</desc>
                                 </valItem>
                                 <valItem ident="insects">
                                     <desc xml:lang="de">Insektenfrass</desc>
@@ -3275,7 +3275,7 @@
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='currency']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Angster|fl|lb|ß|xr|d|Dukat|bz|h|M|plp|Böhmischer Groschen|Gros|Grossi|k|Ort|Vierer|Spagürli|S|Taler|L)$')"
+                                        test="matches(@unit,'^(Angster|fl|franc|lb|ß|xr|d|Dukat|bz|h|M|plp|Böhmischer Groschen|Gros|Grossi|k|Ort|Quart|Vierer|Spagürli|S|Taler|L)$')"
                                         >keine gültige Währung</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='length']">
@@ -4046,6 +4046,11 @@
                                     <desc xml:lang="de">Gulden</desc>
                                     <desc xml:lang="fr">florin</desc>
                                 </valItem>
+                                <valItem ident="franc">
+                                    <desc xml:lang="de">Franken</desc>
+                                    <desc xml:lang="fr">franc</desc>
+                                    <desc xml:lang="fr" type="plural">francs</desc>
+                                </valItem>
                                 <valItem ident="lb">
                                     <desc xml:lang="de">Pfund</desc>
                                     <desc xml:lang="fr">livre</desc>
@@ -4751,6 +4756,10 @@
                         <valItem ident="added-in">
                             <desc xml:lang="de">Zusatz in</desc>
                             <desc xml:lang="fr">Ajout dans</desc>
+                        </valItem>
+                        <valItem ident="omitted-in">
+                            <desc xml:lang="de">Auslassung in</desc>
+                            <desc xml:lang="fr">Omission dans</desc>
                         </valItem>
                         <valItem ident="alt-rdg-in">
                             <desc xml:lang="de">Alternative Lesung in</desc>

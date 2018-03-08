@@ -313,6 +313,10 @@
                         <desc>app with empty lemma and reading</desc>
                         <param name="content" value="(ec:label('added-in'), ' ', @wit, ': ', .)"/>
                     </model>
+                    <model predicate="empty(node())" behaviour="inline">
+                        <desc>app with empty reading</desc>
+                        <param name="content" value="(ec:label('omitted-in'), ' ', @wit)"/>
+                    </model>
                     <model behaviour="inline">
                         <param name="content" value="(ec:label('alt-rdg-in'), ' ', @wit, ': ', .)"/>
                     </model>
