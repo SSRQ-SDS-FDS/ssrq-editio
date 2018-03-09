@@ -194,70 +194,73 @@ declare function query:api-filter-subtype($id as xs:string*, $type as xs:string,
  : Apply filters to the query result.
  :)
 declare function query:filter($hits as element()*) {
-    fold-right(request:get-parameter-names()[starts-with(., 'filter-')], $hits, function($filter, $context) {
-        let $value := filter(request:get-parameter($filter, ()), function($param) { $param != "" })
-        return
-            if (exists($value)) then
-                switch ($filter)
-                    case "filter-period-min" return
-                        let $dateMin := xs:date($value || "-01-01")
-                        return
-                            $context[ancestor-or-self::tei:TEI//tei:history/tei:origin/tei:origDate/@when >= $dateMin]
-                    case "filter-period-max" return
-                        let $dateMax := xs:date($value || "-12-31")
-                        return
-                            $context[ancestor-or-self::tei:TEI//tei:history/tei:origin/tei:origDate/@when <= $dateMax]
-                    case "filter-language" return
-                        $context[ancestor-or-self::tei:TEI/@xml:lang = $value]
-                    case "filter-condition" return
-                        if ($value = "yes") then
-                            $context[ancestor-or-self::tei:TEI//tei:supportDesc/tei:condition]
-                        else
-                            $context[not(ancestor-or-self::tei:TEI//tei:supportDesc/tei:condition)]
-                    case "filter-material" return
-                        $context[ancestor-or-self::tei:TEI//tei:support/tei:material = $value]
-                    case "filter-seal" return
-                        if ($value = "yes") then
-                            $context[ancestor-or-self::tei:TEI//tei:sealDesc/tei:seal]
-                        else
-                            $context[not(ancestor-or-self::tei:TEI//tei:sealDesc/tei:seal)]
-                    case "filter-author" return
-                        if ($value = "yes") then
-                            $context[ancestor-or-self::tei:TEI//tei:msContents/tei:msItem/tei:author/@role = 'scribe']
-                        else
-                            $context[not(ancestor-or-self::tei:TEI//tei:msContents/tei:msItem/tei:author/@role = 'scribe')]
-                    case "filter-kanton" return
-                        for $v in $value
-                        return
-                            $context[ancestor-or-self::tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $v || "_")]]
-                    case "filter-pubdate-min" return
-                        let $dateMin := xs:date($value || "-01-01")
-                        return
-                            $context[ancestor-or-self::tei:TEI//tei:publicationStmt/tei:date[@type='electronic']/@when >= $dateMin]
-                    case "filter-pubdate-max" return
-                        let $dateMax := xs:date($value || "-01-01")
-                        return
-                            $context[ancestor-or-self::tei:TEI//tei:publicationStmt/tei:date[@type='electronic'][@when <= $dateMax]]
-                    case "filter-archive" return
-                        $context[starts-with(ancestor-or-self::tei:TEI//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno, $value)]
-                    case "filter-filiation" return
-                        for $node in $context
-                        let $idno := $node/ancestor-or-self::tei:TEI//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno
-                        let $filiations :=
-                            collection($config:data-root)//tei:teiHeader//tei:filiation/tei:idno[. = $idno]
-                        let $log := console:log(($idno, count($filiations)))
-                        return
-                            if ($value = "yes" and exists($filiations)) then
-                                $node
-                            else if ($value = "no" and empty($filiations)) then
-                                $node
+    (: Entferne Dokumente ohne body :)
+    let $hits := $hits[root(.)//tei:text/tei:body/*]
+    return
+        fold-right(request:get-parameter-names()[starts-with(., 'filter-')], $hits, function($filter, $context) {
+            let $value := filter(request:get-parameter($filter, ()), function($param) { $param != "" })
+            return
+                if (exists($value)) then
+                    switch ($filter)
+                        case "filter-period-min" return
+                            let $dateMin := xs:date($value || "-01-01")
+                            return
+                                $context[ancestor-or-self::tei:TEI//tei:history/tei:origin/tei:origDate/@when >= $dateMin]
+                        case "filter-period-max" return
+                            let $dateMax := xs:date($value || "-12-31")
+                            return
+                                $context[ancestor-or-self::tei:TEI//tei:history/tei:origin/tei:origDate/@when <= $dateMax]
+                        case "filter-language" return
+                            $context[ancestor-or-self::tei:TEI/@xml:lang = $value]
+                        case "filter-condition" return
+                            if ($value = "yes") then
+                                $context[ancestor-or-self::tei:TEI//tei:supportDesc/tei:condition]
                             else
-                                ()
-                    default return
-                        $context
-            else
-                $context
-    })
+                                $context[not(ancestor-or-self::tei:TEI//tei:supportDesc/tei:condition)]
+                        case "filter-material" return
+                            $context[ancestor-or-self::tei:TEI//tei:support/tei:material = $value]
+                        case "filter-seal" return
+                            if ($value = "yes") then
+                                $context[ancestor-or-self::tei:TEI//tei:sealDesc/tei:seal]
+                            else
+                                $context[not(ancestor-or-self::tei:TEI//tei:sealDesc/tei:seal)]
+                        case "filter-author" return
+                            if ($value = "yes") then
+                                $context[ancestor-or-self::tei:TEI//tei:msContents/tei:msItem/tei:author/@role = 'scribe']
+                            else
+                                $context[not(ancestor-or-self::tei:TEI//tei:msContents/tei:msItem/tei:author/@role = 'scribe')]
+                        case "filter-kanton" return
+                            for $v in $value
+                            return
+                                $context[ancestor-or-self::tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $v || "_")]]
+                        case "filter-pubdate-min" return
+                            let $dateMin := xs:date($value || "-01-01")
+                            return
+                                $context[ancestor-or-self::tei:TEI//tei:publicationStmt/tei:date[@type='electronic']/@when >= $dateMin]
+                        case "filter-pubdate-max" return
+                            let $dateMax := xs:date($value || "-01-01")
+                            return
+                                $context[ancestor-or-self::tei:TEI//tei:publicationStmt/tei:date[@type='electronic'][@when <= $dateMax]]
+                        case "filter-archive" return
+                            $context[starts-with(ancestor-or-self::tei:TEI//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno, $value)]
+                        case "filter-filiation" return
+                            for $node in $context
+                            let $idno := $node/ancestor-or-self::tei:TEI//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno
+                            let $filiations :=
+                                collection($config:data-root)//tei:teiHeader//tei:filiation/tei:idno[. = $idno]
+                            let $log := console:log(($idno, count($filiations)))
+                            return
+                                if ($value = "yes" and exists($filiations)) then
+                                    $node
+                                else if ($value = "no" and empty($filiations)) then
+                                    $node
+                                else
+                                    ()
+                        default return
+                            $context
+                else
+                    $context
+        })
 };
 
 (:~
