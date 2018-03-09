@@ -207,8 +207,12 @@ function app:kanton-auswahl($node as node(), $model as map(*), $filter as xs:str
             {
                 let $current := $tr/td[2]
                 let $docs :=
-                    (collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $current || "_")]
-                    | collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, "SSRQ_" || $current || "_")])
+                    (
+                        collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $current || "_")]
+                        [.//tei:text/tei:body/*]
+                        | collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, "SSRQ_" || $current || "_")]
+                        [.//tei:text/tei:body/*]
+                    )
                     except
                         collection($config:temp-root)/tei:TEI
                 return (
@@ -260,9 +264,9 @@ declare function app:list-works($node as node(), $model as map(*), $filter as xs
         else
             (
                 collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $kanton || "_")]
-                    [not(tei:teiHeader//tei:filiation/@type = 'original')],
+                    [.//tei:text/tei:body/*],
                 collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, "SSRQ_" || $kanton || "_")]
-                    [not(tei:teiHeader//tei:filiation/@type = 'original')]
+                    [.//tei:text/tei:body/*]
             )
             except
             collection($config:temp-root)/tei:TEI
@@ -364,13 +368,23 @@ declare function app:regest($node as node(), $model as map(*), $action as xs:str
 declare
      %templates:wrap
 function app:additionalSource($node as node(), $model as map(*)) {
-    let $idno := root($model?data)//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno
-    let $idnoFil := collection($config:data-root)//tei:teiHeader//tei:filiation[contains(tei:idno, $idno)]
-    let $additional := $idnoFil/ancestor::tei:msDesc
+    let $idno := root($model?data)//tei:teiHeader//tei:seriesStmt/tei:idno
     return
-        app:show-if-exists($node, $additional, function() {
-            templates:process($node/node(), map:merge(($model, map { "data": $additional })))
-        })
+        if (matches($idno, "_1$")) then
+            let $base := replace($idno, "^(.*)_1$", '$1')
+            let $additional :=
+                for $header in
+                    collection($config:data-root)//tei:teiHeader[matches(.//tei:seriesStmt/tei:idno, "^" || $base || "_\d+$")]
+                        [not(.//tei:seriesStmt/tei:idno = $idno)]
+                order by number(replace($header//tei:seriesStmt/tei:idno, "^.*_(\d+)$", "$1"))
+                return
+                    $header//tei:msDesc
+            return
+                app:show-if-exists($node, $additional, function() {
+                    templates:process($node/node(), map:merge(($model, map { "data": $additional })))
+                })
+        else
+            ()
 };
 
 declare
