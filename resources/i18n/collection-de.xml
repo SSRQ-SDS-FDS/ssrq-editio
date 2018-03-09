@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <catalogue xml:lang="de">
     <msg key="home">Start</msg>
     <msg key="download">Download</msg>
@@ -96,7 +95,11 @@
     <msg key="filter-by">Filtern nach</msg>
     <msg key="doctitel">Sammlung Schweizerische Rechtsquellen online</msg>
     <msg key="kontakt">Kontakt</msg>
-    <msg key="transrichtlinien"> <a href="https://www.ssrq-sds-fds.ch/wiki/Transkriptionsrichtlinien">Transkriptionsrichtlinien</a>
+    <msg key="transrichtlinien">
+        <a href="https://www.ssrq-sds-fds.ch/wiki/Transkriptionsrichtlinien">Transkriptionsrichtlinien</a>
+    </msg>
+    <msg key="datrichtlinien">
+        <a href="https://www.ssrq-sds-fds.ch/wiki/Datierungsrichtlinien">Datierungsrichtlinien</a>
     </msg>
     <msg key="realisierung">Realisierung</msg>
     <msg key="search">Suche</msg>

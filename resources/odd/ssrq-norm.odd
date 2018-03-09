@@ -114,19 +114,6 @@
                         <param name="alternate" value="orig[1]"/>
                     </model>
                 </elementSpec>
-                <elementSpec ident="subst" mode="change">
-                    <model predicate="add/@hand" behaviour="alternote" cssClass="text-critical">
-                        <param name="content" value="del"/>
-                        <param name="alternate" value="(ec:label('replace-del'), ec:translate(add/@place, 0, 'lowercase'), text{' '}, ec:translate(add/@hand, 0, 'lowercase'), text{': '}, add/node())"/>
-                        <param name="type" value="'text-critical'"/>
-                    </model>
-                    <model predicate="add" behaviour="alternote" cssClass="text-critical">
-                        <param name="content" value="add"/>
-                        <param name="alternate" value="(ec:translate(add/@place, 0, 'uppercase'), text{', '}, ec:label('replace-del'),text{': '}, del/node())"/>
-                        <param name="type" value="'text-critical'"/>
-                    </model>
-                    <model behaviour="inline"/>
-                </elementSpec>
                 <elementSpec ident="expan" mode="change">
                     <model behaviour="inline"/>
                 </elementSpec>
@@ -168,15 +155,9 @@
                     <model predicate="@resp and @n" behaviour="block">
                         <desc>Supplied heading: output in brackets if @resp</desc>
                         <param name="level" value="2"/>
-                        <param name="content" value="(@n, '. ', .)"/>
+                        <param name="content" value="('[ ', @n, '. ', ., ' ]')"/>
                         <outputRendition>
                             font-weight: bold;
-                        </outputRendition>
-                        <outputRendition scope="before">
-                            content: '[ ';
-                        </outputRendition>
-                        <outputRendition scope="after">
-                            content: ']';
                         </outputRendition>
                     </model>
                     <model predicate="@resp" behaviour="block">
