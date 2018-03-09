@@ -165,6 +165,20 @@
                             font-weight: bold;
                         </outputRendition>
                     </model>
+                    <model predicate="@resp and @n" behaviour="block">
+                        <desc>Supplied heading: output in brackets if @resp</desc>
+                        <param name="level" value="2"/>
+                        <param name="content" value="(@n, '. ', .)"/>
+                        <outputRendition>
+                            font-weight: bold;
+                        </outputRendition>
+                        <outputRendition scope="before">
+                            content: '[ ';
+                        </outputRendition>
+                        <outputRendition scope="after">
+                            content: ']';
+                        </outputRendition>
+                    </model>
                     <model predicate="@resp" behaviour="block">
                         <desc>Supplied heading: output in brackets if @resp</desc>
                         <param name="level" value="2"/>
