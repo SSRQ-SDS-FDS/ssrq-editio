@@ -738,7 +738,7 @@
                     </model>
                     <model predicate="add" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="add"/>
-                        <param name="alternate" value="(ec:translate(add/@place, 0, 'uppercase'), ', ', ec:label('replace-del', false()), ': ', del/node())"/>
+                        <param name="alternate" value="(ec:label('add', true()), ' ', ec:translate(add/@place, 0, 'lowercase'), ', ', ec:label('replace-del', false()), ': ', del/node())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model behaviour="inline"/>
