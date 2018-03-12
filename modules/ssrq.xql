@@ -212,6 +212,8 @@ function app:kanton-auswahl($node as node(), $model as map(*), $filter as xs:str
                         [.//tei:text/tei:body/*]
                         | collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, "SSRQ_" || $current || "_")]
                         [.//tei:text/tei:body/*]
+                        | collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, "SDS_" || $current || "_")]
+                        [.//tei:text/tei:body/*]
                     )
                     except
                         collection($config:temp-root)/tei:TEI
@@ -266,6 +268,8 @@ declare function app:list-works($node as node(), $model as map(*), $filter as xs
                 collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $kanton || "_")]
                     [.//tei:text/tei:body/*],
                 collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, "SSRQ_" || $kanton || "_")]
+                    [.//tei:text/tei:body/*],
+                collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, "SDS_" || $kanton || "_")]
                     [.//tei:text/tei:body/*]
             )
             except

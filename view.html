@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <html data-template="pages:app-root">
     <head data-template="templates:include" data-template-path="templates/head.html"/>
     <body xmlns:i18n="http://exist-db.org/xquery/i18n">
@@ -49,16 +48,6 @@
                                 <div id="sourceDesc" class="collapse" data-template="app:display-data"/>
                             </div>
                         </div>
-                        <div class="comment tp-row" data-template="app:comment">
-                            <div class="tp-column">
-                                <h4 class="block-title">
-                                    <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#comment" aria-expanded="false" aria-controls="comment">
-                                        <i18n:text key="comment"/>
-                                    </a>
-                                </h4>
-                                <div id="comment" class="collapse" data-template="app:display-data"/>
-                            </div>
-                        </div>
                         <div class="comment tp-row" data-template="app:additionalSource">
                             <div class="tp-column">
                                 <h4 class="block-title">
@@ -67,6 +56,16 @@
                                     </a>
                                 </h4>
                                 <div id="additional" class="collapse" data-template="app:display-data" data-template-mode="filiation"/>
+                            </div>
+                        </div>
+                        <div class="comment tp-row" data-template="app:comment">
+                            <div class="tp-column">
+                                <h4 class="block-title">
+                                    <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#comment" aria-expanded="false" aria-controls="comment">
+                                        <i18n:text key="comment"/>
+                                    </a>
+                                </h4>
+                                <div id="comment" class="collapse" data-template="app:display-data"/>
                             </div>
                         </div>
                         <section class="tp-row">
