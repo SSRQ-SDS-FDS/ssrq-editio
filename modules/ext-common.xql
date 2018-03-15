@@ -110,12 +110,12 @@ declare function pmf:format-date($when as xs:string?, $language as xs:string?) {
 declare function pmf:format-duration($duration as xs:string) {
     try {
         let $duration := xs:duration($duration)
-        let $components := map {
-            "Jahre": years-from-duration($duration),
-            "Monate": months-from-duration($duration),
-            "Tage": days-from-duration($duration),
-            "Stunden": hours-from-duration($duration)
-        }
+        let $components := map:merge((
+            pmf:get-duration-label("year", years-from-duration($duration)),
+            pmf:get-duration-label("month", months-from-duration($duration)),
+            pmf:get-duration-label("day", days-from-duration($duration)),
+            pmf:get-duration-label("hour", hours-from-duration($duration))
+        ))
         return
             string-join(
                 map:for-each-entry($components, function($key, $value) {
@@ -129,4 +129,22 @@ declare function pmf:format-duration($duration as xs:string) {
     } catch * {
         $duration
     }
+};
+
+declare function pmf:get-duration-label($name as xs:string, $quantity as xs:int) {
+    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
+    let $val := $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident=$name]
+    return
+        if ($val) then
+            let $label :=
+                if ($quantity > 1) then
+                    ($val/tei:desc[@xml:lang = $lang][@type="plural"]/string(), $val/tei:desc[@xml:lang = $lang]/string())[1]
+                else
+                    $val/tei:desc[@xml:lang = $lang][not(@type = "plural")]/string()
+            return
+                map {
+                    $label : $quantity
+                }
+        else
+            map { $name: $quantity }
 };
