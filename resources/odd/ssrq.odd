@@ -915,11 +915,13 @@
                         <desc>Heading in app</desc>
                         <outputRendition>
                             
+                            
                             display: block;
 font-weight: 700;
 line-height: 1.2;
 margin-top: 20px;
 margin-bottom: 10px;
+                        
                         
                         </outputRendition>
                     </model>
@@ -988,7 +990,7 @@ margin-bottom: 10px;
             <elementSpec ident="textLang" mode="add">
                     <model behaviour="listItem">
                         <desc>Ausgabe Sprache in "weitere Überlieferungen"</desc>
-                        <param name="content" value="(ec:label('language'), ': ', .)"/>
+                        <param name="content" value="(ec:label('language'), ': ', ec:label(.))"/>
                     </model>
                 </elementSpec>
             </schemaSpec>
