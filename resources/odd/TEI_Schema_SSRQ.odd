@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 275 $</p>
-                <p>Date of last commit:     $Date: 2018-03-08 11:14:41 +0100 (Thu, 08 Mar 2018) $</p>
+                <p>Revision of last commit: $Rev: 303 $</p>
+                <p>Date of last commit:     $Date: 2018-03-16 16:17:57 +0100 (Fri, 16 Mar 2018) $</p>
                 <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
@@ -1716,6 +1716,7 @@
                                 <rng:ref name="head"/>
                                 <rng:ref name="row"/>
                                 <rng:ref name="pb"/>
+                                <rng:ref name="measureGrp"/>
                             </rng:choice>
                         </rng:zeroOrMore>
                     </content>
@@ -1843,7 +1844,10 @@
                 <elementSpec ident="row" module="figures" mode="change">
                     <content>
                         <rng:oneOrMore>
+                            <rng:choice>
                             <rng:ref name="cell"/>
+                            <rng:ref name="measureGrp"/>
+                            </rng:choice>
                         </rng:oneOrMore>
                     </content>
                     <attList>
@@ -3275,7 +3279,7 @@
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='currency']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Angster|fl|franc|lb|ß|xr|d|Dukat|bz|h|M|plp|Böhmischer Groschen|Gros|Grossi|k|Ort|Quart|Vierer|Spagürli|S|Taler|L)$')"
+                                        test="matches(@unit,'^(Angster|fl|franc|lb|ß|xr|d|Dicken|Dukat|bz|h|M|plp|Böhmischer Groschen|Gros|Grossi|k|Ort|Quart|Vierer|Spagürli|S|Taler|L)$')"
                                         >keine gültige Währung</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='length']">
@@ -4037,6 +4041,10 @@
                                 <valItem ident="bz">
                                     <desc xml:lang="de">Batzen</desc>
                                     <desc xml:lang="fr">batz/bache</desc>
+                                </valItem>
+                                <valItem ident="Dicken">
+                                    <desc xml:lang="de">Dicken</desc>
+                                    <desc xml:lang="fr">Dicken</desc>
                                 </valItem>
                                 <valItem ident="Böhmischer Groschen">
                                     <desc xml:lang="de">Böhmischer Groschen</desc>
@@ -4940,6 +4948,7 @@
                             <desc xml:lang="de">Jahr</desc> 
                             <desc xml:lang="de" type="plural">Jahre</desc>
                             <desc xml:lang="fr">année</desc>
+                            <desc xml:lang="fr" type="plural">années</desc>
                         </valItem>
                         <valItem ident="month">
                             <desc xml:lang="de">Monat</desc>
@@ -4950,11 +4959,13 @@
                             <desc xml:lang="de">Tag</desc>
                             <desc xml:lang="de" type="plural">Tage</desc>
                             <desc xml:lang="fr">jour</desc>
+                            <desc xml:lang="fr" type="plural">jours</desc>
                         </valItem>
                         <valItem ident="hour">
                             <desc xml:lang="de">Stunde</desc>
                             <desc xml:lang="de" type="plural">Stunden</desc>
-                            <desc xml:lang="fr">heur</desc>
+                            <desc xml:lang="fr">heure</desc>
+                            <desc xml:lang="fr" type="plural">heures</desc>
                         </valItem>
                     </valList>
                 </dataSpec>
