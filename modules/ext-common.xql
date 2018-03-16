@@ -49,6 +49,15 @@ declare function pmf:label($id as xs:string, $upper as xs:boolean, $lang as xs:s
             ``[[Nicht übersetzt: `{$id}`, Sprache: `{$lang}`]]``
 };
 
+declare function pmf:abbr($abbr as xs:string) {
+    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
+    let $val := $config:abbr//tei:valItem[@ident=$abbr]
+    return (
+        $val/tei:desc[@xml:lang = $lang]/string(),
+        $val/tei:desc[1]/string()
+    )[1]
+};
+
 declare function pmf:translate($attribute) {
     pmf:translate($attribute, 0, "uppercase")
 };
