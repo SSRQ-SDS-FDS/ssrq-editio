@@ -4936,6 +4936,26 @@
                             <desc xml:lang="de">Frühere Überlieferung</desc>
                             <desc xml:lang="fr">Ancienne cote</desc>
                         </valItem>
+                        <valItem ident="year">
+                            <desc xml:lang="de">Jahr</desc> 
+                            <desc xml:lang="de" type="plural">Jahre</desc>
+                            <desc xml:lang="fr">année</desc>
+                        </valItem>
+                        <valItem ident="month">
+                            <desc xml:lang="de">Monat</desc>
+                            <desc xml:lang="de" type="plural">Monate</desc>
+                            <desc xml:lang="fr">mois</desc>
+                        </valItem>
+                        <valItem ident="day">
+                            <desc xml:lang="de">Tag</desc>
+                            <desc xml:lang="de" type="plural">Tage</desc>
+                            <desc xml:lang="fr">jour</desc>
+                        </valItem>
+                        <valItem ident="hour">
+                            <desc xml:lang="de">Stunde</desc>
+                            <desc xml:lang="de" type="plural">Stunden</desc>
+                            <desc xml:lang="fr">heur</desc>
+                        </valItem>
                     </valList>
                 </dataSpec>
             </schemaSpec>

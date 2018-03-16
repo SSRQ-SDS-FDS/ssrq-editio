@@ -2,6 +2,7 @@
 <catalogue xml:lang="en">
     <msg key="home">Home</msg>
     <msg key="download">Download</msg>
+    <msg key="abbr">Abbreviations</msg>
     <msg key="pdf-fo">PDF (FO Version)</msg>
     <msg key="pdf-title">Download as PDF</msg>
     <msg key="fo-source">FO Source</msg>

@@ -1,6 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <catalogue xml:lang="de">
     <msg key="home">Start</msg>
     <msg key="download">Download</msg>
+    <msg key="abbr">Abkürzungen</msg>
     <msg key="pdf-fo">PDF (FO Version)</msg>
     <msg key="pdf-title">Als PDF herunterladen</msg>
     <msg key="fo-source">FO Quelle</msg>

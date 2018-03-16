@@ -92,7 +92,7 @@
                     </model>
                     <model behaviour="alternate">
                         <param name="default" value="."/>
-                        <param name="alternate" value="ec:label('abbr')"/>
+                        <param name="alternate" value="(ec:label('abbr'), ': ', ec:abbr(.))"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="unclear" mode="change">
@@ -305,6 +305,12 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="app">
+                    <model predicate="empty(lem/text())" behaviour="alternote">
+                        <desc>Lemma ist leer</desc>
+                        <param name="content" value="rdg/node()"/>
+                        <param name="alternate" value="rdg"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
                     <model behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="lem"/>
                         <param name="alternate" value="rdg"/>
@@ -321,7 +327,7 @@
                     </model>
                     <model predicate="empty(../lem/node())" behaviour="inline">
                         <desc>app with empty lemma and reading</desc>
-                        <param name="content" value="(ec:label('added-in'), ' ', @wit, ': ', .)"/>
+                        <param name="content" value="(ec:label('added-in'), ' ', @wit)"/>
                     </model>
                     <model predicate="empty(node())" behaviour="inline">
                         <desc>app with empty reading</desc>
@@ -903,6 +909,18 @@
                     <model predicate="parent::list" behaviour="block">
                         <outputRendition>
                             font-weight: bold;
+                        </outputRendition>
+                    </model>
+                    <model predicate="ancestor::app" behaviour="inline" cssClass="head">
+                        <desc>Heading in app</desc>
+                        <outputRendition>
+                            
+                            display: block;
+font-weight: 700;
+line-height: 1.2;
+margin-top: 20px;
+margin-bottom: 10px;
+                        
                         </outputRendition>
                     </model>
                     <model predicate="@resp" behaviour="omit">
