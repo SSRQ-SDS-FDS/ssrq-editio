@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 303 $</p>
-                <p>Date of last commit:     $Date: 2018-03-16 16:17:57 +0100 (Fri, 16 Mar 2018) $</p>
+                <p>Revision of last commit: $Rev: 310 $</p>
+                <p>Date of last commit:     $Date: 2018-03-19 09:46:48 +0100 (Mon, 19 Mar 2018) $</p>
                 <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
@@ -1023,7 +1023,7 @@
                                 <rng:ref name="lb"/>
                                 <rng:ref name="hi"/>
                                 <rng:ref name="note"/>
-                            	<rng:ref name="sic"/>
+                                <rng:ref name="sic"/>
                                 <rng:ref name="unclear"/>
                                 <rng:ref name="num"/>
                             </rng:choice> 
@@ -1092,7 +1092,7 @@
                                 <rng:ref name="lb"/>
                                 <rng:ref name="note"/>
                            <rng:ref name="subst"/>
-                            	<rng:ref name="term"/><!-- 31.3.2017 -->
+                                <rng:ref name="term"/><!-- 31.3.2017 -->
                                 <rng:text/>
                             </rng:choice>
                         </rng:zeroOrMore>
@@ -1274,42 +1274,42 @@
                             <valList type="closed">
                                 <valItem ident="absent">
                                     <desc xml:lang="de">fehlt</desc>
-                                	<desc xml:lang="fr">absent</desc>
+                                    <desc xml:lang="fr">absent</desc>
                                 </valItem>
                                 <valItem ident="polished">
                                     <desc xml:lang="de">abgeschliffen</desc>
-                                	<desc xml:lang="fr">poli</desc>
+                                    <desc xml:lang="fr">poli</desc>
                                 </valItem>
                                 <valItem ident="ex and enclosed">
                                     <desc xml:lang="de">ab und beiliegend</desc>
-                                	<desc xml:lang="fr">détaché et joint</desc>
+                                    <desc xml:lang="fr">détaché et joint</desc>
                                 </valItem>
                                 <!-- PS: Weggelassen, da absent genügt mit Kombinatin @attachment <valItem ident="ex and absent">
                                     <desc xml:lang="de">ab und fehlend</desc>
                                 </valItem> -->
                                 <valItem ident="damaged">
                                     <desc xml:lang="de">beschädigt</desc>
-                                	<desc xml:lang="fr">endommagé</desc>
+                                    <desc xml:lang="fr">endommagé</desc>
                                 </valItem>
                                 <valItem ident="chamfered">
                                     <desc xml:lang="de">bestossen</desc>
-                                	<desc xml:lang="fr">écorné</desc>
+                                    <desc xml:lang="fr">écorné</desc>
                                 </valItem>
                                 <valItem ident="fragmentary">
                                     <desc xml:lang="de">bruchstückhaft</desc>
-                                	<desc xml:lang="fr">fragmentaire</desc>
+                                    <desc xml:lang="fr">fragmentaire</desc>
                                 </valItem>
                                 <valItem ident="well-preserved">
                                     <desc xml:lang="de">gut erhalten</desc>
-                                	<desc xml:lang="fr">bien conservé</desc>
+                                    <desc xml:lang="fr">bien conservé</desc>
                                 </valItem>
                                 <valItem ident="bound in linen">
-                                	<desc xml:lang="de">in Leinensäckchen </desc>
-                                	<desc xml:lang="fr">lié dans un sachet de lin</desc>
+                                    <desc xml:lang="de">in Leinensäckchen </desc>
+                                    <desc xml:lang="fr">lié dans un sachet de lin</desc>
                                 </valItem>
                                 <valItem ident="in a box">
                                     <desc xml:lang="de">in verschlossener Holzkapsel</desc>
-                                	<desc xml:lang="fr">dans une boîte en bois </desc>
+                                    <desc xml:lang="fr">dans une boîte en bois </desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -1806,10 +1806,10 @@
                                     <desc xml:lang="de">Stempel</desc>
                                     <desc xml:lang="fr">tampon</desc>
                                 </valItem>
-                            	<valItem ident="woodcut">
-				<desc xml:lang="de">Holzschnitt</desc>
-                            	    <desc xml:lang="fr">gravure sur bois</desc>
-                            	</valItem>
+                                <valItem ident="woodcut">
+                <desc xml:lang="de">Holzschnitt</desc>
+                                    <desc xml:lang="fr">gravure sur bois</desc>
+                                </valItem>
                             </valList>
                         </attDef>
                         <attDef ident="corresp" mode="delete"/>
@@ -2402,13 +2402,13 @@
                         <memberOf key="att.handFeatures"/>
                     </classes>
                     <content>
-                		<rng:zeroOrMore>
-                			<rng:choice>
-                				<rng:text/>
-                				<rng:ref name="macro.defaultContent"/>
-                			</rng:choice>
-                		</rng:zeroOrMore>
-                	</content>
+                        <rng:zeroOrMore>
+                            <rng:choice>
+                                <rng:text/>
+                                <rng:ref name="macro.defaultContent"/>
+                            </rng:choice>
+                        </rng:zeroOrMore>
+                    </content>
 <!--                    <classes mode="replace">
                         <memberOf key="model.global.edit"/>
                         <memberOf key="att.global"/>
@@ -2794,14 +2794,14 @@
                     </attList>
                 </elementSpec>
                 <elementSpec ident="damageSpan" module="transcr" mode="change">
-                	<content>
-                		<rng:zeroOrMore>
-                			<rng:choice>
-                				<rng:text/>
-                				<rng:ref name="macro.defaultContent"/>
-                			</rng:choice>
-                		</rng:zeroOrMore>
-                	</content>
+                    <content>
+                        <rng:zeroOrMore>
+                            <rng:choice>
+                                <rng:text/>
+                                <rng:ref name="macro.defaultContent"/>
+                            </rng:choice>
+                        </rng:zeroOrMore>
+                    </content>
                     <attList>
                         <attDef ident="agent" mode="replace" usage="req">
                             <desc xml:lang="de">beschreibt die Art einer Beschädigung</desc>
@@ -3020,14 +3020,14 @@
                     </attList>
                 </elementSpec>
                 <elementSpec ident="delSpan" module="transcr" mode="change">
-                	<content>
-                		<rng:zeroOrMore>
-                			<rng:choice>
-                				<rng:text/>
-                				<rng:ref name="macro.defaultContent"/>
-                			</rng:choice>
-                		</rng:zeroOrMore>
-                	</content>
+                    <content>
+                        <rng:zeroOrMore>
+                            <rng:choice>
+                                <rng:text/>
+                                <rng:ref name="macro.defaultContent"/>
+                            </rng:choice>
+                        </rng:zeroOrMore>
+                    </content>
                     <attList>
                         <attDef ident="rend" mode="replace">
                             <desc xml:lang="de">gibt wieder, wie eine Streichung vorgenommen
@@ -3274,7 +3274,7 @@
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='area']">
                                     <sch:assert
-                                    	test="matches(@unit,'^(Fuss|Gertel|Hube|Juchart|Klafter|Kuhsömmerung|Kuhwinterung|Mal|Mannmad|Mannwerk|Mitmal|Rute|Schritt|Schuh|Schuppose|Staffel|Tagwen|Vierdung|Vierling)$')"
+                                        test="matches(@unit,'^(Fuss|Gertel|Hube|Juchart|Klafter|Kuhsömmerung|Kuhwinterung|Mal|Mannmad|Mannwerk|Mitmal|Rute|Schritt|Schuh|Schuppose|Staffel|Tagwen|Vierdung|Vierling)$')"
                                         >kein gültiges Flächenmass</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='currency']">
@@ -3464,7 +3464,7 @@
                                 </valItem>
                                 <valItem ident="gold">
                                     <desc xml:lang="de">Gold</desc>
-                                	<desc xml:lang="fr">or</desc>
+                                    <desc xml:lang="fr">or</desc>
                                 </valItem>
                                 <valItem ident="oat">
                                     <desc xml:lang="de">Hafer</desc>
@@ -3571,11 +3571,11 @@
                                     <desc xml:lang="de">Ried</desc>
                                    <desc xml:lang="fr">marais</desc> 
                                 </valItem>
-                            	<valItem ident="rye">
-                            		<desc xml:lang="de">Roggen</desc>
-                            	     <desc xml:lang="fr">seigel</desc>
-                            		<desc xml:lang="it">segale</desc>
-                            	</valItem>
+                                <valItem ident="rye">
+                                    <desc xml:lang="de">Roggen</desc>
+                                     <desc xml:lang="fr">seigel</desc>
+                                    <desc xml:lang="it">segale</desc>
+                                </valItem>
                                 <valItem ident="salt">
                                     <desc xml:lang="de">Salz</desc>
                                      <desc xml:lang="fr">sel</desc> 
@@ -3590,7 +3590,7 @@
                                 </valItem>
                                 <valItem ident="silver">
                                     <desc xml:lang="de">Silber</desc>
-                                	<desc xml:lang="fr">argent</desc> 
+                                    <desc xml:lang="fr">argent</desc> 
                                 </valItem>
                                 <valItem ident="steel">
                                     <desc xml:lang="de">Stahl</desc>
@@ -3616,10 +3616,10 @@
                                     <desc xml:lang="de">Wachs</desc>    
                                   <desc xml:lang="fr">cire</desc> 
                                 </valItem>
-                            	<valItem ident="forest">
-                            		<desc xml:lang="de">Wald</desc>
-                            	 <desc xml:lang="fr">forêt</desc>
-                            	</valItem>
+                                <valItem ident="forest">
+                                    <desc xml:lang="de">Wald</desc>
+                                 <desc xml:lang="fr">forêt</desc>
+                                </valItem>
                                 <valItem ident="wine">
                                     <desc xml:lang="de">Wein</desc>
                                     <desc xml:lang="fr"></desc> 
@@ -3858,10 +3858,10 @@
                                     <desc xml:lang="fr" type="plural">pouces</desc>
                                 </valItem>
                                 <!--  -->
-                            	<valItem ident="Gertel">
-                            		<desc xml:lang="de">Gertel</desc>
-                            	    <desc xml:lang="fr">Gertel</desc>
-                            	</valItem>
+                                <valItem ident="Gertel">
+                                    <desc xml:lang="de">Gertel</desc>
+                                    <desc xml:lang="fr">Gertel</desc>
+                                </valItem>
                                 <valItem ident="Hube">
                                     <desc xml:lang="de">Hube</desc>
                                     <desc xml:lang="de" type="plural">Huben</desc>
@@ -4374,11 +4374,11 @@
                     <content> <!-- PS: das muss kontrolliert werden -->
                         <rng:oneOrMore>
                             <rng:choice>
-                    		  <rng:text/>
+                              <rng:text/>
                               <rng:ref name="p"/>
                                 <rng:ref name="anchor"/>
                               <rng:ref name="macro.defaultContent"/>                               
-                    	   </rng:choice>
+                           </rng:choice>
                         </rng:oneOrMore>
                     </content>
                     <attList>
@@ -4450,7 +4450,7 @@
                             <rng:choice>
                                 <rng:ref name="lb"/>
                                 <rng:ref name="note"/>
-                            	<rng:text/>
+                                <rng:text/>
                             </rng:choice>
                         </rng:zeroOrMore>
                         <rng:oneOrMore>
@@ -4460,18 +4460,18 @@
                                 <rng:ref name="del"/>
                                 <rng:ref name="delSpan"/>
                                 <rng:ref name="orig"/>
-                            	<rng:ref name="anchor"/>
-                            	<rng:ref name="persName"/>
-                            	<rng:ref name="orgName"/>
-                            	<rng:ref name="placeName"/>
-                            	<rng:text/>
+                                <rng:ref name="anchor"/>
+                                <rng:ref name="persName"/>
+                                <rng:ref name="orgName"/>
+                                <rng:ref name="placeName"/>
+                                <rng:text/>
                             </rng:choice>
                         </rng:oneOrMore>
                         <rng:zeroOrMore>
                             <rng:choice>
                                 <rng:ref name="lb"/>
                                 <rng:ref name="note"/>
-                            	<rng:ref name="anchor"/>
+                                <rng:ref name="anchor"/>
                             </rng:choice>
                         </rng:zeroOrMore> -->
                         <rng:oneOrMore>
@@ -4481,13 +4481,13 @@
                                 <rng:ref name="del"/>
                                 <rng:ref name="delSpan"/>
                                 <rng:ref name="orig"/>
-                            	<rng:ref name="anchor"/>
-                            	<rng:ref name="persName"/>
-                            	<rng:ref name="orgName"/>
-                            	<rng:ref name="placeName"/>
-                            	<rng:ref name="lb"/>
-                            	<rng:ref name="note"/>
-                            	<rng:text/>
+                                <rng:ref name="anchor"/>
+                                <rng:ref name="persName"/>
+                                <rng:ref name="orgName"/>
+                                <rng:ref name="placeName"/>
+                                <rng:ref name="lb"/>
+                                <rng:ref name="note"/>
+                                <rng:text/>
                             </rng:choice>
                         </rng:oneOrMore>
                     </content>
@@ -4973,7 +4973,7 @@
                         </valItem>
                         <valItem ident="Deutsch">
                             <desc xml:lang="de">Deutsch</desc>
-                            <desc xml:lang="fr">Allemande</desc>
+                            <desc xml:lang="fr">allemand</desc>
                         </valItem>
                     </valList>
                 </dataSpec>
