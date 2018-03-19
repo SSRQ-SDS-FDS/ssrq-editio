@@ -4967,6 +4967,14 @@
                             <desc xml:lang="fr">heure</desc>
                             <desc xml:lang="fr" type="plural">heures</desc>
                         </valItem>
+                        <valItem ident="français">
+                            <desc xml:lang="de">Französisch</desc>
+                            <desc xml:lang="fr">français</desc>
+                        </valItem>
+                        <valItem ident="Deutsch">
+                            <desc xml:lang="de">Deutsch</desc>
+                            <desc xml:lang="fr">Allemande</desc>
+                        </valItem>
                     </valList>
                 </dataSpec>
             </schemaSpec>
