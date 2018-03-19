@@ -134,7 +134,7 @@
                         <desc>Called to output the sigle of a document</desc>
                         <param name="content" value="format-date(xs:date(@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())"/>
                     </model>
-                    <modelSequence predicate="parent::origin and text()" behaviour="listItem">
+                    <!--<modelSequence predicate="parent::origin and text()" behaviour="listItem">
                         <desc>Ausgabe in "Stückbeschreibung"</desc>
                         <model behaviour="inline">
                             <param name="content" value="(ec:label('origDate'), ': ', format-date(xs:date(@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()))"/>
@@ -142,7 +142,15 @@
                         <model behaviour="listItem" cssClass="content">
                             <param name="content" value="(' (', text(), ')')"/>
                         </model>
-                    </modelSequence>
+                    </modelSequence>-->
+                    <model predicate="parent::origin and @from and text()" behaviour="listItem">
+                        <desc>Ausgabe in "Stückbeschreibung"</desc>
+                        <param name="content" value="(ec:label('origDate'), ': ', format-date(xs:date(@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' - ', format-date(xs:date(@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' (', text(), ')')"/>
+                    </model>
+                    <model predicate="parent::origin and text()" behaviour="listItem">
+                        <desc>Ausgabe in "Stückbeschreibung"</desc>
+                        <param name="content" value="(ec:label('origDate'), ': ', format-date(xs:date(@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' (', text(), ')')"/>
+                    </model>
                     <model predicate="parent::origin and @from" behaviour="listItem">
                         <desc>Ausgabe in "Stückbeschreibung" UND "Weitere Überlieferungen"</desc>
                         <param name="content" value="(ec:label('origDate'), ': ', format-date(xs:date(@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' - ', format-date(xs:date(@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()))"/>
