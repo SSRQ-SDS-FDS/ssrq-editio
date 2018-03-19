@@ -214,38 +214,27 @@
                         <param name="type" value="'text-critical'"/>
                         <param name="content" value="(ec:translate(@rend),', ', ec:label('unclear-rdg', false()), ': ', .)"/>
                     </model>
-                    <model predicate="@hand='other hand'" behaviour="note">
-                        <desc>Show footnote only</desc>
-                        <param name="content" value="(ec:translate(@rend, 0, 'uppercase'), ' ', ec:translate(@hand, 0, 'lowercase'), ': ', .)"/>
-                        <param name="type" value="'text-critical'"/>
-                    </model>
-                    <model behaviour="alternote">
+                    <model predicate="@hand='later hand'" behaviour="alternote">
                         <desc>Show text of del with popup and footnote</desc>
-                        <param name="alternate" value="(ec:translate(@rend, 0, 'uppercase'), ' ', ec:translate(@hand, 0, 'lowercase'))"/>
+                        <param name="alternate" value="(if (@rend) then (ec:translate(@rend, 0, 'uppercase')) else (ec:label('del')), ' ', ec:translate(@hand, 0, 'lowercase'))"/>
                         <param name="type" value="'text-critical'"/>
                         <param name="content" value="."/>
                     </model>
-                    <!--<model predicate="@hand and @rend" behaviour="note">
-                        <param name="place" value=""footnote""/>
+                    <model predicate="@rend" behaviour="note">
+                        <desc>Show footnote only</desc>
+                        <param name="content" value="(ec:translate(@rend, 0, 'uppercase'), if (@hand) then (' ', ec:translate(@hand, 0, 'lowercase')) else (), ': ', .)"/>
                         <param name="type" value="'text-critical'"/>
-                        <param name="content" value="(ec:translate(@rend), ', ', ec:translate(@hand, 0, ()),': ',.)"/>
                     </model>
                     <model predicate="@hand" behaviour="note">
-                        <param name="place" value=""footnote""/>
+                        <desc>Show footnote only</desc>
                         <param name="type" value="'text-critical'"/>
-                        <param name="content" value="(ec:translate(@hand),': ',.)"/>
+                        <param name="content" value="(ec:label('del'), ' ', ec:translate(@hand, 0, 'uppercase'), ': ', .)"/>
                     </model>
-                    <model predicate="@rend" behaviour="note">
-                        <param name="place" value=""footnote""/>
-                        <param name="content" value="(ec:translate(@rend), ': ', .)"/>
+                    <model behaviour="note">
+                        <desc>Show footnote only</desc>
                         <param name="type" value="'text-critical'"/>
+                        <param name="content" value="(ec:label('del'), ': ', .)"/>
                     </model>
-                    <model predicate="not(@rend)" behaviour="note">
-                        <param name="place" value="'footnote'"/>
-                        <param name="type" value="'text-critical'"/>
-                        <param name="content" value="(ec:label('del'),': ', .)"/>
-                    </model>-->
-                    <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="delSpan" mode="change">
                     <model predicate="not(@rend)" behaviour="note">
@@ -253,8 +242,7 @@
                         <param name="content" value="ec:label('del')"/>
                     </model>
                     <model behaviour="note">
-                        <desc>Show text of del with popup and footnote</desc>
-                        <param name="content" value="(ec:translate(@rend, 0, 'uppercase'), if (@hand) then (text{' '}, ec:translate(@hand, 0, 'lowercase')) else ())"/>
+                        <param name="content" value="(ec:translate(@rend, 0, 'uppercase'), if (@hand) then (' ', ec:translate(@hand, 0, 'lowercase')) else ())"/>
                         <param name="type" value="'text-critical-start'"/>
                     </model>
                     <!--<model predicate="@hand and @rend" behaviour="note">
@@ -1005,6 +993,11 @@ margin-bottom: 10px;
                     <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="bibl" mode="add">
+                    <!--<model behaviour="link">
+                        <param name="content" value="."/>
+                        <param name="uri" value="."/>
+                        <param name="target" value="'_new'"/>
+                    </model>-->
                     <model behaviour="listItem"/>
                 </elementSpec>
                 <elementSpec ident="additional" mode="add">
