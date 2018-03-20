@@ -325,15 +325,10 @@ declare function app:header-short($node as node(), $model as map(*), $action as 
 
 declare function app:idno($node as node(), $model as map(*)) {
     let $header := root($model?data)//tei:teiHeader
-    let $idno := (
-        $header/tei:fileDesc/tei:seriesStmt/tei:idno,
-        $header/tei:fileDesc/tei:seriesStmt/tei:idno/@xml:id
-    )[1]
+    let $idno := $header/tei:fileDesc/tei:seriesStmt/tei:idno
     return
         app:show-if-exists($node, $idno, function() {
-            common:display-sigle($idno),
-            $header/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@when/string(),
-            "(provisorisch)"
+            common:format-id($idno)
         })
 };
 
