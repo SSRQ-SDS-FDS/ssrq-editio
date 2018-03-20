@@ -335,6 +335,12 @@
                         <desc xml:lang="it">Wilhelm?</desc>
                         <desc xml:lang="en">Wilhelm?</desc>
                     </valItem>
+                    <valItem ident="Xpi">
+                        <desc xml:lang="de">Christi</desc>
+                        <desc xml:lang="fr">Christi</desc>
+                        <desc xml:lang="it">Christi</desc>
+                        <desc xml:lang="en">Christi</desc>
+                    </valItem>
                     </valList>
                 </dataSpec>
                 <dataSpec ident="abbr-symbols">
