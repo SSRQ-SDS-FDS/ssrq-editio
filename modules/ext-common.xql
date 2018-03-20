@@ -92,6 +92,16 @@ declare function pmf:display-sigle($id as xs:string?) {
         $components[1] || " " || $components[2] || "/" || $components[3]
 };
 
+declare function pmf:format-id($id as xs:string?) {
+    let $temp  := replace($id, "^(.+?)_(\d{8}(?:_\d{8})?(?:[A-Z])?)(?:_\d{1,2})?$", "$1 $2")
+    let $parts := tokenize($temp)
+    let $ssrq  := substring-before($parts[1], '_')
+    let $vol   := replace(substring-after($parts[1], '_'), '_', '/')
+    let $date  := replace($parts[2], '_', '-')
+    return
+        $ssrq || ' ' || $vol || ' ' || $date
+};
+
 declare function pmf:format-date($when as xs:string?) {
     pmf:format-date($when, (session:get-attribute("ssrq.lang"), "de")[1])
 };
