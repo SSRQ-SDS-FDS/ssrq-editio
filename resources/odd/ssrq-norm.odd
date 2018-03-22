@@ -83,13 +83,6 @@
                         </outputRendition>
                     </model>
                 </elementSpec>
-                <elementSpec ident="div" mode="change">
-                    <model predicate="parent::back and @n" behaviour="listItem">
-                        <desc>output as list item if in commentary</desc>
-                    </model>
-                    <model predicate="parent::body or parent::front or parent::back" behaviour="section"/>
-                    <model behaviour="block"/>
-                </elementSpec>
                 <elementSpec ident="choice" mode="change">
                     <model output="plain" predicate="sic and corr" behaviour="inline">
                         <param name="content" value="corr[1]"/>
@@ -118,7 +111,7 @@
                     <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="p" mode="change">
-                    <model predicate="parent::div[@n]/*[1] is ." behaviour="paragraph" useSourceRendition="true">
+                    <model predicate="parent::body/div and parent::div[@n]/*[1] is ." behaviour="paragraph" useSourceRendition="true">
                         <param name="content" value="('[', parent::div/@n, '] ', .)"/>
                         <outputRendition>
                             text-align: justify;
