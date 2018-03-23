@@ -105,5 +105,6 @@
     </msg>
     <msg key="realisierung">Realisierung</msg>
     <msg key="search">Suche</msg>
-    <msq key="lizenz">Lizenz: </msq>
+    <msg key="lizenz">Lizenz: </msg>
+    <msg key="sorting">Sortierung</msg>
 </catalogue>

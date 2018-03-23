@@ -8,13 +8,15 @@ import module namespace templates="http://exist-db.org/xquery/templates";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace http="http://expath.org/ns/http-client";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
-import module namespace browse="http://www.tei-c.org/tei-simple/templates" at "/db/apps/ssrq/modules/lib/browse.xql";
-import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "/db/apps/ssrq/modules/lib/util.xql";
+import module namespace browse="http://www.tei-c.org/tei-simple/templates" at "lib/browse.xql";
+import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
 import module namespace kwic="http://exist-db.org/xquery/kwic";
-import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "/db/apps/ssrq/modules/navigation.xql";
-import module namespace app="http://existsolutions.com/ssrq/app" at "/db/apps/ssrq/modules/ssrq.xql";
-import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "/db/apps/ssrq/modules/pm-config.xql";
-import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "/db/apps/ssrq/modules/ext-common.xql";
+import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "navigation.xql";
+import module namespace app="http://existsolutions.com/ssrq/app" at "ssrq.xql";
+import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xql";
+import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xql";
+import module namespace intl="http://exist-db.org/xquery/i18n/templates" at "lib/i18n-templates.xql";
+
 
 declare variable $query:QUERY_OPTIONS :=
     <options>
@@ -358,7 +360,7 @@ declare
     %templates:wrap
     %templates:default("start", 1)
     %templates:default("per-page", 10)
-function query:show-hits($node as node()*, $model as map(*), $start as xs:integer, $per-page as xs:integer, $view as xs:string?) {
+function query:show-hits($node as node()*, $model as map(*), $start as xs:integer, $per-page as xs:integer, $view as xs:string?, $lang as xs:string?) {
     for $hit at $p in subsequence($model("hits"), $start, $per-page)
     let $parent := ($hit/self::tei:body, $hit/ancestor-or-self::tei:div[1])[1]
     let $parent := ($parent, $hit/ancestor-or-self::tei:teiHeader, $hit)[1]
@@ -369,11 +371,12 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
     let $config := tpu:parse-pi(root($work), $view)
     let $div := query:get-current($config, $parent)
     let $loc :=
-        <div class="reference">
+        <div class="reference" xmlns:i18n="http://exist-db.org/xquery/i18n">
             <h5><span class="number">{$start + $p - 1}</span>
-                <span class="badge">{query:category($hit)}</span>
-                Kanton: <span>{query:view-kanton($work)}</span>,
-                Stück: <span>{query:view-idno($work)}</span>, Datum: <span>{query:view-origDate($work)}</span>
+                <span class="badge"><i18n:text key="{query:category($hit)}"/></span>
+                <i18n:text key="canton">Kanton</i18n:text>: <span>{query:view-kanton($work)}</span>,
+                <i18n:text key="work-id">Stück</i18n:text>: <span>{query:view-idno($work)}</span>,
+                <i18n:text key="orig-date">Datum</i18n:text>: <span>{query:view-origDate($work)}</span>
             </h5>
             <h4>{query:view-header($work, $parent-id)}</h4>
         </div>
@@ -390,7 +393,7 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
         else
             $docId
     return (
-        $loc,
+        intl:translate($loc, $model, $lang, ()),
         for $match in subsequence($expanded//exist:match, 1, 5)
         let $matchId := $match/../@exist:id
         let $docLink :=
@@ -420,12 +423,12 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
 
 declare function query:category($hit as element()) {
     typeswitch($hit)
-        case element(tei:head) return "Titel"
-        case element(tei:summary) return "Regest"
-        case element(tei:note) return "Anmerkung"
-        case element(tei:back) return "Kommentar"
-        case element(tei:seal) return "Siegel"
-        default return "Editionstext"
+        case element(tei:head) return "title"
+        case element(tei:summary) return "regest"
+        case element(tei:note) return "notes"
+        case element(tei:back) return "comment"
+        case element(tei:seal) return "seal"
+        default return "editionText"
 };
 
 declare function query:sort($result as element()*, $sortBy as xs:string?) {
@@ -460,23 +463,20 @@ declare function query:view-header($work as element(), $parent-id as xs:string) 
 };
 
 declare function query:view-kanton($work as element()) {
-    replace($work//tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, "^([^_]+).*$", "$1")
+    replace($work//tei:teiHeader//tei:seriesStmt/tei:idno, "^(?:SSRQ|SDS|FDS)_([^_]+).*$", "$1")
 };
 
 declare function query:view-idno($work as element()) {
     let $header := $work//tei:teiHeader
-    let $idno := $header/tei:fileDesc/tei:seriesStmt/tei:idno/@xml:id
-    return (
-        common:display-sigle($idno),
-        $header/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@when/string(),
-        "(provisorisch)"
-    )
+    let $idno := $header/tei:fileDesc/tei:seriesStmt/tei:idno
+    return
+        common:format-id($idno)
 };
 
 declare function query:view-origDate($work as element()) {
     let $origDate := $work//tei:teiHeader/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@when
     return
-        format-date(xs:date($origDate), '[Y] [MNn] [D01]')
+        format-date(xs:date($origDate), '[Y] [MNn] [D01]', (session:get-attribute("ssrq.lang"), "de")[1], (), ())
 };
 
 (:~

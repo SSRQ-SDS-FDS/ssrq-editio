@@ -210,9 +210,7 @@ function app:kanton-auswahl($node as node(), $model as map(*), $filter as xs:str
                     (
                         collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $current || "_")]
                         [.//tei:text/tei:body/*]
-                        | collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, "SSRQ_" || $current || "_")]
-                        [.//tei:text/tei:body/*]
-                        | collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, "SDS_" || $current || "_")]
+                        | collection($config:data-root)/tei:TEI[matches(tei:teiHeader//tei:seriesStmt/tei:idno, "^(?:SSRQ|SDS|FDS)_" || $current || ".*$")]
                         [.//tei:text/tei:body/*]
                     )
                     except
@@ -267,9 +265,7 @@ declare function app:list-works($node as node(), $model as map(*), $filter as xs
             (
                 collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $kanton || "_")]
                     [.//tei:text/tei:body/*],
-                collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, "SSRQ_" || $kanton || "_")]
-                    [.//tei:text/tei:body/*],
-                collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, "SDS_" || $kanton || "_")]
+                collection($config:data-root)/tei:TEI[matches(tei:teiHeader//tei:seriesStmt/tei:idno, ``[^(?:SSRQ|SDS|FDS)_`{$kanton}`.*$]``)]
                     [.//tei:text/tei:body/*]
             )
             except
