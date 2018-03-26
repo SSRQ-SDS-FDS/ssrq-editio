@@ -76,6 +76,9 @@
                 <elementSpec ident="seg" mode="change">
                     <model predicate="@n" behaviour="block">
                         <param name="content" value="(text{'['}, @n, text{'] '}, .)"/>
+                        <outputRendition>
+                            margin-top: 1ex;
+                        </outputRendition>
                     </model>
                     <model behaviour="block">
                         <outputRendition>
