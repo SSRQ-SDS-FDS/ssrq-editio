@@ -317,6 +317,12 @@
                         <desc xml:lang="it">manu propria</desc>
                         <desc xml:lang="en">manu propria</desc>
                     </valItem>
+                    <valItem ident="NB">
+                        <desc xml:lang="de">Nota bene</desc>
+                        <desc xml:lang="fr">Nota bene</desc>
+                        <desc xml:lang="it">Nota bene</desc>
+                        <desc xml:lang="en">Nota bene</desc>
+                    </valItem>
                     <valItem ident="q">
                         <desc xml:lang="de">quart?</desc>
                         <desc xml:lang="fr">quart?</desc>
