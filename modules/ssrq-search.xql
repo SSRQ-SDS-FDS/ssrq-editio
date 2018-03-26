@@ -145,6 +145,7 @@ declare function query:query-api($type as xs:string, $subtypes as xs:string*, $q
                     for-each($json?results?*, function($result) {
                         $result?id
                     })
+            (: let $log := util:log("info", "IDs: " || string-join($ids, ', ')) :)
             return
                 map {
                     "id": $ids,
@@ -169,26 +170,26 @@ declare function query:api-filter-subtype($id as xs:string*, $type as xs:string,
             switch ($subtype)
                 case "title" return
                     collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:head/
-                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[@ref = $id]
+                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[substring(@ref, 1, 9) = $id]
                 case "regest" return
                     collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:msContents/tei:summary/
-                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[@ref = $id]
+                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[substring(@ref, 1, 9) = $id]
                 case "comment" return
                     collection($config:data-root)//tei:back[
-                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)/@ref = $id]
+                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[substring(@ref, 1, 9) = $id]]
                 case "notes" return
                     collection($config:data-root)/(descendant::tei:body|descendant::tei:back)//tei:note/
-                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[@ref = $id]
+                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[substring(@ref, 1, 9) = $id]
                 case "seal" return
-                    collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:physDesc/tei:sealDesc/tei:seal/tei:persName[@ref = $id]
+                    collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:physDesc/tei:sealDesc/tei:seal/tei:persName[substring(@ref, 1, 9) = $id]
                 (: Editionstext: body + orig in Kommentar und Fussnoten :)
                 default return
                     collection($config:data-root)//tei:body[
-                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)/@ref = $id] |
+                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[substring(@ref, 1, 9) = $id]] |
                     collection($config:data-root)//tei:back[.//tei:orig/
-                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)/@ref = $id] |
+                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[substring(@ref, 1, 9) = $id]] |
                     collection($config:data-root)//tei:body[.//tei:note//tei:orig/
-                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)/@ref = $id] |
+                        (descendant::tei:placeName|descendant::tei:term|descendant::tei:persName|descendant::tei:orgName)[substring(@ref, 1, 9) = $id]] |
                     collection($config:data-root)//tei:body[.//@scribe = $id]
 };
 
@@ -331,7 +332,7 @@ declare function query:highlight-annotations($nodes as node()*, $ids as xs:strin
             case element(tei:persName) | element(tei:placeName) | element(tei:orgName) | element(tei:term) return
                 element { node-name($node) } {
                     $node/@*,
-                    if ($node/@ref = $ids) then
+                    if (substring($node/@ref, 1, 9) = $ids) then
                         <exist:match exist:id="{util:node-id($node)}">{ query:highlight-annotations($node/node(), $ids) }</exist:match>
                     else
                         query:highlight-annotations($node/node(), $ids)
@@ -490,7 +491,7 @@ declare function query:expand($nodes as node()*, $ids as xs:string+) {
             case element(tei:term) | element(tei:placeName) | element(tei:persName) | element(tei:orgName) return
                 element { node-name($node) } {
                     $node/@*,
-                    if ($node/@ref = $ids) then (
+                    if (substring($node/@ref, 1, 9) = $ids) then (
                         attribute exist:id { util:node-id($node) },
                         <exist:match>{ query:expand($node/node(), $ids) }</exist:match>
                     ) else
