@@ -639,6 +639,11 @@
                         <desc>Add css class for quotes</desc>
                     </model>
                 </elementSpec>
+                <elementSpec ident="quote" mode="change">
+                    <model behaviour="inline">
+                        <desc>No quotes</desc>
+                    </model>
+                </elementSpec>
                 <elementSpec ident="supplied" mode="change">
                     <model predicate="parent::choice" behaviour="inline"/>
                     <model predicate="@reason" behaviour="alternote" cssClass="text-critical">

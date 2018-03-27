@@ -80,6 +80,19 @@
                             margin-top: 1ex;
                         </outputRendition>
                     </model>
+                    <model predicate=". is (ancestor::quote[1]/seg[1])" behaviour="inline">
+                        <desc>Force « on same line, cf. quote</desc>
+                    </model>
+                    <model predicate=". is (ancestor::quote[1]/seg[last()])" behaviour="inline">
+                        <desc>Force » on same line, cf. quote</desc>
+                    </model>
+                    <model predicate=". is (ancestor::quote[1]/seg[last()-1])" behaviour="block">
+                        <desc>Add missing margin</desc>
+                        <outputRendition>
+                            margin-top: 1ex;
+                            margin-bottom: 1ex;
+                        </outputRendition>
+                    </model>
                     <model behaviour="block">
                         <outputRendition>
                             margin-top: 1ex;
@@ -195,6 +208,17 @@ margin-bottom: 10px;
                     <model behaviour="heading">
                         <desc>All other headings are same size as text</desc>
                         <param name="level" value="if (@type='title') then 1 else 2"/>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="quote" mode="change">
+                    <model behaviour="inline">
+                        <desc>With quotes</desc>
+                        <outputRendition scope="before">
+                            content: '«';
+                        </outputRendition>
+                        <outputRendition scope="after">
+                            content: '»';
+                        </outputRendition>
                     </model>
                 </elementSpec>
             </schemaSpec>
