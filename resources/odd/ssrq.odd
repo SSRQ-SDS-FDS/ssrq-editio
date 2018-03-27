@@ -159,6 +159,10 @@
                         <desc>Ausgabe in "Stückbeschreibung" UND "Weitere Überlieferungen"</desc>
                         <param name="content" value="(ec:label('origDate'), ': ', format-date(xs:date(@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()))"/>
                     </model>
+                    <model predicate="@calendar" behaviour="alternate">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="(ec:label('origDate'), ': ', ec:format-date(@when), ' (', ec:translate(@calendar, 0, ()), ')')"/>
+                    </model>
                     <model behaviour="alternate">
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('origDate'), ': ', ec:format-date(@when))"/>
