@@ -48,7 +48,7 @@
                             content: '[';
                         </outputRendition>
                         <outputRendition scope="after">
-                            content: '] ';
+                            content: ']';
                         </outputRendition>
                     </model>
                 </elementSpec>
@@ -964,13 +964,13 @@ margin-bottom: 10px;
                 <elementSpec ident="text()">
                     <model behaviour="content"/>
                 </elementSpec>
-            <elementSpec ident="author" mode="change">
+                <elementSpec ident="author" mode="change">
                     <model behaviour="listItem">
                         <desc>Ausgabe des Schreibers im Header</desc>
                         <param name="content" value="(ec:label('scriptor'), ': ', .)"/>
                     </model>
                 </elementSpec>
-            <elementSpec ident="listBibl" mode="change">
+                <elementSpec ident="listBibl" mode="change">
                     <modelSequence predicate="not($parameters?mode = 'filiation')">
                         <desc>Ausgabe Bibliographie, aber nicht in "weitere Überlieferungen"</desc>
                         <model behaviour="heading">
@@ -999,10 +999,10 @@ margin-bottom: 10px;
                 <elementSpec ident="additional" mode="add">
                     <model behaviour="listItem"/>
                 </elementSpec>
-            <elementSpec ident="textLang" mode="add">
+                <elementSpec ident="textLang" mode="add">
                     <model behaviour="listItem">
                         <desc>Ausgabe Sprache in "weitere Überlieferungen"</desc>
-                        <param name="content" value="(ec:label('language'), ': ', ec:label(.))"/>
+                        <param name="content" value="(ec:label('language'), ': ', string-join(for $lang in tokenize(., ', *') return ec:label($lang), ', '))"/>
                     </model>
                 </elementSpec>
             </schemaSpec>
