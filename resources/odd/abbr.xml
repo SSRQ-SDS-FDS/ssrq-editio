@@ -251,6 +251,12 @@
                         <desc xml:lang="it">anno</desc>
                         <desc xml:lang="en">anno</desc>
                     </valItem>
+                    <valItem ident="da">
+                        <desc xml:lang="de">datum</desc>
+                        <desc xml:lang="fr">datum</desc>
+                        <desc xml:lang="it">datum</desc>
+                        <desc xml:lang="en">datum</desc>
+                    </valItem>
                   <valItem ident="etc">
                         <desc xml:lang="de">et cetera</desc>
                         <desc xml:lang="fr">et cetera</desc>
