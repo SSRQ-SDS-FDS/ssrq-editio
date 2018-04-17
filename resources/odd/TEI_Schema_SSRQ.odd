@@ -18,9 +18,9 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 315 $</p>
-                <p>Date of last commit:     $Date: 2018-03-19 15:36:34 +0100 (Mon, 19 Mar 2018) $</p>
-                <p>Author of last commit:   $Author: beni $</p>
+                <p>Revision of last commit: $Rev: 384 $</p>
+                <p>Date of last commit:     $Date: 2018-04-12 14:23:08 +0200 (Thu, 12 Apr 2018) $</p>
+                <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
     </teiHeader>
@@ -46,7 +46,7 @@
 
                 <moduleRef key="tei"/>
                 <moduleRef key="core"
-                    include="abbr add author bibl choice corr date del expan foreign gap head hi item label
+                    include="abbr add author bibl cb choice corr date del expan foreign gap head hi item label
                     lb list listBibl measure measureGrp note num orig p pb q quote ref reg resp respStmt sic term textLang time title unclear"/>
                 <moduleRef key="header"
                     include="textClass profileDesc fileDesc idno editorialDecl encodingDesc extent keywords publicationStmt profileDesc seriesStmt sourceDesc teiHeader textClass titleStmt"/>
@@ -251,6 +251,7 @@
                         <rng:ref name="unclear"/>
                         <!--Auszeichnungen, die der Darstellung...-->
                         <rng:ref name="ab"/>
+                        <rng:ref name="cb"/>
                         <rng:ref name="div"/>
                         <rng:ref name="figure"/>
                         <rng:ref name="head"/>
@@ -1090,9 +1091,10 @@
                             <rng:choice>
                                 <rng:ref name="pb"/>
                                 <rng:ref name="lb"/>
+                                <rng:ref name="del"/>
                                 <rng:ref name="note"/>
                            <rng:ref name="subst"/>
-                                <rng:ref name="term"/><!-- 31.3.2017 -->
+                                <rng:ref name="term"/>
                                 <rng:text/>
                             </rng:choice>
                         </rng:zeroOrMore>
@@ -1379,6 +1381,7 @@
                         <rng:group>
                             <rng:zeroOrMore>
                                 <rng:choice>
+                                    <rng:ref name="cb"/>
                                     <rng:ref name="gap"/>
                                     <rng:ref name="pb"/>
                                     <rng:ref name="lb"/>
@@ -1390,6 +1393,7 @@
                                         <rng:ref name="div"/>
                                         <rng:zeroOrMore>
                                             <rng:choice>
+                                                <rng:ref name="cb"/>
                                                 <rng:ref name="gap"/>
                                                 <rng:ref name="pb"/>
                                                 <rng:ref name="lb"/>
@@ -1454,6 +1458,7 @@
                     <content>
                         <rng:zeroOrMore>
                             <rng:choice>
+                                <rng:ref name="cb"/>
                                 <rng:ref name="head"/>
                                 <rng:ref name="p"/>
                                 <rng:ref name="lb"/>
@@ -1516,6 +1521,30 @@
                     <classes mode="change">
                         <memberOf key="att.global.facs"/>
                     </classes>
+                </elementSpec>
+                <elementSpec ident="cb" module="core" mode="change">
+                    <classes mode="change">
+                        <memberOf key="att.global.facs"/>
+                    </classes>
+                    <content>
+                        <rng:empty/>
+                    </content>
+                    <attList>
+                        <attDef ident="break" mode="replace">
+                            <desc/>
+                            <valList type="closed">
+                                <valItem ident="no">
+                                    <desc/>
+                                </valItem>
+                            </valList>
+                        </attDef>
+                        <attDef ident="corresp" mode="delete"/>
+                        <attDef ident="cert" mode="delete"/>
+                        <attDef ident="resp" mode="delete"/>
+                        <attDef ident="source" mode="delete"/>
+                        <attDef ident="spanTo" mode="delete"/>
+                        <attDef ident="type" mode="delete"/>
+                    </attList>
                 </elementSpec>
                 <elementSpec ident="pb" module="core" mode="change">
                     <!--classes mode="replace">
@@ -1977,9 +2006,13 @@
                                     <desc xml:lang="de">unter der Plica</desc>
                                     <desc xml:lang="fr">au-dessous de la plica</desc>
                                 </valItem>
+                                <valItem ident="parchment tag">
+                                    <desc xml:lang="de">auf dem Pergamentstreifen</desc>
+                                    <desc xml:lang="fr">au verso de la plica</desc>
+                                </valItem>
                                 <valItem ident="plica verso">
                                     <desc xml:lang="de">auf der Rückseite der Plica</desc>
-                                    <desc xml:lang="fr">au verso de la plica</desc>
+                                    <desc xml:lang="fr">à une lanière en parchemin</desc>
                                 </valItem>
                                 <valItem ident="plica">
                                     <desc xml:lang="de">auf der Plica</desc>
@@ -2361,12 +2394,8 @@
                             </valList>
                         </attDef>
                         <attDef ident="rend" mode="replace">
-                            <desc xml:lang="de">"Schreibmaterial" der Hinzufügung</desc>
+                            <desc xml:lang="de">"Schreibstoff" der Hinzufügung</desc>
                             <valList type="closed">
-                                <valItem ident="pencil">
-                                    <desc xml:lang="de">mit Bleistift</desc>
-                                    <desc xml:lang="fr">avec un crayon</desc>
-                                </valItem>
                                 <valItem ident="other ink">
                                     <desc xml:lang="de">mit anderer Tinte</desc>
                                     <desc xml:lang="fr">avec une autre encre</desc>
@@ -2577,12 +2606,8 @@
                             </valList>
                         </attDef>
                         <attDef ident="rend" mode="replace">
-                            <desc xml:lang="de">"Schreibmaterial" der Hinzufügung</desc>
+                            <desc xml:lang="de">"Schreibstoff" der Hinzufügung</desc>
                             <valList type="closed">
-                                <valItem ident="pencil">
-                                    <desc xml:lang="de">mit Bleistift</desc>
-                                    <desc xml:lang="fr">avec un crayon</desc>
-                                </valItem>
                                 <valItem ident="other ink">
                                     <desc xml:lang="de">mit anderer Tinte</desc>
                                     <desc xml:lang="fr">avec une autre encre</desc>
@@ -2954,14 +2979,6 @@
                                     <desc xml:lang="fr">d'un main plus récente</desc>
                                     <!-- Text im Haupttext -->
                                 </valItem>
-                                <valItem ident="other ink">
-                                    <desc xml:lang="de">mit anderer Tinte</desc>
-                                    <desc xml:lang="fr">avec une autre encre</desc>
-                                </valItem>
-                                <valItem ident="pencil">
-                                    <desc xml:lang="de">mit Bleistift</desc>
-                                    <desc xml:lang="fr">avec un crayon</desc>
-                                </valItem>
                             </valList>
                         </attDef>
                         <attDef ident="rend" mode="replace">
@@ -3131,6 +3148,14 @@
                                     <desc xml:lang="de">kursiv</desc>
                                     <desc xml:lang="fr">cursif</desc>
                                 </valItem>
+                                <valItem ident="outdent">
+                                    <desc xml:lang="de">Durch hängenden Einzug hervorgehoben</desc>
+                                    <desc xml:lang="fr">Dans la marge</desc>
+                                </valItem>
+                                <valItem ident="rubricated">
+                                    <desc xml:lang="de">rubriziert</desc>
+                                    <desc xml:lang="fr">Rubrication</desc>
+                                </valItem>
                                 <valItem ident="sup">
                                     <desc xml:lang="de">hochgestellt</desc>
                                     <desc xml:lang="fr">suscrit</desc>
@@ -3148,14 +3173,6 @@
                                 <valItem ident="later hand">
                                     <desc xml:lang="de">von späterer Hand</desc>
                                     <desc xml:lang="fr">d'un main plus récente </desc>
-                                </valItem>
-                                <valItem ident="other ink">
-                                    <desc xml:lang="de">mit anderer Tinte</desc>
-                                    <desc xml:lang="fr">avec une autre encre</desc>
-                                </valItem>
-                                <valItem ident="pencil">
-                                    <desc xml:lang="de">mit Bleistift</desc>
-                                    <desc xml:lang="fr">avec un crayon</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -3231,7 +3248,7 @@
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='currency']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Angster|fl|franc|lb|ß|xr|d|Dicken|Dukat|bz|h|M|plp|Böhmischer Groschen|Gros|Grossi|k|Ort|Quart|Vierer|Spagürli|S|Taler|L)$')"
+                                        test="matches(@unit,'^(Angster|fl|franc|lb|ß|xr|d|Dicken|Dukat|bz|h|M|plp|Böhmischer Groschen|Gros|Grossi|k|livre faible|Ort|Quart|Vierer|Spagürli|S|sol faible|Taler|L)$')"
                                         >keine gültige Währung</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='length']">
@@ -3453,6 +3470,10 @@
                                 <valItem ident="lime">
                                     <desc xml:lang="de">Kalk</desc>
                                   <desc xml:lang="fr">chaux</desc> 
+                                </valItem>
+                                <valItem ident="potatoes">
+                                    <desc xml:lang="de">Kartoffeln</desc>
+                                    <desc xml:lang="fr">pommes de terre</desc> 
                                 </valItem>
                                 <valItem ident="cheese">
                                     <desc xml:lang="de">Käse</desc>
@@ -4049,6 +4070,10 @@
                                     <desc xml:lang="de" type="plural">Kronen</desc>
                                     <desc xml:lang="fr">écu/couronne</desc>
                                 </valItem>
+                                <valItem ident="livre faible">
+                                    <desc xml:lang="de">livre faible</desc>
+                                    <desc xml:lang="fr">livre faible</desc>
+                                </valItem>
                                 <valItem ident="M">
                                     <desc xml:lang="de">Mark</desc>
                                     <desc xml:lang="fr">marc</desc>
@@ -4068,6 +4093,10 @@
                                 <valItem ident="S">
                                     <desc xml:lang="de">Sol</desc>
                                     <desc xml:lang="fr">sol</desc>
+                                </valItem>
+                                <valItem ident="sol faible">
+                                    <desc xml:lang="de">sol faible</desc>
+                                    <desc xml:lang="fr">sol faible</desc>
                                 </valItem>
                                 <valItem ident="Spagürli">
                                     <desc xml:lang="de">Spagürli</desc>
