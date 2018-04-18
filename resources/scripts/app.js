@@ -3,7 +3,7 @@ $(document).ready(function() {
     var appRoot = $("html").data("app");
     var tableOfContents = false;
 
-    var iiifApi = "http://localhost:8182/iiif/2/";
+    var iiifApi = "http://teip.rechtsquellen.ch:8182/iiif/2/";
 
     var seadragon;
 
