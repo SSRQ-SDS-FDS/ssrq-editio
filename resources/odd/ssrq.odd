@@ -447,9 +447,12 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="foreign" mode="change">
-                    <model behaviour="alternate" cssClass="text-critical">
+                    <model behaviour="alternate">
                         <param name="default" value="."/>
-                        <param name="alternate" value="ec:label('lang-switch')"/>
+                        <param name="alternate" value="(ec:label('lang-switch'), ' ', ec:label(@xml:lang))"/>
+                        <outputRendition>
+                            color: black;
+                        </outputRendition>
                     </model>
                 </elementSpec>
                 <elementSpec ident="term" mode="change">
