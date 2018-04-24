@@ -18,9 +18,9 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 384 $</p>
-                <p>Date of last commit:     $Date: 2018-04-12 14:23:08 +0200 (Thu, 12 Apr 2018) $</p>
-                <p>Author of last commit:   $Author: pascale $</p>
+                <p>Revision of last commit: $Rev: 420 $</p>
+                <p>Date of last commit:     $Date: 2018-04-24 11:56:24 +0200 (Tue, 24 Apr 2018) $</p>
+                <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
     </teiHeader>
@@ -1811,7 +1811,7 @@
                         <attDef ident="type" mode="replace" usage="req">
                             <desc/>
                             <valList type="closed">
-                                <valItem ident="copper engraving ">
+                                <valItem ident="copper engraving">
                                     <desc xml:lang="de">Kupferstich</desc>
                                     <desc xml:lang="fr">gravure sur cuivre</desc>
                                 </valItem>
