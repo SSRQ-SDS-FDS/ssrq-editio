@@ -26,6 +26,7 @@ $(document).ready(function() {
             var key = $(head).attr("data-ref").replace(/^([^\.]+).*$/, "$1");
             var params = {};
             params[param] = key;
+            params['lang'] = $('#lang-select').val();
             $.ajax({
                 url: uri,
                 data: params,

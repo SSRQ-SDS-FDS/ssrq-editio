@@ -296,6 +296,11 @@
                         <param name="type" value="'text-critical'"/>
                         <param name="alternate" value="(ec:translate(@agent), ', ', ec:span((ec:label('add'), ' ', string-join((ec:translate(add/@place, 0, 'lowercase'), ec:translate(add/@hand, 0, 'lowercase'), ec:translate(add/@rend, 0, 'lowercase'), ec:translate(add/@type, 0, 'lowercase')), ' '))))"/>
                     </model>
+                    <model predicate="@agent" behaviour="alternote" cssClass="text-critical">
+                        <param name="place" value="&#34;footnote&#34;"/>
+                        <param name="type" value="'text-critical'"/>
+                        <param name="alternate" value="ec:translate(@agent)"/>
+                    </model>
                     <model behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="'[...]'"/>
                         <param name="place" value="&#34;footnote&#34;"/>
