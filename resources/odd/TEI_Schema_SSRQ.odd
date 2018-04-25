@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 421 $</p>
-                <p>Date of last commit:     $Date: 2018-04-24 15:09:41 +0200 (Tue, 24 Apr 2018) $</p>
+                <p>Revision of last commit: $Rev: 423 $</p>
+                <p>Date of last commit:     $Date: 2018-04-25 11:08:34 +0200 (Wed, 25 Apr 2018) $</p>
                 <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
@@ -4922,7 +4922,7 @@
                         <valItem ident="scriptor">
                             <desc xml:lang="de">Schreiber</desc>
                             <desc xml:lang="fr">scripteur</desc>
-                            <desc xml:lang="fr">Scribe</desc>
+                            <desc xml:lang="en">Scribe</desc>
                         </valItem>
                         <valItem ident="signatureAlt">
                             <desc xml:lang="de">Frühere Überlieferung</desc>
