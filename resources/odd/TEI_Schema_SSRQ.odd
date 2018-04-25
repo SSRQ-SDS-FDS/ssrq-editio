@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 423 $</p>
-                <p>Date of last commit:     $Date: 2018-04-25 11:08:34 +0200 (Wed, 25 Apr 2018) $</p>
+                <p>Revision of last commit: $Rev: 424 $</p>
+                <p>Date of last commit:     $Date: 2018-04-25 11:15:52 +0200 (Wed, 25 Apr 2018) $</p>
                 <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
@@ -4892,7 +4892,7 @@
                         <valItem ident="corrected">
                             <desc xml:lang="de">Korrigiert</desc>
                             <desc xml:lang="fr">Corrigé</desc>
-                            <desc xml:lang="fr">Corrected</desc>
+                            <desc xml:lang="en">Corrected</desc>
                         </valItem>
                         <valItem ident="corrected-from">
                             <desc xml:lang="de">korrigiert aus</desc>
