@@ -30,14 +30,14 @@ declare variable $query:QUERY_OPTIONS :=
 declare
     %templates:default("type", "text")
 function query:query($node as node()*, $model as map(*), $type as xs:string, $subtype as xs:string*, $query as xs:string?, $doc as xs:string*,
-    $sort as xs:string?) as map(*) {
-    if (empty($subtype)) then
+    $sort as xs:string?, $refresh as xs:boolean?) as map(*) {
+    if (empty($refresh)) then
         let $sortOrder := session:get-attribute("ssrq.sort")
         return
             map {
                 "hits" :
                     if (empty($sort) or $sortOrder = $sort) then
-                        session:get-attribute("ssrq.sort")
+                        session:get-attribute("ssrq")
                     else (
                         query:sort(session:get-attribute("ssrq"), $sort),
                         session:set-attribute("ssrq.sort", $sort)
