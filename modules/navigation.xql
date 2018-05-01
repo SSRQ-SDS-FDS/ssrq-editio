@@ -79,8 +79,8 @@ declare %private function nav:get-previous-recursive($config as map(*), $div as 
 };
 
 declare function nav:output-footnotes($footnotes as element()*) {
-    <div class="footnotes">
-        <h4 class="block-title">Anmerkungen</h4>
+    <div class="footnotes" xmlns:i18n="http://exist-db.org/xquery/i18n">
+        <h4 class="block-title"><i18n:text key="notes">Anmerkungen</i18n:text></h4>
         <ol class="textcritical">
         {
             for $note in $footnotes[@type="a"]
