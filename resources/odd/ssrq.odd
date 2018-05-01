@@ -968,7 +968,13 @@ margin-bottom: 10px;
                     </model>
                 </elementSpec>
                 <elementSpec ident="ref" mode="change">
-                    <model predicate="not(@target)" behaviour="inline"/>
+                    <model predicate="not(@target) and matches(., '^(?:SSRQ|SDS|FDS)_')" behaviour="link">
+                        <desc>Link auf ein anderes Dokument innerhalb Portal</desc>
+                        <param name="link" value="string() || &#34;.xml&#34;"/>
+                    </model>
+                    <model predicate="not(@target)" behaviour="inline">
+                        <desc>Link ohne Verweisadresse</desc>
+                    </model>
                     <model predicate="not(text())" behaviour="link">
                         <param name="content" value="@target"/>
                         <param name="link" value="@target"/>
