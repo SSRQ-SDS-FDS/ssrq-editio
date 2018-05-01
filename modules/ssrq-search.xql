@@ -443,15 +443,17 @@ declare function query:sort($result as element()*, $sortBy as xs:string?) {
 declare function query:sort-value($item as element(), $sortBy as xs:string?) {
     switch($sortBy)
         case "kanton" return
-            replace(root($item)//tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, "^([^_]+).*$", "$1")
+            replace(root($item)//tei:teiHeader//tei:seriesStmt/tei:idno, "^(?:SSRQ|SDS|FDS)_([^_]+).*$", "$1")
         case "title" return
             let $header := root($item)//tei:teiHeader
             return
                 ($header//tei:msDesc/tei:head/string(), $header//tei:titleStmt/tei:title/string())[1]
         case "id" return
-            root($item)//tei:teiHeader/tei:fileDesc/tei:seriesStmt/tei:idno/@xml:id
-        case "date" return
-            root($item)//tei:teiHeader/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@when/xs:date(.)
+            root($item)//tei:teiHeader/tei:fileDesc/tei:seriesStmt/tei:idno
+        case "date" return (
+                root($item)//tei:teiHeader/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@when/xs:date(.),
+                root($item)//tei:teiHeader/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@from/xs:date(.)
+            )[1]
         default return
             ft:score($item)
 };
@@ -475,9 +477,14 @@ declare function query:view-idno($work as element()) {
 };
 
 declare function query:view-origDate($work as element()) {
-    let $origDate := $work//tei:teiHeader/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@when
+    let $origDate := $work//tei:teiHeader/tei:fileDesc//tei:msDesc/tei:history//tei:origDate
     return
-        format-date(xs:date($origDate), '[Y] [MNn] [D01]', (session:get-attribute("ssrq.lang"), "de")[1], (), ())
+        if ($origDate/@when) then
+            format-date(xs:date($origDate/@when), '[Y] [MNn] [D01]', (session:get-attribute("ssrq.lang"), "de")[1], (), ())
+        else
+            format-date(xs:date($origDate/@from), '[Y] [MNn] [D01]', (session:get-attribute("ssrq.lang"), "de")[1], (), ()) ||
+            ' - ' ||
+            format-date(xs:date($origDate/@to), '[Y] [MNn] [D01]', (session:get-attribute("ssrq.lang"), "de")[1], (), ())
 };
 
 (:~
