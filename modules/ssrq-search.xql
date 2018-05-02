@@ -450,12 +450,12 @@ declare function query:sort-value($item as element(), $sortBy as xs:string?) {
                 ($header//tei:msDesc/tei:head/string(), $header//tei:titleStmt/tei:title/string())[1]
         case "id" return
             root($item)//tei:teiHeader/tei:fileDesc/tei:seriesStmt/tei:idno
-        case "date" return (
+        case "relevance" return
+            ft:score($item)
+        default return (
                 root($item)//tei:teiHeader/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@when/xs:date(.),
                 root($item)//tei:teiHeader/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@from/xs:date(.)
             )[1]
-        default return
-            ft:score($item)
 };
 
 declare function query:view-header($work as element(), $parent-id as xs:string) {
