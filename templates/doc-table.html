@@ -26,6 +26,14 @@
                         </span>
                     </span>
                 </div>
+                <div class="form-group pull-right">
+                    <label for="sort-browse"><i18n:text key="sorting">Sortierung</i18n:text>: </label>
+                    <select id="sort-browse" name="sort" class="form-control" data-template="templates:form-control">
+                        <option value="date"><i18n:text key="orig-date">Datum</i18n:text></option>
+                        <option value="title"><i18n:text key="title">Titel</i18n:text></option>
+                    </select>
+                </div>
+                <input type="hidden" name="refresh" value="true"/>
             </form>
         </div>
         <div data-template="browse:dispatch-action"/>

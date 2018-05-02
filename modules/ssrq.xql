@@ -234,19 +234,17 @@ function app:kanton-auswahl($node as node(), $model as map(*), $filter as xs:str
 (:~
  : Ausgabe der Stücke nach Kanton und ggf. Filter
  :)
-declare function app:list-works($node as node(), $model as map(*), $filter as xs:string?, $kanton as xs:string?, $browse as xs:string?) {
-    let $useSession := (empty($filter) or $filter = session:get-attribute("filter")) and $kanton = session:get-attribute("kanton")
-    let $log := console:log("Use session: " || $useSession || "; kanton=" || $kanton || "; session=" || session:get-attribute("kanton"))
-    let $kanton :=
-        if ($useSession) then
-            session:get-attribute("kanton")
-        else
-            ($kanton, app:select-kanton())[1]
+declare
+    %templates:default("sort", "date")
+function app:list-works($node as node(), $model as map(*), $filter as xs:string?, $kanton as xs:string?, $browse as xs:string?,
+    $sort as xs:string, $refresh as xs:string?) {
+    let $kanton := ($kanton, app:select-kanton())[1]
     let $sessionData :=
-        if ($useSession) then
-            session:get-attribute("ssrq.works")
-        else
+        if ($refresh) then
             session:clear()
+        else
+            session:get-attribute("ssrq.works")
+    let $log := console:log("Refresh: " || $refresh || "; kanton=" || $kanton || "; count: " || count($sessionData))
     let $filtered :=
         if ($sessionData) then
             $sessionData
@@ -254,13 +252,12 @@ declare function app:list-works($node as node(), $model as map(*), $filter as xs
             let $ordered :=
                 for $item in
                     ft:search($config:data-root, $browse || ":" || $filter, ("author", "title"))/search
-                let $author := $item/field[@name = "author"]
-                order by $author[1], $author[2], $author[3]
                 return
                     $item
             for $doc in $ordered
             return
-                doc($doc/@uri)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, "SSRQ_" || $kanton || "_")]
+                doc($doc/@uri)/tei:TEI[matches(tei:teiHeader//tei:seriesStmt/tei:idno, ``[^(?:SSRQ|SDS|FDS)_`{$kanton}`.*$]``)]
+                    [.//tei:text/tei:body/*]
         else
             (
                 collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $kanton || "_")]
@@ -270,13 +267,15 @@ declare function app:list-works($node as node(), $model as map(*), $filter as xs
             )
             except
             collection($config:temp-root)/tei:TEI
+    let $sorted := query:sort($filtered, $sort)
     return (
-        session:set-attribute("ssrq.works", $filtered),
+        session:set-attribute("ssrq.works", $sorted),
         session:set-attribute("ssrq.browse", $browse),
         session:set-attribute("ssrq.filter", $filter),
         session:set-attribute("ssrq.kanton", $kanton),
+        session:set-attribute("ssrq.sort", $sort),
         map {
-            "all" : $filtered,
+            "all" : $sorted,
             "mode": "browse"
         }
     )

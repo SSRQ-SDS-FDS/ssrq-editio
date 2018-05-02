@@ -33,7 +33,10 @@ $(function () {
     $('#sort-select').on('change', function() {
         var sortBy = $(this).val();
         console.log("sorting by %s", sortBy);
-        var href = window.location.href.replace(/&sort=\w+/, '');
+        var href = window.location.href.replace(/&sort=\w*/, '');
         window.location.replace(href + '&sort=' + sortBy);
+    });
+    $('#sort-browse').on('change', function() {
+        $(this).parents('form').submit();
     });
 });
