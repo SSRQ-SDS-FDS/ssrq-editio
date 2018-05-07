@@ -601,8 +601,10 @@ function query:list-archives($node as node(), $model as map(*), $filter-archive 
                 replace($id, "^(\w+).*$", "$1")
             })
         )
+        order by $idno
     return
         <option>
+            
         {
             if ($idno = $filter-archive) then
                 attribute selected { "selected" }
