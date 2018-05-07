@@ -80,7 +80,7 @@ else if (ends-with($exist:resource, ".xql")) then (
     let $mode := request:get-parameter("mode", ())
     let $facsimiles := request:get-parameter("facs", ())
     let $html :=
-        if ($exist:resource = "") then
+        if ($exist:resource = "" and not(request:get-parameter("id", ()))) then
             "index.html"
         else if ($exist:resource = "doc-table.html") then
             "templates/doc-table.html"
