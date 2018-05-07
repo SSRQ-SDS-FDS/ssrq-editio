@@ -18,9 +18,9 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 424 $</p>
-                <p>Date of last commit:     $Date: 2018-04-25 11:15:52 +0200 (Wed, 25 Apr 2018) $</p>
-                <p>Author of last commit:   $Author: beni $</p>
+                <p>Revision of last commit: $Rev: 452 $</p>
+                <p>Date of last commit:     $Date: 2018-05-07 09:55:14 +0200 (Mon, 07 May 2018) $</p>
+                <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
     </teiHeader>
@@ -138,7 +138,7 @@
                         <attDef ident="evaluate" mode="delete"/>
                     </attList>
                 </classSpec>
-                
+
                 <classSpec ident="att.global.linking" type="atts" mode="change">
                     <attList>
                         <attDef ident="synch" mode="delete"/>
@@ -150,7 +150,7 @@
                         <attDef ident="select" mode="delete"/>
                     </attList>
                 </classSpec>
-                
+
                 <classSpec ident="att.handFeatures" type="atts" mode="change">
                     <attList>
                         <attDef ident="scribe" mode="replace">
@@ -165,7 +165,7 @@
                         <attDef ident="scriptRef" mode="delete"/>
                     </attList>
                 </classSpec>
-                
+
                 <!--END CHANGES TO ATTRIBUTE CLASSES-->
                 <!---BEGIN GLOBAL SCH CONSTRAINTS-->
 
@@ -195,7 +195,7 @@
                             </sch:rule>
                         </sch:pattern>
                     </constraint>
-                </constraintSpec> 
+                </constraintSpec>
 
                 <!-- wird gar nicht verwendet
                 <constraintSpec scheme="isoschematron" ident="sch-damageSpan">
@@ -325,7 +325,7 @@
                 <elementSpec ident="encodingDesc" module="header" mode="change">
                     <content>
                         <rng:group>
-                                <rng:ref name="editorialDecl"/> 
+                                <rng:ref name="editorialDecl"/>
                         </rng:group>
                     </content>
                 </elementSpec>
@@ -437,7 +437,7 @@
                     </content>
                     <constraintSpec scheme="isoschematron" ident="msId_minimal" mode="delete"/>
                 </elementSpec>
-                
+
                 <elementSpec ident="additional" module="msdescription" mode="change">
                     <content>
                         <rng:oneOrMore>
@@ -445,7 +445,7 @@
                         </rng:oneOrMore>
                     </content>
                 </elementSpec>
-                
+
                 <!-- ebene 4 unterbaum teiHeader/fileDesc/titleStmt -->
                 <elementSpec ident="title" module="core" mode="change">
                     <!-- classes mode="replace">
@@ -453,17 +453,14 @@
                         <memberOf key="model.msQuoteLike"/>
                         <memberOf key="att.global"/>
                     </classes> -->
-                     <content>
-                        <rng:text/>
-                    </content>   
-                  <!--   <content>
+                    <content>
                         <rng:zeroOrMore>
                             <rng:choice>
                                 <rng:text/>
-                                <rng:ref name="macro.defaultContent"/>
-                            </rng:choice> 
+                                <rng:ref name="macro.defaultContent"/><!-- (u.a.) <hi> erlauben -->
+                            </rng:choice>
                         </rng:zeroOrMore>
-                    </content> hi zulassen-->
+                    </content>
                 </elementSpec>
                 <elementSpec ident="respStmt" module="core" mode="change">
                     <content>
@@ -509,7 +506,7 @@
                             <valList type="closed">
                                 <valItem ident="annunciation">
                                     <desc xml:lang="de">Annuntiationsstil</desc>
-                                    <desc xml:lang="fr">le style de l'Annonciation)</desc>
+                                    <desc xml:lang="fr">le style de l’Annonciation)</desc>
                                 </valItem>
                                 <valItem ident="circumcision">
                                     <desc xml:lang="de">Circumcisionsstil</desc>
@@ -672,7 +669,7 @@
                                 </valItem>
                                 <valItem ident="tagging">
                                     <desc xml:lang="de">Auszeichnung der Transkription</desc>
-                                    <desc xml:lang="fr">désignation d'une transcription</desc>
+                                    <desc xml:lang="fr">désignation d’une transcription</desc>
                                 </valItem>
                                 <valItem ident="index">
                                     <desc xml:lang="de">Index</desc>
@@ -701,7 +698,7 @@
                                 </valItem>
                                 <valItem ident="testis">
                                     <desc xml:lang="de">Zeuge</desc>
-                                    <desc xml:lang="fr">témoin d'une liste de témoins</desc>
+                                    <desc xml:lang="fr">témoin d’une liste de témoins</desc>
                                 </valItem>
                                 <valItem ident="issuer">
                                     <desc xml:lang="de">Aussteller</desc>
@@ -709,7 +706,7 @@
                                 </valItem>
                                 <valItem ident="recipient">
                                     <desc xml:lang="de">Empfänger</desc>
-                                    <desc xml:lang="fr">personne qui a reçu l'acte</desc>
+                                    <desc xml:lang="fr">personne qui a reçu l’acte</desc>
                                     <!-- Papsturkunden -->
                                 </valItem>
                                 <valItem ident="audentiaprocurator">
@@ -788,7 +785,7 @@
                                 </valItem>
                                 <valItem ident="recipient">
                                     <desc xml:lang="de">Empfänger</desc>
-                                    <desc xml:lang="fr">institution qui a reçu l'acte</desc>
+                                    <desc xml:lang="fr">institution qui a reçu l’acte</desc>
                                 </valItem>
                                 <valItem ident="sigillant">
                                     <desc xml:lang="de">Siegelinhaber</desc>
@@ -796,7 +793,7 @@
                                 </valItem>
                                 <valItem ident="testis">
                                     <desc xml:lang="de">Zeuge</desc>
-                                    <desc xml:lang="fr">institution d'une liste de témoins</desc>
+                                    <desc xml:lang="fr">institution d’une liste de témoins</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -844,7 +841,7 @@
                                 </valItem>
                                 <valItem ident="tagging">
                                     <desc xml:lang="de">Auszeichnung der Transkription</desc>
-                                    <desc xml:lang="fr">désignation d'une transcription</desc>
+                                    <desc xml:lang="fr">désignation d’une transcription</desc>
                                 </valItem>
                                 <valItem ident="index">
                                     <desc xml:lang="de">Index</desc>
@@ -967,7 +964,7 @@
                                 <rng:ref name="sic"/>
                                 <rng:ref name="corr"/>
                             </rng:group>
-                            <!-- 
+                            <!--
                             <rng:group>
                                 <rng:ref name="orig"/>
                                 <rng:ref name="reg"/>
@@ -1027,7 +1024,7 @@
                                 <rng:ref name="sic"/>
                                 <rng:ref name="unclear"/>
                                 <rng:ref name="num"/>
-                            </rng:choice> 
+                            </rng:choice>
                         </rng:zeroOrMore>
                     </content>
                     <attList>
@@ -1261,7 +1258,7 @@
                                 </valItem>
                                 <valItem ident="slit">
                                     <desc xml:lang="de">nur Siegelschlitz vorhanden</desc>
-                                    <desc xml:lang="fr">il n'existe qu'une fente pour le sceau</desc>
+                                    <desc xml:lang="fr">il n’existe qu’une fente pour le sceau</desc>
                                 </valItem>
                                 <valItem ident="wrapping-tie">
                                     <desc xml:lang="de">zum Verschluss aufgedrückt</desc>
@@ -1320,11 +1317,11 @@
                             <valList type="closed">
                                 <valItem ident="end">
                                     <desc xml:lang="de">am Ende der Urkunde</desc>
-                                    <desc xml:lang="fr">en bas de l'acte</desc>
+                                    <desc xml:lang="fr">en bas de l’acte</desc>
                                 </valItem>
                                 <valItem ident="overleaf">
                                     <desc xml:lang="de">auf der anderen Seite des Blattes</desc>
-                                    <desc xml:lang="fr">sur l'autre page de la feuille</desc>
+                                    <desc xml:lang="fr">sur l’autre page de la feuille</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -1951,7 +1948,7 @@
                                 </valItem>
                                 <valItem ident="chancery notation">
                                     <desc xml:lang="de">Kanzleivermerk</desc>
-                                    <desc xml:lang="fr">annotation issue d'une chancellerie</desc>
+                                    <desc xml:lang="fr">annotation issue d’une chancellerie</desc>
                                 </valItem>
                                 <valItem ident="archiving reference">
                                     <desc xml:lang="de">Registraturvermerk</desc>
@@ -1963,7 +1960,7 @@
                                 </valItem>
                                 <valItem ident="sigillant">
                                     <desc xml:lang="de">Sieglervermerk</desc>
-                                    <desc xml:lang="fr">annotation d'un sceau</desc>
+                                    <desc xml:lang="fr">annotation d’un sceau</desc>
                                 </valItem>
                                 <valItem ident="tax">
                                     <desc xml:lang="de">Taxvermerk</desc>
@@ -1980,11 +1977,11 @@
                             <valList type="closed">
                                 <valItem ident="above">
                                     <desc xml:lang="de">oberhalb des Textes</desc>
-                                    <desc xml:lang="fr">au-dessus d'une ligne</desc>
+                                    <desc xml:lang="fr">au-dessus d’une ligne</desc>
                                 </valItem>
                                 <valItem ident="below">
                                     <desc xml:lang="de">unterhalb des Textes</desc>
-                                    <desc xml:lang="fr">au-dessous d'une ligne</desc>
+                                    <desc xml:lang="fr">au-dessous d’une ligne</desc>
                                 </valItem>
                                 <valItem ident="cover">
                                     <desc xml:lang="de">auf dem Umschlag</desc>
@@ -2084,107 +2081,107 @@
                             <valList type="closed">
                                 <valItem ident="hand10c">
                                     <desc xml:lang="de">von Hand des 10. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du X<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du X<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand11c">
                                     <desc xml:lang="de">von Hand des 11. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XI<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XI<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand12c">
                                     <desc xml:lang="de">von Hand des 12. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XII<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand13c">
                                     <desc xml:lang="de">von Hand des 13. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIII<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XIII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand14c">
                                     <desc xml:lang="de">von Hand des 14. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIV<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XIV<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand15c">
                                     <desc xml:lang="de">von Hand des 15. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XV<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XV<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand16c">
                                     <desc xml:lang="de">von Hand des 16. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVI<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XVI<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand17c">
                                     <desc xml:lang="de">von Hand des 17. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVII<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XVII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand18c">
                                     <desc xml:lang="de">von Hand des 18. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVIII<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XVIII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand19c">
                                     <desc xml:lang="de">von Hand des 19. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIX<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XIX<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand20c">
                                     <desc xml:lang="de">von Hand des 20. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XX<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XX<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand21c">
                                     <desc xml:lang="de">von Hand des 21. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XXI<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XXI<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand10c?">
                                     <desc xml:lang="de">von Hand des 10. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du X<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du X<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand11c?">
                                     <desc xml:lang="de">von Hand des 11. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XI<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XI<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand12c?">
                                     <desc xml:lang="de">von Hand des 12. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XII<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand13c?">
                                     <desc xml:lang="de">von Hand des 13. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIII<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XIII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand14c?">
                                     <desc xml:lang="de">von Hand des 14. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIV<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XIV<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand15c?">
                                     <desc xml:lang="de">von Hand des 15. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XV<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XV<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand16c?">
                                     <desc xml:lang="de">von Hand des 16. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVI<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XVI<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand17c?">
                                     <desc xml:lang="de">von Hand des 17. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVII<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XVII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand18c?">
                                     <desc xml:lang="de">von Hand des 18. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVIII<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XVIII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand19c?">
                                     <desc xml:lang="de">von Hand des 19. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIX<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XIX<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand20c?">
                                     <desc xml:lang="de">von Hand des 20. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XX<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XX<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand21c?">
                                     <desc xml:lang="de">von Hand des 21. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XXI<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XXI<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="other hand">
                                     <desc xml:lang="de">von anderer Hand</desc>
-                                    <desc xml:lang="fr">écrit d'une autre main</desc>
+                                    <desc xml:lang="fr">écrit d’une autre main</desc>
                                 </valItem>
                                 <valItem ident="later hand">
                                     <desc xml:lang="de">von späterer Hand</desc>
-                                    <desc xml:lang="fr">d'un main plus récente</desc>
+                                    <desc xml:lang="fr">d’un main plus récente</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -2214,108 +2211,108 @@
                             <valList type="closed">
                                 <valItem ident="hand10c">
                                     <desc xml:lang="de">von Hand des 10. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du X<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du X<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand11c">
                                     <desc xml:lang="de">von Hand des 11. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XI<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XI<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand12c">
                                     <desc xml:lang="de">von Hand des 12. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XII<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand13c">
                                     <desc xml:lang="de">von Hand des 13. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIII<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XIII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand14c">
                                     <desc xml:lang="de">von Hand des 14. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIV<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XIV<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand15c">
                                     <desc xml:lang="de">von Hand des 15. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XV<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XV<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand16c">
                                     <desc xml:lang="de">von Hand des 16. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVI<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XVI<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand17c">
                                     <desc xml:lang="de">von Hand des 17. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVII<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XVII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand18c">
                                     <desc xml:lang="de">von Hand des 18. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVIII<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XVIII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand19c">
                                     <desc xml:lang="de">von Hand des 19. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIX<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XIX<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand20c">
                                     <desc xml:lang="de">von Hand des 20. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XX<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XX<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand21c">
                                     <desc xml:lang="de">von Hand des 21. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XXI<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XXI<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand10c?">
                                     <desc xml:lang="de">von Hand des 10. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du X<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du X<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand11c?">
                                     <desc xml:lang="de">von Hand des 11. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XI<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XI<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand12c?">
                                     <desc xml:lang="de">von Hand des 12. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XII<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand13c?">
                                     <desc xml:lang="de">von Hand des 13. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIII<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XIII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand14c?">
                                     <desc xml:lang="de">von Hand des 14. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIV<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XIV<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand15c?">
                                     <desc xml:lang="de">von Hand des 15. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XV<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XV<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand16c?">
                                     <desc xml:lang="de">von Hand des 16. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVI<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XVI<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand17c?">
                                     <desc xml:lang="de">von Hand des 17. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVII<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XVII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand18c?">
                                     <desc xml:lang="de">von Hand des 18. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVIII<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XVIII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand19c?">
                                     <desc xml:lang="de">von Hand des 19. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIX<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XIX<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand20c?">
                                     <desc xml:lang="de">von Hand des 20. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XX<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XX<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand21c?">
                                     <desc xml:lang="de">von Hand des 21. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XXI<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XXI<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="other hand">
                                     <desc xml:lang="de">von anderer Hand</desc>
-                                    <desc xml:lang="fr">écrit d'une autre main</desc>
+                                    <desc xml:lang="fr">écrit d’une autre main</desc>
                                     <!-- erscheint in der Anmerkung -->
                                 </valItem>
                                 <valItem ident="later hand">
                                     <desc xml:lang="de">von späterer Hand</desc>
-                                    <desc xml:lang="fr">d'un main plus récente</desc>
+                                    <desc xml:lang="fr">d’un main plus récente</desc>
                                     <!-- erscheint im Haupttext -->
                                 </valItem>
                             </valList>
@@ -2325,11 +2322,11 @@
                             <valList type="closed">
                                 <valItem ident="above">
                                     <desc xml:lang="de">oberhalb der Zeile</desc>
-                                    <desc xml:lang="fr">au-dessus d'une ligne</desc>
+                                    <desc xml:lang="fr">au-dessus d’une ligne</desc>
                                 </valItem>
                                 <valItem ident="below">
                                     <desc xml:lang="de">unterhalb der Zeile</desc>
-                                    <desc xml:lang="fr">au-dessous d'une ligne</desc>
+                                    <desc xml:lang="fr">au-dessous d’une ligne</desc>
                                 </valItem>
                                 <valItem ident="cover">
                                     <desc xml:lang="de">auf dem Umschlag</desc>
@@ -2353,7 +2350,7 @@
                                 </valItem>
                                 <valItem ident="inline">
                                     <desc xml:lang="de">auf Zeilenhöhe</desc>
-                                    <desc xml:lang="fr">à l'hauteur de la ligne</desc>
+                                    <desc xml:lang="fr">à l’hauteur de la ligne</desc>
                                 </valItem>
                                 <valItem ident="interlinear">
                                     <desc xml:lang="de">zwischen zwei Zeilen</desc>
@@ -2407,7 +2404,7 @@
                             <valList type="closed">
                                 <valItem ident="sign">
                                     <desc xml:lang="de">mit Einfügungszeichen</desc>
-                                    <desc xml:lang="fr">signe d'insertion</desc>
+                                    <desc xml:lang="fr">signe d’insertion</desc>
                                 </valItem>
                                 <valItem ident="catchword">
                                     <desc xml:lang="de">Kustode</desc>
@@ -2449,11 +2446,11 @@
                             <valList type="closed">
                                 <valItem ident="above">
                                     <desc xml:lang="de">oberhalb der Zeile</desc>
-                                    <desc xml:lang="fr">au-dessus d'une ligne</desc>
+                                    <desc xml:lang="fr">au-dessus d’une ligne</desc>
                                 </valItem>
                                 <valItem ident="below">
                                     <desc xml:lang="de">unterhalb der Zeile</desc>
-                                    <desc xml:lang="fr">au-dessous d'une ligne</desc>
+                                    <desc xml:lang="fr">au-dessous d’une ligne</desc>
                                 </valItem>
                                 <valItem ident="bottom">
                                     <desc xml:lang="de">am unteren Rand</desc>
@@ -2465,7 +2462,7 @@
                                 </valItem>
                                 <valItem ident="inline">
                                     <desc xml:lang="de">auf Zeilenhöhe</desc>
-                                    <desc xml:lang="fr">à l'hauteur de la ligne </desc>
+                                    <desc xml:lang="fr">à l’hauteur de la ligne </desc>
                                 </valItem>
                                 <valItem ident="left margin">
                                     <desc xml:lang="de">am linken Rand</desc>
@@ -2499,108 +2496,108 @@
                             <valList type="closed">
                                 <valItem ident="hand10c">
                                     <desc xml:lang="de">von Hand des 10. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du X<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du X<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand11c">
                                     <desc xml:lang="de">von Hand des 11. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XI<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XI<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand12c">
                                     <desc xml:lang="de">von Hand des 12. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XII<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand13c">
                                     <desc xml:lang="de">von Hand des 13. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIII<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XIII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand14c">
                                     <desc xml:lang="de">von Hand des 14. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIV<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XIV<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand15c">
                                     <desc xml:lang="de">von Hand des 15. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XV<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XV<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand16c">
                                     <desc xml:lang="de">von Hand des 16. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVI<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XVI<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand17c">
                                     <desc xml:lang="de">von Hand des 17. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVII<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XVII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand18c">
                                     <desc xml:lang="de">von Hand des 18. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVIII<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XVIII<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand19c">
                                     <desc xml:lang="de">von Hand des 19. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIX<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XIX<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand20c">
                                     <desc xml:lang="de">von Hand des 20. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XX<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XX<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand21c">
                                     <desc xml:lang="de">von Hand des 21. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XXI<hi rend="sup" >e</hi> siècle</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XXI<hi rend="sup" >e</hi> siècle</desc>
                                 </valItem>
                                 <valItem ident="hand10c?">
                                     <desc xml:lang="de">von Hand des 10. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du X<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du X<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand11c?">
                                     <desc xml:lang="de">von Hand des 11. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XI<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XI<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand12c?">
                                     <desc xml:lang="de">von Hand des 12. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XII<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand13c?">
                                     <desc xml:lang="de">von Hand des 13. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIII<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XIII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand14c?">
                                     <desc xml:lang="de">von Hand des 14. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIV<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XIV<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand15c?">
                                     <desc xml:lang="de">von Hand des 15. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XV<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XV<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand16c?">
                                     <desc xml:lang="de">von Hand des 16. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVI<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XVI<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand17c?">
                                     <desc xml:lang="de">von Hand des 17. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVII<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XVII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand18c?">
                                     <desc xml:lang="de">von Hand des 18. Jh.</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XVIII<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XVIII<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand19c?">
                                     <desc xml:lang="de">von Hand des 19. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XIX<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XIX<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand20c?">
                                     <desc xml:lang="de">von Hand des 20. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XX<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XX<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="hand21c?">
                                     <desc xml:lang="de">von Hand des 21. Jh.?</desc>
-                                    <desc xml:lang="fr">écrit d'une main du XXI<hi rend="sup" >e</hi> siècle?</desc>
+                                    <desc xml:lang="fr">écrit d’une main du XXI<hi rend="sup" >e</hi> siècle?</desc>
                                 </valItem>
                                 <valItem ident="other hand">
                                     <desc xml:lang="de">von anderer Hand</desc>
-                                    <desc xml:lang="fr">écrit d'une autre main</desc>
+                                    <desc xml:lang="fr">écrit d’une autre main</desc>
                                     <!-- erscheint in der Anmerkung -->
                                 </valItem>
                                 <valItem ident="later hand">
                                     <desc xml:lang="de">von späterer Hand</desc>
-                                    <desc xml:lang="fr">d'un main plus récente</desc>
+                                    <desc xml:lang="fr">d’un main plus récente</desc>
                                     <!-- erscheint im Haupttext -->
                                 </valItem>
                             </valList>
@@ -2619,7 +2616,7 @@
                             <valList type="closed">
                                 <valItem ident="sign">
                                     <desc xml:lang="de">mit Zeichen</desc>
-                                    <desc xml:lang="fr">signe d'insertion</desc>
+                                    <desc xml:lang="fr">signe d’insertion</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -2740,7 +2737,7 @@
                                 </valItem>
                                 <valItem ident="faded ink">
                                     <desc xml:lang="de">verblasste Tinte</desc>
-                                    <desc xml:lang="fr">l'encre s'est affaiblie</desc>
+                                    <desc xml:lang="fr">l’encre s’est affaiblie</desc>
                                 </valItem>
                                 <valItem ident="fold">
                                     <desc xml:lang="de">Falt</desc>
@@ -2760,11 +2757,11 @@
                                 </valItem>
                                 <valItem ident="ink blot">
                                     <desc xml:lang="de">Tintenklecks</desc>
-                                    <desc xml:lang="fr">taché par l'encre</desc>
+                                    <desc xml:lang="fr">taché par l’encre</desc>
                                 </valItem>
                                 <valItem ident="ink hole">
                                     <desc xml:lang="de">Tintenfrass</desc>
-                                    <desc xml:lang="fr">acidité de l'encre</desc>
+                                    <desc xml:lang="fr">acidité de l’encre</desc>
                                 </valItem>
                                 <valItem ident="insects">
                                     <desc xml:lang="de">Insektenfrass</desc>
@@ -2792,7 +2789,7 @@
                                 </valItem>
                                 <!-- <valItem ident="rubbing">
                                     <desc xml:lang="de">Rasur</desc>
-                                    DEL verwenden 
+                                    DEL verwenden
                                 </valItem>-->
                                 <valItem ident="smoke">
                                     <desc xml:lang="de">Rauch/Brandschaden</desc>
@@ -2845,7 +2842,7 @@
                                 </valItem>
                                 <valItem ident="faded ink">
                                     <desc xml:lang="de">verblasste Tinte</desc>
-                                    <desc xml:lang="fr">l'encre s'est affaiblie</desc>
+                                    <desc xml:lang="fr">l’encre s’est affaiblie</desc>
                                 </valItem>
                                 <valItem ident="fold">
                                     <desc xml:lang="de">Falt</desc>
@@ -2865,11 +2862,11 @@
                                 </valItem>
                                 <valItem ident="ink blot">
                                     <desc xml:lang="de">Tintenklecks</desc>
-                                    <desc xml:lang="fr">taché par l'encre</desc>
+                                    <desc xml:lang="fr">taché par l’encre</desc>
                                 </valItem>
                                 <valItem ident="ink hole">
                                     <desc xml:lang="de">Tintenfrass</desc>
-                                    <desc xml:lang="fr">endommagé par l'acidité de l'encre</desc>
+                                    <desc xml:lang="fr">endommagé par l’acidité de l’encre</desc>
                                 </valItem>
                                 <valItem ident="insects">
                                     <desc xml:lang="de">Insektenfrass</desc>
@@ -2897,7 +2894,7 @@
                                 </valItem>
                                 <!-- <valItem ident="rubbing">
                                     <desc xml:lang="de">Rasur</desc>
-                                    DEL verwenden 
+                                    DEL verwenden
                                 </valItem>-->
                                 <valItem ident="smoke">
                                     <desc xml:lang="de">Rauch/Brandschaden</desc>
@@ -2971,12 +2968,12 @@
                             <valList type="closed">
                                 <valItem ident="later hand">
                                     <desc xml:lang="de">von späterer Hand</desc>
-                                    <desc xml:lang="fr">écrit d'une autre main</desc>
+                                    <desc xml:lang="fr">écrit d’une autre main</desc>
                                     <!-- Text in den Anmerkungen -->
                                 </valItem>
                                 <valItem ident="other hand">
                                     <desc xml:lang="de">von anderer Hand</desc>
-                                    <desc xml:lang="fr">d'un main plus récente</desc>
+                                    <desc xml:lang="fr">d’un main plus récente</desc>
                                     <!-- Text im Haupttext -->
                                 </valItem>
                             </valList>
@@ -3010,8 +3007,8 @@
                                <valItem ident="strikethrough">
                                     <desc xml:lang="de">Streichung durch einfache
                                         Durchstreichung</desc>
-                                    <desc xml:lang="fr">la suppression a été tracée</desc> 
-                                </valItem> 
+                                    <desc xml:lang="fr">la suppression a été tracée</desc>
+                                </valItem>
                                 <valItem ident="subpunction">
                                     <desc xml:lang="de">Streichung durch Punkte unter dem zu
                                         Streichenden</desc>
@@ -3094,11 +3091,11 @@
                             <valList type="closed">
                             <valItem ident="other hand">
                                 <desc xml:lang="de">von anderer Hand</desc>
-                                <desc xml:lang="fr">écrit d'une autre main</desc>
+                                <desc xml:lang="fr">écrit d’une autre main</desc>
                             </valItem>
                             <valItem ident="later hand">
                                 <desc xml:lang="de">von späterer Hand</desc>
-                                <desc xml:lang="fr">d'un main plus récente</desc>
+                                <desc xml:lang="fr">d’un main plus récente</desc>
                             </valItem>
                             </valList>
                         </attDef>
@@ -3138,7 +3135,7 @@
                                 </valItem>
                                 <valItem ident="framed">
                                     <desc xml:lang="de">umrandet</desc>
-                                    <desc xml:lang="fr">encadré</desc> 
+                                    <desc xml:lang="fr">encadré</desc>
                                 </valItem>
                                 <valItem ident="font change">
                                     <desc xml:lang="de">Schriftwechsel</desc>
@@ -3172,7 +3169,7 @@
                             <valList type="closed">
                                 <valItem ident="later hand">
                                     <desc xml:lang="de">von späterer Hand</desc>
-                                    <desc xml:lang="fr">d'un main plus récente </desc>
+                                    <desc xml:lang="fr">d’un main plus récente </desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -3301,14 +3298,18 @@
                                 </valItem>
                                 <valItem ident="Elsass">
                                     <desc xml:lang="de">Elsässer</desc>
-                                    <desc xml:lang="fr">de l'Alsace</desc>
+                                    <desc xml:lang="fr">de l’Alsace</desc>
+                                </valItem>
+                                <valItem ident="Etsch">
+                                    <desc xml:lang="de">Etsch</desc>
+                                    <desc xml:lang="fr">de l’Adige</desc>
                                 </valItem>
                                 <valItem ident="Feldkirch">
                                     <desc xml:lang="de">Feldkircher</desc>
                                     <desc xml:lang="fr">de Feldkirch</desc>
                                 </valItem>
                                 <valItem ident="Florenz">
-                                    <desc xml:lang="de">Florenzer</desc>
+                                    <desc xml:lang="de">Florentiner</desc>
                                     <desc xml:lang="fr">de Florence</desc>
                                 </valItem>
                                 <valItem ident="HU">
@@ -3326,14 +3327,14 @@
                                 <valItem ident="LU">
                                     <desc xml:lang="de">Luzerner</desc>
                                     <desc xml:lang="fr">de Lucerne</desc>
-                                </valItem>    
+                                </valItem>
                                 <valItem ident="NE">
                                     <desc xml:lang="de">Neuenburger</desc>
                                     <desc xml:lang="fr">de Neuchâtel</desc>
-                                </valItem>         
+                                </valItem>
                                 <valItem ident="Österreich">
                                     <desc xml:lang="de">Österreicher</desc>
-                                    <desc xml:lang="fr">d'Autriche</desc>
+                                    <desc xml:lang="fr">d’Autriche</desc>
                                 </valItem>
                                 <valItem ident="Rh">
                                     <desc xml:lang="de">Rheinischer</desc>
@@ -3349,7 +3350,7 @@
                                 </valItem>
                                 <valItem ident="Utrecht">
                                     <desc xml:lang="de">utrischer</desc>
-                                    <desc xml:lang="fr">d'Utrecht</desc>
+                                    <desc xml:lang="fr">d’Utrecht</desc>
                                 </valItem>
                                 <valItem ident="Werdenberg">
                                     <desc xml:lang="de">Werdenberger</desc>
@@ -3391,7 +3392,7 @@
                             </valItem>
                                 <valItem ident="butter">
                                     <desc xml:lang="de">Butter</desc>
-                                    <desc xml:lang="fr">beurre</desc> 
+                                    <desc xml:lang="fr">beurre</desc>
                                 </valItem>
                                 <valItem ident="spelt">
                                     <desc xml:lang="de">Dinkel</desc>
@@ -3423,7 +3424,7 @@
                                     <desc xml:lang="fr">viande</desc>
                                 </valItem>
                             <valItem ident="vegetables">
-                                <desc xml:lang="de">Gemüse</desc> 
+                                <desc xml:lang="de">Gemüse</desc>
                             <desc xml:lang="it">verdura</desc>
                             <desc xml:lang="fr">légume</desc>
                             </valItem>
@@ -3437,7 +3438,7 @@
                                 </valItem>
                                 <valItem ident="oat">
                                     <desc xml:lang="de">Hafer</desc>
-                                     <desc xml:lang="fr">avoine</desc> 
+                                     <desc xml:lang="fr">avoine</desc>
                                 </valItem>
                                 <valItem ident="hemp">
                                     <desc xml:lang="de">Hanf</desc>
@@ -3449,7 +3450,7 @@
                                 </valItem>
                                     <valItem ident="herring">
                                         <desc xml:lang="de">Hering</desc>
-                                         <desc xml:lang="fr">hareng</desc> 
+                                         <desc xml:lang="fr">hareng</desc>
                                     </valItem>
                                 <valItem ident="sorghum">
                                     <desc xml:lang="de">Hirse</desc>
@@ -3469,15 +3470,15 @@
                                 </valItem>
                                 <valItem ident="lime">
                                     <desc xml:lang="de">Kalk</desc>
-                                  <desc xml:lang="fr">chaux</desc> 
+                                  <desc xml:lang="fr">chaux</desc>
                                 </valItem>
                                 <valItem ident="potatoes">
                                     <desc xml:lang="de">Kartoffeln</desc>
-                                    <desc xml:lang="fr">pommes de terre</desc> 
+                                    <desc xml:lang="fr">pommes de terre</desc>
                                 </valItem>
                                 <valItem ident="cheese">
                                     <desc xml:lang="de">Käse</desc>
-                                    <desc xml:lang="fr">fromage</desc> 
+                                    <desc xml:lang="fr">fromage</desc>
                                 </valItem>
                                 <valItem ident="merchandise">
                                     <desc xml:lang="de">Kaufmannsgut</desc>
@@ -3486,15 +3487,15 @@
                                 <valItem ident="bran">
                                     <desc xml:lang="de">Kleie</desc>
                                    <desc xml:lang="fr">son</desc>
-                                    <desc xml:lang="it">crusca</desc> 
+                                    <desc xml:lang="it">crusca</desc>
                                 </valItem>
                                 <valItem ident="grain">
                                     <desc xml:lang="de">Korn</desc>
-                                     <desc xml:lang="fr">grain</desc> 
+                                     <desc xml:lang="fr">grain</desc>
                                 </valItem>
                                 <valItem ident="grain_wheat">
                                     <desc xml:lang="de">Korn und Weizen</desc>
-                                    <desc xml:lang="fr">grain et blé</desc> 
+                                    <desc xml:lang="fr">grain et blé</desc>
                                 </valItem>
                                 <valItem ident="land">
                                     <desc xml:lang="de">Land</desc>
@@ -3502,11 +3503,11 @@
                                 </valItem>
                                 <valItem ident="electuary">
                                     <desc xml:lang="de">Latwerge</desc>
-                                    <desc xml:lang="fr">électuaire</desc> 
+                                    <desc xml:lang="fr">électuaire</desc>
                                 </valItem>
                                 <valItem ident="lentils">
                                     <desc xml:lang="de">Linsen</desc>
-                              <desc xml:lang="fr">lentilles</desc> 
+                              <desc xml:lang="fr">lentilles</desc>
                                 </valItem>
                                 <valItem ident="flour">
                                     <desc xml:lang="de">Mehl</desc>
@@ -3514,35 +3515,35 @@
                                 </valItem>
                                 <valItem ident="milk">
                                     <desc xml:lang="de">Milch</desc>
-                                    <desc xml:lang="fr">lait</desc> 
+                                    <desc xml:lang="fr">lait</desc>
                                 </valItem>
                                 <valItem ident="dung">
                                     <desc xml:lang="de">Mist</desc>
-                                    <desc xml:lang="fr">fumier</desc> 
+                                    <desc xml:lang="fr">fumier</desc>
                                 </valItem>
                                 <valItem ident="must">
                                     <desc xml:lang="de">Most</desc>
-                                    <desc xml:lang="fr">cidre</desc> 
+                                    <desc xml:lang="fr">cidre</desc>
                                 </valItem>
                                 <valItem ident="mush">
                                     <desc xml:lang="de">Mus</desc>
-                                    <desc xml:lang="fr"></desc> 
+                                    <desc xml:lang="fr"></desc>
                                 </valItem>
                                 <valItem ident="nuts">
                                     <desc xml:lang="de">Nüsse</desc>
-                                    <desc xml:lang="fr">noix</desc> 
+                                    <desc xml:lang="fr">noix</desc>
                                 </valItem>
                                 <valItem ident="vineyard">
                                     <desc xml:lang="de">Reben</desc>
-                                    <desc xml:lang="fr">vigne</desc> 
+                                    <desc xml:lang="fr">vigne</desc>
                                 </valItem>
                                 <valItem ident="rice">
                                     <desc xml:lang="de">Reis</desc>
-                                  <desc xml:lang="fr">riz</desc> 
+                                  <desc xml:lang="fr">riz</desc>
                                 </valItem>
                                 <valItem ident="marsh">
                                     <desc xml:lang="de">Ried</desc>
-                                   <desc xml:lang="fr">marais</desc> 
+                                   <desc xml:lang="fr">marais</desc>
                                 </valItem>
                                 <valItem ident="rye">
                                     <desc xml:lang="de">Roggen</desc>
@@ -3551,7 +3552,7 @@
                                 </valItem>
                                 <valItem ident="salt">
                                     <desc xml:lang="de">Salz</desc>
-                                     <desc xml:lang="fr">sel</desc> 
+                                     <desc xml:lang="fr">sel</desc>
                                 </valItem>
                                 <valItem ident="lard">
                                     <desc xml:lang="de">Schmalz</desc>
@@ -3559,35 +3560,35 @@
                                 </valItem>
                                 <valItem ident="silk">
                                     <desc xml:lang="de">Seide</desc>
-                                   <desc xml:lang="fr">soie</desc> 
+                                   <desc xml:lang="fr">soie</desc>
                                 </valItem>
                                 <valItem ident="silver">
                                     <desc xml:lang="de">Silber</desc>
-                                    <desc xml:lang="fr">argent</desc> 
+                                    <desc xml:lang="fr">argent</desc>
                                 </valItem>
                                 <valItem ident="steel">
                                     <desc xml:lang="de">Stahl</desc>
-                                 <desc xml:lang="fr">acier</desc> 
+                                 <desc xml:lang="fr">acier</desc>
                                 </valItem>
                                 <valItem ident="picket">
                                     <desc xml:lang="de">Stickel</desc>
-                                    <desc xml:lang="fr">échalas</desc> 
+                                    <desc xml:lang="fr">échalas</desc>
                                 </valItem>
                                 <valItem ident="straw">
                                     <desc xml:lang="de">Stroh</desc>
-                                   <desc xml:lang="fr">paille</desc> 
+                                   <desc xml:lang="fr">paille</desc>
                                 </valItem>
                                 <valItem ident="drapery">
                                     <desc xml:lang="de">Tuch</desc>
-                                     <desc xml:lang="fr">étoffe</desc> 
+                                     <desc xml:lang="fr">étoffe</desc>
                                 </valItem>
                                 <valItem ident="tallow">
                                     <desc xml:lang="de">Unschlitt</desc>
-                                    <desc xml:lang="fr"></desc> 
+                                    <desc xml:lang="fr"></desc>
                                 </valItem>
                                 <valItem ident="wax">
-                                    <desc xml:lang="de">Wachs</desc>    
-                                  <desc xml:lang="fr">cire</desc> 
+                                    <desc xml:lang="de">Wachs</desc>
+                                  <desc xml:lang="fr">cire</desc>
                                 </valItem>
                                 <valItem ident="forest">
                                     <desc xml:lang="de">Wald</desc>
@@ -3595,19 +3596,19 @@
                                 </valItem>
                                 <valItem ident="wine">
                                     <desc xml:lang="de">Wein</desc>
-                                    <desc xml:lang="fr"></desc> 
+                                    <desc xml:lang="fr"></desc>
                                 </valItem>
                                 <valItem ident="wheat">
                                     <desc xml:lang="de">Weizen</desc>
-                                   <desc xml:lang="fr">vin</desc> 
+                                   <desc xml:lang="fr">vin</desc>
                                 </valItem>
                                 <valItem ident="grassland">
                                     <desc xml:lang="de">Wiese</desc>
-                                     <desc xml:lang="fr">pré</desc> 
+                                     <desc xml:lang="fr">pré</desc>
                                 </valItem>
                                 <valItem ident="wool">
                                     <desc xml:lang="de">Wolle</desc>
-                                    <desc xml:lang="fr">laine</desc> 
+                                    <desc xml:lang="fr">laine</desc>
                                 </valItem>
                                 <valItem ident="Ziger">
                                     <desc xml:lang="de">Ziger</desc>
@@ -3615,7 +3616,7 @@
                                 </valItem>
                                 <valItem ident="denim">
                                     <desc xml:lang="de">Zwillich</desc>
-                                     <desc xml:lang="fr">coutil</desc> 
+                                     <desc xml:lang="fr">coutil</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -3652,7 +3653,7 @@
                                 </valItem>
                             </valList>
                         </attDef>
-                        <!--  
+                        <!--
                         <attDef ident="quantity" mode="replace">
                             <desc/>
                             <valList type="closed">
@@ -3852,12 +3853,12 @@
                                 <valItem ident="Kuhsömmerung">
                                     <desc xml:lang="de">Kuhsömmerung</desc>
                                     <desc xml:lang="de" type="plural">Kuhsömmerungen</desc>
-                                    <desc xml:lang="fr">valeur d'un alpage selon le nombre de vaches qui peuvent y paître en ét</desc>
+                                    <desc xml:lang="fr">valeur d’un alpage selon le nombre de vaches qui peuvent y paître en ét</desc>
                                 </valItem>
                                 <valItem ident="Kuhwinterung">
                                     <desc xml:lang="de">Kuhwinterung</desc>
                                     <desc xml:lang="de" type="plural">Kuhwinterungen</desc>
-                                    <desc xml:lang="fr">valeur d'un alpage selon le nombre de vaches qui peuvent y paître en hiver</desc>
+                                    <desc xml:lang="fr">valeur d’un alpage selon le nombre de vaches qui peuvent y paître en hiver</desc>
                                 </valItem>
                                 <valItem ident="Mal">
                                     <desc xml:lang="de">Mal</desc>
@@ -4080,7 +4081,7 @@
                                 </valItem>
                                 <valItem ident="Ort">
                                     <desc xml:lang="de">Ort</desc>
-                                    <desc xml:lang="fr">un quart d'un florin</desc>
+                                    <desc xml:lang="fr">un quart d’un florin</desc>
                                 </valItem>
                                 <valItem ident="plp">
                                     <desc xml:lang="de">Plappart</desc>
@@ -4113,7 +4114,7 @@
                                 </valItem>
                                 <!--  -->
                                 <valItem ident="year">
-                                    <desc xml:lang="de">Jahr</desc> 
+                                    <desc xml:lang="de">Jahr</desc>
                                     <desc xml:lang="de" type="plural">Jahre</desc>
                                     <desc xml:lang="fr">année</desc>
                                 </valItem>
@@ -4180,7 +4181,7 @@
                             <valList type="closed">
                                 <valItem ident="annunciation">
                                     <desc xml:lang="de">Annuntiationsstil</desc>
-                                    <desc xml:lang="fr">le style de l'Annonciation)</desc>
+                                    <desc xml:lang="fr">le style de l’Annonciation)</desc>
                                 </valItem>
                                 <valItem ident="circumcision">
                                     <desc xml:lang="de">Circumcisionsstil</desc>
@@ -4358,7 +4359,7 @@
                               <rng:text/>
                               <rng:ref name="p"/>
                                 <rng:ref name="anchor"/>
-                              <rng:ref name="macro.defaultContent"/>                               
+                              <rng:ref name="macro.defaultContent"/>
                            </rng:choice>
                         </rng:oneOrMore>
                     </content>
@@ -4517,7 +4518,7 @@
                                 </valItem>
                                 <valItem ident="omitted line">
                                     <desc xml:lang="de">Zeilensprung</desc>
-                                    <desc xml:lang="fr">omission d'une ligne</desc>
+                                    <desc xml:lang="fr">omission d’une ligne</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -4583,7 +4584,7 @@
                                 <rng:text/>
                             </datatype>
                         </attDef>
-                        <!--                         
+                        <!--
                     <attDef ident="dur"/>
                         <attDef ident="dur" mode="replace">
                             <desc xml:lang="de">Angabe von Zeitperiode oder Zeitpunkt</desc>
@@ -4620,7 +4621,7 @@
                                 </valItem>
                                 <valItem ident="#afternoon">
                                     <desc xml:lang="de">Nachmittags</desc>
-                                    <desc xml:lang="fr">l'après-midi</desc>
+                                    <desc xml:lang="fr">l’après-midi</desc>
                                 </valItem>
                                 <valItem ident="#byNight">
                                     <desc xml:lang="de">Nachts</desc>
@@ -4692,11 +4693,11 @@
                     <valList>
                         <valItem ident="abbr-expanded">
                             <desc xml:lang="de">Aufgelöste Abkürzung</desc>
-                            <desc xml:lang="fr">Résolution d'abbréviation</desc>
+                            <desc xml:lang="fr">Résolution d’abbréviation</desc>
                         </valItem>
                         <valItem ident="abbr-nonexpanded">
                             <desc xml:lang="de">In der Vorlage</desc>
-                            <desc xml:lang="fr">À l'original</desc>
+                            <desc xml:lang="fr">À l’original</desc>
                         </valItem>
                         <valItem ident="abbr-unclear">
                             <desc xml:lang="de">Abkürzung, unsichere Lesung</desc>
@@ -4733,10 +4734,10 @@
                         <valItem ident="del">
                             <desc xml:lang="de">Streichung</desc>
                             <desc xml:lang="fr">Suppression</desc>
-                        </valItem>   
+                        </valItem>
                         <valItem ident="del-add">
                             <desc xml:lang="de">Streichung der Hinzufügung</desc>
-                            <desc xml:lang="fr">Suppression de l'ajout</desc>
+                            <desc xml:lang="fr">Suppression de l’ajout</desc>
                         </valItem>
                         <valItem ident="unreadable">
                             <desc xml:lang="de">unlesbar</desc>
@@ -4800,7 +4801,7 @@
                         </valItem>
                         <valItem ident="origPlace">
                             <desc xml:lang="de">Ausstellungsort</desc>
-                            <desc xml:lang="fr">Lieu d'origine</desc>
+                            <desc xml:lang="fr">Lieu d’origine</desc>
                             <desc xml:lang="en">Origin place</desc>
                         </valItem>
                         <valItem ident="amount">
@@ -4913,7 +4914,7 @@
                         </valItem>
                         <valItem ident="scribe2">
                             <desc xml:lang="de">Nachtragshand</desc>
-                            <desc xml:lang="fr">main de l'ajout</desc>
+                            <desc xml:lang="fr">main de l’ajout</desc>
                         </valItem>
                         <valItem ident="by">
                             <desc xml:lang="de">von </desc>
@@ -4929,7 +4930,7 @@
                             <desc xml:lang="fr">Ancienne cote</desc>
                         </valItem>
                         <valItem ident="year">
-                            <desc xml:lang="de">Jahr</desc> 
+                            <desc xml:lang="de">Jahr</desc>
                             <desc xml:lang="de" type="plural">Jahre</desc>
                             <desc xml:lang="fr">année</desc>
                             <desc xml:lang="fr" type="plural">années</desc>
@@ -4974,7 +4975,7 @@
                     </valList>
                 </dataSpec>
             </schemaSpec>
-            
+
             <!--END ODD SCHEMA SPEC-->
         </body>
     </text>
