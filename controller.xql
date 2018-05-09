@@ -1,4 +1,4 @@
-xquery version "3.0";
+xquery version "3.1";
 
 import module namespace login="http://exist-db.org/xquery/login" at "resource:org/exist/xquery/modules/persistentlogin/login.xql";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "modules/config.xqm";
@@ -11,6 +11,23 @@ declare variable $exist:root external;
 
 declare variable $logout := request:get-parameter("logout", ());
 declare variable $login := request:get-parameter("user", ());
+
+declare function local:resolve($path as xs:string, $name as xs:string) {
+    if (doc-available(``[`{$config:data-root}`/`{$path}`/`{$name}`]``)) then
+        ()
+    else
+        let $basename := replace($name, "^([^\.]+)\..*$", "$1")
+        let $suffix := replace($name, "^[^\.]+(\..*)$", "$1")
+        let $name := $basename || "_1" || $suffix
+        return
+            if (doc-available(``[`{$config:data-root}`/`{$path}`/`{$name}`]``)) then
+                <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+                    <redirect url="{replace(request:get-uri(), '^(.*/ssrq/).*$', '$1')}{$path}/{$name}"/>
+                </dispatch>
+            else
+                ()
+};
+
 
 if ($exist:path eq '') then
     <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
@@ -77,6 +94,11 @@ else if (ends-with($exist:resource, ".xql")) then (
     (: let $id := replace(xmldb:decode($exist:resource), "^(.*)\..*$", "$1") :)
     let $id := xmldb:decode($exist:resource)
     let $path := substring-before($exist:path, $exist:resource)
+    let $redir := local:resolve($path, $id)
+    return
+        if ($redir) then
+            $redir
+        else
     let $mode := request:get-parameter("mode", ())
     let $facsimiles := request:get-parameter("facs", ())
     let $html :=
