@@ -23,17 +23,17 @@ function app:load($node as node(), $model as map(*), $doc as xs:string, $root as
     let $doc := xmldb:decode($doc)
     let $data :=
         if ($id) then
-            let $node := doc($config:data-root || "/" || $doc)/id($id)
-            let $div := $node/ancestor-or-self::tei:div[1]
-            let $config := tpu:parse-pi(root($node), $view)
+            let $node := collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id]/tei:text
+            let $node :=
+                if ($node) then
+                    $node
+                else
+                    collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id || "_1"]/tei:text
+            let $config := if ($node) then tpu:parse-pi(root($node), $view) else ()
             return
                 map {
                     "config": $config,
-                    "data":
-                        if (empty($div)) then
-                            $node/following-sibling::tei:div[1]
-                        else
-                            $div
+                    "data": $node
                 }
         else
             pages:load-xml($view, $root, $doc)
