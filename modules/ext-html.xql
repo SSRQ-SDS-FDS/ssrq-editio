@@ -33,12 +33,27 @@ declare function pmf:link($config as map(*), $node as node(), $class as xs:strin
 
 declare function pmf:reference($config as map(*), $node as element(), $class as xs:string+, $content,
     $ref, $label) {
-    <span class="reference {$class}">
-    <span>{$config?apply-children($config, $node, $content)}</span>
-    <span class="altcontent">
-        {$label, if (empty($ref)) then () else <span class="ref" data-ref="{$ref}"/>}
-    </span>
-    </span>
+    let $url :=
+        typeswitch($node)
+            case element(tei:persName) | element(tei:orgName) return
+                "https://www.ssrq-sds-fds.ch/persons-db-edit/?query=" || $ref[1]
+            case element(tei:placeName)  | element(tei:origPlace)  return
+                "https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id=" || $ref
+            case element(tei:term) return
+                if (tei:term[starts-with(@ref, 'key')]) then
+                    "https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id=" || $ref
+                else
+                    "https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-lemma.xq?id=" || $ref
+            default return $ref
+    return
+        <a target="_blank" href="{$url}"> 
+            <span class="reference {$class}">
+                <span>{$config?apply-children($config, $node, $content)}</span> 
+                    <span class="altcontent">
+                     {$label, if (empty($ref)) then () else <span class="ref" data-ref="{$ref}"/>}
+                </span>
+            </span>
+        </a>
 };
 
 declare function pmf:alternote($config as map(*), $node as element(), $class as xs:string+, $content,
