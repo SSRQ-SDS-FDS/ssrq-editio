@@ -51,7 +51,7 @@ $(document).ready(function() {
             }
             prev = prev.previousSibling;
         }
-        var src = prev.getAttribute('src');
+        var src = prev.getAttribute('data-facs');
         var pos = facsimiles.indexOf(iiifApi + src + "/info.json");
         if (seadragon.currentPage() !== pos) {
             seadragon.goToPage(pos);
@@ -140,8 +140,8 @@ $(document).ready(function() {
         if (document.getElementById("image-container")) {
             var foundFacs = {};
             facsimiles = [];
-            $("#document-pane img.facs").each(function() {
-                var src = $(this).attr("src");
+            $("#document-pane .facs").each(function() {
+                var src = $(this).attr("data-facs");
                 var url = iiifApi + src + "/info.json";
                 if (!foundFacs[url]) {
                     facsimiles.push(url);
@@ -152,7 +152,7 @@ $(document).ready(function() {
             seadragon.open(facsimiles);
 
             pagebreaks = [];
-            $(".pb-pagination, .pb-foliation").each(function() {
+            $(".pb-pagination, .pb-foliation, .pb-empty").each(function() {
                 pagebreaks.push(this);
             }).on('mouseover', function(ev) {
                 viewFacsimile(this);

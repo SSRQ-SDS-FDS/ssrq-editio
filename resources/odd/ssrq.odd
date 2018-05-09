@@ -134,15 +134,6 @@
                         <desc>Called to output the sigle of a document</desc>
                         <param name="content" value="format-date(xs:date(@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())"/>
                     </model>
-                    <!--<modelSequence predicate="parent::origin and text()" behaviour="listItem">
-                        <desc>Ausgabe in "Stückbeschreibung"</desc>
-                        <model behaviour="inline">
-                            <param name="content" value="(ec:label('origDate'), ': ', format-date(xs:date(@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()))"/>
-                        </model>
-                        <model behaviour="listItem" cssClass="content">
-                            <param name="content" value="(' (', text(), ')')"/>
-                        </model>
-                    </modelSequence>-->
                     <model predicate="parent::origin and @from and text()" behaviour="listItem">
                         <desc>Ausgabe in "Stückbeschreibung"</desc>
                         <param name="content" value="(ec:label('origDate'), ': ', format-date(xs:date(@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' – ', format-date(xs:date(@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' (', text(), ')')"/>
@@ -249,21 +240,6 @@
                         <param name="content" value="(ec:translate(@rend, 0, 'uppercase'), if (@hand) then (' ', ec:translate(@hand, 0, 'lowercase')) else ())"/>
                         <param name="type" value="'text-critical-start'"/>
                     </model>
-                    <!--<model predicate="@hand and @rend" behaviour="note">
-                        <param name="place" value=""footnote""/>
-                        <param name="type" value="'text-critical-start'"/>
-                        <param name="content" value="(ec:translate(@rend),ec:translate(@hand))"/>
-                    </model>
-                    <model predicate="@hand" behaviour="note">
-                        <param name="place" value=""footnote""/>
-                        <param name="type" value="'text-critical-start'"/>
-                        <param name="content" value="(ec:translate(@hand))"/>
-                    </model>
-                    <model predicate="@rend" behaviour="note">
-                        <param name="place" value=""footnote""/>
-                        <param name="content" value="(ec:translate(@rend))"/>
-                        <param name="type" value="'text-critical-start'"/>
-                    </model>-->
                 </elementSpec>
                 <elementSpec ident="damage" mode="add">
                     <model predicate="gap" behaviour="alternote" cssClass="text-critical">
@@ -590,33 +566,33 @@
                         <desc>If followed by an lb, process the lb first, then the pb</desc>
                         <param name="content" value="(following-sibling::lb[1], $node)"/>
                     </model>
-                    <modelGrp output="web">
-                        <model predicate="@facs" behaviour="graphic" cssClass="facs">
+                    <modelSequence output="web">
+                        <model predicate="@facs" behaviour="template" cssClass="facs">
                             <desc>Facsimile image links will be extracted via javascript</desc>
-                            <param name="url" value="@facs || '.ptif'"/>
+                            <param name="src" value="@facs || '.ptif'"/>
+                            <param name="content" value="&lt;span data-facs=&#34;$[src]&#34;/&gt;"/>
                             <outputRendition>
                                 display: none;
                             </outputRendition>
                         </model>
-                        <model predicate="ancestor::text and not(preceding::pb[ancestor::text])" behaviour="omit">
-                            <desc>Hide the very first pagebreak in a document</desc>
-                        </model>
-                        <model predicate="not(@*)" behaviour="alternate" cssClass="pb-empty">
-                            <desc>Show tooltip on pagebreaks that don't contain attributes</desc>
-                            <param name="default" value="'|'"/>
-                            <param name="alternate" value="ec:label('pb')"/>
-                        </model>
-                        <model predicate="number(@n) gt 0" behaviour="alternate" cssClass="pb-pagination">
-                            <desc>Show pagebreak with a label, if pb contains a @n attribute and its value only contains a number</desc>
-                            <param name="default" value="@n"/>
-                            <param name="alternate" value="ec:label('pb')"/>
-                        </model>
-                        <model predicate="not(number(@n) gt 0)" behaviour="alternate" cssClass="pb-foliation">
-                            <desc>Show pagebreak with a label, if pb contains a @n attribute and its value contains a number+string combination</desc>
-                            <param name="default" value="@n"/>
-                            <param name="alternate" value="ec:label('pb')"/>
-                        </model>
-                    </modelGrp>
+                        <modelGrp>
+                            <model predicate="not(@n)" behaviour="alternate" cssClass="pb-empty">
+                                <desc>Show tooltip on pagebreaks that don't contain attributes</desc>
+                                <param name="default" value="'|'"/>
+                                <param name="alternate" value="ec:label('pb')"/>
+                            </model>
+                            <model predicate="@n and number(@n) gt 0" behaviour="alternate" cssClass="pb-pagination">
+                                <desc>Show pagebreak with a label, if pb contains a @n attribute and its value only contains a number</desc>
+                                <param name="default" value="@n"/>
+                                <param name="alternate" value="ec:label('pb')"/>
+                            </model>
+                            <model predicate="@n and not(number(@n) gt 0)" behaviour="alternate" cssClass="pb-foliation">
+                                <desc>Show pagebreak with a label, if pb contains a @n attribute and its value contains a number+string combination</desc>
+                                <param name="default" value="@n"/>
+                                <param name="alternate" value="ec:label('pb')"/>
+                            </model>
+                        </modelGrp>
+                    </modelSequence>
                     <modelGrp output="print">
                         <model predicate="ancestor::text and not(preceding::pb[ancestor::text])" behaviour="omit">
                             <desc>Hide the very first pagebreak in a document</desc>
@@ -725,7 +701,6 @@
                             <param name="content" value="titleStmt"/>
                         </model>
                         <model behaviour="block" cssClass="header-short">
-                            <!--<param name="content" value="(seriesStmt, ' ', sourceDesc/msDesc/history/origin/origDate/@when, ' (prov.)')"/>-->
                             <param name="content" value="ec:format-id(seriesStmt/idno)"/>
                         </model>
                         <model behaviour="block" cssClass="header-short">
@@ -938,15 +913,11 @@
                     <model predicate="ancestor::app" behaviour="inline" cssClass="head">
                         <desc>Heading in app</desc>
                         <outputRendition>
-                            
-                            
                             display: block;
 font-weight: 700;
 line-height: 1.2;
 margin-top: 20px;
 margin-bottom: 10px;
-                        
-                        
                         </outputRendition>
                     </model>
                     <model predicate="@resp" behaviour="omit">
@@ -1011,12 +982,11 @@ margin-bottom: 10px;
                     </modelSequence>
                     <model behaviour="omit"/>
                 </elementSpec>
-                <elementSpec ident="bibl" mode="add">
-                    <!--<model behaviour="link">
-                        <param name="content" value="."/>
-                        <param name="uri" value="."/>
-                        <param name="target" value="'_new'"/>
-                    </model>-->
+                <elementSpec ident="bibl" mode="change">
+                    <model predicate="@type='url'" behaviour="template">
+                        <param name="content" value="&lt;li&gt;&lt;a href=&#34;$[url]&#34;&gt;$[url]&lt;/a&gt;&lt;/li&gt;"/>
+                        <param name="url" value="string()"/>
+                    </model>
                     <model behaviour="listItem"/>
                 </elementSpec>
                 <elementSpec ident="additional" mode="add">
