@@ -244,6 +244,11 @@ declare function query:filter($hits as element()*) {
                             let $dateMax := xs:date($value || "-01-01")
                             return
                                 $context[ancestor-or-self::tei:TEI//tei:publicationStmt/tei:date[@type='electronic'][@when <= $dateMax]]
+                        case "filter-pubplace" return
+                            if ($value = "yes") then
+                                $context[ancestor-or-self::tei:TEI//tei:history/tei:origin/tei:origPlace]
+                            else
+                                $context[not(ancestor-or-self::tei:TEI//tei:history/tei:origin/tei:origPlace)]
                         case "filter-archive" return
                             $context[starts-with(ancestor-or-self::tei:TEI//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno, $value)]
                         case "filter-filiation" return
@@ -604,7 +609,7 @@ function query:list-archives($node as node(), $model as map(*), $filter-archive 
         order by $idno
     return
         <option>
-            
+
         {
             if ($idno = $filter-archive) then
                 attribute selected { "selected" }
