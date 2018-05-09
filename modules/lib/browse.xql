@@ -32,7 +32,7 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare
     %templates:wrap
 function app:show-for-document($node as node(), $model as map(*), $doc as xs:string?, $query as xs:string?, $start as xs:string?) {
-    if ($doc and empty($query) and empty($start)) then
+    if ($doc) then
         templates:process($node/*, $model)
     else
         ()
