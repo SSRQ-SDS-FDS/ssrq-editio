@@ -437,30 +437,42 @@ declare function query:category($hit as element()) {
         default return "editionText"
 };
 
-declare function query:sort($result as element()*, $sortBy as xs:string?) {
-    let $fn := query:sort-value(?, $sortBy)
-    for $item in $result
-    order by $fn($item)
-    return
-        $item
-};
-
-declare function query:sort-value($item as element(), $sortBy as xs:string?) {
+declare function query:sort($items as element()*, $sortBy as xs:string?) {
     switch($sortBy)
         case "kanton" return
-            replace(root($item)//tei:teiHeader//tei:seriesStmt/tei:idno, "^(?:SSRQ|SDS|FDS)_([^_]+).*$", "$1")
-        case "title" return
-            let $header := root($item)//tei:teiHeader
+            for $item in $items
+            order by replace(root($item)//tei:teiHeader//tei:seriesStmt/tei:idno, "^(?:SSRQ|SDS|FDS)_([^_]+).*$", "$1")
             return
+                $item
+        case "title" return
+            for $item in $items
+            let $header := root($item)//tei:teiHeader
+            order by
                 ($header//tei:msDesc/tei:head/string(), $header//tei:titleStmt/tei:title/string())[1]
+            return
+                $item
         case "id" return
-            root($item)//tei:teiHeader/tei:fileDesc/tei:seriesStmt/tei:idno
+            for $item in $items
+            order by root($item)//tei:teiHeader/tei:fileDesc/tei:seriesStmt/tei:idno
+            return
+                $item
         case "relevance" return
-            ft:score($item)
-        default return (
-                root($item)//tei:teiHeader/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@when/xs:date(.),
-                root($item)//tei:teiHeader/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@from/xs:date(.)
-            )[1]
+            for $item in $items
+            order by ft:score($item)
+            return
+                $item
+        default return
+            for $item in $items
+            let $header := root($item)//tei:teiHeader
+            let $origDate :=
+                (
+                    $header/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@when/xs:date(.),
+                    $header/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@from/xs:date(.)
+                )[1]
+            let $letter := analyze-string($header//tei:seriesStmt/tei:idno, "^.*?\d+([A-Z])+(?:_\d+)?$")//fn:group
+            order by $origDate, $letter
+            return
+                $item
 };
 
 declare function query:view-header($work as element(), $parent-id as xs:string) {
