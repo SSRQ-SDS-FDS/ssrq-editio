@@ -913,11 +913,13 @@
                     <model predicate="ancestor::app" behaviour="inline" cssClass="head">
                         <desc>Heading in app</desc>
                         <outputRendition>
+
                             display: block;
 font-weight: 700;
 line-height: 1.2;
 margin-top: 20px;
 margin-bottom: 10px;
+
                         </outputRendition>
                     </model>
                     <model predicate="@resp" behaviour="omit">
@@ -987,7 +989,8 @@ margin-bottom: 10px;
                         <param name="content" value="&lt;li&gt;&lt;a href=&#34;$[url]&#34;&gt;$[url]&lt;/a&gt;&lt;/li&gt;"/>
                         <param name="url" value="string()"/>
                     </model>
-                    <model behaviour="listItem"/>
+                    <model predicate="ancestor::teiHeader" behaviour="listItem"/>
+                    <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="additional" mode="add">
                     <model behaviour="listItem"/>
