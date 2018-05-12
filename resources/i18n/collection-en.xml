@@ -102,4 +102,5 @@
     <msg key="search">Search</msg>
     <msg key="lizenz">License: </msg>
     <msg key="sorting">Sort order</msg>
+    <msg key="loading-facets">Loading ...</msg>
 </catalogue>

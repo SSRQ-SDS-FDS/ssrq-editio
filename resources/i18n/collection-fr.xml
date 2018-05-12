@@ -106,4 +106,5 @@
     <msg key="search">Recherche</msg>
     <msg key="lizenz"> Licence: </msg>
     <msg key="sorting">Tirage</msg>
+    <msg key="loading-facets">Il charge ...</msg>
 </catalogue>

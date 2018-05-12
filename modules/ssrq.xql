@@ -10,11 +10,18 @@ import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 import module namespace query="http://existsolutions.com/ssrq/search" at "ssrq-search.xql";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xql";
-
+import module namespace http="http://expath.org/ns/http-client" at "java:org.expath.exist.HttpClientModule";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 declare variable $app:single-body-div-max := 7;
+
+declare variable $app:HOST := "https://www.ssrq-sds-fds.ch";
+
+declare variable $app:PLACES := $app:HOST || "/places-db-edit/views/get-info.xq";
+declare variable $app:PERSONS := $app:HOST || "/persons-db-api/";
+declare variable $app:LEMMA := $app:HOST || "/lemma-db-edit/views/get-lem-info.xq";
+declare variable $app:KEYWORDS := $app:HOST || "/lemma-db-edit/views/get-key-info.xq";
 
 declare
     %templates:wrap
@@ -90,18 +97,43 @@ declare function app:switch-view($node as node(), $model as map(*), $odd as xs:s
     }
 };
 
+declare function app:api-lookup($api as xs:string, $list as map(*)*, $param as xs:string) {
+    for $item in $list
+    let $request := <http:request method="GET" href="{$api}?{$param}={$item?ref}"/>
+    let $response := http:send-request($request)
+    return
+        if ($response[1]/@status = "200") then
+            let $json := parse-json(util:binary-to-string($response[2]))
+            return
+                map:merge(($json, map { "ref": $item?ref }))
+        else
+            ()
+};
+
+declare function app:api-keys($refs as xs:string*) {
+    for $id in $refs
+    group by $ref := replace($id, "^([^\.]+).*$", "$1")
+    return
+        map {
+            "ref": $ref,
+            "name": $id[1]
+        }
+};
 
 declare function app:list-places($node as node(), $model as map(*)) {
     let $places := root($model?data)//(tei:placeName[@ref]|tei:origPlace[@ref])
     where exists($places)
     return map {
         "items":
-            for $place in $places
-            group by $ref := replace($place/@ref, "^([^\.]+).*$", "$1")
-            order by $place[1] collation "?lang=de_CH"
+            for $place in app:api-lookup($app:PLACES, app:api-keys($places/@ref), "id")
             return
-                <li data-ref="{$ref}">
-                    <a target="_new" href="https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$ref}">{$place[1]/string()}</a>
+                <li data-ref="{$place?ref}">
+                    <a target="_new"
+                        href="https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$place?ref}">
+                        {$place?stdName('#text')}
+                    </a>
+                    ({$place?location})
+                    {$place?type}
                 </li>
     }
 };
@@ -111,14 +143,12 @@ declare function app:list-keys($node as node(), $model as map(*)) {
     where exists($keywords)
     return map {
         "items":
-            for $lemma in $keywords
-            group by $ref := replace($lemma/@ref, "^([^\.]+).*$", "$1")
-            order by $lemma[1] collation "?lang=de_CH"
+            for $lemma in app:api-lookup($app:KEYWORDS, app:api-keys($keywords/@ref), "id")
             return
-                <li data-ref="{$ref}">
-                    <a href="https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id={$ref}"
+                <li data-ref="{$lemma?ref}">
+                    <a href="https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id={$lemma?ref}"
                         target="_new">
-                    {$lemma[1]/string()}
+                        {$lemma?name("#text")}
                     </a>
                 </li>
     }
@@ -129,15 +159,15 @@ declare function app:list-lemmata($node as node(), $model as map(*)) {
     where exists($lemmata)
     return map {
         "items":
-            for $lemma in $lemmata
-            group by $ref := replace($lemma/@ref, "^([^\.]+).*$", "$1")
-            order by $lemma[1] collation "?lang=de_CH"
+            for $lemma in app:api-lookup($app:LEMMA, app:api-keys($lemmata/@ref), "id")
             return
-                <li data-ref="{$ref}">
+                <li data-ref="{$lemma?ref}">
                     <a target="_new"
-                        href="https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-lemma.xq?id={$ref}">
-                        {$lemma[1]/string()}
+                        href="https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-lemma.xq?id={$lemma?ref}">
+                        {$lemma?stdName("#text")}
                     </a>
+                    ({$lemma?morphology})
+                    {$lemma?definition("#text")}
                 </li>
     }
 };
@@ -149,33 +179,41 @@ declare function app:list-persons($node as node(), $model as map(*)) {
     where exists($persons)
     return map {
         "items":
-            for $person in $persons
-            group by $ref := replace($person, "^(per\d+)\w*$", "$1")
-            order by $person[1]/../string() collation "?lang=de_CH"
+            for $person in app:api-lookup($app:PERSONS, app:api-keys($persons), "id_search")
             return
-                <li data-ref="{$ref}">
+                <li data-ref="{$person?ref}">
                     <a target="_new"
-                        href="https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$person[1]}">
-                        {$person[1]/../text()}
+                        href="https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$person?ref}">
+                        {$person?name}
                     </a>
+                    {
+                        if ($person?dates) then
+                            <span class="info"> ({$person?dates})</span>
+                        else
+                            ()
+                    }
                 </li>
     }
 };
 
 declare function app:list-organizations($node as node(), $model as map(*)) {
-    let $organizations := root($model?data)//tei:orgName[@ref]
+    let $organizations := root($model?data)//tei:orgName/@ref
     where exists($organizations)
     return map {
         "items":
-            for $organization in $organizations
-            group by $ref := replace($organization/@ref, "^([^\.]+).*$", "$1")
-            order by $organization[1] collation "?lang=de_DE"
+            for $organization in app:api-lookup($app:PERSONS, app:api-keys($organizations), "id_search")
             return
-                <li data-ref="{$ref}">
+                <li data-ref="{$organization?ref}">
                     <a target="_new"
-                        href="https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$ref}">
-                        {$organization[1]/text()}
+                        href="https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$organization?ref}">
+                        {$organization?name}
                     </a>
+                    {
+                        if ($organization?type) then
+                            <span class="info"> ({$organization?type})</span>
+                        else
+                            ()
+                    }
                 </li>
     }
 };
@@ -183,7 +221,10 @@ declare function app:list-organizations($node as node(), $model as map(*)) {
 declare
     %templates:wrap
 function app:show-list-items($node as node(), $model as map(*)) {
-    $model?items
+    for $item in $model?items
+    order by $item/a collation "?lang=de_CH"
+    return
+        $item
 };
 
 (:~

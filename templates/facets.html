@@ -1,0 +1,34 @@
+<aside data-template="i18n:translate" data-catalogues="resources/i18n" xmlns:i18n="http://exist-db.org/xquery/i18n">
+    <div data-template="pages:load">
+        <div data-template="app:list-places">
+            <h3 class="place">
+                <i18n:text key="places"/>
+            </h3>
+            <ul class="places" data-template="app:show-list-items"/>
+        </div>
+        <div data-template="app:list-persons">
+            <h3 class="person">
+                <i18n:text key="person"/>
+            </h3>
+            <ul class="persons" data-template="app:show-list-items"/>
+        </div>
+        <div data-template="app:list-organizations">
+            <h3 class="organization">
+                <i18n:text key="organisation"/>
+            </h3>
+            <ul class="organizations" data-template="app:show-list-items"/>
+        </div>
+        <div data-template="app:list-keys">
+            <h3 class="term">
+                <i18n:text key="keywords"/>
+            </h3>
+            <ul class="keywords" data-template="app:show-list-items"/>
+        </div>
+        <div data-template="app:list-lemmata">
+            <h3 class="term">
+                <i18n:text key="lemma"/>
+            </h3>
+            <ul class="lemmata" data-template="app:show-list-items"/>
+        </div>
+    </div>
+</aside>

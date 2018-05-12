@@ -103,4 +103,5 @@
     <msg key="search">Suche</msg>
     <msg key="lizenz"> Licenca: </msg>
     <msg key="sorting">Sortierung</msg>
+    <msg key="loading-facets">Lade Registereinträge ...</msg>
 </catalogue>

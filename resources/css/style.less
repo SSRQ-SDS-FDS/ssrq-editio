@@ -243,25 +243,11 @@
         padding: 0;
     }
 
-    .places {
-        .location::before {
-            content: ' (';
-        }
-        .location::after {
-            content: ')';
-        }
-        .type::before {
-            content: ', ';
-        }
-    }
-
-    .persons, .organizations, .keywords {
-        .info::before {
-            content: ' (';
-        }
-        .info::after {
-            content: ')';
-        }
+    .loading {
+        font-size: @font-size-small;
+        font-family: @font-monospace;
+        margin-top: 20px;
+        color: @color-gray-light;
     }
 }
 
@@ -435,6 +421,10 @@ label{
     .pagination {
         margin-top: 0;
     }
+}
+
+.highlight {
+    background-color: @color-text-marker;
 }
 
 .term {
