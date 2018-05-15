@@ -36,4 +36,8 @@ $(document).ready(function() {
             });
         });
     });
+
+    $(".reference span[data-url]").click(function(ev) {
+        window.open($(this).attr('data-url'), 'ssrq.references');
+    });
 });
