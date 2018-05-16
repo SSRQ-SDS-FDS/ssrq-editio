@@ -97,6 +97,7 @@ declare function pmf:format-id($id as xs:string?) {
     let $parts := tokenize($temp)
     let $ssrq  := substring-before($parts[1], '_')
     let $vol   := replace(substring-after($parts[1], '_'), '_', '/')
+    let $vol   := replace($vol, "^([A-Z]{2})/", "$1 ")      (: space after canton abbreviation :)
     let $date  := replace($parts[2], '_', '-')
     return
         $ssrq || ' ' || $vol || ' ' || $date
