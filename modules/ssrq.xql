@@ -98,8 +98,9 @@ declare function app:switch-view($node as node(), $model as map(*), $odd as xs:s
 };
 
 declare function app:api-lookup($api as xs:string, $list as map(*)*, $param as xs:string) {
+    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
     for $item in $list
-    let $request := <http:request method="GET" href="{$api}?{$param}={$item?ref}"/>
+    let $request := <http:request method="GET" href="{$api}?{$param}={$item?ref}&amp;lang={$lang}"/>
     let $response := http:send-request($request)
     return
         if ($response[1]/@status = "200") then
@@ -112,7 +113,8 @@ declare function app:api-lookup($api as xs:string, $list as map(*)*, $param as x
 
 declare function app:api-keys($refs as xs:string*) {
     for $id in $refs
-    group by $ref := replace($id, "^([^\.]+).*$", "$1")
+    group by $ref := substring($id, 1, 9)
+    (: group by $ref := replace($id, "^([^\.]+).*$", "$1") :)
     return
         map {
             "ref": $ref,
