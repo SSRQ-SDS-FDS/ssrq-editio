@@ -3,10 +3,8 @@ xquery version "3.1";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 declare namespace output = "http://www.w3.org/2010/xslt-xquery-serialization";
-(:
 declare option output:method "json";
 declare option output:media-type "application/json";
-:)
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xql";
