@@ -5,9 +5,9 @@
             <form action="" class="form-inline col-md-12">
                 <div class="form-group">
                     <select name="browse" class="form-control" data-template="templates:form-control">
-                        <option value="author">
-                            <i18n:text key="browse-author">Author</i18n:text>
-                        </option>
+<!--                        <option value="author">-->
+<!--                            <i18n:text key="browse-author">Author</i18n:text>-->
+<!--                        </option>-->
                         <option value="title">
                             <i18n:text key="browse-title">Title</i18n:text>
                         </option>
@@ -27,10 +27,15 @@
                     </span>
                 </div>
                 <div class="form-group pull-right">
-                    <label for="sort-browse"><i18n:text key="sorting">Sortierung</i18n:text>: </label>
+                    <label for="sort-browse">
+                        <i18n:text key="sorting">Sortierung</i18n:text>: </label>
                     <select id="sort-browse" name="sort" class="form-control" data-template="templates:form-control">
-                        <option value="date"><i18n:text key="orig-date">Datum</i18n:text></option>
-                        <option value="title"><i18n:text key="title">Titel</i18n:text></option>
+                        <option value="date">
+                            <i18n:text key="orig-date">Datum</i18n:text>
+                        </option>
+                        <option value="title">
+                            <i18n:text key="title">Titel</i18n:text>
+                        </option>
                     </select>
                 </div>
                 <input type="hidden" name="refresh" value="true"/>
@@ -58,44 +63,44 @@
                         <div class="document-info">
                             <div data-template="app:short-header"/>
                             <div class="btn-group toolbar">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <i class="material-icons">print</i>
-                                        <span class="hidden-xs">PDF</span>
-                                        <span class="caret"/>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li>
-                                            <a class="download-link" data-template="browse:download-link" data-template-type="pdf" title="i18n(pdf-download)">
-                                                <i18n:text key="pdf-fo"/>
-                                            </a>
-                                        </li>
-                                        <li data-template="browse:show-if-logged-in">
-                                            <a target="_blank" data-template="browse:download-link" data-template-type="pdf" data-template-source="true">
-                                                <i18n:text key="fo-source"/>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="download-link" data-template="browse:download-link" data-template-type="tex" title="i18n(pdf-download)">
-                                                <i18n:text key="pdf-latex"/>
-                                            </a>
-                                        </li>
-                                        <li data-template="browse:show-if-logged-in">
-                                            <a target="_blank" data-template="browse:download-link" data-template-type="tex" data-template-source="true">
-                                                <i18n:text key="latex-source"/>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <a class="btn btn-default download-link" data-template="browse:download-link" data-template-type="epub" title="i18n(epub-download)">
-                                    <i class="material-icons">book</i>
-                                </a>
-                                <a class="btn btn-default" data-template="pages:xml-link" title="i18n(view-tei)">
-                                    <i class="material-icons">code</i>
-                                </a>
-                                <a class="btn btn-default delete" title="i18n(delete)" data-template="browse:show-if-logged-in">
-                                    <i class="material-icons">delete</i>
-                                </a>
+<!--                                <div class="btn-group">-->
+<!--                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">-->
+<!--                                        <i class="material-icons">print</i>-->
+<!--                                        <span class="hidden-xs">PDF</span>-->
+<!--                                        <span class="caret"/>-->
+<!--                                    </button>-->
+<!--                                    <ul class="dropdown-menu" role="menu">-->
+<!--                                        <li>-->
+<!--                                            <a class="download-link" data-template="browse:download-link" data-template-type="pdf" title="i18n(pdf-download)">-->
+<!--                                                <i18n:text key="pdf-fo"/>-->
+<!--                                            </a>-->
+<!--                                        </li>-->
+<!--                                        <li data-template="browse:show-if-logged-in">-->
+<!--                                            <a target="_blank" data-template="browse:download-link" data-template-type="pdf" data-template-source="true">-->
+<!--                                                <i18n:text key="fo-source"/>-->
+<!--                                            </a>-->
+<!--                                        </li>-->
+<!--                                        <li>-->
+<!--                                            <a class="download-link" data-template="browse:download-link" data-template-type="tex" title="i18n(pdf-download)">-->
+<!--                                                <i18n:text key="pdf-latex"/>-->
+<!--                                            </a>-->
+<!--                                        </li>-->
+<!--                                        <li data-template="browse:show-if-logged-in">-->
+<!--                                            <a target="_blank" data-template="browse:download-link" data-template-type="tex" data-template-source="true">-->
+<!--                                                <i18n:text key="latex-source"/>-->
+<!--                                            </a>-->
+<!--                                        </li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
+<!--                                <a class="btn btn-default download-link" data-template="browse:download-link" data-template-type="epub" title="i18n(epub-download)">-->
+<!--                                    <i class="material-icons">book</i>-->
+<!--                                </a>-->
+<!--                                <a class="btn btn-default" data-template="pages:xml-link" title="i18n(view-tei)">-->
+<!--                                    <i class="material-icons">code</i>-->
+<!--                                </a>-->
+<!--                                <a class="btn btn-default delete" title="i18n(delete)" data-template="browse:show-if-logged-in">-->
+<!--                                    <i class="material-icons">delete</i>-->
+<!--                                </a>-->
                             </div>
                             <br class="clear"/>
                         </div>
@@ -110,14 +115,21 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title"><i18n:text key="delete"/>?</h4>
+                        <h4 class="modal-title">
+                            <i18n:text key="delete"/>?</h4>
                     </div>
                     <div class="modal-body">
-                        <p><i18n:text key="delete-confirmation"/></p>
+                        <p>
+                            <i18n:text key="delete-confirmation"/>
+                        </p>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" id="confirm-delete"><i18n:text key="yes"/></button>
-                        <button type="submit" class="btn btn-primary" data-dismiss="modal"><i18n:text key="no"/></button>
+                        <button type="submit" class="btn btn-primary" id="confirm-delete">
+                            <i18n:text key="yes"/>
+                        </button>
+                        <button type="submit" class="btn btn-primary" data-dismiss="modal">
+                            <i18n:text key="no"/>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -133,7 +145,7 @@
             $(".delete").on("click", function(ev) {
                 selection = [];
                 var checked = $("#documents input:checked").parents(".document");
-                if (checked.length > 0) {
+                if (checked.length &gt; 0) {
                     checked.each(function() {
                         selection.push($(this).attr("data-doc"));
                     });
