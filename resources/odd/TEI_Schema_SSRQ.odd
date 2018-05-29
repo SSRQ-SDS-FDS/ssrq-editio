@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 452 $</p>
-                <p>Date of last commit:     $Date: 2018-05-07 09:55:14 +0200 (Mon, 07 May 2018) $</p>
+                <p>Revision of last commit: $Rev: 514 $</p>
+                <p>Date of last commit:     $Date: 2018-05-29 08:01:47 +0200 (Tue, 29 May 2018) $</p>
                 <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
@@ -658,6 +658,16 @@
                             </rng:choice>
                         </rng:zeroOrMore>
                     </content>
+                    <constraintSpec scheme="schematron" ident="sch-persname">
+                        <desc>ref attribute</desc>
+                        <constraint>
+                            <sch:pattern>
+                                <sch:rule context="tei:persName">
+                                    <sch:assert test="not(@ref) or matches(@ref,'^per\d{6}[abc]?(\.\d{2})?$')">Ungültiger Wert für persName/@ref</sch:assert>
+                                </sch:rule>
+                            </sch:pattern>
+                        </constraint>
+                    </constraintSpec>
                     <attList>
                         <attDef ident="key" mode="replace">
                             <desc xml:lang="de">Tätigkeit, für die ein Bearbeiter verantwortlich
@@ -774,6 +784,16 @@
                         </rng:zeroOrMore>
                         <rng:text/>
                     </content>
+                    <constraintSpec scheme="schematron" ident="sch-orgname">
+                        <desc>ref attribute</desc>
+                        <constraint>
+                            <sch:pattern>
+                                <sch:rule context="tei:orgName">
+                                    <sch:assert test="not(@ref) or matches(@ref,'^org\d{6}(\.\d{2})?$')">Ungültiger Wert für orgName/@ref</sch:assert>
+                                </sch:rule>
+                            </sch:pattern>
+                        </constraint>
+                    </constraintSpec>
                     <attList>
                         <attDef ident="role" mode="replace">
                             <desc xml:lang="de">Rolle einer Person oder Institution im besagten
@@ -926,6 +946,16 @@
                             </rng:choice>
                         </rng:zeroOrMore>
                     </content>
+                    <constraintSpec scheme="schematron" ident="sch-placename">
+                        <desc>ref attribute</desc>
+                        <constraint>
+                            <sch:pattern>
+                                <sch:rule context="tei:placeName">
+                                    <sch:assert test="not(@ref) or matches(@ref,'^loc\d{6}(\.\d{2})?$')">Ungültiger Wert für placeName/@ref</sch:assert>
+                                </sch:rule>
+                            </sch:pattern>
+                        </constraint>
+                    </constraintSpec>
                     <attList>
                         <attDef ident="calendar" mode="delete"/>
                         <attDef ident="cert" mode="delete"/>
@@ -1781,6 +1811,12 @@
                         </rng:zeroOrMore>
                     </content>
                     <attList>
+                        <attDef ident="xml:lang" mode="replace" usage="req">
+                            <desc xml:lang="de">ISO-3166-Sprachkürzel für fremdsprachigen Einschub</desc>
+                            <datatype>
+                                <rng:ref name="teidata.language"/>
+                            </datatype>
+                        </attDef>
                         <attDef ident="corresp" mode="delete"/>
                         <attDef ident="n" mode="delete"/>
                         <attDef ident="rend" mode="delete"/>
@@ -4550,6 +4586,16 @@
                             </rng:choice>
                         </rng:zeroOrMore>
                     </content>
+                    <constraintSpec scheme="schematron" ident="sch-term">
+                        <desc>ref attribute</desc>
+                        <constraint>
+                            <sch:pattern>
+                                <sch:rule context="tei:term">
+                                    <sch:assert test="not(@ref) or matches(@ref,'^lem\d{6}(\.\d{2})?$') or matches(@ref,'^key\d{6}$')">Ungültiger Wert für term/@ref</sch:assert>
+                                </sch:rule>
+                            </sch:pattern>
+                        </constraint>
+                    </constraintSpec>
                     <attList>
                         <attDef ident="corresp" mode="delete"/>
                         <attDef ident="rend" mode="delete"/>
@@ -4706,6 +4752,7 @@
                         <valItem ident="abbr">
                             <desc xml:lang="de">Abkürzung</desc>
                             <desc xml:lang="fr">Abbréviation</desc>
+                            <desc xml:lang="en">Abbreviation</desc>
                         </valItem>
                         <valItem ident="unclear-rdg">
                             <desc xml:lang="de">unsichere Lesung</desc>
@@ -4714,6 +4761,7 @@
                         <valItem ident="corr">
                             <desc xml:lang="de">Korrektur</desc>
                             <desc xml:lang="fr">Correction</desc>
+                            <desc xml:lang="en">Correction</desc>
                         </valItem>
                         <valItem ident="sic">
                             <desc xml:lang="de">Auffällige Schreibung</desc>
@@ -4722,10 +4770,12 @@
                         <valItem ident="origDate">
                             <desc xml:lang="de">Originaldatierung</desc>
                             <desc xml:lang="fr">Datation originale</desc>
+                            <desc xml:lang="en">Origin date</desc>
                         </valItem>
                         <valItem ident="add">
                             <desc xml:lang="de">Hinzufügung</desc>
                             <desc xml:lang="fr">Ajout</desc>
+                            <desc xml:lang="en">Addition</desc>
                         </valItem>
                         <valItem ident="del-gap">
                             <desc xml:lang="de">mit Textverlust</desc>
@@ -4734,6 +4784,7 @@
                         <valItem ident="del">
                             <desc xml:lang="de">Streichung</desc>
                             <desc xml:lang="fr">Suppression</desc>
+                            <desc xml:lang="en">Deletion</desc>
                         </valItem>
                         <valItem ident="del-add">
                             <desc xml:lang="de">Streichung der Hinzufügung</desc>
@@ -4742,14 +4793,17 @@
                         <valItem ident="unreadable">
                             <desc xml:lang="de">unlesbar</desc>
                             <desc xml:lang="fr">illisible</desc>
+                            <desc xml:lang="en">unreadable</desc>
                         </valItem>
                         <valItem ident="added-in">
                             <desc xml:lang="de">Zusatz in</desc>
                             <desc xml:lang="fr">Ajout dans</desc>
+                            <desc xml:lang="en">Addes in</desc>
                         </valItem>
                         <valItem ident="omitted-in">
                             <desc xml:lang="de">Auslassung in</desc>
                             <desc xml:lang="fr">Omission dans</desc>
+                            <desc xml:lang="fr">Omitted in</desc>
                         </valItem>
                         <valItem ident="alt-rdg-in">
                             <desc xml:lang="de">Alternative Lesung in</desc>
@@ -4758,10 +4812,12 @@
                         <valItem ident="handswitch">
                             <desc xml:lang="de">Handwechsel</desc>
                             <desc xml:lang="fr">Changement de main</desc>
+                            <desc xml:lang="fr">Handshift</desc>
                         </valItem>
                         <valItem ident="underlined">
                             <desc xml:lang="de">Unterstrichen</desc>
                             <desc xml:lang="fr">Souligné</desc>
+                            <desc xml:lang="en">Underlined</desc>
                         </valItem>
                         <valItem ident="gap-in-orig">
                             <desc xml:lang="de">Lücke in der Vorlage</desc>
@@ -4832,14 +4888,17 @@
                         <valItem ident="supplied">
                             <desc xml:lang="de">sinngemäss ergänzt</desc>
                             <desc xml:lang="fr">complété par analogie</desc>
+                            <desc xml:lang="en">supplied</desc>
                         </valItem>
                         <valItem ident="supplied-after">
                             <desc xml:lang="de">ergänzt nach</desc>
                             <desc xml:lang="fr">complété à l’aide de</desc>
+                            <desc xml:lang="en">supplied after</desc>
                         </valItem>
                         <valItem ident="replace">
                             <desc xml:lang="de">ersetzt</desc>
                             <desc xml:lang="fr">remplace</desc>
+                            <desc xml:lang="en">replace</desc>
                         </valItem>
                         <valItem ident="date">
                             <desc xml:lang="de">Datum</desc>
@@ -4849,6 +4908,7 @@
                         <valItem ident="repeated-duration">
                             <desc xml:lang="de">Wiederholte Zeitspanne</desc>
                             <desc xml:lang="fr">Durée répétée</desc>
+                            <desc xml:lang="en">Repeated duration</desc>
                         </valItem>
                         <valItem ident="signature">
                             <desc xml:lang="de">Signatur</desc>
@@ -4926,31 +4986,40 @@
                             <desc xml:lang="en">Scribe</desc>
                         </valItem>
                         <valItem ident="signatureAlt">
-                            <desc xml:lang="de">Frühere Überlieferung</desc>
+                            <desc xml:lang="de">Frühere Signatur</desc>
                             <desc xml:lang="fr">Ancienne cote</desc>
+                            <desc xml:lang="en">Alternative identifier</desc>
                         </valItem>
                         <valItem ident="year">
                             <desc xml:lang="de">Jahr</desc>
                             <desc xml:lang="de" type="plural">Jahre</desc>
                             <desc xml:lang="fr">année</desc>
                             <desc xml:lang="fr" type="plural">années</desc>
+                            <desc xml:lang="en">year</desc>
+                            <desc xml:lang="en" type="plural">years</desc>
                         </valItem>
                         <valItem ident="month">
                             <desc xml:lang="de">Monat</desc>
                             <desc xml:lang="de" type="plural">Monate</desc>
                             <desc xml:lang="fr">mois</desc>
+                            <desc xml:lang="en">month</desc>
+                            <desc xml:lang="en" type="plural">months</desc>
                         </valItem>
                         <valItem ident="day">
                             <desc xml:lang="de">Tag</desc>
                             <desc xml:lang="de" type="plural">Tage</desc>
                             <desc xml:lang="fr">jour</desc>
                             <desc xml:lang="fr" type="plural">jours</desc>
+                            <desc xml:lang="en">day</desc>
+                            <desc xml:lang="en" type="plural">days</desc>
                         </valItem>
                         <valItem ident="hour">
                             <desc xml:lang="de">Stunde</desc>
                             <desc xml:lang="de" type="plural">Stunden</desc>
                             <desc xml:lang="fr">heure</desc>
                             <desc xml:lang="fr" type="plural">heures</desc>
+                            <desc xml:lang="en">hour</desc>
+                            <desc xml:lang="en" type="plural">hours</desc>
                         </valItem>
                         <valItem ident="français">
                             <desc xml:lang="de">Französisch</desc>
@@ -4966,6 +5035,16 @@
                             <desc xml:lang="de">Latein</desc>
                             <desc xml:lang="fr">latin</desc>
                             <desc xml:lang="en">Latin</desc>
+                        </valItem>
+                        <valItem ident="de">
+                            <desc xml:lang="de">Deutsch</desc>
+                            <desc xml:lang="fr">allemand</desc>
+                            <desc xml:lang="en">German</desc>
+                        </valItem>
+                        <valItem ident="fr">
+                            <desc xml:lang="de">Französisch</desc>
+                            <desc xml:lang="fr">français</desc>
+                            <desc xml:lang="en">French</desc>
                         </valItem>
                         <valItem ident="la">
                             <desc xml:lang="de">Latein</desc>
