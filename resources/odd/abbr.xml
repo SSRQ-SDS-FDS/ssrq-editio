@@ -163,6 +163,12 @@
                         <desc xml:lang="fr">Archives de l'État de Glaris</desc>
                         <desc xml:lang="it">Landesarchiv Glarus</desc>
                         <desc xml:lang="en">State Archives of Glarus</desc>
+                    </valItem>      
+                    <valItem ident="OA">
+                        <desc xml:lang="de">Ortsarchiv</desc>
+                        <desc xml:lang="fr">Ortsarchiv</desc>
+                        <desc xml:lang="it">Ortsarchiv</desc>
+                        <desc xml:lang="en">Ortsarchiv</desc>
                     </valItem>
                     <valItem ident="OGA">
                         <desc xml:lang="de">Ortsgemeindearchiv</desc>
