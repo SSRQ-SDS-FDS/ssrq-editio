@@ -193,6 +193,12 @@
                         <param name="content" value="(ec:label('del-add'), string-join((ec:translate(add/@place, 0, 'lowercase'), ', ', ec:translate(add/@type, 0, 'lowercase')), ''), text{': '}, add/node())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
+                    <model predicate="@hand='later hand'" behaviour="alternote">
+                        <desc>Show text of del with popup and footnote</desc>
+                        <param name="alternate" value="(if (@rend) then (ec:translate(@rend, 0, 'uppercase')) else (ec:label('del')), ' ', ec:translate(@hand, 0, 'lowercase'))"/>
+                        <param name="type" value="'text-critical'"/>
+                        <param name="content" value="."/>
+                    </model>
                     <model predicate="add" behaviour="note">
                         <param name="content" value="(ec:label('del-add'), ' ', string-join((ec:translate(add/@place, 0, 'lowercase'), ec:translate(add/@hand, 0, 'lowercase'), ec:translate(add/@rend, 0, 'lowercase'), ec:translate(add/@type, 0, 'lowercase')), ' '), text{': '}, add/node())"/>
                         <param name="type" value="'text-critical'"/>
@@ -208,12 +214,6 @@
                         <param name="place" value="&#34;footnote&#34;"/>
                         <param name="type" value="'text-critical'"/>
                         <param name="content" value="(ec:translate(@rend),', ', ec:label('unclear-rdg', false()), ': ', .)"/>
-                    </model>
-                    <model predicate="@hand='later hand'" behaviour="alternote">
-                        <desc>Show text of del with popup and footnote</desc>
-                        <param name="alternate" value="(if (@rend) then (ec:translate(@rend, 0, 'uppercase')) else (ec:label('del')), ' ', ec:translate(@hand, 0, 'lowercase'))"/>
-                        <param name="type" value="'text-critical'"/>
-                        <param name="content" value="."/>
                     </model>
                     <model predicate="@rend" behaviour="note">
                         <desc>Show footnote only</desc>
