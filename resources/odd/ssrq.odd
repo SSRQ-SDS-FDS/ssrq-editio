@@ -301,15 +301,9 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="app">
-                    <model predicate="empty(lem/text())" behaviour="alternote">
-                        <desc>Lemma ist leer</desc>
-                        <param name="content" value="rdg/node()"/>
-                        <param name="alternate" value="rdg"/>
-                        <param name="type" value="'text-critical'"/>
-                    </model>
                     <model behaviour="alternote" cssClass="text-critical">
-                        <param name="content" value="lem"/>
-                        <param name="alternate" value="rdg"/>
+                        <param name="content" value="lem/node()"/>
+                        <param name="alternate" value="(ec:label('alt-rdg-in'), ' ', rdg/@wit, ': ', rdg)"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                 </elementSpec>
@@ -328,9 +322,6 @@
                     <model predicate="empty(node())" behaviour="inline">
                         <desc>app with empty reading</desc>
                         <param name="content" value="(ec:label('omitted-in'), ' ', @wit)"/>
-                    </model>
-                    <model behaviour="inline">
-                        <param name="content" value="(ec:label('alt-rdg-in'), ' ', @wit, ': ', .)"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="handShift">
