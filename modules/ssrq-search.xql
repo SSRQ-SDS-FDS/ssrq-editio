@@ -163,7 +163,8 @@ declare function query:query-api($type as xs:string, $subtypes as xs:string*, $q
  :)
 declare function query:api-filter-subtype($id as xs:string*, $type as xs:string, $subtypes as xs:string*) {
     if ($type = "keywords") then
-        collection($config:data-root)/tei:TEI[tei:teiHeader/tei:profileDesc/tei:textClass/tei:keywords/tei:term/@ref = $id]//tei:body
+        collection($config:data-root)/tei:TEI[tei:teiHeader/tei:profileDesc/tei:textClass/tei:keywords/tei:term/@ref = $id]/tei:text |
+        collection($config:data-root)/tei:TEI/tei:text[descendant::tei:term/@ref = $id]
     else
         for $subtype in $subtypes
         return
