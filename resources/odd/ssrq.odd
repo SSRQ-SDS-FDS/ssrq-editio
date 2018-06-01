@@ -876,7 +876,7 @@
                 </elementSpec>
                 <elementSpec ident="seal">
                     <model behaviour="listItem">
-                        <param name="content" value="(persName|orgName, if (persName|orgName) then ', ' else (), string-join((@nontei:material,@nontei:shape,@nontei:extent,@nontei:attachment,@nontei:condition) ! ec:translate(., 0, ()), ', '))"/>
+                        <param name="content" value="(persName|orgName, if ((persName|orgName)/text()) then ', ' else (), string-join((@nontei:material,@nontei:shape,@nontei:extent,@nontei:attachment,@nontei:condition) ! ec:translate(., 0, ()), ', '))"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="head" mode="change">
