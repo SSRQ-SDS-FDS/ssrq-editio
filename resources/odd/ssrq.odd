@@ -816,13 +816,13 @@
                 </elementSpec>
                 <elementSpec ident="filiation">
                     <model predicate="text() and origDate/@when" behaviour="inline">
-                        <param name="content" value="(ec:label('other-source'), ': ', text(), ', ', format-date(xs:date(origDate/@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()))"/>
+                        <param name="content" value="(ec:label('other-source'), ': ', text()[1], ', ', format-date(xs:date(origDate/@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()))"/>
                     </model>
                     <model predicate="text() and origDate/@from" behaviour="inline">
-                        <param name="content" value="(ec:label('other-source'), ': ', text(), ', ', format-date(xs:date(origDate/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' – ', format-date(xs:date(origDate/@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()))"/>
+                        <param name="content" value="(ec:label('other-source'), ': ', text()[1], ', ', format-date(xs:date(origDate/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' – ', format-date(xs:date(origDate/@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()))"/>
                     </model>
                     <model predicate="text()" behaviour="inline">
-                        <param name="content" value="(ec:label('other-source'), ': ', text())"/>
+                        <param name="content" value="(ec:label('other-source'), ': ', text()[1])"/>
                     </model>
                     <model behaviour="omit"/>
                 </elementSpec>
