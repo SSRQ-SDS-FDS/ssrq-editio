@@ -373,18 +373,25 @@ declare function app:idno($node as node(), $model as map(*)) {
 declare function app:origDate($node as node(), $model as map(*)) {
     let $header := root($model?data)//tei:teiHeader
     let $origin := $header/tei:fileDesc//tei:msDesc/tei:history/tei:origin
-    let $origDate := $origin/tei:origDate/@when
+    let $origDate := $origin/tei:origDate
     let $origPlace := $origin/tei:origPlace
     return
-        app:show-if-exists($node, $origDate, function() {
-            string-join((
-                format-date(xs:date($origDate), '[Y] [MNn] [D1]', (session:get-attribute("ssrq.lang"), "de")[1], (), ()),
-                $origPlace
-            ), ". ")
-        })
+        if ($origDate/@from) then
+            app:show-if-exists($node, $origDate/@from, function() {
+                string-join((
+                    format-date(xs:date($origDate/@from), '[Y] [MNn] [D1]', (session:get-attribute("ssrq.lang"), "de")[1], (), ()) || ' – ' ||
+                    format-date(xs:date($origDate/@to), '[Y] [MNn] [D1]', (session:get-attribute("ssrq.lang"), "de")[1], (), ()),
+                    $origPlace
+                ), ". ")
+            })
+        else
+            app:show-if-exists($node, $origDate/@when, function() {
+                string-join((
+                    format-date(xs:date($origDate/@when), '[Y] [MNn] [D1]', (session:get-attribute("ssrq.lang"), "de")[1], (), ()),
+                    $origPlace
+                ), ". ")
+            })
 };
-
-
 
 declare function app:comment($node as node(), $model as map(*), $action as xs:string?, $sr as xs:string*) {
     let $back := root($model?data)//tei:back
