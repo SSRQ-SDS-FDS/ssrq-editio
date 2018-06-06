@@ -150,11 +150,11 @@
                         <desc>Ausgabe in "Stückbeschreibung" UND "Weitere Überlieferungen"</desc>
                         <param name="content" value="(ec:label('origDate'), ': ', format-date(xs:date(@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()))"/>
                     </model>
-                    <model predicate="@calendar" behaviour="alternate">
+                    <model predicate="@calendar" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('origDate'), ': ', ec:format-date(@when), ' (', ec:translate(@calendar, 0, ()), ')')"/>
                     </model>
-                    <model behaviour="alternate">
+                    <model behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('origDate'), ': ', ec:format-date(@when))"/>
                     </model>
@@ -166,7 +166,7 @@
                         <param name="content" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ec:translate(@hand, 0, 'lowercase'), ec:translate(@rend, 0, 'lowercase'), ec:translate(@type, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('by', false()), ec:scribe(@scribe)) else (), text{': '})), .)"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
-                    <model behaviour="alternote">
+                    <model behaviour="alternote" cssClass="text-critical">
                         <desc>Show text of add with popup and footnote</desc>
                         <param name="alternate" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ec:translate(@hand, 0, 'lowercase'), ec:translate(@rend, 0, 'lowercase'), ec:translate(@type, 0, 'lowercase')), ' '))), if (@scribe) then (' ', ec:label('by', false()), ec:scribe(@scribe)) else ())"/>
                         <param name="type" value="'text-critical'"/>
@@ -193,7 +193,7 @@
                         <param name="content" value="(ec:label('del-add'), string-join((ec:translate(add/@place, 0, 'lowercase'), ', ', ec:translate(add/@type, 0, 'lowercase')), ''), text{': '}, add/node())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
-                    <model predicate="@hand='later hand'" behaviour="alternote">
+                    <model predicate="@hand='later hand'" behaviour="alternote" cssClass="text-critical">
                         <desc>Show text of del with popup and footnote</desc>
                         <param name="alternate" value="(if (@rend) then (ec:translate(@rend, 0, 'uppercase')) else (ec:label('del')), ' ', ec:translate(@hand, 0, 'lowercase'))"/>
                         <param name="type" value="'text-critical'"/>
@@ -433,17 +433,11 @@
                         <param name="content" value="."/>
                         <param name="ref" value="@ref"/>
                         <param name="label" value="ec:label('term')"/>
-                        <outputRendition>
-                            color: #b5221f;
-                        </outputRendition>
                     </model>
                     <model behaviour="alternate" cssClass="semantic term">
                         <desc>Semantic highlighting of keywords and lemmata with dark-red text color</desc>
                         <param name="default" value="."/>
                         <param name="alternate" value="ec:label('term')"/>
-                        <outputRendition>
-                            color: #b5221f;
-                        </outputRendition>
                     </model>
                 </elementSpec>
                 <elementSpec ident="persName" mode="add">
@@ -478,17 +472,11 @@
                         <param name="content" value="."/>
                         <param name="label" value="ec:label('place')"/>
                         <param name="ref" value="@ref"/>
-                        <outputRendition>
-                            color: #007e00;
-                        </outputRendition>
                     </model>
                     <model behaviour="alternate" cssClass="semantic place">
                         <desc>Semantic highlighting of place names with tooltip and green text color</desc>
                         <param name="default" value="."/>
                         <param name="alternate" value="ec:label('place')"/>
-                        <outputRendition>
-                            color: #007e00;
-                        </outputRendition>
                     </model>
                 </elementSpec>
                 <elementSpec ident="origPlace" mode="add">
@@ -503,50 +491,44 @@
                         <param name="content" value="."/>
                         <param name="label" value="ec:label('origPlace')"/>
                         <param name="ref" value="@ref"/>
-                        <outputRendition>
-                            color: #007e00;
-                        </outputRendition>
                     </model>
                     <model behaviour="alternate" cssClass="semantic place">
                         <desc>Semantic highlighting of origPlace names with tooltip and green text color</desc>
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('origPlace'), ': ', . )"/>
-                        <outputRendition>
-                            color: #007e00;
-                        </outputRendition>
                     </model>
                 </elementSpec>
                 <elementSpec ident="num" mode="change">
-                    <model behaviour="alternate" cssClass="semantic">
+                    <model behaviour="alternate" cssClass="text-critical">
                         <desc>Display number in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('amount'), ': ', @value)"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="time" mode="change">
-                    <model predicate="@period" behaviour="alternate" cssClass="semantic">
+                    <model predicate="@period" behaviour="alternate" cssClass="text-critical">
                         <desc>Display time with given parameter in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('duration'), ': ', ec:translate(@period, 0, ()))"/>
                     </model>
-                    <model predicate="@when" behaviour="alternate" cssClass="semantic">
+                    <model predicate="@when" behaviour="alternate" cssClass="text-critical">
                         <desc>Display time with given parameter in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('time'), ': ', format-time(@when, '[H]:[m]'))"/>
                     </model>
-                    <model predicate="@dur" behaviour="alternate" cssClass="semantic">
+                    <model predicate="@dur" behaviour="alternate" cssClass="text-critical">
                         <desc>Display time in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('duration'), ': ', ec:format-duration(@dur))"/>
                     </model>
-                    <model behaviour="alternate" cssClass="semantic">
+                    <model behaviour="alternate" cssClass="text-critical">
                         <desc>Display time in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
                         <param name="alternate" value="ec:label('time')"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="measure" mode="change">
-                    <model behaviour="alternate" cssClass="semantic">
+                    <model behaviour="alternate" cssClass="text-critical">
                         <desc>Display measurement with given parameters in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:translate(@type, 0, 'uppercase'), text{': '}, @quantity, text{' '}, ec:translate(@origin, 0, 'lowercase'), text{' '}, ec:translate(@unit, @quantity, 'lowercase'), text{' '}, ec:translate(@commodity, 0, 'lowercase'))"/>
@@ -733,6 +715,9 @@
                 <elementSpec ident="ab" mode="change">
                     <model predicate="@place" behaviour="block">
                         <param name="content" value="('[', string-join((ec:translate(@type, 0, 'lowercase'),ec:translate(@place, 0, 'lowercase'),ec:translate(@hand, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('by', false()), ec:scribe(@scribe)) else (), ':] ', .)"/>
+                        <outputRendition>
+                            font-size: 90%;
+                        </outputRendition>
                     </model>
                     <model behaviour="paragraph"/>
                 </elementSpec>
@@ -750,39 +735,39 @@
                     <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="date" mode="change">
-                    <model output="web" predicate="@when and @type" behaviour="alternate" cssClass="semantic">
+                    <model output="web" predicate="@when and @type" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('date'), ': ', ec:format-date(@when), ' (', ec:translate(@type, 0, ()), ')')"/>
                     </model>
-                    <model output="web" predicate="@when and @calendar" behaviour="alternate" cssClass="semantic">
+                    <model output="web" predicate="@when and @calendar" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('date'), ': ', ec:format-date(@when), ' (', ec:translate(@calendar, 0, ()), ')')"/>
                     </model>
-                    <model output="web" predicate="@when" behaviour="alternate" cssClass="semantic">
+                    <model output="web" predicate="@when" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('date'), ': ', ec:format-date(@when))"/>
                     </model>
-                    <model output="web" predicate="@from and @to" behaviour="alternate" cssClass="semantic">
+                    <model output="web" predicate="@from and @to" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('date'), ': ', ec:format-date(@from), ' – ', ec:format-date(@to))"/>
                     </model>
-                    <model output="web" predicate="@period" behaviour="alternate" cssClass="semantic">
+                    <model output="web" predicate="@period" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('duration'), ': ', ec:translate(@period, 0, ()))"/>
                     </model>
-                    <model output="web" predicate="@dur[starts-with(., 'R/P')]" behaviour="alternate" cssClass="semantic">
+                    <model output="web" predicate="@dur[starts-with(., 'R/P')]" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('repeated-duration'), ': ', ec:format-duration(substring-after(@dur, 'R/')))"/>
                     </model>
-                    <model output="web" predicate="@dur" behaviour="alternate" cssClass="semantic">
+                    <model output="web" predicate="@dur" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('duration'), ': ', ec:format-duration(@dur))"/>
                     </model>
-                    <model predicate="@type" behaviour="alternate" cssClass="semantic">
+                    <model predicate="@type" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('date'), ' ', ec:translate(@type, 0, ()) )"/>
                     </model>
-                    <model predicate="text()" behaviour="inline" cssClass="semantic"/>
+                    <model predicate="text()" behaviour="inline" cssClass="text-critical"/>
                 </elementSpec>
                 <elementSpec ident="msDesc" mode="add">
                     <desc>Stückbeschreibung ausgeben</desc>
