@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 514 $</p>
-                <p>Date of last commit:     $Date: 2018-05-29 08:01:47 +0200 (Tue, 29 May 2018) $</p>
+                <p>Revision of last commit: $Rev: 537 $</p>
+                <p>Date of last commit:     $Date: 2018-06-07 12:51:02 +0200 (Thu, 07 Jun 2018) $</p>
                 <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
@@ -1051,6 +1051,7 @@
                                 <rng:ref name="lb"/>
                                 <rng:ref name="hi"/>
                                 <rng:ref name="note"/>
+                                <rng:ref name="pb"/>
                                 <rng:ref name="sic"/>
                                 <rng:ref name="unclear"/>
                                 <rng:ref name="num"/>
@@ -1095,6 +1096,7 @@
                     <rng:ref name="orgName"/>
                     <rng:ref name="placeName"/>
                     <rng:ref name="persName"/>
+                   <rng:ref name="pb"/>
                     </rng:choice>
                     </rng:zeroOrMore>
                     </content>
@@ -1120,7 +1122,7 @@
                                 <rng:ref name="lb"/>
                                 <rng:ref name="del"/>
                                 <rng:ref name="note"/>
-                           <rng:ref name="subst"/>
+                                 <rng:ref name="subst"/>
                                 <rng:ref name="term"/>
                                 <rng:text/>
                             </rng:choice>
@@ -4504,6 +4506,7 @@
                                 <rng:ref name="orgName"/>
                                 <rng:ref name="placeName"/>
                                 <rng:ref name="lb"/>
+                                <rng:ref name="pb"/>
                                 <rng:ref name="note"/>
                                 <rng:text/>
                             </rng:choice>
