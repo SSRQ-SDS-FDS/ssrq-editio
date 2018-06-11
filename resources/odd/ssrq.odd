@@ -301,6 +301,18 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="app">
+                    <model predicate="empty(rdg/node())" behaviour="alternote" cssClass="text-critical">
+                        <desc>app with empty reading</desc>
+                        <param name="content" value="lem/node()"/>
+                        <param name="alternate" value="(ec:label('omitted-in'), ' ', rdg/@wit)"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
+                    <model predicate="empty(lem/node())" behaviour="alternote" cssClass="text-critical">
+                        <desc>app with empty lemma</desc>
+                        <param name="content" value="''"/>
+                        <param name="alternate" value="(ec:label('added-in'), ' ', rdg/@wit, ': ', rdg)"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
                     <model behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="lem/node()"/>
                         <param name="alternate" value="(ec:label('alt-rdg-in'), ' ', rdg/@wit, ': ', rdg)"/>
@@ -314,14 +326,6 @@
                     <model predicate="../gap" behaviour="inline">
                         <desc>app with gap and reading</desc>
                         <param name="content" value="(ec:label('unreadable'), ', ', ec:label('supplied-after', false()), ' ', @wit)"/>
-                    </model>
-                    <model predicate="empty(../lem/node())" behaviour="inline">
-                        <desc>app with empty lemma and reading</desc>
-                        <param name="content" value="(ec:label('added-in'), ' ', @wit)"/>
-                    </model>
-                    <model predicate="empty(node())" behaviour="inline">
-                        <desc>app with empty reading</desc>
-                        <param name="content" value="(ec:label('omitted-in'), ' ', @wit)"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="handShift">
