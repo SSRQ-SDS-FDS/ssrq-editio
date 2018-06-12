@@ -18,7 +18,7 @@
         <body>
             <schemaSpec start="TEI teiCorpus" ident="ssrq" source="teipublisher.odd">
                 <elementSpec ident="lb" mode="change">
-                    <model predicate="ancestor::orig" behaviour="omit"/>
+                    <model predicate="ancestor::back//orig" behaviour="omit"/>
                     <model predicate="preceding-sibling::node()[1][self::pb]" behaviour="omit"/>
                     <model predicate=". is (./ancestor::div[1]//lb[1])" behaviour="omit"/>
                     <model predicate=". is (ancestor::p[1]/lb[1])" behaviour="omit"/>
@@ -96,7 +96,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="unclear" mode="change">
-                    <model predicate="ancestor::orig" behaviour="inline"/>
+                    <model predicate="ancestor::back//orig" behaviour="inline"/>
                     <model predicate="parent::del or parent::abbr or parent::corr" behaviour="inline"/>
                     <model predicate="parent::damage" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="."/>
@@ -161,7 +161,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="add" mode="change">
-                    <model predicate="ancestor::orig" behaviour="inline"/>
+                    <model predicate="ancestor::back//orig" behaviour="inline"/>
                     <model predicate="parent::subst" behaviour="inline"/>
                     <model predicate="@hand!='other hand'" behaviour="note">
                         <desc>Show footnote only</desc>
@@ -190,7 +190,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="del" mode="change">
-                    <model predicate="ancestor::orig" behaviour="omit"/>
+                    <model predicate="ancestor::back//orig" behaviour="omit"/>
                     <model predicate="add/@type='catchword'" behaviour="note">
                         <param name="content" value="(ec:label('del-add'), string-join((ec:translate(add/@place, 0, 'lowercase'), ', ', ec:translate(add/@type, 0, 'lowercase')), ''), text{': '}, add/node())"/>
                         <param name="type" value="'text-critical'"/>
