@@ -890,17 +890,8 @@
                             font-weight: bold;
                         </outputRendition>
                     </model>
-                    <model predicate="ancestor::app" behaviour="inline" cssClass="head">
-                        <desc>Heading in app</desc>
-                        <outputRendition>
-
-                            display: block;
-font-weight: 700;
-line-height: 1.2;
-margin-top: 20px;
-margin-bottom: 10px;
-
-                        </outputRendition>
+                    <model predicate="ancestor::app" behaviour="inline">
+                        <desc>Heading in app (don't format)</desc>
                     </model>
                     <model predicate="@resp" behaviour="omit">
                         <desc>Supplied heading: output in brackets if @resp</desc>
