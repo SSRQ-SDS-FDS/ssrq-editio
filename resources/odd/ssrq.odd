@@ -96,6 +96,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="unclear" mode="change">
+                    <model predicate="ancestor::orig" behaviour="inline"/>
                     <model predicate="parent::del or parent::abbr or parent::corr" behaviour="inline"/>
                     <model predicate="parent::damage" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="."/>
@@ -160,6 +161,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="add" mode="change">
+                    <model predicate="ancestor::orig" behaviour="inline"/>
                     <model predicate="parent::subst" behaviour="inline"/>
                     <model predicate="@hand!='other hand'" behaviour="note">
                         <desc>Show footnote only</desc>
