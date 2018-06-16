@@ -34,7 +34,7 @@ let $config := map {
                 request:get-attribute($param)
             ], (), 
             function($zero, $current) {
-                if ($zero) then
+                if (exists($zero)) then
                     $zero
                 else
                     $current

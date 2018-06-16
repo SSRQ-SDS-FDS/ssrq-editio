@@ -324,6 +324,15 @@ function app:list-works($node as node(), $model as map(*), $filter as xs:string?
     )
 };
 
+declare function app:home($node as node(), $model as map(*)) {
+    element { node-name($node) } {
+        $node/@* except $node/@href,
+        attribute href { "index.html?kanton=" || app:select-kanton() },
+        templates:process($node/node(), $model)
+    }
+};
+
+
 declare function app:select-kanton() {
     let $first := fold-left(("ZH", "BE", "LU", "UR", "SZ", "OW", "NW", "GL", "ZG", "FR", "SO", "BS", "BL", "SH", "AR", "AI", "SG",
         "GR", "AG", "TG", "TI", "VD", "VS", "NE", "GE", "JU"), (), function($zero, $kanton) {
