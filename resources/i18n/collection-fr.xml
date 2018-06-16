@@ -107,4 +107,7 @@
     <msg key="lizenz"> Licence: </msg>
     <msg key="sorting">Tirage</msg>
     <msg key="loading-facets">Il charge ...</msg>
+    <msg key="error-title">An Error Occurred!</msg>
+    <msg key="error-description">Unfortunately you have encountered an error. Please return
+        to the previous page and maybe describe us the error through the feedback function.</msg>
 </catalogue>

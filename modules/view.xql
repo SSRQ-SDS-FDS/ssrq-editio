@@ -3,7 +3,7 @@
  : to process any URI ending with ".html". It receives the HTML from
  : the controller and passes it to the templating system.
  :)
-xquery version "3.0";
+xquery version "3.1";
 
 import module namespace templates="http://exist-db.org/xquery/templates" at "templates.xql";
 
@@ -28,7 +28,18 @@ let $config := map {
     $templates:CONFIG_APP_ROOT : $config:app-root,
     $templates:CONFIG_STOP_ON_ERROR : true(),
     $templates:CONFIG_PARAM_RESOLVER : function($param) {
-        let $pval := request:get-parameter($param, ())
+        let $pval := array:fold-right(
+            [
+                request:get-parameter($param, ()),
+                request:get-attribute($param)
+            ], (), 
+            function($zero, $current) {
+                if ($zero) then
+                    $zero
+                else
+                    $current
+            }
+        )
         return
             if (exists($pval)) then
                 $pval
