@@ -8,7 +8,7 @@
                 <span class="icon-bar"/>
                 <span class="icon-bar"/>
             </button>
-            <a class="navbar-brand" href="http://tei-publisher.com/">
+            <a class="navbar-brand" href="i18n(website-link)">
                 <span data-template="config:app-title">App Title</span>
             </a>
         </div>
@@ -58,11 +58,11 @@
                                 <i class="material-icons">code</i> <i18n:text key="latex-source"/>
                             </a>
                         </li>
-                        <li>
+                        <!--li>
                             <a class="download-link" data-template="browse:download-link" data-template-type="" data-template-mode="plain" title="i18n(single-page)">
                                 <i class="material-icons">web</i> <i18n:text key="single-page"/>
                             </a>
-                        </li>
+                        </li-->
 <!--                        <li>-->
 <!--                            <a data-template="browse:download-link" data-template-type="epub" title="i18n(epub-download)">-->
 <!--                                <i class="material-icons">book</i>-->
@@ -109,7 +109,7 @@
                         </li>
                     </ul>
                 </li>
-                <li id="code">
+                <li id="code" data-template="browse:show-if-logged-in">
                     <a href="https://gitlab.existsolutions.com/SSRQ/ssrq/" title="View code on Gitlab">
                         <img src="resources/images/wm_no_bg.svg" height="20"/>
                     </a>
