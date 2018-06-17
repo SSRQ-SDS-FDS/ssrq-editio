@@ -61,13 +61,18 @@ else if (ends-with($exist:resource, ".xql")) then (
         <cache-control cache="no"/>
     </dispatch>
 
-) else if ($logout or $login) then (
-    login:set-user($config:login-domain, (), false()),
-    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-        <redirect url="{replace(request:get-uri(), "^(.*)\?", "$1")}"/>
-    </dispatch>
-
-) else if (ends-with($exist:resource, ".html")) then (
+) else if ($logout or $login) then
+    (: Spracheinstellung geht verloren bei Login :)
+    let $lang := session:get-attribute("ssrq.lang")
+    return (
+        login:set-user($config:login-domain, (), false()),
+        session:create(),
+        session:set-attribute("ssrq.lang", $lang),
+        <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+            <redirect url="{replace(request:get-uri(), "^(.*)\?", "$1")}"/>
+        </dispatch>
+    )
+else if (ends-with($exist:resource, ".html")) then (
     login:set-user($config:login-domain, (), false()),
     let $resource :=
         if (contains($exist:path, "/templates/")) then

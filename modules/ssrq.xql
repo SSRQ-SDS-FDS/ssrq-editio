@@ -284,7 +284,11 @@ function app:list-works($node as node(), $model as map(*), $filter as xs:string?
     let $kanton := ($kanton, app:select-kanton())[1]
     let $sessionData :=
         if ($refresh) then
-            session:clear()
+            let $lang := session:get-attribute("ssrq.lang")
+            return (
+                session:clear(),
+                session:set-attribute("ssrq.lang", $lang)
+            )
         else
             session:get-attribute("ssrq.works")
     let $log := console:log("Refresh: " || $refresh || "; kanton=" || $kanton || "; count: " || count($sessionData))
@@ -325,11 +329,14 @@ function app:list-works($node as node(), $model as map(*), $filter as xs:string?
 };
 
 declare function app:home($node as node(), $model as map(*)) {
-    element { node-name($node) } {
-        $node/@* except $node/@href,
-        attribute href { "index.html?kanton=" || app:select-kanton() },
-        templates:process($node/node(), $model)
-    }
+    templates:process(
+        element { node-name($node) } {
+            $node/@* except $node/@data-template,
+            attribute href { "$app/index.html?refresh=yes&amp;kanton=" || app:select-kanton() },
+            $node/node()
+        },
+        $model
+    )
 };
 
 
