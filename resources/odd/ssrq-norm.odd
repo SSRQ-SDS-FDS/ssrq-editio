@@ -58,12 +58,12 @@
                     </model>
                     <model predicate="sic and corr" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="corr"/>
-                        <param name="alternate" value="(ec:label('corrected-from'), ': ', sic)"/>
+                        <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), sic)"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="abbr and expan" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="expan[1]"/>
-                        <param name="alternate" value="(ec:label('abbr-nonexpanded'), ': ', abbr[1])"/>
+                        <param name="alternate" value="(ec:label('abbr-nonexpanded'), ec:colon(), abbr[1])"/>
                     </model>
                     <model predicate="orig and reg" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="reg[1]"/>

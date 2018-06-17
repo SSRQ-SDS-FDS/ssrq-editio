@@ -58,6 +58,25 @@ declare function pmf:abbr($abbr as xs:string) {
     )[1]
 };
 
+(:~ Doppelpunkt einfügen unter Berücksichtigung frz. Typographie :)
+declare function pmf:colon() {
+    pmf:punct(':', true())
+};
+
+(:~ Französische Typographie erfordert Leerzeichen vor best. Interpunktionszeichen :)
+declare function pmf:punct($char as xs:string, $spaceAfter as xs:boolean?) {
+    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
+    let $punct :=
+        switch ($lang)
+            case 'fr' return ' ' || $char
+            default return $char
+    return
+        if ($spaceAfter) then
+            $punct || ' '
+        else
+            $punct
+};
+
 declare function pmf:translate($attribute) {
     pmf:translate($attribute, 0, "uppercase")
 };

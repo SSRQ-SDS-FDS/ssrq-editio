@@ -10,9 +10,11 @@ $(document).ready(function() {
     var root = $(document.documentElement).attr("data-app");
     var docPath = location.pathname.substr(root.length + 1);
     aside.load("templates/facets.html?doc=" + docPath, function() {
+        var lang = $('#lang-select').val();
+        var colon = lang == 'fr' ? ' : ' : ': ';
         aside.find("li").each(function() {
             var key = $(this).attr('data-ref');
-            var label = ': ' + $(this).text();
+            var label = colon + $(this).text();
 
             function filterSpan(i, span) {
                 var ref = $(span).attr('data-ref');
