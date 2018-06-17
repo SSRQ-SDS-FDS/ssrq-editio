@@ -4815,7 +4815,7 @@
                         <valItem ident="handswitch">
                             <desc xml:lang="de">Handwechsel</desc>
                             <desc xml:lang="fr">Changement de main</desc>
-                            <desc xml:lang="fr">Handshift</desc>
+                            <desc xml:lang="en">Handshift</desc>
                         </valItem>
                         <valItem ident="underlined">
                             <desc xml:lang="de">Unterstrichen</desc>

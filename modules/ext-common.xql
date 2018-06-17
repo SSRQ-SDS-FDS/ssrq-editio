@@ -41,7 +41,9 @@ declare function pmf:label($id as xs:string, $upper as xs:boolean, $lang as xs:s
     let $label := $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang]
     return
         if ($label) then
-            if ($upper) then
+            if (count($label) > 1) then
+                ``[[Doppelte Übersetzung: `{$id}`, Sprache: `{$lang}`]]``
+            else if ($upper) then
                 upper-case(substring($label, 1, 1)) || substring($label, 2)
             else
                 lower-case(substring($label, 1, 1)) || substring($label, 2)
