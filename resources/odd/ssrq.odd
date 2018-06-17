@@ -719,10 +719,10 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="ab" mode="change">
-                    <model predicate="@place" behaviour="block">
+                    <model predicate="@place" behaviour="block" cssClass="ab">
                         <param name="content" value="('[', string-join((ec:translate(@type, 0, 'lowercase'),ec:translate(@place, 0, 'lowercase'),ec:translate(@hand, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('by', false()), ec:scribe(@scribe)) else (), ec:punct(':', false()), '] ', .)"/>
                         <outputRendition>
-                            font-size: 90%;
+                            font-size: 1.5rem;
                         </outputRendition>
                     </model>
                     <model behaviour="paragraph"/>
