@@ -236,7 +236,7 @@ declare function query:filter($hits as element()*) {
                         case "filter-kanton" return
                             for $v in $value
                             return
-                                $context[ancestor-or-self::tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $v || "_")]]
+                                $context[ancestor-or-self::tei:TEI[matches(tei:teiHeader//tei:seriesStmt/tei:idno, ``[^(?:SSRQ|SDS|FDS)_`{$v}`.*$]``)]]
                         case "filter-pubdate-min" return
                             let $dateMin := xs:date($value || "-01-01")
                             return
