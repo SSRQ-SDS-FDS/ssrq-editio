@@ -257,7 +257,7 @@ function app:kanton-auswahl($node as node(), $model as map(*), $filter as xs:str
                         (
                             for $prefix in ("SSRQ_", "SDS_", "FDS_")
                             return 
-                                collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, $prefix || $current || ".*$")]
+                                collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, $prefix || $current)]
                                 [.//tei:text/tei:body/*]
                         )
                     )
