@@ -11,12 +11,15 @@ import module namespace html="http://www.tei-c.org/tei-simple/xquery/functions";
 import module namespace counter="http://exist-db.org/xquery/counter" at "java:org.exist.xquery.modules.counter.CounterModule";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 
+declare variable $pmf:COUNTER_TEXTCRITICAL := "text-critical-" || util:uuid();
+declare variable $pmf:COUNTER_NOTE := "note-" || util:uuid();
+
 declare function pmf:prepare($config as map(*), $node as node()*) {
     (
-        counter:destroy("text-critical"),
-        counter:destroy("note"),
-        counter:create("text-critical"),
-        counter:create("note")
+        counter:destroy($pmf:COUNTER_TEXTCRITICAL),
+        counter:destroy($pmf:COUNTER_NOTE),
+        counter:create($pmf:COUNTER_TEXTCRITICAL),
+        counter:create($pmf:COUNTER_NOTE)
     )[5]
 };
 
@@ -66,9 +69,9 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
     let $nr :=
         switch ($type)
             case "text-critical" return
-                counter:next-value("text-critical")
+                counter:next-value($pmf:COUNTER_TEXTCRITICAL)
             default return
-                counter:next-value("note")
+                counter:next-value($pmf:COUNTER_NOTE)
     let $alternate := $config?apply-children($config, $node, $alternate)
     let $label :=
         switch($type)
@@ -129,9 +132,9 @@ declare function pmf:note($config as map(*), $node as element(), $class as xs:st
             let $nr :=
                 switch ($type)
                     case "text-critical" case "text-critical-start" return
-                        counter:next-value("text-critical")
+                        counter:next-value($pmf:COUNTER_TEXTCRITICAL)
                     default return
-                        counter:next-value("note")
+                        counter:next-value($pmf:COUNTER_NOTE)
             let $content := $config?apply-children($config, $node, $content)
             let $n :=
                 switch($type)
