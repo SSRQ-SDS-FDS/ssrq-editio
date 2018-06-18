@@ -112,4 +112,5 @@
     <msg key="error-description">Leider ist ein Fehler in der Anwendung aufgetreten. Bitte gehen Sie zurück 
     zur vorherigen Seite und beschreiben Sie uns den Fehler ggf. über die Feedback-Funktion.</msg>
     <msg key="website-link">https://www.ssrq-sds-fds.ch/home/</msg>
+    <msg key="feedback">Feedback</msg>
 </catalogue>
