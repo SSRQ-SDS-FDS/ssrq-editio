@@ -253,8 +253,13 @@ function app:kanton-auswahl($node as node(), $model as map(*), $filter as xs:str
                     (
                         collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $current || "_")]
                         [.//tei:text/tei:body/*]
-                        | collection($config:data-root)/tei:TEI[matches(tei:teiHeader//tei:seriesStmt/tei:idno, "^(?:SSRQ|SDS|FDS)_" || $current || ".*$")]
-                        [.//tei:text/tei:body/*]
+                        |
+                        (
+                            for $prefix in ("SSRQ_", "SDS_", "FDS_")
+                            return 
+                                collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, $prefix || $current || ".*$")]
+                                [.//tei:text/tei:body/*]
+                        )
                     )
                     except
                         collection($config:temp-root)/tei:TEI
@@ -309,8 +314,10 @@ function app:list-works($node as node(), $model as map(*), $filter as xs:string?
             (
                 collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $kanton || "_")]
                     [.//tei:text/tei:body/*],
-                collection($config:data-root)/tei:TEI[matches(tei:teiHeader//tei:seriesStmt/tei:idno, ``[^(?:SSRQ|SDS|FDS)_`{$kanton}`.*$]``)]
-                    [.//tei:text/tei:body/*]
+                for $prefix in ("SSRQ_", "SDS_", "FDS_")
+                return
+                    collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, $prefix || $kanton)]
+                        [.//tei:text/tei:body/*]
             )
             except
             collection($config:temp-root)/tei:TEI
@@ -346,8 +353,12 @@ declare function app:select-kanton() {
             if ($zero) then
                 $zero
             else if (exists(
-                collection($config:data-root)/tei:TEI[matches(tei:teiHeader//tei:seriesStmt/tei:idno, ``[^(?:SSRQ|SDS|FDS)_`{$kanton}`.*$]``)]
-                    except
+                (
+                    for $prefix in ("SSRQ_", "SDS_", "FDS_")
+                    return
+                        collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, $prefix || $kanton)]
+                )
+                except
                 collection($config:temp-root)/tei:TEI
             )) then
                 $kanton
