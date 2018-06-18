@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 537 $</p>
-                <p>Date of last commit:     $Date: 2018-06-07 12:51:02 +0200 (Thu, 07 Jun 2018) $</p>
+                <p>Revision of last commit: $Rev: 542 $</p>
+                <p>Date of last commit:     $Date: 2018-06-11 14:44:11 +0200 (Mon, 11 Jun 2018) $</p>
                 <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
@@ -1978,35 +1978,35 @@
                             <valList type="closed">
                                 <valItem ident="address">
                                     <desc xml:lang="de">Anschrift</desc>
-                                    <desc xml:lang="fr">adresse</desc>
+                                    <desc xml:lang="fr">Adresse</desc>
                                 </valItem>
                                 <valItem ident="dorsal">
                                     <desc xml:lang="de">Vermerk</desc>
-                                    <desc xml:lang="fr">note dorsale</desc>
+                                    <desc xml:lang="fr">Note dorsale</desc>
                                 </valItem>
                                 <valItem ident="chancery notation">
                                     <desc xml:lang="de">Kanzleivermerk</desc>
-                                    <desc xml:lang="fr">annotation issue d’une chancellerie</desc>
+                                    <desc xml:lang="fr">Annotation issue d’une chancellerie</desc>
                                 </valItem>
                                 <valItem ident="archiving reference">
                                     <desc xml:lang="de">Registraturvermerk</desc>
-                                    <desc xml:lang="fr">annotation issue de la Registratur</desc>
+                                    <desc xml:lang="fr">Annotation issue de la Registratur</desc>
                                 </valItem>
                                 <valItem ident="computatio">
                                     <desc xml:lang="de">Komputierungsvermerk</desc>
-                                    <desc xml:lang="fr">annotation du computeur</desc>
+                                    <desc xml:lang="fr">Annotation du computeur</desc>
                                 </valItem>
                                 <valItem ident="sigillant">
                                     <desc xml:lang="de">Sieglervermerk</desc>
-                                    <desc xml:lang="fr">annotation d’un sceau</desc>
+                                    <desc xml:lang="fr">Annotation d’un sceau</desc>
                                 </valItem>
                                 <valItem ident="tax">
                                     <desc xml:lang="de">Taxvermerk</desc>
-                                    <desc xml:lang="fr">annotation de taxation</desc>
+                                    <desc xml:lang="fr">Annotation de taxation</desc>
                                 </valItem>
                                 <valItem ident="marginal note">
                                     <desc xml:lang="de">Marginalie</desc>
-                                    <desc xml:lang="fr">note en marge</desc>
+                                    <desc xml:lang="fr">Note en marge</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -3307,7 +3307,7 @@
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='undefined']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Ballen|Bürde|Dutzend|Fuder|Gaden|Kloben|Loden|Maschen|Paar|Riste|Schubkarre|Seil|Sester|Stock|Stuck|Zeine)$')"
+                                        test="matches(@unit,'^(Ballen|Bürde|Dutzend|Fuder|Gaden|Kloben|Laib|Loden|Mal|Maschen|Paar|Riste|Schubkarre|Seil|Sester|Stock|Stuck|Zeine)$')"
                                         >keine gültige Einheit für ungefähre
                                         Masse/Gewichte</sch:assert>
                                 </sch:rule>
@@ -4815,7 +4815,7 @@
                         <valItem ident="handswitch">
                             <desc xml:lang="de">Handwechsel</desc>
                             <desc xml:lang="fr">Changement de main</desc>
-                            <desc xml:lang="en">Handshift</desc>
+                            <desc xml:lang="fr">Handshift</desc>
                         </valItem>
                         <valItem ident="underlined">
                             <desc xml:lang="de">Unterstrichen</desc>
