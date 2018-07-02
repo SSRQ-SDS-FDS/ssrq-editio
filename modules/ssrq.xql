@@ -256,7 +256,7 @@ function app:kanton-auswahl($node as node(), $model as map(*), $filter as xs:str
                         |
                         (
                             for $prefix in ("SSRQ_", "SDS_", "FDS_")
-                            return 
+                            return
                                 collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, $prefix || $current)]
                                 [.//tei:text/tei:body/*]
                         )
@@ -574,6 +574,24 @@ declare
 function app:show-help($node as node(), $model as map(*), $field as xs:string) {
     $pm-config:web-transform($model($field), (), $config:odd)
 };
+
+declare
+    %templates:wrap
+function app:download-xml($node as node(), $model as map(*), $doc as xs:string?) {
+    let $resource :=
+        if ($model?work) then
+            config:get-identifier($model?work)
+        else
+            $doc
+    return
+        <a href="{request:get-context-path()}/apps/ssrq-data/{$resource}">
+        {
+            $node/@*,
+            templates:process($node/node(), $model)
+        }
+        </a>
+};
+
 
 declare function app:parse-params($node as node(), $model as map(*)) {
     element { node-name($node) } {
