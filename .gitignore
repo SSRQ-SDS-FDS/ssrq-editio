@@ -6,3 +6,6 @@ package-lock.json
 node_modules/*
 resources/css/style.css
 resources/css/style.css.map
+test/node_modules
+test/errorShots/
+test/reports/
