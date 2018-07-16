@@ -18,6 +18,11 @@
         <body>
             <schemaSpec start="TEI teiCorpus" ident="ssrq-norm" source="ssrq.odd">
                 <elementSpec ident="lb" mode="change">
+                    <model predicate="@break='no'" behaviour="inline">
+                        <outputRendition scope="before">
+                            content: '-';
+                        </outputRendition>
+                    </model>
                     <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="seg" mode="change">
