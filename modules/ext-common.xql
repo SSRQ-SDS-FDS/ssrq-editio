@@ -26,7 +26,15 @@ declare function pmf:scribe($scribe as attribute()?) {
 
 
 declare function pmf:span($content) {
-    <span class="description">{$content}</span>
+    <span class="description">{
+        for $node in $content
+        return
+        typeswitch($node)
+            case xs:string return
+                text { $node }
+            default return
+                $node
+    }</span>
 };
 
 declare function pmf:label($id as xs:string) {
