@@ -109,9 +109,10 @@
     <msg key="sorting">Sortierung</msg>
     <msg key="loading-facets">Lade Registereinträge ...</msg>
     <msg key="error-title">Ein Fehler ist aufgetreten!</msg>
-    <msg key="error-description">Leider ist ein Fehler in der Anwendung aufgetreten. Bitte gehen Sie zurück 
+    <msg key="error-description">Leider ist ein Fehler in der Anwendung aufgetreten. Bitte gehen Sie zurück
     zur vorherigen Seite und beschreiben Sie uns den Fehler ggf. über die Feedback-Funktion.</msg>
     <msg key="website-link">https://www.ssrq-sds-fds.ch/home/</msg>
     <msg key="feedback">Feedback</msg>
     <msg key="registrierung">Für ein neues Login oder bei Problemen bitte E-Mail an info@ssrq-sds-fds.ch oder Feedback-Button drücken.</msg>
+    <msg key="require-login">Bitte einloggen</msg>
 </catalogue>

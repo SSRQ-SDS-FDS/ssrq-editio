@@ -113,4 +113,5 @@
     <msg key="website-link">https://www.ssrq-sds-fds.ch/fr/home/</msg>
     <msg key="feedback">Feedback</msg>
     <msg key="registrierung">Für ein neues Login oder bei Problemen bitte E-Mail an info@ssrq-sds-fds.ch oder Feedback-Button drücken.</msg>
+    <msg key="require-login">Bitte einloggen</msg>
 </catalogue>
