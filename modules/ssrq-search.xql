@@ -242,7 +242,7 @@ declare function query:filter($hits as element()*) {
                             return
                                 $context[ancestor-or-self::tei:TEI//tei:publicationStmt/tei:date[@type='electronic']/@when >= $dateMin]
                         case "filter-pubdate-max" return
-                            let $dateMax := xs:date($value || "-01-01")
+                            let $dateMax := xs:date($value || "-12-31")
                             return
                                 $context[ancestor-or-self::tei:TEI//tei:publicationStmt/tei:date[@type='electronic'][@when <= $dateMax]]
                         case "filter-pubplace" return
