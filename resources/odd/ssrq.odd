@@ -959,7 +959,7 @@
                 </elementSpec>
                 <elementSpec ident="bibl" mode="change">
                     <model predicate="@type='url'" behaviour="template">
-                        <param name="template" value="&lt;li&gt;&lt;a href=&#34;$[url]&#34;&gt;$[url]&lt;/a&gt;&lt;/li&gt;"/>
+                        <param name="template" value="&lt;li&gt;&lt;a href=&#34;$[url]&#34; target=&#34;_new&#34;&gt;$[url]&lt;/a&gt;&lt;/li&gt;"/>
                         <param name="url" value="string()"/>
                     </model>
                     <model predicate="ancestor::teiHeader" behaviour="listItem"/>
