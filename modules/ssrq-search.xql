@@ -616,7 +616,7 @@ function query:list-archives($node as node(), $model as map(*), $filter-archive 
             collection($config:data-root)
     for $idno in distinct-values(
             for-each($context//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno, function($id) {
-                replace($id, "^(\w+).*$", "$1")
+                replace($id, "^\s*(\w+).*$", "$1")
             })
         )
         order by $idno
