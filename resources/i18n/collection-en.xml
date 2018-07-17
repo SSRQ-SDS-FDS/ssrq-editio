@@ -108,6 +108,6 @@
         to the previous page and maybe describe us the error through the feedback function.</msg>
     <msg key="website-link">https://www.ssrq-sds-fds.ch/en/home/</msg>
     <msg key="feedback">Feedback</msg>
-    <msg key="registrierung">For login problems oder requests please write to E-Mail-Address info@ssrq-sds-fds.ch or use the Feedback button.</msg>
+    <msg key="registrierung">For an account or in case of problems please contact info@ssrq-sds-fds.ch or use the feedback button.</msg>
     <msg key="require-login">Please log in</msg>
 </catalogue>

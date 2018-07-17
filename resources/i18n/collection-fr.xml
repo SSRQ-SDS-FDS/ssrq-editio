@@ -104,7 +104,7 @@
     </msg>
     <msg key="realisierung">Réalisation</msg>
     <msg key="search">Recherche</msg>
-    <msg key="lizenz"> Licence: </msg>
+    <msg key="lizenz">Licence: </msg>
     <msg key="sorting">Tirage</msg>
     <msg key="loading-facets">Il charge ...</msg>
     <msg key="error-title">An Error Occurred!</msg>
@@ -112,6 +112,6 @@
         to the previous page and maybe describe us the error through the feedback function.</msg>
     <msg key="website-link">https://www.ssrq-sds-fds.ch/fr/home/</msg>
     <msg key="feedback">Feedback</msg>
-    <msg key="registrierung">Für ein neues Login oder bei Problemen bitte E-Mail an info@ssrq-sds-fds.ch oder Feedback-Button drücken.</msg>
-    <msg key="require-login">Bitte einloggen</msg>
+    <msg key="registrierung">Pour obtenir un nouveau Login, ainsi qu’en cas de problème, merci d’écrire à info@ssrq-sds-fds.ch ou d’utiliser le bouton Feedback.</msg>
+    <msg key="require-login">Veuillez vous identifier</msg>
 </catalogue>
