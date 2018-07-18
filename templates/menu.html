@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <nav xmlns:i18n="http://exist-db.org/xquery/i18n" class="navbar navbar-default navbar-fixed-top" role="navigation" data-template="i18n:translate" data-catalogues="resources/i18n">
     <div class="container-fluid" data-template="browse:fix-links">
         <div class="navbar-header">
@@ -60,11 +59,11 @@
 <!--                                <i class="material-icons">print</i> <i18n:text key="pdf-latex"/>-->
 <!--                            </a>-->
 <!--                        </li>-->
-                        <li data-template="browse:show-if-logged-in">
+                        <!--<li data-template="browse:show-if-logged-in">
                             <a target="_blank" data-template="browse:download-link" data-template-type="tex" data-template-source="true" title="i18n(latex-source)">
                                 <i class="material-icons">code</i> <i18n:text key="latex-source"/>
                             </a>
-                        </li>
+                        </li>-->
                         <!--li>
                             <a class="download-link" data-template="browse:download-link" data-template-type="" data-template-mode="plain" title="i18n(single-page)">
                                 <i class="material-icons">web</i> <i18n:text key="single-page"/>
@@ -81,7 +80,8 @@
                                 <i class="material-icons">code</i>
                                 XML
                             </a>
-                            <a href="#"><i18n:text key="require-login"/>.</a>
+                            <a href="#">
+                                <i18n:text key="require-login"/>.</a>
                         </li>
                     </ul>
                 </li>
