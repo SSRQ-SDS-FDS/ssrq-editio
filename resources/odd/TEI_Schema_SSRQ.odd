@@ -18,9 +18,9 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 542 $</p>
-                <p>Date of last commit:     $Date: 2018-06-11 14:44:11 +0200 (Mon, 11 Jun 2018) $</p>
-                <p>Author of last commit:   $Author: pascale $</p>
+                <p>Revision of last commit: $Rev: 596 $</p>
+                <p>Date of last commit:     $Date: 2018-07-19 11:26:17 +0200 (Thu, 19 Jul 2018) $</p>
+                <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
     </teiHeader>
@@ -43,10 +43,11 @@
             <schemaSpec ident="essrq_2d" docLang="de" xml:lang="en">
 
                 <!--BEGIN MODULE REFERENCES AND ELEMENTS THAT ARE INCLUDED-->
+                <!-- Koenigsfelden: Added surface, zone, graphic -->
 
                 <moduleRef key="tei"/>
                 <moduleRef key="core"
-                    include="abbr add author bibl cb choice corr date del expan foreign gap head hi item label
+                    include="abbr add author bibl cb choice corr date del expan foreign gap graphic head hi item label
                     lb list listBibl measure measureGrp note num orig p pb q quote ref reg resp respStmt sic term textLang time title unclear"/>
                 <moduleRef key="header"
                     include="textClass profileDesc fileDesc idno editorialDecl encodingDesc extent keywords publicationStmt profileDesc seriesStmt sourceDesc teiHeader textClass titleStmt"/>
@@ -55,7 +56,7 @@
                 <moduleRef key="msdescription"
                     include="altIdentifier origDate origPlace dimensions height width support material condition msDesc physDesc sealDesc objectDesc supportDesc seal msContents history additional repository msItem filiation msIdentifier summary origin"/>
                 <moduleRef key="transcr"
-                    include="addSpan damage damageSpan delSpan facsimile fw handShift space subst supplied"/>
+                    include="addSpan damage damageSpan delSpan facsimile fw handShift space subst surface supplied zone"/>
                 <moduleRef key="textcrit" include="app lem listWit rdg witness"/>
                 <moduleRef key="namesdates"
                     include="listOrg listPerson listPlace orgName persName placeName"/>
@@ -79,12 +80,14 @@
                 <!--END WHOLESALE DELETIONS OF ATTRIBUTE CLASSES-->
                 <!--BEGIN CHANGES TO ATTRIBUTE CLASSES-->
 
+                <!-- Koenigsfelden: enable rendition attributes in global -->
                 <classSpec ident="att.global" type="atts" mode="change">
                     <classes mode="replace">
                         <memberOf key="att.global.linking"/>
                         <memberOf key="att.global.analytic"/>
                         <memberOf key="att.global.responsibility"/>
                         <memberOf key="att.global.source"/>
+                        <memberOf key="att.global.rendition"/>
                     </classes>
                     <attList>
                         <attDef ident="xml:base" mode="delete"/>
@@ -92,10 +95,11 @@
                     </attList>
                 </classSpec>
 
+                <!-- Koenigsfelden: enable rendition attribute (so zone can make use of it) -->
                 <classSpec ident="att.global.rendition" type="atts" mode="change">
                     <attList>
                         <attDef ident="style" mode="delete"/>
-                        <attDef ident="rendition" mode="delete"/>
+                        <!--<attDef ident="rendition" mode="delete"/>-->
                     </attList>
                 </classSpec>
 
@@ -139,10 +143,11 @@
                     </attList>
                 </classSpec>
 
+                <!-- Koenigsfelden: copyOf is now allowed -->
                 <classSpec ident="att.global.linking" type="atts" mode="change">
                     <attList>
                         <attDef ident="synch" mode="delete"/>
-                        <attDef ident="copyOf" mode="delete"/>
+                        <!--<attDef ident="copyOf" mode="delete"/>-->
                         <attDef ident="sameAs" mode="delete"/>
                         <attDef ident="next" mode="delete"/>
                         <attDef ident="prev" mode="delete"/>
@@ -285,10 +290,13 @@
                 <!--BEGIN ELEMENT SPECIFICATIONS-->
 
                 <!-- ebene 0 -->
+                <!-- Koenigsfelden: Added Optional Facsimile -->
                 <elementSpec ident="TEI" module="textstructure" mode="change">
                     <content>
                         <rng:ref name="teiHeader"/>
-                        <!--<rng:ref name="facsimile"/>-->
+                        <rng:zeroOrMore>
+                            <rng:ref name="facsimile"/>
+                        </rng:zeroOrMore>
                         <rng:ref name="text"/>
                     </content>
                 </elementSpec>
@@ -515,10 +523,12 @@
                                 <valItem ident="Gregorian">
                                     <desc xml:lang="de">Gregorianischer Kalender</desc>
                                     <desc xml:lang="fr">le calendrier grégorien</desc>
+                                    <desc xml:lang="en">Gregorian calendar</desc>
                                 </valItem>
                                 <valItem ident="Julian">
                                     <desc xml:lang="de">Julianischer Kalender</desc>
                                     <desc xml:lang="fr">le calendrier julien</desc>
+                                    <desc xml:lang="de">Julian calendar</desc>
                                 </valItem>
                                 <valItem ident="natal">
                                     <desc xml:lang="de">Natalstil</desc>
@@ -539,46 +549,57 @@
                                 <valItem ident="#spring">
                                     <desc xml:lang="de">Frühling</desc>
                                     <desc xml:lang="fr">printemps</desc>
+                                    <desc xml:lang="en">spring</desc>
                                 </valItem>
                                 <valItem ident="#fall">
                                     <desc xml:lang="de">Herbst</desc>
                                     <desc xml:lang="fr">automne</desc>
+                                    <desc xml:lang="en">fall</desc>
                                 </valItem>
                                 <valItem ident="#summer">
                                     <desc xml:lang="de">Sommer</desc>
                                     <desc xml:lang="fr">été</desc>
+                                    <desc xml:lang="en">summer</desc>
                                 </valItem>
                                 <valItem ident="#winter">
                                     <desc xml:lang="de">Winter</desc>
                                     <desc xml:lang="fr">hiver</desc>
+                                    <desc xml:lang="en">winter</desc>
                                 </valItem>
                                 <valItem ident="P1WD">
                                     <desc xml:lang="de">Sonntag</desc>
                                     <desc xml:lang="fr">dimanche</desc>
+                                    <desc xml:lang="en">Sunday</desc>
                                 </valItem>
                                 <valItem ident="P2WD">
                                     <desc xml:lang="de">Montag</desc>
                                     <desc xml:lang="fr">lundi</desc>
+                                    <desc xml:lang="en">Monday</desc>
                                 </valItem>
                                 <valItem ident="P3WD">
                                     <desc xml:lang="de">Dienstag</desc>
                                     <desc xml:lang="fr">mardi</desc>
+                                    <desc xml:lang="en">Tuesday</desc>
                                 </valItem>
                                 <valItem ident="P4WD">
                                     <desc xml:lang="de">Mittwoch</desc>
                                     <desc xml:lang="fr">mercredi</desc>
+                                    <desc xml:lang="en">Wednesday</desc>
                                 </valItem>
                                 <valItem ident="P5WD">
                                     <desc xml:lang="de">Donnerstag</desc>
                                     <desc xml:lang="fr">jeudi</desc>
+                                    <desc xml:lang="en">Thursday</desc>
                                 </valItem>
                                 <valItem ident="P6WD">
                                     <desc xml:lang="de">Freitag</desc>
                                     <desc xml:lang="fr">vendredi</desc>
+                                    <desc xml:lang="en">Friday</desc>
                                 </valItem>
                                 <valItem ident="P7WD">
                                     <desc xml:lang="de">Samstag</desc>
                                     <desc xml:lang="fr">samedi</desc>
+                                    <desc xml:lang="en">Saturday</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -589,10 +610,12 @@
                                 <valItem ident="deadline">
                                     <desc xml:lang="de">Termin/Frist</desc>
                                     <desc xml:lang="fr">délai</desc>
+                                    <desc xml:lang="en">deadline</desc>
                                 </valItem>
                                 <valItem ident="deadline_holiday">
                                     <desc xml:lang="de">Kirchenfest als Termin/Frist </desc>
                                     <desc xml:lang="fr">des fêtes religieuses comme délai</desc>
+                                    <!-- <desc xml:lang="en"></desc> -->
                                 </valItem>
                                 <valItem ident="deadline_floating holiday">
                                     <desc xml:lang="de">Beweglicher Feiertag als Termin/Frist</desc>
@@ -601,17 +624,21 @@
                                 <valItem ident="holiday">
                                     <desc xml:lang="de">Kirchenfest</desc>
                                     <desc xml:lang="fr">des fêtes religieuses</desc>
+                                    <desc xml:lang="en">holiday</desc>
                                 </valItem>
                                 <valItem ident="floating holiday">
                                     <desc xml:lang="de">Beweglicher Feiertag</desc>
                                     <desc xml:lang="fr">des fêtes sans date fixe</desc>
+                                    <desc xml:lang="en">floating holiday</desc>
                                 </valItem>
                                 <valItem ident="electronic">
                                     <desc xml:lang="de">elektronische Publikation</desc>
+                                    <desc xml:lang="fr">publication numérique</desc>
                                 </valItem>
                                 <valItem ident="print">
                                     <desc xml:lang="de">Druck</desc>
                                     <desc xml:lang="fr">imprimé</desc>
+                                    <desc xml:lang="en">print</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -676,14 +703,17 @@
                                 <valItem ident="transcript">
                                     <desc xml:lang="de">Transkript</desc>
                                     <desc xml:lang="fr">transcription</desc>
+                                    <desc xml:lang="en">transcript</desc>
                                 </valItem>
                                 <valItem ident="tagging">
                                     <desc xml:lang="de">Auszeichnung der Transkription</desc>
                                     <desc xml:lang="fr">désignation d’une transcription</desc>
+                                    <desc xml:lang="en">tagging</desc>
                                 </valItem>
                                 <valItem ident="index">
                                     <desc xml:lang="de">Index</desc>
                                     <desc xml:lang="fr">index</desc>
+                                    <desc xml:lang="en">index</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -701,10 +731,12 @@
                                 <valItem ident="saint">
                                     <desc xml:lang="de">Heilige</desc>
                                     <desc xml:lang="fr">saint</desc>
+                                    <desc xml:lang="en">saint</desc>
                                 </valItem>
                                 <valItem ident="sigillant">
                                     <desc xml:lang="de">Siegler</desc>
                                     <desc xml:lang="fr">personne qui a posé un sceau</desc>
+                                    <desc xml:lang="en">sigillant</desc>
                                 </valItem>
                                 <valItem ident="testis">
                                     <desc xml:lang="de">Zeuge</desc>
@@ -713,35 +745,43 @@
                                 <valItem ident="issuer">
                                     <desc xml:lang="de">Aussteller</desc>
                                     <desc xml:lang="fr">personne qui a fait un acte</desc>
+                                    <desc xml:lang="en">issuer</desc>
                                 </valItem>
                                 <valItem ident="recipient">
                                     <desc xml:lang="de">Empfänger</desc>
                                     <desc xml:lang="fr">personne qui a reçu l’acte</desc>
+                                    <desc xml:lang="en">recipient</desc>
                                     <!-- Papsturkunden -->
                                 </valItem>
                                 <valItem ident="audentiaprocurator">
                                     <desc xml:lang="de">Audentiaprokurator</desc>
                                     <desc xml:lang="fr">audentiaprokurator</desc>
+                                    <desc xml:lang="en">audentiaprocurator</desc>
                                 </valItem>
                                 <valItem ident="computator">
                                     <desc xml:lang="de">Komputator</desc>
                                     <desc xml:lang="fr">computateur</desc>
+                                    <desc xml:lang="en">computator</desc>
                                 </valItem>
                                 <valItem ident="corrector">
                                     <desc xml:lang="de">Korrektor</desc>
                                     <desc xml:lang="fr">correcteur</desc>
+                                    <desc xml:lang="en">corrector</desc>
                                 </valItem>
                                 <valItem ident="protonotarius">
                                     <desc xml:lang="de">Protonotar</desc>
                                     <desc xml:lang="fr">protonotaire</desc>
+                                    <desc xml:lang="en">protonotarius</desc>
                                 </valItem>
                                 <valItem ident="rescribendario">
                                     <desc xml:lang="de">Reskribendar</desc>
                                     <desc xml:lang="fr">reskribendar</desc>
+                                    <desc xml:lang="en">rescribendario</desc>
                                 </valItem>
                                 <valItem ident="scriptor">
                                     <desc xml:lang="de">Schreiber</desc>
                                     <desc xml:lang="fr">scripteur</desc>
+                                    <desc xml:lang="en">scribe</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -802,14 +842,17 @@
                                 <valItem ident="issuer">
                                     <desc xml:lang="de">Aussteller</desc>
                                     <desc xml:lang="fr">institution qui a fait un acte</desc>
+                                    <desc xml:lang="en">issuer</desc>
                                 </valItem>
                                 <valItem ident="recipient">
                                     <desc xml:lang="de">Empfänger</desc>
                                     <desc xml:lang="fr">institution qui a reçu l’acte</desc>
+                                    <desc xml:lang="en">recipient</desc>
                                 </valItem>
                                 <valItem ident="sigillant">
                                     <desc xml:lang="de">Siegelinhaber</desc>
                                     <desc xml:lang="fr">institution qui a posé un sceau </desc>
+                                    <desc xml:lang="en">sigillant</desc>
                                 </valItem>
                                 <valItem ident="testis">
                                     <desc xml:lang="de">Zeuge</desc>
@@ -858,18 +901,22 @@
                                 <valItem ident="transcript">
                                     <desc xml:lang="de">Transkript</desc>
                                     <desc xml:lang="fr">transcription</desc>
+                                    <desc xml:lang="en">transcript</desc>
                                 </valItem>
                                 <valItem ident="tagging">
                                     <desc xml:lang="de">Auszeichnung der Transkription</desc>
                                     <desc xml:lang="fr">désignation d’une transcription</desc>
+                                    <desc xml:lang="en">tagging</desc>
                                 </valItem>
                                 <valItem ident="index">
                                     <desc xml:lang="de">Index</desc>
                                     <desc xml:lang="fr">index</desc>
+                                    <desc xml:lang="en">index</desc>
                                 </valItem>
                                 <valItem ident="qualitycheck">
                                     <desc xml:lang="de">Qualitätskontrolle</desc>
                                     <desc xml:lang="fr">contrôle de qualité</desc>
+                                    <desc xml:lang="en">qualitycheck</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -1201,30 +1248,37 @@
                                 <valItem ident="bulle">
                                     <desc xml:lang="de">Bulle</desc>
                                     <desc xml:lang="fr">bulle</desc>
+                                    <desc xml:lang="en">bulle</desc>
                                 </valItem>
                                 <valItem ident="wafer">
                                     <desc xml:lang="de">Oblatensiegel</desc>
                                     <desc xml:lang="fr">sceau hostie</desc>
+                                    <desc xml:lang="en">wafer</desc>
                                 </valItem>
                                 <valItem ident="papered seal">
                                     <desc xml:lang="de">Papierwachssiegel</desc>
                                     <desc xml:lang="fr">sceau sous papier</desc>
+                                    <desc xml:lang="en">papered seal</desc>
                                 </valItem>
                                 <valItem ident="sealing wax">
                                     <desc xml:lang="de">Siegellack</desc>
                                     <desc xml:lang="fr">cire pour le scellement</desc>
+                                    <desc xml:lang="en">sealing wax</desc>
                                 </valItem>
                                 <valItem ident="wax">
                                     <desc xml:lang="de">Wachs</desc>
                                     <desc xml:lang="fr">cire</desc>
+                                    <desc xml:lang="en">wax</desc>
                                 </valItem>
                                 <valItem ident="wax in a box">
                                     <desc xml:lang="de">Wachs in Holzkapsel</desc>
                                     <desc xml:lang="fr">cire dans une caissette en bois</desc>
+                                    <desc xml:lang="en">wax in a box</desc>
                                 </valItem>
                                 <valItem ident="wax with margin">
                                     <desc xml:lang="de">Wachs in Schüssel</desc>
                                     <desc xml:lang="fr">cire dans un bol</desc>
+                                    <desc xml:lang="en">wax with margin</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -1234,26 +1288,32 @@
                                 <valItem ident="octangular">
                                     <desc xml:lang="de">achteckig</desc>
                                     <desc xml:lang="fr">octongonal</desc>
+                                    <desc xml:lang="en">octangular</desc>
                                 </valItem>
                                 <valItem ident="triangular">
                                     <desc xml:lang="de">dreieckig</desc>
                                     <desc xml:lang="fr">triangulaire</desc>
+                                    <desc xml:lang="en">triangular</desc>
                                 </valItem>
                                 <valItem ident="heart-shaped">
                                     <desc xml:lang="de">herzförmig</desc>
                                     <desc xml:lang="fr">en forme de cœur</desc>
+                                    <desc xml:lang="en">heart-shaped</desc>
                                 </valItem>
                                 <valItem ident="round">
                                     <desc xml:lang="de">rund</desc>
                                     <desc xml:lang="fr">rond</desc>
+                                    <desc xml:lang="en">round</desc>
                                 </valItem>
                                 <valItem ident="peltade">
                                     <desc xml:lang="de">schildförmig</desc>
                                     <desc xml:lang="fr">en forme de bouclier</desc>
+                                    <desc xml:lang="en">peltade</desc>
                                 </valItem>
                                 <valItem ident="oval">
                                     <desc xml:lang="de">spitzoval</desc>
                                     <desc xml:lang="fr">ovale pointu</desc>
+                                    <desc xml:lang="en">oval</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -1263,38 +1323,47 @@
                                 <valItem ident="sealed on a ribbon">
                                     <desc xml:lang="de">angehängt an Band</desc>
                                     <desc xml:lang="fr">attaché à un ruban</desc>
+                                    <desc xml:lang="en">sealed on a ribbon</desc>
                                 </valItem>
                                 <valItem ident="sealed on laces">
                                     <desc xml:lang="de">angehängt an Fäden</desc>
                                     <desc xml:lang="fr">attaché à un fil</desc>
+                                    <desc xml:lang="en">sealed on laces</desc>
                                 </valItem>
                                 <valItem ident="sealed on a leather tag">
                                     <desc xml:lang="de">angehängt an Lederstreifen</desc>
                                     <desc xml:lang="fr">attaché à une lanière en cuir</desc>
+                                    <desc xml:lang="en">sealed on a leather tag</desc>
                                 </valItem>
                                 <valItem ident="sealed on a cord">
                                     <desc xml:lang="de">angehängt an einer Kordel</desc>
-                                    <desc xml:lang="fr"></desc>
+                                    <desc xml:lang="fr">attaché à un cordo</desc>
+                                    <desc xml:lang="en">sealed on a cord</desc>
                                 </valItem>
                                 <valItem ident="sealed on a parchment tag">
                                     <desc xml:lang="de">angehängt an Pergamentstreifen</desc>
-                                    <desc xml:lang="fr"></desc>
+                                    <desc xml:lang="fr">attaché à une lanière en parchemin</desc>
+                                    <desc xml:lang="en">sealed on a parchment tag</desc>
                                 </valItem>
                                 <valItem ident="sealed on a lace">
                                     <desc xml:lang="de">angehängt an Schnur</desc>
                                     <desc xml:lang="fr">attaché à un cordon</desc>
+                                    <desc xml:lang="en">sealed on a lace</desc>
                                 </valItem>
                                 <valItem ident="applied">
                                     <desc xml:lang="de">aufgedrückt</desc>
-                                    <desc xml:lang="fr">pressé (</desc>
+                                    <desc xml:lang="fr">pressé</desc>
+                                    <desc xml:lang="en">applied</desc>
                                 </valItem>
                                 <valItem ident="slit">
                                     <desc xml:lang="de">nur Siegelschlitz vorhanden</desc>
                                     <desc xml:lang="fr">il n’existe qu’une fente pour le sceau</desc>
+                                    <desc xml:lang="en">slit</desc>
                                 </valItem>
                                 <valItem ident="wrapping-tie">
                                     <desc xml:lang="de">zum Verschluss aufgedrückt</desc>
                                     <desc xml:lang="fr">sceau fermant le document</desc>
+                                    <desc xml:lang="en">wrapping-tie</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -1306,14 +1375,17 @@
                                 <valItem ident="absent">
                                     <desc xml:lang="de">fehlt</desc>
                                     <desc xml:lang="fr">absent</desc>
+                                    <desc xml:lang="en">absent</desc>
                                 </valItem>
                                 <valItem ident="polished">
                                     <desc xml:lang="de">abgeschliffen</desc>
                                     <desc xml:lang="fr">poli</desc>
+                                    <desc xml:lang="en">polished</desc>
                                 </valItem>
                                 <valItem ident="ex and enclosed">
                                     <desc xml:lang="de">ab und beiliegend</desc>
                                     <desc xml:lang="fr">détaché et joint</desc>
+                                    <desc xml:lang="en">ex and enclosed</desc>
                                 </valItem>
                                 <!-- PS: Weggelassen, da absent genügt mit Kombinatin @attachment <valItem ident="ex and absent">
                                     <desc xml:lang="de">ab und fehlend</desc>
@@ -1321,26 +1393,32 @@
                                 <valItem ident="damaged">
                                     <desc xml:lang="de">beschädigt</desc>
                                     <desc xml:lang="fr">endommagé</desc>
+                                    <desc xml:lang="en">damaged</desc>
                                 </valItem>
                                 <valItem ident="chamfered">
                                     <desc xml:lang="de">bestossen</desc>
                                     <desc xml:lang="fr">écorné</desc>
+                                    <desc xml:lang="en"></desc>
                                 </valItem>
                                 <valItem ident="fragmentary">
                                     <desc xml:lang="de">bruchstückhaft</desc>
                                     <desc xml:lang="fr">fragmentaire</desc>
+                                    <desc xml:lang="en">chamfered</desc>
                                 </valItem>
                                 <valItem ident="well-preserved">
                                     <desc xml:lang="de">gut erhalten</desc>
                                     <desc xml:lang="fr">bien conservé</desc>
+                                    <desc xml:lang="en">well-preserved</desc>
                                 </valItem>
                                 <valItem ident="bound in linen">
                                     <desc xml:lang="de">in Leinensäckchen </desc>
                                     <desc xml:lang="fr">lié dans un sachet de lin</desc>
+                                    <desc xml:lang="en">bound in linen</desc>
                                 </valItem>
                                 <valItem ident="in a box">
                                     <desc xml:lang="de">in verschlossener Holzkapsel</desc>
                                     <desc xml:lang="fr">dans une boîte en bois </desc>
+                                    <desc xml:lang="en">in a box</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -1350,10 +1428,12 @@
                                 <valItem ident="end">
                                     <desc xml:lang="de">am Ende der Urkunde</desc>
                                     <desc xml:lang="fr">en bas de l’acte</desc>
+                                    <desc xml:lang="en">end</desc>
                                 </valItem>
                                 <valItem ident="overleaf">
                                     <desc xml:lang="de">auf der anderen Seite des Blattes</desc>
                                     <desc xml:lang="fr">sur l’autre page de la feuille</desc>
+                                    <desc xml:lang="en">overleaf</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -1370,6 +1450,34 @@
                         <attDef ident="rend" mode="delete"/>
                         <attDef ident="type" mode="delete"/>
                     </attList>
+                </elementSpec>
+                <!-- FACSIMILE -->
+                <!-- Koenigsfelden: Added facsimile element and below -->
+                <!-- ebene 1 unterbaum TEI -->
+                <elementSpec ident="facsimile" module="transcr" mode="change">
+                    <content>
+                        <rng:ref name="surface"/>
+                    </content>
+                </elementSpec>
+                <!-- ebene 2 unterbaum facsimile -->
+                <elementSpec ident="surface" module="transcr" mode="change">
+                    <content>
+                        <rng:ref name="graphic"/>
+                        <rng:optional>
+                            <rng:ref name="zone"/>
+                        </rng:optional>
+                    </content>
+                </elementSpec>
+                <!-- ebene 3 unterbaum surface -->
+                <elementSpec ident="graphic" module="core" mode="change">
+                    <content/>
+                </elementSpec>
+                <elementSpec ident="zone" module="transcr" mode="change">
+                    <content>
+                        <rng:zeroOrMore>
+                            <rng:ref name="zone"/>
+                        </rng:zeroOrMore>
+                    </content>
                 </elementSpec>
                 <!-- TEXT -->
                 <!-- ebene 1 unterbaum TEI -->
@@ -1515,10 +1623,12 @@
                                 <valItem ident="part">
                                     <desc xml:lang="de">Teil</desc>
                                     <desc xml:lang="fr">partie</desc>
+                                    <desc xml:lang="en">part</desc>
                                 </valItem>
                                 <valItem ident="chapter">
                                     <desc xml:lang="de">Kapitel</desc>
                                     <desc xml:lang="fr">chapitre</desc>
+                                    <desc xml:lang="en">chapter</desc>
                                 </valItem>
                                 <valItem ident="preliminary remark"><!-- Ergänzung für Andreas Ineichen -->
                                     <desc xml:lang="de">Vorbemerkung</desc>
@@ -1526,10 +1636,12 @@
                                 <valItem ident="section">
                                     <desc xml:lang="de">Artikel</desc>
                                     <desc xml:lang="fr">article</desc>
+                                    <desc xml:lang="en">section</desc>
                                 </valItem>
                                 <valItem ident="subsection">
                                     <desc xml:lang="de">Paragraph</desc>
                                     <desc xml:lang="fr">paragraphe</desc>
+                                    <desc xml:lang="en">subsection</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -1684,10 +1796,12 @@
                                 <valItem ident="illegible">
                                     <desc xml:lang="de">unleserlich</desc>
                                     <desc xml:lang="fr">illisible</desc>
+                                    <desc xml:lang="en">illegible</desc>
                                 </valItem>
                                 <valItem ident="irrelevant">
                                     <desc xml:lang="de">irrelevant</desc>
                                     <desc xml:lang="fr">insignifiant</desc>
+                                    <desc xml:lang="en">irrelevant</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -1701,28 +1815,37 @@
                                     <desc xml:lang="de" type="plural">Buchstaben</desc>
                                     <desc xml:lang="fr">lettre</desc>
                                     <desc xml:lang="fr" type="plural">lettres</desc>
+                                    <desc xml:lang="en">character</desc>
+                                    <desc xml:lang="en" type="plural">characters</desc>
                                 </valItem>
                                 <valItem ident="cm">
                                     <desc xml:lang="de">cm</desc>
                                     <desc xml:lang="fr">cm</desc>
+                                    <desc xml:lang="en">cm</desc>
                                 </valItem>
                                 <valItem ident="line">
                                     <desc xml:lang="de">Zeile</desc>
                                     <desc xml:lang="de" type="plural">Zeilen</desc>
                                     <desc xml:lang="fr">ligne</desc>
                                     <desc xml:lang="fr" type="plural">lignes</desc>
+                                    <desc xml:lang="en">line</desc>
+                                    <desc xml:lang="en" type="plural">lines</desc>
                                 </valItem>
                                 <valItem ident="page">
                                     <desc xml:lang="de">Seite</desc>
                                     <desc xml:lang="de" type="plural">Seiten</desc>
                                     <desc xml:lang="fr">page</desc>
                                     <desc xml:lang="fr" type="plural">pages</desc>
+                                    <desc xml:lang="en">page</desc>
+                                    <desc xml:lang="en" type="plural">pages</desc>
                                 </valItem>
                                 <valItem ident="word">
                                     <desc xml:lang="de">Wort</desc>
                                     <desc xml:lang="de" type="plural">Wörter</desc>
                                     <desc xml:lang="fr">mot</desc>
                                     <desc xml:lang="fr" type="plural">mots</desc>
+                                    <desc xml:lang="en">word</desc>
+                                    <desc xml:lang="en" type="plural">words</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -1754,10 +1877,12 @@
                                 <valItem ident="title">
                                     <desc xml:lang="de">Haupttitel</desc>
                                     <desc xml:lang="fr">titre principal</desc>
+                                    <desc xml:lang="en">title</desc>
                                 </valItem>
                                 <valItem ident="subtitle">
                                     <desc xml:lang="de">Untertitel</desc>
                                     <desc xml:lang="fr">sous-titre</desc>
+                                    <desc xml:lang="en">subtitle</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -1849,30 +1974,37 @@
                                 <valItem ident="copper engraving">
                                     <desc xml:lang="de">Kupferstich</desc>
                                     <desc xml:lang="fr">gravure sur cuivre</desc>
+                                    <desc xml:lang="en">copper engraving</desc>
                                 </valItem>
                                 <valItem ident="drawing">
                                     <desc xml:lang="de">Federzeichnung</desc>
                                     <desc xml:lang="fr">dessin à la plume</desc>
+                                    <desc xml:lang="en">drawing</desc>
                                 </valItem>
                                 <valItem ident="locus sigilli">
                                     <desc xml:lang="de">Locus sigilli</desc>
                                     <desc xml:lang="fr">locus sigilli</desc>
+                                    <desc xml:lang="en">locus sigilli</desc>
                                 </valItem>
                                 <valItem ident="notarial sign">
                                     <desc xml:lang="de">Notarzeichen</desc>
                                     <desc xml:lang="fr">seing notariel</desc>
+                                    <desc xml:lang="en">notarial sign</desc>
                                 </valItem>
                                 <valItem ident="sign">
                                     <desc xml:lang="de">Verweiszeichen</desc>
                                     <desc xml:lang="fr">signe de renvoi </desc>
+                                    <desc xml:lang="en">sign</desc>
                                 </valItem>
                                 <valItem ident="stamp">
                                     <desc xml:lang="de">Stempel</desc>
                                     <desc xml:lang="fr">tampon</desc>
+                                    <desc xml:lang="en">stamp</desc>
                                 </valItem>
                                 <valItem ident="woodcut">
                 <desc xml:lang="de">Holzschnitt</desc>
                                     <desc xml:lang="fr">gravure sur bois</desc>
+                                    <desc xml:lang="en">woodcut</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -1979,34 +2111,42 @@
                                 <valItem ident="address">
                                     <desc xml:lang="de">Anschrift</desc>
                                     <desc xml:lang="fr">Adresse</desc>
+                                    <desc xml:lang="en">Adress</desc>
                                 </valItem>
                                 <valItem ident="dorsal">
                                     <desc xml:lang="de">Vermerk</desc>
                                     <desc xml:lang="fr">Note dorsale</desc>
+                                    <desc xml:lang="en">Dorsal</desc>
                                 </valItem>
                                 <valItem ident="chancery notation">
                                     <desc xml:lang="de">Kanzleivermerk</desc>
                                     <desc xml:lang="fr">Annotation issue d’une chancellerie</desc>
+                                    <desc xml:lang="en">Chancery notation</desc>
                                 </valItem>
                                 <valItem ident="archiving reference">
                                     <desc xml:lang="de">Registraturvermerk</desc>
                                     <desc xml:lang="fr">Annotation issue de la Registratur</desc>
+                                    <desc xml:lang="fr">Archiving reference</desc>
                                 </valItem>
                                 <valItem ident="computatio">
                                     <desc xml:lang="de">Komputierungsvermerk</desc>
                                     <desc xml:lang="fr">Annotation du computeur</desc>
+                                    <desc xml:lang="en">Computatio</desc>
                                 </valItem>
                                 <valItem ident="sigillant">
                                     <desc xml:lang="de">Sieglervermerk</desc>
                                     <desc xml:lang="fr">Annotation d’un sceau</desc>
+                                    <desc xml:lang="en">Sigillant</desc>
                                 </valItem>
                                 <valItem ident="tax">
                                     <desc xml:lang="de">Taxvermerk</desc>
                                     <desc xml:lang="fr">Annotation de taxation</desc>
+                                    <desc xml:lang="en">Tax</desc>
                                 </valItem>
                                 <valItem ident="marginal note">
                                     <desc xml:lang="de">Marginalie</desc>
                                     <desc xml:lang="fr">Note en marge</desc>
+                                    <desc xml:lang="en">Marginal note</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -2016,98 +2156,122 @@
                                 <valItem ident="above">
                                     <desc xml:lang="de">oberhalb des Textes</desc>
                                     <desc xml:lang="fr">au-dessus d’une ligne</desc>
+                                    <desc xml:lang="en">above</desc>
                                 </valItem>
                                 <valItem ident="below">
                                     <desc xml:lang="de">unterhalb des Textes</desc>
                                     <desc xml:lang="fr">au-dessous d’une ligne</desc>
+                                    <desc xml:lang="en">below</desc>
                                 </valItem>
                                 <valItem ident="cover">
                                     <desc xml:lang="de">auf dem Umschlag</desc>
                                     <desc xml:lang="fr">sur le couverture</desc>
+                                    <desc xml:lang="en">cover</desc>
                                 </valItem>
                                 <valItem ident="cover above">
                                     <desc xml:lang="de">auf dem Umschlag oben</desc>
                                     <desc xml:lang="fr">en haut de la couverture</desc>
+                                    <desc xml:lang="en"></desc>
                                 </valItem>
                                 <valItem ident="cover middle">
                                     <desc xml:lang="de">auf dem Umschlag in der Mitte</desc>
                                     <desc xml:lang="fr">au milieu de la couverture</desc>
+                                    <desc xml:lang="en">cover middle</desc>
                                 </valItem>
                                 <valItem ident="cover bottom">
                                     <desc xml:lang="de">auf dem Umschlag unten</desc>
                                     <desc xml:lang="fr">en bas de la couverture</desc>
+                                    <desc xml:lang="en">cover bottom</desc>
                                 </valItem>
                                 <valItem ident="sub plica">
                                     <desc xml:lang="de">unter der Plica</desc>
                                     <desc xml:lang="fr">au-dessous de la plica</desc>
+                                    <desc xml:lang="en">sub plica</desc>
                                 </valItem>
                                 <valItem ident="parchment tag">
                                     <desc xml:lang="de">auf dem Pergamentstreifen</desc>
                                     <desc xml:lang="fr">au verso de la plica</desc>
+                                    <desc xml:lang="en">parchment tag</desc>
                                 </valItem>
                                 <valItem ident="plica verso">
                                     <desc xml:lang="de">auf der Rückseite der Plica</desc>
                                     <desc xml:lang="fr">à une lanière en parchemin</desc>
+                                    <desc xml:lang="en">plica verso</desc>
                                 </valItem>
                                 <valItem ident="plica">
                                     <desc xml:lang="de">auf der Plica</desc>
                                     <desc xml:lang="fr">sur la plica</desc>
+                                    <desc xml:lang="en">plica</desc>
                                 </valItem>
                                 <valItem ident="right plica">
                                     <desc xml:lang="de">auf der rechten Seite der Plica</desc>
                                     <desc xml:lang="fr">du côté droit de la plica</desc>
+                                    <desc xml:lang="en">right plica</desc>
                                 </valItem>
                                 <valItem ident="left plica">
                                     <desc xml:lang="de">auf der linken Seite der Plica</desc>
                                     <desc xml:lang="fr">du côté gauche de la plica</desc>
+                                    <desc xml:lang="en">left plica</desc>
                                 </valItem>
                                 <valItem ident="next page">
                                     <desc xml:lang="de">auf der nächsten Seite</desc>
                                     <desc xml:lang="fr">sur la page suivante</desc>
+                                    <desc xml:lang="en">next page</desc>
                                 </valItem>
                                 <valItem ident="verso">
                                     <desc xml:lang="de">auf der Rückseite</desc>
                                     <desc xml:lang="fr">au verso</desc>
+                                    <desc xml:lang="en">verso</desc>
                                 </valItem>
                                 <valItem ident="verso above">
                                     <desc xml:lang="de">auf der Rückseite oben</desc>
                                     <desc xml:lang="fr">au verso en haut</desc>
+                                    <desc xml:lang="en">verso above</desc>
                                 </valItem>
                                 <valItem ident="verso above left">
                                     <desc xml:lang="de">auf der Rückseite oben links</desc>
                                     <desc xml:lang="fr">au verso en haut à gauche</desc>
+                                    <desc xml:lang="en">verso above left</desc>
                                 </valItem>
                                 <valItem ident="verso above middle">
                                     <desc xml:lang="de">auf der Rückseite oben in der Mitte</desc>
                                     <desc xml:lang="fr">au verso en haut au milieu</desc>
+                                    <desc xml:lang="en">verso above middle</desc>
                                 </valItem>
                                 <valItem ident="verso above right">
                                     <desc xml:lang="de">auf der Rückseite oben rechts</desc>
                                     <desc xml:lang="fr">au verso en haut à droite</desc>
+                                    <desc xml:lang="en">verso above right</desc>
                                 </valItem>
                                 <valItem ident="verso bottom">
                                     <desc xml:lang="de">auf der Rückseite unten</desc>
                                     <desc xml:lang="fr">au verso en bas</desc>
+                                    <desc xml:lang="en">verso bottom</desc>
                                 </valItem>
                                 <valItem ident="verso bottom left">
                                     <desc xml:lang="de">auf der Rückseite unten links</desc>
                                     <desc xml:lang="fr">au verso en bas à gauche</desc>
+                                    <desc xml:lang="en">verso bottom left</desc>
                                 </valItem>
                                 <valItem ident="verso bottom middle">
                                     <desc xml:lang="de">auf der Rückseite unten in der Mitte</desc>
                                     <desc xml:lang="fr">au verso en bas au milieu</desc>
+                                    <desc xml:lang="en">verso bottom middl</desc>
                                 </valItem>
                                 <valItem ident="verso bottom right">
                                     <desc xml:lang="de">auf der Rückseite unten rechts</desc>
                                     <desc xml:lang="fr">au verso en bas au milieu</desc>
+                                    <desc xml:lang="en">verso bottom right</desc>
                                 </valItem>
                                 <valItem ident="right margin">
                                     <desc xml:lang="de">am rechten Rand</desc>
                                     <desc xml:lang="fr">au verso en bas à droite</desc>
+                                    <desc xml:lang="en">right margin</desc>
                                 </valItem>
                                 <valItem ident="left margin">
                                     <desc xml:lang="de">am linken Rand</desc>
                                     <desc xml:lang="fr">sur la marge gauche</desc>
+                                    <desc xml:lang="en">left margin</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -4554,10 +4718,12 @@
                                 <valItem ident="omitted">
                                     <desc xml:lang="de">Auslassung</desc>
                                     <desc xml:lang="fr">omission</desc>
+                                    <desc xml:lang="en">omitted</desc>
                                 </valItem>
                                 <valItem ident="omitted line">
                                     <desc xml:lang="de">Zeilensprung</desc>
                                     <desc xml:lang="fr">omission d’une ligne</desc>
+                                    <desc xml:lang="en">omitted line</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -4658,7 +4824,7 @@
                             <valList type="closed">
                                 <valItem ident="#evening">
                                     <desc xml:lang="de">Abends</desc>
-                                    <desc xml:lang="fr">le soir </desc>
+                                    <desc xml:lang="fr">le soir</desc>
                                 </valItem>
                                 <valItem ident="#morning">
                                     <desc xml:lang="de">Morgens</desc>
@@ -4711,14 +4877,17 @@
                                 <valItem ident="high">
                                     <desc xml:lang="de">hoch</desc>
                                     <desc xml:lang="fr">haut</desc>
+                                    <desc xml:lang="en">high</desc>
                                 </valItem>
                                 <valItem ident="medium">
                                     <desc xml:lang="de">mittel</desc>
                                     <desc xml:lang="fr">moyen</desc>
+                                    <desc xml:lang="en">medium</desc>
                                 </valItem>
                                 <valItem ident="low">
                                     <desc xml:lang="de">niedrig</desc>
                                     <desc xml:lang="fr">bas</desc>
+                                    <desc xml:lang="en">low</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -4806,7 +4975,7 @@
                         <valItem ident="omitted-in">
                             <desc xml:lang="de">Auslassung in</desc>
                             <desc xml:lang="fr">Omission dans</desc>
-                            <desc xml:lang="fr">Omitted in</desc>
+                            <desc xml:lang="en">Omitted in</desc>
                         </valItem>
                         <valItem ident="alt-rdg-in">
                             <desc xml:lang="de">Alternative Lesung in</desc>
@@ -4815,7 +4984,7 @@
                         <valItem ident="handswitch">
                             <desc xml:lang="de">Handwechsel</desc>
                             <desc xml:lang="fr">Changement de main</desc>
-                            <desc xml:lang="fr">Handshift</desc>
+                            <desc xml:lang="en">Handshift</desc>
                         </valItem>
                         <valItem ident="underlined">
                             <desc xml:lang="de">Unterstrichen</desc>
