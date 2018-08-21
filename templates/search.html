@@ -5,7 +5,9 @@
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <i18n:text key="search">Suche</i18n:text>
-                    <a href="#" class="info-btn" data-toggle="modal" data-target="#searchInfo"><i class="material-icons">info</i></a>
+                    <a href="#" class="info-btn" data-toggle="modal" data-target="#searchInfo">
+                        <i class="material-icons">info</i>
+                    </a>
                 </h3>
             </div>
             <div class="panel-body">
@@ -37,8 +39,7 @@
                 <div class="form-group">
                     <div class="col-md-12 col-xs-12">
                         <span class="input-group">
-                            <input name="query" type="search" class="form-control typeahead-search"
-                                placeholder="i18n(search-query-attr)" autocomplete="off" data-template="templates:form-control"/>
+                            <input name="query" type="search" class="form-control typeahead-search" placeholder="i18n(search-query-attr)" autocomplete="off" data-template="templates:form-control"/>
                             <span class="input-group-btn">
                                 <button id="f-btn-search" type="submit" class="btn btn-primary">
                                     <span class="material-icons">search</span>
@@ -48,36 +49,35 @@
                         <input type="hidden" name="doc" data-template="search:form-current-doc"/>
                     </div>
                 </div>
-                <h4><i18n:text key="genre"/>:</h4>
+                <h4>
+                    <i18n:text key="genre"/>:</h4>
                 <ul class="control-list">
                     <li>
                         <label class="form-check-label">
-                            <input id="bearbeitungstext" class="form-check-input" type="checkbox" value="${query}" data-template="app:parse-params"/> <i18n:text key="searchText"/></label>
+                            <input id="bearbeitungstext" class="form-check-input" type="checkbox" value="${query}" data-template="app:parse-params"/> <i18n:text key="searchText"/>
+                        </label>
                         <ul>
                             <li>
                                 <label class="form-check-label">
-                                    <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="title"
-                                        data-template="templates:form-control"/> <i18n:text key="title"/></label>
+                                    <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="title" data-template="templates:form-control"/> <i18n:text key="title"/>
+                                </label>
                             </li>
                             <li>
                                 <label class="form-check-label">
-                                    <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="regest"
-                                        data-template="templates:form-control"/> <i18n:text key="regest"/></label>
+                                    <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="regest" data-template="templates:form-control"/> <i18n:text key="regest"/>
+                                </label>
                             </li>
                             <li>
                                 <label class="form-check-label">
-                                    <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="comment"
-                                        data-template="templates:form-control"/> <i18n:text key="comment"/> </label>
+                                    <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="comment" data-template="templates:form-control"/> <i18n:text key="comment"/> </label>
                             </li>
                             <li>
                                 <label class="form-check-label">
-                                    <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="notes"
-                                        data-template="templates:form-control"/> <i18n:text key="notes"/> </label>
+                                    <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="notes" data-template="templates:form-control"/> <i18n:text key="notes"/> </label>
                             </li>
                             <li>
                                 <label class="form-check-label">
-                                    <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="seal"
-                                        data-template="templates:form-control"/> <i18n:text key="seal"/> </label>
+                                    <input class="form-check-input bearbeitungstext" name="subtype" type="checkbox" value="seal" data-template="templates:form-control"/> <i18n:text key="seal"/> </label>
                             </li>
                         </ul>
                     </li>
@@ -87,23 +87,24 @@
                             <i18n:text key="searchEdition"/> </label>
                     </li>
                 </ul>
-                <h4><i18n:text key="filters"/>:</h4>
+                <h4>
+                    <i18n:text key="filters"/>:</h4>
                 <ul class="control-list">
                     <li>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><i18n:text key="period"/>: </label>
+                            <label class="col-sm-4 control-label">
+                                <i18n:text key="period"/>: </label>
                             <div class="col-sm-8" data-template="query:period-range">
-                                <input type="number" name="filter-period-min" placeholder="${min}" min="${min}" max="${max}" value="${filter-period-min}"
-                                    data-template="app:parse-params"/>
+                                <input type="number" name="filter-period-min" placeholder="${min}" min="${min}" max="${max}" value="${filter-period-min}" data-template="app:parse-params"/>
                                 <span>-</span>
-                                <input type="number" name="filter-period-max" placeholder="${max}" min="${min}" max="${max}" value="${filter-period-max}"
-                                    data-template="app:parse-params"/>
+                                <input type="number" name="filter-period-max" placeholder="${max}" min="${min}" max="${max}" value="${filter-period-max}" data-template="app:parse-params"/>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><i18n:text key="language"/>: </label>
+                            <label class="col-sm-4 control-label">
+                                <i18n:text key="language"/>: </label>
                             <div class="col-sm-8">
                                 <select name="filter-language" class="form-control" multiple="multiple" data-template="templates:form-control">
                                     <option>de</option>
@@ -116,17 +117,19 @@
                     </li>
                     <li>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><i18n:text key="archive"/>: </label>
+                            <label class="col-sm-4 control-label">
+                                <i18n:text key="archive"/>: </label>
                             <div class="col-sm-8">
                                 <select name="filter-archive" class="form-control" data-template="query:list-archives">
-                                    <option></option>
+                                    <option/>
                                 </select>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><i18n:text key="origPlace"/>: </label>
+                            <label class="col-sm-4 control-label">
+                                <i18n:text key="origPlace"/>: </label>
                             <div class="col-sm-8">
                                 <select name="filter-pubplace" class="form-control" data-template="templates:form-control">
                                     <option/>
@@ -138,7 +141,8 @@
                     </li>
                     <li>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><i18n:text key="scribe"/>: </label>
+                            <label class="col-sm-4 control-label">
+                                <i18n:text key="scribe"/>: </label>
                             <div class="col-sm-8">
                                 <select name="filter-author" class="form-control" data-template="templates:form-control">
                                     <option/>
@@ -150,7 +154,8 @@
                     </li>
                     <li>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><i18n:text key="seal"/>: </label>
+                            <label class="col-sm-4 control-label">
+                                <i18n:text key="seal"/>: </label>
                             <div class="col-sm-8">
                                 <select name="filter-seal" class="form-control" data-template="templates:form-control">
                                     <option/>
@@ -162,7 +167,8 @@
                     </li>
                     <li>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><i18n:text key="filliation"/>: </label>
+                            <label class="col-sm-4 control-label">
+                                <i18n:text key="filliation"/>: </label>
                             <div class="col-sm-8">
                                 <select name="filter-filiation" class="form-control" data-template="templates:form-control">
                                     <option/>
@@ -174,19 +180,25 @@
                     </li>
                     <li>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><i18n:text key="material"/>: </label>
+                            <label class="col-sm-4 control-label">
+                                <i18n:text key="material"/>: </label>
                             <div class="col-sm-8">
                                 <select name="filter-material" class="form-control" data-template="templates:form-control">
                                     <option/>
-                                    <option value="Papier"><i18n:text key="paper">Papier</i18n:text></option>
-                                    <option value="Pergament"><i18n:text key="parchment">Pergament</i18n:text></option>
+                                    <option value="Papier">
+                                        <i18n:text key="paper">Papier</i18n:text>
+                                    </option>
+                                    <option value="Pergament">
+                                        <i18n:text key="parchment">Pergament</i18n:text>
+                                    </option>
                                 </select>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><i18n:text key="condition"/>: </label>
+                            <label class="col-sm-4 control-label">
+                                <i18n:text key="condition"/>: </label>
                             <div class="col-sm-8">
                                 <select name="filter-condition" class="form-control" data-template="templates:form-control">
                                     <option/>
@@ -198,45 +210,45 @@
                     </li>
                     <li>
                         <div class="form-group">
-                            <label class="col-sm-12 control-label"><i18n:text key="volume"/>: </label>
+                            <label class="col-sm-12 control-label">
+                                <i18n:text key="volume"/>: </label>
                             <div class="col-sm-12">
                                 <select name="filter-kanton" class="form-control" multiple="multiple" data-template="templates:form-control">
-                                    <option value="ZH">I. Abteilung: Die Rechtsquellen des Kantons Zürich</option>
-                                    <option value="BE">II. Abteilung: Die Rechtsquellen des Kantons Bern</option>
-                                    <option value="LU">III. Abteilung: Die Rechtsquellen des Kantons Luzern </option>
-                                    <option value="UR">IV. Abteilung: Die Rechtsquellen des Kantons Uri </option>
-                                    <option value="SZ">V. Abteilung: Die Rechtsquellen des Kantons Schwyz</option>
-                                    <option value="OW/NW">VI. Abteilung: Die Rechtsquellen des Kantons Unterwalden</option>
-                                    <option value="GL">VII. Abteilung: Die Rechtsquellen des Kantons Glarus</option>
-                                    <option value="ZG">VIII. Abteilung: Die Rechtsquellen des Kantons Zug</option>
-                                    <option value="FR">IX. Abteilung: Die Rechtsquellen des Kantons Freiburg</option>
-                                    <option value="SO">X. Abteilung: Die Rechtsquellen des Kantons Solothurn</option>
-                                    <option value="BS/BL">XI. Abteilung: Die Rechtsquellen der Kantone Basel</option>
-                                    <option value="SH">XII. Abteilung: Die Rechtsquellen des Kantons Schaffhausen</option>
-                                    <option value="AR/AI">XIII. Abteilung: Die Rechtsquellen der Kantone Appenzell</option>
-                                    <option value="SG">XIV. Abteilung: Die Rechtsquellen des Kantons St. Gallen</option>
-                                    <option value="GR">XV. Abteilung: Die Rechtsquellen des Kantons Graubünden</option>
-                                    <option value="AG">XVI. Abteilung: Die Rechtsquellen des Kantons Aargau</option>
-                                    <option value="TG">XVII. Abteilung: Die Rechtsquellen des Kantons Thurgau</option>
-                                    <option value="TI">XVIII sezione: Le fonti del diritto del cantone Ticino</option>
-                                    <option value="VD">XIXe partie : Les sources du droit du canton de Vaud</option>
-                                    <option value="VS">XXe partie : Les sources du droit du canton du Valais</option>
-                                    <option value="NE">XXIe partie : Les sources du droit du canton de Neuchâtel</option>
-                                    <option value="GE">XXIIe partie : Les sources du droit du canton de Genève</option>
-                                    <option value="JU">XXIIIe partie : Les sources du droit du canton du Jura</option>
+                                    <option value="ZH">Zürich (I. Abteilung)</option>
+                                    <option value="BE">Bern (II. Abteilung)</option>
+                                    <option value="LU">Luzern (III. Abteilung)</option>
+                                    <option value="UR">Uri (IV. Abteilung)</option>
+                                    <option value="SZ">Schwyz (V. Abteilung)</option>
+                                    <option value="OW/NW">Unterwalden (VI. Abteilung)</option>
+                                    <option value="GL">Glarus (VII. Abteilung)</option>
+                                    <option value="ZG">Zug (VIII. Abteilung)</option>
+                                    <option value="FR">Freiburg (IX. Abteilung)</option>
+                                    <option value="SO">Solothurn (X. Abteilung)</option>
+                                    <option value="BS/BL">Basel (XI. Abteilung)</option>
+                                    <option value="SH">Schaffhausen (XII. Abteilung)</option>
+                                    <option value="AR/AI">Appenzell (XIII. Abteilung)</option>
+                                    <option value="SG">Gallen (XIV. Abteilung)</option>
+                                    <option value="GR">Graubünden (XV. Abteilung)</option>
+                                    <option value="AG">Aargau (XVI. Abteilung)</option>
+                                    <option value="TG">Thurgau (XVII. Abteilung)</option>
+                                    <option value="TI">Ticino (XVIII sezione)</option>
+                                    <option value="VD">Vaud (XIXe partie)</option>
+                                    <option value="VS">Valais (XXe partie)</option>
+                                    <option value="NE">Neuchâtel (XXIe partie)</option>
+                                    <option value="GE">Genève (XXIIe partie)</option>
+                                    <option value="JU">Jura (XXIIIe partie)</option>
                                 </select>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><i18n:text key="pubdate"/>: </label>
+                            <label class="col-sm-4 control-label">
+                                <i18n:text key="pubdate"/>: </label>
                             <div class="col-sm-8" data-template="query:pubdate-range">
-                                <input type="number" name="filter-pubdate-min" placeholder="${min}" min="${min}" max="${max}" value="${filter-pubdate-min}"
-                                    data-template="app:parse-params"/>
+                                <input type="number" name="filter-pubdate-min" placeholder="${min}" min="${min}" max="${max}" value="${filter-pubdate-min}" data-template="app:parse-params"/>
                                 <span>-</span>
-                                <input type="number" name="filter-pubdate-max" placeholder="${max}" min="${min}" max="${max}" value="${filter-pubdate-max}"
-                                    data-template="app:parse-params"/>
+                                <input type="number" name="filter-pubdate-max" placeholder="${max}" min="${min}" max="${max}" value="${filter-pubdate-max}" data-template="app:parse-params"/>
                             </div>
                         </div>
                     </li>
@@ -250,9 +262,11 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">
                         <span class="material-icons" aria-hidden="true">close</span>
-                        <span class="sr-only"><i18n:text key="close"/></span>
+                        <span class="sr-only">
+                            <i18n:text key="close"/>
+                        </span>
                     </button>
-                    <h4 class="modal-title" data-template="app:show-help" data-template-field="title"></h4>
+                    <h4 class="modal-title" data-template="app:show-help" data-template-field="title"/>
                 </div>
                 <div class="modal-body content" data-template="app:show-help" data-template-field="body">
                 </div>
