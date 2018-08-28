@@ -68,6 +68,29 @@ declare function app:show-if-logged-in($node as node(), $model as map(*)) {
             ()
 };
 
+declare function app:is-admin () {
+    let $groups := sm:get-user-groups(xmldb:get-current-user())
+
+    for $group in $groups
+        return
+            if ($group = 'portal-admin') then
+                true()
+            else
+                ()
+};
+
+declare function app:show-if-logged-in-as-admin($node as node(), $model as map(*)) {
+    let $user := request:get-attribute($config:login-domain || ".user")
+    return
+        if ($user and app:is-admin()) then
+            element { node-name($node) } {
+                $node/@*,
+                templates:process($node/node(), $model)
+            }
+        else
+            ()
+};
+
 (:~
  : List documents in data collection
  :)
