@@ -329,6 +329,12 @@
                         <desc xml:lang="it">Locus sigilli</desc>
                         <desc xml:lang="en">Locus sigilli</desc>
                     </valItem>
+                        <valItem ident="LS">
+                        <desc xml:lang="de">Locus sigilli</desc>
+                        <desc xml:lang="fr">Locus sigilli</desc>
+                        <desc xml:lang="it">Locus sigilli</desc>
+                        <desc xml:lang="en">Locus sigilli</desc>
+                    </valItem>
                      <valItem ident="m g h">
                         <desc xml:lang="de">mein gnädiger herr, meine gnädigen herren</desc>
                            <!--<desc xml:lang="fr">mein gnädiger herr, meine gnädigen herren</desc>
