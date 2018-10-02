@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 648 $</p>
-                <p>Date of last commit:     $Date: 2018-08-23 09:34:55 +0200 (Thu, 23 Aug 2018) $</p>
+                <p>Revision of last commit: $Rev: 705 $</p>
+                <p>Date of last commit:     $Date: 2018-09-28 11:25:43 +0200 (Fri, 28 Sep 2018) $</p>
                 <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
@@ -782,6 +782,12 @@
                                     <desc xml:lang="fr">protonotaire</desc>
                                     <desc xml:lang="en">protonotarius</desc>
                                 </valItem>
+                                <valItem ident="procurator">
+                                    <desc xml:lang="de">Prokurator</desc>
+                                    <desc xml:lang="fr">procurateur</desc>
+                                    <desc xml:lang="en">procurator</desc>
+                                    <desc xml:lang="it">procuratore</desc>
+                                </valItem>
                                 <valItem ident="rescribendario">
                                     <desc xml:lang="de">Reskribendar</desc>
                                     <desc xml:lang="fr">reskribendar</desc>
@@ -1185,6 +1191,7 @@
                     <content>
                         <rng:zeroOrMore>
                             <rng:choice>
+                                <rng:ref name="add"/>
                                 <rng:ref name="pb"/>
                                 <rng:ref name="lb"/>
                                 <rng:ref name="del"/>
@@ -3066,6 +3073,11 @@
                                     <desc xml:lang="fr">coupé (dans la marge)</desc>
                                     <desc xml:lang="en">clipping (on the leaf margin)</desc>
                                 </valItem>
+                                <valItem ident="covered by seal">
+                                    <desc xml:lang="de">vom Siegel verdeckt</desc>
+                                    <desc xml:lang="fr">couvert par le sceau</desc>
+                                    <desc xml:lang="en">covered by seal</desc>
+                                </valItem>
                                 <valItem ident="crack">
                                     <desc xml:lang="de">Riss</desc>
                                     <desc xml:lang="fr">déchiré</desc>
@@ -3131,6 +3143,11 @@
                                     <desc xml:lang="fr">couvert par la reliure</desc>
                                     <desc xml:lang="en">overbinding</desc>
                                 </valItem>
+                                <valItem ident="part of the folio lost">
+                                    <desc xml:lang="de">Teil der Seite/Blatt fehlt</desc>
+                                    <desc xml:lang="fr">partie de la page/feuille manquante</desc>
+                                    <desc xml:lang="en">part of the page/folio lost</desc>
+                                </valItem>
                                 <valItem ident="restoration">
                                     <desc xml:lang="de">Restauration</desc>
                                     <desc xml:lang="fr">restauré</desc>
@@ -3195,6 +3212,11 @@
                                     <desc xml:lang="fr">déchiré</desc>
                                     <desc xml:lang="en">crack</desc>
                                 </valItem>
+                                <valItem ident="covered by seal">
+                                    <desc xml:lang="de">vom Siegel verdeckt</desc>
+                                    <desc xml:lang="fr">couvert par le sceau</desc>
+                                    <desc xml:lang="en">covered by seal</desc>
+                                </valItem>
                                 <valItem ident="faded ink">
                                     <desc xml:lang="de">verblasste Tinte</desc>
                                     <desc xml:lang="fr">l’encre s’est affaiblie</desc>
@@ -3254,6 +3276,11 @@
                                     <desc xml:lang="de">durch Einband überdeckt</desc>
                                     <desc xml:lang="fr">couvert par la reliure</desc>
                                     <desc xml:lang="en">overbinding</desc>
+                                </valItem>
+                                <valItem ident="part of the folio lost">
+                                    <desc xml:lang="de">Teil der Seite/Blatt fehlt</desc>
+                                    <desc xml:lang="fr">partie de la page/feuille manquante</desc>
+                                    <desc xml:lang="en">part of the page/folio lost</desc>
                                 </valItem>
                                 <valItem ident="restoration">
                                     <desc xml:lang="de">Restauration</desc>
@@ -3650,7 +3677,7 @@
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='length']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Daumen|Elle|Fuss|Klafter|Linie|Meile|Schuh|Stab|Vierling|Zoll)$')"
+                                        test="matches(@unit,'^(Daumen|Elle|Finger|Fuss|Klafter|Linie|Meile|Schuh|Stab|Vierling|Zoll)$')"
                                         >kein gültiges Längenmass</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='volume']">
@@ -4345,6 +4372,15 @@
                                     <desc xml:lang="fr">aune</desc>
                                     <desc xml:lang="en">cubit</desc>
                                     <desc xml:lang="en" type="plural">cubits</desc>
+                                </valItem>
+                                <valItem ident="Finger">
+                                    <desc xml:lang="de">Finger</desc>
+                                    <desc xml:lang="fr">doigt</desc>
+                                    <desc xml:lang="fr" type="plural">doigts</desc>
+                                    <desc xml:lang="en">finger</desc>
+                                    <desc xml:lang="en" type="plural">fingers</desc>
+                                    <desc xml:lang="it">dito</desc>
+                                    <desc xml:lang="it" type="plural">dita</desc>
                                 </valItem>
                                 <valItem ident="Fuss">
                                     <desc xml:lang="de">Fuss</desc>
@@ -5479,9 +5515,9 @@
                             <desc xml:lang="en">Omitted in</desc>
                         </valItem>
                         <valItem ident="alt-rdg-in">
-                            <desc xml:lang="de">Alternative Lesung in</desc>
-                            <desc xml:lang="fr">Lecture alternative dans</desc>
-                            <desc xml:lang="en">Alternative reading in</desc>
+                            <desc xml:lang="de">Textvariante in</desc>
+                            <desc xml:lang="fr">Variante alternative dans</desc>
+                            <desc xml:lang="en">Text variant in</desc>
                         </valItem>
                         <valItem ident="handswitch">
                             <desc xml:lang="de">Handwechsel</desc>
