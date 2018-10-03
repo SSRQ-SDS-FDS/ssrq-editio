@@ -22,7 +22,7 @@ declare variable $repoxml :=
 ;
 
 declare function local:generate-code($collection as xs:string) {
-    for $source in ("ssrq.odd", "ssrq-norm.odd")
+    for $source in ("ssrq.odd", "ssrq-norm.odd", "ssrq-print.odd")
     for $module in ("web", "print", "latex", "epub")
     for $file in pmu:process-odd(
         odd:get-compiled($collection || "/resources/odd", $source),
