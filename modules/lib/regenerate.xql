@@ -39,7 +39,7 @@ declare function local:get-line($src, $line as xs:int) {
         replace($lines[$line], "^\s*(.*?)", "$1")
 };
 
-let $odd := ("ssrq.odd", "ssrq-norm.odd", "ssrq-print.odd")
+let $odd := ("ssrq.odd", "ssrq-norm.odd")
 let $result :=
     for $source in $odd
         for $module in ("web", "print", "latex", "epub")
