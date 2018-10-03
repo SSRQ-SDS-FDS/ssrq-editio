@@ -1,4 +1,4 @@
-<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" xml:lang="en">
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI"  xmlns:pb="http://teipublisher.com/1.0" xml:lang="en">
     <teiHeader>
         <fileDesc>
             <titleStmt>
@@ -17,6 +17,58 @@
     <text>
         <body>
             <schemaSpec start="TEI teiCorpus" ident="ssrq" source="teipublisher.odd">
+                <elementSpec ident="TEI" mode="change">
+                    <model output="latex" behaviour="section">
+                        <param name="title" value="teiHeader/fileDesc/titleStmt/title/node()"/>
+                        <param name="content" value="(teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary, text/back, text/(group|body))"/>
+                        <pb:template>
+                            \documentclass[10pt,twoside]{article}
+                            
+                            \usepackage{ssrq}			% here's all the magic...
+                            \usepackage{hyperref}
+                            
+                            \begin{document}
+                            
+                            % Variablen für Kopfzeile
+                            \def\volume{[[title]]}
+                            \def\volid{\url{https://www.ssrq-sds-fds.ch/online/tei/SG/SSRQ_SG_III_4_14510101B_1.xml}}
+                            
+                            \linenumbers				% Zeilennummern
+                            \normalsize					% normale Grösse, d.h. Quellentext (source) ist 10pt
+                            
+                            \thispagestyle{firstpage}
+                            [[content]]
+                            
+                            \printnotes*
+                            
+                            \end{document}
+                        </pb:template>
+                    </model>
+                    <model behaviour="document"/>
+                </elementSpec>
+                <elementSpec ident="body">
+                    <model output="latex" behaviour="block">
+                        <pb:template>\begin{source}[[content]]\end{source}</pb:template>
+                    </model>
+                    <modelSequence>
+                        <model behaviour="index">
+                            <param name="type" value="'toc'"/>
+                        </model>
+                        <model behaviour="block"/>
+                    </modelSequence>
+                </elementSpec>
+                <elementSpec ident="summary" mode="add">
+                    <model output="latex" behaviour="block">
+                        <pb:template>\begin{summary}[[content]]\end{summary}</pb:template>
+                    </model>
+                    <model behaviour="block"/>
+                </elementSpec>
+                <elementSpec ident="back" mode="change">
+                    <model output="print" behaviour="block">
+                        <pb:template>\begin{intro}[[content]]\end{intro}</pb:template>
+                    </model>
+                    <model behaviour="block"/>
+                </elementSpec>
                 <elementSpec ident="lb" mode="change">
                     <model predicate="ancestor::back//orig" behaviour="omit"/>
                     <model predicate="preceding-sibling::node()[1][self::pb]" behaviour="omit"/>
@@ -329,6 +381,9 @@
                         <desc>app with gap and reading</desc>
                         <param name="content" value="(ec:label('unreadable'), ', ', ec:label('supplied-after', false()), ' ', @wit)"/>
                     </model>
+                    <model output="latex" behaviour="inline">
+                        <pb:template>\textup{[[content]]}</pb:template>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="handShift">
                     <model behaviour="note">
@@ -434,55 +489,51 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="term" mode="change">
-                    <model output="web" behaviour="reference" cssClass="semantic term">
+                    <model output="latex" behaviour="inline">
+                        <param name="ref" value="@ref"/>
+                        <pb:template>\term{[[ref]]}{[[content]]}</pb:template>
+                    </model>
+                    <model behaviour="reference" cssClass="semantic term">
                         <desc>Semantic highlighting of keywords and lemmata with dark-red text color</desc>
                         <param name="content" value="."/>
                         <param name="ref" value="@ref"/>
                         <param name="label" value="ec:label('term')"/>
                     </model>
-                    <model behaviour="alternate" cssClass="semantic term">
-                        <desc>Semantic highlighting of keywords and lemmata with dark-red text color</desc>
-                        <param name="default" value="."/>
-                        <param name="alternate" value="ec:label('term')"/>
-                    </model>
                 </elementSpec>
                 <elementSpec ident="persName" mode="add">
-                    <model output="web" behaviour="reference" cssClass="semantic person">
+                    <model output="latex" behaviour="inline">
+                        <param name="ref" value="@ref"/>
+                        <pb:template>\persname{[[ref]]}{[[content]]}</pb:template>
+                    </model>
+                    <model behaviour="reference" cssClass="semantic person">
                         <desc>Semantic highlighting of person with blue text color</desc>
                         <param name="content" value="."/>
                         <param name="ref" value="@ref"/>
                         <param name="label" value="ec:label('person')"/>
                     </model>
-                    <model behaviour="alternate" cssClass="semantic person">
-                        <desc>Semantic highlighting of person names with tooltip and blue text color</desc>
-                        <param name="default" value="."/>
-                        <param name="alternate" value="ec:label('person')"/>
-                    </model>
                 </elementSpec>
                 <elementSpec ident="orgName" mode="add">
-                    <model output="web" behaviour="reference" cssClass="semantic organization">
+                    <model output="latex" behaviour="inline">
+                        <param name="ref" value="@ref"/>
+                        <pb:template>\persname{[[ref]]}{[[content]]}</pb:template>
+                    </model>
+                    <model behaviour="reference" cssClass="semantic organization">
                         <desc>Semantic highlighting of organization names with tooltip and blue text color</desc>
                         <param name="content" value="."/>
                         <param name="ref" value="@ref"/>
                         <param name="label" value="ec:label('organisation')"/>
                     </model>
-                    <model behaviour="alternate" cssClass="semantic organization">
-                        <desc>Semantic highlighting of organization names with tooltip and blue text color</desc>
-                        <param name="default" value="."/>
-                        <param name="alternate" value="ec:label('organisation')"/>
-                    </model>
                 </elementSpec>
                 <elementSpec ident="placeName" mode="add">
-                    <model output="web" behaviour="reference" cssClass="semantic place">
+                    <model output="latex" behaviour="inline">
+                        <param name="ref" value="@ref"/>
+                        <pb:template>\placename{[[ref]]}{[[content]]}</pb:template>
+                    </model>
+                    <model behaviour="reference" cssClass="semantic place">
                         <desc>Semantic highlighting of place names with tooltip and green text color</desc>
                         <param name="content" value="."/>
                         <param name="label" value="ec:label('place')"/>
                         <param name="ref" value="@ref"/>
-                    </model>
-                    <model behaviour="alternate" cssClass="semantic place">
-                        <desc>Semantic highlighting of place names with tooltip and green text color</desc>
-                        <param name="default" value="."/>
-                        <param name="alternate" value="ec:label('place')"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="origPlace" mode="add">
@@ -909,6 +960,7 @@
                     <model predicate="@type = 'title'" behaviour="heading">
                         <param name="level" value="1"/>
                     </model>
+                    <model output="latex" behaviour="block" useSourceRendition="true"/>
                     <model behaviour="heading" useSourceRendition="true">
                         <param name="level" value="2"/>
                     </model>
@@ -931,6 +983,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="text()">
+                    <model output="latex" behaviour="text"/>
                     <model behaviour="content"/>
                 </elementSpec>
                 <elementSpec ident="author" mode="change">
