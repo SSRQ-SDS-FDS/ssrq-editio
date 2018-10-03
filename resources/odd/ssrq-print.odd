@@ -57,7 +57,10 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="note" mode="change">
-                    <model behaviour="note"/>
+                    <model behaviour="inline">
+                        <param name="label" value="ec:increment-counter('note')"/>
+                        <pb:template>\ednote[[[label]]]{[[content]]}</pb:template>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="seg" mode="change">
                     <model predicate="@n" behaviour="block">

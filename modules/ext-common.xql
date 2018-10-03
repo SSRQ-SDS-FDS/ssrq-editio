@@ -6,8 +6,29 @@ xquery version "3.1";
 module namespace pmf="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
+import module namespace counter="http://exist-db.org/xquery/counter" at "java:org.exist.xquery.modules.counter.CounterModule";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
+
+declare variable $pmf:COUNTER_TEXTCRITICAL := "text-critical-" || util:uuid();
+declare variable $pmf:COUNTER_NOTE := "note-" || util:uuid();
+
+declare function pmf:prepare($config as map(*), $node as node()*) {
+    (
+        counter:destroy($pmf:COUNTER_TEXTCRITICAL),
+        counter:destroy($pmf:COUNTER_NOTE),
+        counter:create($pmf:COUNTER_TEXTCRITICAL),
+        counter:create($pmf:COUNTER_NOTE)
+    )[5]
+};
+
+declare function pmf:increment-counter($type as xs:string) {
+    switch ($type)
+        case "text-critical" case "text-critical-start" return
+            counter:next-value($pmf:COUNTER_TEXTCRITICAL)
+        default return
+            counter:next-value($pmf:COUNTER_NOTE)
+};
 
 declare function pmf:scribe($scribe as attribute()?) {
     if ($scribe) then
@@ -198,4 +219,20 @@ declare function pmf:get-duration-label($name as xs:string, $quantity as xs:int)
                 }
         else
             map { $name: $quantity }
+};
+
+declare function pmf:footnote-label($nr as xs:int) {
+    string-join(reverse(pmf:footnote-label-recursive($nr)))
+};
+
+
+declare %private function pmf:footnote-label-recursive($nr as xs:int) {
+    if ($nr > 0) then
+        let $nr := $nr - 1
+        return (
+            codepoints-to-string(string-to-codepoints("a") + $nr mod 26),
+            pmf:footnote-label-recursive($nr div 26)
+        )
+    else
+        ()
 };

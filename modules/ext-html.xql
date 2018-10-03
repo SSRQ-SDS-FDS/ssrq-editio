@@ -8,20 +8,7 @@ module namespace pmf="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-web"
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 import module namespace html="http://www.tei-c.org/tei-simple/xquery/functions";
-import module namespace counter="http://exist-db.org/xquery/counter" at "java:org.exist.xquery.modules.counter.CounterModule";
-import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
-
-declare variable $pmf:COUNTER_TEXTCRITICAL := "text-critical-" || util:uuid();
-declare variable $pmf:COUNTER_NOTE := "note-" || util:uuid();
-
-declare function pmf:prepare($config as map(*), $node as node()*) {
-    (
-        counter:destroy($pmf:COUNTER_TEXTCRITICAL),
-        counter:destroy($pmf:COUNTER_NOTE),
-        counter:create($pmf:COUNTER_TEXTCRITICAL),
-        counter:create($pmf:COUNTER_NOTE)
-    )[5]
-};
+import module namespace pmc="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xql";
 
 declare function pmf:link($config as map(*), $node as node(), $class as xs:string+, $content, $link, $target) {
     <a href="{$link}" class="{$class}">
@@ -66,17 +53,12 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
         else
             util:node-id($node)
     let $id := translate($nodeId, "-", "_")
-    let $nr :=
-        switch ($type)
-            case "text-critical" return
-                counter:next-value($pmf:COUNTER_TEXTCRITICAL)
-            default return
-                counter:next-value($pmf:COUNTER_NOTE)
+    let $nr := pmc:increment-counter($type)
     let $alternate := $config?apply-children($config, $node, $alternate)
     let $label :=
         switch($type)
             case "text-critical" return
-                pmf:footnote-label($nr)
+                pmc:footnote-label($nr)
             default return
                 $nr
     let $enclose := $type = "text-critical" and matches($content, "\w+\s+\w+")
@@ -129,17 +111,12 @@ declare function pmf:note($config as map(*), $node as element(), $class as xs:st
                 else
                     util:node-id($node)
             let $id := translate($nodeId, "-", "_")
-            let $nr :=
-                switch ($type)
-                    case "text-critical" case "text-critical-start" return
-                        counter:next-value($pmf:COUNTER_TEXTCRITICAL)
-                    default return
-                        counter:next-value($pmf:COUNTER_NOTE)
+            let $nr := pmc:increment-counter($type)
             let $content := $config?apply-children($config, $node, $content)
             let $n :=
                 switch($type)
                     case "text-critical" case "text-critical-start" return
-                        pmf:footnote-label($nr)
+                        pmc:footnote-label($nr)
                     default return
                         $nr
             return (
@@ -191,22 +168,6 @@ declare function pmf:finish($config as map(*), $input as node()*) {
                 }
             default return
                 $node
-};
-
-declare %private function pmf:footnote-label($nr as xs:int) {
-    string-join(reverse(pmf:footnote-label-recursive($nr)))
-};
-
-
-declare %private function pmf:footnote-label-recursive($nr as xs:int) {
-    if ($nr > 0) then
-        let $nr := $nr - 1
-        return (
-            codepoints-to-string(string-to-codepoints("a") + $nr mod 26),
-            pmf:footnote-label-recursive($nr div 26)
-        )
-    else
-        ()
 };
 
 declare function pmf:copy($config as map(*), $node as element(), $class as xs:string+, $content) {
