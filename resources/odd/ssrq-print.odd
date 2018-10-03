@@ -37,6 +37,9 @@
                             
                             \thispagestyle{firstpage}
                             [[content]]
+                            
+                            \printnotes*
+                            
                             \end{document}
                         </pb:template>
                     </model>
