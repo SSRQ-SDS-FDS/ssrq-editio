@@ -39,14 +39,14 @@ declare function local:get-line($src, $line as xs:int) {
         replace($lines[$line], "^\s*(.*?)", "$1")
 };
 
-let $odd := request:get-parameter("source", $config:odd)
+let $odd := ("ssrq.odd", "ssrq-norm.odd", "ssrq-print.odd")
 let $result :=
     for $source in $odd
         for $module in ("web", "print", "latex", "epub")
         return
             try {
                 for $file in pmu:process-odd(
-                    odd:get-compiled($config:odd-root, $odd),
+                    odd:get-compiled($config:odd-root, $source),
                     $config:output-root,
                     $module,
                     "../" || $config:output,

@@ -10,6 +10,7 @@ import module namespace norm-web="http://www.tei-c.org/pm/models/ssrq-norm/web/m
 import module namespace norm-print="http://www.tei-c.org/pm/models/ssrq-norm/fo/module" at "../transform/ssrq-norm-print-module.xql";
 import module namespace norm-latex="http://www.tei-c.org/pm/models/ssrq-norm/latex/module" at "../transform/ssrq-norm-latex-module.xql";
 import module namespace norm-epub="http://www.tei-c.org/pm/models/ssrq-norm/epub/module" at "../transform/ssrq-norm-epub-module.xql";
+import module namespace print-latex="http://www.tei-c.org/pm/models/ssrq-print/latex/module" at "../transform/ssrq-print-latex-module.xql";
 
 declare variable $pm-config:web-transform := function($xml as node()*, $parameters as map(*)?, $odd as xs:string?) {
     switch ($odd)
@@ -28,11 +29,7 @@ declare variable $pm-config:print-transform := function($xml as node()*, $parame
 };
 
 declare variable $pm-config:latex-transform := function($xml as node()*, $parameters as map(*)?, $odd as xs:string?) {
-    switch ($odd)
-        case "ssrq-norm.odd" return
-            norm-latex:transform($xml, $parameters)
-        default return
-            pm-latex:transform($xml, $parameters)
+        print-latex:transform($xml, $parameters)
 };
 
 declare variable $pm-config:epub-transform := function($xml as node()*, $parameters as map(*)?, $odd as xs:string?) {

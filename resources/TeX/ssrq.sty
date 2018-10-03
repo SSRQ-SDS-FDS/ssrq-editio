@@ -1,0 +1,322 @@
+\ProvidesPackage{ssrq}
+%% Präambel
+
+%\nonstopmode           % don't stop on (recoverable) errors
+
+% draft: zeigt Überlängen, aber Grafiken nur als Boxen
+\hfuzz=2.0pt            % level for suppressing overfull \hbox warnings
+
+% Optischer Randausgleich
+%\usepackage{microtype}             % doesn't work yet with XeTeX
+%\tolerance=200
+%\setlength{\emergencystretch}{2em} % doesn't seem to make any difference
+
+% Vermeidung von Hurenkindern und Schusterjungen
+\clubpenalty 10000
+\widowpenalty 10000
+\displaywidowpenalty 10000
+\raggedbottom
+
+% Verwendung eines MUFI-Fonts mit XeTeX
+\usepackage{fontspec}
+\setmainfont{Lexia Fontes}
+
+% Seiteneinrichtung
+\usepackage{geometry}
+\geometry{paperwidth=174mm,paperheight=245mm}
+\geometry{top=26mm,bottom=33mm,inner=21mm,outer=29mm}
+
+% leere Seiten enthalten auch keine Seitenzahlen
+\usepackage{emptypage}
+
+% Durchschuss
+\usepackage{setspace}
+\setstretch{1.08}
+
+% Hauptsprache ist deutsch
+\usepackage[ngerman]{babel}
+
+% URLs
+\usepackage[hyphens]{url}
+\def\UrlFont{\rmfamily}
+
+% Listen (in Verzeichnissen und Registern)
+\renewenvironment{itemize}
+    {\begin{list}{–}{\setlength{\leftmargin}{1.25em}\setlength{\itemsep}{-0.3ex}\setlength{\topsep}{0ex}}}
+    {\end{list}}
+
+\newenvironment{sortorder}
+    {\begin{list}{–}{\setlength{\leftmargin}{1.25em}\setlength{\labelsep}{0.5em}\setlength{\itemsep}{-0.3ex}\setlength{\topsep}{0ex}}}
+    {\end{list}}
+
+% Tabellen
+\setlength{\tabcolsep}{0pt}
+\usepackage{longtable}
+\usepackage{multirow}
+\def\arraystretch{1.08}     % Zeilenabstand bei Tabellen, vgl. Durchschuss
+
+% Keine Nummerierung der Überschriften
+\usepackage{titlesec}
+\titleformat{\section}
+	{\Large\bfseries}{}{0mm}{}						% Rechtsquellen des Sarganserlandes
+\titleformat{\subsection}
+	{\large\bfseries\itshape}{}{0mm}{}				% Burg Flums
+% Horizontale Abstände verkleinern
+\titlespacing*{\subsection}
+    {0pt}{*2.5}{*1.25}
+
+% Massgeschneiderte Kopf- und Fusszeilen
+\usepackage{fancyhdr,extramarks,xifthen}
+\pagestyle{fancy}
+\addtolength{\headheight}{\baselineskip}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[LE,RO]{\small \thepage}
+
+% Nur die erste Seite beinhaltet eine Kopfzeile
+\fancypagestyle{firstpage}{%
+    \fancyhf{}
+    \fancyhead[LO,RE]{\footnotesize\volume\\[0.5ex]\scriptsize\volid}
+    \renewcommand{\headrulewidth}{0pt}
+    \fancyfoot[LE,RO]{\small \thepage}}
+
+% Apparat
+\usepackage{pagenote}
+\makepagenote
+% kein Titel beim Apparat, aber Abstand
+\renewcommand{\pagenotesubhead}[2]{}
+\renewcommand{\notedivision}{\vspace{3mm}}              % vor Apparat
+\renewcommand{\textedsep}{\vspace{1.5mm}}               % zwischen text- und sachkritischen Anmerkungen (nur falls sachkritische vorhanden)
+% Formatierung der Anmerkung im Text
+\renewcommand{\notenumintext}[1]{%
+    \isitalic
+    \ifthenelse{\boolean{italic}}
+        {\/\textsuperscript{\normalfont #1}}            % nie kursiv, aber mit italic correction
+        {\textsuperscript{\normalfont #1}}}             % nie kursiv
+% Formatierung der einzelnen Anmerkung im Apparat
+\renewcommand{\prenoteinnotes}{%
+    \noindent\hangindent 4.5mm\footnotesize\itshape}
+\renewcommand{\textinnotes}[1]{%
+    \makebox[4.5mm][l]{\textsuperscript{\normalfont #1}}}
+
+% Zeilennummerierung
+\usepackage[pagewise,edtable]{lineno}                   % seitenweise
+\switchlinenumbers                                      % am äussern Rand
+\modulolinenumbers[5]                                   % jede 5. Zeile
+\renewcommand{\linenumberfont}{\normalfont\tiny}
+
+% Eigene Befehle und Umgebungen
+% subsubsubsection: syntaktischer Zucker für paragraph
+%\def\subsubsubsection#1 {\paragraph{#1}\vspace{-2mm}\noindent}
+\def\subsubsubsection#1 {\paragraph{#1}}
+
+% lb: Zeilenumbruch
+\def\lb{}       % Zeilenumbrüche werden nicht angezeigt
+
+% pb: Seitenumbruch
+\def\pb{/}      % Seitenumbrüche werden mit einem (!) / angezeigt
+
+% article: Stück
+\newcommand{\article}[3][]{%
+    \vspace{4mm}
+    \subsection{#2}}
+
+% dating: Datierung
+\newcommand{\dating}[1]{{\vspace{-1mm}\normalsize\bfseries\itshape #1\par\vspace{2mm}}}
+
+% subarticle: "Unterstück"
+\newcommand{\subarticle}[3][]{%
+    \subsubsection{#2}}
+
+% subdating: Datierung eines untergeordneten Ereignisses
+\newcommand{\subdating}[1]{{\vspace{-1mm}\normalsize\bfseries\itshape #1\par\vspace{2mm}}}
+
+% vcorr: Abstand verkleinern  ("vertical correction"), falls ein Stück direkt mit Quellentext oder Regest beginnt
+\def\vcorr{\expandafter\vspace{-1mm}}
+
+% intro: Einzelne einführende Bemerkung
+\newenvironment{intro}
+{\list{}{\listparindent 4.5mm%
+    \parsep 0mm%
+    \footnotesize\itshape\leftmargin 0mm}%
+\item\relax}
+{\endlist}
+
+% back: Einzelne nachfolgende Bemerkung
+\newenvironment{back}
+{\vspace{1mm}%
+\list{}{\listparindent 4.5mm%
+    \parsep 0mm%
+    \footnotesize\itshape\leftmargin 0mm}%
+\item\relax}
+{\endlist\vspace{-2mm}}         % damit der Abstand zum Apparat immer gleich bleibt
+
+% introlist: Einführende Bemerkungen in Form einer Aufzählung
+\newcounter{il}
+\newenvironment{introlist}{\begin{list}
+    {\makebox[4.5mm][l]{\arabic{il}.}}
+    {\usecounter{il}%
+    \setlength{\topsep}{0.5mm}%
+    \setlength{\leftmargin}{0mm}%
+    \setlength{\labelwidth}{4.5mm}%
+    \setlength{\labelsep}{0mm}%
+    \setlength{\itemindent}{\labelwidth+\labelsep}%
+    \setlength{\itemsep}{1mm}%
+    \setlength{\listparindent}{4.5mm}%
+    \setlength{\parsep}{0mm}%
+    \footnotesize\itshape}}
+    {\end{list}\vspace{-1mm}}   % damit der Abstand danach immer gleich bleibt
+
+% backlist: Nachfolgende Bemerkungen in Form einer Aufzählung
+\newcounter{bl}
+\newenvironment{backlist}{\begin{list}
+    {\makebox[4.5mm][l]{\arabic{bl}.}}
+    {\usecounter{bl}%
+    \setlength{\topsep}{2mm}%
+    \setlength{\leftmargin}{0mm}%
+    \setlength{\labelwidth}{4.5mm}%
+    \setlength{\labelsep}{0mm}%
+    \setlength{\itemindent}{\labelwidth+\labelsep}%
+    \setlength{\itemsep}{1mm}%
+    \setlength{\listparindent}{4.5mm}%
+    \setlength{\parsep}{0mm}%
+    \footnotesize\itshape}}
+    {\end{list}\vspace{-2mm}}   % damit der Abstand zum Apparat immer gleich bleibt
+
+% manudesc: Manuskriptbeschreibung (Original, Kopien, Druck, Literatur etc.)
+\newcommand{\manudesc}[1]{{\setlength{\parskip}{1mm}\par\noindent\footnotesize\itshape #1\par}}
+
+% source: Quellentext des Stückes
+\newenvironment{source}
+{\list{}{\listparindent 4.5mm%
+    \parsep 0mm%
+    \normalsize\normalfont\leftmargin 0mm}%
+\item\relax}
+{\endlist}
+
+% moresource: Weiterer Quellentext
+% (bessere Lösung als \vspace gefolgt von \noindent)
+\newenvironment{moresource}
+% \vspace{-0.75mm} produces more vertical space than no \vspace command at all!
+{\vspace{-0.75mm}\list{}{\listparindent 4.5mm%
+    \parsep 0mm%
+    \normalsize\normalfont\leftmargin 0mm}%
+\item\relax}
+{\endlist}
+
+% Setzen des Apparats zwischen zwei moresource-Umgebungen
+\newcommand{\printinotes}{%
+    \vspace{-1.5mm}%
+    \printnotes*%
+    \vspace{1.5mm}}
+
+% law: einzelner Artikel in einem Stadtrecht et al.
+\newenvironment{law}[1]
+{\vspace{1.5mm}\noindent{\normalsize\normalfont #1}%
+\vspace{-1mm}\noindent\list{}{\listparindent 4.5mm%
+    \parsep 0mm%
+    \normalsize\normalfont\leftmargin 0mm}%
+\item\relax}
+{\endlist}
+
+% summary: Regest des Stückes
+\newenvironment{summary}
+{\list{}{\listparindent 4.5mm%
+    \parsep 0mm%
+    \small\itshape\leftmargin 0mm}%
+\item\relax}
+{\endlist}
+
+% inventory: Steuerliste etc. (ohne Absatzeinzug)
+\newenvironment{inventory}
+{\list{}{\listparindent 0mm%
+    \parsep 0mm%
+    \normalsize\normalfont\leftmargin 0mm}%
+\item\relax}
+{\endlist}
+
+% ihead: Eingezogene Überschrift innerhalb \inventory ("inventory heading")
+\newcommand{\ihead}[1]{%
+    {\setlength{\parindent}{4.5mm}#1\par}}
+
+% lss: hochgestellt, aber grösser als \textsuperscript ("large superscript")
+% Verwendung z.B. für c für centum
+\usepackage{relsize}
+\newcommand{\lss}[1]{%
+    {\textsuperscript{\relscale{1.1}#1}}}
+
+% Test auf kursive Schrift (Unterscheidung zwischen historischer und moderner Schreibweise)
+\newboolean{italic}
+\makeatletter
+\newcommand{\isitalic}{\ifthenelse{\equal{\f@shape}{it}}{\setboolean{italic}{true}}{\setboolean{italic}{false}}}
+\makeatother
+
+% persname: Personenname (persName in TEI)
+\newcommand{\persname}[2]{%
+    {#2}}
+% placename: Ortsname (placeName in TEI)
+\newcommand{\placename}[2]{%
+    {#2}}
+% term: Sachregistereintrag (term in TEI)
+\newcommand{\term}[2]{%
+    {#2}}
+
+% Trennungsregeln
+% Wörter dürfen '[', ']' und '/' enthalten
+\lccode`\[=`\[
+\lccode`\]=`\]
+\lccode`\/=`\/
+% ... sowie einige MUFI/PUA-Zeichen
+\lccode`\=`\      % LATIN SMALL LETTER A + COMBINING LATIN SMALL LETTER E
+\lccode`\=`\      % LATIN SMALL LETTER A + COMBINING LATIN SMALL LETTER U
+\lccode`\=`\      % LATIN SMALL LETTER A + COMBINING LATIN SMALL LETTER V
+\lccode`\=`\      % LATIN SMALL LETTER O + COMBINING LATIN SMALL LETTER E
+\lccode`\=`\      % LATIN SMALL LETTER U + COMBINING LATIN SMALL LETTER E
+\lccode`\=`\      % LATIN SMALL LETTER U + COMBINING VERTICAL LINE ABOVE
+\lccode`\=`\      % LATIN SMALL LETTER U + COMBINING LATIN SMALL LETTER O
+
+\input{hyphenations}
+
+% Trennung von Wörtern, die Bindestriche enthalten (Flums-Gräpplang etc.)
+\usepackage{hyphenat}
+\usepackage{expl3}
+
+% The following defs make sure words that contain an explicit `-` (hyphen) are still hyphenated the normal way, and double- and triple hyphens keep working the way they should. Just don't use a `-` as the last token of your document. Also note that `-` is now a macro that is not fully expandable
+
+\ExplSyntaxOn
+
+% latex2e doesn't like commands starting with 'end', apparently expl3 doesn't have any problems with it
+\cs_new:Npn \hyphenfix_emdash:c {---}
+\cs_new:Npn \hyphenfix_endash:c {--}
+
+\cs_new:Npn \hyphenfix_discardnext:NN #1#2{#1}
+
+\catcode`\-=\active
+
+\cs_new_protected:Npn -{
+   \futurelet\hyphenfix_nexttok\hyphenfix_i:w
+}
+
+\cs_new:Npn \hyphenfix_i:w {
+   \cs_if_eq:NNTF{\hyphenfix_nexttok}{-}{
+       %discard the next `-` token
+       \hyphenfix_discardnext:NN{\futurelet\hyphenfix_nexttok\hyphenfix_ii:w}
+   }{
+       % from package hyphenat
+       \hyp
+   }
+}
+
+\cs_new:Npn \hyphenfix_ii:w {
+   \cs_if_eq:NNTF{\hyphenfix_nexttok}{-}{
+       \hyphenfix_discardnext:NN{\hyphenfix_emdash:c}
+   }{
+       \hyphenfix_endash:c
+   }
+}
+
+\ExplSyntaxOff
+
+
+% Absatzeinzug erste Zeile
+\setlength{\parindent}{4.5mm}
