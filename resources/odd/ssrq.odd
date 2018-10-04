@@ -80,16 +80,6 @@
                     </model>
                     <model behaviour="block"/>
                 </elementSpec>
-                <elementSpec ident="back" mode="change">
-                    <model output="print" behaviour="block">
-                        <pb:template>
-                            \begin{intro}
-                            [[content]]
-                            \end{intro}
-                        </pb:template>
-                    </model>
-                    <model behaviour="block"/>
-                </elementSpec>
                 <elementSpec ident="lb" mode="change">
                     <model output="latex" behaviour="omit"/>
                     <model predicate="ancestor::back//orig" behaviour="omit"/>
@@ -785,6 +775,13 @@
                 </elementSpec>
                 <elementSpec ident="back" mode="change">
                     <desc>back contains the commentary, which should appear as a numbered list</desc>
+                    <model output="latex" behaviour="block">
+                        <pb:template>
+                            \begin{intro}
+                            [[content]]
+                            \end{intro}
+                        </pb:template>
+                    </model>
                     <model predicate="div/@n" behaviour="list">
                         <param name="type" value="'ordered'"/>
                     </model>
