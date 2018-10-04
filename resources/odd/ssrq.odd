@@ -1,4 +1,4 @@
-<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI"  xmlns:pb="http://teipublisher.com/1.0" xml:lang="en">
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" xml:lang="en">
     <teiHeader>
         <fileDesc>
             <titleStmt>
@@ -19,8 +19,12 @@
             <schemaSpec start="TEI teiCorpus" ident="ssrq" source="teipublisher.odd">
                 <elementSpec ident="TEI" mode="change">
                     <model output="latex" behaviour="section">
-                        <param name="title" value="teiHeader/fileDesc/titleStmt/title/node()"/>
-                        <param name="content" value="(teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary, text/back, text/(group|body))"/>
+                        <param name="volume" value="teiHeader/fileDesc/titleStmt/title/text()"/>
+                        <param name="idno" value="teiHeader/fileDesc/seriesStmt/idno/text()"/>
+                        <param name="canton" value="replace(teiHeader/fileDesc/seriesStmt/idno/text(), '^(?:SSRQ|SDS|FDS)_(..)_.+$', '$1')"/>
+                        <param name="title" value="teiHeader/fileDesc/sourceDesc/msDesc/head/text()"/>
+                        <param name="dating" value="teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation/origDate[@type='human readable']/text()"/>
+                        <param name="content" value="(teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary, text/back, text//body)"/>
                         <pb:template>
                             \documentclass[10pt,twoside]{article}
                             
@@ -30,13 +34,18 @@
                             \begin{document}
                             
                             % Variablen für Kopfzeile
-                            \def\volume{[[title]]}
-                            \def\volid{\url{https://www.ssrq-sds-fds.ch/online/tei/SG/SSRQ_SG_III_4_14510101B_1.xml}}
+                            \def\volume{[[volume]]}
+                            \def\volid{\url{https://www.ssrq-sds-fds.ch/online/tei/[[canton]]/[[idno]].xml}}
                             
                             \linenumbers				% Zeilennummern
                             \normalsize					% normale Grösse, d.h. Quellentext (source) ist 10pt
                             
                             \thispagestyle{firstpage}
+                            
+                            \article{[[title]]}
+                            \fussy
+                            \dating{[[dating]]}
+                            
                             [[content]]
                             
                             \printnotes*
@@ -48,7 +57,11 @@
                 </elementSpec>
                 <elementSpec ident="body">
                     <model output="latex" behaviour="block">
-                        <pb:template>\begin{source}[[content]]\end{source}</pb:template>
+                        <pb:template>
+                            \begin{source}
+                            [[content]]
+                            \end{source}
+                        </pb:template>
                     </model>
                     <modelSequence>
                         <model behaviour="index">
@@ -59,13 +72,21 @@
                 </elementSpec>
                 <elementSpec ident="summary" mode="add">
                     <model output="latex" behaviour="block">
-                        <pb:template>\begin{summary}[[content]]\end{summary}</pb:template>
+                        <pb:template>
+                            \begin{summary}
+                            [[content]]
+                            \end{summary}
+                        </pb:template>
                     </model>
                     <model behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="back" mode="change">
                     <model output="print" behaviour="block">
-                        <pb:template>\begin{intro}[[content]]\end{intro}</pb:template>
+                        <pb:template>
+                            \begin{intro}
+                            [[content]]
+                            \end{intro}
+                        </pb:template>
                     </model>
                     <model behaviour="block"/>
                 </elementSpec>
@@ -176,6 +197,9 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="orig" mode="change">
+                    <model output="latex" behaviour="inline">
+                        <pb:template>\textup{[[content]]}</pb:template>
+                    </model>
                     <model behaviour="inline" cssClass="orig"/>
                 </elementSpec>
                 <elementSpec ident="origDate" mode="add">
@@ -849,6 +873,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="idno">
+                    <model output="latex" behaviour="inline"/>
                     <model predicate="parent::altIdentifier" behaviour="inline">
                         <param name="content" value="(ec:label('signatureAlt'), ec:colon(), .)"/>
                     </model>
