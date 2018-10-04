@@ -55,7 +55,7 @@
                     </model>
                     <model behaviour="document"/>
                 </elementSpec>
-                <elementSpec ident="body">
+                <elementSpec ident="body" mode="change">
                     <model output="latex" behaviour="block">
                         <pb:template>
                             \begin{source}
@@ -91,6 +91,7 @@
                     <model behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="lb" mode="change">
+                    <model output="latex" behaviour="omit"/>
                     <model predicate="ancestor::back//orig" behaviour="omit"/>
                     <model predicate="preceding-sibling::node()[1][self::pb]" behaviour="omit"/>
                     <model predicate=". is (./ancestor::div[1]//lb[1])" behaviour="omit"/>
@@ -190,6 +191,9 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="sic" mode="change">
+                    <model output="latex" behaviour="inline">
+                        <pb:template>[[content]]\,[!]</pb:template>
+                    </model>
                     <model predicate="parent::choice and count(parent::*/*) gt 1" behaviour="inline"/>
                     <model behaviour="alternate">
                         <param name="default" value="."/>
@@ -401,12 +405,12 @@
                     <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="rdg">
+                    <model output="latex" behaviour="inline">
+                        <pb:template>\textup{[[content]]}</pb:template>
+                    </model>
                     <model predicate="../gap" behaviour="inline">
                         <desc>app with gap and reading</desc>
                         <param name="content" value="(ec:label('unreadable'), ', ', ec:label('supplied-after', false()), ' ', @wit)"/>
-                    </model>
-                    <model output="latex" behaviour="inline">
-                        <pb:template>\textup{[[content]]}</pb:template>
                     </model>
                 </elementSpec>
                 <elementSpec ident="handShift">
@@ -616,6 +620,11 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="pb" mode="change">
+                    <model output="latex" behaviour="inline">
+                        <param name="page" value="('S. ', @n)"/>
+                        <!-- Achtung Sprachabhängigkeit, sollte nicht in CSS definiert werden -->
+                        <pb:template>\textit{[[[page]]]}</pb:template>
+                    </model>
                     <model predicate="following-sibling::node()[1][self::lb]" behaviour="copy">
                         <desc>If followed by an lb, process the lb first, then the pb</desc>
                         <param name="content" value="(following-sibling::lb[1], $node)"/>
@@ -789,6 +798,21 @@
                     <model behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="seg" mode="change">
+                    <model predicate="@n" output="latex" behaviour="block">
+                        <param name="n" value="@n"/>
+                        <pb:template>
+                            \noindent [[[n]]]
+                            [[content]]
+                            \vspace{1mm}
+                        </pb:template>
+                    </model>
+                    <model output="latex" behaviour="block">
+                        <pb:template>
+                            \noindent
+                            [[content]]
+                            \vspace{1mm}
+                        </pb:template>
+                    </model>
                     <model behaviour="inline">
                         <param name="content" value="."/>
                     </model>
@@ -873,7 +897,6 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="idno">
-                    <model output="latex" behaviour="inline"/>
                     <model predicate="parent::altIdentifier" behaviour="inline">
                         <param name="content" value="(ec:label('signatureAlt'), ec:colon(), .)"/>
                     </model>
@@ -947,6 +970,12 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="head" mode="change">
+                    <model output="latex" behaviour="block">
+                        <pb:template>
+                            [[content]]
+                            \vspace{1mm}
+                        </pb:template>
+                    </model>
                     <model predicate="$parameters?header='short'" behaviour="inline">
                         <param name="content" value="replace(string-join(.//text() except .//ref//text()), '^(.*?)[^\w]*$', '$1')"/>
                     </model>
@@ -985,7 +1014,6 @@
                     <model predicate="@type = 'title'" behaviour="heading">
                         <param name="level" value="1"/>
                     </model>
-                    <model output="latex" behaviour="block" useSourceRendition="true"/>
                     <model behaviour="heading" useSourceRendition="true">
                         <param name="level" value="2"/>
                     </model>

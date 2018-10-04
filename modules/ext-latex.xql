@@ -10,6 +10,11 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 import module namespace latex="http://www.tei-c.org/tei-simple/xquery/functions/latex";
 import module namespace pmc="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xql";
 
+declare function pmf:alternate($config as map(*), $node as node(), $class as xs:string+, $content, $default,
+    $alternate) {
+    latex:get-content($config, $node, $class, $default)
+};
+
 declare function pmf:alternote($config as map(*), $node as element(), $class as xs:string+, $content,
     $label, $type, $alternate) {
     let $nr := pmc:increment-counter($type)
