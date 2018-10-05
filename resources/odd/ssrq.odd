@@ -285,22 +285,22 @@
                     <model predicate="unclear" behaviour="note">
                         <param name="place" value="&#34;footnote&#34;"/>
                         <param name="type" value="'text-critical'"/>
-                        <param name="content" value="(ec:translate(@rend),', ', ec:label('unclear-rdg', false()), ec:colon(), .)"/>
+                        <param name="prefix" value="(ec:translate(@rend),', ', ec:label('unclear-rdg', false()), ec:colon())"/>
                     </model>
                     <model predicate="@rend" behaviour="note">
                         <desc>Show footnote only</desc>
-                        <param name="content" value="(ec:translate(@rend, 0, 'uppercase'), if (@hand) then (' ', ec:translate(@hand, 0, 'lowercase')) else (), ec:colon(), .)"/>
+                        <param name="prefix" value="(ec:translate(@rend, 0, 'uppercase'), if (@hand) then (' ', ec:translate(@hand, 0, 'lowercase')) else (), ec:colon())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="@hand" behaviour="note">
                         <desc>Show footnote only</desc>
                         <param name="type" value="'text-critical'"/>
-                        <param name="content" value="(ec:label('del'), ' ', ec:translate(@hand, 0, 'uppercase'), ec:colon(), .)"/>
+                        <param name="prefix" value="(ec:label('del'), ' ', ec:translate(@hand, 0, 'uppercase'), ec:colon())"/>
                     </model>
                     <model behaviour="note">
                         <desc>Show footnote only</desc>
                         <param name="type" value="'text-critical'"/>
-                        <param name="content" value="(ec:label('del'), ec:colon(), .)"/>
+                        <param name="prefix" value="(ec:label('del'), ec:colon())"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="delSpan" mode="change">

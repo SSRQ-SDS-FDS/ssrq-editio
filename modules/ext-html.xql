@@ -46,7 +46,7 @@ declare function pmf:reference($config as map(*), $node as element(), $class as 
 };
 
 declare function pmf:alternote($config as map(*), $node as element(), $class as xs:string+, $content,
-    $label, $type, $alternate) {
+    $label, $type, $alternate, $optional as map(*)) {
     let $nodeId :=
         if ($node/@exist:id) then
             $node/@exist:id
@@ -55,6 +55,7 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
     let $id := translate($nodeId, "-", "_")
     let $nr := pmc:increment-counter($type)
     let $alternate := $config?apply-children($config, $node, $alternate)
+    let $prefix := $config?apply-children($config, $node, $optional?prefix)
     let $label :=
         switch($type)
             case "text-critical" return
@@ -75,7 +76,7 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
             (),
         <span class="alternate {$class}">
             <span>{html:apply-children($config, $node, $content)}</span>
-            <span class="altcontent">{$alternate}</span>
+            <span class="altcontent">{$prefix}{$alternate}</span>
         </span>,
         <span id="fnref:{$id}" class="note-wrap">
             <a class="note note-end" rel="footnote" href="#fn:{$id}">
@@ -85,14 +86,14 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
         <li class="footnote" id="fn:{$id}" value="{$nr}"
             type="{if ($type = 'text-critical') then 'a' else '1'}">
             <span class="fn-content">
-                {$alternate}
+                {$prefix}{$alternate}
             </span>
             <a class="fn-back" href="#fnref:{$id}">↩</a>
         </li>
     )
 };
 
-declare function pmf:note($config as map(*), $node as element(), $class as xs:string+, $content, $place, $label, $type) {
+declare function pmf:note($config as map(*), $node as element(), $class as xs:string+, $content, $place, $label, $type, $optional as map(*)) {
     switch ($place)
         case "margin" return
             if ($label) then (
@@ -113,6 +114,7 @@ declare function pmf:note($config as map(*), $node as element(), $class as xs:st
             let $id := translate($nodeId, "-", "_")
             let $nr := pmc:increment-counter($type)
             let $content := $config?apply-children($config, $node, $content)
+            let $prefix := $config?apply-children($config, $node, $optional?prefix)
             let $n :=
                 switch($type)
                     case "text-critical" case "text-critical-start" return
@@ -128,7 +130,7 @@ declare function pmf:note($config as map(*), $node as element(), $class as xs:st
                 <li class="footnote" id="fn:{$id}" value="{$nr}"
                     type="{if ($type = ('text-critical','text-critical-start')) then 'a' else '1'}">
                     <span class="fn-content">
-                        {$content}
+                        {$prefix}{$content}
                     </span>
                     <a class="fn-back" href="#fnref:{$id}">↩</a>
                 </li>
