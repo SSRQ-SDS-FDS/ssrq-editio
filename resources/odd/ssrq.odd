@@ -612,7 +612,7 @@
                 <elementSpec ident="pb" mode="change">
                     <model output="latex" behaviour="inline">
                         <param name="page" value="('S. ', @n)"/>
-                        <!-- Achtung Sprachabhängigkeit, sollte nicht in CSS definiert werden -->
+                        <!-- Achtung Sprachabhängigkeit, sollte nicht hier oder in CSS definiert werden -->
                         <pb:template>\textit{[[[page]]]}</pb:template>
                     </model>
                     <model predicate="following-sibling::node()[1][self::lb]" behaviour="copy">
@@ -815,6 +815,14 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="ab" mode="change">
+                    <model output="latex" behaviour="block">
+                        <param name="place" value="('[', string-join((ec:translate(@type, 0, 'lowercase'),ec:translate(@place, 0, 'lowercase'),ec:translate(@hand, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('by', false()), ec:scribe(@scribe)) else (), ec:punct(':', false()), ']')"/>
+                        <pb:template>
+                            \medskip
+                            \noindent
+                            \textit{[[place]]} [[content]]
+                        </pb:template>
+                    </model>
                     <model predicate="@place" behaviour="block" cssClass="ab">
                         <param name="content" value="('[', string-join((ec:translate(@type, 0, 'lowercase'),ec:translate(@place, 0, 'lowercase'),ec:translate(@hand, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('by', false()), ec:scribe(@scribe)) else (), ec:punct(':', false()), '] ', .)"/>
                         <outputRendition>
