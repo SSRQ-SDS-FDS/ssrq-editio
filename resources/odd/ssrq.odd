@@ -13,6 +13,13 @@
                 </p>
             </sourceDesc>
         </fileDesc>
+        <encodingDesc>
+            <tagsDecl>
+                <pb:behaviour output="latex" ident="textup">
+                    <pb:template>\textup{[[content]]}</pb:template>
+                </pb:behaviour>
+            </tagsDecl>
+        </encodingDesc>
     </teiHeader>
     <text>
         <body>
@@ -191,9 +198,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="orig" mode="change">
-                    <model output="latex" behaviour="inline">
-                        <pb:template>\textup{[[content]]}</pb:template>
-                    </model>
+                    <model output="latex" behaviour="textup"/>
                     <model behaviour="inline" cssClass="orig"/>
                 </elementSpec>
                 <elementSpec ident="origDate" mode="add">
@@ -395,9 +400,7 @@
                     <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="rdg">
-                    <model output="latex" behaviour="inline">
-                        <pb:template>\textup{[[content]]}</pb:template>
-                    </model>
+                    <model output="latex" behaviour="textup"/>
                     <model predicate="../gap" behaviour="inline">
                         <desc>app with gap and reading</desc>
                         <param name="content" value="(ec:label('unreadable'), ', ', ec:label('supplied-after', false()), ' ', @wit)"/>
@@ -620,10 +623,10 @@
                         <param name="content" value="(following-sibling::lb[1], $node)"/>
                     </model>
                     <modelSequence output="web">
-                        <model predicate="@facs" behaviour="template" cssClass="facs">
+                        <model predicate="@facs" behaviour="inline">
                             <desc>Facsimile image links will be extracted via javascript</desc>
                             <param name="src" value="@facs || '.ptif'"/>
-                            <param name="template" value="&lt;span data-facs=&#34;$[src]&#34;/&gt;"/>
+                            <pb:template><span xmlns="" class="facs" data-facs="[[src]]"/></pb:template>
                             <outputRendition>
                                 display: none;
                             </outputRendition>
@@ -1069,9 +1072,9 @@
                     <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="bibl" mode="change">
-                    <model predicate="@type='url'" behaviour="template">
-                        <param name="template" value="&lt;li&gt;&lt;a href=&#34;$[url]&#34; target=&#34;_blank&#34;&gt;$[url]&lt;/a&gt;&lt;/li&gt;"/>
+                    <model predicate="@type='url'" behaviour="inline">
                         <param name="url" value="string()"/>
+                        <pb:template><li xmlns=""><a href="[[url]]" target="_blank">[[url]]</a></li></pb:template>
                     </model>
                     <model predicate="ancestor::teiHeader" behaviour="listItem"/>
                     <model behaviour="inline"/>
