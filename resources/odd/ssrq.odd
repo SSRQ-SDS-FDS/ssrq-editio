@@ -30,7 +30,7 @@
                         <param name="idno" value="teiHeader/fileDesc/seriesStmt/idno/text()"/>
                         <param name="canton" value="replace(teiHeader/fileDesc/seriesStmt/idno/text(), '^(?:SSRQ|SDS|FDS)_(..)_.+$', '$1')"/>
                         <param name="title" value="teiHeader/fileDesc/sourceDesc/msDesc/head/text()"/>
-                        <param name="dating" value="teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation/origDate[@type='human readable']/text()"/>
+                        <param name="dating" value="teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation/origDate[@type='humanReadable']/text()"/>
                         <param name="content" value="(teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary, text/back, text//body)"/>
                         <pb:template>
                             \documentclass[10pt,twoside]{article}
@@ -129,23 +129,25 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="choice" mode="change">
-                    <model output="plain" predicate="sic and corr" behaviour="inline">
+                    <model output="latex" predicate="sic and corr" behaviour="inline">
                         <param name="content" value="corr[1]"/>
                     </model>
-                    <model output="plain" predicate="abbr and expan" behaviour="inline">
+                    <model output="latex" predicate="abbr and expan" behaviour="inline">
                         <param name="content" value="expan[1]"/>
                     </model>
-                    <model output="plain" predicate="orig and reg" behaviour="inline">
+                    <model output="latex" predicate="orig and reg" behaviour="inline">
                         <param name="content" value="reg[1]"/>
                     </model>
                     <model predicate="sic and corr" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="sic"/>
-                        <param name="alternate" value="(ec:label('corrected'), ec:colon(), corr)"/>
+                        <param name="prefix" value="(ec:label('corrected'), ec:colon())"/>
+                        <param name="alternate" value="corr"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="abbr and expan" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="abbr[1]"/>
-                        <param name="alternate" value="(ec:label('abbr-expanded'), ec:colon(), expan[1])"/>
+                        <param name="prefix" value="(ec:label('abbr-expanded'), ec:colon())"/>
+                        <param name="alternate" value="expan[1]"/>
                     </model>
                     <model predicate="orig and reg" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="orig[1]"/>
@@ -171,7 +173,7 @@
                     <model predicate="parent::del or parent::abbr or parent::corr" behaviour="inline"/>
                     <model predicate="parent::damage" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="."/>
-                        <param name="alternate" value="(ec:translate( parent::damage/@agent), ', ', ec:label('unclear-rdg', false()))"/>
+                        <param name="alternate" value="(ec:translate(parent::damage/@agent), ', ', ec:label('unclear-rdg', false()))"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model behaviour="alternote" cssClass="text-critical">
@@ -240,7 +242,7 @@
                     <model predicate="parent::subst" behaviour="inline"/>
                     <model predicate="@hand!='other hand'" behaviour="note">
                         <desc>Show footnote only</desc>
-                        <param name="content" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ec:translate(@hand, 0, 'lowercase'), ec:translate(@rend, 0, 'lowercase'), ec:translate(@type, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('by', false()), ec:scribe(@scribe)) else (), ec:colon())), .)"/>
+                        <param name="prefix" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ec:translate(@hand, 0, 'lowercase'), ec:translate(@rend, 0, 'lowercase'), ec:translate(@type, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('by', false()), ec:scribe(@scribe)) else (), ec:colon())))"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model behaviour="alternote" cssClass="text-critical">
@@ -267,7 +269,7 @@
                 <elementSpec ident="del" mode="change">
                     <model predicate="ancestor::back//orig" behaviour="omit"/>
                     <model predicate="add/@type='catchword'" behaviour="note">
-                        <param name="content" value="(ec:label('del-add'), string-join((ec:translate(add/@place, 0, 'lowercase'), ', ', ec:translate(add/@type, 0, 'lowercase')), ''), ec:colon(), add/node())"/>
+                        <param name="prefix" value="(ec:label('del-add'), string-join((ec:translate(add/@place, 0, 'lowercase'), ', ', ec:translate(add/@type, 0, 'lowercase')), ''), ec:colon())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="@hand='later hand'" behaviour="alternote" cssClass="text-critical">
@@ -277,7 +279,7 @@
                         <param name="content" value="."/>
                     </model>
                     <model predicate="add" behaviour="note">
-                        <param name="content" value="(ec:label('del-add'), ' ', string-join((ec:translate(add/@place, 0, 'lowercase'), ec:translate(add/@hand, 0, 'lowercase'), ec:translate(add/@rend, 0, 'lowercase'), ec:translate(add/@type, 0, 'lowercase')), ' '), ec:colon(), add/node())"/>
+                        <param name="prefix" value="(ec:label('del-add'), ' ', string-join((ec:translate(add/@place, 0, 'lowercase'), ec:translate(add/@hand, 0, 'lowercase'), ec:translate(add/@rend, 0, 'lowercase'), ec:translate(add/@type, 0, 'lowercase')), ' '), ec:colon())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="parent::subst" behaviour="inline"/>
@@ -387,12 +389,14 @@
                     <model predicate="empty(lem/node())" behaviour="alternote" cssClass="text-critical">
                         <desc>app with empty lemma</desc>
                         <param name="content" value="''"/>
-                        <param name="alternate" value="(ec:label('added-in'), ' ', rdg/@wit, ec:colon(), rdg)"/>
+                        <param name="prefix" value="(ec:label('alt-rdg-in'), ' ', rdg/@wit, ec:colon())"/>
+                        <param name="alternate" value="rdg"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="lem/node()"/>
-                        <param name="alternate" value="(ec:label('alt-rdg-in'), ' ', rdg/@wit, ec:colon(), rdg)"/>
+                        <param name="prefix" value="(ec:label('alt-rdg-in'), ' ', rdg/@wit, ec:colon())"/>
+                        <param name="alternate" value="rdg"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                 </elementSpec>
@@ -400,7 +404,6 @@
                     <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="rdg">
-                    <model output="latex" behaviour="textup"/>
                     <model predicate="../gap" behaviour="inline">
                         <desc>app with gap and reading</desc>
                         <param name="content" value="(ec:label('unreadable'), ', ', ec:label('supplied-after', false()), ' ', @wit)"/>
@@ -626,7 +629,9 @@
                         <model predicate="@facs" behaviour="inline">
                             <desc>Facsimile image links will be extracted via javascript</desc>
                             <param name="src" value="@facs || '.ptif'"/>
-                            <pb:template><span xmlns="" class="facs" data-facs="[[src]]"/></pb:template>
+                            <pb:template>
+                                <span xmlns="" class="facs" data-facs="[[src]]"/>
+                            </pb:template>
                             <outputRendition>
                                 display: none;
                             </outputRendition>
@@ -837,17 +842,27 @@
                 <elementSpec ident="subst" mode="change">
                     <model predicate="add/@hand" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="del"/>
-                        <param name="alternate" value="(ec:label('del'), ', ', ec:label('replace', false()), ' ', ec:translate(add/@place, 0, 'lowercase'), text{' '}, ec:translate(add/@hand, 0, 'lowercase'), ec:colon(), add/node())"/>
+                        <param name="prefix" value="(ec:label('del'), ', ', ec:label('replace', false()), ' ', ec:translate(add/@place, 0, 'lowercase'), text{' '}, ec:translate(add/@hand, 0, 'lowercase'), ec:colon())"/>
+                        <param name="alternate" value="add/node()"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="add" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="add"/>
-                        <param name="alternate" value="(ec:label('add', true()), ' ', ec:translate(add/@place, 0, 'lowercase'), ', ', ec:label('replace-del', false()), ec:colon(), del/node())"/>
+                        <param name="prefix" value="(ec:label('add', true()), ' ', ec:translate(add/@place, 0, 'lowercase'), ', ', ec:label('replace-del', false()), ec:colon())"/>
+                        <param name="alternate" value="'[...]'"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="date" mode="change">
+                    <model output="latex" predicate="@when" behaviour="inline">
+                        <param name="date" value="ec:format-date(@when)"/>
+                        <pb:template>[[content]] \textit{[[[date]]]}</pb:template>
+                    </model>
+                    <model output="latex" predicate="@from and @to" behaviour="inline">
+                        <param name="date" value="(ec:format-date(@from), ' – ', ec:format-date(@to))"/>
+                        <pb:template>[[content]] \textit{[[[date]]]}</pb:template>
+                    </model>
                     <model output="web" predicate="@when and @type" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('date'), ec:colon(), ec:format-date(@when), ' (', ec:translate(@type, 0, ()), ')')"/>
@@ -1027,6 +1042,9 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="ref" mode="change">
+                    <model predicate="matches(., '^(?:SSRQ|SDS|FDS)_')" output="latex" behaviour="inline">
+                        <param name="content" value="ec:format-id(.)"/>
+                    </model>
                     <model predicate="not(@target) and matches(., '^(?:SSRQ|SDS|FDS)_')" behaviour="link">
                         <desc>Link auf ein anderes Dokument innerhalb Portal</desc>
                         <param name="link" value="string() || &#34;.xml&#34;"/>
@@ -1074,7 +1092,11 @@
                 <elementSpec ident="bibl" mode="change">
                     <model predicate="@type='url'" behaviour="inline">
                         <param name="url" value="string()"/>
-                        <pb:template><li xmlns=""><a href="[[url]]" target="_blank">[[url]]</a></li></pb:template>
+                        <pb:template>
+                            <li xmlns="">
+                                <a href="[[url]]" target="_blank">[[url]]</a>
+                            </li>
+                        </pb:template>
                     </model>
                     <model predicate="ancestor::teiHeader" behaviour="listItem"/>
                     <model behaviour="inline"/>
