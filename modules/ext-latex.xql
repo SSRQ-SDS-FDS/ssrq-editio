@@ -27,19 +27,19 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
             default return
                 $nr
     let $alternate :=
-        if (exists($optional?prefix) and $type = "test-critical") then
+        if (exists($optional?prefix) and $type = "text-critical") then
             ``[\textup{`{$alternate}`}]``
         else
             $alternate
     let $prefix := latex:get-content($config, $node, $class, $optional?prefix)
     return
         if ($enclose) then
-            ``[\textnotestart{`{$label}`}{`{$prefix}``{$alternate}`}`{$config?apply-children($config, $node, $content)}`\textnoteend{`{$label}`}]``
+            ``[\textnotestart{`{$label}`}{`{$prefix}``{$alternate}`.}`{$config?apply-children($config, $node, $content)}`\textnoteend{`{$label}`}]``
         else (
             $config?apply-children($config, $node, $content),
             switch($type)
                 case "text-critical" return
-                    ``[\textnote[`{$label}`]{`{$prefix}``{$alternate}`}]``
+                    ``[\textnote[`{$label}`]{`{$prefix}``{$alternate}`.}]``
                 default return
                     ``[\ednote[`{$label}`]{`{$prefix}``{$alternate}`}]``
         )
@@ -69,7 +69,7 @@ declare function pmf:note($config as map(*), $node as node(), $class as xs:strin
                 return
                     switch($type)
                         case "text-critical" return
-                            ``[\textnote[`{$label}`]{`{$prefix}``{$content}`}]``
+                            ``[\textnote[`{$label}`]{`{$prefix}``{$content}`.}]``
                         default return
                             ``[\ednote[`{$label}`]{`{$prefix}``{$content}`}]``
     else
