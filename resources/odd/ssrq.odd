@@ -616,10 +616,21 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="pb" mode="change">
+                    <!-- Achtung Sprachabhängigkeit, 'S. ' sollte nicht hier oder in CSS definiert werden (aber Latein ist die Lösung :-) -->
+                    <model output="latex" predicate="preceding-sibling::*[1][self::seg]" behaviour="omit">
+                        <desc>seg directly followed by p is handled by seg</desc>
+                    </model>
+                    <model output="latex" predicate="ancestor::text and not(preceding::pb[ancestor::text])" behaviour="inline">
+                        <desc>Only show page number at first pagebreak</desc>
+                        <param name="page" value="('p. ', @n)"/>
+                        <pb:template>\noindent \textit{[[[page]]]}</pb:template>
+                    </model>
+                    <model output="latex" predicate="@n" behaviour="inline">
+                        <param name="page" value="('p. ', @n)"/>
+                        <pb:template>\noindent \pb{} \textit{[[[page]]]}</pb:template>
+                    </model>
                     <model output="latex" behaviour="inline">
-                        <param name="page" value="('S. ', @n)"/>
-                        <!-- Achtung Sprachabhängigkeit, sollte nicht hier oder in CSS definiert werden -->
-                        <pb:template>\textit{[[[page]]]}</pb:template>
+                        <pb:template>\noindent \pb{}</pb:template>
                     </model>
                     <model predicate="following-sibling::node()[1][self::lb]" behaviour="copy">
                         <desc>If followed by an lb, process the lb first, then the pb</desc>
@@ -803,18 +814,25 @@
                     <model behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="seg" mode="change">
-                    <model predicate="@n" output="latex" behaviour="block">
+                    <model output="latex" predicate="following-sibling::*[1][self::pb]" behaviour="inline">
+                        <param name="n" value="if (@n) then ('[', @n, ']') else ()"/>
+                        <param name="pagebreak" value="if (following-sibling::*[1][@n]) then ('\pb{} \textit{[p. ', following-sibling::*[1]/@n, ']}') else '\pb{}'"/>
+                        <pb:template>
+                            \noindent [[n]] [[content]] [[pagebreak]]
+                            \vspace{1mm}
+                        </pb:template>
+                    </model>
+                    <model output="latex" predicate="@n" behaviour="block">
+                        <!--<param name="content" value="replace(., '\s+', ' ')"/>-->
                         <param name="n" value="@n"/>
                         <pb:template>
-                            \noindent [[[n]]]
-                            [[content]]
+                            \noindent [[[n]]] [[content]]
                             \vspace{1mm}
                         </pb:template>
                     </model>
                     <model output="latex" behaviour="block">
                         <pb:template>
-                            \noindent
-                            [[content]]
+                            \noindent [[content]]
                             \vspace{1mm}
                         </pb:template>
                     </model>
@@ -855,11 +873,11 @@
                     <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="date" mode="change">
-                    <model output="latex" predicate="@when" behaviour="inline">
+                    <model output="latex" predicate="@when and ancestor::body" behaviour="inline">
                         <param name="date" value="ec:format-date(@when)"/>
                         <pb:template>[[content]] \textit{[[[date]]]}</pb:template>
                     </model>
-                    <model output="latex" predicate="@from and @to" behaviour="inline">
+                    <model output="latex" predicate="@from and @to and ancestor::body" behaviour="inline">
                         <param name="date" value="(ec:format-date(@from), ' – ', ec:format-date(@to))"/>
                         <pb:template>[[content]] \textit{[[[date]]]}</pb:template>
                     </model>
@@ -993,6 +1011,11 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="head" mode="change">
+                    <model output="latex" predicate="preceding-sibling::*[1][self::pb]" behaviour="inline">
+                        <pb:template>[[content]]
+                            \vspace{1mm}
+                        </pb:template>
+                    </model>
                     <model output="latex" behaviour="block">
                         <pb:template>
                             [[content]]
@@ -1042,7 +1065,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="ref" mode="change">
-                    <model predicate="matches(., '^(?:SSRQ|SDS|FDS)_')" output="latex" behaviour="inline">
+                    <model output="latex" predicate="matches(., '^(?:SSRQ|SDS|FDS)_')" behaviour="inline">
                         <param name="content" value="ec:format-id(.)"/>
                     </model>
                     <model predicate="not(@target) and matches(., '^(?:SSRQ|SDS|FDS)_')" behaviour="link">
