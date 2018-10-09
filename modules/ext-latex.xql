@@ -19,7 +19,8 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
     $label, $type, $alternate, $optional as map(*)) {
     let $nr := pmc:increment-counter($type)
     let $alternate := $config?apply-children($config, $node, $alternate)
-    let $enclose := $type = "text-critical" and matches($content, "\w+\s+\w+")
+    (: let $enclose := $type = "text-critical" and matches($content, "\w+\s+\w+") :)
+    let $enclose := $type = "text-critical" and matches($content, "\s")
     let $label :=
         switch($type)
             case "text-critical" return
