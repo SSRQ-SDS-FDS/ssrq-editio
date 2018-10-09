@@ -32,6 +32,7 @@
                         <param name="title" value="teiHeader/fileDesc/sourceDesc/msDesc/head/text()"/>
                         <param name="dating" value="teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation/origDate[@type='humanReadable']/text()"/>
                         <param name="content" value="(teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary, text/back, text//body)"/>
+                        <param name="literature" value="teiHeader/fileDesc/sourceDesc/msDesc/additional/listBibl"/>
                         <pb:template>
                             \documentclass[10pt,twoside]{article}
                             
@@ -54,6 +55,8 @@
                             \dating{[[dating]]}
                             
                             [[content]]
+                            
+                            [[literature]]
                             
                             \printnotes*
                             
@@ -1095,6 +1098,13 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="listBibl" mode="change">
+                    <model output="latex" behaviour="block">
+                        <param name="type" value="head/text()"/>
+                        <param name="content" value="string-join(bibl, '; ')"/>
+                        <pb:template>
+                            \manudesc{\textbf{[[type]]:} [[content]]}
+                        </pb:template>
+                    </model>
                     <modelSequence predicate="not($parameters?mode = 'filiation')">
                         <desc>Ausgabe Bibliographie, aber nicht in "weitere Überlieferungen"</desc>
                         <model behaviour="heading">
