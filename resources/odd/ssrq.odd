@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" xml:lang="en">
     <teiHeader>
         <fileDesc>
@@ -769,17 +770,33 @@
                         </outputRendition>
                     </model>
                 </elementSpec>
+                <elementSpec ident="titleStmt" mode="change">
+                    <model output="latex" behaviour="meta">
+                        <param name="content" value="."/>
+                    </model>
+                    <model output="fo" behaviour="heading"/>
+                    <modelSequence output="web" predicate="$parameters?header='short'">
+                        <model behaviour="block">
+                            <param name="content" value="title[1]"/>
+                        </model>
+                        <model behaviour="block">
+                            <param name="content" value="subsequence(title, 2)"/>
+                        </model>
+                        <model behaviour="block">
+                            <param name="content" value="author"/>
+                        </model>
+                    </modelSequence>
+                    <model output="web" behaviour="block"/>
+                </elementSpec>
                 <elementSpec ident="fileDesc" mode="change">
                     <modelSequence predicate="$parameters?header='short'">
                         <desc>Output a short header to be used in document listings</desc>
                         <model behaviour="block" cssClass="header-short">
-                            <param name="content" value="titleStmt"/>
-                        </model>
-                        <model behaviour="block" cssClass="header-short">
                             <param name="content" value="ec:format-id(seriesStmt/idno)"/>
                         </model>
-                        <model behaviour="block" cssClass="header-short">
+                        <model behaviour="link" cssClass="header-short">
                             <param name="content" value="sourceDesc/msDesc/head"/>
+                            <param name="link" value="$parameters?doc"/>
                         </model>
                         <model behaviour="block" cssClass="header-short">
                             <param name="content" value="sourceDesc/msDesc/history/origin/origDate"/>
@@ -790,10 +807,10 @@
                         <model behaviour="block" cssClass="header-short">
                             <param name="content" value="publicationStmt"/>
                         </model>
+                        <model behaviour="block" cssClass="header-short">
+                            <param name="content" value="titleStmt"/>
+                        </model>
                     </modelSequence>
-                    <model behaviour="title">
-                        <param name="content" value="titleStmt"/>
-                    </model>
                 </elementSpec>
                 <elementSpec ident="back" mode="change">
                     <desc>back contains the commentary, which should appear as a numbered list</desc>
@@ -1025,7 +1042,7 @@
                             \vspace{1mm}
                         </pb:template>
                     </model>
-                    <model predicate="$parameters?header='short'" behaviour="inline">
+                    <model predicate="$parameters?header='short'" behaviour="heading">
                         <param name="content" value="replace(string-join(.//text() except .//ref//text()), '^(.*?)[^\w]*$', '$1')"/>
                     </model>
                     <model predicate="parent::figure" behaviour="block">
