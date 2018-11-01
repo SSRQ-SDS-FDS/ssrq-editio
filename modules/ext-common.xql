@@ -6,7 +6,7 @@ xquery version "3.1";
 module namespace pmf="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
-import module namespace counter="http://exist-db.org/xquery/counter" at "java:org.exist.xquery.modules.counter.CounterModule";
+import module namespace counters="http://www.tei-c.org/tei-simple/xquery/counters";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
@@ -15,19 +15,19 @@ declare variable $pmf:COUNTER_NOTE := "note-" || util:uuid();
 
 declare function pmf:prepare($config as map(*), $node as node()*) {
     (
-        counter:destroy($pmf:COUNTER_TEXTCRITICAL),
-        counter:destroy($pmf:COUNTER_NOTE),
-        counter:create($pmf:COUNTER_TEXTCRITICAL),
-        counter:create($pmf:COUNTER_NOTE)
+        counters:destroy($pmf:COUNTER_TEXTCRITICAL),
+        counters:destroy($pmf:COUNTER_NOTE),
+        counters:create($pmf:COUNTER_TEXTCRITICAL),
+        counters:create($pmf:COUNTER_NOTE)
     )[5]
 };
 
 declare function pmf:increment-counter($type as xs:string) {
     switch ($type)
         case "text-critical" case "text-critical-start" return
-            counter:next-value($pmf:COUNTER_TEXTCRITICAL)
+            counters:increment($pmf:COUNTER_TEXTCRITICAL)
         default return
-            counter:next-value($pmf:COUNTER_NOTE)
+            counters:increment($pmf:COUNTER_NOTE)
 };
 
 declare function pmf:scribe($scribe as attribute()?) {
