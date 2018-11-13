@@ -293,6 +293,12 @@
                         <desc xml:lang="it">gnädige herren/desc>
                         <desc xml:lang="en">gnädige herren</desc>-->
                     </valItem>
+                      <valItem ident="H">
+                        <desc xml:lang="de">Herr, Herren</desc>
+                           <!--<desc xml:lang="fr">herr, herren</desc>
+                        <desc xml:lang="it">herr, herren</desc>
+                        <desc xml:lang="en">herr, herren</desc>-->
+                    </valItem>
                     <valItem ident="h">
                         <desc xml:lang="de">herr, herren</desc>
                            <!--<desc xml:lang="fr">herr, herren</desc>
