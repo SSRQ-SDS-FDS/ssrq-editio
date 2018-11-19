@@ -45,13 +45,15 @@ $(document).ready(function() {
 
     function viewFacsimile(pb) {
         var prev = pb.previousSibling;
+        var facs;
         while (prev) {
-            if ($(prev).hasClass('facs')) {
+            facs = $(prev).find('.facs');
+            if (facs.length > 0) {
                 break;
             }
             prev = prev.previousSibling;
         }
-        var src = prev.getAttribute('data-facs');
+        var src = facs[0].getAttribute('data-facs');
         var pos = facsimiles.indexOf(iiifApi + src + "/info.json");
         if (seadragon.currentPage() !== pos) {
             seadragon.goToPage(pos);
