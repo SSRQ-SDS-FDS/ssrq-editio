@@ -58,26 +58,29 @@ declare function pmf:span($content) {
     }</span>
 };
 
-declare function pmf:label($id as xs:string) {
+declare function pmf:label($id as xs:string?) {
     pmf:label($id, true())
 };
 
-declare function pmf:label($id as xs:string, $upper as xs:boolean) {
+declare function pmf:label($id as xs:string?, $upper as xs:boolean) {
     pmf:label($id, $upper, (session:get-attribute("ssrq.lang"), "de")[1])
 };
 
-declare function pmf:label($id as xs:string, $upper as xs:boolean, $lang as xs:string) {
-    let $label := $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang]
-    return
-        if ($label) then
-            if (count($label) > 1) then
-                ``[[Doppelte Übersetzung: `{$id}`, Sprache: `{$lang}`]]``
-            else if ($upper) then
-                upper-case(substring($label, 1, 1)) || substring($label, 2)
+declare function pmf:label($id as xs:string?, $upper as xs:boolean, $lang as xs:string) {
+    if ($id) then
+        let $label := $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang]
+        return
+            if ($label) then
+                if (count($label) > 1) then
+                    ``[[Doppelte Übersetzung: `{$id}`, Sprache: `{$lang}`]]``
+                else if ($upper) then
+                    upper-case(substring($label, 1, 1)) || substring($label, 2)
+                else
+                    lower-case(substring($label, 1, 1)) || substring($label, 2)
             else
-                lower-case(substring($label, 1, 1)) || substring($label, 2)
-        else
-            ``[[Nicht übersetzt: `{$id}`, Sprache: `{$lang}`]]``
+                ``[[Nicht übersetzt: `{$id}`, Sprache: `{$lang}`]]``
+    else
+        "[Missing label]"
 };
 
 declare function pmf:abbr($abbr as xs:string) {
