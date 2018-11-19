@@ -336,11 +336,9 @@ function app:list-works($node as node(), $model as map(*), $filter as xs:string?
 };
 
 declare function app:filter-collections($docs) {
-    filter($docs, function($doc) {
-        let $name := substring-before(util:document-name($doc), ".xml")
-        return
-            empty(collection($config:data-root)//tei:div[@type='collection']//tei:ref[. = $name])
-    })
+    let $refs := collection($config:data-root)//tei:div[@type='collection']//tei:ref/string()
+    return
+        $docs except $docs[substring-before(util:document-name(.), ".xml") = $refs]
 };
 
 
