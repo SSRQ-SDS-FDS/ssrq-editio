@@ -321,7 +321,7 @@ function app:list-works($node as node(), $model as map(*), $filter as xs:string?
             )
             except
             collection($config:temp-root)/tei:TEI
-    let $sorted := query:sort($filtered, $sort)
+    let $sorted := query:sort(app:filter-collections($filtered), $sort)
     return (
         session:set-attribute("ssrq.works", $sorted),
         session:set-attribute("ssrq.browse", $browse),
@@ -334,6 +334,15 @@ function app:list-works($node as node(), $model as map(*), $filter as xs:string?
         }
     )
 };
+
+declare function app:filter-collections($docs) {
+    filter($docs, function($doc) {
+        let $name := substring-before(util:document-name($doc), ".xml")
+        return
+            empty(collection($config:data-root)//tei:div[@type='collection']//tei:ref[. = $name])
+    })
+};
+
 
 declare function app:home($node as node(), $model as map(*)) {
     templates:process(
