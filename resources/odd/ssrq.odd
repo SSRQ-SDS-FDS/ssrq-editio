@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" xml:lang="en">
     <teiHeader>
         <fileDesc>
@@ -879,15 +878,15 @@
                 </elementSpec>
                 <elementSpec ident="subst" mode="change">
                     <model predicate="add/@hand" behaviour="alternote" cssClass="text-critical">
-                        <param name="content" value="del"/>
-                        <param name="prefix" value="(ec:label('del'), ', ', ec:label('replace', false()), ' ', ec:translate(add/@place, 0, 'lowercase'), text{' '}, ec:translate(add/@hand, 0, 'lowercase'), ec:colon())"/>
-                        <param name="alternate" value="add/node()"/>
+                        <param name="content" value="add"/>
+                        <param name="prefix" value="(ec:label('add', true()), ' ', ec:translate(add/@place, 0, 'lowercase'), ' ', ec:translate(add/@hand, 0, 'lowercase'), ', ', ec:label('replace', false()), ec:colon())"/>
+                        <param name="alternate" value="del"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="add" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="add"/>
-                        <param name="prefix" value="(ec:label('add', true()), ' ', ec:translate(add/@place, 0, 'lowercase'), ', ', ec:label('replace-del', false()), ec:colon())"/>
-                        <param name="alternate" value="'[...]'"/>
+                        <param name="prefix" value="(ec:label('add', true()), ' ', ec:translate(add/@place, 0, 'lowercase'), ', ', ec:label('replace', false()), ec:colon())"/>
+                        <param name="alternate" value="del"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model behaviour="inline"/>
