@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 705 $</p>
-                <p>Date of last commit:     $Date: 2018-09-28 11:25:43 +0200 (Fri, 28 Sep 2018) $</p>
+                <p>Revision of last commit: $Rev: 1115 $</p>
+                <p>Date of last commit:     $Date: 2018-11-30 13:41:49 +0100 (Fri, 30 Nov 2018) $</p>
                 <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
@@ -616,14 +616,14 @@
                                     <desc xml:lang="en">deadline</desc>
                                 </valItem>
                                 <valItem ident="deadline_holiday">
-                                    <desc xml:lang="de">Kirchenfest als Termin/Frist </desc>
-                                    <desc xml:lang="fr">des fêtes religieuses comme délai</desc>
-                                    <desc xml:lang="en">holiday (deadline)</desc>
+                                    <desc xml:lang="de">(Kirchenfest als Termin/Frist)</desc>
+                                    <desc xml:lang="fr">(des fêtes religieuses comme délai)</desc>
+                                    <desc xml:lang="en">(holiday [deadline])</desc>
                                 </valItem>
                                 <valItem ident="deadline_floating holiday">
-                                    <desc xml:lang="de">Beweglicher Feiertag als Termin/Frist</desc>
-                                    <desc xml:lang="fr">des fêtes sans date fixe comme délai</desc>
-                                    <desc xml:lang="en">floating holiday (deadline)</desc>
+                                    <desc xml:lang="de">(beweglicher Feiertag als Termin/Frist)</desc>
+                                    <desc xml:lang="fr">(des fêtes sans date fixe comme délai)</desc>
+                                    <desc xml:lang="en">(floating holiday [deadline])</desc>
                                 </valItem>
                                 <valItem ident="holiday">
                                     <desc xml:lang="de">Kirchenfest</desc>
@@ -631,9 +631,9 @@
                                     <desc xml:lang="en">holiday</desc>
                                 </valItem>
                                 <valItem ident="floating holiday">
-                                    <desc xml:lang="de">Beweglicher Feiertag</desc>
-                                    <desc xml:lang="fr">des fêtes sans date fixe</desc>
-                                    <desc xml:lang="en">floating holiday</desc>
+                                    <desc xml:lang="de">(beweglicher Feiertag)</desc>
+                                    <desc xml:lang="fr">(des fêtes sans date fixe)</desc>
+                                    <desc xml:lang="en">(floating holiday)</desc>
                                 </valItem>
                                 <valItem ident="electronic">
                                     <desc xml:lang="de">elektronische Publikation</desc>
@@ -1659,6 +1659,11 @@
                                     <desc xml:lang="de">Kapitel</desc>
                                     <desc xml:lang="fr">chapitre</desc>
                                     <desc xml:lang="en">chapter</desc>
+                                </valItem>
+                                <valItem ident="collection">
+                                    <desc xml:lang="de">Sammlung</desc>
+                                    <desc xml:lang="fr">collection</desc>
+                                    <desc xml:lang="en">collection</desc>
                                 </valItem>
                                 <valItem ident="section">
                                     <desc xml:lang="de">Artikel</desc>
@@ -3069,9 +3074,9 @@
                                     <desc xml:lang="en">cancelled</desc>
                                 </valItem>
                                 <valItem ident="clipping">
-                                    <desc xml:lang="de">Beschneidung (am Blattrand)</desc>
-                                    <desc xml:lang="fr">coupé (dans la marge)</desc>
-                                    <desc xml:lang="en">clipping (on the leaf margin)</desc>
+                                    <desc xml:lang="de">Beschneidung [am Blattrand]</desc>
+                                    <desc xml:lang="fr">coupé [dans la marge]</desc>
+                                    <desc xml:lang="en">clipping [on the leaf margin]</desc>
                                 </valItem>
                                 <valItem ident="covered by seal">
                                     <desc xml:lang="de">vom Siegel verdeckt</desc>
@@ -3672,7 +3677,7 @@
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='currency']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Angster|écu petit|fl|franc|lb|ß|xr|d|Dicken|Dukat|bz|h|M|plp|Böhmischer Groschen|Gros|Grossi|k|livre faible|Ort|Quart|Vierer|Spagürli|S|sol faible|Taler|L)$')"
+                                        test="matches(@unit,'^(Angster|écu petit|fl|franc|lb|ß|xr|d|Dicken|Doubloon|Dukat|bz|h|M|plp|Böhmischer Groschen|Gros|Grossi|k|livre faible|Ort|Quart|Vierer|Spagürli|S|sol faible|Taler|L)$')"
                                         >keine gültige Währung</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='length']">
@@ -3691,8 +3696,7 @@
                                         >kein gültiges Gewicht</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='age']">
-                                    <sch:assert test="@unit='year'">keine gültige Einheit für
-                                        Alter</sch:assert>
+                                    <sch:assert test="matches(@unit,'^(year|week)$')">keine gültige Einheit für Alter</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='undefined']">
                                     <sch:assert
@@ -3746,6 +3750,12 @@
                                     <desc xml:lang="de">Florentiner</desc>
                                     <desc xml:lang="fr">de Florence</desc>
                                     <desc xml:lang="en">from Florence</desc>
+                                </valItem>
+                                <valItem ident="FR">
+                                    <desc xml:lang="de">französisch/e</desc>
+                                    <desc xml:lang="fr">français/e</desc>
+                                    <desc xml:lang="it">francese</desc>
+                                    <desc xml:lang="en">French</desc>
                                 </valItem>
                                 <valItem ident="HU">
                                     <desc xml:lang="de">ungarischer</desc>
@@ -4689,6 +4699,7 @@
                                 </valItem>
                                 <valItem ident="Böhmischer Groschen">
                                     <desc xml:lang="de">Böhmischer Groschen</desc>
+                                    <desc xml:lang="de" type="plural">Böhmische Groschen</desc>
                                     <desc xml:lang="fr">gros bohêmien</desc>
                                     <desc xml:lang="en">Bohemian groschen</desc>
                                 </valItem>
@@ -4735,6 +4746,15 @@
                                     <desc xml:lang="fr">denier</desc>
                                     <desc xml:lang="fr" type="plural">deniers</desc>
                                     <desc xml:lang="en">pfennig</desc>
+                                </valItem>
+                                <valItem ident="Doubloon">
+                                    <desc xml:lang="de">Dublone</desc>
+                                    <desc xml:lang="de" type="plural">Dublonen</desc>
+                                    <desc xml:lang="fr">Doublon</desc>
+                                    <desc xml:lang="fr" type="plural">Doublons</desc>
+                                    <desc xml:lang="it">doblone</desc>
+                                    <desc xml:lang="en">Doubloon</desc>
+                                    <desc xml:lang="en" type="plural">Doubloons</desc>
                                 </valItem>
                                 <valItem ident="Dukat">
                                     <desc xml:lang="de">Dukat</desc>
@@ -4830,6 +4850,16 @@
                                     <desc xml:lang="fr" type="plural">années</desc>
                                     <desc xml:lang="en" type="plural">years</desc>
                                     <desc xml:lang="en">year</desc>
+                                </valItem>
+                                <valItem ident="week">
+                                    <desc xml:lang="de">Woche</desc>
+                                    <desc xml:lang="de" type="plural">Wochen</desc>
+                                    <desc xml:lang="fr">semaine</desc>
+                                    <desc xml:lang="fr" type="plural">semaines</desc>
+                                    <desc xml:lang="it" type="plural">settimane</desc>
+                                    <desc xml:lang="it">settimana</desc>
+                                    <desc xml:lang="en" type="plural">weeks</desc>
+                                    <desc xml:lang="en">week</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -4931,7 +4961,6 @@
                         <attDef ident="period" mode="delete"/>
                         <attDef ident="precision" mode="delete"/>
                         <attDef ident="resp" mode="delete"/>
-                        <attDef ident="type" mode="delete"/>
                     </attList>
                 </elementSpec>
                 <elementSpec ident="origPlace" module="msdescription" mode="change">
@@ -5196,6 +5225,7 @@
                                 <rng:ref name="lb"/>
                                 <rng:ref name="pb"/>
                                 <rng:ref name="note"/>
+                                <rng:ref name="term"/>
                                 <rng:text/>
                             </rng:choice>
                         </rng:oneOrMore>
@@ -5273,8 +5303,10 @@
                                 <rng:ref name="damage"/>
                                 <rng:ref name="del"/>
                                 <rng:ref name="add"/>
+                                <rng:ref name="hi"/>
                                 <rng:ref name="sic"/>
                                 <rng:ref name="note"/>
+                                <rng:ref name="subst"/>
                                 <rng:text/>
                             </rng:choice>
                         </rng:zeroOrMore>
@@ -5284,7 +5316,7 @@
                         <constraint>
                             <sch:pattern>
                                 <sch:rule context="tei:term">
-                                    <sch:assert test="not(@ref) or matches(@ref,'^lem\d{6}(\.\d{2})?$') or matches(@ref,'^key\d{6}$')">Ungültiger Wert für term/@ref</sch:assert>
+                                    <sch:assert test="not(@ref) or matches(@ref,'^lem\d{6}(\.1?\d{2})?$') or matches(@ref,'^key\d{6}$')">Ungültiger Wert für term/@ref</sch:assert>
                                 </sch:rule>
                             </sch:pattern>
                         </constraint>
@@ -5759,10 +5791,22 @@
                             <desc xml:lang="fr">allemand</desc>
                             <desc xml:lang="en">German</desc>
                         </valItem>
+                        <valItem ident="en">
+                            <desc xml:lang="de">Englisch</desc>
+                            <desc xml:lang="fr">anglais</desc>
+                            <desc xml:lang="it">inglese</desc>
+                            <desc xml:lang="en">English</desc>
+                        </valItem>
                         <valItem ident="fr">
                             <desc xml:lang="de">Französisch</desc>
                             <desc xml:lang="fr">français</desc>
                             <desc xml:lang="en">French</desc>
+                        </valItem>
+                        <valItem ident="he">
+                            <desc xml:lang="de">Hebräisch</desc>
+                            <desc xml:lang="fr">hébraïque</desc>
+                            <desc xml:lang="it">ebraico</desc>
+                            <desc xml:lang="en">Hebrew</desc>
                         </valItem>
                         <valItem ident="la">
                             <desc xml:lang="de">Latein</desc>
