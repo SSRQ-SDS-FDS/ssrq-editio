@@ -23,18 +23,18 @@ declare function pmf:link($config as map(*), $node as node(), $class as xs:strin
 
 declare function pmf:reference($config as map(*), $node as element(), $class as xs:string+, $content,
     $ref, $label) {
-    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
+    (: no language parameter at the moment :)
     let $url :=
         typeswitch($node)
             case element(tei:persName) | element(tei:orgName) return
-                "https://www.ssrq-sds-fds.ch/persons-db-edit/?query=" || $ref[1] || "&amp;lang=" || $lang
+                "https://www.ssrq-sds-fds.ch/persons-db-edit/?query=" || $ref[1]
             case element(tei:placeName)  | element(tei:origPlace)  return
-                "https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id=" || $ref || "&amp;lang=" || $lang
+                "https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id=" || $ref
             case element(tei:term) return
                 if (starts-with($ref, 'key')) then
-                    "https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id=" || $ref || "&amp;lang=" || $lang
+                    "https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id=" || $ref
                 else
-                    "https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-lemma.xq?id=" || $ref || "&amp;lang=" || $lang
+                    "https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-lemma.xq?id=" || $ref
             default return $ref
     return
         <span class="reference {$class}">

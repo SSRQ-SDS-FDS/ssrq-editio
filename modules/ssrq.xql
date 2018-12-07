@@ -99,8 +99,15 @@ declare function app:switch-view($node as node(), $model as map(*), $odd as xs:s
 
 declare function app:api-lookup($api as xs:string, $list as map(*)*, $param as xs:string) {
     let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
+    let $iso-639-3 :=
+    map {
+        'de'     := 'deu',
+        'fr'     := 'fra',
+        'it'     := 'ita',
+        'en'     := 'eng'
+    }
     for $item in $list
-    let $request := <http:request method="GET" href="{$api}?{$param}={$item?ref}&amp;lang={$lang}"/>
+    let $request := <http:request method="GET" href="{$api}?{$param}={$item?ref}&amp;lang={$iso-639-3($lang)}"/>
     let $response := http:send-request($request)
     return
         if ($response[1]/@status = "200") then
