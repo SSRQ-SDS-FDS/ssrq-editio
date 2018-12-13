@@ -146,14 +146,21 @@ declare function pmf:display-sigle($id as xs:string?) {
 };
 
 declare function pmf:format-id($id as xs:string?) {
-    let $temp  := replace($id, "^(.+?)_(\d{8}(?:_\d{8})?(?:[A-Z])?)(?:_\d{1,2})?$", "$1 $2")
+    let $temp  := replace($id, "^(.+?)_(\d{4}.*)$", "$1 $2")
     let $parts := tokenize($temp)
     let $ssrq  := substring-before($parts[1], '_')
     let $vol   := replace(substring-after($parts[1], '_'), '_', '/')
     let $vol   := replace($vol, "^([A-Z]{2})/", "$1 ")      (: space after canton abbreviation :)
-    let $date  := replace($parts[2], '_', '-')
+    let $id    :=
+        if (matches($parts[2], '^\d{8}')) then
+            replace($parts[2], '_', '-')
+        else
+            if (matches($parts[2], '^\d{4}_\d{3}')) then
+                number(substring-before($parts[2], '_')) || '-' || number(substring-after($parts[2], '_'))
+            else
+                number($parts[2])
     return
-        $ssrq || ' ' || $vol || ' ' || $date
+        $ssrq || ' ' || $vol || ' ' || $id
 };
 
 declare function pmf:format-date($when as xs:string?) {
