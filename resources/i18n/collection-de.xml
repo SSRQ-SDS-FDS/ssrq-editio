@@ -8,10 +8,10 @@
     <msg key="fo-source">FO Quelle</msg>
     <msg key="pdf-latex">PDF (LaTeX Version)</msg>
     <msg key="latex-source">TeX Quelle</msg>
-    <msg key="plain">Eine Seite</msg>
     <msg key="single-page">Auf einer Seite anzeigen</msg>
     <msg key="epub-download">Als epub ebook herunterladen</msg>
     <msg key="view-tei">TEI XML ansehen</msg>
+    <msg key="plain">Eine Seite</msg>
     <msg key="admin">Admin</msg>
     <msg key="recompile">ODD neu kompilieren</msg>
     <msg key="metadata-update">Metadatenindex neu erzeugen</msg>
@@ -41,9 +41,7 @@
     <msg key="next-page">Nächste Seite [Pfeil rechts auf der Tastatur]</msg>
     <msg key="close">Schließen</msg>
     <msg key="generating-file">Erzeuge Datei...</msg>
-    <msg key="download-message">
-        Das Erzeugen einer Datei zum Download kann bis zu mehrere Minuten dauern. Bitte warten Sie. Das Fenster sollte sich automatisch schließen, sobald
-        der Download beendet wurde.</msg>
+    <msg key="download-message">Das Erzeugen einer Datei zum Download kann bis zu mehrere Minuten dauern. Bitte warten Sie. Das Fenster sollte sich automatisch schließen, sobald der Download beendet wurde.</msg>
     <msg key="search-results">Suchergebnis</msg>
     <msg key="found">Gefundene Treffer</msg>
     <msg key="view-switch">Zwischen quellennaher und normalisierter Ansicht wechseln</msg>
@@ -54,8 +52,8 @@
     <msg key="examples">Anwendungsbeispiele</msg>
     <msg key="odd-data">ODD Dateien</msg>
     <msg key="create">Erzeugen</msg>
-    <msg key="delete-confirmation">Sind Sie sicher, dass Sie <span id="docs-to-delete"/> Dokument(e) löschen möchten?</msg>
     <msg key="delete">Löschen</msg>
+    <msg key="delete-confirmation">Sind Sie sicher, dass Sie <span id="docs-to-delete"/> Dokument(e) löschen möchten?</msg>
     <msg key="yes">Ja</msg>
     <msg key="no">Nein</msg>
     <msg key="pubdate">Publikationsdatum</msg>
@@ -72,11 +70,11 @@
     <msg key="paper">Papier</msg>
     <msg key="parchment">Pergament</msg>
     <msg key="text">Volltext</msg>
-    <msg key="person">Personen</msg>
+    <msg key="person">Person</msg>
     <msg key="organisation">Familie/Organisation</msg>
-    <msg key="places">Orte</msg>
+    <msg key="places">Ort</msg>
     <msg key="lemma">Lemma</msg>
-    <msg key="keywords">Schlagworte</msg>
+    <msg key="keywords">Schlagwort</msg>
     <msg key="genre">Textgattung</msg>
     <msg key="searchText">durchsuche Bearbeitungstext</msg>
     <msg key="title">Titel</msg>
@@ -109,8 +107,7 @@
     <msg key="sorting">Sortierung</msg>
     <msg key="loading-facets">Lade Registereinträge ...</msg>
     <msg key="error-title">Ein Fehler ist aufgetreten!</msg>
-    <msg key="error-description">Leider ist ein Fehler in der Anwendung aufgetreten. Bitte gehen Sie zurück
-    zur vorherigen Seite und beschreiben Sie uns den Fehler ggf. über die Feedback-Funktion.</msg>
+    <msg key="error-description">Leider ist ein Fehler in der Anwendung aufgetreten. Bitte gehen Sie zurück zur vorherigen Seite und beschreiben Sie uns den Fehler ggf. über die Feedback-Funktion.</msg>
     <msg key="website-link">https://www.ssrq-sds-fds.ch/home/</msg>
     <msg key="feedback">Feedback</msg>
     <msg key="registrierung">Für ein neues Login oder bei Problemen bitte E-Mail an info@ssrq-sds-fds.ch oder Feedback-Button drücken.</msg>

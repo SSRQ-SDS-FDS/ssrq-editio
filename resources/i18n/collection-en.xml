@@ -24,8 +24,7 @@
     <msg key="password">Password</msg>
     <msg key="search-sections">Search Sections</msg>
     <msg key="search-headings">Search Headings</msg>
-    <msg key="upload-files">Upload TEI XML or ODD files into the test document set. Click on the button below or
-        drag&amp;drop files on it.</msg>
+    <msg key="upload-files">Upload TEI XML or ODD files into the test document set. Click on the button below or drag&amp;drop files on it.</msg>
     <msg key="select-files">Select files...</msg>
     <msg key="upload">Upload</msg>
     <msg key="uploaded-files">Uploaded Files</msg>
@@ -71,11 +70,11 @@
     <msg key="paper">Paper</msg>
     <msg key="parchment">Parchment</msg>
     <msg key="text">Full Text</msg>
-    <msg key="person">Persons</msg>
+    <msg key="person">Person</msg>
     <msg key="organisation">Family/Organisation</msg>
-    <msg key="places">Places</msg>
+    <msg key="places">Place</msg>
     <msg key="lemma">Lemma</msg>
-    <msg key="keywords">Keywords</msg>
+    <msg key="keywords">Keyword</msg>
     <msg key="genre">Genre</msg>
     <msg key="searchText">Search Secondary Text</msg>
     <msg key="title">Title</msg>
@@ -91,21 +90,24 @@
     <msg key="addFill">Additional Filiations</msg>
     <msg key="editionText">Edition Text</msg>
     <msg key="relevance">Relevance</msg>
-    <msg key="work-id">Work id</msg>
+    <msg key="work-id">Part Number</msg>
     <msg key="orig-date">Date</msg>
     <msg key="filter-by">filter by</msg>
     <msg key="doctitel">Collection of Swiss Law Sources online</msg>
     <msg key="kontakt">Contact</msg>
-    <msg key="transrichtlinien"> <a href="https://www.ssrq-sds-fds.ch/wiki/Transkriptionsrichtlinien">Transcription rules</a>
+    <msg key="transrichtlinien">
+        <a href="https://www.ssrq-sds-fds.ch/wiki/Transkriptionsrichtlinien">Transcription guidelines</a>
+    </msg>
+    <msg key="datrichtlinien">
+        <a href="https://www.ssrq-sds-fds.ch/wiki/Datierungsrichtlinien">Dating guidelines</a>
     </msg>
     <msg key="realisierung">Realisation</msg>
     <msg key="search">Search</msg>
     <msg key="lizenz">License: </msg>
     <msg key="sorting">Sort order</msg>
     <msg key="loading-facets">Loading ...</msg>
-    <msg key="error-title">An Error Occurred!</msg>
-    <msg key="error-description">Unfortunately you have encountered an error. Please return
-        to the previous page and maybe describe us the error through the feedback function.</msg>
+    <msg key="error-title">An error occurred!</msg>
+    <msg key="error-description">Unfortunately you have encountered an error. Please return to the previous page and possibly describe us the error through the feedback function.</msg>
     <msg key="website-link">https://www.ssrq-sds-fds.ch/en/home/</msg>
     <msg key="feedback">Feedback</msg>
     <msg key="registrierung">For an account or in case of problems please contact info@ssrq-sds-fds.ch or use the feedback button.</msg>

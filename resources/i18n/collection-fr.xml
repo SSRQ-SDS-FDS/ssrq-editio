@@ -70,11 +70,11 @@
     <msg key="paper">Papier</msg>
     <msg key="parchment">Parchemin</msg>
     <msg key="text">Recherche plein texte</msg>
-    <msg key="person">Personnes</msg>
+    <msg key="person">Personne</msg>
     <msg key="organisation">Famille/Organisation</msg>
-    <msg key="places">Lieux</msg>
+    <msg key="places">Lieu</msg>
     <msg key="lemma">Lemma</msg>
-    <msg key="keywords">Termes</msg>
+    <msg key="keywords">Terme</msg>
     <msg key="genre">Genre</msg>
     <msg key="searchText">Recherche dans les commentaires et annotations</msg>
     <msg key="title">Titre</msg>
@@ -93,9 +93,8 @@
     <msg key="work-id">Numéro</msg>
     <msg key="orig-date">Datation</msg>
     <msg key="filter-by">Limiter à</msg>
-    <msg key="Collection of Swiss Law Sources online">Collection des sources du droit suisse online</msg>
     <msg key="doctitel">Collection des sources du droit suisse online</msg>
-    <msg key="kontakt">Kontakt</msg>
+    <msg key="kontakt">Contact</msg>
     <msg key="transrichtlinien">
         <a href="https://www.ssrq-sds-fds.ch/wiki/Transkriptionsrichtlinien/fr">Principes de transcription</a>
     </msg>
@@ -108,10 +107,9 @@
     <msg key="sorting">Tirage</msg>
     <msg key="loading-facets">Il charge ...</msg>
     <msg key="error-title">An Error Occurred!</msg>
-    <msg key="error-description">Unfortunately you have encountered an error. Please return
-        to the previous page and maybe describe us the error through the feedback function.</msg>
+    <msg key="error-description">Unfortunately you have encountered an error. Please return to the previous page and maybe describe us the error through the feedback function.</msg>
     <msg key="website-link">https://www.ssrq-sds-fds.ch/fr/home/</msg>
     <msg key="feedback">Feedback</msg>
-    <msg key="registrierung">Pour obtenir un nouveau Login, ainsi qu’en cas de problème, merci d’écrire à info@ssrq-sds-fds.ch ou d’utiliser le bouton Feedback.</msg>
+    <msg key="registrierung">Pour obtenir un nouveau login, ainsi qu’en cas de problème, merci d’écrire à info@ssrq-sds-fds.ch ou d’utiliser le bouton Feedback.</msg>
     <msg key="require-login">Veuillez vous identifier</msg>
 </catalogue>
