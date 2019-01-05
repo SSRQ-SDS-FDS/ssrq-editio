@@ -1119,9 +1119,16 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="listBibl" mode="change">
+                    <!--<model output="latex" predicate="head='URLs'" behaviour="block">
+                        <param name="type" value="head/text()"/>
+                        <param name="content" value="'\url{' || bibl || '}'"/>
+                        <pb:template>
+                            \manudesc{\textbf{[[type]]:} [[content]]}
+                        </pb:template>
+                    </model>-->
                     <model output="latex" behaviour="block">
                         <param name="type" value="head/text()"/>
-                        <param name="content" value="string-join(bibl, '; ')"/>
+                        <param name="content" value="if (starts-with(head, 'URL')) then string-join(for $bibl in bibl return '\url{' || tokenize($bibl)[1] || '}', '; ') else string-join(bibl, '; ')"/>
                         <pb:template>
                             \manudesc{\textbf{[[type]]:} [[content]]}
                         </pb:template>
