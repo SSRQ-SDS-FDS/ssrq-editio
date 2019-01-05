@@ -40,7 +40,7 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
             $config?apply-children($config, $node, $content),
             switch($type)
                 case "text-critical" return
-                    ``[\textnote[`{$label}`]{`{$prefix}``{$alternate}`.}]``
+                    ``[\leavevmode\textnote[`{$label}`]{`{$prefix}``{$alternate}`.}]``
                 default return
                     ``[\ednote[`{$label}`]{`{$prefix}``{$alternate}`}]``
         )
@@ -70,7 +70,7 @@ declare function pmf:note($config as map(*), $node as node(), $class as xs:strin
                 return
                     switch($type)
                         case "text-critical" return
-                            ``[\textnote[`{$label}`]{`{$prefix}``{$content}`.}]``
+                            ``[\leavevmode\textnote[`{$label}`]{`{$prefix}``{$content}`.}]``
                         default return
                             ``[\ednote[`{$label}`]{`{$prefix}``{$content}`}]``
     else
