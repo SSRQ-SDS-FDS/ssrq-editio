@@ -146,7 +146,7 @@ declare function pmf:display-sigle($id as xs:string?) {
 };
 
 declare function pmf:format-id($id as xs:string?) {
-    let $temp  := replace($id, "^(.+?)_(\d{4}.*)$", "$1 $2")
+    let $temp  := replace($id, "^(.+?)_(\d{4}.*?)(?:_\d{1,2})?$", "$1 $2")
     let $parts := tokenize($temp)
     let $ssrq  := substring-before($parts[1], '_')
     let $vol   := replace(substring-after($parts[1], '_'), '_', '/')
