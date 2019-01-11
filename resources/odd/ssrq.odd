@@ -943,14 +943,14 @@
                 <elementSpec ident="msDesc" mode="add">
                     <desc>Stückbeschreibung ausgeben</desc>
                     <model output="latex" behaviour="block">
-                        <param name="idno" value="msIdentifier"/>
-                        <!--<param name="idno" value="msIdentifier/idno/text()"/>-->
+                        <param name="original" value="('Original', ec:punct(':', false()))"/>
+                        <param name="idno" value="(msIdentifier, ec:semicolon())"/>
                         <param name="material" value="physDesc/objectDesc/supportDesc/support/material/text()"/>
                         <param name="dimensions" value="physDesc/objectDesc/supportDesc/extent/dimensions"/>
                         <param name="condition" value="if (physDesc/objectDesc/supportDesc/condition) then (', ' || physDesc/objectDesc/supportDesc/condition/text()) else ()"/>
-                        <param name="seal" value="if (physDesc/sealDesc/seal/node()) then ('; ' || physDesc/sealDesc) else ()"/>
+                        <param name="seal" value="if (physDesc/sealDesc/seal/node()) then (ec:semicolon(), physDesc/sealDesc) else ()"/>
                         <pb:template>
-                            \manudesc{\textbf{Original:} [[idno]]; [[material]], [[dimensions]][[condition]][[seal]]}
+                            \manudesc{\textbf{[[original]]} [[idno]] [[material]], [[dimensions]][[condition]][[seal]]}
                         </pb:template>
                     </model>
                     <model behaviour="list">
@@ -1155,10 +1155,10 @@
                         </pb:template>
                     </model>-->
                     <model output="latex" behaviour="block">
-                        <param name="type" value="head/text()"/>
-                        <param name="content" value="if (starts-with(head, 'URL')) then string-join(for $bibl in bibl return '\url{' || tokenize($bibl)[1] || '}', '; ') else string-join(bibl, '; ')"/>
+                        <param name="type" value="(head/text(), ec:punct(':', false()))"/>
+                        <param name="content" value="if (starts-with(head, 'URL')) then string-join(for $bibl in bibl return '\url{' || tokenize($bibl)[1] || '}', ec:semicolon()) else string-join(bibl, ec:semicolon())"/>
                         <pb:template>
-                            \manudesc{\textbf{[[type]]:} [[content]]}
+                            \manudesc{\textbf{[[type]]} [[content]]}
                         </pb:template>
                     </model>
                     <modelSequence predicate="not($parameters?mode = 'filiation')">

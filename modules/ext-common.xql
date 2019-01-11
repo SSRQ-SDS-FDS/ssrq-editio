@@ -97,6 +97,11 @@ declare function pmf:colon() {
     pmf:punct(':', true())
 };
 
+(:~ Strichpunkt einfügen unter Berücksichtigung frz. Typographie :)
+declare function pmf:semicolon() {
+    pmf:punct(';', true())
+};
+
 (:~ Französische Typographie erfordert Leerzeichen vor best. Interpunktionszeichen :)
 declare function pmf:punct($char as xs:string, $spaceAfter as xs:boolean?) {
     let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
