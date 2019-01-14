@@ -942,8 +942,13 @@
                 </elementSpec>
                 <elementSpec ident="msDesc" mode="add">
                     <desc>Stückbeschreibung ausgeben</desc>
+                    <model output="latex" predicate="$parameters?mode = 'filiation'" behaviour="block">
+                        <pb:template>
+                            \manudesc{\textbf{A copy!}}
+                        </pb:template>
+                    </model>
                     <model output="latex" behaviour="block">
-                        <param name="original" value="('Original', ec:punct(':', false()))"/>
+                        <param name="original" value="(ec:label('original'), ec:punct(':', false()))"/>
                         <param name="idno" value="(msIdentifier, ec:semicolon())"/>
                         <param name="material" value="physDesc/objectDesc/supportDesc/support/material/text()"/>
                         <param name="dimensions" value="physDesc/objectDesc/supportDesc/extent/dimensions"/>
@@ -1022,7 +1027,7 @@
                 </elementSpec>
                 <elementSpec ident="dimensions">
                     <model output="latex" predicate="@type = 'leaves' and (width/@quantity &gt; 0 or height/@quantity &gt; 0)" behaviour="inline">
-                        <param name="content" value="(string-join((width/@quantity,height/@quantity), '\,×\,'), ' cm')"/>
+                        <param name="content" value="(string-join((width/@quantity,height/@quantity), '\,×\,'), '~cm')"/>
                     </model>
                     <model output="latex" predicate="@type = 'plica' and width/@quantity &gt; 0" behaviour="inline">
                         <param name="content" value="' (Plica: ' || width/@quantity || ')'"/>
@@ -1036,7 +1041,9 @@
                 </elementSpec>
                 <elementSpec ident="sealDesc">
                     <model output="latex" predicate="seal and seal/node()" behaviour="inline">
-                        <param name="content" value="(count(seal), ' ', ec:label('sigle'), ec:colon())"/>
+                        <param name="summary" value="(count(seal), ' ', ec:label('sigle'), ec:colon())"/>
+                        <param name="details" value="string-join(for $seal at $pos in seal return ($pos || '. ' || string-join(($seal/(persName|orgName)/text(), if ($seal/(persName|orgName)/text()) then ', ' else (), string-join(($seal/@nontei:material,$seal/@nontei:shape,$seal/@nontei:extent,$seal/@nontei:attachment,$seal/@nontei:condition) ! ec:translate(., 0, ()), ', ')))), '; ')"/>
+                        <pb:template>[[summary]][[details]]</pb:template>
                     </model>
                     <modelSequence predicate="seal and seal/node()">
                         <model behaviour="inline">
@@ -1147,13 +1154,6 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="listBibl" mode="change">
-                    <!--<model output="latex" predicate="head='URLs'" behaviour="block">
-                        <param name="type" value="head/text()"/>
-                        <param name="content" value="'\url{' || bibl || '}'"/>
-                        <pb:template>
-                            \manudesc{\textbf{[[type]]:} [[content]]}
-                        </pb:template>
-                    </model>-->
                     <model output="latex" behaviour="block">
                         <param name="type" value="(head/text(), ec:punct(':', false()))"/>
                         <param name="content" value="if (starts-with(head, 'URL')) then string-join(for $bibl in bibl return '\url{' || tokenize($bibl)[1] || '}', ec:semicolon()) else string-join(bibl, ec:semicolon())"/>

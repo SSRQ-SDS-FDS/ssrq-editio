@@ -18,9 +18,9 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 1145 $</p>
-                <p>Date of last commit:     $Date: 2018-12-17 15:12:23 +0100 (Mon, 17 Dec 2018) $</p>
-                <p>Author of last commit:   $Author: pascale $</p>
+                <p>Revision of last commit: $Rev: 1229 $</p>
+                <p>Date of last commit:     $Date: 2019-01-14 15:46:35 +0100 (Mon, 14 Jan 2019) $</p>
+                <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
     </teiHeader>
@@ -2643,7 +2643,7 @@
                                 </valItem>
                                 <valItem ident="inline">
                                     <desc xml:lang="de">auf Zeilenhöhe</desc>
-                                    <desc xml:lang="fr">à l’hauteur de la ligne</desc>
+                                    <desc xml:lang="fr">à la hauteur de la ligne</desc>
                                     <desc xml:lang="en">inline</desc>
                                 </valItem>
                                 <valItem ident="interlinear">
@@ -5771,6 +5771,19 @@
                             <desc xml:lang="fr" type="plural">heures</desc>
                             <desc xml:lang="en">hour</desc>
                             <desc xml:lang="en" type="plural">hours</desc>
+                        </valItem>
+                        <valItem ident="original">
+                            <desc xml:lang="de">Original</desc>
+                            <desc xml:lang="fr">Original</desc>
+                            <desc xml:lang="en">Original</desc>
+                        </valItem>
+                        <valItem ident="copy">
+                            <desc xml:lang="de">Kopie</desc>
+                            <desc xml:lang="de" type="plural">Kopien</desc>
+                            <desc xml:lang="fr">Copie</desc>
+                            <desc xml:lang="fr" type="plural">Copies</desc>
+                            <desc xml:lang="en">Copy</desc>
+                            <desc xml:lang="en" type="plural">Copies</desc>
                         </valItem>
                         <valItem ident="français">
                             <desc xml:lang="de">Französisch</desc>
