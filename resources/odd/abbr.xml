@@ -287,6 +287,12 @@
                         <desc xml:lang="it">gnädige frau</desc>
                         <desc xml:lang="en">gnädige frau</desc>-->
                     </valItem>
+                    <valItem ident="gn h">
+                        <desc xml:lang="de">gnädiger herr, gnädige herren</desc>
+                           <!--<desc xml:lang="fr">gnädige herren</desc>
+                        <desc xml:lang="it">gnädige herren/desc>
+                        <desc xml:lang="en">gnädige herren</desc>-->
+                    </valItem>
                        <valItem ident="gn hr">
                         <desc xml:lang="de">gnädige herren</desc>
                            <!--<desc xml:lang="fr">gnädige herren</desc>
@@ -347,6 +353,12 @@
                         <desc xml:lang="it">mein gnädiger herr, meine gnädigen herren</desc>
                         <desc xml:lang="en">mein gnädiger herr, meine gnädigen herren</desc>-->
                     </valItem>
+                    <valItem ident="m">
+                        <desc xml:lang="de">meister</desc>
+                        <desc xml:lang="fr">meister</desc>
+                        <desc xml:lang="it">meister</desc>
+                        <desc xml:lang="en">meister</desc>
+                    </valItem>
                     <valItem ident="mmp">
                         <desc xml:lang="de">manu propria (eigenhändig)</desc>
                         <desc xml:lang="fr">manu propria</desc>
@@ -364,6 +376,12 @@
                         <desc xml:lang="fr">quart?</desc>
                         <desc xml:lang="it">quart?</desc>
                         <desc xml:lang="en">quart?</desc>
+                    </valItem>
+                    <valItem ident="s v">
+                        <desc xml:lang="de">salva venia (mit Verlaub zu sagen)</desc>
+                        <desc xml:lang="fr">salva venia</desc>
+                        <desc xml:lang="it">salva venia</desc>
+                        <desc xml:lang="en">salva venia</desc>
                     </valItem>
                     <valItem ident="Ulr">
                         <desc xml:lang="de">Ulrich</desc>
@@ -428,7 +446,6 @@
                         <desc xml:lang="it">Libbra (valuta)</desc>
                         <desc xml:lang="en">Pound (currency)</desc>
                     </valItem>
-    
                        <valItem ident="">
                         <desc xml:lang="de">Schilling (Währung)</desc>
                         <desc xml:lang="fr">Schilling (unité monétaire)</desc>
