@@ -240,6 +240,22 @@ declare function pmf:footnote-label($nr as xs:int) {
     string-join(reverse(pmf:footnote-label-recursive($nr)))
 };
 
+declare function pmf:existsAdditionalSource($idno as xs:string) {
+    if (matches($idno, "_1$")) then
+        true()
+    else
+        false()
+};
+
+declare function pmf:additionalSource($idno as xs:string) {
+    let $base := replace($idno, "^(.*)_1$", '$1')
+    for $header in
+        collection($config:data-root)//tei:teiHeader[matches(.//tei:seriesStmt/tei:idno, "^" || $base || "_\d+$")]
+            [not(.//tei:seriesStmt/tei:idno = $idno)]
+        order by number(replace($header//tei:seriesStmt/tei:idno, "^.*_(\d+)$", "$1"))
+        return
+            $header//tei:msDesc
+};
 
 declare %private function pmf:footnote-label-recursive($nr as xs:int) {
     if ($nr > 0) then

@@ -34,7 +34,8 @@
                         <!--<param name="dating" value="teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate[@type='humanReadable'][@lang=session:get-attribute('ssrq.lang')]/text()"/>-->
                         <param name="dating" value="format-date(xs:date(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate/@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())"/>
                         <param name="content" value="(teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary, text/back, text//body)"/>
-                        <param name="msdescoriginal" value="teiHeader/fileDesc/sourceDesc/msDesc"/>
+                        <param name="msdesc" value="teiHeader/fileDesc/sourceDesc/msDesc"/>
+                        <param name="additionalSources" value="if (ec:existsAdditionalSource(teiHeader/fileDesc/seriesStmt/idno/text())) then ec:additionalSource(teiHeader/fileDesc/seriesStmt/idno/text()) else ''"/>
                         <param name="literature" value="teiHeader/fileDesc/sourceDesc/msDesc/additional/listBibl"/>
                         <pb:template>
                             \documentclass[10pt,twoside]{article}
@@ -60,7 +61,9 @@
                             
                             [[content]]
                             
-                            [[msdescoriginal]]
+                            [[msdesc]]
+                            
+                            [[additionalSources]]
                             
                             [[literature]]
                             
@@ -942,20 +945,29 @@
                 </elementSpec>
                 <elementSpec ident="msDesc" mode="add">
                     <desc>Stückbeschreibung ausgeben</desc>
-                    <model output="latex" predicate="$parameters?mode = 'filiation'" behaviour="block">
-                        <pb:template>
-                            \manudesc{\textbf{A copy!}}
-                        </pb:template>
-                    </model>
-                    <model output="latex" behaviour="block">
-                        <param name="original" value="(ec:label('original'), ec:punct(':', false()))"/>
+                    <!--<model output="latex" predicate="not(starts-with(msContents/msItem/filiation[@type='current'], 'Original'))" behaviour="block">-->
+                    <model output="latex" predicate="count(msContents/msItem/filiation) &gt; 1" behaviour="block">
+                        <param name="copy" value="(ec:label('copy'), ec:punct(':', false()))"/>
                         <param name="idno" value="(msIdentifier, ec:semicolon())"/>
+                        <param name="filiation" value="(msContents/msItem/filiation[@type='current']/text(), ec:semicolon())"/>
                         <param name="material" value="physDesc/objectDesc/supportDesc/support/material/text()"/>
                         <param name="dimensions" value="physDesc/objectDesc/supportDesc/extent/dimensions"/>
                         <param name="condition" value="if (physDesc/objectDesc/supportDesc/condition) then (', ' || physDesc/objectDesc/supportDesc/condition/text()) else ()"/>
                         <param name="seal" value="if (physDesc/sealDesc/seal/node()) then (ec:semicolon(), physDesc/sealDesc) else ()"/>
                         <pb:template>
-                            \manudesc{\textbf{[[original]]} [[idno]] [[material]], [[dimensions]][[condition]][[seal]]}
+                            \manudesc{\textbf{[[copy]]} [[idno]][[filiation]][[material]], [[dimensions]][[condition]][[seal]]}
+                        </pb:template>
+                    </model>
+                    <model output="latex" behaviour="block">
+                        <param name="original" value="(ec:label('original'), ec:punct(':', false()))"/>
+                        <param name="idno" value="(msIdentifier, ec:semicolon())"/>
+                        <param name="filiation" value="if (msContents/msItem/filiation[@type='current']='Original') then () else (msContents/msItem/filiation[@type='current']/text(), ec:semicolon())"/>
+                        <param name="material" value="physDesc/objectDesc/supportDesc/support/material/text()"/>
+                        <param name="dimensions" value="physDesc/objectDesc/supportDesc/extent/dimensions"/>
+                        <param name="condition" value="if (physDesc/objectDesc/supportDesc/condition) then (', ' || physDesc/objectDesc/supportDesc/condition/text()) else ()"/>
+                        <param name="seal" value="if (physDesc/sealDesc/seal/node()) then (ec:semicolon(), physDesc/sealDesc) else ()"/>
+                        <pb:template>
+                            \manudesc{\textbf{[[original]]} [[idno]][[filiation]][[material]], [[dimensions]][[condition]][[seal]]}
                         </pb:template>
                     </model>
                     <model behaviour="list">
