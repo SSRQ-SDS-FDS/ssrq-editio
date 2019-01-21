@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 1229 $</p>
-                <p>Date of last commit:     $Date: 2019-01-14 15:46:35 +0100 (Mon, 14 Jan 2019) $</p>
+                <p>Revision of last commit: $Rev: 1241 $</p>
+                <p>Date of last commit:     $Date: 2019-01-20 08:52:53 +0100 (Sun, 20 Jan 2019) $</p>
                 <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
@@ -3677,7 +3677,7 @@
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='currency']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Angster|écu petit|fl|franc|lb|ß|xr|d|Dicken|Doubloon|Dukat|bz|h|M|plp|Böhmischer Groschen|Gros|Grossi|k|livre faible|Ort|Quart|Vierer|Spagürli|S|sol faible|Taler|L)$')"
+                                        test="matches(@unit,'^(Angster|écu petit|fl|franc|lb|ß|xr|d|Dicken|Doubloon|Dukat|bz|h|M|plp|Böhmischer Groschen|Gros|Grossi|k|livre faible|Louistaler|Ort|Quart|Vierer|Spagürli|S|sol faible|Taler|L)$')"
                                         >keine gültige Währung</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='length']">
@@ -4796,6 +4796,13 @@
                                     <desc xml:lang="en">livre faible</desc>
                                     <desc xml:lang="en" type="plural">livres faibles</desc>
                                 </valItem>
+                                <valItem ident="Louistaler">
+                                    <desc xml:lang="de">Louistaler</desc>
+                                    <desc xml:lang="fr">Louis blanc</desc>
+                                    <desc xml:lang="fr" type="plural">Louis blancs</desc>
+                                    <desc xml:lang="en">Louis blanc</desc>
+                                    <desc xml:lang="en" type="plural">Louis blancs</desc>
+                                </valItem>
                                 <valItem ident="M">
                                     <desc xml:lang="de">Mark</desc>
                                     <desc xml:lang="fr">marc</desc>
@@ -5779,11 +5786,8 @@
                         </valItem>
                         <valItem ident="copy">
                             <desc xml:lang="de">Kopie</desc>
-                            <desc xml:lang="de" type="plural">Kopien</desc>
                             <desc xml:lang="fr">Copie</desc>
-                            <desc xml:lang="fr" type="plural">Copies</desc>
                             <desc xml:lang="en">Copy</desc>
-                            <desc xml:lang="en" type="plural">Copies</desc>
                         </valItem>
                         <valItem ident="français">
                             <desc xml:lang="de">Französisch</desc>
