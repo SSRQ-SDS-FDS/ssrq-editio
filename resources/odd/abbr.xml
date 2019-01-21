@@ -347,17 +347,17 @@
                         <desc xml:lang="it">Locus sigilli</desc>
                         <desc xml:lang="en">Locus sigilli</desc>
                     </valItem>
-                     <valItem ident="m g h">
-                        <desc xml:lang="de">mein gnädiger herr, meine gnädigen herren</desc>
-                           <!--<desc xml:lang="fr">mein gnädiger herr, meine gnädigen herren</desc>
-                        <desc xml:lang="it">mein gnädiger herr, meine gnädigen herren</desc>
-                        <desc xml:lang="en">mein gnädiger herr, meine gnädigen herren</desc>-->
-                    </valItem>
                     <valItem ident="m">
                         <desc xml:lang="de">meister</desc>
                         <desc xml:lang="fr">meister</desc>
                         <desc xml:lang="it">meister</desc>
                         <desc xml:lang="en">meister</desc>
+                    </valItem>
+                     <valItem ident="m g h">
+                        <desc xml:lang="de">mein gnädiger herr, meine gnädigen herren</desc>
+                           <!--<desc xml:lang="fr">mein gnädiger herr, meine gnädigen herren</desc>
+                        <desc xml:lang="it">mein gnädiger herr, meine gnädigen herren</desc>
+                        <desc xml:lang="en">mein gnädiger herr, meine gnädigen herren</desc>-->
                     </valItem>
                     <valItem ident="mmp">
                         <desc xml:lang="de">manu propria (eigenhändig)</desc>
