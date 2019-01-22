@@ -365,6 +365,12 @@
                         <desc xml:lang="it">manu propria</desc>
                         <desc xml:lang="en">manu propria</desc>
                     </valItem>
+                    <valItem ident="mr">
+                        <desc xml:lang="de">meister</desc>
+                        <desc xml:lang="fr">meister</desc>
+                        <desc xml:lang="it">meister</desc>
+                        <desc xml:lang="en">meister</desc>
+                    </valItem>
                     <valItem ident="NB">
                         <desc xml:lang="de">Nota bene</desc>
                         <desc xml:lang="fr">Nota bene</desc>
