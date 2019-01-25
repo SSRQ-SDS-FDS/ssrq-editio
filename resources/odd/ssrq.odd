@@ -26,7 +26,7 @@
             <schemaSpec start="TEI teiCorpus" ident="ssrq" source="teipublisher.odd">
                 <elementSpec ident="TEI" mode="change">
                     <model output="latex" behaviour="section">
-                        <param name="volume" value="teiHeader/fileDesc/titleStmt/title/text()"/>
+                        <param name="volume" value="teiHeader/fileDesc/titleStmt/title"/>
                         <param name="idno" value="teiHeader/fileDesc/seriesStmt/idno/text()"/>
                         <param name="canton" value="replace(teiHeader/fileDesc/seriesStmt/idno/text(), '^(?:SSRQ|SDS|FDS)_(..)_.+$', '$1')"/>
                         <param name="title" value="teiHeader/fileDesc/sourceDesc/msDesc/head/text()"/>
@@ -442,30 +442,23 @@
                     <model output="latex" predicate="@rend='sup'" behaviour="inline">
                         <pb:template>\textsuperscript{[[content]]}</pb:template>
                     </model>
+                    <model output="latex" predicate="not(@rend='sup')" behaviour="inline">
+                        <param name="content" value="."/>
+                    </model>
                     <model predicate="@rend='sup'" behaviour="inline">
                         <outputRendition>
                             font-size: 80%; vertical-align: top;
                         </outputRendition>
                     </model>
-                    <model predicate="@rend='underline' and @hand" behaviour="alternote">
+                    <model predicate="@rend!='sup' and @hand" behaviour="alternote">
                         <param name="content" value="."/>
-                        <param name="alternate" value="(ec:label('underlined'), ' ', ec:translate(@hand, 0, 'lowercase'))"/>
+                        <param name="alternate" value="(ec:translate(@rend), ' ', ec:translate(@hand, 0, 'lowercase'))"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
-                    <model predicate="@rend='underline'" behaviour="alternote" cssClass="text-critical">
+                    <model predicate="@rend!='sup'" behaviour="alternote">
                         <param name="content" value="."/>
-                        <param name="alternate" value="ec:label('underlined')"/>
+                        <param name="alternate" value="ec:translate(@rend)"/>
                         <param name="type" value="'text-critical'"/>
-                    </model>
-                    <model predicate="@rendition" behaviour="inline" useSourceRendition="true">
-                        <outputRendition>
-                            font-style: italic;
-                        </outputRendition>
-                    </model>
-                    <model predicate="not(@rendition)" behaviour="inline">
-                        <outputRendition>
-                            font-style: italic;
-                        </outputRendition>
                     </model>
                 </elementSpec>
                 <elementSpec ident="space" mode="change">
@@ -520,6 +513,9 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="foreign" mode="change">
+                    <model output="latex" behaviour="inline">
+                        <param name="content" value="."/>
+                    </model>
                     <model behaviour="alternate">
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('lang-switch'), ' ', ec:label(@xml:lang))"/>
@@ -959,7 +955,7 @@
                         <param name="condition" value="if (physDesc/objectDesc/supportDesc/condition) then (', ' || physDesc/objectDesc/supportDesc/condition/text()) else ()"/>
                         <param name="seal" value="if (physDesc/sealDesc/seal/node()) then (ec:semicolon(), physDesc/sealDesc) else ()"/>
                         <pb:template>
-                            \manudesc{\textbf{[[copy]]} [[idno]][[filiation]][[material]][[dimensions]][[condition]][[seal]]}
+                            \manudesc{\textbf{[[copy]]} [[idno]][[filiation]][[material]][[dimensions]][[condition]][[seal]].}
                         </pb:template>
                     </model>
                     <model output="latex" behaviour="block">
@@ -971,7 +967,7 @@
                         <param name="condition" value="if (physDesc/objectDesc/supportDesc/condition) then (', ' || physDesc/objectDesc/supportDesc/condition/text()) else ()"/>
                         <param name="seal" value="if (physDesc/sealDesc/seal/node()) then (ec:semicolon(), physDesc/sealDesc) else ()"/>
                         <pb:template>
-                            \manudesc{\textbf{[[original]]} [[idno]][[filiation]][[material]][[dimensions]][[condition]][[seal]]}
+                            \manudesc{\textbf{[[original]]} [[idno]][[filiation]][[material]][[dimensions]][[condition]][[seal]].}
                         </pb:template>
                     </model>
                     <model behaviour="list">
