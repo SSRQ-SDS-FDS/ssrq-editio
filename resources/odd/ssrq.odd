@@ -227,11 +227,11 @@
                     </model>
                     <model predicate="parent::origin and @from and text()" behaviour="listItem">
                         <desc>Ausgabe in "Stückbeschreibung"</desc>
-                        <param name="content" value="(ec:label('origDate'), ec:colon(), format-date(xs:date(@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' – ', format-date(xs:date(@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' (', text(), ')')"/>
+                        <param name="content" value="(ec:label('origDate'), ec:colon(), format-date(xs:date(@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' – ', format-date(xs:date(@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' (', ., ')')"/>
                     </model>
                     <model predicate="parent::origin and text()" behaviour="listItem">
                         <desc>Ausgabe in "Stückbeschreibung"</desc>
-                        <param name="content" value="(ec:label('origDate'), ec:colon(), format-date(xs:date(@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' (', text(), ')')"/>
+                        <param name="content" value="(ec:label('origDate'), ec:colon(), format-date(xs:date(@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' (', ., ')')"/>
                     </model>
                     <model predicate="parent::origin and @from" behaviour="listItem">
                         <desc>Ausgabe in "Stückbeschreibung" UND "Weitere Überlieferungen"</desc>
