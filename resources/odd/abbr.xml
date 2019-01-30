@@ -347,6 +347,12 @@
                         <desc xml:lang="it">Locus sigilli</desc>
                         <desc xml:lang="en">Locus sigilli</desc>
                     </valItem>
+                       <valItem ident="M">
+                        <desc xml:lang="de">Meister</desc>
+                        <desc xml:lang="fr">Meister</desc>
+                        <desc xml:lang="it">Meister</desc>
+                        <desc xml:lang="en">Meister</desc>
+                    </valItem>
                     <valItem ident="m">
                         <desc xml:lang="de">meister</desc>
                         <desc xml:lang="fr">meister</desc>
