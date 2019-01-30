@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 1280 $</p>
-                <p>Date of last commit:     $Date: 2019-01-28 12:15:52 +0100 (Mon, 28 Jan 2019) $</p>
+                <p>Revision of last commit: $Rev: 1282 $</p>
+                <p>Date of last commit:     $Date: 2019-01-30 13:11:56 +0100 (Wed, 30 Jan 2019) $</p>
                 <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
@@ -5722,6 +5722,11 @@
                             <desc xml:lang="de">ersetzt Streichung</desc>
                             <desc xml:lang="fr">remplace une suppression</desc>
                             <desc xml:lang="en">replaces deletion</desc>
+                        </valItem>
+                        <valItem ident="subst-del-gap">
+                            <desc xml:lang="de">ersetzt Streichung mit Textverlust</desc>
+                            <desc xml:lang="fr">remplace une suppression avec une perte de texte</desc>
+                            <desc xml:lang="en">replaces deletion with text loss</desc>
                         </valItem>
                         <valItem ident="scribe1">
                             <desc xml:lang="de">Anlagehand</desc>

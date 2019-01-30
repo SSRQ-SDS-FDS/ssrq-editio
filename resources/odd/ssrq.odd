@@ -297,9 +297,8 @@
                     </model>
                     <model predicate="parent::subst" behaviour="inline"/>
                     <model predicate="gap" behaviour="alternote">
-                        <param name="place" value="&#34;footnote&#34;"/>
                         <param name="type" value="'text-critical'"/>
-                        <param name="alternate" value="(ec:translate(@rend), ' ', ec:label('del-gap', false()), ' (', gap/@quantity, ' ', ec:translate(gap/@unit, gap/@quantity, ()), ')')"/>
+                        <param name="alternate" value="(ec:label('del-gap'), ' (', gap/@quantity, ' ', ec:translate(gap/@unit, gap/@quantity, ()), ')')"/>
                         <param name="content" value="'[...]'"/>
                     </model>
                     <model predicate="unclear" behaviour="note">
@@ -886,6 +885,11 @@
                     <model behaviour="paragraph"/>
                 </elementSpec>
                 <elementSpec ident="subst" mode="change">
+                    <model predicate="del/gap and add" behaviour="alternote">
+                        <param name="content" value="add"/>
+                        <param name="alternate" value="(ec:label('corr'), ' ', ec:translate(add/@place, 0, 'lowercase'), ', ', ec:label('subst-del-gap', false()))"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
                     <model predicate="add/@hand" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="add"/>
                         <param name="prefix" value="(ec:label('add', true()), ' ', ec:translate(add/@place, 0, 'lowercase'), ' ', ec:translate(add/@hand, 0, 'lowercase'), ', ', ec:label('replace', false()), ec:colon())"/>
