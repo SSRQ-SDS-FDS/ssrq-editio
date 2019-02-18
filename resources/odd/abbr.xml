@@ -377,11 +377,23 @@
                         <desc xml:lang="it">meister</desc>
                         <desc xml:lang="en">meister</desc>
                     </valItem>
+                    <valItem ident="N">
+                        <desc xml:lang="de">nomen, non nominat, non nescio (Ersatzbuchstaben für einen unbekannten Namen)</desc>
+                        <desc xml:lang="fr">nomen, non nominat, non nescio</desc>
+                        <desc xml:lang="it">nomen, non nominat, non nescio</desc>
+                        <desc xml:lang="en">nomen, non nominat, non nescio</desc>
+                    </valItem>
                     <valItem ident="NB">
-                        <desc xml:lang="de">Nota bene</desc>
+                        <desc xml:lang="de">Nota bene (Nebenbei bemerkt)</desc>
                         <desc xml:lang="fr">Nota bene</desc>
                         <desc xml:lang="it">Nota bene</desc>
                         <desc xml:lang="en">Nota bene</desc>
+                    </valItem>
+                    <valItem ident="N N">
+                        <desc xml:lang="de">nomen, non nominat, non nescio (Ersatzbuchstaben für einen unbekannten Namen)</desc>
+                        <desc xml:lang="fr">nomen, non nominat, non nescio</desc>
+                        <desc xml:lang="it">nomen, non nominat, non nescio</desc>
+                        <desc xml:lang="en">nomen, non nominat, non nescio</desc>
                     </valItem>
                     <valItem ident="q">
                         <desc xml:lang="de">quart?</desc>
