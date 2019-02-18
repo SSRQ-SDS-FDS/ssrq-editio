@@ -269,6 +269,11 @@
                         <param name="alternate" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ', ', ec:translate(@type, 0, 'lowercase'))))))"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
+                    <model predicate="del" behaviour="note">
+                        <param name="prefix" value="(ec:label('add'), ' ', ec:translate(@place, 0, 'lowercase'), ', ', if (del/@rend) then ec:translate(del/@rend, 0, 'lowercase') else ec:label('del'), ec:colon())"/>
+                        <param name="type" value="'text-critical'"/>
+                        <param name="content" value="del/text()"/>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="addSpan" mode="change">
                     <model predicate="parent::subst" behaviour="inline"/>
@@ -280,6 +285,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="del" mode="change">
+                    <model predicate="ancestor::add" behaviour="omit"/><!-- cf. above -->
                     <model predicate="ancestor::back//orig" behaviour="omit"/>
                     <model predicate="add/@type='catchword'" behaviour="note">
                         <param name="prefix" value="(ec:label('del-add'), string-join((ec:translate(add/@place, 0, 'lowercase'), ', ', ec:translate(add/@type, 0, 'lowercase')), ''), ec:colon())"/>
