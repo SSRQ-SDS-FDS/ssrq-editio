@@ -401,6 +401,12 @@
                         <desc xml:lang="it">quart?</desc>
                         <desc xml:lang="en">quart?</desc>
                     </valItem>
+                    <valItem ident="s h">
+                        <desc xml:lang="de">salvo honore (mit Verlaub zu sagen)</desc>
+                        <desc xml:lang="fr">salvo honore</desc>
+                        <desc xml:lang="it">salvo honore</desc>
+                        <desc xml:lang="en">salvo honore</desc>
+                    </valItem>
                     <valItem ident="s v">
                         <desc xml:lang="de">salva venia (mit Verlaub zu sagen)</desc>
                         <desc xml:lang="fr">salva venia</desc>
