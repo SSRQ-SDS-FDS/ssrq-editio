@@ -67,7 +67,9 @@ else if (ends-with($exist:resource, ".xql")) then (
     return (
         login:set-user($config:login-domain, (), false()),
         session:create(),
-        session:set-attribute("ssrq.lang", $lang),
+        try {
+            session:set-attribute("ssrq.lang", $lang)
+        } catch * {()},
         <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
             <redirect url="{replace(request:get-uri(), "^(.*)\?", "$1")}"/>
         </dispatch>
