@@ -400,7 +400,7 @@
                 <elementSpec ident="app">
                     <model predicate="empty(rdg/node())" behaviour="alternote" cssClass="text-critical">
                         <desc>app with empty reading</desc>
-                        <param name="content" value="lem/node()"/>
+                        <param name="content" value="lem"/>
                         <param name="alternate" value="(ec:label('omitted-in'), ' ', rdg/@wit)"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
@@ -412,7 +412,7 @@
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model behaviour="alternote" cssClass="text-critical">
-                        <param name="content" value="lem/node()"/>
+                        <param name="content" value="lem"/>
                         <param name="prefix" value="(ec:label('alt-rdg-in'), ' ', rdg/@wit, ec:colon())"/>
                         <param name="alternate" value="rdg"/>
                         <param name="type" value="'text-critical'"/>
