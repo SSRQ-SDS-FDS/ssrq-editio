@@ -18,9 +18,9 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 1282 $</p>
-                <p>Date of last commit:     $Date: 2019-01-30 13:11:56 +0100 (Wed, 30 Jan 2019) $</p>
-                <p>Author of last commit:   $Author: beni $</p>
+                <p>Revision of last commit: $Rev: 1320 $</p>
+                <p>Date of last commit:     $Date: 2019-02-27 13:52:41 +0100 (Wed, 27 Feb 2019) $</p>
+                <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
     </teiHeader>
@@ -549,22 +549,22 @@
                         <attDef ident="period" mode="replace" usage="opt">
                             <desc xml:lang="de">benannte Periode</desc>
                             <valList type="closed">
-                                <valItem ident="#spring">
+                                <valItem ident="spring">
                                     <desc xml:lang="de">Frühling</desc>
                                     <desc xml:lang="fr">printemps</desc>
                                     <desc xml:lang="en">spring</desc>
                                 </valItem>
-                                <valItem ident="#fall">
+                                <valItem ident="fall">
                                     <desc xml:lang="de">Herbst</desc>
                                     <desc xml:lang="fr">automne</desc>
                                     <desc xml:lang="en">fall</desc>
                                 </valItem>
-                                <valItem ident="#summer">
+                                <valItem ident="summer">
                                     <desc xml:lang="de">Sommer</desc>
                                     <desc xml:lang="fr">été</desc>
                                     <desc xml:lang="en">summer</desc>
                                 </valItem>
-                                <valItem ident="#winter">
+                                <valItem ident="winter">
                                     <desc xml:lang="de">Winter</desc>
                                     <desc xml:lang="fr">hiver</desc>
                                     <desc xml:lang="en">winter</desc>
@@ -1500,7 +1500,9 @@
                 </elementSpec>
                 <!-- ebene 3 unterbaum surface -->
                 <elementSpec ident="graphic" module="core" mode="change">
-                    <content/>
+                    <content>
+                        <rng:empty/>
+                    </content>
                 </elementSpec>
                 <elementSpec ident="zone" module="transcr" mode="change">
                     <content>
@@ -2701,6 +2703,11 @@
                                     <desc xml:lang="fr">avec une autre encre</desc>
                                     <desc xml:lang="en">with different ink</desc>
                                 </valItem>
+                                <valItem ident="pencil">
+                                    <desc xml:lang="de">mit Bleistift</desc>
+                                    <desc xml:lang="fr">au crayon</desc>
+                                    <desc xml:lang="en">with pencil</desc>
+                                </valItem>
                             </valList>
                         </attDef>
                         <attDef ident="type" mode="replace">
@@ -3677,7 +3684,7 @@
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='currency']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Angster|écu petit|fl|franc|lb|ß|xr|d|Dicken|Doubloon|Dukat|bz|h|M|plp|Böhmischer Groschen|Gros|Grossi|k|livre faible|Louistaler|Ort|Quart|Vierer|Spagürli|S|sol faible|Taler|L)$')"
+                                        test="matches(@unit,'^(Angster|écu petit|fl|franc|lb|ß|xr|d|Dicken|Doubloon|Dukat|bz|h|M|Mirliton|plp|Böhmischer Groschen|Gros|Grossi|k|livre faible|Kronentaler|Louis dor|Louistaler|Ort|Quart|Vierer|Spagürli|S|sol faible|Sonnendublone|Taler|L)$')"
                                         >keine gültige Währung</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='length']">
@@ -3687,7 +3694,7 @@
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='volume']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Becher|Eimer|Garbe|Immi|Kratten|Ledi|Malter|Mütt|Sack|Scheffel|Sester|Ster|Vierdung|Vierling|Viertel|Brenten|Fass|Kopf|Klafter|Legel|Mass|Mässli|Quart|Quartane|Saum|Schaffen|Tonne|Viertel|Zuber|Fass|Krötli|Röhrchen|Scheibe|Trinken)$')"
+                                        test="matches(@unit,'^(Becher|Eimer|Garbe|Immi|Kanne|Kratten|Ledi|Malter|Mütt|Sack|Scheffel|Sester|Ster|Vierdung|Vierling|Viertel|Brenten|Fass|Kopf|Klafter|Legel|Mass|Mässli|Quart|Quartane|Saum|Schaffen|Tonne|Viertel|Zuber|Fass|Krötli|Röhrchen|Scheibe|Trinken)$')"
                                         >kein gültiges Hohlmass</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='weight']">
@@ -3776,6 +3783,11 @@
                                     <desc xml:lang="de">Luzerner</desc>
                                     <desc xml:lang="fr">de Lucerne</desc>
                                     <desc xml:lang="en">of Lucerne</desc>
+                                </valItem>
+                                <valItem ident="Montfort">
+                                    <desc xml:lang="de">Montforter</desc>
+                                    <desc xml:lang="fr">de Montfort</desc>
+                                    <desc xml:lang="en">of Montfort</desc>
                                 </valItem>
                                 <valItem ident="NE">
                                     <desc xml:lang="de">Neuenburger</desc>
@@ -4217,6 +4229,14 @@
                                     <desc xml:lang="fr" type="plural">gerbes</desc>
                                     <desc xml:lang="en">sheaf</desc>
                                     <desc xml:lang="en" type="plural">sheafs</desc>
+                                </valItem>
+                                <valItem ident="Kanne">
+                                    <desc xml:lang="de">Kanne</desc>
+                                    <desc xml:lang="de" type="plural">Kannen</desc>
+                                    <desc xml:lang="fr">Kanne (pot)</desc>
+                                    <desc xml:lang="fr" type="plural">Kannen (pots)</desc>
+                                    <desc xml:lang="en">Kanne</desc>
+                                    <desc xml:lang="en" type="plural">Kannen</desc>
                                 </valItem>
                                 <valItem ident="Immi">
                                     <desc xml:lang="de">Immi</desc>
@@ -4788,6 +4808,11 @@
                                     <desc xml:lang="en">crown</desc>
                                     <desc xml:lang="en" type="plural">crowns</desc>
                                 </valItem>
+                                <valItem ident="Kronentaler">
+                                    <desc xml:lang="de">Kronentaler</desc>
+                                    <desc xml:lang="fr">Kronentaler</desc>
+                                    <desc xml:lang="en">Kronentaler</desc>
+                                </valItem>
                                 <valItem ident="livre faible">
                                     <desc xml:lang="de">livre faible</desc>
                                     <desc xml:lang="de" type="plural">livres faibles</desc>
@@ -4795,6 +4820,11 @@
                                     <desc xml:lang="fr" type="plural">livres faibles</desc>
                                     <desc xml:lang="en">livre faible</desc>
                                     <desc xml:lang="en" type="plural">livres faibles</desc>
+                                </valItem>
+                                <valItem ident="Louis dor">
+                                    <desc xml:lang="de">Louis d'or</desc>
+                                    <desc xml:lang="fr">Louis d'or</desc>
+                                    <desc xml:lang="en">Louis d'or</desc>
                                 </valItem>
                                 <valItem ident="Louistaler">
                                     <desc xml:lang="de">Louistaler</desc>
@@ -4807,6 +4837,11 @@
                                     <desc xml:lang="de">Mark</desc>
                                     <desc xml:lang="fr">marc</desc>
                                     <desc xml:lang="en">mark</desc>
+                                </valItem>
+                                <valItem ident="Mirliton">
+                                    <desc xml:lang="de">Lous d'or Mirliton</desc>
+                                    <desc xml:lang="fr">Lous d'or Mirliton</desc>
+                                    <desc xml:lang="en">Lous d'or Mirliton</desc>
                                 </valItem>
                                 <valItem ident="Ort">
                                     <desc xml:lang="de">Ort</desc>
@@ -4832,6 +4867,11 @@
                                     <desc xml:lang="de">sol faible</desc>
                                     <desc xml:lang="fr">sol faible</desc>
                                     <desc xml:lang="en">sol faible</desc>
+                                </valItem>
+                                <valItem ident="Sonnendublone">
+                                    <desc xml:lang="de">Sonnendublone</desc>
+                                    <desc xml:lang="fr">Sonnendublone</desc>
+                                    <desc xml:lang="en">Sonnendublone</desc>
                                 </valItem>
                                 <valItem ident="Spagürli">
                                     <desc xml:lang="de">Spagürli</desc>
@@ -5386,32 +5426,32 @@
                         <attDef ident="period" mode="replace">
                             <desc xml:lang="de">benannte Periode</desc>
                             <valList type="closed">
-                                <valItem ident="#evening">
+                                <valItem ident="evening">
                                     <desc xml:lang="de">Abends</desc>
                                     <desc xml:lang="fr">le soir</desc>
                                     <desc xml:lang="en">evening</desc>
                                 </valItem>
-                                <valItem ident="#morning">
+                                <valItem ident="morning">
                                     <desc xml:lang="de">Morgens</desc>
                                     <desc xml:lang="fr">le matin</desc>
                                     <desc xml:lang="en">morning</desc>
                                 </valItem>
-                                <valItem ident="#noon">
+                                <valItem ident="noon">
                                     <desc xml:lang="de">Mittags</desc>
                                     <desc xml:lang="fr">à midi</desc>
                                     <desc xml:lang="en">noon</desc>
                                 </valItem>
-                                <valItem ident="#afternoon">
+                                <valItem ident="afternoon">
                                     <desc xml:lang="de">Nachmittags</desc>
                                     <desc xml:lang="fr">l’après-midi</desc>
                                     <desc xml:lang="en">afternoon</desc>
                                 </valItem>
-                                <valItem ident="#byNight">
+                                <valItem ident="byNight">
                                     <desc xml:lang="de">Nachts</desc>
                                     <desc xml:lang="fr">la nuit</desc>
                                     <desc xml:lang="en">night</desc>
                                 </valItem>
-                                <valItem ident="#byDay">
+                                <valItem ident="byDay">
                                     <desc xml:lang="de">Tags</desc>
                                     <desc xml:lang="fr">le jour</desc>
                                     <desc xml:lang="en">day</desc>
@@ -5637,6 +5677,11 @@
                             <desc xml:lang="de">Seitenumbruch</desc>
                             <desc xml:lang="fr">Saut de page</desc>
                             <desc xml:lang="en">Page break</desc>
+                        </valItem>
+                        <valItem ident="page-abbr">
+                            <desc xml:lang="de">S.</desc>
+                            <desc xml:lang="fr">p.</desc>
+                            <desc xml:lang="en">p.</desc>
                         </valItem>
                         <valItem ident="supplied">
                             <desc xml:lang="de">sinngemäss ergänzt</desc>

@@ -633,7 +633,6 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="pb" mode="change">
-                    <!-- Achtung Sprachabhängigkeit, 'S. ' sollte nicht hier oder in CSS definiert werden (aber Latein ist die Lösung :-) -->
                     <model output="latex" predicate="preceding-sibling::*[1][self::seg]" behaviour="omit">
                         <desc>seg directly followed by pb is handled by seg</desc>
                     </model>
@@ -646,9 +645,7 @@
                         <param name="page" value="('p. ', @n)"/>
                         <pb:template>\noindent \pb{} \textit{[[[page]]]}</pb:template>
                     </model>
-                    <model output="latex" behaviour="omit">
-                        <pb:template>\noindent \pb{}</pb:template>
-                    </model>
+                    <model output="latex" behaviour="omit"/>
                     <model predicate="following-sibling::node()[1][self::lb]" behaviour="copy">
                         <desc>If followed by an lb, process the lb first, then the pb</desc>
                         <param name="content" value="(following-sibling::lb[1], $node)"/>
@@ -672,12 +669,12 @@
                             </model>
                             <model predicate="@n and number(@n) gt 0" behaviour="alternate" cssClass="pb-pagination">
                                 <desc>Show pagebreak with a label, if pb contains a @n attribute and its value only contains a number</desc>
-                                <param name="default" value="@n"/>
+                                <param name="default" value="('[', ec:label('page-abbr', false()), ' ', @n, ']')"/>
                                 <param name="alternate" value="ec:label('pb')"/>
                             </model>
                             <model predicate="@n and not(number(@n) gt 0)" behaviour="alternate" cssClass="pb-foliation">
                                 <desc>Show pagebreak with a label, if pb contains a @n attribute and its value contains a number+string combination</desc>
-                                <param name="default" value="@n"/>
+                                <param name="default" value="'[fol. ' || @n || ']'"/>
                                 <param name="alternate" value="ec:label('pb')"/>
                             </model>
                         </modelGrp>
