@@ -63,12 +63,24 @@ declare function pmf:label($id as xs:string?) {
 };
 
 declare function pmf:label($id as xs:string?, $upper as xs:boolean) {
-    pmf:label($id, $upper, (session:get-attribute("ssrq.lang"), "de")[1])
+    pmf:label($id, $upper, 0)
 };
 
-declare function pmf:label($id as xs:string?, $upper as xs:boolean, $lang as xs:string) {
+declare function pmf:label($id as xs:string?, $upper as xs:boolean, $plural as xs:integer) {
+    pmf:label($id, $upper, $plural, (session:get-attribute("ssrq.lang"), "de")[1])
+};
+
+declare function pmf:label($id as xs:string?, $upper as xs:boolean, $plural as xs:integer, $lang as xs:string) {
     if ($id) then
         let $label := $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang]
+        let $label:=
+            if ($plural > 1) then
+                if ($config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang][@type="plural"]) then
+                    $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang][@type="plural"]/text()
+                else
+                    $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang][1]/text()
+            else
+                $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang][1]/text()
         return
             if ($label) then
                 if (count($label) > 1) then
@@ -76,7 +88,7 @@ declare function pmf:label($id as xs:string?, $upper as xs:boolean, $lang as xs:
                 else if ($upper) then
                     upper-case(substring($label, 1, 1)) || substring($label, 2)
                 else
-                    lower-case(substring($label, 1, 1)) || substring($label, 2)
+                    $label
             else
                 ``[[Nicht übersetzt: `{$id}`, Sprache: `{$lang}`]]``
     else
