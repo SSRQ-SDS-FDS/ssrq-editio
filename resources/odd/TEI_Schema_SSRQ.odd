@@ -18,9 +18,9 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 1320 $</p>
-                <p>Date of last commit:     $Date: 2019-02-27 13:52:41 +0100 (Wed, 27 Feb 2019) $</p>
-                <p>Author of last commit:   $Author: pascale $</p>
+                <p>Revision of last commit: $Rev: 1340 $</p>
+                <p>Date of last commit:     $Date: 2019-03-01 17:18:04 +0100 (Fri, 01 Mar 2019) $</p>
+                <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
     </teiHeader>
@@ -2023,7 +2023,7 @@
                                 </valItem>
                                 <valItem ident="notarial sign">
                                     <desc xml:lang="de">Notarzeichen</desc>
-                                    <desc xml:lang="fr">seing notariel</desc>
+                                    <desc xml:lang="fr">seing notarial</desc>
                                     <desc xml:lang="en">notarial sign</desc>
                                 </valItem>
                                 <valItem ident="sign">
@@ -2190,12 +2190,12 @@
                             <valList type="closed">
                                 <valItem ident="above">
                                     <desc xml:lang="de">oberhalb des Textes</desc>
-                                    <desc xml:lang="fr">au-dessus d’une ligne</desc>
+                                    <desc xml:lang="fr">au-dessus de la ligne</desc>
                                     <desc xml:lang="en">above the text</desc>
                                 </valItem>
                                 <valItem ident="below">
                                     <desc xml:lang="de">unterhalb des Textes</desc>
-                                    <desc xml:lang="fr">au-dessous d’une ligne</desc>
+                                    <desc xml:lang="fr">au-dessous de la ligne</desc>
                                     <desc xml:lang="en">below the text</desc>
                                 </valItem>
                                 <valItem ident="cover">
@@ -2305,7 +2305,7 @@
                                 </valItem>
                                 <valItem ident="left margin">
                                     <desc xml:lang="de">am linken Rand</desc>
-                                    <desc xml:lang="fr">sur la marge gauche</desc>
+                                    <desc xml:lang="fr">dans la marge gauche</desc>
                                     <desc xml:lang="en">in the left margin</desc>
                                 </valItem>
                             </valList>
@@ -2442,7 +2442,7 @@
                                 </valItem>
                                 <valItem ident="later hand">
                                     <desc xml:lang="de">von späterer Hand</desc>
-                                    <desc xml:lang="fr">d’un main plus récente</desc>
+                                    <desc xml:lang="fr">d’une main plus récente</desc>
                                     <desc xml:lang="en">in a later hand</desc>
                                 </valItem>
                             </valList>
@@ -2599,7 +2599,7 @@
                                 </valItem>
                                 <valItem ident="later hand">
                                     <desc xml:lang="de">von späterer Hand</desc>
-                                    <desc xml:lang="fr">d’un main plus récente</desc>
+                                    <desc xml:lang="fr">d’une main plus récente</desc>
                                     <desc xml:lang="en">in a later hand</desc>
                                     <!-- erscheint im Haupttext -->
                                 </valItem>
@@ -2610,12 +2610,12 @@
                             <valList type="closed">
                                 <valItem ident="above">
                                     <desc xml:lang="de">oberhalb der Zeile</desc>
-                                    <desc xml:lang="fr">au-dessus d’une ligne</desc>
+                                    <desc xml:lang="fr">au-dessus de la ligne</desc>
                                     <desc xml:lang="en">above the line</desc>
                                 </valItem>
                                 <valItem ident="below">
                                     <desc xml:lang="de">unterhalb der Zeile</desc>
-                                    <desc xml:lang="fr">au-dessous d’une ligne</desc>
+                                    <desc xml:lang="fr">au-dessous de la ligne</desc>
                                     <desc xml:lang="en">below the line</desc>
                                 </valItem>
                                 <valItem ident="cover">
@@ -2655,7 +2655,7 @@
                                 </valItem>
                                 <valItem ident="left margin">
                                     <desc xml:lang="de">am linken Rand</desc>
-                                    <desc xml:lang="fr">sur la marge gauche</desc>
+                                    <desc xml:lang="fr">dans la marge gauche</desc>
                                     <desc xml:lang="en">on the left margin</desc>
                                 </valItem>
                                 <valItem ident="next page">
@@ -2715,7 +2715,7 @@
                             <valList type="closed">
                                 <valItem ident="sign">
                                     <desc xml:lang="de">mit Einfügungszeichen</desc>
-                                    <desc xml:lang="fr">signe d’insertion</desc>
+                                    <desc xml:lang="fr">avec signe d’insertion</desc>
                                     <desc xml:lang="en">by insertion mark</desc>
                                 </valItem>
                                 <valItem ident="catchword">
@@ -2759,12 +2759,12 @@
                             <valList type="closed">
                                 <valItem ident="above">
                                     <desc xml:lang="de">oberhalb der Zeile</desc>
-                                    <desc xml:lang="fr">au-dessus d’une ligne</desc>
+                                    <desc xml:lang="fr">au-dessus de la ligne</desc>
                                     <desc xml:lang="en">above the line</desc>
                                 </valItem>
                                 <valItem ident="below">
                                     <desc xml:lang="de">unterhalb der Zeile</desc>
-                                    <desc xml:lang="fr">au-dessous d’une ligne</desc>
+                                    <desc xml:lang="fr">au-dessous de la ligne</desc>
                                     <desc xml:lang="en">below the line</desc>
                                 </valItem>
                                 <valItem ident="bottom">
@@ -2784,7 +2784,7 @@
                                 </valItem>
                                 <valItem ident="left margin">
                                     <desc xml:lang="de">am linken Rand</desc>
-                                    <desc xml:lang="fr">sur la marge gauche</desc>
+                                    <desc xml:lang="fr">dans la marge gauche</desc>
                                     <desc xml:lang="en">on the left margin</desc>
                                 </valItem>
                                 <valItem ident="opposite">
@@ -2946,7 +2946,7 @@
                                 </valItem>
                                 <valItem ident="later hand">
                                     <desc xml:lang="de">von späterer Hand</desc>
-                                    <desc xml:lang="fr">d’un main plus récente</desc>
+                                    <desc xml:lang="fr">d’une main plus récente</desc>
                                     <desc xml:lang="en">in a later hand</desc>
                                     <!-- erscheint im Haupttext -->
                                 </valItem>
@@ -2967,7 +2967,7 @@
                             <valList type="closed">
                                 <valItem ident="sign">
                                     <desc xml:lang="de">mit Zeichen</desc>
-                                    <desc xml:lang="fr">signe d’insertion</desc>
+                                    <desc xml:lang="fr">avec signe d’insertion</desc>
                                     <desc xml:lang="en">by insertion mark</desc>
                                 </valItem>
                             </valList>
@@ -3393,7 +3393,7 @@
                                 </valItem>
                                 <valItem ident="other hand">
                                     <desc xml:lang="de">von anderer Hand</desc>
-                                    <desc xml:lang="fr">d’un main plus récente</desc>
+                                    <desc xml:lang="fr">d’une main plus récente</desc>
                                     <desc xml:lang="en">in another hand</desc>
                                     <!-- Text im Haupttext -->
                                 </valItem>
@@ -3524,7 +3524,7 @@
                             </valItem>
                             <valItem ident="later hand">
                                 <desc xml:lang="de">von späterer Hand</desc>
-                                <desc xml:lang="fr">d’un main plus récente</desc>
+                                <desc xml:lang="fr">d’une main plus récente</desc>
                                 <desc xml:lang="en">in a later hand</desc>
                             </valItem>
                             </valList>
@@ -3607,7 +3607,7 @@
                             <valList type="closed">
                                 <valItem ident="later hand">
                                     <desc xml:lang="de">von späterer Hand</desc>
-                                    <desc xml:lang="fr">d’un main plus récente </desc>
+                                    <desc xml:lang="fr">d’une main plus récente </desc>
                                     <desc xml:lang="en">in a later hand</desc>
                                 </valItem>
                             </valList>
@@ -5571,8 +5571,8 @@
                         </valItem>
                         <valItem ident="del">
                             <desc xml:lang="de">Streichung</desc>
-                            <desc xml:lang="fr">Suppression</desc>
-                            <desc xml:lang="en">Deletion</desc>
+                            <desc xml:lang="fr">suppression</desc>
+                            <desc xml:lang="en">deletion</desc>
                         </valItem>
                         <valItem ident="del-add">
                             <desc xml:lang="de">Streichung der Hinzufügung</desc>
@@ -5740,8 +5740,11 @@
                         </valItem>
                         <valItem ident="sigle">
                             <desc xml:lang="de">Siegel</desc>
-                            <desc xml:lang="fr">Sceau</desc>
-                            <desc xml:lang="en">Seal</desc>
+                            <desc xml:lang="de" type="plural">Siegel</desc>
+                            <desc xml:lang="fr">sceau</desc>
+                            <desc xml:lang="fr" type="plural">sceaux</desc>
+                            <desc xml:lang="en">seal</desc>
+                            <desc xml:lang="en" type="plural">seals</desc>
                         </valItem>
                         <valItem ident="signed">
                             <desc xml:lang="de">Unterschrift</desc>
@@ -5784,9 +5787,14 @@
                             <desc xml:lang="en">secondary hand</desc>
                         </valItem>
                         <valItem ident="by">
-                            <desc xml:lang="de">von </desc>
-                            <desc xml:lang="fr">de </desc>
-                            <desc xml:lang="en">by </desc>
+                            <desc xml:lang="de">von</desc>
+                            <desc xml:lang="fr">de</desc>
+                            <desc xml:lang="en">by</desc>
+                        </valItem>
+                        <valItem ident="through">
+                            <desc xml:lang="de">durch</desc>
+                            <desc xml:lang="fr">par</desc>
+                            <desc xml:lang="en">through</desc>
                         </valItem>
                         <valItem ident="scriptor">
                             <desc xml:lang="de">Schreiber</desc>
