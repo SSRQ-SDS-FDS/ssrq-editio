@@ -518,7 +518,7 @@
                     </model>
                     <model behaviour="alternate">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('lang-switch'), ' ', ec:label(@xml:lang), false())"/>
+                        <param name="alternate" value="(ec:label('lang-switch'), ec:colon(), ' ', ec:label(@xml:lang, false()))"/>
                         <outputRendition>
                             color: black;
                         </outputRendition>

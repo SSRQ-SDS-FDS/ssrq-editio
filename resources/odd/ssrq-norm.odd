@@ -1,4 +1,4 @@
-<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" xml:lang="en">
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" xml:lang="en">
     <teiHeader>
         <fileDesc>
             <titleStmt>
@@ -180,16 +180,18 @@ margin-bottom: 10px;
                         </outputRendition>
                     </model>
                 </elementSpec>
-            <elementSpec ident="pb" mode="change">
+                <elementSpec ident="pb" mode="change">
                     <model predicate="following-sibling::node()[1][self::lb[@break='no']]" behaviour="copy">
                         <desc>If followed by an lb, process the lb first, then the pb. For normalized mode, insert '-' before lb[@break='no']</desc>
                         <param name="content" value="(text{'-'}, following-sibling::lb[1], $node)"/>
                     </model>
                     <modelSequence output="web">
-                        <model predicate="@facs" behaviour="template" cssClass="facs">
+                        <model predicate="@facs" behaviour="inline">
                             <desc>Facsimile image links will be extracted via javascript</desc>
                             <param name="src" value="@facs || '.ptif'"/>
-                            <param name="template" value="&lt;span data-facs=&#34;$[src]&#34;/&gt;"/>
+                            <pb:template>
+                                <span xmlns="" class="facs" data-facs="[[src]]"/>
+                            </pb:template>
                             <outputRendition>
                                 display: none;
                             </outputRendition>
@@ -202,12 +204,12 @@ margin-bottom: 10px;
                             </model>
                             <model predicate="@n and number(@n) gt 0" behaviour="alternate" cssClass="pb-pagination">
                                 <desc>Show pagebreak with a label, if pb contains a @n attribute and its value only contains a number</desc>
-                                <param name="default" value="@n"/>
+                                <param name="default" value="('[', ec:label('page-abbr', false()), ' ', @n, ']')"/>
                                 <param name="alternate" value="ec:label('pb')"/>
                             </model>
                             <model predicate="@n and not(number(@n) gt 0)" behaviour="alternate" cssClass="pb-foliation">
                                 <desc>Show pagebreak with a label, if pb contains a @n attribute and its value contains a number+string combination</desc>
-                                <param name="default" value="@n"/>
+                                <param name="default" value="'[fol. ' || @n || ']'"/>
                                 <param name="alternate" value="ec:label('pb')"/>
                             </model>
                         </modelGrp>
