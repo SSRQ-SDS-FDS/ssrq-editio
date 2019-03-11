@@ -307,10 +307,15 @@
                         <param name="alternate" value="(ec:label('del-gap'), ' (', gap/@quantity, ' ', ec:translate(gap/@unit, gap/@quantity, ()), ')')"/>
                         <param name="content" value="'[...]'"/>
                     </model>
-                    <model predicate="unclear" behaviour="note">
+                    <model predicate="unclear and @rend" behaviour="note">
                         <param name="place" value="&#34;footnote&#34;"/>
                         <param name="type" value="'text-critical'"/>
                         <param name="prefix" value="(ec:translate(@rend),', ', ec:label('unclear-rdg', false()), ec:colon())"/>
+                    </model>
+                    <model predicate="unclear" behaviour="note">
+                        <param name="place" value="&#34;footnote&#34;"/>
+                        <param name="type" value="'text-critical'"/>
+                        <param name="prefix" value="(ec:label('del'), ', ', ec:label('unclear-rdg', false()), ec:colon())"/>
                     </model>
                     <model predicate="@rend" behaviour="note">
                         <desc>Show footnote only</desc>

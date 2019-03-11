@@ -21,7 +21,7 @@
                     <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="seg" mode="change">
-                    <model predicate="@n" behaviour="block">
+                    <model predicate="@n and not(p)" behaviour="block">
                         <param name="content" value="(text{'['}, @n, text{'] '}, .)"/>
                         <outputRendition>
                             margin-top: 1ex;
@@ -76,6 +76,13 @@
                     <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="p" mode="change">
+                    <model predicate="parent::seg[@n] and parent::seg/*[1] is ." behaviour="paragraph" useSourceRendition="true">
+                        <desc>Put seg numbering before the first p but on the same line</desc>
+                        <param name="content" value="('[', parent::seg/@n, '] ', .)"/>
+                        <outputRendition>
+                            margin-top: 1ex;
+                        </outputRendition>
+                    </model>
                     <model predicate="parent::body/div and parent::div[@n]/*[1] is ." behaviour="paragraph" useSourceRendition="true">
                         <param name="content" value="('[', parent::div/@n, '] ', .)"/>
                         <outputRendition>
