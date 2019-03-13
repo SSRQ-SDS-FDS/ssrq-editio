@@ -269,6 +269,13 @@ declare function pmf:additionalSource($idno as xs:string) {
             $header//tei:msDesc
 };
 
+declare function pmf:url($url as xs:string) {
+    (: fix URL for LaTeX :)
+    let $url := tokenize(replace($url, "#", '\\#'))[1]
+
+    return '\url{' || $url || '}'
+};
+
 declare %private function pmf:footnote-label-recursive($nr as xs:int) {
     if ($nr > 0) then
         let $nr := $nr - 1

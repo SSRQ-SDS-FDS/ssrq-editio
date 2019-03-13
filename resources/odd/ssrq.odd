@@ -826,9 +826,9 @@
                     <desc>back contains the commentary, which should appear as a numbered list</desc>
                     <model output="latex" behaviour="block">
                         <pb:template>
-                            \begin{intro}
+                            \begin{introlist}
                             [[content]]
-                            \end{intro}
+                            \end{introlist}
                         </pb:template>
                     </model>
                     <model predicate="div/@n" behaviour="list">
@@ -848,22 +848,19 @@
                         <param name="n" value="if (@n) then ('[', @n, ']') else ()"/>
                         <param name="pagebreak" value="if (following-sibling::*[1][@n]) then ('\pb{} \textit{[p. ', following-sibling::*[1]/@n, ']}') else '\pb{}'"/>
                         <pb:template>
-                            \noindent [[n]] [[content]] [[pagebreak]]
-                            \vspace{1mm}
+                            [[n]] [[content]] [[pagebreak]]
                         </pb:template>
                     </model>
                     <model output="latex" predicate="@n" behaviour="block">
                         <!--<param name="content" value="replace(., '\s+', ' ')"/>-->
                         <param name="n" value="@n"/>
                         <pb:template>
-                            \noindent [[[n]]] [[content]]
-                            \vspace{1mm}
+                            [[[n]]] [[content]]
                         </pb:template>
                     </model>
                     <model output="latex" behaviour="block">
                         <pb:template>
-                            \noindent [[content]]
-                            \vspace{1mm}
+                            [[content]]
                         </pb:template>
                     </model>
                     <model behaviour="inline">
@@ -1177,7 +1174,7 @@
                 <elementSpec ident="listBibl" mode="change">
                     <model output="latex" predicate="bibl/node()" behaviour="block">
                         <param name="type" value="(head/text(), ec:punct(':', false()))"/>
-                        <param name="content" value="if (starts-with(head, 'URL')) then string-join(for $bibl in bibl return '\url{' || tokenize($bibl)[1] || '}', ec:semicolon()) else string-join(bibl, ec:semicolon())"/>
+                        <param name="content" value="if (starts-with(head, 'URL')) then string-join(for $bibl in bibl return ec:url($bibl), ec:semicolon()) else string-join(bibl, ec:semicolon())"/>
                         <pb:template>
                             \manudesc{\textbf{[[type]]} [[content]]}
                         </pb:template>
