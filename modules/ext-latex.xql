@@ -18,9 +18,9 @@ declare function pmf:alternate($config as map(*), $node as node(), $class as xs:
 declare function pmf:alternote($config as map(*), $node as element(), $class as xs:string+, $content,
     $label, $type, $alternate, $optional as map(*)) {
     let $nr := pmc:increment-counter($type)
-    let $alternate := $config?apply-children($config, $node, $alternate)
-    (: let $enclose := $type = "text-critical" and matches($content, "\w+\s+\w+") :)
     let $enclose := $type = "text-critical" and matches($content, "\s")
+    let $alternate := string-join($config?apply-children($config, $node, $alternate))
+    let $content := string-join($config?apply-children($config, $node, $content))
     let $label :=
         switch($type)
             case "text-critical" return
@@ -35,9 +35,9 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
     let $prefix := latex:get-content($config, $node, $class, $optional?prefix)
     return
         if ($enclose) then
-            ``[\textnotestart{`{$label}`}{`{$prefix}``{$alternate}`.}`{$config?apply-children($config, $node, $content)}`\textnoteend{`{$label}`}]``
+            ``[\textnotestart{`{$label}`}{`{$prefix}``{$alternate}`.}`{$content}`\textnoteend{`{$label}`}]``
         else (
-            $config?apply-children($config, $node, $content),
+            $content,
             switch($type)
                 case "text-critical" return
                     ``[\leavevmode\textnote[`{$label}`]{`{$prefix}``{$alternate}`.}]``
@@ -53,7 +53,7 @@ declare function pmf:note($config as map(*), $node as node(), $class as xs:strin
                 "\marginpar{\noindent\raggedleft\footnotesize " || latex:get-content($config, $node, $class, $content) || "}"
             )
             default return
-                let $content := latex:get-content($config, $node, $class, $content)
+                let $content := string-join(latex:get-content($config, $node, $class, $content))
                 let $nr := pmc:increment-counter($type)
                 let $label :=
                     switch($type)
@@ -66,7 +66,7 @@ declare function pmf:note($config as map(*), $node as node(), $class as xs:strin
                         ``[\textup{`{$content}`}]``
                     else
                         $content
-                let $prefix := latex:get-content($config, $node, $class, $optional?prefix)
+                let $prefix := string-join(latex:get-content($config, $node, $class, $optional?prefix))
                 return
                     switch($type)
                         case "text-critical" return
