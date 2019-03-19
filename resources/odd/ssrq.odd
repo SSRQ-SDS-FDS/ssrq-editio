@@ -708,8 +708,8 @@
                     </modelGrp>
                 </elementSpec>
                 <elementSpec ident="q" mode="change">
-                    <model behaviour="inline" cssClass="quote-inline" useSourceRendition="true">
-                        <desc>Add css class for quotes</desc>
+                    <model behaviour="inline">
+                        <param name="content" value="('«', ., '»')"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="quote" mode="change">
