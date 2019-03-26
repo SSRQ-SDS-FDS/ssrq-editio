@@ -48,6 +48,7 @@
                             [[literature]]
                             
                             \printnotes*
+                            
                         </pb:template>
                     </model>
                     <model output="latex" behaviour="section">

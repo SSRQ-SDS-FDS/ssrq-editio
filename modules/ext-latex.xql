@@ -35,7 +35,7 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
     let $prefix := latex:get-content($config, $node, $class, $optional?prefix)
     return
         if ($enclose) then
-            ``[\textnotestart{`{$label}`}{`{$prefix}``{$alternate}`.}`{$content}`\textnoteend{`{$label}`}]``
+            ``[\leavevmode\textnotestart{`{$label}`}{`{$prefix}``{$alternate}`.}`{$content}`\textnoteend{`{$label}`}]``
         else (
             $content,
             switch($type)
