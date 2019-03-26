@@ -22,6 +22,8 @@ declare option output:media-type "text/text";
 
 declare variable $local:WORKING_DIR := system:get-exist-home() || "/webapp";
 
+let $dummy := session:set-attribute("ssrq.lang", request:get-parameter("lang", "de"))
+
 let $id := request:get-parameter("id", ())
 let $token := request:get-parameter("token", ())
 let $source := request:get-parameter("source", ())

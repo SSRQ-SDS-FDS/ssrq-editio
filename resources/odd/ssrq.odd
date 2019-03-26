@@ -25,6 +25,31 @@
         <body>
             <schemaSpec start="TEI teiCorpus" ident="ssrq" source="teipublisher.odd">
                 <elementSpec ident="TEI" mode="change">
+                    <model output="latex" predicate="request:get-parameter('book', ())" behaviour="section">
+                        <param name="title" value="teiHeader/fileDesc/sourceDesc/msDesc/head/text()"/>
+                        <param name="dating" value="ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate)"/>
+                        <param name="place" value="if (teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace) then ('. ' || teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace/text()) else ()"/>
+                        <param name="content" value="(teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary, text/back, text//body)"/>
+                        <param name="msdesc" value="teiHeader/fileDesc/sourceDesc/msDesc"/>
+                        <param name="additionalSources" value="if (ec:existsAdditionalSource(teiHeader/fileDesc/seriesStmt/idno/text())) then ec:additionalSource(teiHeader/fileDesc/seriesStmt/idno/text()) else ''"/>
+                        <param name="literature" value="teiHeader/fileDesc/sourceDesc/msDesc/additional/listBibl"/>
+                        <pb:template>
+                            \sloppy
+                            \article{[[title]]}
+                            \fussy
+                            \dating{[[dating]][[place]]}
+                            
+                            [[content]]
+                            
+                            [[msdesc]]
+                            
+                            [[additionalSources]]
+                            
+                            [[literature]]
+                            
+                            \printnotes*
+                        </pb:template>
+                    </model>
                     <model output="latex" behaviour="section">
                         <param name="volume" value="teiHeader/fileDesc/titleStmt/title"/>
                         <param name="by" value="ec:label('by', false())"/>
@@ -33,9 +58,7 @@
                         <param name="idno" value="teiHeader/fileDesc/seriesStmt/idno/text()"/>
                         <param name="canton" value="replace(teiHeader/fileDesc/seriesStmt/idno/text(), '^(?:SSRQ|SDS|FDS)_(..)_.+$', '$1')"/>
                         <param name="title" value="teiHeader/fileDesc/sourceDesc/msDesc/head/text()"/>
-                        <!--<param name="dating" value="teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation/origDate[@type='humanReadable']/text()"/>-->
-                        <!--<param name="dating" value="teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate[@type='humanReadable'][@lang=session:get-attribute('ssrq.lang')]/text()"/>-->
-                        <param name="dating" value="format-date(xs:date(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate/@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())"/>
+                        <param name="dating" value="ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate)"/>
                         <param name="place" value="if (teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace) then ('. ' || teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace/text()) else ()"/>
                         <param name="content" value="(teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary, text/back, text//body)"/>
                         <param name="msdesc" value="teiHeader/fileDesc/sourceDesc/msDesc"/>
@@ -94,6 +117,7 @@
                     </modelSequence>
                 </elementSpec>
                 <elementSpec ident="summary" mode="add">
+                    <model output="latex" predicate="ancestor::TEI/text/group/text[@type='summary']" behaviour="omit"/>
                     <model output="latex" behaviour="block">
                         <pb:template>
                             \begin{summary}
@@ -220,29 +244,17 @@
                     <model behaviour="inline" cssClass="orig"/>
                 </elementSpec>
                 <elementSpec ident="origDate" mode="add">
-                    <model predicate="$parameters?header='short' and @from" behaviour="inline">
-                        <desc>Called to output the sigle of a document</desc>
-                        <param name="content" value="(format-date(xs:date(@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' – ', format-date(xs:date(@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()))"/>
-                    </model>
                     <model predicate="$parameters?header='short'" behaviour="inline">
                         <desc>Called to output the sigle of a document</desc>
-                        <param name="content" value="format-date(xs:date(@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())"/>
-                    </model>
-                    <model predicate="parent::origin and @from and text()" behaviour="listItem">
-                        <desc>Ausgabe in "Stückbeschreibung"</desc>
-                        <param name="content" value="(ec:label('origDate'), ec:colon(), format-date(xs:date(@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' – ', format-date(xs:date(@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' (', ., ')')"/>
+                        <param name="content" value="ec:print-date(.)"/>
                     </model>
                     <model predicate="parent::origin and text()" behaviour="listItem">
                         <desc>Ausgabe in "Stückbeschreibung"</desc>
-                        <param name="content" value="(ec:label('origDate'), ec:colon(), format-date(xs:date(@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' (', ., ')')"/>
-                    </model>
-                    <model predicate="parent::origin and @from" behaviour="listItem">
-                        <desc>Ausgabe in "Stückbeschreibung" UND "Weitere Überlieferungen"</desc>
-                        <param name="content" value="(ec:label('origDate'), ec:colon(), format-date(xs:date(@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' – ', format-date(xs:date(@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()))"/>
+                        <param name="content" value="(ec:label('origDate'), ec:colon(), ec:print-date(.), ' (', ., ')')"/>
                     </model>
                     <model predicate="parent::origin" behaviour="listItem">
                         <desc>Ausgabe in "Stückbeschreibung" UND "Weitere Überlieferungen"</desc>
-                        <param name="content" value="(ec:label('origDate'), ec:colon(), format-date(xs:date(@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()))"/>
+                        <param name="content" value="(ec:label('origDate'), ec:colon(), ec:print-date(.))"/>
                     </model>
                     <model predicate="@calendar" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
@@ -820,12 +832,19 @@
                     </modelSequence>
                 </elementSpec>
                 <elementSpec ident="back" mode="change">
-                    <desc>back contains the commentary, which should appear as a numbered list</desc>
-                    <model output="latex" behaviour="block">
+                    <desc>back contains the commentary, which normally should appear as a numbered list</desc>
+                    <model output="latex" predicate="div/@n" behaviour="block">
                         <pb:template>
                             \begin{introlist}
                             [[content]]
                             \end{introlist}
+                        </pb:template>
+                    </model>
+                    <model output="latex" behaviour="block">
+                        <pb:template>
+                            \begin{intro}
+                            [[content]]
+                            \end{intro}
                         </pb:template>
                     </model>
                     <model predicate="div/@n" behaviour="list">
@@ -1002,11 +1021,8 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="filiation">
-                    <model predicate="text() and origDate/@when" behaviour="inline">
-                        <param name="content" value="(ec:label('other-source'), ec:colon(), text()[1], ', ', format-date(xs:date(origDate/@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()))"/>
-                    </model>
-                    <model predicate="text() and origDate/@from" behaviour="inline">
-                        <param name="content" value="(ec:label('other-source'), ec:colon(), text()[1], ', ', format-date(xs:date(origDate/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' – ', format-date(xs:date(origDate/@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()))"/>
+                    <model predicate="text() and origDate" behaviour="inline">
+                        <param name="content" value="(ec:label('other-source'), ec:colon(), normalize-space(text()[1]), ', ', ec:print-date(origDate))"/>
                     </model>
                     <model predicate="text()" behaviour="inline">
                         <param name="content" value="(ec:label('other-source'), ec:colon(), text()[1])"/>

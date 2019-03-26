@@ -276,6 +276,15 @@ declare function pmf:url($url as xs:string) {
     return '\url{' || $url || '}'
 };
 
+declare function pmf:print-date($date as node()*) {
+    (: save typing in srq.odd :)
+
+    if ($date/@when) then
+        format-date(xs:date($date/@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
+    else
+        format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()), ' – ', format-date(xs:date($date/@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
+};
+
 declare %private function pmf:footnote-label-recursive($nr as xs:int) {
     if ($nr > 0) then
         let $nr := $nr - 1
