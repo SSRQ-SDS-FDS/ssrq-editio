@@ -646,13 +646,11 @@
                     <model output="latex" predicate="preceding-sibling::*[1][self::seg]" behaviour="omit">
                         <desc>seg directly followed by pb is handled by seg</desc>
                     </model>
-                    <model output="latex" predicate="ancestor::text and not(preceding::pb[ancestor::text]) and @n" behaviour="inline">
-                        <desc>Show page number only at first pagebreak</desc>
-                        <param name="page" value="('p. ', @n)"/>
-                        <pb:template>\noindent \textit{[[[page]]]}</pb:template>
+                    <model output="latex" predicate="ancestor::text and not(preceding::pb[ancestor::text])" behaviour="omit">
+                        <desc>Suppress first pagebreak</desc>
                     </model>
                     <model output="latex" predicate="@n" behaviour="inline">
-                        <param name="page" value="('p. ', @n)"/>
+                        <param name="page" value="(ec:label('page-abbr', false()), ' ', @n)"/>
                         <pb:template>\noindent \pb{} \textit{[[[page]]]}</pb:template>
                     </model>
                     <model output="latex" behaviour="omit"/>
@@ -672,6 +670,9 @@
                             </outputRendition>
                         </model>
                         <modelGrp>
+                            <model predicate="ancestor::text and not(preceding::pb[ancestor::text])" behaviour="omit">
+                                <desc>Hide the very first pagebreak in a document</desc>
+                            </model>
                             <model predicate="not(@n)" behaviour="alternate" cssClass="pb-empty">
                                 <desc>Show tooltip on pagebreaks that don't contain attributes</desc>
                                 <param name="default" value="'|'"/>
@@ -969,6 +970,7 @@
                     <!--<model output="latex" predicate="not(starts-with(msContents/msItem/filiation[@type='current'], 'Original'))" behaviour="block">-->
                     <model output="latex" predicate="count(msContents/msItem/filiation) &gt; 1" behaviour="block">
                         <param name="copy" value="(ec:label('copy'), ec:punct(':', false()))"/>
+                        <param name="dating" value="ec:print-date(history/origin/origDate)"/>
                         <param name="idno" value="(msIdentifier, ec:semicolon())"/>
                         <param name="filiation" value="(msContents/msItem/filiation[@type='current']/text(), ec:semicolon())"/>
                         <param name="material" value="physDesc/objectDesc/supportDesc/support/material/text()"/>
@@ -976,7 +978,7 @@
                         <param name="condition" value="if (physDesc/objectDesc/supportDesc/condition) then (', ' || physDesc/objectDesc/supportDesc/condition/text()) else ()"/>
                         <param name="seal" value="if (physDesc/sealDesc/seal/node()) then (ec:semicolon(), physDesc/sealDesc) else ()"/>
                         <pb:template>
-                            \manudesc{\textbf{[[copy]]} [[idno]][[filiation]][[material]][[dimensions]][[condition]][[seal]].}
+                            \manudesc{\textbf{[[copy]]} ([[dating]]) [[idno]][[filiation]][[material]][[dimensions]][[condition]][[seal]].}
                         </pb:template>
                     </model>
                     <model output="latex" behaviour="block">
@@ -1151,6 +1153,10 @@
                 <elementSpec ident="ref" mode="change">
                     <model output="latex" predicate="matches(., '^(?:SSRQ|SDS|FDS)_')" behaviour="inline">
                         <param name="content" value="ec:format-id(.)"/>
+                    </model>
+                    <model output="latex" behaviour="inline">
+                        <param name="url" value="replace(@target, '#', '\\#')"/>
+                        <pb:template>\href{[[url]]}{[[content]]}</pb:template>
                     </model>
                     <model predicate="ancestor::div/@type='collection'" behaviour="link">
                         <desc>Link in Klammerdokument</desc>
