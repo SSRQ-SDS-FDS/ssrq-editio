@@ -19,21 +19,20 @@
         <body>
             <dataSpec ident="partners">
                 <valList>
-                    <valItem ident="Stadtarchiv St. Gallen">
+                   <valItem ident="Bibliothèque publique et universitaire de Neuchâtel (BPUN)">
                         <desc xml:lang="de">
-                        <p>Dem Stadtarchiv St. Gallen sind wir zu grossem Dank verpflichtet.</p>
-                        <p>Ein zweiter Paragraph.</p>
+                        <p></p>
                         </desc>
                         <desc xml:lang="fr">
-                        <p>Dem Stadtarchiv St. Gallen sind wir zu grossem Dank verpflichtet. (en français)</p>
+                        <p></p>
                         </desc>
                     </valItem>
-                    <valItem ident="Bibliothèque publique et universitaire de Neuchâtel (BPUN)">
+                    <valItem ident="Staatsarchiv St. Gallen (StASG)">
                         <desc xml:lang="de">
-                        <p>Danke nach Neuchâtel</p>
+                        <p></p>
                         </desc>
                         <desc xml:lang="fr">
-                        <p>Merci les amis neuchâtelois</p>
+                        <p></p>
                         </desc>
                     </valItem>
                 </valList>
