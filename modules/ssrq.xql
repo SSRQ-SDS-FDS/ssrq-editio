@@ -502,6 +502,20 @@ function app:abbr-blocks($node as node(), $model as map(*)) {
 };
 
 declare
+     %templates:wrap
+function app:partners($node as node(), $model as map(*)) {
+    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
+    return
+        for $partner in $config:partners//tei:dataSpec/tei:valList/tei:valItem return
+            <div>
+                <h3>
+                    { data($partner/@ident) }
+                </h3>
+                { $partner/tei:desc[@xml:lang=$lang] }
+            </div>
+};
+
+declare
     %templates:wrap
 function app:source-description($node as node(), $model as map(*)) {
     let $msDesc := root($model?data)//tei:teiHeader//tei:fileDesc/tei:sourceDesc/tei:msDesc

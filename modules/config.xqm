@@ -208,6 +208,8 @@ declare variable $config:schema-odd := doc($config:odd-root || "/TEI_Schema_SSRQ
 
 declare variable $config:abbr := doc($config:odd-root || "/abbr.xml")/*;
 
+declare variable $config:partners := doc($config:odd-root || "/partners.xml")/*;
+
 declare variable $config:output := "transform";
 
 declare variable $config:output-root := $config:app-root || "/" || $config:output;

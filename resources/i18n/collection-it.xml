@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <catalogue xml:lang="it">
     <msg key="home">Start</msg>
     <msg key="download">Download</msg>
@@ -111,4 +110,5 @@
     <msg key="feedback">Feedback</msg>
     <msg key="registrierung">Für ein neues Login oder bei Problemen bitte E-Mail an info@ssrq-sds-fds.ch oder Feedback-Button drücken.</msg>
     <msg key="require-login">Bitte einloggen</msg>
+    <msg key="partners">Partner del progetto</msg>
 </catalogue>
