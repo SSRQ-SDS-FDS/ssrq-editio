@@ -112,4 +112,5 @@
     <msg key="registrierung">Pour obtenir un nouveau login, ainsi qu’en cas de problème, merci d’écrire à info@ssrq-sds-fds.ch ou d’utiliser le bouton Feedback.</msg>
     <msg key="require-login">Veuillez vous identifier</msg>
     <msg key="partners">Partenaires</msg>
+    <msg key="credits">Fac-similés mis à disposition par</msg>
 </catalogue>
