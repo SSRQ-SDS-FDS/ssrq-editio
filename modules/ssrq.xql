@@ -518,7 +518,7 @@ function app:partners($node as node(), $model as map(*)) {
 declare
      %templates:wrap
 function app:show-credits($node as node(), $model as map(*)) {
-    let $partner := root($model?data)//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:p[@id="facs"]/text()
+    let $partner := root($model?data)//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:p[@xml:id="facs"]/text()
     return
         if ($partner) then
             <p xmlns:i18n="http://exist-db.org/xquery/i18n"><i18n:text key="credits"/>{' ' || $partner}</p>
