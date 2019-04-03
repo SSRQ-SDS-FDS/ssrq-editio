@@ -1090,16 +1090,21 @@
                         <param name="content" value="(persName|orgName, if ((persName|orgName)/text()) then ', ' else (), string-join((@nontei:material,@nontei:shape,@nontei:extent,@nontei:attachment,@nontei:condition) ! ec:translate(., 0, ()), ', '))"/>
                     </model>
                 </elementSpec>
+                <elementSpec ident="p" mode="change">
+                    <model output="latex" predicate="preceding-sibling::*[1][self::head]" behaviour="inline">
+                        <pb:template>\noindent[[content]]</pb:template>
+                    </model>
+                </elementSpec>
                 <elementSpec ident="head" mode="change">
                     <model output="latex" predicate="preceding-sibling::*[1][self::pb]" behaviour="inline">
                         <pb:template>[[content]]
-                            \vspace{1mm}
+                            \vspace{1.5mm}
                         </pb:template>
                     </model>
                     <model output="latex" behaviour="block">
                         <pb:template>
                             [[content]]
-                            \vspace{1mm}
+                            \vspace{1.5mm}
                         </pb:template>
                     </model>
                     <model predicate="$parameters?header='short'" behaviour="heading">
@@ -1175,7 +1180,7 @@
                 </elementSpec>
                 <elementSpec ident="text()">
                     <model output="latex" behaviour="text">
-                        <param name="content" value="replace(., '&amp;amp;', '\\&amp;amp;')"/>
+                        <param name="content" value="replace(replace(., '&amp;amp;', '\\&amp;amp;'), '_', '\\_')"/>
                     </model>
                     <model behaviour="content"/>
                 </elementSpec>

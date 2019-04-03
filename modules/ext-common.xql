@@ -7,6 +7,7 @@ module namespace pmf="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-comm
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace counters="http://www.tei-c.org/tei-simple/xquery/counters";
+import module namespace functx="http://www.functx.com";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
@@ -271,7 +272,7 @@ declare function pmf:additionalSource($idno as xs:string) {
 
 declare function pmf:url($url as xs:string) {
     (: fix URL for LaTeX :)
-    let $url := tokenize(replace($url, "#", '\\#'))[1]
+    let $url := tokenize(functx:replace-multi($url, ('#', '%'), ('\\#', '\\%')))[1]
 
     return '\url{' || $url || '}'
 };
@@ -279,7 +280,7 @@ declare function pmf:url($url as xs:string) {
 declare function pmf:print-date($date as node()*) {
     (: save typing in ssrq.odd :)
 
-    if (exists($date/@when)) then
+    if ($date/@when) then
         format-date(xs:date($date/@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
     else
         string-join((format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()),
