@@ -1090,7 +1090,7 @@
                         <param name="content" value="(persName|orgName, if ((persName|orgName)/text()) then ', ' else (), string-join((@nontei:material,@nontei:shape,@nontei:extent,@nontei:attachment,@nontei:condition) ! ec:translate(., 0, ()), ', '))"/>
                     </model>
                 </elementSpec>
-                <elementSpec ident="p" mode="change">
+                <elementSpec ident="p">
                     <model output="latex" predicate="preceding-sibling::*[1][self::head]" behaviour="inline">
                         <pb:template>\noindent[[content]]</pb:template>
                     </model>

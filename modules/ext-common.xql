@@ -74,7 +74,7 @@ declare function pmf:label($id as xs:string?, $upper as xs:boolean, $plural as x
 declare function pmf:label($id as xs:string?, $upper as xs:boolean, $plural as xs:integer, $lang as xs:string) {
     if ($id) then
         let $label := $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang]
-        let $label:=
+        let $label :=
             if ($plural > 1) then
                 if ($config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang][@type="plural"]) then
                     $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang][@type="plural"]/text()
@@ -280,12 +280,20 @@ declare function pmf:url($url as xs:string) {
 declare function pmf:print-date($date as node()*) {
     (: save typing in ssrq.odd :)
 
-    if ($date/@when) then
-        format-date(xs:date($date/@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
-    else
-        string-join((format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()),
-        ' – ',
-        format-date(xs:date($date/@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())))
+    let $date-string :=
+    	if ($date/@when) then
+        	format-date(xs:date($date/@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
+    	else
+        	string-join((format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()),
+        	' – ',
+        	format-date(xs:date($date/@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())))
+    let $old-style :=
+    	if ($date/@calendar='Julian') then
+    		' ' || pmf:label('old-style-abbr', false())
+    	else
+    		()
+ 
+    	return $date-string || $old-style
 };
 
 declare %private function pmf:footnote-label-recursive($nr as xs:int) {

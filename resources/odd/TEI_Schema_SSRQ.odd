@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 1340 $</p>
-                <p>Date of last commit:     $Date: 2019-03-01 17:18:04 +0100 (Fri, 01 Mar 2019) $</p>
+                <p>Revision of last commit: $Rev: 1726 $</p>
+                <p>Date of last commit:     $Date: 2019-04-18 14:28:41 +0200 (Thu, 18 Apr 2019) $</p>
                 <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
@@ -50,7 +50,7 @@
                     include="abbr add author bibl cb choice corr date del expan foreign gap graphic head hi item label
                     lb list listBibl measure measureGrp note num orig p pb q quote ref reg resp respStmt sic term textLang time title unclear"/>
                 <moduleRef key="header"
-                    include="textClass profileDesc fileDesc idno editorialDecl encodingDesc extent keywords publicationStmt profileDesc seriesStmt sourceDesc teiHeader textClass titleStmt"/>
+                    include="availability textClass profileDesc fileDesc idno editorialDecl encodingDesc extent keywords publicationStmt profileDesc seriesStmt sourceDesc teiHeader textClass titleStmt"/>
                 <moduleRef key="textstructure" include="TEI back body div front group signed text"/>
                 <moduleRef key="linking" include="ab anchor seg"/>
                 <moduleRef key="msdescription"
@@ -400,6 +400,9 @@
                         <rng:oneOrMore>
                             <rng:ref name="date"/>
                         </rng:oneOrMore>
+                        <rng:optional>
+                            <rng:ref name="availability"/>
+                        </rng:optional>
                     </content>
                 </elementSpec>
                 <elementSpec ident="seriesStmt" module="header" mode="change">
@@ -1397,8 +1400,7 @@
                                 </valItem>
                             </valList>
                         </attDef>
-                        <attDef ident="condition" ns="http://ssrq-sds-fds.ch/ns/nonTEI" mode="add"
-                            usage="rec"> <!--usage="req"-->
+                        <attDef ident="condition" ns="http://ssrq-sds-fds.ch/ns/nonTEI" mode="add">
                             <desc>condition beschreibt den Erhaltungszustand und Schäden des
                                 Siegels</desc>
                             <valList type="closed">
@@ -1695,6 +1697,7 @@
                 <elementSpec ident="p" module="core" mode="change">
                     <classes mode="change">
                         <memberOf key="att.global.facs"/>
+                        <memberOf key="att.global"/>
                     </classes>
                 </elementSpec>
                 <elementSpec ident="cb" module="core" mode="change">
@@ -5344,6 +5347,7 @@
                         <rng:zeroOrMore>
                             <rng:choice>
                                 <rng:ref name="lb"/>
+                                <rng:ref name="pb"/>
                                 <rng:ref name="p"/>
                                 <rng:ref name="unclear"/>
                                 <rng:ref name="choice"/>
@@ -5682,6 +5686,11 @@
                             <desc xml:lang="de">S.</desc>
                             <desc xml:lang="fr">p.</desc>
                             <desc xml:lang="en">p.</desc>
+                        </valItem>
+                        <valItem ident="old-style-abbr">
+                            <desc xml:lang="de">a. S.</desc>
+                            <desc xml:lang="fr">a. s.</desc>
+                            <desc xml:lang="en">O.S.</desc>
                         </valItem>
                         <valItem ident="supplied">
                             <desc xml:lang="de">sinngemäss ergänzt</desc>
