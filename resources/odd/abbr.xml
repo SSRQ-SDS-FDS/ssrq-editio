@@ -311,11 +311,17 @@
                         <desc xml:lang="it">herr, herren</desc>
                         <desc xml:lang="en">herr, herren</desc>-->
                     </valItem>
-                         <valItem ident="hr">
+                    <valItem ident="hr">
                         <desc xml:lang="de">herr, herren</desc>
                            <!--<desc xml:lang="fr">herr, herren</desc>
                         <desc xml:lang="it">herr, herren</desc>
                         <desc xml:lang="en">herr, herren</desc>-->
+                    </valItem>
+                    <valItem ident="j">
+                        <desc xml:lang="de">junker</desc>
+                        <desc xml:lang="fr">junker (donzel)</desc>
+                        <desc xml:lang="it">junker (donzello)</desc>
+                        <desc xml:lang="en">junker</desc>
                     </valItem>
                     <valItem ident="J. H.">
                         <desc xml:lang="de">Johann Heinrich?</desc>
