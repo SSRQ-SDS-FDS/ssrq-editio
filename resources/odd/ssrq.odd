@@ -637,11 +637,14 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="pb" mode="change">
+                    <model output="latex" predicate="ancestor::text and not(preceding-sibling::pb[ancestor::text])" behaviour="omit">
+                        <desc>Hide the first pagebreak in a document</desc>
+                    </model>
+                    <model output="latex" predicate="ancestor::text and not(following-sibling::pb[ancestor::text]) and not(following-sibling::p[ancestor::text])" behaviour="omit">
+                        <desc>Hide the last pagebreak in a document if it's the last element besides div/ab</desc>
+                    </model>
                     <model output="latex" predicate="preceding-sibling::*[1][self::seg]" behaviour="omit">
                         <desc>seg directly followed by pb is handled by seg</desc>
-                    </model>
-                    <model output="latex" predicate="ancestor::text and not(preceding::pb[ancestor::text])" behaviour="omit">
-                        <desc>Suppress first pagebreak</desc>
                     </model>
                     <model output="latex" predicate="@n" behaviour="inline">
                         <param name="page" value="(ec:label('page-abbr', false()), ' ', @n)"/>
@@ -664,50 +667,29 @@
                             </outputRendition>
                         </model>
                         <modelGrp>
-                            <model predicate="ancestor::text and not(preceding::pb[ancestor::text])" behaviour="omit">
-                                <desc>Hide the very first pagebreak in a document</desc>
+                            <model predicate="ancestor::text and not(preceding-sibling::pb[ancestor::text])" behaviour="omit">
+                                <desc>Hide the first pagebreak in a document</desc>
+                            </model>
+                            <model predicate="ancestor::text and not(following-sibling::pb[ancestor::text]) and not(following-sibling::p[ancestor::text])" behaviour="omit">
+                                <desc>Hide the last pagebreak in a document if it's the last element besides div/ab</desc>
                             </model>
                             <model predicate="not(@n)" behaviour="alternate" cssClass="pb-empty">
                                 <desc>Show tooltip on pagebreaks that don't contain attributes</desc>
                                 <param name="default" value="'|'"/>
                                 <param name="alternate" value="ec:label('pb')"/>
                             </model>
-                            <model predicate="@n and number(@n) gt 0" behaviour="alternate" cssClass="pb-pagination">
-                                <desc>Show pagebreak with a label, if pb contains a @n attribute and its value only contains a number</desc>
-                                <param name="default" value="('[', ec:label('page-abbr', false()), ' ', @n, ']')"/>
-                                <param name="alternate" value="ec:label('pb')"/>
-                            </model>
-                            <model predicate="@n and not(number(@n) gt 0)" behaviour="alternate" cssClass="pb-foliation">
+                            <model predicate="@n and matches(@n, '[vr]$')" behaviour="alternate" cssClass="pb-foliation">
                                 <desc>Show pagebreak with a label, if pb contains a @n attribute and its value contains a number+string combination</desc>
                                 <param name="default" value="'[fol. ' || @n || ']'"/>
                                 <param name="alternate" value="ec:label('pb')"/>
                             </model>
+                            <model predicate="@n" behaviour="alternate" cssClass="pb-pagination">
+                                <desc>Show pagebreak with a label, if pb contains a @n attribute and its value only contains a number</desc>
+                                <param name="default" value="('[', ec:label('page-abbr', false()), ' ', @n, ']')"/>
+                                <param name="alternate" value="ec:label('pb')"/>
+                            </model>
                         </modelGrp>
                     </modelSequence>
-                    <modelGrp output="print">
-                        <model predicate="ancestor::text and not(preceding::pb[ancestor::text])" behaviour="omit">
-                            <desc>Hide the very first pagebreak in a document</desc>
-                        </model>
-                        <model predicate="following-sibling::node()[1][self::lb]" behaviour="copy">
-                            <desc>If followed by an lb, process the lb first, then the pb</desc>
-                            <param name="content" value="(following-sibling::lb[1], $node)"/>
-                        </model>
-                        <model predicate="not(@*)" behaviour="alternate" cssClass="pb-empty">
-                            <desc>Show tooltip on pagebreaks that don't contain attributes</desc>
-                            <param name="default" value="'|'"/>
-                            <param name="alternate" value="ec:label('pb')"/>
-                        </model>
-                        <model predicate="number(@n) gt 0" behaviour="alternate" cssClass="pb-pagination">
-                            <desc>Show pagebreak with a label, if pb contains a @n attribute and its value only contains a number</desc>
-                            <param name="default" value="@n"/>
-                            <param name="alternate" value="ec:label('pb')"/>
-                        </model>
-                        <model behaviour="alternate" cssClass="pb-foliation">
-                            <desc>Show pagebreak with a label, if pb contains a @n attribute and its value contains a number+string combination</desc>
-                            <param name="default" value="@n"/>
-                            <param name="alternate" value="ec:label('pb')"/>
-                        </model>
-                    </modelGrp>
                 </elementSpec>
                 <elementSpec ident="q" mode="change">
                     <model behaviour="inline">
