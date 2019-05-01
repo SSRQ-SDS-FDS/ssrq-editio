@@ -21,7 +21,7 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
     let $nr := pmc:increment-counter($type)
     let $enclose := $type = "text-critical" and matches($content, "\s")
     let $alternate := functx:replace-multi(normalize-space(string-join($config?apply-children($config, $node, $alternate))), ('#', '%', '_'), ('\\#', '\\%', '\\_'))
-    let $content := functx:replace-multi(normalize-space(string-join($config?apply-children($config, $node, $content))), ('#', '%', '_'), ('\\#', '\\%', '\\_'))
+    let $content := normalize-space(string-join($config?apply-children($config, $node, $content)))
     let $label :=
         switch($type)
             case "text-critical" return
@@ -33,7 +33,7 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
             ``[\textup{`{$alternate}`}]``
         else
             $alternate
-    let $prefix := latex:get-content($config, $node, $class, $optional?prefix)
+    let $prefix := functx:replace-multi(normalize-space(string-join(latex:get-content($config, $node, $class, $optional?prefix))), ('#', '%', '_'), ('\\#', '\\%', '\\_'))
     return
         if ($enclose) then
             ``[\leavevmode\textnotestart{`{$label}`}{`{$prefix}``{$alternate}`.}`{$content}`\textnoteend{`{$label}`}]``
@@ -51,10 +51,10 @@ declare function pmf:note($config as map(*), $node as node(), $class as xs:strin
     if (not($config?skip-footnotes)) then
         switch($place)
             case "margin" return (
-                "\marginpar{\noindent\raggedleft\footnotesize " || latex:get-content($config, $node, $class, $content) || "}"
+                "\marginpar{\noindent\raggedleft\footnotesize " || functx:replace-multi(normalize-space(string-join(latex:get-content($config, $node, $class, $optional?prefix))), ('#', '%', '_'), ('\\#', '\\%', '\\_')) || "}"
             )
             default return
-                let $content := functx:replace-multi(normalize-space(string-join($config?apply-children($config, $node, $content))), ('#', '%', '_'), ('\\#', '\\%', '\\_'))
+                let $content := normalize-space(string-join($config?apply-children($config, $node, $content)))
                 let $nr := pmc:increment-counter($type)
                 let $label :=
                     switch($type)
@@ -67,7 +67,7 @@ declare function pmf:note($config as map(*), $node as node(), $class as xs:strin
                         ``[\textup{`{$content}`}]``
                     else
                         $content
-                let $prefix := string-join(latex:get-content($config, $node, $class, $optional?prefix))
+                let $prefix := functx:replace-multi(normalize-space(string-join(latex:get-content($config, $node, $class, $optional?prefix))), ('#', '%', '_'), ('\\#', '\\%', '\\_'))
                 return
                     switch($type)
                         case "text-critical" return

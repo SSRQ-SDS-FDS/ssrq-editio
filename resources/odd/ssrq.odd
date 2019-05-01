@@ -52,6 +52,7 @@
                         </pb:template>
                     </model>
                     <model output="latex" behaviour="section">
+                        <param name="lang" value="(session:get-attribute('ssrq.lang'), 'de')[1]"/>
                         <param name="volume" value="teiHeader/fileDesc/titleStmt/title"/>
                         <param name="by" value="ec:label('by', false())"/>
                         <param name="author" value="teiHeader/fileDesc/titleStmt/respStmt[resp[@key='transcript']]/persName"/>
@@ -68,7 +69,7 @@
                         <pb:template>
                             \documentclass[10pt,twoside]{article}
                             
-                            \usepackage{ssrq}			% here's all the magic...
+                            \usepackage{ssrq_[[lang]]}  % here's all the magic...
                             \usepackage{hyperref}
                             
                             \begin{document}
