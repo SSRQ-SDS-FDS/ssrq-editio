@@ -637,11 +637,11 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="pb" mode="change">
-                    <model output="latex" predicate="ancestor::text and not(preceding-sibling::pb[ancestor::text])" behaviour="omit">
-                        <desc>Hide the first pagebreak in a document</desc>
+                    <model output="latex" predicate="ancestor::body and not(preceding::pb[ancestor::body])" behaviour="omit">
+                        <desc>Hide the first pagebreak in a document (beware: independent of position!)</desc>
                     </model>
-                    <model output="latex" predicate="ancestor::text and not(following-sibling::pb[ancestor::text]) and not(following-sibling::p[ancestor::text])" behaviour="omit">
-                        <desc>Hide the last pagebreak in a document if it's the last element besides div/ab</desc>
+                    <model output="latex" predicate="ancestor::body and not(following::pb[ancestor::body]) and not(following::p[ancestor::body]) and not(following::seg[ancestor::body])" behaviour="omit">
+                        <desc>Hide the last pagebreak in a document if it's the last element besides div/ab (i.e. not followed by p or seg)</desc>
                     </model>
                     <model output="latex" predicate="preceding-sibling::*[1][self::seg]" behaviour="omit">
                         <desc>seg directly followed by pb is handled by seg</desc>
@@ -667,11 +667,8 @@
                             </outputRendition>
                         </model>
                         <modelGrp>
-                            <model predicate="ancestor::text and not(preceding-sibling::pb[ancestor::text])" behaviour="omit">
-                                <desc>Hide the first pagebreak in a document</desc>
-                            </model>
-                            <model predicate="ancestor::text and not(following-sibling::pb[ancestor::text]) and not(following-sibling::p[ancestor::text])" behaviour="omit">
-                                <desc>Hide the last pagebreak in a document if it's the last element besides div/ab</desc>
+                            <model predicate="ancestor::body and not(preceding::pb[ancestor::body])" behaviour="omit">
+                                <desc>Hide the first pagebreak in a document (beware: independent of position!)</desc>
                             </model>
                             <model predicate="not(@n)" behaviour="alternate" cssClass="pb-empty">
                                 <desc>Show tooltip on pagebreaks that don't contain attributes</desc>

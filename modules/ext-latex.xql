@@ -9,6 +9,7 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 import module namespace latex="http://www.tei-c.org/tei-simple/xquery/functions/latex";
 import module namespace pmc="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xql";
+import module namespace functx="http://www.functx.com";
 
 declare function pmf:alternate($config as map(*), $node as node(), $class as xs:string+, $content, $default,
     $alternate) {
@@ -19,8 +20,8 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
     $label, $type, $alternate, $optional as map(*)) {
     let $nr := pmc:increment-counter($type)
     let $enclose := $type = "text-critical" and matches($content, "\s")
-    let $alternate := string-join($config?apply-children($config, $node, $alternate))
-    let $content := string-join($config?apply-children($config, $node, $content))
+    let $alternate := functx:replace-multi(normalize-space(string-join($config?apply-children($config, $node, $alternate))), ('#', '%', '_'), ('\\#', '\\%', '\\_'))
+    let $content := functx:replace-multi(normalize-space(string-join($config?apply-children($config, $node, $content))), ('#', '%', '_'), ('\\#', '\\%', '\\_'))
     let $label :=
         switch($type)
             case "text-critical" return
@@ -53,7 +54,7 @@ declare function pmf:note($config as map(*), $node as node(), $class as xs:strin
                 "\marginpar{\noindent\raggedleft\footnotesize " || latex:get-content($config, $node, $class, $content) || "}"
             )
             default return
-                let $content := string-join(latex:get-content($config, $node, $class, $content))
+                let $content := functx:replace-multi(normalize-space(string-join($config?apply-children($config, $node, $content))), ('#', '%', '_'), ('\\#', '\\%', '\\_'))
                 let $nr := pmc:increment-counter($type)
                 let $label :=
                     switch($type)
