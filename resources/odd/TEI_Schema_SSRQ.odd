@@ -18,9 +18,9 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 1726 $</p>
-                <p>Date of last commit:     $Date: 2019-04-18 14:28:41 +0200 (Thu, 18 Apr 2019) $</p>
-                <p>Author of last commit:   $Author: beni $</p>
+                <p>Revision of last commit: $Rev: 1750 $</p>
+                <p>Date of last commit:     $Date: 2019-05-01 14:51:00 +0200 (Wed, 01 May 2019) $</p>
+                <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
     </teiHeader>
@@ -3687,7 +3687,7 @@
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='currency']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Angster|écu petit|fl|franc|lb|ß|xr|d|Dicken|Doubloon|Dukat|bz|h|M|Mirliton|plp|Böhmischer Groschen|Gros|Grossi|k|livre faible|Kronentaler|Louis dor|Louistaler|Ort|Quart|Vierer|Spagürli|S|sol faible|Sonnendublone|Taler|L)$')"
+                                        test="matches(@unit,'^(Angster|écu petit|fl|franc|lb|ß|xr|d|Dicken|Doubloon|Dukat|bz|h|M|Mirliton|plp|Böhmischer Groschen|Gros|Grossi|k|livre faible|Kronentaler|Louis dor|Louistaler|Ort|Quart|Vierer|Spagürli|S|sol faible|Sonnendublone|Taler|L|zecchino)$')"
                                         >keine gültige Währung</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='length']">
@@ -4892,6 +4892,16 @@
                                     <desc xml:lang="de">Taler</desc>
                                     <desc xml:lang="fr">thaler</desc>
                                     <desc xml:lang="en">thaler</desc>
+                                </valItem>
+                                <valItem ident="zecchino">
+                                    <desc xml:lang="de">Zechine</desc>
+                                    <desc xml:lang="de" type="plural">Zechinen</desc>
+                                    <desc xml:lang="fr">zecchino</desc>
+                                    <desc xml:lang="de" type="plural">zecchini</desc>
+                                    <desc xml:lang="it">zecchino</desc>
+                                    <desc xml:lang="de" type="plural">zecchini</desc>
+                                    <desc xml:lang="en">zecchino</desc>
+                                    <desc xml:lang="de" type="plural">zecchini</desc>
                                 </valItem>
                                 <!--  -->
                                 <valItem ident="year">
