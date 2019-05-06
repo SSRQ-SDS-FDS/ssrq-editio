@@ -181,8 +181,29 @@ declare function pmf:format-id($id as xs:string?) {
         $ssrq || ' ' || $vol || ' ' || $id
 };
 
+declare function pmf:zitation-id($id as xs:string?) {
+    let $temp  := replace($id, "^(.+?)_(\d{4}.*?)(?:_\d{1,2})?$", "$1 $2")
+    let $parts := tokenize($temp)
+    let $ssrq  := substring-before($parts[1], '_')
+    let $vol   := replace(substring-after($parts[1], '_'), '_', '/')
+    let $vol   := replace($vol, "^([A-Z]{2})/", "$1 ")      (: space after canton abbreviation :)
+    let $id    :=
+        if (matches($parts[2], '^\d{8}')) then
+            replace($parts[2], '_', '-')
+        else
+            if (matches($parts[2], '^\d{4}_\d{3}')) then
+                number(substring-before($parts[2], '_')) || '-' || number(substring-after($parts[2], '_'))
+            else
+                number($parts[2])
+    return
+        $ssrq || ' ' || $vol || ' ' 
+};
+
 declare function pmf:format-date($when as xs:string?) {
     pmf:format-date($when, (session:get-attribute("ssrq.lang"), "de")[1])
+};
+declare function pmf:zitation-date($when as xs:string?) {
+    pmf:format-date($when, "[Y0001].[M1].[D1]")
 };
 
 declare function pmf:format-date($when as xs:string?, $language as xs:string?) {

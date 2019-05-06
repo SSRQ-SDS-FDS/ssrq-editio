@@ -411,6 +411,26 @@ declare function app:idno($node as node(), $model as map(*)) {
         })
 };
 
+declare function app:idno-popup($node as node(), $model as map(*)) {
+    let $header := root($model?data)//tei:teiHeader/tei:fileDesc
+    let $idno := $header/tei:seriesStmt/tei:idno
+    let $stmtTitle := $header/tei:seriesStmt/tei:title/text()
+    let $fileDescTitle := $header/tei:titleStmt/tei:title/text()
+    let $fileDescPerson := $header/tei:titleStmt/tei:respStmt[1]/tei:persName/text()
+    let $zitation := $header/tei:publicationStmt/tei:date/@when/xs:date(.)
+    return
+        app:show-if-exists($node, $idno, function() {
+            <span class="alternate">
+                <span>{common:format-id($idno)}</span>
+                <span class="altcontent">
+                    <p>{$stmtTitle}, {$fileDescTitle}, von {$fileDescPerson}</p>
+                    <p>Zitation: {common:zitation-id($idno)}  {common:zitation-date($zitation)} </p>
+                    
+                </span>
+            </span>
+        })
+};
+
 declare function app:origDate($node as node(), $model as map(*)) {
     let $header := root($model?data)//tei:teiHeader
     let $origin := $header/tei:fileDesc//tei:msDesc/tei:history/tei:origin

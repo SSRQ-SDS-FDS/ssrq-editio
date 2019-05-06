@@ -455,7 +455,7 @@ $(document).ready(function() {
     initContent();
 
     // initialize popups for comment section
-    $("#comment .alternate, #sourceDesc .alternate, #comment .reference, #sourceDesc .reference").each(initAlternate);
+    $("#comment .alternate, #sourceDesc .alternate, #comment .reference, #sourceDesc .reference, #idno .alternate").each(initAlternate);
 
     $('#lang-select').on('change', function(ev) {
         var loc = window.location;
