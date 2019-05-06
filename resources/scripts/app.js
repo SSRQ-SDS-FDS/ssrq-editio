@@ -211,6 +211,33 @@ $(document).ready(function() {
             elem.popover("hide");
         });
     }
+    
+    function popupFixed() {
+        var elem = $(this);
+        elem.popover({
+            content: function() {
+                var content = [ elem.children(".altcontent").html() ];
+                elem.parents(".alternate").each(function() {
+                    content.push($(this).children(".altcontent").html());
+                });
+                if (content.length > 1) {
+                    var list = "<ol>";
+                    for (var i = 0; i < content.length; i++) {
+                        list += "<li>" + content[i] + "</li>";
+                    }
+                    return list + "</ol>";
+                }
+                return content.join("");
+            },
+            trigger: "click",
+            html: true,
+            container: "#document-wrapper",
+            viewport: "#document-pane",
+            placement: "auto top"
+        });
+    }
+        
+    
 
     function initFootnote() {
         var elem = $(this);
@@ -455,7 +482,10 @@ $(document).ready(function() {
     initContent();
 
     // initialize popups for comment section
-    $("#comment .alternate, #sourceDesc .alternate, #comment .reference, #sourceDesc .reference, #idno .alternate").each(initAlternate);
+    $("#comment .alternate, #sourceDesc .alternate, #comment .reference, #sourceDesc .reference").each(initAlternate);
+    
+    // initialize popups for sigle section
+    $("#idno .alternate").each(popupFixed);
 
     $('#lang-select').on('change', function(ev) {
         var loc = window.location;

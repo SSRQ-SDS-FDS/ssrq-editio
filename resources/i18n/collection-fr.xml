@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <catalogue xml:lang="fr">
     <msg key="home">Accueil</msg>
     <msg key="download">Télécharger</msg>
@@ -113,4 +114,7 @@
     <msg key="require-login">Veuillez vous identifier</msg>
     <msg key="partners">Partenaires</msg>
     <msg key="credits">Réalisation des fac-similés :</msg>
+    <msg key="by"> de </msg>
+    <msg key="and"> et </msg>
+    <msg key="zitation">Citation: </msg>
 </catalogue>

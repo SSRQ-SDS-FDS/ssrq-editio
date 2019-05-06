@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <catalogue xml:lang="it">
     <msg key="home">Start</msg>
     <msg key="download">Download</msg>
@@ -112,4 +113,7 @@
     <msg key="require-login">Bitte einloggen</msg>
     <msg key="partners">Partner del progetto</msg>
     <msg key="credits">Facsimiles by courtesy of</msg>
+    <msg key="by"> von </msg>
+    <msg key="and"> und </msg>
+    <msg key="zitation">Zitation: </msg>
 </catalogue>

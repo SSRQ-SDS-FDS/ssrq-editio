@@ -414,13 +414,12 @@ declare function app:idno($node as node(), $model as map(*)) {
 declare function app:pers-names($header as node() ) {
     let $namen :=  $header/tei:titleStmt/tei:respStmt[1]/tei:persName/text()
 return
-    if (count($namen) > 1) then
-        string-join(
-            (string-join(subsequence($namen, 1, count($namen) -1), ', '), $namen[last()]),
-            ' und '
-            )
-            else
-                $namen
+    if (count($namen) > 1) then (
+        string-join(subsequence($namen, 1, count($namen) -1), ', '), 
+        <i18n:text xmlns:i18n="http://exist-db.org/xquery/i18n" key="and"> und </i18n:text>,
+        $namen[last()]
+    ) else
+        $namen
 };
 
 declare function app:idno-popup($node as node(), $model as map(*)) {
@@ -434,10 +433,11 @@ declare function app:idno-popup($node as node(), $model as map(*)) {
     return
         app:show-if-exists($node, $idno, function() {
             <span class="alternate">
-                <span>{common:format-id($idno)}</span>
-                <span class="altcontent">
-                    <p>{$stmtTitle}, {$fileDescTitle}, von {app:pers-names($header)}</p>
-                    <p>Zitation: {common:zitation-id($idno)}  {common:zitation-date($zitation)} </p>
+                <span class="zitation">{common:format-id($idno)}</span>
+                <span class="altcontent" xmlns:i18n="http://exist-db.org/xquery/i18n">
+                    <p>{$stmtTitle}, {$fileDescTitle}, <i18n:text key="by">von </i18n:text> {app:pers-names($header)}</p>
+                    <p><i18n:text key="zitation">Zitation:</i18n:text> {common:zitation-id($idno)}  {common:zitation-date($zitation)} </p>
+                    <p><i18n:text key="lizenz">Lizenz:</i18n:text> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de"> CC BY-NC-SA</a> </p>
                     
                 </span>
             </span>
