@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <html data-template="pages:app-root">
     <head data-template="templates:include" data-template-path="templates/head.html"/>
     <body xmlns:i18n="http://exist-db.org/xquery/i18n">
@@ -22,7 +23,7 @@
                         <div class="tp-document-title-wrapper tp-row">
                             <div class="tp-column">
                                 <!-- Document title -->
-                                <h5 data-template="app:idno"/>
+                                <h5 id="idno" data-template="app:idno-popup"/>
                                 <h4 data-template="app:header-short"/>
                                 <h5 data-template="app:origDate"/>
                             </div>
@@ -83,7 +84,9 @@
                         </section>
                     </main>
                     <aside id="aside" class="${sidebar-class}" data-template="app:parse-params">
-                        <p class="loading"><i18n:text key="loading-facets"/></p>
+                        <p class="loading">
+                            <i18n:text key="loading-facets"/>
+                        </p>
                     </aside>
                     <aside id="image-aside" class="${facs-class}" data-template="app:parse-params">
                         <div id="credits-container" class="credits" data-template="app:show-credits"/>
