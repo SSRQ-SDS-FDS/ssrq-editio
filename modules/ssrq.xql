@@ -411,19 +411,32 @@ declare function app:idno($node as node(), $model as map(*)) {
         })
 };
 
+declare function app:pers-names($header as node() ) {
+    let $namen :=  $header/tei:titleStmt/tei:respStmt[1]/tei:persName/text()
+return
+    if (count($namen) > 1) then
+        string-join(
+            (string-join(subsequence($namen, 1, count($namen) -1), ', '), $namen[last()]),
+            ' und '
+            )
+            else
+                $namen
+};
+
 declare function app:idno-popup($node as node(), $model as map(*)) {
     let $header := root($model?data)//tei:teiHeader/tei:fileDesc
     let $idno := $header/tei:seriesStmt/tei:idno
     let $stmtTitle := $header/tei:seriesStmt/tei:title/text()
     let $fileDescTitle := $header/tei:titleStmt/tei:title/text()
     let $fileDescPerson := $header/tei:titleStmt/tei:respStmt[1]/tei:persName/text()
-    let $zitation := $header/tei:publicationStmt/tei:date/@when/xs:date(.)
+    let $zitation := $header/tei:publicationStmt/tei:date/@when/string()
+    
     return
         app:show-if-exists($node, $idno, function() {
             <span class="alternate">
                 <span>{common:format-id($idno)}</span>
                 <span class="altcontent">
-                    <p>{$stmtTitle}, {$fileDescTitle}, von {$fileDescPerson}</p>
+                    <p>{$stmtTitle}, {$fileDescTitle}, von {app:pers-names($header)}</p>
                     <p>Zitation: {common:zitation-id($idno)}  {common:zitation-date($zitation)} </p>
                     
                 </span>
