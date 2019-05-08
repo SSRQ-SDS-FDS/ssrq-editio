@@ -29,7 +29,7 @@ declare function tpu:parse-pi($doc as document-node(), $view as xs:string?) {
         "fill": $config:pagination-fill
     }
     let $pis :=
-        map:new(
+        map:merge(
             for $pi in $doc/processing-instruction("teipublisher")
             let $analyzed := analyze-string($pi, '([^\s]+)\s*=\s*"(.*?)"')
             for $match in $analyzed/fn:match
@@ -37,5 +37,5 @@ declare function tpu:parse-pi($doc as document-node(), $view as xs:string?) {
                 map:entry($match/fn:group[@nr="1"], $match/fn:group[@nr="2"])
         )
     return
-        map:new(($default, $pis))
+        map:merge(($default, $pis))
 };

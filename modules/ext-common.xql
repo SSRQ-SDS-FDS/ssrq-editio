@@ -239,7 +239,7 @@ declare function pmf:format-duration($duration as xs:string) {
         ))
         return
             string-join(
-                map:for-each-entry($components, function($key, $value) {
+                map:for-each($components, function($key, $value) {
                     if ($value > 0) then
                         $value || " " || $key
                     else

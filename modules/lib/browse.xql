@@ -69,7 +69,7 @@ declare function app:show-if-logged-in($node as node(), $model as map(*)) {
 };
 
 declare function app:is-admin () {
-    let $groups := sm:get-user-groups(xmldb:get-current-user())
+    let $groups := sm:get-user-groups(sm:id()//sm:real/sm:username)
 
     for $group in $groups
         return
@@ -136,7 +136,7 @@ function app:browse($node as node(), $model as map(*), $start as xs:int, $per-pa
         templates:process($node/*[@class="empty"], $model)
     else
         subsequence($model?all, $start, $per-page) !
-            templates:process($node/*[not(@class="empty")], map:new(
+            templates:process($node/*[not(@class="empty")], map:merge(
                 ($model, map {
                     "work": .,
                     "config": tpu:parse-pi(root(.), ())
