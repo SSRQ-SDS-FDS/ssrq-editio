@@ -433,11 +433,11 @@ declare function app:idno-popup($node as node(), $model as map(*)) {
     return
         app:show-if-exists($node, $idno, function() {
             <span class="alternate">
-                <span class="zitation">{common:format-id($idno)}</span>
-                <span class="altcontent" xmlns:i18n="http://exist-db.org/xquery/i18n">
+                <span style="color:#607D8B;">{common:format-id($idno)}</span>
+                <span class="altcontent" xmlns:i18n="http://exist-db.org/xquery/i18n" popover-class="increase-popover-width">
                     <p>{$stmtTitle}, {$fileDescTitle}, <i18n:text key="by">von </i18n:text> {app:pers-names($header)}</p>
-                    <p><i18n:text key="zitation">Zitation:</i18n:text> {common:zitation-id($idno)}  {common:zitation-date($zitation)} </p>
-                    <p><i18n:text key="lizenz">Lizenz:</i18n:text> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de"> CC BY-NC-SA</a> </p>
+                    <p>Zitation: {common:zitation-id($idno)}  {common:zitation-date($zitation)} </p>
+                    <p>Lizenz:<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de"> CC BY-NC-SA</a> </p>
                     
                 </span>
             </span>

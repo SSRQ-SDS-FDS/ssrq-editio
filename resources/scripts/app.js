@@ -231,7 +231,7 @@ $(document).ready(function() {
             },
             trigger: "click",
             html: true,
-            container: "#document-wrapper",
+            container: "#idno",
             viewport: "#document-pane",
             placement: "auto top"
         });
