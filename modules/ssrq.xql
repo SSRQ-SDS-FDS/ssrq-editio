@@ -270,6 +270,7 @@ function app:kanton-auswahl($node as node(), $model as map(*), $filter as xs:str
                     )
                     except
                         collection($config:temp-root)/tei:TEI
+                let $docs := app:filter-collections($docs)
                 return (
                     $tr/td[3]/@*,
                     if (exists($docs)) then
