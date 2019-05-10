@@ -117,4 +117,5 @@
     <msg key="by"> von </msg>
     <msg key="and"> und </msg>
     <msg key="zitation">Zitation: </msg>
+    <msg key="highlight-facet">Auswählen um Vorkommen hervorzuheben</msg>
 </catalogue>

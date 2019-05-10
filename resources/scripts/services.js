@@ -28,13 +28,12 @@ $(document).ready(function() {
             var refs = $(".ref[data-ref^='" + key + "']").filter(filterSpan);
             scribes.text(label);
             refs.text(label);
-            $(this).on('mouseenter', function() {
-                console.log("mouseenter");
-                refs.parents('.reference').addClass('highlight');
-            });
-            $(this).on('mouseleave', function() {
-                console.log("mouseleave");
-                refs.parents('.reference').removeClass('highlight');
+            $(this).find('.select-facet').on('change', function() {
+                if (this.checked) {
+                    refs.parents('.reference').addClass('highlight');
+                } else {
+                    refs.parents('.reference').removeClass('highlight');
+                }
             });
         });
     });

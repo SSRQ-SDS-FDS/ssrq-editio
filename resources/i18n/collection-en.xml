@@ -116,5 +116,6 @@
     <msg key="credits">Facsimiles by courtesy of</msg>
     <msg key="by"> by </msg>
     <msg key="and"> and </msg>
-    <msg key="zitation">Zitation: </msg>
+    <msg key="zitation">Citation: </msg>
+    <msg key="highlight-facet">Select to highlight occurrences</msg>
 </catalogue>

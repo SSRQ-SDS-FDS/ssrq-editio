@@ -117,4 +117,5 @@
     <msg key="by"> de </msg>
     <msg key="and"> et </msg>
     <msg key="zitation">Citation: </msg>
+    <msg key="highlight-facet">Select to highlight occurrences</msg>
 </catalogue>

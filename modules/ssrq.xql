@@ -137,12 +137,15 @@ declare function app:list-places($node as node(), $model as map(*)) {
             for $place in app:api-lookup($app:PLACES, app:api-keys($places/@ref), "id")
             return
                 <li data-ref="{$place?ref}">
-                    <a target="_new"
-                        href="https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$place?ref}">
-                        {$place?stdName('#text')}
-                    </a>
-                    ({$place?location})
-                    {$place?type}
+                    <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"></input>
+                    <div>
+                        <a target="_new"
+                            href="https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$place?ref}">
+                            {$place?stdName('#text')}
+                        </a>
+                        ({$place?location})
+                        {$place?type}
+                    </div>
                 </li>
     }
 };
@@ -155,10 +158,13 @@ declare function app:list-keys($node as node(), $model as map(*)) {
             for $lemma in app:api-lookup($app:KEYWORDS, app:api-keys($keywords/@ref), "id")
             return
                 <li data-ref="{$lemma?ref}">
-                    <a href="https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id={$lemma?ref}"
-                        target="_new">
-                        {$lemma?name("#text")}
-                    </a>
+                    <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"></input>
+                    <div>
+                        <a href="https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id={$lemma?ref}"
+                            target="_new">
+                            {$lemma?name("#text")}
+                        </a>
+                    </div>
                 </li>
     }
 };
@@ -171,12 +177,15 @@ declare function app:list-lemmata($node as node(), $model as map(*)) {
             for $lemma in app:api-lookup($app:LEMMA, app:api-keys($lemmata/@ref), "id")
             return
                 <li data-ref="{$lemma?ref}">
-                    <a target="_new"
-                        href="https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-lemma.xq?id={$lemma?ref}">
-                        {$lemma?stdName("#text")}
-                    </a>
-                    ({$lemma?morphology})
-                    {$lemma?definition("#text")}
+                    <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"></input>
+                    <div>
+                        <a target="_new"
+                            href="https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-lemma.xq?id={$lemma?ref}">
+                            {$lemma?stdName("#text")}
+                        </a>
+                        ({$lemma?morphology})
+                        {$lemma?definition("#text")}
+                    </div>
                 </li>
     }
 };
@@ -191,16 +200,19 @@ declare function app:list-persons($node as node(), $model as map(*)) {
             for $person in app:api-lookup($app:PERSONS, app:api-keys($persons), "id_search")
             return
                 <li data-ref="{$person?ref}">
-                    <a target="_new"
-                        href="https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$person?ref}">
-                        {$person?name}
-                    </a>
-                    {
-                        if ($person?dates) then
-                            <span class="info"> ({$person?dates})</span>
-                        else
-                            ()
-                    }
+                    <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"></input>
+                    <div>
+                        <a target="_new"
+                            href="https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$person?ref}">
+                            {$person?name}
+                        </a>
+                        {
+                            if ($person?dates) then
+                                <span class="info"> ({$person?dates})</span>
+                            else
+                                ()
+                        }
+                    </div>
                 </li>
     }
 };
@@ -213,16 +225,19 @@ declare function app:list-organizations($node as node(), $model as map(*)) {
             for $organization in app:api-lookup($app:PERSONS, app:api-keys($organizations), "id_search")
             return
                 <li data-ref="{$organization?ref}">
-                    <a target="_new"
-                        href="https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$organization?ref}">
-                        {$organization?name}
-                    </a>
-                    {
-                        if ($organization?type) then
-                            <span class="info"> ({$organization?type})</span>
-                        else
-                            ()
-                    }
+                    <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"></input>
+                    <div>
+                        <a target="_new"
+                            href="https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$organization?ref}">
+                            {$organization?name}
+                        </a>
+                        {
+                            if ($organization?type) then
+                                <span class="info"> ({$organization?type})</span>
+                            else
+                                ()
+                        }
+                    </div>
                 </li>
     }
 };
