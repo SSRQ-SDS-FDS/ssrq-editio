@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 1750 $</p>
-                <p>Date of last commit:     $Date: 2019-05-01 14:51:00 +0200 (Wed, 01 May 2019) $</p>
+                <p>Revision of last commit: $Rev: 1866 $</p>
+                <p>Date of last commit:     $Date: 2019-05-14 14:15:04 +0200 (Tue, 14 May 2019) $</p>
                 <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
@@ -3682,12 +3682,12 @@
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='area']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Fuss|Gertel|Hube|Juchart|Klafter|Kuhsömmerung|Kuhwinterung|Mal|Mannmad|Mannwerk|Mitmal|Rute|Schritt|Schuh|Schuppose|Staffel|Tagwen|Vierdung|Vierling)$')"
+                                        test="matches(@unit,'^(Fuss|Gertel|Hube|Juchart|Kammer|Klafter|Kuhsömmerung|Kuhwinterung|Mal|Mannmad|Mannwerk|Mitmal|Rute|Schritt|Schuh|Schuppose|Staffel|Tagwen|Vierdung|Vierling|Zeile)$')"
                                         >kein gültiges Flächenmass</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='currency']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Angster|écu petit|fl|franc|lb|ß|xr|d|Dicken|Doubloon|Dukat|bz|h|M|Mirliton|plp|Böhmischer Groschen|Gros|Grossi|k|livre faible|Kronentaler|Louis dor|Louistaler|Ort|Quart|Vierer|Spagürli|S|sol faible|Sonnendublone|Taler|L|zecchino)$')"
+                                        test="matches(@unit,'^(Angster|écu petit|fl|franc|lb|ß|xr|d|Dicken|Doubloon|Dukat|bz|h|M|Mirliton|plp|Böhmischer Groschen|Gros|Grossi|k|livre faible|Kronentaler|Louis dor|Louistaler|Pistole|Ort|Quart|Vierer|Spagürli|S|sol faible|Sonnendublone|Taler|L|zecchino)$')"
                                         >keine gültige Währung</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='length']">
@@ -3807,10 +3807,20 @@
                                     <desc xml:lang="fr">de la Rhénanie</desc>
                                     <desc xml:lang="en">Rheinischer</desc>
                                 </valItem>
+                                <valItem ident="Rheintaler">
+                                    <desc xml:lang="de">Rheintaler</desc>
+                                    <desc xml:lang="fr">de Rheintal</desc>
+                                    <desc xml:lang="en">of Rheintal</desc>
+                                </valItem>
                                 <valItem ident="Sargans">
                                     <desc xml:lang="de">Sarganser</desc>
                                     <desc xml:lang="fr">de Sargans</desc>
                                     <desc xml:lang="en">of Sargans</desc>
+                                </valItem>
+                                <valItem ident="SG">
+                                    <desc xml:lang="de">St. Galler</desc>
+                                    <desc xml:lang="fr">de Saint-Gall</desc>
+                                    <desc xml:lang="en">of St Gall</desc>
                                 </valItem>
                                 <valItem ident="SZ">
                                     <desc xml:lang="de">Schwyzer</desc>
@@ -4468,8 +4478,19 @@
                                 </valItem>
                                 <valItem ident="Juchart">
                                     <desc xml:lang="de">Juchart</desc>
+                                    <desc xml:lang="de" type="plural">Jucharten</desc>
                                     <desc xml:lang="fr">pose</desc>
+                                    <desc xml:lang="fr" type="plural">poses</desc>
                                     <desc xml:lang="en">juchart</desc>
+                                    <desc xml:lang="en" type="plural">jucharten</desc>
+                                </valItem>
+                                <valItem ident="Kammer">
+                                    <desc xml:lang="de">Kammer</desc>
+                                    <desc xml:lang="de" type="plural">Kammern</desc>
+                                    <desc xml:lang="fr">Kammer</desc>
+                                    <desc xml:lang="fr" type="plural">Kammern</desc>
+                                    <desc xml:lang="en">Kammer</desc>
+                                    <desc xml:lang="en" type="plural">Kammern</desc>
                                 </valItem>
                                 <valItem ident="Klafter">
                                     <desc xml:lang="de">Klafter</desc>
@@ -4536,6 +4557,14 @@
                                     <desc xml:lang="de">Tagwen</desc>
                                     <desc xml:lang="fr">tagwen</desc>
                                     <desc xml:lang="en">tagwen</desc>
+                                </valItem>
+                                <valItem ident="Zeile">
+                                    <desc xml:lang="de">Zeile</desc>
+                                    <desc xml:lang="de" type="plural">Zeilen</desc>
+                                    <desc xml:lang="fr">ligne</desc>
+                                    <desc xml:lang="fr" type="plural">lignes</desc>
+                                    <desc xml:lang="en">line</desc>
+                                    <desc xml:lang="en" type="plural">lines</desc>
                                 </valItem>
                                 <!--  -->
                                 <valItem ident="Biner">
@@ -4604,7 +4633,7 @@
                                     <desc xml:lang="en">slice</desc>
                                     <desc xml:lang="en" type="plural">slices</desc>
                                 </valItem>
-                                <!--  -->
+                                <!-- weight -->
                                 <valItem ident="Ballen">
                                     <desc xml:lang="de">Ballen</desc>
                                     <desc xml:lang="fr">ballot</desc>
@@ -4705,7 +4734,7 @@
                                     <desc xml:lang="en">basket</desc>
                                     <desc xml:lang="en" type="plural">baskets</desc>
                                 </valItem>
-                                <!--  -->
+                                <!--  currency-->
                                 <valItem ident="Angster">
                                     <desc xml:lang="de">Angster</desc>
                                     <desc xml:lang="fr">angster</desc>
@@ -4825,9 +4854,9 @@
                                     <desc xml:lang="en" type="plural">livres faibles</desc>
                                 </valItem>
                                 <valItem ident="Louis dor">
-                                    <desc xml:lang="de">Louis d'or</desc>
-                                    <desc xml:lang="fr">Louis d'or</desc>
-                                    <desc xml:lang="en">Louis d'or</desc>
+                                    <desc xml:lang="de">Louis d’or</desc>
+                                    <desc xml:lang="fr">Louis d’or</desc>
+                                    <desc xml:lang="en">Louis d’or</desc>
                                 </valItem>
                                 <valItem ident="Louistaler">
                                     <desc xml:lang="de">Louistaler</desc>
@@ -4842,14 +4871,24 @@
                                     <desc xml:lang="en">mark</desc>
                                 </valItem>
                                 <valItem ident="Mirliton">
-                                    <desc xml:lang="de">Lous d'or Mirliton</desc>
-                                    <desc xml:lang="fr">Lous d'or Mirliton</desc>
-                                    <desc xml:lang="en">Lous d'or Mirliton</desc>
+                                    <desc xml:lang="de">Lous d’or Mirliton</desc>
+                                    <desc xml:lang="fr">Lous d’or Mirliton</desc>
+                                    <desc xml:lang="en">Lous d’or Mirliton</desc>
                                 </valItem>
                                 <valItem ident="Ort">
                                     <desc xml:lang="de">Ort</desc>
                                     <desc xml:lang="fr">un quart d’un florin</desc>
                                     <desc xml:lang="en">ort</desc>
+                                </valItem>
+                                <valItem ident="Pistole">
+                                    <desc xml:lang="de">Pistole</desc>
+                                    <desc xml:lang="de" type="plural">Pistolen</desc>
+                                    <desc xml:lang="fr">pistole</desc>
+                                    <desc xml:lang="fr" type="plural">pistoles</desc>
+                                    <desc xml:lang="en">pistole</desc>
+                                    <desc xml:lang="en" type="plural">pistoles</desc>
+                                    <desc xml:lang="it">pistola</desc>
+                                    <desc xml:lang="it" type="plural">pistole</desc>
                                 </valItem>
                                 <valItem ident="plp">
                                     <desc xml:lang="de">Plappart</desc>
