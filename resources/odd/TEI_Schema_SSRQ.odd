@@ -18,9 +18,9 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 1866 $</p>
-                <p>Date of last commit:     $Date: 2019-05-14 14:15:04 +0200 (Tue, 14 May 2019) $</p>
-                <p>Author of last commit:   $Author: pascale $</p>
+                <p>Revision of last commit: $Rev: 1900 $</p>
+                <p>Date of last commit:     $Date: 2019-05-20 20:02:05 +0200 (Mon, 20 May 2019) $</p>
+                <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
     </teiHeader>
@@ -4936,11 +4936,11 @@
                                     <desc xml:lang="de">Zechine</desc>
                                     <desc xml:lang="de" type="plural">Zechinen</desc>
                                     <desc xml:lang="fr">zecchino</desc>
-                                    <desc xml:lang="de" type="plural">zecchini</desc>
+                                    <desc xml:lang="fr" type="plural">zecchini</desc>
                                     <desc xml:lang="it">zecchino</desc>
-                                    <desc xml:lang="de" type="plural">zecchini</desc>
+                                    <desc xml:lang="it" type="plural">zecchini</desc>
                                     <desc xml:lang="en">zecchino</desc>
-                                    <desc xml:lang="de" type="plural">zecchini</desc>
+                                    <desc xml:lang="en" type="plural">zecchini</desc>
                                 </valItem>
                                 <!--  -->
                                 <valItem ident="year">
