@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <catalogue xml:lang="fr">
     <msg key="home">Accueil</msg>
     <msg key="download">Télécharger</msg>
@@ -103,7 +102,7 @@
     </msg>
     <msg key="realisierung">Réalisation</msg>
     <msg key="search">Recherche</msg>
-    <msg key="lizenz">Licence: </msg>
+    <msg key="lizenz">Licence : </msg>
     <msg key="sorting">Tirage</msg>
     <msg key="loading-facets">Il charge ...</msg>
     <msg key="error-title">Une erreur s’est produite !</msg>
@@ -116,6 +115,6 @@
     <msg key="credits">Réalisation des fac-similés :</msg>
     <msg key="by"> de </msg>
     <msg key="and"> et </msg>
-    <msg key="zitation">Citation: </msg>
+    <msg key="zitation">Citation : </msg>
     <msg key="highlight-facet">Select to highlight occurrences</msg>
 </catalogue>
