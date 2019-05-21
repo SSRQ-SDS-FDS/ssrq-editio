@@ -993,6 +993,10 @@
                     <model predicate="parent::altIdentifier" behaviour="inline">
                         <param name="content" value="(ec:label('signatureAlt'), ec:colon(), .)"/>
                     </model>
+                    <model predicate="@source" behaviour="link">
+                        <param name="link" value="@source"/>
+                        <param name="target" value="'_new'"/>
+                    </model>
                     <model behaviour="inline">
                         <param name="content" value="(ec:label('signature'), ec:colon(), .)"/>
                     </model>
