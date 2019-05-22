@@ -18,7 +18,7 @@ declare variable $app:single-body-div-max := 7;
 
 declare variable $app:HOST := "https://www.ssrq-sds-fds.ch";
 
-declare variable $app:PLACES := $app:HOST || "/places-db-edit/views/get-info.xq";
+declare variable $app:PLACES := $app:HOST || "/places-db-edit/views/get-infos.xq";
 declare variable $app:PERSONS := $app:HOST || "/persons-db-api/";
 declare variable $app:LEMMA := $app:HOST || "/lemma-db-edit/views/get-lem-info.xq";
 declare variable $app:KEYWORDS := $app:HOST || "/lemma-db-edit/views/get-key-info.xq";
@@ -118,6 +118,25 @@ declare function app:api-lookup($api as xs:string, $list as map(*)*, $param as x
             ()
 };
 
+declare function app:api-lookup-xml($api as xs:string, $list as map(*)*, $param as xs:string) {
+    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
+    let $iso-639-3 :=
+    map {
+        'de'     := 'deu',
+        'fr'     := 'fra',
+        'it'     := 'ita',
+        'en'     := 'eng'
+    }
+    let $refs := string-join(for $item in $list return $item?ref, ",")
+    let $request := <http:request method="GET" href="{$api}?{$param}={$refs}&amp;lang={$iso-639-3($lang)}"/>
+    let $response := http:send-request($request)
+    return
+        if ($response[1]/@status = "200") then
+            $response[2]
+        else
+            ()
+};
+
 declare function app:api-keys($refs as xs:string*) {
     for $id in $refs
     group by $ref := substring($id, 1, 9)
@@ -134,17 +153,17 @@ declare function app:list-places($node as node(), $model as map(*)) {
     where exists($places)
     return map {
         "items":
-            for $place in app:api-lookup($app:PLACES, app:api-keys($places/@ref), "id")
+            for $place in app:api-lookup-xml($app:PLACES, app:api-keys($places/@ref), "id")//info
             return
-                <li data-ref="{$place?ref}">
+                <li data-ref="{$place/@id}">
                     <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"></input>
                     <div>
                         <a target="_new"
-                            href="https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$place?ref}">
-                            {$place?stdName('#text')}
+                            href="https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$place/@id}">
+                            {$place/stdName}
                         </a>
-                        ({$place?location})
-                        {$place?type}
+                        ({$place/location})
+                        {$place/type}
                     </div>
                 </li>
     }
