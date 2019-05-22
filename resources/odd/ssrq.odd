@@ -695,8 +695,9 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="quote" mode="change">
-                    <model behaviour="inline">
-                        <desc>No quotes</desc>
+                    <model predicate="ancestor::back" behaviour="inline">
+                        <desc>Quotes in commentary</desc>
+                        <param name="content" value="('«', ., '»')"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="supplied" mode="change">
