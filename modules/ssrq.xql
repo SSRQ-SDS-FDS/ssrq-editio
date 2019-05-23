@@ -154,6 +154,7 @@ declare function app:list-places($node as node(), $model as map(*)) {
     return map {
         "items":
             for $place in app:api-lookup-xml($app:PLACES, app:api-keys($places/@ref), "id")//info
+            order by $place/stdName
             return
                 <li data-ref="{$place/@id}">
                     <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"></input>
