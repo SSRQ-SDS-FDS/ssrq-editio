@@ -202,9 +202,6 @@ declare function pmf:zitation-id($id as xs:string?) {
 declare function pmf:format-date($when as xs:string?) {
     pmf:format-date($when, (session:get-attribute("ssrq.lang"), "de")[1])
 };
-declare function pmf:zitation-date($when as xs:string?) {
-    format-date($when, "[Y0001].[M1].[D1]")
-};
 
 declare function pmf:format-date($when as xs:string?, $language as xs:string?) {
     if ($when) then
