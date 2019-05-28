@@ -103,7 +103,7 @@
     <msg key="realisierung">Réalisation</msg>
     <msg key="search">Recherche</msg>
     <msg key="lizenz">Licence : </msg>
-    <msg key="sorting">Tirage</msg>
+    <msg key="sorting">Trier par</msg>
     <msg key="loading-facets">Il charge ...</msg>
     <msg key="error-title">Une erreur s’est produite !</msg>
     <msg key="error-description">Malheureusement une erreur est survenue. Veuillez retournez sur la page précédente et, si possible, décrivez-nous l’erreur à travers la fonction de feedback.</msg>
@@ -116,5 +116,5 @@
     <msg key="by"> de </msg>
     <msg key="and"> et </msg>
     <msg key="zitation">Citation : </msg>
-    <msg key="highlight-facet">Select to highlight occurrences</msg>
+    <msg key="highlight-facet">Trier pour mettre les occurrences en évidence</msg>
 </catalogue>
