@@ -20,8 +20,8 @@ declare variable $app:HOST := "https://www.ssrq-sds-fds.ch";
 
 declare variable $app:PLACES := $app:HOST || "/places-db-edit/views/get-infos.xq";
 declare variable $app:PERSONS := $app:HOST || "/persons-db-api/";
-declare variable $app:LEMMA := $app:HOST || "/lemma-db-edit/views/get-lem-info.xq";
-declare variable $app:KEYWORDS := $app:HOST || "/lemma-db-edit/views/get-key-info.xq";
+declare variable $app:LEMMA := $app:HOST || "/lemma-db-edit/views/get-lem-infos.xq";
+declare variable $app:KEYWORDS := $app:HOST || "/lemma-db-edit/views/get-key-infos.xq";
 
 declare
     %templates:wrap
@@ -106,14 +106,14 @@ declare function app:api-lookup($api as xs:string, $list as map(*)*, $param as x
         'it'     := 'ita',
         'en'     := 'eng'
     }
-    for $item in $list
-    let $request := <http:request method="GET" href="{$api}?{$param}={$item?ref}&amp;lang={$iso-639-3($lang)}"/>
+    let $refs := string-join(for $item in $list return $item?ref, ",")
+    let $request := <http:request method="GET" href="{$api}?{$param}={$refs}&amp;lang={$iso-639-3($lang)}"/>
     let $response := http:send-request($request)
     return
         if ($response[1]/@status = "200") then
             let $json := parse-json(util:binary-to-string($response[2]))
             return
-                map:merge(($json, map { "ref": $item?ref }))
+                $json?info
         else
             ()
 };
@@ -175,14 +175,15 @@ declare function app:list-keys($node as node(), $model as map(*)) {
     where exists($keywords)
     return map {
         "items":
-            for $lemma in app:api-lookup($app:KEYWORDS, app:api-keys($keywords/@ref), "id")
+            for $lemma in app:api-lookup-xml($app:KEYWORDS, app:api-keys($keywords/@ref), "id")//info
+            order by $lemma/name
             return
-                <li data-ref="{$lemma?ref}">
+                <li data-ref="{$lemma/@id}">
                     <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"></input>
                     <div>
-                        <a href="https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id={$lemma?ref}"
+                        <a href="https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id={$lemma/@id}"
                             target="_new">
-                            {$lemma?name("#text")}
+                            {$lemma/name}
                         </a>
                     </div>
                 </li>
@@ -194,17 +195,18 @@ declare function app:list-lemmata($node as node(), $model as map(*)) {
     where exists($lemmata)
     return map {
         "items":
-            for $lemma in app:api-lookup($app:LEMMA, app:api-keys($lemmata/@ref), "id")
+            for $lemma in app:api-lookup-xml($app:LEMMA, app:api-keys($lemmata/@ref), "id")//info
+            order by $lemma/stdName
             return
-                <li data-ref="{$lemma?ref}">
+                <li data-ref="{$lemma/@id}">
                     <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"></input>
                     <div>
                         <a target="_new"
-                            href="https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-lemma.xq?id={$lemma?ref}">
-                            {$lemma?stdName("#text")}
+                            href="https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-lemma.xq?id={$lemma/@id}">
+                            {$lemma/stdName}
                         </a>
-                        ({$lemma?morphology})
-                        {$lemma?definition("#text")}
+                        ({$lemma/morphology})
+                        {$lemma/definition}
                     </div>
                 </li>
     }
@@ -217,13 +219,14 @@ declare function app:list-persons($node as node(), $model as map(*)) {
     where exists($persons)
     return map {
         "items":
-            for $person in app:api-lookup($app:PERSONS, app:api-keys($persons), "id_search")
+            for $person in app:api-lookup($app:PERSONS, app:api-keys($persons), "ids_search")?*
+            order by $person?name
             return
-                <li data-ref="{$person?ref}">
+                <li data-ref="{$person?id}">
                     <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"></input>
                     <div>
                         <a target="_new"
-                            href="https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$person?ref}">
+                            href="https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$person?id}">
                             {$person?name}
                         </a>
                         {
@@ -242,13 +245,14 @@ declare function app:list-organizations($node as node(), $model as map(*)) {
     where exists($organizations)
     return map {
         "items":
-            for $organization in app:api-lookup($app:PERSONS, app:api-keys($organizations), "id_search")
+            for $organization in app:api-lookup($app:PERSONS, app:api-keys($organizations), "id_search")?*
+            order by $organization?name
             return
-                <li data-ref="{$organization?ref}">
+                <li data-ref="{$organization?id}">
                     <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"></input>
                     <div>
                         <a target="_new"
-                            href="https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$organization?ref}">
+                            href="https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$organization?id}">
                             {$organization?name}
                         </a>
                         {
@@ -451,7 +455,7 @@ declare function app:pers-names($header as node() ) {
     let $namen :=  $header/tei:titleStmt/tei:respStmt[1]/tei:persName/text()
 return
     if (count($namen) > 1) then (
-        string-join(subsequence($namen, 1, count($namen) -1), ', '), 
+        string-join(subsequence($namen, 1, count($namen) -1), ', '),
         <i18n:text xmlns:i18n="http://exist-db.org/xquery/i18n" key="and"> und </i18n:text>,
         $namen[last()]
     ) else
