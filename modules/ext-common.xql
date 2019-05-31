@@ -163,6 +163,12 @@ declare function pmf:display-sigle($id as xs:string?) {
         $components[1] || " " || $components[2] || "/" || $components[3]
 };
 
+declare function pmf:get-canton($id as xs:string?) {
+    let $components := tokenize($id, "_")
+    return
+        $components[2]
+};
+
 declare function pmf:format-id($id as xs:string?) {
     let $temp  := replace($id, "^(.+?)_(\d{4}.*?)(?:_\d{1,2})?$", "$1 $2")
     let $parts := tokenize($temp)
@@ -179,24 +185,6 @@ declare function pmf:format-id($id as xs:string?) {
                 number($parts[2])
     return
         $ssrq || ' ' || $vol || ' ' || $id
-};
-
-declare function pmf:zitation-id($id as xs:string?) {
-    let $temp  := replace($id, "^(.+?)_(\d{4}.*?)(?:_\d{1,2})?$", "$1 $2")
-    let $parts := tokenize($temp)
-    let $ssrq  := substring-before($parts[1], '_')
-    let $vol   := replace(substring-after($parts[1], '_'), '_', '/')
-    let $vol   := replace($vol, "^([A-Z]{2})/", "$1 ")      (: space after canton abbreviation :)
-    let $id    :=
-        if (matches($parts[2], '^\d{8}')) then
-            replace($parts[2], '_', '-')
-        else
-            if (matches($parts[2], '^\d{4}_\d{3}')) then
-                number(substring-before($parts[2], '_')) || '-' || number(substring-after($parts[2], '_'))
-            else
-                number($parts[2])
-    return
-        $ssrq || ' ' || $vol || ' ' 
 };
 
 declare function pmf:format-date($when as xs:string?) {

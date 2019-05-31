@@ -468,15 +468,14 @@ declare function app:idno-popup($node as node(), $model as map(*)) {
     let $stmtTitle := $header/tei:seriesStmt/tei:title/text()
     let $fileDescTitle := $header/tei:titleStmt/tei:title/text()
     let $fileDescPerson := $header/tei:titleStmt/tei:respStmt[1]/tei:persName/text()
-    let $zitation := $header/tei:publicationStmt/tei:date/@when/string()
-    let $link := "https://www.ssrq-sds-fds.ch/online/tei/" || session:get-attribute('ssrq.kanton') || "/" || util:document-name($model?data)
+    let $link := "https://www.ssrq-sds-fds.ch/online/tei/" || common:get-canton($idno) || "/" || util:document-name($model?data)
     return
         app:show-if-exists($node, $idno, function() {
             <span class="alternate">
                 <span class="id" style="color:#607D8B;">{common:format-id($idno)} <i class="glyphicon glyphicon-info-sign"/></span>
                 <span class="altcontent" xmlns:i18n="http://exist-db.org/xquery/i18n" popover-class="increase-popover-width">
                     <p>{$stmtTitle}, {$fileDescTitle}, <i18n:text key="by">von</i18n:text> {app:pers-names($header)}</p>
-                    <p><i18n:text key="zitation">Zitation:</i18n:text> {$link}</p>
+                    <p><i18n:text key="zitation">Zitation:</i18n:text> <a href="{$link}">{common:format-id($idno)}</a></p>
                     <p><i18n:text key="lizenz">Lizenz:</i18n:text> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de">CC BY-NC-SA</a></p>
                 </span>
             </span>
