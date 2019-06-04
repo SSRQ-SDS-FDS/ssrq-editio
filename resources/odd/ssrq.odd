@@ -631,10 +631,15 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="measure" mode="change">
-                    <model behaviour="alternate" cssClass="text-critical">
+                    <model predicate="(session:get-attribute('ssrq.lang'), 'de')[1]='de'" behaviour="alternate" cssClass="text-critical">
                         <desc>Display measurement with given parameters in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:translate(@type, 0, 'uppercase'), ec:colon(), @quantity, text{' '}, ec:translate(@origin, 0, 'lowercase'), text{' '}, ec:translate(@unit, @quantity, 'lowercase'), text{' '}, ec:translate(@commodity, 0, 'lowercase'))"/>
+                        <param name="alternate" value="(ec:translate(@type, 0, 'uppercase'), ec:colon(), @quantity, ' ', ec:translate(@origin, 0, 'lowercase'), ' ', ec:translate(@unit, @quantity, 'lowercase'), ' ', ec:translate(@commodity, 0, 'lowercase'))"/>
+                    </model>
+                    <model predicate="(session:get-attribute('ssrq.lang'), 'de')[1]!='de'" behaviour="alternate" cssClass="text-critical">
+                        <desc>Display measurement with given parameters in tooltip and highlight text with color</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="(ec:translate(@type, 0, 'uppercase'), ec:colon(), @quantity, ' ', ec:translate(@unit, @quantity, 'lowercase'), ' ', ec:translate(@commodity, 0, 'lowercase'), ' ', ec:translate(@origin, 0, 'lowercase'))"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="pb" mode="change">

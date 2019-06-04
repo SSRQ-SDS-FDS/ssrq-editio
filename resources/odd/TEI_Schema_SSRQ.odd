@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 1900 $</p>
-                <p>Date of last commit:     $Date: 2019-05-20 20:02:05 +0200 (Mon, 20 May 2019) $</p>
+                <p>Revision of last commit: $Rev: 1996 $</p>
+                <p>Date of last commit:     $Date: 2019-06-04 18:08:15 +0200 (Tue, 04 Jun 2019) $</p>
                 <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
@@ -231,7 +231,7 @@
                 <!--END GLOBAL SCH CONSTRAINTS-->
                 <!--BEGIN ADDITIONAL MACROSPECS-->
 
-                <macroSpec ident="macro.defaultContent" mode="add" type="pe">
+                <macroSpec ident="macro.defaultContent" mode="add">
                     <content>
                         <rng:text/>
                         <!--Textkritische Auszeichnungen-->
@@ -3682,7 +3682,7 @@
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='area']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Fuss|Gertel|Hube|Juchart|Kammer|Klafter|Kuhsömmerung|Kuhwinterung|Mal|Mannmad|Mannwerk|Mitmal|Rute|Schritt|Schuh|Schuppose|Staffel|Tagwen|Vierdung|Vierling|Zeile)$')"
+                                        test="matches(@unit,'^(Fuss|Gertel|Hube|Juchart|Kammer|Klafter|Kuhsömmerung|Kuhwinterung|Mal|Mannmad|Mannwerk|Mitmal|Mütt|Rute|Schritt|Schuh|Schuppose|Staffel|Tagwen|Vierdung|Vierling|Zeile)$')"
                                         >kein gültiges Flächenmass</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='currency']">
@@ -3706,11 +3706,10 @@
                                         >kein gültiges Gewicht</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='age']">
-                                    <sch:assert test="matches(@unit,'^(year|week)$')">keine gültige Einheit für Alter</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='undefined']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Ballen|Bürde|Dutzend|Fuder|Gaden|Kloben|Laib|Loden|Mal|Maschen|Paar|Riste|Schubkarre|Seil|Sester|Stock|Stuck|Zeine)$')"
+                                        test="matches(@unit,'^(Ballen|Bürde|Dutzend|Fuder|Gaden|Kloben|Laib|Loden|Mal|Maschen|Paar|Riste|Schoch|Schubkarre|Seil|Sester|Stock|Stuck|Zeine)$')"
                                         >keine gültige Einheit für ungefähre
                                         Masse/Gewichte</sch:assert>
                                 </sch:rule>
@@ -3805,7 +3804,7 @@
                                 <valItem ident="Rh">
                                     <desc xml:lang="de">Rheinischer</desc>
                                     <desc xml:lang="fr">de la Rhénanie</desc>
-                                    <desc xml:lang="en">Rheinischer</desc>
+                                    <desc xml:lang="en">of Rhineland</desc>
                                 </valItem>
                                 <valItem ident="Rheintaler">
                                     <desc xml:lang="de">Rheintaler</desc>
@@ -4693,6 +4692,14 @@
                                     <desc xml:lang="en">barrow</desc>
                                     <desc xml:lang="en" type="plural">barrows</desc>
                                 </valItem>
+                                <valItem ident="Schoch">
+                                    <desc xml:lang="de">Schoch</desc>
+                                    <desc xml:lang="de" type="plural">Schochen</desc>
+                                    <desc xml:lang="fr">Schoch</desc>
+                                    <desc xml:lang="fr" type="plural">Schochen</desc>
+                                    <desc xml:lang="en">Schoch</desc>
+                                    <desc xml:lang="en" type="plural">Schochen</desc>
+                                </valItem>
                                 <valItem ident="Seil">
                                     <desc xml:lang="de">Seil</desc>
                                     <desc xml:lang="de" type="plural">Seile</desc>
@@ -5050,6 +5057,46 @@
                                 </valItem>
                             </valList>
                         </attDef>
+                            <attDef ident="period" mode="replace" usage="opt">
+                                <desc xml:lang="de">benannte Periode</desc>
+                                <valList type="closed">
+                                    <valItem ident="P1WD">
+                                        <desc xml:lang="de">Sonntag</desc>
+                                        <desc xml:lang="fr">dimanche</desc>
+                                        <desc xml:lang="en">Sunday</desc>
+                                    </valItem>
+                                    <valItem ident="P2WD">
+                                        <desc xml:lang="de">Montag</desc>
+                                        <desc xml:lang="fr">lundi</desc>
+                                        <desc xml:lang="en">Monday</desc>
+                                    </valItem>
+                                    <valItem ident="P3WD">
+                                        <desc xml:lang="de">Dienstag</desc>
+                                        <desc xml:lang="fr">mardi</desc>
+                                        <desc xml:lang="en">Tuesday</desc>
+                                    </valItem>
+                                    <valItem ident="P4WD">
+                                        <desc xml:lang="de">Mittwoch</desc>
+                                        <desc xml:lang="fr">mercredi</desc>
+                                        <desc xml:lang="en">Wednesday</desc>
+                                    </valItem>
+                                    <valItem ident="P5WD">
+                                        <desc xml:lang="de">Donnerstag</desc>
+                                        <desc xml:lang="fr">jeudi</desc>
+                                        <desc xml:lang="en">Thursday</desc>
+                                    </valItem>
+                                    <valItem ident="P6WD">
+                                        <desc xml:lang="de">Freitag</desc>
+                                        <desc xml:lang="fr">vendredi</desc>
+                                        <desc xml:lang="en">Friday</desc>
+                                    </valItem>
+                                    <valItem ident="P7WD">
+                                        <desc xml:lang="de">Samstag</desc>
+                                        <desc xml:lang="fr">samedi</desc>
+                                        <desc xml:lang="en">Saturday</desc>
+                                    </valItem>
+                                </valList>
+                            </attDef>
                         <attDef ident="corresp" mode="delete"/>
                         <attDef ident="n" mode="delete"/>
                         <attDef ident="rend" mode="delete"/>
@@ -5058,7 +5105,6 @@
                         <attDef ident="cert" mode="delete"/>
                         <attDef ident="extent" mode="delete"/>
                         <attDef ident="source" mode="delete"/>
-                        <attDef ident="period" mode="delete"/>
                         <attDef ident="precision" mode="delete"/>
                         <attDef ident="resp" mode="delete"/>
                     </attList>
