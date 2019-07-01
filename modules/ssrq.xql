@@ -245,7 +245,7 @@ declare function app:list-organizations($node as node(), $model as map(*)) {
     where exists($organizations)
     return map {
         "items":
-            for $organization in app:api-lookup($app:PERSONS, app:api-keys($organizations), "id_search")?*
+            for $organization in app:api-lookup($app:PERSONS, app:api-keys($organizations), "ids_search")?*
             order by $organization?name
             return
                 <li data-ref="{$organization?id}">
