@@ -25,6 +25,38 @@
         <body>
             <schemaSpec start="TEI teiCorpus" ident="ssrq" source="teipublisher.odd">
                 <elementSpec ident="TEI" mode="change">
+                    <model output="latex" predicate="request:get-parameter('introduction', ())" behaviour="section">
+                        <param name="lang" value="(session:get-attribute('ssrq.lang'), 'de')[1]"/>
+                        <param name="content" value="(teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary, text/back, text//body)"/>
+                        <param name="literature" value="teiHeader/fileDesc/sourceDesc/msDesc/additional/listBibl"/>
+                        <pb:template>
+                            \documentclass[10pt,twoside]{article}
+                            
+                            \usepackage{ssrq_intro_[[lang]]}  % here's all the magic...
+                            \usepackage{hyperref}
+                            
+                            \begin{document}
+
+                            \cleardoublepage			% Fortsetzung auf einer ungeraden Seite
+                            \pagestyle{plain}			% Beginn der Seitennummerierung
+                            \pagenumbering{arabic}		% arabische Seitenzahlen, mit 1 beginnend
+                            \footnotesize				% sehr platzsparend... (normalsize ist 8pt)
+                            \tableofcontents			% Inhaltsverzeichnis
+
+                            % Einleitung
+                            \cleardoublepage			% Fortsetzung auf einer ungeraden Seite
+                            \small						% platzsparend... (normalsize ist 9pt)
+                            \addcontentsline{toc}{section}{Einleitung}
+                            \fancyhead[LE,RO]{\small Einleitung}			% Kopfzeile aussen
+                            \thispagestyle{plain}							% aber nicht auf der ersten Seite
+                            
+                            [[content]]
+
+                            [[literature]]
+
+                            \end{document}
+                        </pb:template>
+                    </model>
                     <model output="latex" predicate="request:get-parameter('book', ())" behaviour="section">
                         <param name="title" value="teiHeader/fileDesc/sourceDesc/msDesc/head/text()"/>
                         <param name="dating" value="ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate)"/>
@@ -445,6 +477,9 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="note" mode="change">
+                    <model output="latex" predicate="request:get-parameter('introduction', ())" behaviour="inline">
+                        <pb:template>\footnote{[[content]]}</pb:template>
+                  </model>
                     <model predicate="@place" behaviour="note">
                         <param name="place" value="@place"/>
                         <param name="label" value="@n"/>
@@ -1086,6 +1121,12 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="head" mode="change">
+                    <model output="latex" predicate="request:get-parameter('introduction', ()) and matches(@n, '^\d\.\d$')" behaviour="block">
+                        <pb:template>\subsection{[[content]]}</pb:template>
+                    </model>
+                    <model output="latex" predicate="request:get-parameter('introduction', ())" behaviour="block">
+                        <pb:template>\section{[[content]]}</pb:template>
+                    </model>
                     <model output="latex" predicate="preceding-sibling::*[1][self::pb]" behaviour="inline">
                         <pb:template>[[content]]
                             \vspace{1.5mm}
@@ -1144,7 +1185,7 @@
                         <param name="content" value="ec:format-id(.)"/>
                     </model>
                     <model output="latex" behaviour="inline">
-                        <param name="url" value="replace(@target, '#', '\\#')"/>
+                        <param name="url" value="replace(replace(@target, '#', '\\#'), '%', '\\%')"/>
                         <pb:template>\href{[[url]]}{[[content]]}</pb:template>
                     </model>
                     <model predicate="ancestor::div/@type='collection'" behaviour="link">
