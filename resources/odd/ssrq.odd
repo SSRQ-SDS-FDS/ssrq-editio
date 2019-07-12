@@ -1252,10 +1252,11 @@
                 </elementSpec>
                 <elementSpec ident="bibl" mode="change">
                     <model predicate="@type='url'" behaviour="inline">
-                        <param name="url" value="string()"/>
+                        <param name="url" value="ref/@target"/>
+                        <param name="text" value="."/>
                         <pb:template>
                             <li xmlns="">
-                                <a href="[[url]]" target="_blank">[[url]]</a>
+                                <a href="[[url]]" target="_blank">[[text]]</a>
                             </li>
                         </pb:template>
                     </model>
