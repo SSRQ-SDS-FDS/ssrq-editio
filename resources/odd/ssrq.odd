@@ -136,6 +136,9 @@
                     <model behaviour="document"/>
                 </elementSpec>
                 <elementSpec ident="body" mode="change">
+                    <model output="latex" predicate="request:get-parameter('introduction', ())" behaviour="block">
+                        <pb:template>[[content]]</pb:template>
+                    </model>
                     <model output="latex" behaviour="block">
                         <pb:template>
                             \begin{source}
