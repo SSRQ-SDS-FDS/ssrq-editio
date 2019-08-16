@@ -1040,6 +1040,7 @@
                     <model predicate="@source" behaviour="link">
                         <param name="link" value="@source"/>
                         <param name="target" value="'_new'"/>
+                        <param name="content" value="(ec:label('signature'), ec:colon(), .)"/>
                     </model>
                     <model behaviour="inline">
                         <param name="content" value="(ec:label('signature'), ec:colon(), .)"/>
@@ -1099,7 +1100,7 @@
                         <param name="details" value="string-join(for $seal at $pos in seal return ($pos || '. ' || string-join(($seal/(persName|orgName)/text(), if ($seal/(persName|orgName)/text()) then ', ' else (), string-join(($seal/@nontei:material,$seal/@nontei:shape,$seal/@nontei:extent,$seal/@nontei:attachment,$seal/@nontei:condition) ! ec:translate(., 0, ()), ', ')))), '; ')"/>
                         <pb:template>[[summary]][[details]]</pb:template>
                     </model>
-                    <modelSequence predicate="seal and seal/node()">
+                    <modelSequence predicate="seal">
                         <model behaviour="inline">
                             <param name="content" value="(count(seal), ' ', ec:label('sigle', false(), count(seal)), ec:colon())"/>
                         </model>
