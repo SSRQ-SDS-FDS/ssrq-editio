@@ -89,7 +89,7 @@
                         <param name="by" value="ec:label('by', false())"/>
                         <param name="author" value="teiHeader/fileDesc/titleStmt/respStmt[resp[@key='transcript']]/persName"/>
                         <param name="year" value="substring(teiHeader/fileDesc/publicationStmt/date[@type='electronic']/@when, 1, 4)"/>
-                        <param name="idno" value="teiHeader/fileDesc/seriesStmt/idno/text()"/>
+                        <param name="idno" value="replace(teiHeader/fileDesc/seriesStmt/idno/text(), '^(.+\d{3})(?:_\d{1,2})?$', '$1')"/>
                         <param name="canton" value="replace(teiHeader/fileDesc/seriesStmt/idno/text(), '^(?:SSRQ|SDS|FDS)_(..)_.+$', '$1')"/>
                         <param name="title" value="teiHeader/fileDesc/sourceDesc/msDesc/head/text()"/>
                         <param name="dating" value="ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate)"/>
@@ -138,6 +138,15 @@
                 <elementSpec ident="body" mode="change">
                     <model output="latex" predicate="request:get-parameter('introduction', ())" behaviour="block">
                         <pb:template>[[content]]</pb:template>
+                    </model>
+                    <model output="latex" predicate="parent::text/@type='summary'" behaviour="block">
+                        <pb:template>
+                            \begin{source}
+                            \begin{itshape}
+                            [[content]]
+                            \end{itshape}
+                            \end{source}
+                        </pb:template>
                     </model>
                     <model output="latex" behaviour="block">
                         <pb:template>
@@ -290,7 +299,7 @@
                         <param name="content" value="(ec:label('origDate'), ec:colon(), ec:print-date(.), ' (', ., ')')"/>
                     </model>
                     <model predicate="parent::origin" behaviour="listItem">
-                        <desc>Ausgabe in "Stückbeschreibung" UND "Weitere Überlieferungen"</desc>
+                        <desc>Ausgabe in "Stückbeschreibung"</desc>
                         <param name="content" value="(ec:label('origDate'), ec:colon(), ec:print-date(.))"/>
                     </model>
                     <model predicate="@calendar" behaviour="alternate" cssClass="text-critical">
@@ -573,6 +582,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="term" mode="change">
+                    <model output="latex" predicate="not(text())" behaviour="omit"/>
                     <model output="latex" behaviour="inline">
                         <param name="ref" value="@ref"/>
                         <pb:template>\term{[[ref]]}{[[content]]}</pb:template>
@@ -689,6 +699,10 @@
                     </model>
                     <model output="latex" predicate="preceding-sibling::*[1][self::seg]" behaviour="omit">
                         <desc>seg directly followed by pb is handled by seg</desc>
+                    </model>
+                    <model output="latex" predicate="@n and matches(@n, '[vr]$')" behaviour="inline">
+                        <param name="page" value="('fol. ', @n)"/>
+                        <pb:template>\noindent \pb{} \textit{[[[page]]]}</pb:template>
                     </model>
                     <model output="latex" predicate="@n" behaviour="inline">
                         <param name="page" value="(ec:label('page-abbr', false()), ' ', @n)"/>
@@ -909,7 +923,7 @@
                         <pb:template>
                             \medskip
                             \noindent
-                            \textit{[[place]]} [[content]]
+                            {\small \textit{[[place]]} [[content]]}
                         </pb:template>
                     </model>
                     <model predicate="@place" behaviour="block" cssClass="ab">
@@ -1138,8 +1152,12 @@
                     </model>
                     <model output="latex" behaviour="block">
                         <pb:template>
+                            \vspace{1.5mm}
+                            \noindent
                             [[content]]
                             \vspace{1.5mm}
+
+                            \noindent
                         </pb:template>
                     </model>
                     <model predicate="$parameters?header='short'" behaviour="heading">

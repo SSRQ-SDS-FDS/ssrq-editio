@@ -30,7 +30,7 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
                 $nr
     let $alternate :=
         if (exists($optional?prefix) and $type = "text-critical") then
-            ``[\textup{`{$alternate}`}]``
+            ``[ \textup{`{$alternate}`}]``
         else
             $alternate
     let $prefix := functx:replace-multi(normalize-space(string-join(latex:get-content($config, $node, $class, $optional?prefix))), ('#', '%', '_'), ('\\#', '\\%', '\\_'))
@@ -64,7 +64,7 @@ declare function pmf:note($config as map(*), $node as node(), $class as xs:strin
                             $nr
                 let $content :=
                     if (exists($optional?prefix) and $type = "text-critical") then
-                        ``[\textup{`{$content}`}]``
+                        ``[ \textup{`{$content}`}]``
                     else
                         $content
                 let $prefix := functx:replace-multi(normalize-space(string-join(latex:get-content($config, $node, $class, $optional?prefix))), ('#', '%', '_'), ('\\#', '\\%', '\\_'))
@@ -73,7 +73,7 @@ declare function pmf:note($config as map(*), $node as node(), $class as xs:strin
                         case "text-critical" return
                             ``[\leavevmode\textnote[`{$label}`]{`{$prefix}``{$content}`.}]``
                         default return
-                            ``[\leavevmode\ednote[`{$label}`]{`{$prefix}``{$content}`}]``
+                            ``[\leavevmode\ednote[`{$label}`]{`{$content}`}]``
     else
         ()
 };
