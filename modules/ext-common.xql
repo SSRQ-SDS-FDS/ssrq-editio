@@ -288,6 +288,11 @@ declare function pmf:print-date($date as node()*) {
     let $date-string :=
     	if ($date/@when) then
         	format-date(xs:date($date/@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
+    	else if (matches($date/@from, '-01-01$') and matches($date/@to, '-12-31$')) then
+    	    if (substring($date/@from, 1, 4) = substring($date/@to, 1, 4)) then
+    	        substring($date/@from, 1, 4)
+            else
+                pmf:print-date-period(xs:int(substring($date/@from, 1, 4)), xs:int(substring($date/@to, 1, 4)))
     	else
         	string-join((format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()),
         	' – ',
@@ -299,6 +304,31 @@ declare function pmf:print-date($date as node()*) {
     		()
  
     	return $date-string || $old-style
+};
+
+declare function pmf:print-date-period($from as xs:int, $to as xs:int) {
+
+    let $century := $from idiv 100 + 1
+    let $default := string-join(('ca. ', $from, ' – ', $to))
+    return
+        if (($to - $from = 99) and ($to mod 100 = 0)) then
+            string-join(($century, '. ', pmf:label('century-abbr', false())))
+        else if (($to - $from = 49) and ($to mod 50 = 0)) then
+            switch ($to - $from idiv 100 * 100)
+                case  50 return string-join(('1. ', pmf:label('half-cent-abbr', false()), ' ', $century, '. ', pmf:label('century-abbr', false())))
+                case 100 return string-join(('2. ', pmf:label('half-cent-abbr', false()), ' ', $century, '. ', pmf:label('century-abbr', false())))
+                default return $default
+        else if (($to - $from = 24) and ($to mod 25 = 0)) then
+            switch ($to - $from idiv 100 * 100)
+                case  25 return string-join(('1. ', pmf:label('quarter-cent-abbr', false()), ' ', $century, '. ', pmf:label('century-abbr', false())))
+                case  50 return string-join(('2. ', pmf:label('quarter-cent-abbr', false()), ' ', $century, '. ', pmf:label('century-abbr', false())))
+                case  75 return string-join(('3. ', pmf:label('quarter-cent-abbr', false()), ' ', $century, '. ', pmf:label('century-abbr', false())))
+                case 100 return string-join(('4. ', pmf:label('quarter-cent-abbr', false()), ' ', $century, '. ', pmf:label('century-abbr', false())))
+                default return $default
+        else if (($to - $from = 20) and ($from mod 100 = 40)) then
+            string-join((pmf:label('mid-cent-abbr', false()), ' ', $century, '. ', pmf:label('century-abbr', false())))
+        else
+            $default
 };
 
 declare %private function pmf:footnote-label-recursive($nr as xs:int) {
