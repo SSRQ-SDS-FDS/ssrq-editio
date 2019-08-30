@@ -297,7 +297,7 @@ function app:kanton-auswahl($node as node(), $model as map(*), $filter as xs:str
                 let $current := $tr/td[2]
                 let $docs :=
                     (
-                        collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $current || "_")]
+                        collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, $current || "_")]
                         [.//tei:text/tei:body/*]
                         |
                         (
@@ -359,7 +359,7 @@ function app:list-works($node as node(), $model as map(*), $filter as xs:string?
                     [.//tei:text/tei:body/*]
         else
             (
-                collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno/@xml:id, $kanton || "_")]
+                collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, $kanton || "_")]
                     [.//tei:text/tei:body/*],
                 for $prefix in ("SSRQ_", "SDS_", "FDS_")
                 return
@@ -484,15 +484,15 @@ declare function app:idno-popup($node as node(), $model as map(*)) {
 
 declare function app:origDate($node as node(), $model as map(*)) {
     let $header := root($model?data)//tei:teiHeader
+    let $filiation := $header/tei:fileDesc//tei:msDesc/tei:msContents/tei:msItem/tei:filiation[@type='original'][tei:origDate]
     let $origin := $header/tei:fileDesc//tei:msDesc/tei:history/tei:origin
-    let $origDate := $origin/tei:origDate
-    let $origPlace := $origin/tei:origPlace
+    let $origDate := if (exists($filiation)) then $filiation/tei:origDate else $origin/tei:origDate
+    let $origPlace := if (exists($filiation)) then $filiation/tei:origPlace else $origin/tei:origPlace
     return
         if ($origDate/@from) then
             app:show-if-exists($node, $origDate/@from, function() {
                 string-join((
-                    format-date(xs:date($origDate/@from), '[Y] [MNn] [D1]', (session:get-attribute("ssrq.lang"), "de")[1], (), ()) || ' – ' ||
-                    format-date(xs:date($origDate/@to), '[Y] [MNn] [D1]', (session:get-attribute("ssrq.lang"), "de")[1], (), ()),
+                    common:print-date($origDate),
                     $origPlace
                 ), ". ")
             })

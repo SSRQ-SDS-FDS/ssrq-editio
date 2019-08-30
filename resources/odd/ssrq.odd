@@ -59,7 +59,7 @@
                     </model>
                     <model output="latex" predicate="request:get-parameter('book', ())" behaviour="section">
                         <param name="title" value="teiHeader/fileDesc/sourceDesc/msDesc/head/text()"/>
-                        <param name="dating" value="ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate)"/>
+                        <param name="dating" value="if (exists(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original'][origDate])) then ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original']/origDate) else ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate)"/>
                         <param name="place" value="if (teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace) then ('. ' || teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace/text()) else ()"/>
                         <param name="content" value="(teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary, text/back, text//body)"/>
                         <param name="msdesc" value="teiHeader/fileDesc/sourceDesc/msDesc"/>
@@ -92,7 +92,7 @@
                         <param name="idno" value="replace(teiHeader/fileDesc/seriesStmt/idno/text(), '^(.+\d{3})(?:_\d{1,2})?$', '$1')"/>
                         <param name="canton" value="replace(teiHeader/fileDesc/seriesStmt/idno/text(), '^(?:SSRQ|SDS|FDS)_(..)_.+$', '$1')"/>
                         <param name="title" value="teiHeader/fileDesc/sourceDesc/msDesc/head/text()"/>
-                        <param name="dating" value="ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate)"/>
+                        <param name="dating" value="if (exists(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original'][origDate])) then ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original']/origDate) else ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate)"/>
                         <param name="place" value="if (teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace) then ('. ' || teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace/text()) else ()"/>
                         <param name="content" value="(teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary, text/back, text//body)"/>
                         <param name="msdesc" value="teiHeader/fileDesc/sourceDesc/msDesc"/>
@@ -858,7 +858,7 @@
                             <param name="link" value="$parameters?doc"/>
                         </model>
                         <model behaviour="block" cssClass="header-short">
-                            <param name="content" value="sourceDesc/msDesc/history/origin/origDate"/>
+                            <param name="content" value="if (exists(sourceDesc/msDesc/msContents/msItem/filiation[@type='original'][origDate])) then ec:print-date(sourceDesc/msDesc/msContents/msItem/filiation[@type='original']/origDate) else ec:print-date(sourceDesc/msDesc/history/origin/origDate)"/>
                         </model>
                         <model behaviour="block" cssClass="header-short">
                             <param name="content" value="editionStmt"/>
