@@ -464,14 +464,7 @@ declare function query:sort($items as element()*, $sortBy as xs:string?) {
                 $item
         default return
             for $item in $items
-            let $header := root($item)//tei:teiHeader
-            let $origDate :=
-                (
-                    $header/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@when/xs:date(.),
-                    $header/tei:fileDesc//tei:msDesc/tei:history//tei:origDate/@from/xs:date(.)
-                )[1]
-            let $letter := analyze-string($header//tei:seriesStmt/tei:idno, "^.*?\d+([A-Z])+(?:_\d+)?$")//fn:group
-            order by $origDate, $letter
+            order by root($item)//tei:teiHeader/tei:fileDesc/tei:seriesStmt/tei:idno
             return
                 $item
 };
