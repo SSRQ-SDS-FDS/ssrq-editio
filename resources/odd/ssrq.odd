@@ -1032,7 +1032,7 @@
                         </pb:template>
                     </model>
                     <model behaviour="list">
-                        <param name="content" value="(msIdentifier,history/origin/origDate,msContents/msItem/filiation[@type='current'], physDesc/objectDesc/supportDesc/condition, physDesc/objectDesc/supportDesc, physDesc, history/origin/origPlace, msContents/msItem/textLang, msContents/msItem/author[@role=&#34;scribe&#34;], additional)"/>
+                        <param name="content" value="(msIdentifier,history/origin/origDate,msContents/msItem/filiation[@type='current'], physDesc/objectDesc/supportDesc/condition, physDesc/objectDesc/supportDesc, physDesc, msContents/msItem/textLang, msContents/msItem/author[@role=&#34;scribe&#34;], additional)"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="msIdentifier">
