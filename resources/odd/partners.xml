@@ -19,11 +19,19 @@
         <body>
             <dataSpec ident="partners">
                 <valList>
-                   <valItem ident="Bibliothèque publique et universitaire de Neuchâtel (BPUN)">
+                   <valItem ident="Archives cantonales vaudoises (ACV)">
+                        <desc xml:lang="fr">
+                        <p></p>
+                        </desc>
                         <desc xml:lang="de">
                         <p></p>
                         </desc>
+                   </valItem>
+                   <valItem ident="Bibliothèque publique et universitaire de Neuchâtel (BPUN)">
                         <desc xml:lang="fr">
+                        <p></p>
+                        </desc>
+                        <desc xml:lang="de">
                         <p></p>
                         </desc>
                     </valItem>
