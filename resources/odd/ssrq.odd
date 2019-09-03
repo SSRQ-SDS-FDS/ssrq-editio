@@ -91,6 +91,7 @@
                         <param name="year" value="substring(teiHeader/fileDesc/publicationStmt/date[@type='electronic']/@when, 1, 4)"/>
                         <param name="idno" value="replace(teiHeader/fileDesc/seriesStmt/idno/text(), '^(.+\d{3})(?:_\d{1,2})?$', '$1')"/>
                         <param name="canton" value="replace(teiHeader/fileDesc/seriesStmt/idno/text(), '^(?:SSRQ|SDS|FDS)_(..)_.+$', '$1')"/>
+                        <param name="articleNr" value="ec:get-article-nr(teiHeader/fileDesc/seriesStmt/idno/text()) - 1"/>
                         <param name="title" value="teiHeader/fileDesc/sourceDesc/msDesc/head/text()"/>
                         <param name="dating" value="if (exists(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original'][origDate])) then ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original']/origDate) else ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate)"/>
                         <param name="place" value="if (teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace) then ('. ' || teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace/text()) else ()"/>
@@ -116,6 +117,7 @@
                             \thispagestyle{firstpage}
                             
                             \sloppy
+                            \setcounter{subsection}{[[articleNr]]}  % Stücknummer - 1
                             \article{[[title]]}
                             \fussy
                             \dating{[[dating]][[place]]}

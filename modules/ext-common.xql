@@ -186,6 +186,19 @@ declare function pmf:format-id($id as xs:string?) {
         $ssrq || ' ' || $vol || ' ' || $id
 };
 
+declare function pmf:get-article-nr($id as xs:string?) {
+    let $temp  := replace($id, "^(.+?)_(\d{3}.*?)(?:_\d{1,2})?$", "$1 $2")
+    let $parts := tokenize($temp)
+    let $nr    :=
+        if (matches($parts[2], '^\d{8}')) then
+            ()
+        else if (matches($parts[2], '^\d{4}_\d{3}')) then
+            number(substring-before($parts[2], '_')) || '-' || number(substring-after($parts[2], '_'))
+        else
+            number($parts[2])
+    return $nr
+};
+
 declare function pmf:format-date($when as xs:string?) {
     pmf:format-date($when, (session:get-attribute("ssrq.lang"), "de")[1])
 };
