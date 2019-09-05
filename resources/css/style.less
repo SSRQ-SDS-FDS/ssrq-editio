@@ -226,11 +226,16 @@
 }
 
 #image-aside {
-    position: relative;
-    margin-top: 120px;
-
+    position: fixed;
+    right: 0;
+    top: 120px;
+    bottom: 0;
+    
     #image-container {
-        position: fixed;
+        height: 100%;
+        padding-top: 20px;
+        margin-top: -20px;
+        width: 100%;
     }
 }
 
@@ -616,7 +621,7 @@ label{
   .note,
   .popover,
   .note-wrap {
-    font-size: 13px;
+    font-size: 80%;
     margin-right: 0.1em;
   }
   

@@ -61,15 +61,7 @@ $(document).ready(function() {
     }
 
     function resize() {
-        if (document.getElementById("image-container")) {
-            $(".tp-document-title-wrapper").each(function() {
-                var wh = $(window).height();
-                var ot = $(this).offset().top;
-                $("#image-aside").height(wh - ot);
-                $("#image-container").height(wh - ot);
-                $("#image-container").width($("#image-aside").width());
-            });
-        }
+
     }
 
     function getFontSize() {
