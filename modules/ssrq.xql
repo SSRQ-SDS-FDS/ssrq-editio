@@ -702,6 +702,19 @@ function app:download-xml($node as node(), $model as map(*), $doc as xs:string?)
         </a>
 };
 
+declare
+    %templates:wrap
+function app:download-pdf($node as node(), $model as map(*), $doc as xs:string?) {
+    let $resource := replace($doc, '^/([A-Z]{2})/(.+?)(?:_\d{1,2})?\.xml$', '$1/pdf/$2.pdf')
+    return
+        <a href="{request:get-context-path()}/apps/ssrq-data/data/{$resource}">
+        {
+            $node/@*,
+            templates:process($node/node(), $model)
+        }
+        </a>
+};
+
 declare function app:show-if-logged-in($node as node(), $model as map(*)) {
     let $user := request:get-attribute($config:login-domain || ".user")
     return

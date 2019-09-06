@@ -44,26 +44,11 @@
                         <!--<i class="material-icons">file_download</i>-->
                     </a>
                     <ul class="dropdown-menu" role="menu">
-<!--                        <li>-->
-<!--                            <a class="download-link" data-template="browse:download-link" data-template-type="pdf" title="i18n(pdf-fo)">-->
-<!--                                <i class="material-icons">print</i> <i18n:text key="pdf-fo"/>-->
-<!--                            </a>-->
-<!--                        </li>-->
-<!--                        <li data-template="browse:show-if-logged-in">-->
-<!--                            <a target="_blank" data-template="browse:download-link" data-template-type="pdf" data-template-source="true" title="i18n(fo-source)">-->
-<!--                                <i class="material-icons">code</i> <i18n:text key="fo-source"/>-->
-<!--                            </a>-->
-<!--                        </li>-->
                        <!--<li>
                            <a class="download-link" data-template="browse:download-link" data-template-type="tex" title="i18n(pdf-latex)">
                                <i class="material-icons">print</i> <i18n:text key="pdf-latex"/>
                            </a>
-                       </li>
-                        <li data-template="browse:show-if-logged-in">
-                            <a target="_blank" data-template="browse:download-link" data-template-type="tex" data-template-source="true" title="i18n(latex-source)">
-                                <i class="material-icons">code</i> <i18n:text key="latex-source"/>
-                            </a>
-                        </li>-->
+                       </li>-->
                         <!--li>
                             <a class="download-link" data-template="browse:download-link" data-template-type="" data-template-mode="plain" title="i18n(single-page)">
                                 <i class="material-icons">web</i> <i18n:text key="single-page"/>
@@ -76,7 +61,13 @@
 <!--                            </a>-->
 <!--                        </li>-->
                         <li data-template="app:show-if-logged-in">
-                            <a data-template="app:download-xml" title="i18n(view-tei)" target="_blank">
+                            <a target="_blank" data-template="app:download-pdf" title="i18n(pdf-latex)">
+                                <i class="material-icons">print</i>
+                                PDF
+                            </a>
+                        </li>
+                        <li data-template="app:show-if-logged-in">
+                            <a target="_blank" data-template="app:download-xml" title="i18n(view-tei)">
                                 <i class="material-icons">code</i>
                                 XML/TEI
                             </a>
