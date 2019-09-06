@@ -362,7 +362,7 @@
                     <model predicate="gap" behaviour="alternote">
                         <param name="type" value="'text-critical'"/>
                         <param name="alternate" value="(ec:label('del-gap'), ' (', gap/@quantity, ' ', ec:translate(gap/@unit, gap/@quantity, ()), ')')"/>
-                        <param name="content" value="'[...]'"/>
+                        <param name="content" value="''"/>
                     </model>
                     <model predicate="unclear and @rend" behaviour="note">
                         <param name="place" value="&#34;footnote&#34;"/>
