@@ -217,9 +217,14 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="choice" mode="change">
+                    <model output="latex" predicate="sic/del and corr" behaviour="alternote">
+                        <param name="content" value="corr"/>
+                        <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), '\textup{', normalize-space(sic/text()), '}', ', ', ec:translate(sic/del/@rend, 0, 'uppercase'), ec:colon(), '\textup{', sic/del/text(), '}')"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
                     <model output="latex" predicate="sic and corr" behaviour="alternote">
                         <param name="content" value="corr"/>
-                        <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), sic)"/>
+                        <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), '\textup{', sic, '}')"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model output="latex" predicate="abbr and expan" behaviour="inline">
