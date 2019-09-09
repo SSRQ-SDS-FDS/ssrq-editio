@@ -217,15 +217,17 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="choice" mode="change">
-                    <!--<model output="latex" predicate="sic and corr" behaviour="inline">
-                        <param name="content" value="corr[1]"/>
+                    <model output="latex" predicate="sic and corr" behaviour="alternote">
+                        <param name="content" value="corr"/>
+                        <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), sic)"/>
+                        <param name="type" value="'text-critical'"/>
                     </model>
                     <model output="latex" predicate="abbr and expan" behaviour="inline">
-                        <param name="content" value="expan[1]"/>
+                        <param name="content" value="expan"/>
                     </model>
                     <model output="latex" predicate="orig and reg" behaviour="inline">
-                        <param name="content" value="reg[1]"/>
-                    </model>-->
+                        <param name="content" value="reg"/>
+                    </model>
                     <model predicate="sic and corr" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="sic"/>
                         <param name="prefix" value="(ec:label('corrected'), ec:colon())"/>
@@ -278,7 +280,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="sic" mode="change">
-                    <model output="latex" behaviour="inline">
+                    <model output="latex" predicate="not(parent::choice and count(parent::*/*) gt 1)" behaviour="inline">
                         <pb:template>[[content]]\,[!]</pb:template>
                     </model>
                     <model predicate="parent::choice and count(parent::*/*) gt 1" behaviour="inline"/>
@@ -578,9 +580,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="foreign" mode="change">
-                    <model output="latex" behaviour="inline">
-                        <param name="content" value="."/>
-                    </model>
+                    <model output="latex" behaviour="inline"/>
                     <model behaviour="alternate">
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('lang-switch'), ec:colon(), ' ', ec:label(@xml:lang, false()))"/>
@@ -903,6 +903,7 @@
                 </elementSpec>
                 <elementSpec ident="seg" mode="change">
                     <model output="latex" predicate="following-sibling::*[1][self::pb]" behaviour="inline">
+                        <!-- not found in actual corpus, therefore hard-coded 'p. ' not corrected yet (bru, 20190909) -->
                         <param name="n" value="if (@n) then ('[', @n, ']') else ()"/>
                         <param name="pagebreak" value="if (following-sibling::*[1][@n]) then ('\pb{} \textit{[p. ', following-sibling::*[1]/@n, ']}') else '\pb{}'"/>
                         <pb:template>
