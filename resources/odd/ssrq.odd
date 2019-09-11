@@ -323,6 +323,7 @@
                 <elementSpec ident="add" mode="change">
                     <model predicate="ancestor::back//orig" behaviour="inline"/>
                     <model predicate="parent::subst" behaviour="inline"/>
+                    <model predicate="parent::del" behaviour="inline"/>
                     <model predicate="@hand!='other hand'" behaviour="note">
                         <desc>Show footnote only</desc>
                         <param name="prefix" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ec:translate(@hand, 0, 'lowercase'), ec:translate(@rend, 0, 'lowercase'), ec:translate(@type, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('by', false()), ' ', ec:scribe(@scribe)) else (), ec:colon())))"/>
