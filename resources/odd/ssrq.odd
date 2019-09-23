@@ -296,7 +296,9 @@
                 </elementSpec>
                 <elementSpec ident="orig" mode="change">
                     <model output="latex" behaviour="textup"/>
-                    <model behaviour="inline" cssClass="orig"/>
+                    <model behaviour="inline">
+                        <param name="content" value="('«', ., '»')"/>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="origDate" mode="add">
                     <model predicate="$parameters?header='short'" behaviour="inline">
@@ -766,7 +768,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="quote" mode="change">
-                    <model predicate="ancestor::back" behaviour="inline">
+                    <model behaviour="inline">
                         <desc>Quotes in commentary</desc>
                         <param name="content" value="('«', ., '»')"/>
                     </model>
@@ -970,11 +972,11 @@
                     <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="date" mode="change">
-                    <model output="latex" predicate="@when and ancestor::body" behaviour="inline">
+                    <model output="latex" predicate="@when and ancestor::body and not(ancestor::note)" behaviour="inline">
                         <param name="date" value="ec:format-date(@when)"/>
                         <pb:template>[[content]] \textit{[[[date]]]}</pb:template>
                     </model>
-                    <model output="latex" predicate="@from and @to and ancestor::body" behaviour="inline">
+                    <model output="latex" predicate="@from and @to and ancestor::body and not(ancestor::note)" behaviour="inline">
                         <param name="date" value="(ec:format-date(@from), ' – ', ec:format-date(@to))"/>
                         <pb:template>[[content]] \textit{[[[date]]]}</pb:template>
                     </model>
@@ -1017,7 +1019,7 @@
                     <!--<model output="latex" predicate="not(starts-with(msContents/msItem/filiation[@type='current'], 'Original'))" behaviour="block">-->
                     <model output="latex" predicate="count(msContents/msItem/filiation) &gt; 1" behaviour="block">
                         <param name="copy" value="(ec:label('copy'), ec:punct(':', false()))"/>
-                        <param name="dating" value="ec:print-date(history/origin/origDate)"/>
+                        <param name="dating" value="if (exists(msContents/msItem/filiation[@type='current'][origDate])) then ec:print-date(msContents/msItem/filiation[@type='current']/origDate) else ec:print-date(history/origin/origDate)"/>
                         <param name="idno" value="(msIdentifier, ec:semicolon())"/>
                         <param name="filiation" value="(msContents/msItem/filiation[@type='current']/text(), ec:semicolon())"/>
                         <param name="material" value="physDesc/objectDesc/supportDesc/support/material/text()"/>
