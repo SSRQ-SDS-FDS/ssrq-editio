@@ -910,10 +910,16 @@
                     <model behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="seg" mode="change">
-                    <model output="latex" predicate="following-sibling::*[1][self::pb]" behaviour="inline">
-                        <!-- not found in actual corpus, therefore hard-coded 'p. ' not corrected yet (bru, 20190909) -->
+                    <model output="latex" predicate="following-sibling::*[1][self::pb] and matches(following-sibling::*[1]/@n, '[vr]$')" behaviour="inline">
                         <param name="n" value="if (@n) then ('[', @n, ']') else ()"/>
-                        <param name="pagebreak" value="if (following-sibling::*[1][@n]) then ('\pb{} \textit{[p. ', following-sibling::*[1]/@n, ']}') else '\pb{}'"/>
+                        <param name="pagebreak" value="if (following-sibling::*[1][@n]) then ('\pb{} \textit{[fol. ', following-sibling::*[1]/@n, ']}') else '\pb{}'"/>
+                        <pb:template>
+                            [[n]] [[content]] [[pagebreak]]
+                        </pb:template>
+                    </model>
+                    <model output="latex" predicate="following-sibling::*[1][self::pb]" behaviour="inline">
+                        <param name="n" value="if (@n) then ('[', @n, ']') else ()"/>
+                        <param name="pagebreak" value="if (following-sibling::*[1][@n]) then ('\pb{} \textit{[', ec:label('page-abbr', false()), ' ', following-sibling::*[1]/@n, ']}') else '\pb{}'"/>
                         <pb:template>
                             [[n]] [[content]] [[pagebreak]]
                         </pb:template>
