@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 2940 $</p>
-                <p>Date of last commit:     $Date: 2019-09-30 10:35:35 +0200 (Mon, 30 Sep 2019) $</p>
+                <p>Revision of last commit: $Rev: 2945 $</p>
+                <p>Date of last commit:     $Date: 2019-09-30 17:46:11 +0200 (Mon, 30 Sep 2019) $</p>
                 <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
@@ -5921,20 +5921,20 @@
                             <desc xml:lang="fr">remplace une suppression avec une perte de texte</desc>
                             <desc xml:lang="en">replaces deletion with text loss</desc>
                         </valItem>
-                        <valItem ident="scribe1">
-                            <desc xml:lang="de">Anlagehand (A, Hand 1)</desc>
-                            <desc xml:lang="fr">Main principale (A, Main 1)</desc>
-                            <desc xml:lang="en">Main hand (A, Hand 1)</desc>
+                        <valItem ident="mainScribe">
+                            <desc xml:lang="de">Anlagehand</desc>
+                            <desc xml:lang="fr">main principale</desc>
+                            <desc xml:lang="en">main hand</desc>
                         </valItem>
-                        <valItem ident="scribe2">
-                            <desc xml:lang="de">Nachtragshand (B, Hand 2)</desc>
-                            <desc xml:lang="fr">Main B (Main 2)</desc>
-                            <desc xml:lang="en">Secondary hand (B, Hand 2)</desc>
+                        <valItem ident="secondaryScribe">
+                            <desc xml:lang="de">Nachtragshand</desc>
+                            <desc xml:lang="fr">main secondaire</desc>
+                            <desc xml:lang="en">secondary hand</desc>
                         </valItem>
-                        <valItem ident="scribe3">
-                            <desc xml:lang="de">Nachtragshand (C, Hand 3)</desc>
-                            <desc xml:lang="fr">Main C (Main 3)</desc>
-                            <desc xml:lang="en">Hand C (Hand 3)</desc>
+                        <valItem ident="hand">
+                            <desc xml:lang="de">Hand 3</desc>
+                            <desc xml:lang="fr">main</desc>
+                            <desc xml:lang="en">hand</desc>
                         </valItem>
                         <valItem ident="by">
                             <desc xml:lang="de">von</desc>

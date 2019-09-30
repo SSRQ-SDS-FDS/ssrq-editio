@@ -36,12 +36,12 @@ declare function pmf:scribe($scribe as attribute()?) {
         if (starts-with($scribe, 'per')) then
             <span class="scribe" data-ref="{$scribe}"/>
         else
-            let $n := number($scribe)
+            let $nr := number($scribe)
             return
-                if ($n = 1) then
-                    ' ' || pmf:label('scribe1')
+                if ($nr = 1) then
+                    pmf:colon() || ' ' || pmf:label('mainScribe', false()) || ' (' || codepoints-to-string(string-to-codepoints("A") + $nr - 1) || ', ' || pmf:label('hand', false()) || ' ' || $nr || ')'
                 else
-                    ' ' || pmf:label('scribe2') || ' ' || $n - 1
+                    pmf:colon() || ' ' || pmf:label('secondaryScribe', false()) || ' (' || codepoints-to-string(string-to-codepoints("A") + $nr - 1) || ', ' || pmf:label('hand', false()) || ' ' || $nr || ')'
     else
         ()
 };
