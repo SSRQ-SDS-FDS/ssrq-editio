@@ -73,7 +73,6 @@ declare function pmf:label($id as xs:string?, $upper as xs:boolean, $plural as x
 
 declare function pmf:label($id as xs:string?, $upper as xs:boolean, $plural as xs:integer, $lang as xs:string) {
     if ($id) then
-        let $label := $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang]
         let $label :=
             if ($plural > 1) then
                 if ($config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang][@type="plural"]) then
@@ -81,7 +80,7 @@ declare function pmf:label($id as xs:string?, $upper as xs:boolean, $plural as x
                 else
                     $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang][1]/text()
             else
-                $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang][1]/text()
+                $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang][1]   (: doesn't work for <hi rend="sup">e</hi>, just returns 'e' :)
         return
             if ($label) then
                 if (count($label) > 1) then
@@ -325,18 +324,18 @@ declare function pmf:print-date-period($from as xs:int, $to as xs:int) {
     let $default := string-join(('ca. ', $from, ' – ', $to))
     return
         if (($to - $from = 99) and ($to mod 100 = 0)) then
-            string-join(($century, '. ', pmf:label('century-abbr', false())))
+            string-join(($century, pmf:label('century-ordinal', false()), ' ', pmf:label('century-abbr', false())))
         else if (($to - $from = 49) and ($to mod 50 = 0)) then
             switch ($to - $from idiv 100 * 100)
-                case  50 return string-join(('1. ', pmf:label('half-cent-abbr', false()), ' ', $century, '. ', pmf:label('century-abbr', false())))
-                case 100 return string-join(('2. ', pmf:label('half-cent-abbr', false()), ' ', $century, '. ', pmf:label('century-abbr', false())))
+                case  50 return string-join((pmf:label('first-female', false()), ' ', pmf:label('half-cent-abbr', false()), ' ', $century, pmf:label('century-ordinal', false()), ' ', pmf:label('century-abbr', false())))
+                case 100 return string-join((pmf:label('second-female', false()), ' ', pmf:label('half-cent-abbr', false()), ' ', $century, pmf:label('century-ordinal', false()), ' ', pmf:label('century-abbr', false())))
                 default return $default
         else if (($to - $from = 24) and ($to mod 25 = 0)) then
             switch ($to - $from idiv 100 * 100)
-                case  25 return string-join(('1. ', pmf:label('quarter-cent-abbr', false()), ' ', $century, '. ', pmf:label('century-abbr', false())))
-                case  50 return string-join(('2. ', pmf:label('quarter-cent-abbr', false()), ' ', $century, '. ', pmf:label('century-abbr', false())))
-                case  75 return string-join(('3. ', pmf:label('quarter-cent-abbr', false()), ' ', $century, '. ', pmf:label('century-abbr', false())))
-                case 100 return string-join(('4. ', pmf:label('quarter-cent-abbr', false()), ' ', $century, '. ', pmf:label('century-abbr', false())))
+                case  25 return string-join((pmf:label('first-male', false()), ' ', pmf:label('quarter-cent-abbr', false()), ' ', $century, pmf:label('century-ordinal', false()), ' ', pmf:label('century-abbr', false())))
+                case  50 return string-join((pmf:label('second-male', false()), ' ', pmf:label('quarter-cent-abbr', false()), ' ', $century, pmf:label('century-ordinal', false()), ' ', pmf:label('century-abbr', false())))
+                case  75 return string-join((pmf:label('third-male', false()), ' ', pmf:label('quarter-cent-abbr', false()), ' ', $century, pmf:label('century-ordinal', false()), ' ', pmf:label('century-abbr', false())))
+                case 100 return string-join((pmf:label('fourth-male', false()), ' ', pmf:label('quarter-cent-abbr', false()), ' ', $century, pmf:label('century-ordinal', false()), ' ', pmf:label('century-abbr', false())))
                 default return $default
         else if (($to - $from = 20) and ($from mod 100 = 40)) then
             string-join((pmf:label('mid-cent-abbr', false()), ' ', $century, '. ', pmf:label('century-abbr', false())))

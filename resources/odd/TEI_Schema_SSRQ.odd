@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 2786 $</p>
-                <p>Date of last commit:     $Date: 2019-09-02 18:41:25 +0200 (Mon, 02 Sep 2019) $</p>
+                <p>Revision of last commit: $Rev: 2940 $</p>
+                <p>Date of last commit:     $Date: 2019-09-30 10:35:35 +0200 (Mon, 30 Sep 2019) $</p>
                 <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
@@ -1400,7 +1400,7 @@
                                 </valItem>
                             </valList>
                         </attDef>
-                        <attDef ident="condition" ns="http://ssrq-sds-fds.ch/ns/nonTEI" mode="add">
+                        <attDef ident="condition" ns="http://ssrq-sds-fds.ch/ns/nonTEI" mode="add" usage="req">
                             <desc>condition beschreibt den Erhaltungszustand und Schäden des
                                 Siegels</desc>
                             <valList type="closed">
@@ -1477,7 +1477,7 @@
                                 <rng:text/>
                             </datatype>
                         </attDef>
-                        <!-- <attDef ident="n" mode="replace" usage="req"/> -->
+                        <attDef ident="n" mode="change" usage="req"/>
                         <attDef ident="corresp" mode="delete"/>
                         <attDef ident="rend" mode="delete"/>
                         <attDef ident="type" mode="delete"/>
@@ -3103,6 +3103,11 @@
                                     <desc xml:lang="fr">l’encre s’est affaiblie</desc>
                                     <desc xml:lang="en">faded ink</desc>
                                 </valItem>
+                                <valItem ident="faded ink and clipping">
+                                    <desc xml:lang="de">verblasste Tinte und Beschneidung [am Blattrand]</desc>
+                                    <desc xml:lang="fr">l’encre s’est affaiblie et coupé [dans la marge]</desc>
+                                    <desc xml:lang="en">faded ink and clipping [on the leaf margin]</desc>
+                                </valItem>
                                 <valItem ident="fold">
                                     <desc xml:lang="de">Falt</desc>
                                     <desc xml:lang="fr">pli</desc>
@@ -3236,6 +3241,11 @@
                                     <desc xml:lang="de">verblasste Tinte</desc>
                                     <desc xml:lang="fr">l’encre s’est affaiblie</desc>
                                     <desc xml:lang="en">faded ink</desc>
+                                </valItem>
+                                <valItem ident="faded ink and clipping">
+                                    <desc xml:lang="de">verblasste Tinte und Beschneidung [am Blattrand]</desc>
+                                    <desc xml:lang="fr">l’encre s’est affaiblie et coupé [dans la marge]</desc>
+                                    <desc xml:lang="en">faded ink and clipping [on the leaf margin]</desc>
                                 </valItem>
                                 <valItem ident="fold">
                                     <desc xml:lang="de">Falt</desc>
@@ -3775,6 +3785,11 @@
                                     <desc xml:lang="de">Konstanzer</desc>
                                     <desc xml:lang="fr">de Constance</desc>
                                     <desc xml:lang="en">of Konstanz</desc>
+                                </valItem>
+                                <valItem ident="Lausanne">
+                                    <desc xml:lang="de">Lausanner</desc>
+                                    <desc xml:lang="fr">de Lausanne</desc>
+                                    <desc xml:lang="en">of Lausanne</desc>
                                 </valItem>
                                 <valItem ident="Lothringen">
                                     <desc xml:lang="de">lothringische</desc>
@@ -5479,6 +5494,7 @@
                                 <rng:ref name="sic"/>
                                 <rng:ref name="note"/>
                                 <rng:ref name="subst"/>
+                                <rng:ref name="persName"/>
                                 <rng:text/>
                             </rng:choice>
                         </rng:zeroOrMore>
@@ -6023,6 +6039,11 @@
                             <desc xml:lang="fr">latin</desc>
                             <desc xml:lang="en">Latin</desc>
                         </valItem>
+                        <valItem ident="century-ordinal">
+                            <desc xml:lang="de">.</desc>
+                            <desc xml:lang="fr"><hi rend="sup">e</hi></desc>
+                            <desc xml:lang="en">.</desc>
+                        </valItem>
                         <valItem ident="century-abbr">
                             <desc xml:lang="de">Jh.</desc>
                             <desc xml:lang="fr">s.</desc>
@@ -6033,10 +6054,40 @@
                             <desc xml:lang="fr">milieu du</desc>
                             <desc xml:lang="en">mid</desc>
                         </valItem>
+                        <valItem ident="first-female">
+                            <desc xml:lang="de">1.</desc>
+                            <desc xml:lang="fr">1<hi rend="sup">re</hi></desc>
+                            <desc xml:lang="en">1.</desc>
+                        </valItem>
+                        <valItem ident="second-female">
+                            <desc xml:lang="de">2.</desc>
+                            <desc xml:lang="fr">2<hi rend="sup">e</hi></desc>
+                            <desc xml:lang="en">2.</desc>
+                        </valItem>
                         <valItem ident="half-cent-abbr">
                             <desc xml:lang="de">Hälfte</desc>
                             <desc xml:lang="fr">moitié du</desc>
                             <desc xml:lang="en">half</desc>
+                        </valItem>
+                        <valItem ident="first-male">
+                            <desc xml:lang="de">1.</desc>
+                            <desc xml:lang="fr">1<hi rend="sup">er</hi></desc>
+                            <desc xml:lang="en">1.</desc>
+                        </valItem>
+                        <valItem ident="second-male">
+                            <desc xml:lang="de">2.</desc>
+                            <desc xml:lang="fr">2<hi rend="sup">e</hi></desc>
+                            <desc xml:lang="en">2.</desc>
+                        </valItem>
+                        <valItem ident="third-male">
+                            <desc xml:lang="de">3.</desc>
+                            <desc xml:lang="fr">3<hi rend="sup">e</hi></desc>
+                            <desc xml:lang="en">3.</desc>
+                        </valItem>
+                        <valItem ident="fourth-male">
+                            <desc xml:lang="de">4.</desc>
+                            <desc xml:lang="fr">4<hi rend="sup">e</hi></desc>
+                            <desc xml:lang="en">4.</desc>
                         </valItem>
                         <valItem ident="quarter-cent-abbr">
                             <desc xml:lang="de">Viertel</desc>
