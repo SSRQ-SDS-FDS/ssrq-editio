@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 2945 $</p>
-                <p>Date of last commit:     $Date: 2019-09-30 17:46:11 +0200 (Mon, 30 Sep 2019) $</p>
+                <p>Revision of last commit: $Rev: 2946 $</p>
+                <p>Date of last commit:     $Date: 2019-09-30 18:00:23 +0200 (Mon, 30 Sep 2019) $</p>
                 <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
@@ -5932,7 +5932,7 @@
                             <desc xml:lang="en">secondary hand</desc>
                         </valItem>
                         <valItem ident="hand">
-                            <desc xml:lang="de">Hand 3</desc>
+                            <desc xml:lang="de">Hand</desc>
                             <desc xml:lang="fr">main</desc>
                             <desc xml:lang="en">hand</desc>
                         </valItem>
