@@ -58,7 +58,8 @@ declare function pmf:note($config as map(*), $node as node(), $class as xs:strin
                 let $nr := pmc:increment-counter($type)
                 let $label :=
                     switch($type)
-                        case "text-critical" return
+                        case "text-critical"
+                        case "text-critical-start" return
                             pmc:footnote-label($nr)
                         default return
                             $nr
@@ -72,6 +73,8 @@ declare function pmf:note($config as map(*), $node as node(), $class as xs:strin
                     switch($type)
                         case "text-critical" return
                             ``[\leavevmode\textnote[`{$label}`]{`{$prefix}``{$content}`.}]``
+                        case "text-critical-start" return
+                            ``[\leavevmode\textnotestart{`{$label}`}{`{$prefix}``{$content}`.}]``
                         default return
                             ``[\leavevmode\ednote[`{$label}`]{`{$content}`}]``
     else
