@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 2946 $</p>
-                <p>Date of last commit:     $Date: 2019-09-30 18:00:23 +0200 (Mon, 30 Sep 2019) $</p>
+                <p>Revision of last commit: $Rev: 3009 $</p>
+                <p>Date of last commit:     $Date: 2019-10-07 21:08:43 +0200 (Mon, 07 Oct 2019) $</p>
                 <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
@@ -419,6 +419,22 @@
                             </rng:zeroOrMore>
                         </rng:group>
                     </content>
+                    <constraintSpec scheme="schematron" ident="sch-idno">
+                        <desc>seriesStmt/idno</desc>
+                        <constraint>
+                            <!-- two patterns are needed, cf. https://www.data2type.de/en/xml-xslt-xslfo/schematron/schematron-introduction/arrangement-of-the-patterns/ -->
+                            <sch:pattern>
+                                <sch:rule context="tei:seriesStmt/tei:idno">
+                                    <sch:assert test="not(@xml:id)">Das Bandkürzel darf nicht in @xml:id stehen.</sch:assert>
+                                </sch:rule>
+                            </sch:pattern>
+                            <sch:pattern>
+                                <sch:rule context="tei:seriesStmt/tei:idno">
+                                    <sch:assert test="matches(., '^(SSRQ|SDS|FDS)_')">Ungültiges Bandkürzel</sch:assert>
+                                </sch:rule>
+                            </sch:pattern>
+                        </constraint>
+                    </constraintSpec>
                 </elementSpec>
                 <elementSpec ident="sourceDesc" module="header" mode="change">
                     <content>
@@ -5736,8 +5752,8 @@
                         </valItem>
                         <valItem ident="alt-rdg-in">
                             <desc xml:lang="de">Textvariante in</desc>
-                            <desc xml:lang="fr">Variante alternative dans</desc>
-                            <desc xml:lang="en">Text variant in</desc>
+                            <desc xml:lang="fr">variante alternative dans</desc>
+                            <desc xml:lang="en">text variant in</desc>
                         </valItem>
                         <valItem ident="handswitch">
                             <desc xml:lang="de">Handwechsel</desc>
