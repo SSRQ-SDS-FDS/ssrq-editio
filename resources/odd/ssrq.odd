@@ -962,6 +962,9 @@
                     <model behaviour="paragraph"/>
                 </elementSpec>
                 <elementSpec ident="subst" mode="change">
+                    <model predicate="ancestor::teiHeader" behaviour="inline">
+                        <param name="content" value="add"/>
+                    </model>
                     <model predicate="del/gap and add" behaviour="alternote">
                         <param name="content" value="add"/>
                         <param name="alternate" value="(ec:label('corr'), ' ', ec:translate(add/@place, 0, 'lowercase'), ', ', ec:label('subst-del-gap', false()))"/>
