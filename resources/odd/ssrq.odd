@@ -358,7 +358,7 @@
                         <param name="prefix" value="(ec:label('del-add'), string-join((ec:translate(add/@place, 0, 'lowercase'), ', ', ec:translate(add/@type, 0, 'lowercase')), ''), ec:colon())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
-                    <model predicate="@hand='later hand'" behaviour="alternote" cssClass="text-critical">
+                    <model predicate="@hand='later hand' and not(parent::subst)" behaviour="alternote" cssClass="text-critical">
                         <desc>Show text of del with popup and footnote</desc>
                         <param name="alternate" value="(if (@rend) then (ec:translate(@rend, 0, 'uppercase')) else (ec:label('del')), ' ', ec:translate(@hand, 0, 'lowercase'))"/>
                         <param name="type" value="'text-critical'"/>
@@ -979,6 +979,12 @@
                     <model predicate="del/gap and add" behaviour="alternote">
                         <param name="content" value="add"/>
                         <param name="alternate" value="(ec:label('corr'), ' ', ec:translate(add/@place, 0, 'lowercase'), ', ', ec:label('subst-del-gap', false()))"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
+                    <model predicate="add[@hand='later hand'] and del[@hand='later hand']" behaviour="alternote" cssClass="text-critical">
+                        <param name="content" value="add"/>
+                        <param name="prefix" value="(ec:label('corr', true()), ' ', ec:translate(add/@hand, 0, 'lowercase'), ' ', ec:translate(add/@place, 0, 'lowercase'), ', ', ec:label('replace', false()), ec:colon())"/>
+                        <param name="alternate" value="del"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="add/@hand" behaviour="alternote" cssClass="text-critical">
