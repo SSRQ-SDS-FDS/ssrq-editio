@@ -493,6 +493,11 @@
                         <param name="alternate" value="rdg"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
+                    <model predicate="rdg[2]" behaviour="alternote" cssClass="text-critical">
+                        <param name="content" value="lem"/>
+                        <param name="alternate" value="(ec:label('alt-rdg-in'), ' ', rdg[1]/@wit, ec:colon(), rdg[1], '. ', ec:label('alt-rdg-in'), ' ', rdg[2]/@wit, ec:colon(), rdg[2])"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>
                     <model behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="lem"/>
                         <param name="prefix" value="(ec:label('alt-rdg-in'), ' ', rdg/@wit, ec:colon())"/>
