@@ -103,13 +103,13 @@
                 <elementSpec ident="head" mode="change">
                     <model predicate="@resp and @n" behaviour="heading">
                         <desc>Supplied heading: output in brackets if @resp</desc>
-                        <param name="level" value="2"/>
+                        <param name="level" value="if (@type='title') then 1 else 2"/>
                         <param name="content" value="('[ ', @n, ' ', ., ' ]')"/>
                         <outputRendition>
                             font-weight: bold;
                         </outputRendition>
                     </model>
-                    <model predicate="@type and @n" behaviour="heading">
+                    <model predicate="@n" behaviour="heading">
                         <desc>Supplied heading: n. in brackets unless @resp</desc>
                         <param name="level" value="if (@type='title') then 1 else 2"/>
                         <param name="content" value="('[ ', @n, ' ] ', .)"/>
@@ -117,17 +117,9 @@
                             font-weight: bold;
                         </outputRendition>
                     </model>
-                    <model predicate="@n" behaviour="heading">
-                        <desc>Supplied heading: n. in brackets unless @resp</desc>
-                        <param name="level" value="2"/>
-                        <param name="content" value="('[ ', @n, ' ] ', .)"/>
-                        <outputRendition>
-                            font-weight: bold;
-                        </outputRendition>
-                    </model>
                     <model predicate="@resp" behaviour="heading">
                         <desc>Supplied heading: output in brackets if @resp</desc>
-                        <param name="level" value="2"/>
+                        <param name="level" value="if (@type='title') then 1 else 2"/>
                         <param name="content" value="."/>
                         <outputRendition>
                             font-weight: bold;

@@ -179,7 +179,7 @@
                     <model output="latex" behaviour="omit"/>
                     <model predicate="ancestor::back//orig" behaviour="omit"/>
                     <model predicate="preceding-sibling::node()[1][self::pb]" behaviour="omit"/>
-                    <model predicate=". is (./ancestor::div[1]//lb[1])" behaviour="omit"/>
+                    <model predicate=". is (ancestor::div[1]//lb[1])" behaviour="omit"/>
                     <model predicate=". is (ancestor::p[1]/lb[1])" behaviour="omit"/>
                     <modelSequence predicate="@break='no'">
                         <model behaviour="inline">
