@@ -39,9 +39,9 @@ declare function pmf:scribe($scribe as attribute()?) {
             let $nr := number($scribe)
             return
                 if ($nr = 1) then
-                    pmf:colon() || ' ' || pmf:label('mainScribe', false()) || ' (' || codepoints-to-string(string-to-codepoints("A") + $nr - 1) || ', ' || pmf:label('hand', false()) || ' ' || $nr || ')'
+                    pmf:label('mainScribe', false()) || ' (' || codepoints-to-string(string-to-codepoints("A") + $nr - 1) || ', ' || pmf:label('hand', false()) || ' ' || $nr || ')'
                 else
-                    pmf:colon() || ' ' || pmf:label('secondaryScribe', false()) || ' (' || codepoints-to-string(string-to-codepoints("A") + $nr - 1) || ', ' || pmf:label('hand', false()) || ' ' || $nr || ')'
+                    pmf:label('secondaryScribe', false()) || ' (' || codepoints-to-string(string-to-codepoints("A") + $nr - 1) || ', ' || pmf:label('hand', false()) || ' ' || $nr || ')'
     else
         ()
 };

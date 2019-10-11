@@ -14,7 +14,7 @@ $(document).ready(function() {
         var colon = lang == 'fr' ? ' : ' : ': ';
         aside.find("li").each(function() {
             var key = $(this).attr('data-ref');
-            var label = colon + $(this).text();
+            var label = $(this).text();
 
             function filterSpan(i, span) {
                 var ref = $(span).attr('data-ref');

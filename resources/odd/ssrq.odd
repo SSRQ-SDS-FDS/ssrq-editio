@@ -518,13 +518,13 @@
                     <model behaviour="note">
                         <param name="place" value="'footnote'"/>
                         <param name="type" value="'text-critical'"/>
-                        <param name="content" value="(ec:label('handswitch'), ec:scribe(@scribe))"/>
+                        <param name="content" value="(ec:label('handswitch'), if (@scribe) then (ec:colon(), ec:scribe(@scribe)) else ())"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="note" mode="change">
                     <model output="latex" predicate="request:get-parameter('introduction', ())" behaviour="inline">
                         <pb:template>\footnote{[[content]]}</pb:template>
-                  </model>
+                    </model>
                     <model predicate="@place" behaviour="note">
                         <param name="place" value="@place"/>
                         <param name="label" value="@n"/>
