@@ -101,10 +101,10 @@ declare function app:api-lookup($api as xs:string, $list as map(*)*, $param as x
     let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
     let $iso-639-3 :=
     map {
-        'de'     := 'deu',
-        'fr'     := 'fra',
-        'it'     := 'ita',
-        'en'     := 'eng'
+        'de'     : 'deu',
+        'fr'     : 'fra',
+        'it'     : 'ita',
+        'en'     : 'eng'
     }
     let $refs := string-join(for $item in $list return $item?ref, ",")
     let $request := <http:request method="GET" href="{$api}?{$param}={$refs}&amp;lang={$iso-639-3($lang)}"/>
@@ -122,10 +122,10 @@ declare function app:api-lookup-xml($api as xs:string, $list as map(*)*, $param 
     let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
     let $iso-639-3 :=
     map {
-        'de'     := 'deu',
-        'fr'     := 'fra',
-        'it'     := 'ita',
-        'en'     := 'eng'
+        'de'     : 'deu',
+        'fr'     : 'fra',
+        'it'     : 'ita',
+        'en'     : 'eng'
     }
     let $refs := string-join(for $item in $list return $item?ref, ",")
     let $request := <http:request method="GET" href="{$api}?{$param}={$refs}&amp;lang={$iso-639-3($lang)}"/>
