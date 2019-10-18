@@ -304,6 +304,14 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="origDate" mode="add">
+                    <model output="latex" predicate="@when and ancestor::body and not(ancestor::note)" behaviour="inline">
+                        <param name="date" value="ec:format-date(@when)"/>
+                        <pb:template>[[content]] \textit{[[[date]]]}</pb:template>
+                    </model>
+                    <model output="latex" predicate="@from and @to and ancestor::body and not(ancestor::note)" behaviour="inline">
+                        <param name="date" value="(ec:format-date(@from), ' – ', ec:format-date(@to))"/>
+                        <pb:template>[[content]] \textit{[[[date]]]}</pb:template>
+                    </model>
                     <model predicate="$parameters?header='short'" behaviour="inline">
                         <desc>Called to output the sigle of a document</desc>
                         <param name="content" value="ec:print-date(.)"/>
@@ -1200,6 +1208,16 @@
                     <model output="latex" predicate="preceding-sibling::*[1][self::pb]" behaviour="inline">
                         <pb:template>[[content]]
                             \vspace{1.5mm}
+                        </pb:template>
+                    </model>
+                    <model output="latex" predicate="@resp" behaviour="block">
+                        <pb:template>
+                            \vspace{1.5mm}
+                            \noindent
+                            [ [[content]] ]
+                            \vspace{1.5mm}
+
+                            \noindent
                         </pb:template>
                     </model>
                     <model output="latex" behaviour="block">
