@@ -5957,6 +5957,11 @@
                             <desc xml:lang="fr">de</desc>
                             <desc xml:lang="en">by</desc>
                         </valItem>
+                        <valItem ident="and">
+                            <desc xml:lang="de">und</desc>
+                            <desc xml:lang="fr">et</desc>
+                            <desc xml:lang="en">and</desc>
+                        </valItem>
                         <valItem ident="through">
                             <desc xml:lang="de">durch</desc>
                             <desc xml:lang="fr">par</desc>
