@@ -192,7 +192,7 @@ declare function pmf:get-article-nr($id as xs:string?) {
         if (matches($parts[2], '^\d{8}')) then
             ()
         else if (matches($parts[2], '^\d{4}_\d{3}')) then
-            number(substring-before($parts[2], '_')) || '-' || number(substring-after($parts[2], '_'))
+            number(substring-after($parts[2], '_'))
         else
             number($parts[2])
     return $nr

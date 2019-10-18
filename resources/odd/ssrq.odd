@@ -91,6 +91,9 @@
                         <param name="year" value="substring(teiHeader/fileDesc/publicationStmt/date[@type='electronic']/@when, 1, 4)"/>
                         <param name="idno" value="replace(teiHeader/fileDesc/seriesStmt/idno/text(), '^(.+\d{3})(?:_\d{1,2})?$', '$1')"/>
                         <param name="canton" value="replace(teiHeader/fileDesc/seriesStmt/idno/text(), '^(?:SSRQ|SDS|FDS)_(..)_.+$', '$1')"/>
+                        <param name="sectionType" value="if (matches(teiHeader/fileDesc/seriesStmt/idno/text(), '\d{4}_\d{3}$')) then 'subsubsection' else 'subsection'"/>
+                        <param name="articleType" value="if (matches(teiHeader/fileDesc/seriesStmt/idno/text(), '\d{4}_\d{3}$')) then 'subarticle' else 'article'"/>
+                        <param name="datingType" value="if (matches(teiHeader/fileDesc/seriesStmt/idno/text(), '\d{4}_\d{3}$')) then 'subdating' else 'dating'"/>
                         <param name="articleNr" value="ec:get-article-nr(teiHeader/fileDesc/seriesStmt/idno/text()) - 1"/>
                         <param name="title" value="teiHeader/fileDesc/sourceDesc/msDesc/head/text()"/>
                         <param name="dating" value="if (exists(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original'][origDate])) then ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original']/origDate) else ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate)"/>
@@ -117,10 +120,10 @@
                             \thispagestyle{firstpage}
                             
                             \sloppy
-                            \setcounter{subsection}{[[articleNr]]}  % Stücknummer - 1
-                            \article{[[title]]}
+                            \setcounter{[[sectionType]]}{[[articleNr]]}  % Stücknummer - 1
+                            \[[articleType]]{[[title]]}
                             \fussy
-                            \dating{[[dating]][[place]]}
+                            \[[datingType]]{[[dating]][[place]]}
                             
                             [[content]]
                             
@@ -166,7 +169,7 @@
                 </elementSpec>
                 <elementSpec ident="summary" mode="add">
                     <model output="latex" predicate="ancestor::TEI/text/group/text[@type='summary']" behaviour="omit"/>
-                    <model output="latex" behaviour="block">
+                    <model output="latex" predicate="normalize-space(string-join(text()))" behaviour="block">
                         <pb:template>
                             \begin{summary}
                             [[content]]
@@ -905,7 +908,7 @@
                             \end{introlist}
                         </pb:template>
                     </model>
-                    <model output="latex" behaviour="block">
+                    <model output="latex" predicate="normalize-space(string-join(text()))" behaviour="block">
                         <pb:template>
                             \begin{intro}
                             [[content]]
