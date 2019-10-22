@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 3009 $</p>
-                <p>Date of last commit:     $Date: 2019-10-07 21:08:43 +0200 (Mon, 07 Oct 2019) $</p>
+                <p>Revision of last commit: $Rev: 3074 $</p>
+                <p>Date of last commit:     $Date: 2019-10-22 16:16:24 +0200 (Tue, 22 Oct 2019) $</p>
                 <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
@@ -2047,7 +2047,7 @@
                                 </valItem>
                                 <valItem ident="sign">
                                     <desc xml:lang="de">Verweiszeichen</desc>
-                                    <desc xml:lang="fr">signe de renvoi </desc>
+                                    <desc xml:lang="fr">signe de renvoi</desc>
                                     <desc xml:lang="en">signe-de-renvoi</desc>
                                 </valItem>
                                 <valItem ident="stamp">
@@ -2699,7 +2699,7 @@
                                 </valItem>
                                 <valItem ident="right margin">
                                     <desc xml:lang="de">am rechten Rand</desc>
-                                    <desc xml:lang="fr">sur la marge droite</desc>
+                                    <desc xml:lang="fr">dans la marge droite</desc>
                                     <desc xml:lang="en">on the right margin"</desc>
                                 </valItem>
                                 <valItem ident="top">
@@ -2788,7 +2788,7 @@
                                 </valItem>
                                 <valItem ident="bottom">
                                     <desc xml:lang="de">am unteren Rand</desc>
-                                    <desc xml:lang="fr">en bas</desc>
+                                    <desc xml:lang="fr">en bas de page</desc>
                                     <desc xml:lang="en">on the bottom</desc>
                                 </valItem>
                                 <valItem ident="interlinear">
@@ -2818,12 +2818,12 @@
                                 </valItem>
                                 <valItem ident="right margin">
                                     <desc xml:lang="de">am rechten Rand</desc>
-                                    <desc xml:lang="fr">sur la marge droite</desc>
+                                    <desc xml:lang="fr">dans la marge droite</desc>
                                     <desc xml:lang="en">on the right margin</desc>
                                 </valItem>
                                 <valItem ident="top">
                                     <desc xml:lang="de">am oberen Rand</desc>
-                                    <desc xml:lang="fr">en haut</desc>
+                                    <desc xml:lang="fr">en haut de page</desc>
                                     <desc xml:lang="en">on the top</desc>
                                 </valItem>
                                 <valItem ident="verso">
@@ -2986,7 +2986,7 @@
                             <valList type="closed">
                                 <valItem ident="sign">
                                     <desc xml:lang="de">mit Zeichen</desc>
-                                    <desc xml:lang="fr">avec signe d’insertion</desc>
+                                    <desc xml:lang="fr">avec un signe d’insertion</desc>
                                     <desc xml:lang="en">by insertion mark</desc>
                                 </valItem>
                             </valList>
