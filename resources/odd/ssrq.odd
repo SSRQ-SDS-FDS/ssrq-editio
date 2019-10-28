@@ -27,7 +27,7 @@
                 <elementSpec ident="TEI" mode="change">
                     <model output="latex" predicate="request:get-parameter('introduction', ())" behaviour="section">
                         <param name="lang" value="(session:get-attribute('ssrq.lang'), 'de')[1]"/>
-                        <param name="content" value="(teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary, text/back, text//body)"/>
+                        <param name="content" value="text//body"/>
                         <param name="literature" value="teiHeader/fileDesc/sourceDesc/msDesc/additional/listBibl"/>
                         <pb:template>
                             \documentclass[10pt,twoside]{article}
@@ -61,7 +61,7 @@
                         <param name="title" value="teiHeader/fileDesc/sourceDesc/msDesc/head/text()"/>
                         <param name="dating" value="if (exists(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original'][origDate])) then ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original']/origDate) else ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate)"/>
                         <param name="place" value="if (teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace) then ('. ' || teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace/text()) else ()"/>
-                        <param name="content" value="(teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary, text/back, text//body)"/>
+                        <param name="content" value="(teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary, text//back, text//body)"/>
                         <param name="msdesc" value="teiHeader/fileDesc/sourceDesc/msDesc"/>
                         <param name="additionalSources" value="if (ec:existsAdditionalSource(teiHeader/fileDesc/seriesStmt/idno/text())) then ec:additionalSource(teiHeader/fileDesc/seriesStmt/idno/text()) else ''"/>
                         <param name="literature" value="teiHeader/fileDesc/sourceDesc/msDesc/additional/listBibl"/>
@@ -98,7 +98,7 @@
                         <param name="title" value="teiHeader/fileDesc/sourceDesc/msDesc/head/text()"/>
                         <param name="dating" value="if (exists(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original'][origDate])) then ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original']/origDate) else ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate)"/>
                         <param name="place" value="if (teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace) then ('. ' || teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace/text()) else ()"/>
-                        <param name="content" value="(teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary, text/back, text//body)"/>
+                        <param name="content" value="(teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary, text//back, text//body)"/>
                         <param name="msdesc" value="teiHeader/fileDesc/sourceDesc/msDesc"/>
                         <param name="additionalSources" value="if (ec:existsAdditionalSource(teiHeader/fileDesc/seriesStmt/idno/text())) then ec:additionalSource(teiHeader/fileDesc/seriesStmt/idno/text()) else ''"/>
                         <param name="literature" value="teiHeader/fileDesc/sourceDesc/msDesc/additional/listBibl"/>
@@ -182,8 +182,8 @@
                     <model output="latex" behaviour="omit"/>
                     <model predicate="ancestor::back//orig" behaviour="omit"/>
                     <model predicate="preceding-sibling::node()[1][self::pb]" behaviour="omit"/>
-                    <model predicate=". is (ancestor::div[1]//lb[1])" behaviour="omit"/>
-                    <model predicate=". is (ancestor::p[1]/lb[1])" behaviour="omit"/>
+                    <model predicate=". is ancestor::div/node()[1]" behaviour="omit"/>
+                    <model predicate=". is ancestor::p/node()[1]" behaviour="omit"/>
                     <modelSequence predicate="@break='no'">
                         <model behaviour="inline">
                             <outputRendition scope="before">
@@ -1296,7 +1296,7 @@
                 </elementSpec>
                 <elementSpec ident="text()">
                     <model output="latex" behaviour="text">
-                        <param name="content" value="replace(replace(., '&amp;amp;', '\\&amp;amp;'), '_', '\\_')"/>
+                        <param name="content" value="replace(replace(replace(., '&amp;amp;', '\\&amp;amp;'), '_', '\\_'), '%', '\\%')"/>
                     </model>
                     <model behaviour="content"/>
                 </elementSpec>
