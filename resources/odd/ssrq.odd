@@ -169,7 +169,7 @@
                 </elementSpec>
                 <elementSpec ident="summary" mode="add">
                     <model output="latex" predicate="ancestor::TEI/text/group/text[@type='summary']" behaviour="omit"/>
-                    <model output="latex" predicate="normalize-space(string-join(text()))" behaviour="block">
+                    <model output="latex" predicate="normalize-space(string())" behaviour="block">
                         <pb:template>
                             \begin{summary}
                             [[content]]
@@ -916,7 +916,7 @@
                             \end{introlist}
                         </pb:template>
                     </model>
-                    <model output="latex" predicate="normalize-space(string-join(text()))" behaviour="block">
+                    <model output="latex" predicate="normalize-space(string())" behaviour="block">
                         <pb:template>
                             \begin{intro}
                             [[content]]
