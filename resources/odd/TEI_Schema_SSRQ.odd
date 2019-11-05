@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 3074 $</p>
-                <p>Date of last commit:     $Date: 2019-10-22 16:16:24 +0200 (Tue, 22 Oct 2019) $</p>
+                <p>Revision of last commit: $Rev: 3179 $</p>
+                <p>Date of last commit:     $Date: 2019-11-05 15:27:25 +0100 (Tue, 05 Nov 2019) $</p>
                 <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
@@ -635,14 +635,14 @@
                                     <desc xml:lang="en">period</desc>
                                 </valItem>
                                 <valItem ident="deadline_holiday">
-                                    <desc xml:lang="de">(Kirchenfest als Termin/Frist)</desc>
-                                    <desc xml:lang="fr">(des fêtes religieuses comme délai)</desc>
-                                    <desc xml:lang="en">(feast day  [period])</desc>
+                                    <desc xml:lang="de">Kirchenfest als Termin/Frist</desc>
+                                    <desc xml:lang="fr">des fêtes religieuses comme délai</desc>
+                                    <desc xml:lang="en">feast day (period)</desc>
                                 </valItem>
                                 <valItem ident="deadline_floating holiday">
-                                    <desc xml:lang="de">(beweglicher Feiertag als Termin/Frist)</desc>
-                                    <desc xml:lang="fr">(des fêtes sans date fixe comme délai)</desc>
-                                    <desc xml:lang="en">(floating holiday [deadline])</desc>
+                                    <desc xml:lang="de">beweglicher Feiertag als Termin/Frist</desc>
+                                    <desc xml:lang="fr">des fêtes sans date fixe comme délai</desc>
+                                    <desc xml:lang="en">floating holiday (deadline)</desc>
                                 </valItem>
                                 <valItem ident="holiday">
                                     <desc xml:lang="de">Kirchenfest</desc>
@@ -650,9 +650,9 @@
                                     <desc xml:lang="en">feast day </desc>
                                 </valItem>
                                 <valItem ident="floating holiday">
-                                    <desc xml:lang="de">(beweglicher Feiertag)</desc>
-                                    <desc xml:lang="fr">(des fêtes sans date fixe)</desc>
-                                    <desc xml:lang="en">(floating holiday)</desc>
+                                    <desc xml:lang="de">beweglicher Feiertag</desc>
+                                    <desc xml:lang="fr">des fêtes sans date fixe</desc>
+                                    <desc xml:lang="en">floating holiday</desc>
                                 </valItem>
                                 <valItem ident="electronic">
                                     <desc xml:lang="de">elektronische Publikation</desc>
@@ -1856,6 +1856,11 @@
                                     <desc xml:lang="fr">insignifiant</desc>
                                     <desc xml:lang="en">irrelevant</desc>
                                 </valItem>
+                                <valItem ident="missing">
+                                    <desc xml:lang="de">fehlt</desc>
+                                    <desc xml:lang="fr">manquant</desc>
+                                    <desc xml:lang="en">missing</desc>
+                                </valItem>
                             </valList>
                         </attDef>
                         <!-- 4 Attribute zulassen: @unit mit character, cm, line und word; @quantity und @source-->
@@ -1974,11 +1979,6 @@
                                 <rng:ref name="macro.defaultContent"/>
                             </rng:choice>
                         </rng:zeroOrMore>
-                    </content>
-                </elementSpec>
-                <elementSpec ident="label" module="core" mode="change">
-                    <content>
-                        <rng:ref name="macro.defaultContent"/>
                     </content>
                 </elementSpec>
                 <!-- ebene 4 unterbaum text/body/p -->
@@ -2199,7 +2199,7 @@
                                 </valItem>
                                 <valItem ident="marginal note">
                                     <desc xml:lang="de">Marginalie</desc>
-                                    <desc xml:lang="fr">Note en marge</desc>
+                                    <desc xml:lang="fr">Note</desc>
                                     <desc xml:lang="en">Marginal note</desc>
                                 </valItem>
                             </valList>
@@ -2319,12 +2319,12 @@
                                 </valItem>
                                 <valItem ident="right margin">
                                     <desc xml:lang="de">am rechten Rand</desc>
-                                    <desc xml:lang="fr">dans la marge droite</desc>
+                                    <desc xml:lang="fr">dans la marge de droite</desc>
                                     <desc xml:lang="en">in the right margin</desc>
                                 </valItem>
                                 <valItem ident="left margin">
                                     <desc xml:lang="de">am linken Rand</desc>
-                                    <desc xml:lang="fr">dans la marge gauche</desc>
+                                    <desc xml:lang="fr">dans la marge de gauche</desc>
                                     <desc xml:lang="en">in the left margin</desc>
                                 </valItem>
                             </valList>
@@ -2674,7 +2674,7 @@
                                 </valItem>
                                 <valItem ident="left margin">
                                     <desc xml:lang="de">am linken Rand</desc>
-                                    <desc xml:lang="fr">dans la marge gauche</desc>
+                                    <desc xml:lang="fr">dans la marge de gauche</desc>
                                     <desc xml:lang="en">on the left margin</desc>
                                 </valItem>
                                 <valItem ident="next page">
@@ -2699,7 +2699,7 @@
                                 </valItem>
                                 <valItem ident="right margin">
                                     <desc xml:lang="de">am rechten Rand</desc>
-                                    <desc xml:lang="fr">dans la marge droite</desc>
+                                    <desc xml:lang="fr">dans la marge de droite</desc>
                                     <desc xml:lang="en">on the right margin"</desc>
                                 </valItem>
                                 <valItem ident="top">
@@ -2803,7 +2803,7 @@
                                 </valItem>
                                 <valItem ident="left margin">
                                     <desc xml:lang="de">am linken Rand</desc>
-                                    <desc xml:lang="fr">dans la marge gauche</desc>
+                                    <desc xml:lang="fr">dans la marge de gauche</desc>
                                     <desc xml:lang="en">on the left margin</desc>
                                 </valItem>
                                 <valItem ident="opposite">
@@ -2818,7 +2818,7 @@
                                 </valItem>
                                 <valItem ident="right margin">
                                     <desc xml:lang="de">am rechten Rand</desc>
-                                    <desc xml:lang="fr">dans la marge droite</desc>
+                                    <desc xml:lang="fr">dans la marge de droite</desc>
                                     <desc xml:lang="en">on the right margin</desc>
                                 </valItem>
                                 <valItem ident="top">
@@ -3068,7 +3068,7 @@
                         <attDef ident="n" mode="delete"/>
                         <attDef ident="rend" mode="delete"/>
                         <attDef ident="status" mode="delete"/>
-                        </attList>
+                    </attList>
                 </elementSpec>
                 <elementSpec ident="damage" module="transcr" mode="change">
                     <content>
@@ -3097,17 +3097,17 @@
                                 <valItem ident="cancelled">
                                     <desc xml:lang="de">Kassation</desc>
                                     <desc xml:lang="fr">cassation</desc>
-                                    <desc xml:lang="en">cancelled</desc>
+                                    <desc xml:lang="en">cancellation</desc>
                                 </valItem>
                                 <valItem ident="clipping">
-                                    <desc xml:lang="de">Beschneidung [am Blattrand]</desc>
-                                    <desc xml:lang="fr">coupé [dans la marge]</desc>
-                                    <desc xml:lang="en">clipping [on the leaf margin]</desc>
+                                    <desc xml:lang="de">Beschneidung (am Blattrand)</desc>
+                                    <desc xml:lang="fr">coupure (dans la marge)</desc>
+                                    <desc xml:lang="en">clipping (on the leaf margin)</desc>
                                 </valItem>
                                 <valItem ident="covered by seal">
-                                    <desc xml:lang="de">Siegel verdeckt</desc>
-                                    <desc xml:lang="fr">couvert par le sceau</desc>
-                                    <desc xml:lang="en">covered by seal</desc>
+                                    <desc xml:lang="de">verdeckendes Siegel</desc>
+                                    <desc xml:lang="fr">un sceau couvrant</desc>
+                                    <desc xml:lang="en">covering seal</desc>
                                 </valItem>
                                 <valItem ident="crack">
                                     <desc xml:lang="de">Riss</desc>
@@ -3116,13 +3116,13 @@
                                 </valItem>
                                 <valItem ident="faded ink">
                                     <desc xml:lang="de">verblasste Tinte</desc>
-                                    <desc xml:lang="fr">l’encre s’est affaiblie</desc>
+                                    <desc xml:lang="fr">l’affaiblissement de l’encre</desc>
                                     <desc xml:lang="en">faded ink</desc>
                                 </valItem>
                                 <valItem ident="faded ink and clipping">
-                                    <desc xml:lang="de">verblasste Tinte und Beschneidung [am Blattrand]</desc>
-                                    <desc xml:lang="fr">l’encre s’est affaiblie et coupé [dans la marge]</desc>
-                                    <desc xml:lang="en">faded ink and clipping [on the leaf margin]</desc>
+                                    <desc xml:lang="de">verblasste Tinte und Beschneidung (am Blattrand)</desc>
+                                    <desc xml:lang="fr">une coupure et l’affaiblissement de l’encre (dans la marge)</desc>
+                                    <desc xml:lang="en">faded ink and clipping (on the leaf margin)</desc>
                                 </valItem>
                                 <valItem ident="fold">
                                     <desc xml:lang="de">Falt</desc>
@@ -3135,18 +3135,18 @@
                                     <desc xml:lang="en">glued pages</desc>
                                 </valItem>
                                 <valItem ident="hairline">
-                                    <desc xml:lang="de">feiner Riss</desc>
-                                    <desc xml:lang="fr">légèrement fissuré</desc>
+                                    <desc xml:lang="de">feinen Riss</desc>
+                                    <desc xml:lang="fr">légère(s) fissure(s)</desc>
                                     <desc xml:lang="en">hairline tear</desc>
                                 </valItem>
                                 <valItem ident="hole">
                                     <desc xml:lang="de">Loch</desc>
-                                    <desc xml:lang="fr">troué</desc>
+                                    <desc xml:lang="fr">un ou plusieurs trou(s)</desc>
                                     <desc xml:lang="en">hole</desc>
                                 </valItem>
                                 <valItem ident="ink blot">
                                     <desc xml:lang="de">Tintenklecks</desc>
-                                    <desc xml:lang="fr">taché par l’encre</desc>
+                                    <desc xml:lang="fr">coulure d’encre</desc>
                                     <desc xml:lang="en">ink blot</desc>
                                 </valItem>
                                 <valItem ident="ink hole">
@@ -3156,18 +3156,18 @@
                                 </valItem>
                                 <valItem ident="insects">
                                     <desc xml:lang="de">Insektenfrass</desc>
-                                    <desc xml:lang="fr">endommagé par des insectes</desc>
-                                    <desc xml:lang="en">damaged by insects</desc>
+                                    <desc xml:lang="fr">des insectes</desc>
+                                    <desc xml:lang="en">insects</desc>
                                 </valItem>
                                 <valItem ident="lost folio">
                                     <desc xml:lang="de">fehlende Seite/fehlendes Blatt</desc>
-                                    <desc xml:lang="fr">page/feuille manquante</desc>
+                                    <desc xml:lang="fr">la perte de la page/feuille</desc>
                                     <desc xml:lang="en">lost folio</desc>
                                 </valItem>
                                 <valItem ident="mice">
                                     <desc xml:lang="de">Mäusefrass</desc>
-                                    <desc xml:lang="fr">endommagé par la dent des rongeurs</desc>
-                                    <desc xml:lang="en">damaged by mice</desc>
+                                    <desc xml:lang="fr">la dent des rongeurs</desc>
+                                    <desc xml:lang="en">mice</desc>
                                 </valItem>
                                 <valItem ident="mildew">
                                     <desc xml:lang="de">Pilzbefall/Schimmel</desc>
@@ -3175,18 +3175,18 @@
                                     <desc xml:lang="en">mold</desc>
                                 </valItem>
                                 <valItem ident="overbinding">
-                                    <desc xml:lang="de">durch Einband überdeckt</desc>
-                                    <desc xml:lang="fr">couvert par la reliure</desc>
-                                    <desc xml:lang="en">covered by the binding</desc>
+                                    <desc xml:lang="de">verdeckenden Einband</desc>
+                                    <desc xml:lang="fr">la couverture de la reliure</desc>
+                                    <desc xml:lang="en">covering binding</desc>
                                 </valItem>
                                 <valItem ident="part of the folio lost">
-                                    <desc xml:lang="de">Teil der Seite/Blatt fehlt</desc>
-                                    <desc xml:lang="fr">partie de la page/feuille manquante</desc>
-                                    <desc xml:lang="en">part of the page/folio lost</desc>
+                                    <desc xml:lang="de">fehlenden Teil der Seite oder des Blatts</desc>
+                                    <desc xml:lang="fr">la perte d’une partie de la page/feuille</desc>
+                                    <desc xml:lang="en">lost part of the page/folio</desc>
                                 </valItem>
                                 <valItem ident="restoration">
                                     <desc xml:lang="de">Restauration</desc>
-                                    <desc xml:lang="fr">restauré</desc>
+                                    <desc xml:lang="fr">la restauration</desc>
                                     <desc xml:lang="en">restoration</desc>
                                 </valItem>
                                 <!-- <valItem ident="rubbing">
@@ -3195,17 +3195,17 @@
                                 </valItem>-->
                                 <valItem ident="smoke">
                                     <desc xml:lang="de">Rauch/Brandschaden</desc>
-                                    <desc xml:lang="fr">endommagé par la fumée/le feu</desc>
-                                    <desc xml:lang="en">damaged by smoke/fire</desc>
+                                    <desc xml:lang="fr">la fumée/le feu</desc>
+                                    <desc xml:lang="en">smoke/fire</desc>
                                 </valItem>
                                 <valItem ident="stapling">
                                     <desc xml:lang="de">Heftklammer</desc>
-                                    <desc xml:lang="fr">endommagé par une agrafe</desc>
+                                    <desc xml:lang="fr">agrafe</desc>
                                     <desc xml:lang="en">stapling</desc>
                                 </valItem>
                                 <valItem ident="water spot">
                                     <desc xml:lang="de">Wasserfleck</desc>
-                                    <desc xml:lang="fr">taché par la moisissure</desc>
+                                    <desc xml:lang="fr">des taches de moisissure</desc>
                                     <desc xml:lang="en">water spot</desc>
                                 </valItem>
                             </valList>
@@ -3229,6 +3229,17 @@
                             </rng:choice>
                         </rng:zeroOrMore>
                     </content>
+                    <constraintSpec scheme="schematron" ident="sch-damageSpan">
+                        <desc>Attributes of tei:damageSpan</desc>
+                        <constraint>
+                            <sch:pattern>
+                                <sch:rule context="tei:damageSpan">
+                                    <sch:assert test="@agent" xml:lang="en">The @agent attribute
+                                        must be specified on the <sch:name/> element.</sch:assert>
+                                </sch:rule>
+                            </sch:pattern>
+                        </constraint>
+                    </constraintSpec>
                     <attList>
                         <attDef ident="agent" mode="replace" usage="req">
                             <desc xml:lang="de">beschreibt die Art einer Beschädigung</desc>
@@ -3236,77 +3247,77 @@
                                 <valItem ident="cancelled">
                                     <desc xml:lang="de">Kassation</desc>
                                     <desc xml:lang="fr">cassation</desc>
-                                    <desc xml:lang="en">cancelled</desc>
+                                    <desc xml:lang="en">cancellation</desc>
                                 </valItem>
                                 <valItem ident="clipping">
                                     <desc xml:lang="de">Beschneidung (am Blattrand)</desc>
-                                    <desc xml:lang="fr">coupé (dans la marge)</desc>
+                                    <desc xml:lang="fr">coupure (dans la marge)</desc>
                                     <desc xml:lang="en">clipping (on the leaf margin)</desc>
+                                </valItem>
+                                <valItem ident="covered by seal">
+                                    <desc xml:lang="de">verdeckendes Siegel</desc>
+                                    <desc xml:lang="fr">un sceau couvrant</desc>
+                                    <desc xml:lang="en">covering seal</desc>
                                 </valItem>
                                 <valItem ident="crack">
                                     <desc xml:lang="de">Riss</desc>
                                     <desc xml:lang="fr">déchirure</desc>
                                     <desc xml:lang="en">tear</desc>
                                 </valItem>
-                                <valItem ident="covered by seal">
-                                    <desc xml:lang="de">vom Siegel verdeckt</desc>
-                                    <desc xml:lang="fr">couvert par le sceau</desc>
-                                    <desc xml:lang="en">covered by seal</desc>
-                                </valItem>
                                 <valItem ident="faded ink">
                                     <desc xml:lang="de">verblasste Tinte</desc>
-                                    <desc xml:lang="fr">l’encre s’est affaiblie</desc>
+                                    <desc xml:lang="fr">l’affaiblissement de l’encre</desc>
                                     <desc xml:lang="en">faded ink</desc>
                                 </valItem>
                                 <valItem ident="faded ink and clipping">
-                                    <desc xml:lang="de">verblasste Tinte und Beschneidung [am Blattrand]</desc>
-                                    <desc xml:lang="fr">l’encre s’est affaiblie et coupé [dans la marge]</desc>
-                                    <desc xml:lang="en">faded ink and clipping [on the leaf margin]</desc>
+                                    <desc xml:lang="de">verblasste Tinte und Beschneidung (am Blattrand)</desc>
+                                    <desc xml:lang="fr">une coupure et l’affaiblissement de l’encre (dans la marge)</desc>
+                                    <desc xml:lang="en">faded ink and clipping (on the leaf margin)</desc>
                                 </valItem>
                                 <valItem ident="fold">
                                     <desc xml:lang="de">Falt</desc>
-                                    <desc xml:lang="fr">endommagé par un pli</desc>
+                                    <desc xml:lang="fr">pli</desc>
                                     <desc xml:lang="en">fold</desc>
                                 </valItem>
                                 <valItem ident="glued page">
                                     <desc xml:lang="de">zusammengeklebte Seiten</desc>
                                     <desc xml:lang="fr">pages collées</desc>
-                                    <desc xml:lang="en">glued page</desc>
+                                    <desc xml:lang="en">glued pages</desc>
                                 </valItem>
                                 <valItem ident="hairline">
-                                    <desc xml:lang="de">feiner Riss</desc>
-                                    <desc xml:lang="fr">légèrement fissuré</desc>
+                                    <desc xml:lang="de">feinen Riss</desc>
+                                    <desc xml:lang="fr">légère(s) fissure(s)</desc>
                                     <desc xml:lang="en">hairline tear</desc>
                                 </valItem>
                                 <valItem ident="hole">
                                     <desc xml:lang="de">Loch</desc>
-                                    <desc xml:lang="fr">troué</desc>
+                                    <desc xml:lang="fr">un ou plusieurs trou(s)</desc>
                                     <desc xml:lang="en">hole</desc>
                                 </valItem>
                                 <valItem ident="ink blot">
                                     <desc xml:lang="de">Tintenklecks</desc>
-                                    <desc xml:lang="fr">taché par l’encre</desc>
+                                    <desc xml:lang="fr">coulure d’encre</desc>
                                     <desc xml:lang="en">ink blot</desc>
                                 </valItem>
                                 <valItem ident="ink hole">
                                     <desc xml:lang="de">Tintenfrass</desc>
-                                    <desc xml:lang="fr">endommagé par l’acidité de l’encre</desc>
+                                    <desc xml:lang="fr">acidité de l’encre</desc>
                                     <desc xml:lang="en">ink hole</desc>
                                 </valItem>
                                 <valItem ident="insects">
                                     <desc xml:lang="de">Insektenfrass</desc>
-                                    <desc xml:lang="fr">endommagé par des insectes</desc>
-                                    <desc xml:lang="en">damaged by insects</desc>
+                                    <desc xml:lang="fr">des insectes</desc>
+                                    <desc xml:lang="en">insects</desc>
                                 </valItem>
                                 <valItem ident="lost folio">
                                     <desc xml:lang="de">fehlende Seite/fehlendes Blatt</desc>
-                                    <desc xml:lang="fr">page/feuille manquante</desc>
+                                    <desc xml:lang="fr">la perte de la page/feuille</desc>
                                     <desc xml:lang="en">lost folio</desc>
                                 </valItem>
                                 <valItem ident="mice">
                                     <desc xml:lang="de">Mäusefrass</desc>
-                                    <desc xml:lang="fr">endommagé par la dent des rongeurs</desc>
-                                    <desc xml:lang="en">damaged by mice</desc>
+                                    <desc xml:lang="fr">la dent des rongeurs</desc>
+                                    <desc xml:lang="en">mice</desc>
                                 </valItem>
                                 <valItem ident="mildew">
                                     <desc xml:lang="de">Pilzbefall/Schimmel</desc>
@@ -3314,18 +3325,18 @@
                                     <desc xml:lang="en">mold</desc>
                                 </valItem>
                                 <valItem ident="overbinding">
-                                    <desc xml:lang="de">durch Einband überdeckt</desc>
-                                    <desc xml:lang="fr">couvert par la reliure</desc>
-                                    <desc xml:lang="en">covered by the binding</desc>
+                                    <desc xml:lang="de">verdeckenden Einband</desc>
+                                    <desc xml:lang="fr">la couverture de la reliure</desc>
+                                    <desc xml:lang="en">covering binding</desc>
                                 </valItem>
                                 <valItem ident="part of the folio lost">
-                                    <desc xml:lang="de">Teil der Seite/Blatt fehlt</desc>
-                                    <desc xml:lang="fr">partie de la page/feuille manquante</desc>
-                                    <desc xml:lang="en">part of the page/folio lost</desc>
+                                    <desc xml:lang="de">fehlenden Teil der Seite oder des Blatts</desc>
+                                    <desc xml:lang="fr">la perte d’une partie de la page/feuille</desc>
+                                    <desc xml:lang="en">lost part of the page/folio</desc>
                                 </valItem>
                                 <valItem ident="restoration">
                                     <desc xml:lang="de">Restauration</desc>
-                                    <desc xml:lang="fr">restauré</desc>
+                                    <desc xml:lang="fr">la restauration</desc>
                                     <desc xml:lang="en">restoration</desc>
                                 </valItem>
                                 <!-- <valItem ident="rubbing">
@@ -3334,17 +3345,17 @@
                                 </valItem>-->
                                 <valItem ident="smoke">
                                     <desc xml:lang="de">Rauch/Brandschaden</desc>
-                                    <desc xml:lang="fr">endommagé par la fumée/le feu</desc>
-                                    <desc xml:lang="en">damaged by smoke/fire</desc>
+                                    <desc xml:lang="fr">la fumée/le feu</desc>
+                                    <desc xml:lang="en">smoke/fire</desc>
                                 </valItem>
                                 <valItem ident="stapling">
                                     <desc xml:lang="de">Heftklammer</desc>
-                                    <desc xml:lang="fr">endommagé par une agrafe</desc>
+                                    <desc xml:lang="fr">agrafe</desc>
                                     <desc xml:lang="en">stapling</desc>
                                 </valItem>
                                 <valItem ident="water spot">
                                     <desc xml:lang="de">Wasserfleck</desc>
-                                    <desc xml:lang="fr">taché par la moisissure</desc>
+                                    <desc xml:lang="fr">des taches de moisissure</desc>
                                     <desc xml:lang="en">water spot</desc>
                                 </valItem>
                             </valList>
@@ -3657,6 +3668,47 @@
                             <rng:ref name="list"/>
                         </rng:choice>
                     </content>
+                </elementSpec>
+                <elementSpec ident="label" module="core" mode="change">
+                    <classes mode="change">
+                        <!-- because of @scribe -->
+                        <memberOf key="att.handFeatures"/>
+                    </classes>
+                    <content>
+                        <rng:oneOrMore>
+                            <rng:choice>
+                                <rng:text/>
+                                <rng:ref name="macro.defaultContent"/>
+                            </rng:choice>
+                        </rng:oneOrMore>
+                    </content>
+                    <attList>
+                        <attDef ident="type" mode="replace">
+                            <desc/>
+                            <valList type="closed">
+                                <valItem ident="keyword">
+                                    <desc xml:lang="de">Schlagwort</desc>
+                                    <desc xml:lang="fr">mot-clé</desc>
+                                    <desc xml:lang="en">keyword</desc>
+                                </valItem>
+                            </valList>
+                        </attDef>
+                        <attDef ident="place" mode="replace">
+                            <desc/>
+                            <valList type="closed">
+                                <valItem ident="right margin">
+                                    <desc xml:lang="de">am rechten Rand</desc>
+                                    <desc xml:lang="fr">dans la marge de droite</desc>
+                                    <desc xml:lang="en">in the right margin</desc>
+                                </valItem>
+                                <valItem ident="left margin">
+                                    <desc xml:lang="de">am linken Rand</desc>
+                                    <desc xml:lang="fr">dans la marge de gauche</desc>
+                                    <desc xml:lang="en">in the left margin</desc>
+                                </valItem>
+                            </valList>
+                        </attDef>
+                    </attList>
                 </elementSpec>
                 <elementSpec ident="lem" module="textcrit" mode="change">
                     <!-- classes mode="replace">
@@ -5309,7 +5361,8 @@
                               <rng:text/>
                               <rng:ref name="p"/>
                                 <rng:ref name="anchor"/>
-                              <rng:ref name="macro.defaultContent"/>
+                                <rng:ref name="label"/>
+                                <rng:ref name="macro.defaultContent"/>
                            </rng:choice>
                         </rng:oneOrMore>
                     </content>
@@ -5712,7 +5765,7 @@
                         </valItem>
                         <valItem ident="origDate">
                             <desc xml:lang="de">Originaldatierung</desc>
-                            <desc xml:lang="fr">Datation originale</desc>
+                            <desc xml:lang="fr">Date</desc>
                             <desc xml:lang="en">Date of origin</desc>
                         </valItem>
                         <valItem ident="add">
@@ -5722,7 +5775,7 @@
                         </valItem>
                         <valItem ident="del-gap">
                             <desc xml:lang="de">Streichung mit Textverlust</desc>
-                            <desc xml:lang="fr">Suppression avec une perte de texte</desc>
+                            <desc xml:lang="fr">Passage cancellé avec perte de texte</desc>
                             <desc xml:lang="en">Deletion with text loss</desc>
                         </valItem>
                         <valItem ident="del">
@@ -5739,6 +5792,11 @@
                             <desc xml:lang="de">unlesbar</desc>
                             <desc xml:lang="fr">illisible</desc>
                             <desc xml:lang="en">unreadable</desc>
+                        </valItem>
+                        <valItem ident="missing">
+                            <desc xml:lang="de">fehlt</desc>
+                            <desc xml:lang="fr">manquant</desc>
+                            <desc xml:lang="en">missing</desc>
                         </valItem>
                         <valItem ident="added-in">
                             <desc xml:lang="de">Zusatz in</desc>
@@ -5821,7 +5879,7 @@
                         </valItem>
                         <valItem ident="damage">
                             <desc xml:lang="de">Beschädigung</desc>
-                            <desc xml:lang="fr">Dommages</desc>
+                            <desc xml:lang="fr">Endommagé</desc>
                             <desc xml:lang="en">Damage</desc>
                         </valItem>
                         <valItem ident="duration">
@@ -5859,9 +5917,14 @@
                             <desc xml:lang="fr">remplace</desc>
                             <desc xml:lang="en">replace</desc>
                         </valItem>
+                        <valItem ident="marginal-note">
+                            <desc xml:lang="de">Marginalie</desc>
+                            <desc xml:lang="fr">Note</desc>
+                            <desc xml:lang="en">Marginal note</desc>
+                        </valItem>
                         <valItem ident="date">
                             <desc xml:lang="de">Datum</desc>
-                            <desc xml:lang="fr">Datation</desc>
+                            <desc xml:lang="fr">Date</desc>
                             <desc xml:lang="en">Date</desc>
                         </valItem>
                         <valItem ident="repeated-duration">
@@ -5944,13 +6007,8 @@
                         </valItem>
                         <valItem ident="secondaryScribe">
                             <desc xml:lang="de">Nachtragshand</desc>
-                            <desc xml:lang="fr">main secondaire</desc>
-                            <desc xml:lang="en">secondary hand</desc>
-                        </valItem>
-                        <valItem ident="hand">
-                            <desc xml:lang="de">Hand</desc>
-                            <desc xml:lang="fr">main</desc>
-                            <desc xml:lang="en">hand</desc>
+                            <desc xml:lang="fr">autre main</desc>
+                            <desc xml:lang="en">other hand</desc>
                         </valItem>
                         <valItem ident="by">
                             <desc xml:lang="de">von</desc>
