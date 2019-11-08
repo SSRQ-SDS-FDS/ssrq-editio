@@ -1230,11 +1230,22 @@
                             \vspace{1.5mm}
                         </pb:template>
                     </model>
+                    <model output="latex" predicate="@resp and @n" behaviour="block">
+                        <param name="n" value="@n"/>
+                        <pb:template>
+                            \vspace{1.5mm}
+                            \noindent
+                            [[[n]] [[content]]]
+                            \vspace{1.5mm}
+
+                            \noindent
+                        </pb:template>
+                    </model>
                     <model output="latex" predicate="@resp" behaviour="block">
                         <pb:template>
                             \vspace{1.5mm}
                             \noindent
-                            [ [[content]] ]
+                            [[[content]]]
                             \vspace{1.5mm}
 
                             \noindent
