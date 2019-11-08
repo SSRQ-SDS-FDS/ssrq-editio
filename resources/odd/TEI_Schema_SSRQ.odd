@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 3179 $</p>
-                <p>Date of last commit:     $Date: 2019-11-05 15:27:25 +0100 (Tue, 05 Nov 2019) $</p>
+                <p>Revision of last commit: $Rev: 3194 $</p>
+                <p>Date of last commit:     $Date: 2019-11-08 16:18:01 +0100 (Fri, 08 Nov 2019) $</p>
                 <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
@@ -1459,7 +1459,7 @@
                                     <desc xml:lang="en">well-preserved</desc>
                                 </valItem>
                                 <valItem ident="bound in linen">
-                                    <desc xml:lang="de">in Leinensäckchen </desc>
+                                    <desc xml:lang="de">in Leinensäckchen</desc>
                                     <desc xml:lang="fr">lié dans un sachet de lin</desc>
                                     <desc xml:lang="en">enclosed in a linen sack</desc>
                                 </valItem>
@@ -5839,28 +5839,28 @@
                             <desc xml:lang="en">Language change</desc>
                         </valItem>
                         <valItem ident="term">
-                            <desc xml:lang="de">Begriff</desc>
-                            <desc xml:lang="fr">Terme</desc>
-                            <desc xml:lang="it">Termine</desc>
-                            <desc xml:lang="en">Term</desc>
+                            <desc xml:lang="de">Begriff:</desc>
+                            <desc xml:lang="fr">Terme:</desc>
+                            <desc xml:lang="it">Termine:</desc>
+                            <desc xml:lang="en">Term:</desc>
                         </valItem>
                         <valItem ident="person">
-                            <desc xml:lang="de">Person</desc>
-                            <desc xml:lang="fr">Personne</desc>
-                            <desc xml:lang="it">Persona</desc>
-                            <desc xml:lang="en">Person</desc>
+                            <desc xml:lang="de">Person:</desc>
+                            <desc xml:lang="fr">Personne:</desc>
+                            <desc xml:lang="it">Persona:</desc>
+                            <desc xml:lang="en">Person:</desc>
                         </valItem>
                         <valItem ident="organisation">
-                            <desc xml:lang="de">Organisation</desc>
-                            <desc xml:lang="fr">Organisation</desc>
-                            <desc xml:lang="it">Organizzazione</desc>
-                            <desc xml:lang="en">Organisation</desc>
+                            <desc xml:lang="de">Organisation:</desc>
+                            <desc xml:lang="fr">Organisation:</desc>
+                            <desc xml:lang="it">Organizzazione:</desc>
+                            <desc xml:lang="en">Organisation:</desc>
                         </valItem>
                         <valItem ident="place">
-                            <desc xml:lang="de">Ort</desc>
-                            <desc xml:lang="fr">Lieu</desc>
-                            <desc xml:lang="it">Luogo</desc>
-                            <desc xml:lang="en">Place</desc>
+                            <desc xml:lang="de">Ort:</desc>
+                            <desc xml:lang="fr">Lieu:</desc>
+                            <desc xml:lang="it">Luogo:</desc>
+                            <desc xml:lang="en">Place:</desc>
                         </valItem>
                         <valItem ident="origPlace">
                             <desc xml:lang="de">Ausstellungsort</desc>
