@@ -294,9 +294,10 @@
                         <pb:template>[[content]]\,[!]</pb:template>
                     </model>
                     <model predicate="parent::choice and count(parent::*/*) gt 1" behaviour="inline"/>
-                    <model behaviour="alternate">
+                    <model behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
                         <param name="alternate" value="ec:label('sic')"/>
+                        <param name="type" value="'text-critical'"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="orig" mode="change">
