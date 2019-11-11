@@ -1197,11 +1197,6 @@
                     <model output="latex" predicate="request:get-parameter('introduction', ())" behaviour="block">
                         <pb:template>\section{[[content]]}</pb:template>
                     </model>
-                    <model output="latex" predicate="preceding-sibling::*[1][self::pb]" behaviour="inline">
-                        <pb:template>[[content]]
-                            \vspace{1.5mm}
-                        </pb:template>
-                    </model>
                     <model output="latex" predicate="@resp and @n" behaviour="block">
                         <param name="n" value="@n"/>
                         <pb:template>
@@ -1223,7 +1218,18 @@
                             \noindent
                         </pb:template>
                     </model>
-                    <model output="latex" behaviour="block">
+                    <model output="latex" predicate="@n" behaviour="block">
+                        <param name="n" value="@n"/>
+                        <pb:template>
+                            \vspace{1.5mm}
+                            \noindent
+                            [[[n]]] [[content]]
+                            \vspace{1.5mm}
+
+                            \noindent
+                        </pb:template>
+                    </model>
+                    <model output="latex" predicate="@type" behaviour="block">
                         <pb:template>
                             \vspace{1.5mm}
                             \noindent
@@ -1233,6 +1239,11 @@
                             \noindent
                         </pb:template>
                     </model>
+                    <!--<model output="latex" predicate="preceding-sibling::*[1][self::pb]" behaviour="inline">
+                        <pb:template>[[content]]
+                            \vspace{1.5mm}
+                        </pb:template>
+                    </model>-->
                     <model predicate="@resp" behaviour="omit"/>
                     <model predicate="@type='title'" behaviour="heading">
                         <param name="level" value="1"/>
