@@ -551,9 +551,10 @@
                     <model output="latex" predicate="@rend='sup'" behaviour="inline">
                         <pb:template>\textsuperscript{[[content]]}</pb:template>
                     </model>
-                    <model output="latex" predicate="not(@rend='sup')" behaviour="inline">
+                    <!--<model output="latex" predicate="not(@rend='sup')" behaviour="alternote">
                         <param name="content" value="."/>
-                    </model>
+                        <param name="alternate" value="ec:translate(@rend)"/>
+                    </model>-->
                     <model predicate="@rend='sup'" behaviour="inline">
                         <outputRendition>
                             font-size: 80%; vertical-align: top;
