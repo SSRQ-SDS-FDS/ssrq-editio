@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 3194 $</p>
-                <p>Date of last commit:     $Date: 2019-11-08 16:18:01 +0100 (Fri, 08 Nov 2019) $</p>
+                <p>Revision of last commit: $Rev: 3340 $</p>
+                <p>Date of last commit:     $Date: 2019-12-05 15:43:42 +0100 (Thu, 05 Dec 2019) $</p>
                 <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
@@ -2179,7 +2179,7 @@
                                 </valItem>
                                 <valItem ident="archiving reference">
                                     <desc xml:lang="de">Registraturvermerk</desc>
-                                    <desc xml:lang="fr">Annotation issue de la Registratur</desc>
+                                    <desc xml:lang="fr">Note issue des Archives</desc>
                                     <desc xml:lang="en">Registratur’s sign</desc>
                                 </valItem>
                                 <valItem ident="computatio">
@@ -3470,7 +3470,7 @@
                                 </valItem>
                                <valItem ident="strikethrough">
                                     <desc xml:lang="de">Streichung durch einfache Durchstreichung</desc>
-                                    <desc xml:lang="fr">la suppression a été tracée</desc>
+                                    <desc xml:lang="fr">suppression tracée</desc>
                                    <desc xml:lang="en">deletion by strikethrough</desc>
                                 </valItem>
                                 <valItem ident="subpunction">
@@ -3619,10 +3619,20 @@
                                     <desc xml:lang="fr">cursif</desc>
                                     <desc xml:lang="en">italic</desc>
                                 </valItem>
+                                <valItem ident="left">
+                                    <desc xml:lang="de">linksbündig</desc>
+                                    <desc xml:lang="fr">gauche</desc>
+                                    <desc xml:lang="en">left</desc>
+                                </valItem>
                                 <valItem ident="outdent">
                                     <desc xml:lang="de">Durch hängenden Einzug hervorgehoben</desc>
                                     <desc xml:lang="fr">Dans la marge</desc>
                                     <desc xml:lang="en">outdent</desc>
+                                </valItem>
+                                <valItem ident="right">
+                                    <desc xml:lang="de">rechtssbündig</desc>
+                                    <desc xml:lang="fr">droit</desc>
+                                    <desc xml:lang="en">right</desc>
                                 </valItem>
                                 <valItem ident="rubricated">
                                     <desc xml:lang="de">rubriziert</desc>
@@ -3856,7 +3866,7 @@
                                 </valItem>
                                 <valItem ident="Lausanne">
                                     <desc xml:lang="de">Lausanner</desc>
-                                    <desc xml:lang="fr">de Lausanne</desc>
+                                    <desc xml:lang="fr">lausannois</desc>
                                     <desc xml:lang="en">of Lausanne</desc>
                                 </valItem>
                                 <valItem ident="Lothringen">
