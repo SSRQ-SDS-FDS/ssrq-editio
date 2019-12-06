@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 3340 $</p>
-                <p>Date of last commit:     $Date: 2019-12-05 15:43:42 +0100 (Thu, 05 Dec 2019) $</p>
+                <p>Revision of last commit: $Rev: 3344 $</p>
+                <p>Date of last commit:     $Date: 2019-12-06 10:54:49 +0100 (Fri, 06 Dec 2019) $</p>
                 <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
@@ -5028,6 +5028,7 @@
                                 <valItem ident="S">
                                     <desc xml:lang="de">Sol</desc>
                                     <desc xml:lang="fr">sol</desc>
+                                    <desc xml:lang="fr" type="plural">sols</desc>
                                     <desc xml:lang="en">sol</desc>
                                 </valItem>
                                 <valItem ident="sol faible">
