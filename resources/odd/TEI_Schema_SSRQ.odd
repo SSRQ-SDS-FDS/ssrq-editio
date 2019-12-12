@@ -18,8 +18,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 3344 $</p>
-                <p>Date of last commit:     $Date: 2019-12-06 10:54:49 +0100 (Fri, 06 Dec 2019) $</p>
+                <p>Revision of last commit: $Rev: 3367 $</p>
+                <p>Date of last commit:     $Date: 2019-12-12 09:33:55 +0100 (Thu, 12 Dec 2019) $</p>
                 <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
@@ -3470,8 +3470,8 @@
                                 </valItem>
                                <valItem ident="strikethrough">
                                     <desc xml:lang="de">Streichung durch einfache Durchstreichung</desc>
-                                    <desc xml:lang="fr">suppression tracée</desc>
-                                   <desc xml:lang="en">deletion by strikethrough</desc>
+                                    <desc xml:lang="fr">suppression par biffage</desc>
+                                    <desc xml:lang="en">deletion by strikethrough</desc>
                                 </valItem>
                                 <valItem ident="subpunction">
                                     <desc xml:lang="de">Streichung durch Punkte unter dem zu Streichenden</desc>
@@ -3539,7 +3539,7 @@
                                 </valItem>
                                 <valItem ident="strikethrough">
                                     <desc xml:lang="de">Streichung durch einfache Durchstreichung</desc>
-                                    <desc xml:lang="fr">la suppression par simple biffés</desc>
+                                    <desc xml:lang="fr">suppression par biffage</desc>
                                     <desc xml:lang="en">deletion by strikethrough</desc>
                                 </valItem>
                                 <valItem ident="subpunction">
