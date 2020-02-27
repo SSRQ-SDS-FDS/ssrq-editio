@@ -437,6 +437,12 @@
                         <desc xml:lang="it">Christi</desc>
                         <desc xml:lang="en">Christi</desc>
                     </valItem>
+                    <valItem ident="z B">
+                        <desc xml:lang="de">zum Beispiel</desc>
+                        <desc xml:lang="fr">zum Beispiel</desc>
+                        <desc xml:lang="it">zum Beispiel</desc>
+                        <desc xml:lang="en">zum Beispiel</desc>
+                    </valItem>
                     </valList>
                 </dataSpec>
                 <dataSpec ident="abbr-symbols">
