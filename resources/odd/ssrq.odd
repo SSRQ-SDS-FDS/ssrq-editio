@@ -301,6 +301,9 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="orig" mode="change">
+                    <model output="latex" predicate="request:get-parameter('introduction', ())" behaviour="inline">
+                        <pb:template>\textit{[[content]]}</pb:template>
+                    </model>
                     <model output="latex" behaviour="textup"/>
                     <model behaviour="inline">
                         <param name="content" value="('«', ., '»')"/>
@@ -1195,13 +1198,13 @@
                     <model output="latex" predicate="request:get-parameter('introduction', ()) and @type='title' and @n" behaviour="block">
                         <pb:template>\section{[[content]]}</pb:template>
                     </model>
-                    <model output="latex" predicate="request:get-parameter('introduction', ()) and @type='subtitle' and matches(@n, '^\d\.\d$')" behaviour="block">
+                    <model output="latex" predicate="request:get-parameter('introduction', ()) and @type='subtitle' and matches(@n, '^\d+\.\d+$')" behaviour="block">
                         <pb:template>\subsection{[[content]]}</pb:template>
                     </model>
-                    <model output="latex" predicate="request:get-parameter('introduction', ()) and @type='subtitle' and matches(@n, '^\d\.\d\.\d$')" behaviour="block">
+                    <model output="latex" predicate="request:get-parameter('introduction', ()) and @type='subtitle' and matches(@n, '^\d+\.\d+\.\d+$')" behaviour="block">
                         <pb:template>\subsubsection{[[content]]}</pb:template>
                     </model>
-                    <model output="latex" predicate="request:get-parameter('introduction', ()) and @type='subtitle' and matches(@n, '^\d\.\d\.\d\.\d$')" behaviour="block">
+                    <model output="latex" predicate="request:get-parameter('introduction', ()) and @type='subtitle' and matches(@n, '^\d+\.\d+\.\d+\.\d+$')" behaviour="block">
                         <pb:template>\subsubsubsection{[[content]]}</pb:template>
                     </model>
                     <model output="latex" predicate="request:get-parameter('introduction', ()) and @type='title'" behaviour="block">
