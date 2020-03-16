@@ -52,8 +52,12 @@ return
                 return <pubPlace>{replace($i/text(), "(.+?) ?[:;,]$", "$1")}</pubPlace>
         let $pub-date := $result//marc:record/marc:datafield[@tag="260"]/marc:subfield[@code="c"]/text()
 
-        let $journal := $result//marc:record/marc:datafield[@tag="773"]/marc:subfield[@code="t"]/text()
-        let $bibl-scope := $result//marc:record/marc:datafield[@tag="773"]/marc:subfield[@code="g"]/text()
+        let $journal :=
+            for $i in ($result//marc:record/marc:datafield[@tag="773"]/marc:subfield[@code="t"])
+                return <title>{$i/text()}</title>
+        let $bibl-scope :=
+            for $i in ($result//marc:record/marc:datafield[@tag="773"]/marc:subfield[@code="g"])
+                return <biblScope>{$i/text()}</biblScope>
 
         return
             <biblStruct xml:id="{$id}">
@@ -75,8 +79,8 @@ return
                         <title>{$title}</title>
                         <title type="short">{$short-title}</title>
                         <imprint>
-                            {for $i at $pos in ($pub-place)
-                                return ($i, $publisher[$pos])
+                            {for $i at $pos in ($publisher)
+                                return ($i, $pub-place[$pos])
                             }
                             <date>{$pub-date}</date>
                         </imprint>
@@ -88,8 +92,8 @@ return
                         <title type="short">{$short-title}</title>
                     </analytic>,
                     <monogr>
-                        <title>{$journal}</title>
-                        <biblScope>{$bibl-scope}</biblScope>
+                        {$journal}
+                        {$bibl-scope}
                     </monogr>)
                 }
             </biblStruct>
