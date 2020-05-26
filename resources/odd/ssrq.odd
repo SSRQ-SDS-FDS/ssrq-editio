@@ -25,6 +25,16 @@
         <body>
             <schemaSpec start="TEI teiCorpus" ident="ssrq" source="teipublisher.odd">
                 <elementSpec ident="TEI" mode="change">
+                    <model output="latex" predicate="request:get-parameter('literature', ())" behaviour="section">
+                        <param name="literature" value="text/body/div/listBibl/biblStruct"/>
+                        <pb:template>
+                            \begin{hangparas}{4.5mm}{1}
+
+                            [[literature]]
+
+                            \end{hangparas}
+                        </pb:template>
+                    </model>
                     <model output="latex" predicate="request:get-parameter('introduction', ())" behaviour="section">
                         <param name="lang" value="(session:get-attribute('ssrq.lang'), 'de')[1]"/>
                         <param name="content" value="text//body"/>
@@ -1374,6 +1384,28 @@
                     </model>
                     <model predicate="ancestor::teiHeader" behaviour="listItem"/>
                     <model behaviour="inline"/>
+                </elementSpec>
+                <elementSpec ident="biblStruct" mode="change">
+                    <model output="latex" predicate="parent::listBibl and analytic" behaviour="block">
+                        <param name="author" value="if (analytic/author) then (string-join(analytic/author, '; '), ': ') else ()"/>
+                        <param name="title" value="analytic/title[not(@type='short')]"/>
+                        <param name="journal" value="monogr/title"/>
+                        <param name="scope" value="monogr/biblScope"/>
+                        <pb:template>
+                            % Zeitschrift
+                            [[author]][[title]]. In: [[journal]]. [[scope]].
+                        </pb:template>
+                    </model>
+                    <model output="latex" predicate="parent::listBibl and not(analytic)" behaviour="block">
+                        <param name="author" value="if (monogr/author) then (string-join(monogr/author, '; '), ': ') else ()"/>
+                        <param name="title" value="monogr/title[not(@type='short')]"/>
+                        <param name="place" value="(monogr/imprint/pubPlace[1], if (monogr/imprint/pubPlace[2]) then ' et al.' else ())"/>
+                        <param name="date" value="monogr/imprint/date"/>
+                        <pb:template>
+                            % Buch
+                            [[author]][[title]]. [[place]] [[date]].
+                        </pb:template>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="additional" mode="add">
                     <model behaviour="listItem"/>
