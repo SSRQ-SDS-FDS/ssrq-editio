@@ -294,6 +294,18 @@ declare function pmf:url($url as xs:string) {
     return '\url{' || $url || '}'
 };
 
+declare function pmf:format-author($author as node()*) {
+    (: save typing in ssrq.odd :)
+
+    if ($author) then
+        if (count($author) > 2) then
+            string-join(($author[1], $author[2]), '; ') || ' et al.'
+        else
+            string-join($author, '; ')
+    else
+        ()
+};
+
 declare function pmf:print-date($date as node()*) {
     (: save typing in ssrq.odd :)
 

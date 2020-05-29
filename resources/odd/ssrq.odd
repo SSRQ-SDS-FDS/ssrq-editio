@@ -25,7 +25,7 @@
         <body>
             <schemaSpec start="TEI teiCorpus" ident="ssrq" source="teipublisher.odd">
                 <elementSpec ident="TEI" mode="change">
-                    <model output="latex" predicate="request:get-parameter('literature', ()) or request:get-parameter('printed-sources', ())" behaviour="section">
+                    <model output="latex" predicate="request:get-parameter('literature', ())" behaviour="section">
                         <param name="literature" value="text/body/div/listBibl/biblStruct"/>
                         <pb:template>
                             \begin{hangparas}{4.5mm}{1}
@@ -1386,18 +1386,19 @@
                     <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="biblStruct" mode="change">
-                    <model output="latex" predicate="request:get-parameter('literature', ()) and analytic" behaviour="block">
-                        <param name="author" value="if (ec:format-author(analytic/author)) then (ec:format-author(analytic/author) || ': ') else ()"/>
-                        <param name="title" value="replace(analytic/title[not(@type='short')], ' : ', ' – ')"/>
-                        <param name="short-title" value="analytic/title[@type='short']"/>
-                        <param name="journal" value="monogr/title"/>
-                        <param name="scope" value="monogr/biblScope"/>
+                    <model output="latex" predicate="monogr[@type='edition']" behaviour="block">
+                        <param name="author" value="if (ec:format-author(monogr/author)) then (ec:format-author(monogr/author) || ': ') else ()"/>
+                        <param name="series" value="if (series) then (series/title || ', ' || series/biblScope || ': ') else ()"/>
+                        <param name="title" value="replace(monogr/title[not(@type='short')], ' : ', ' – ')"/>
+                        <param name="short-title" value="monogr/title[@type='short']"/>
+                        <param name="place" value="(monogr/imprint/pubPlace[1], if (monogr/imprint/pubPlace[2]) then ' et al.' else ())"/>
+                        <param name="date" value="monogr/imprint/date"/>
                         <pb:template>
-                            % Zeitschrift
-                            [[author]][[title]]. \textit{[[journal]]}, [[scope]] ([[short-title]])
+                            % Edition
+                            [[author]][[series]][[title]]. [[place]] [[date]] ([[short-title]]).
                         </pb:template>
                     </model>
-                    <model output="latex" predicate="request:get-parameter('literature', ()) and not(analytic) and not(monogr[@type='edition'])" behaviour="block">
+                    <model output="latex" predicate="not(analytic)" behaviour="block">
                         <param name="author" value="if (ec:format-author(monogr/author)) then (ec:format-author(monogr/author) || ': ') else ()"/>
                         <param name="title" value="replace(monogr/title[not(@type='short')], ' : ', ' – ')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
@@ -1405,18 +1406,18 @@
                         <param name="date" value="monogr/imprint/date"/>
                         <pb:template>
                             % Buch
-                            [[author]][[title]]. [[place]] [[date]] ([[short-title]])
+                            [[author]][[title]]. [[place]] [[date]] ([[short-title]]).
                         </pb:template>
                     </model>
-                    <model output="latex" predicate="request:get-parameter('printed-sources', ()) and monogr[@type='edition']" behaviour="block">
-                        <param name="author" value="if (ec:format-author(monogr/author)) then (ec:format-author(monogr/author) || ': ') else ()"/>
-                        <param name="title" value="replace(monogr/title[not(@type='short')], ' : ', ' – ')"/>
-                        <param name="short-title" value="monogr/title[@type='short']"/>
-                        <param name="place" value="(monogr/imprint/pubPlace[1], if (monogr/imprint/pubPlace[2]) then ' et al.' else ())"/>
-                        <param name="date" value="monogr/imprint/date"/>
+                    <model output="latex" predicate="analytic" behaviour="block">
+                        <param name="author" value="if (ec:format-author(analytic/author)) then (ec:format-author(analytic/author) || ': ') else ()"/>
+                        <param name="title" value="replace(analytic/title[not(@type='short')], ' : ', ' – ')"/>
+                        <param name="short-title" value="analytic/title[@type='short']"/>
+                        <param name="journal" value="monogr/title"/>
+                        <param name="scope" value="monogr/biblScope"/>
                         <pb:template>
-                            % Edition
-                            [[author]][[title]]. [[place]] [[date]] ([[short-title]])
+                            % Zeitschrift
+                            [[author]][[title]], in: [[journal]], [[scope]] ([[short-title]]).
                         </pb:template>
                     </model>
                     <model output="latex" behaviour="omit"/>
