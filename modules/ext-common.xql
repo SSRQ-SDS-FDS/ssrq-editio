@@ -306,6 +306,25 @@ declare function pmf:format-author($author as node()*) {
         ()
 };
 
+declare function pmf:switch-name($name as node()*) {
+
+    substring-after($name, ', ') || ' ' || substring-before($name, ', ')
+};
+
+declare function pmf:format-editor($editor as node()*) {
+    (: save typing in ssrq.odd :)
+
+    if ($editor) then
+        if (count($editor) > 2) then
+            pmf:switch-name($editor[1]) || ', ' || pmf:switch-name($editor[2]) || ' et al.'
+        else if (count($editor) = 2) then
+            pmf:switch-name($editor[1]) || ' und ' || pmf:switch-name($editor[2])
+        else
+            pmf:switch-name($editor)
+    else
+        ()
+};
+
 declare function pmf:print-date($date as node()*) {
     (: save typing in ssrq.odd :)
 
