@@ -1403,10 +1403,10 @@
                         <param name="title" value="replace(analytic/title[not(@type='short')], ' : ', ' – ')"/>
                         <param name="short-title" value="analytic/title[@type='short']"/>
                         <param name="journal" value="monogr/title"/>
-                        <param name="scope" value="string-join(monogr/biblScope, '; ')"/>
+                        <param name="scope" value="string-join(monogr/biblScope, ', ')"/>
                         <pb:template>
                             % Edition (in Zeitschrift)
-                            [[title]][[author]], in: [[journal]]; [[scope]] ([[short-title]]).
+                            [[title]][[author]], in: [[journal]], [[scope]] ([[short-title]]).
                         </pb:template>
                     </model>
                     <model output="latex" predicate="monogr[not(@type='edition')] and not(analytic)" behaviour="block">
@@ -1425,10 +1425,10 @@
                         <param name="title" value="replace(analytic/title[not(@type='short')], ' : ', ' – ')"/>
                         <param name="short-title" value="analytic/title[@type='short']"/>
                         <param name="journal" value="monogr/title"/>
-                        <param name="scope" value="string-join(monogr/biblScope, '; ')"/>
+                        <param name="scope" value="string-join(monogr/biblScope, ', ')"/>
                         <pb:template>
                             % Zeitschrift
-                            [[author]][[title]], in: [[journal]]; [[scope]] ([[short-title]]).
+                            [[author]][[title]], in: [[journal]], [[scope]] ([[short-title]]).
                         </pb:template>
                     </model>
                     <model output="latex" behaviour="omit"/>
