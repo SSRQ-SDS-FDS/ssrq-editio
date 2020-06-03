@@ -26,8 +26,13 @@
             <schemaSpec start="TEI teiCorpus" ident="ssrq" source="teipublisher.odd">
                 <elementSpec ident="TEI" mode="change">
                     <model output="latex" predicate="request:get-parameter('literature', ())" behaviour="section">
+                        <param name="introduction" value="text/body/div[1]"/>
                         <param name="literature" value="text/body/div/listBibl/biblStruct"/>
                         <pb:template>
+                            \subsection{Literaturverzeichnis}
+
+                            [[introduction]]
+
                             \begin{hangparas}{4.5mm}{1}
 
                             [[literature]]
