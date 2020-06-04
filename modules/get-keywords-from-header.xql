@@ -18,6 +18,6 @@ for $header in collection($data-collection)/tei:TEI[descendant::tei:body/tei:div
     let $title := $header/tei:fileDesc/tei:sourceDesc/tei:msDesc/tei:head/text()
     let $keywords :=
         for $keyword in $header/tei:profileDesc/tei:textClass/tei:keywords/tei:term/@ref
-            return '\term{' || data($keyword) || '}{}' || $nl
+            return '\term{' || data($keyword) || '}{}'
     order by $idno
-    return ($key, $nl, $title, $nl, $keywords, $nl)
+    return ($key, $nl, $title, $nl, $keywords, $nl, $nl)
