@@ -25,6 +25,14 @@
         <body>
             <schemaSpec start="TEI teiCorpus" ident="ssrq" source="teipublisher.odd">
                 <elementSpec ident="TEI" mode="change">
+                    <model output="latex" predicate="request:get-parameter('archives', ())" behaviour="section">
+                        <param name="archiveType" value="text/body/div/div"/>
+                        <pb:template>
+                            \subsection{Ungedruckte Quellen}
+
+                            [[archiveType]]
+                        </pb:template>
+                    </model>
                     <model output="latex" predicate="request:get-parameter('literature', ())" behaviour="section">
                         <param name="introduction" value="text/body/div[1]"/>
                         <param name="literature" value="text/body/div/listBibl/biblStruct"/>
@@ -929,6 +937,35 @@
                     <model behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="div" mode="change">
+                    <model output="latex" predicate="request:get-parameter('archives', ()) and head[@type='title']" behaviour="block">
+                        <param name="title" value="head/text()"/>
+                        <param name="archive" value="div"/>
+                        <pb:template>
+                            \subsubsection{[[title]]}
+
+                            \begin{hangparas}{4.5mm}{1}
+                            [[archive]]
+                            \end{hangparas}
+                        </pb:template>
+                    </model>
+                    <model output="latex" predicate="request:get-parameter('archives', ()) and head[@type='subtitle']" behaviour="block">
+                        <param name="archiveName" value="head/text()"/>
+                        <param name="items" value="div"/>
+                        <pb:template>
+                            [[archiveName]]
+                            \begin{itemize}
+                            [[items]]
+                            \end{itemize}
+                            \vspace{1.5mm}
+                        </pb:template>
+                    </model>
+                    <model output="latex" predicate="request:get-parameter('archives', ()) and listBibl" behaviour="block">
+                        <param name="itemType" value="listBibl/head/text()"/>
+                        <param name="ident" value="string-join(listBibl/bibl/idno, '; ')"/>
+                        <pb:template>
+                            \item [[itemType]]: [[ident]]
+                        </pb:template>
+                    </model>
                     <model predicate="parent::back and @n" behaviour="listItem">
                         <desc>output as list item if in commentary</desc>
                     </model>
