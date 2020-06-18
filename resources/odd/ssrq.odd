@@ -29,7 +29,8 @@
                         <param name="archiveType" value="text/body/div/div"/>
                         <pb:template>
                             \subsection{Ungedruckte Quellen}
-
+                            \setcounter{footnote}{0}
+                            
                             [[archiveType]]
                         </pb:template>
                     </model>
@@ -962,8 +963,9 @@
                     <model output="latex" predicate="request:get-parameter('archives', ()) and listBibl" behaviour="block">
                         <param name="itemType" value="listBibl/head/text()"/>
                         <param name="ident" value="string-join(listBibl/bibl/idno, '; ')"/>
+                        <param name="note" value="if (listBibl/note) then ('\footnote{' || listBibl/note || '}') else ()"/>
                         <pb:template>
-                            \item [[itemType]]: [[ident]]
+                            \item [[itemType]]: [[ident]][[note]]
                         </pb:template>
                     </model>
                     <model predicate="parent::back and @n" behaviour="listItem">
