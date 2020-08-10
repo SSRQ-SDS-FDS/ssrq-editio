@@ -1296,9 +1296,8 @@
                             \noindent
                         </pb:template>
                     </model>
-                    <model output="latex" predicate="@type" behaviour="block">
+                    <model output="latex" behaviour="block">
                         <pb:template>
-                            \vspace{1.5mm}
                             \noindent
                             [[content]]
                             \vspace{1.5mm}
