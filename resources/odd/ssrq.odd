@@ -111,7 +111,7 @@
                         <param name="lang" value="(session:get-attribute('ssrq.lang'), 'de')[1]"/>
                         <param name="volume" value="teiHeader/fileDesc/titleStmt/title"/>
                         <param name="by" value="ec:label('by', false())"/>
-                        <param name="author" value="string-join(teiHeader/fileDesc/titleStmt/respStmt[resp[@key='transcript']]/persName, ' ' || ec:label('and', false()) || ' ')"/>
+                        <param name="author" value="string-join(teiHeader/fileDesc/titleStmt/respStmt[resp[@key='transcript' or @key='headerinfo']]/persName, ' ' || ec:label('and', false()) || ' ')"/>
                         <param name="year" value="substring(teiHeader/fileDesc/publicationStmt/date[@type='electronic']/@when, 1, 4)"/>
                         <param name="idno" value="replace(teiHeader/fileDesc/seriesStmt/idno/text(), '^(.+\d{3})(?:_\d{1,2})?$', '$1')"/>
                         <param name="canton" value="replace(teiHeader/fileDesc/seriesStmt/idno/text(), '^(?:SSRQ|SDS|FDS)_(..)_.+$', '$1')"/>

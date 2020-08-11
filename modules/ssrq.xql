@@ -452,7 +452,7 @@ declare function app:idno($node as node(), $model as map(*)) {
 };
 
 declare function app:pers-names($header as node() ) {
-    let $namen :=  $header/tei:titleStmt/tei:respStmt[1]/tei:persName/text()
+    let $namen :=  $header/tei:titleStmt/tei:respStmt[tei:resp[@key='transcript' or @key='headerinfo']]/tei:persName/text()
 return
     if (count($namen) > 1) then (
         string-join(subsequence($namen, 1, count($namen) -1), ', '),
@@ -467,7 +467,6 @@ declare function app:idno-popup($node as node(), $model as map(*)) {
     let $idno := $header/tei:seriesStmt/tei:idno
     let $stmtTitle := $header/tei:seriesStmt/tei:title/text()
     let $fileDescTitle := $header/tei:titleStmt/tei:title/text()
-    let $fileDescPerson := $header/tei:titleStmt/tei:respStmt[1]/tei:persName/text()
     let $link := "https://www.ssrq-sds-fds.ch/online/tei/" || common:get-canton($idno) || "/" || util:document-name($model?data)
     return
         app:show-if-exists($node, $idno, function() {
