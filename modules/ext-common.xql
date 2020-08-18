@@ -330,6 +330,9 @@ declare function pmf:print-date($date as node()*) {
 
     let $date-string :=
     	if ($date/@when) then
+    	  if (matches($date/@when, "^\d{4}-\d{2}$")) then
+            format-date(xs:date($date/@when || '-01'), "[MNn] [Y0001]", (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
+          else
         	format-date(xs:date($date/@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
     	else if (matches($date/@from, '-01-01$') and matches($date/@to, '-12-31$')) then (: precision is one year :)
     	    if (substring($date/@from, 1, 4) = substring($date/@to, 1, 4)) then

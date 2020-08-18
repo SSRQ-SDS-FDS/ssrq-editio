@@ -488,20 +488,11 @@ declare function app:origDate($node as node(), $model as map(*)) {
     let $origDate := if (exists($filiation)) then $filiation/tei:origDate else $origin/tei:origDate
     let $origPlace := if (exists($filiation)) then $filiation/tei:origPlace else $origin/tei:origPlace
     return
-        if ($origDate/@from) then
-            app:show-if-exists($node, $origDate/@from, function() {
-                string-join((
-                    common:print-date($origDate),
-                    $origPlace
-                ), ". ")
-            })
-        else
-            app:show-if-exists($node, $origDate/@when, function() {
-                string-join((
-                    format-date(xs:date($origDate/@when), '[Y] [MNn] [D1]', (session:get-attribute("ssrq.lang"), "de")[1], (), ()),
-                    $origPlace
-                ), ". ")
-            })
+        app:show-if-exists($node, ($origDate/@when, $origDate/@from), function() {
+            string-join((
+                common:print-date($origDate), $origPlace
+            ), ". ")
+        })
 };
 
 declare function app:comment($node as node(), $model as map(*), $action as xs:string?, $sr as xs:string*) {
