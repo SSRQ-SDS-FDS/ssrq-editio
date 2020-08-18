@@ -1270,8 +1270,7 @@
                             \vspace{1.5mm}
                             \noindent
                             [[[n]] [[content]]]
-                            \vspace{1.5mm}
-
+                            \\ [1.5mm]
                             \noindent
                         </pb:template>
                     </model>
@@ -1280,8 +1279,7 @@
                             \vspace{1.5mm}
                             \noindent
                             [[[content]]]
-                            \vspace{1.5mm}
-
+                            \\ [1.5mm]
                             \noindent
                         </pb:template>
                     </model>
@@ -1291,8 +1289,7 @@
                             \vspace{1.5mm}
                             \noindent
                             [[[n]]] [[content]]
-                            \vspace{1.5mm}
-
+                            \\ [1.5mm]
                             \noindent
                         </pb:template>
                     </model>
@@ -1300,8 +1297,7 @@
                         <pb:template>
                             \noindent
                             [[content]]
-                            \vspace{1.5mm}
-
+                            \\ [1.5mm]
                             \noindent
                         </pb:template>
                     </model>
