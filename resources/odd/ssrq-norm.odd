@@ -60,7 +60,7 @@
                     </model>
                     <model predicate="sic/del and corr" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="corr"/>
-                        <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), normalize-space(sic/text()), ', ', ec:translate(sic/del/@rend, 0, 'uppercase'), ec:colon(), sic/del/text())"/>
+                        <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), normalize-space(string-join(sic//text())), ', ', ec:translate(sic/del/@rend, 0, 'uppercase'), ec:colon(), sic/del//text())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="sic and corr" behaviour="alternote" cssClass="text-critical">
