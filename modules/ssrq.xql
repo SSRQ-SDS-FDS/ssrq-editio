@@ -489,9 +489,7 @@ declare function app:origDate($node as node(), $model as map(*)) {
     let $origPlace := if (exists($filiation)) then $filiation/tei:origPlace else $origin/tei:origPlace
     return
         app:show-if-exists($node, ($origDate/@when, $origDate/@from), function() {
-            string-join((
-                common:print-date($origDate), $origPlace
-            ), ". ")
+            replace(common:print-date($origDate), '\.$', '') || '. ' || $origPlace
         })
 };
 
