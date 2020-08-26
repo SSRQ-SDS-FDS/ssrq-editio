@@ -122,6 +122,7 @@
                         <param name="title" value="teiHeader/fileDesc/sourceDesc/msDesc/head/text()"/>
                         <param name="dating" value="if (exists(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original'][origDate])) then ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original']/origDate) else ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate)"/>
                         <param name="place" value="if (teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace) then ('. ' || teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace/text()) else ()"/>
+                        <param name="keywords" value="string-join(for $keyword in teiHeader/profileDesc/textClass/keywords/term return '\term{' || $keyword/@ref || '}{}')"/>
                         <param name="content" value="(teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary, text//back, text//body)"/>
                         <param name="msdesc" value="teiHeader/fileDesc/sourceDesc/msDesc"/>
                         <param name="additionalSources" value="if (ec:existsAdditionalSource(teiHeader/fileDesc/seriesStmt/idno/text())) then ec:additionalSource(teiHeader/fileDesc/seriesStmt/idno/text()) else ''"/>
@@ -147,7 +148,7 @@
                             \setcounter{[[sectionType]]}{[[articleNr]]}  % Stücknummer - 1
                             \[[articleType]]{[[title]]}
                             \fussy
-                            \[[datingType]]{[[dating]][[place]]}
+                            \[[datingType]]{[[dating]][[place]][[keywords]]}
                             
                             [[content]]
                             
