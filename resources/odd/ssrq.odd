@@ -397,7 +397,7 @@
                 <elementSpec ident="del" mode="change">
                     <model predicate="ancestor::back//orig" behaviour="omit"/>
                     <model predicate="add/@type='catchword'" behaviour="note">
-                        <param name="prefix" value="(ec:label('del-add'), string-join((ec:translate(add/@place, 0, 'lowercase'), ', ', ec:translate(add/@type, 0, 'lowercase')), ''), ec:colon())"/>
+                        <param name="prefix" value="(ec:label('del-add'), ' ', string-join((ec:translate(add/@place, 0, 'lowercase'), ', ', ec:translate(add/@type, 0, 'lowercase')), ''), ec:colon())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="@hand='later hand' and not(parent::subst)" behaviour="alternote" cssClass="text-critical">
@@ -652,12 +652,16 @@
                 </elementSpec>
                 <elementSpec ident="foreign" mode="change">
                     <model output="latex" behaviour="inline"/>
-                    <model behaviour="alternate">
+                    <model predicate="(session:get-attribute('ssrq.lang'), 'de')[1]='fr'" behaviour="alternate">
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('lang-switch'), ec:colon(), ' ', ec:label(@xml:lang, false()))"/>
                         <outputRendition>
-                            color: black;
+                            font-style: italic;
                         </outputRendition>
+                    </model>
+                    <model behaviour="alternate">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="(ec:label('lang-switch'), ec:colon(), ' ', ec:label(@xml:lang, false()))"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="term" mode="change">
@@ -840,12 +844,12 @@
                     <model predicate="parent::choice" behaviour="inline"/>
                     <model predicate="@source and @reason" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="('[', ., ']')"/>
-                        <param name="alternate" value="(ec:translate(@reason, 0, 'uppercase'), ec:label('supplied-after', false()), ' ', @source)"/>
+                        <param name="alternate" value="(ec:translate(@reason, 0, 'uppercase'), ', ', ec:label('supplied-after', false()), ' ', @source)"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="@source" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="('[', ., ']')"/>
-                        <param name="alternate" value="( ec:label('supplied-after'), ' ', @source)"/>
+                        <param name="alternate" value="(ec:label('supplied-after'), ' ', @source)"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="@reason" behaviour="alternote" cssClass="text-critical">
@@ -1025,7 +1029,7 @@
                 </elementSpec>
                 <elementSpec ident="label" mode="change">
                     <model predicate="@type='keyword'" behaviour="alternote">
-                        <param name="alternate" value="(ec:label('marginal-note'), ' ', ec:translate(@place, 0, 'lowercase'), ' ', if (@scribe) then (' ', ec:label('by', false()), ' ', ec:scribe(@scribe)) else ())"/>
+                        <param name="alternate" value="(ec:label('marginal-note'), ' ', ec:translate(@place, 0, 'lowercase'), if (@scribe) then (' ', ec:label('by', false()), ' ', ec:scribe(@scribe)) else ())"/>
                         <!--<param name="content" value="('/ ', .,  ' /')"/>-->
                         <param name="type" value="'text-critical'"/>
                         <outputRendition>
@@ -1210,13 +1214,13 @@
                         <param name="content" value="(string-join((width/@quantity,height/@quantity), '\,×\,'), '~cm')"/>
                     </model>
                     <model output="latex" predicate="@type = 'plica' and width/@quantity &gt; 0" behaviour="inline">
-                        <param name="content" value="' (Plica: ' || width/@quantity || ')'"/>
+                        <param name="content" value="' (Plica: ' || width/@quantity || '~cm)'"/>
                     </model>
                     <model predicate="@type = 'leaves' and (width/@quantity &gt; 0 or height/@quantity &gt; 0)" behaviour="inline">
                         <param name="content" value="(ec:label('format'), ' (cm)', ec:colon(), string-join((width/@quantity,height/@quantity), ' × ') )"/>
                     </model>
                     <model predicate="@type = 'plica' and width/@quantity &gt; 0" behaviour="inline">
-                        <param name="content" value="' (Plica' || ec:colon() || width/@quantity || ')'"/>
+                        <param name="content" value="' (Plica' || ec:colon() || width/@quantity || ' cm)'"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="sealDesc">

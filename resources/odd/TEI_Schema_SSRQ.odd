@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
-<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0"
-    xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:ssrq="http://ssrq-sds-fds.ch/ns/nonTEI"
-    xml:lang="en">
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:ssrq="http://ssrq-sds-fds.ch/ns/nonTEI" xml:lang="en">
     <teiHeader>
         <fileDesc>
             <titleStmt>
@@ -18,8 +16,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 3367 $</p>
-                <p>Date of last commit:     $Date: 2019-12-12 09:33:55 +0100 (Thu, 12 Dec 2019) $</p>
+                <p>Revision of last commit: $Rev: 4748 $</p>
+                <p>Date of last commit:     $Date: 2020-08-28 16:32:04 +0200 (Fri, 28 Aug 2020) $</p>
                 <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
@@ -31,8 +29,9 @@
         <body>
             <p>Beinhaltet alle benötigten TEI-Elemente (auch diejenigen für die
                 Retrodigitalisierung) sowie die Siegel-Erweiterungen. Folgende Elemente sind laut
-                    <ref target="http://www.ssrq-sds-fds.ch/wiki/index.php?title=Hauptseite"
-                    >Wiki</ref> eingeschränkt: titleStmt, title, respStmt, resp, publicationStmt,
+                    <ref
+                    target="http://www.ssrq-sds-fds.ch/wiki/index.php?title=Hauptseite"
+                >Wiki</ref> eingeschränkt: titleStmt, title, respStmt, resp, publicationStmt,
                 editionStmt, extent, dimensions, seriesStmt, sourceDesc, encodingDesc,
                 editorialDecl, profileDesc, textClass, particDesc, settingDesc, revisionDesc,
                 facsimile, text, sealDesc, seal, time, occupation, damage</p>
@@ -47,19 +46,16 @@
 
                 <moduleRef key="tei"/>
                 <moduleRef key="core"
-                    include="abbr add author bibl cb choice corr date del expan foreign gap graphic head hi item label
-                    lb list listBibl measure measureGrp note num orig p pb q quote ref reg resp respStmt sic term textLang time title unclear"/>
+                    include="abbr add author bibl cb choice corr date del expan foreign gap graphic head hi item label                     lb list listBibl measure measureGrp note num orig p pb q quote ref reg resp respStmt sic term textLang time title unclear"/>
                 <moduleRef key="header"
                     include="availability textClass profileDesc fileDesc idno editorialDecl encodingDesc extent keywords publicationStmt profileDesc seriesStmt sourceDesc teiHeader textClass titleStmt"/>
                 <moduleRef key="textstructure" include="TEI back body div front group signed text"/>
                 <moduleRef key="linking" include="ab anchor seg"/>
                 <moduleRef key="msdescription"
                     include="altIdentifier origDate origPlace dimensions height width support material condition msDesc physDesc sealDesc objectDesc supportDesc seal msContents history additional repository msItem filiation msIdentifier summary origin"/>
-                <moduleRef key="transcr"
-                    include="addSpan damage damageSpan delSpan facsimile fw handShift space subst surface supplied zone"/>
+                <moduleRef key="transcr" include="addSpan damage damageSpan delSpan facsimile fw handShift space subst surface supplied zone"/>
                 <moduleRef key="textcrit" include="app lem listWit rdg witness"/>
-                <moduleRef key="namesdates"
-                    include="listOrg listPerson listPlace orgName persName placeName"/>
+                <moduleRef key="namesdates" include="listOrg listPerson listPlace orgName persName placeName"/>
                 <moduleRef key="certainty" include="precision"/>
                 <moduleRef key="figures" include="figure table row cell"/>
                 <moduleRef key="corpus" include="particDesc settingDesc"/>
@@ -179,10 +175,12 @@
                     <constraint>
                         <sch:pattern>
                             <sch:rule context="tei:*">
-                                <sch:report test="@quantity and not(@unit)" xml:lang="en">If the
+                                <sch:report test="@quantity and not(@unit)" xml:lang="en"
+                                    >If the
                                     @quantity attribute is specified on the <sch:name/> element,
                                     @unit must be present, too.</sch:report>
-                                <sch:report test="@unit and not(@quantity)" xml:lang="en">If the
+                                <sch:report test="@unit and not(@quantity)" xml:lang="en"
+                                    >If the
                                     @unit attribute is specified on the <sch:name/> element,
                                     @quantity must be present, too.</sch:report>
                             </sch:rule>
@@ -190,7 +188,7 @@
                     </constraint>
                 </constraintSpec>
 
-               <constraintSpec scheme="schematron" module="core" ident="sch-gl-2" mode="change">
+                <constraintSpec scheme="schematron" module="core" ident="sch-gl-2" mode="change">
                     <desc>Value of @scribe attribute</desc>
                     <constraint>
                         <sch:pattern>
@@ -263,7 +261,7 @@
                         <rng:ref name="hi"/>
                         <rng:ref name="lb"/>
                         <rng:ref name="orig"/>
-                    <rng:ref name="p"/>
+                        <rng:ref name="p"/>
                         <rng:ref name="pb"/>
                         <rng:ref name="q"/>
                         <rng:ref name="quote"/>
@@ -285,8 +283,22 @@
                         <rng:ref name="term"/>
                     </content>
                 </macroSpec>
-
+                <macroSpec ident="macro.specialPara" mode="change">
+                    <content>
+                        <alternate minOccurs="0" maxOccurs="unbounded">
+                            <textNode/>
+                            <classRef key="model.gLike"/>
+                            <classRef key="model.phrase"/>
+                            <classRef key="model.inter"/>
+                            <classRef key="model.divPart"/>
+                            <classRef key="model.global"/>
+                            <classRef key="model.divLike"/>
+                            <!-- this has been added because of summary's need for it -->
+                        </alternate>
+                    </content>
+                </macroSpec>
                 <!--END ADDITIONAL MACROSPECS-->
+
                 <!--BEGIN ELEMENT SPECIFICATIONS-->
 
                 <!-- ebene 0 -->
@@ -333,7 +345,7 @@
                 <elementSpec ident="encodingDesc" module="header" mode="change">
                     <content>
                         <rng:group>
-                                <rng:ref name="editorialDecl"/>
+                            <rng:ref name="editorialDecl"/>
                         </rng:group>
                     </content>
                 </elementSpec>
@@ -484,7 +496,8 @@
                         <rng:zeroOrMore>
                             <rng:choice>
                                 <rng:text/>
-                                <rng:ref name="macro.defaultContent"/><!-- (u.a.) <hi> erlauben -->
+                                <rng:ref name="macro.defaultContent"/>
+                                <!-- (u.a.) <hi> erlauben -->
                             </rng:choice>
                         </rng:zeroOrMore>
                     </content>
@@ -953,6 +966,11 @@
                                     <desc xml:lang="fr">contrôle de qualité</desc>
                                     <desc xml:lang="en">quality control</desc>
                                 </valItem>
+                                <valItem ident="headerinfo">
+                                    <desc xml:lang="de">Metadaten im TEI-Header</desc>
+                                    <desc xml:lang="fr">métadonnées dans le header TEI</desc>
+                                    <desc xml:lang="en">meta data in the TEI header</desc>
+                                </valItem>
                             </valList>
                         </attDef>
                     </attList>
@@ -1181,16 +1199,17 @@
                 </elementSpec>
                 <elementSpec ident="expan" module="core" mode="change">
                     <content>
-                    <rng:zeroOrMore>
-                    <rng:choice>
-                        <rng:text/><!-- PS: 08.03.2017 ergänzt -->
-                    <rng:ref name="term"/>
-                    <rng:ref name="orgName"/>
-                    <rng:ref name="placeName"/>
-                    <rng:ref name="persName"/>
-                   <rng:ref name="pb"/>
-                    </rng:choice>
-                    </rng:zeroOrMore>
+                        <rng:zeroOrMore>
+                            <rng:choice>
+                                <rng:text/>
+                                <!-- PS: 08.03.2017 ergänzt -->
+                                <rng:ref name="term"/>
+                                <rng:ref name="orgName"/>
+                                <rng:ref name="placeName"/>
+                                <rng:ref name="persName"/>
+                                <rng:ref name="pb"/>
+                            </rng:choice>
+                        </rng:zeroOrMore>
                     </content>
                     <attList>
                         <attDef ident="cert" mode="delete"/>
@@ -1215,7 +1234,7 @@
                                 <rng:ref name="lb"/>
                                 <rng:ref name="del"/>
                                 <rng:ref name="note"/>
-                                 <rng:ref name="subst"/>
+                                <rng:ref name="subst"/>
                                 <rng:ref name="term"/>
                                 <rng:ref name="placeName"/>
                                 <rng:ref name="persName"/>
@@ -1238,7 +1257,7 @@
                         <rng:optional>
                             <rng:ref name="objectDesc"/>
                         </rng:optional>
-                    <rng:optional>
+                        <rng:optional>
                             <rng:ref name="sealDesc"/>
                         </rng:optional>
                     </content>
@@ -1818,22 +1837,24 @@
                         <constraint>
                             <sch:pattern>
                                 <sch:rule context="tei:gap[parent::tei:damage]">
-                                    <sch:report test="@reason" xml:lang="en">If tei:gap is a child
+                                    <sch:report test="@reason" xml:lang="en"
+                                        >If tei:gap is a child
                                         of tei:damage, @reason cannot be specififed on
                                         tei:gap.</sch:report>
                                 </sch:rule>
                                 <sch:rule context="tei:gap[not(parent::tei:damage) and @reason]">
-                                    <sch:report
-                                        test="@reason = 'illegible' and (not(@unit) or not(@quantity))"
+                                    <sch:report test="@reason = 'illegible' and (not(@unit) or not(@quantity))"
                                         >If @reason is specified on the <sch:name/> element and its
                                         value is "illegible", @unit and @quantity must be present,
                                         too.</sch:report>
-                                    <sch:report test="@source">On the <sch:name/> element, @source
+                                    <sch:report test="@source"
+                                        >On the <sch:name/> element, @source
                                         cannot occur together with @reason. Those attributes are
                                         mutually exclusive.</sch:report>
                                 </sch:rule>
                                 <sch:rule context="tei:gap[not(parent::tei:damage) and @source]">
-                                    <sch:report test="@unit or @quantity or @reason">If @source is
+                                    <sch:report test="@unit or @quantity or @reason"
+                                        >If @source is
                                         specified on the <sch:name/> element, @unit, @quantity and
                                         @reason are forbidden.</sch:report>
                                     <!--  fakultativ <sch:assert test="following-sibling::*[position() = 1 and self::tei:note]"
@@ -1942,6 +1963,11 @@
                                     <desc xml:lang="de">Untertitel</desc>
                                     <desc xml:lang="fr">sous-titre</desc>
                                     <desc xml:lang="en">subtitle</desc>
+                                </valItem>
+                                <valItem ident="subsubtitle">
+                                    <desc xml:lang="de">Unteruntertitel</desc>
+                                    <desc xml:lang="fr">sou-sous-titre</desc>
+                                    <desc xml:lang="en">subsubtitle</desc>
                                 </valItem>
                             </valList>
                         </attDef>
@@ -2095,8 +2121,8 @@
                     <content>
                         <rng:oneOrMore>
                             <rng:choice>
-                            <rng:ref name="cell"/>
-                            <rng:ref name="measureGrp"/>
+                                <rng:ref name="cell"/>
+                                <rng:ref name="measureGrp"/>
                             </rng:choice>
                         </rng:oneOrMore>
                     </content>
@@ -2146,8 +2172,8 @@
                         <constraint>
                             <sch:pattern>
                                 <sch:rule context="tei:ab">
-                                    <sch:assert test="count(parent::tei:div/tei:ab) = 1"
-                                        xml:lang="en">There can only be one <sch:name/> element
+                                    <sch:assert test="count(parent::tei:div/tei:ab) = 1" xml:lang="en"
+                                        >There can only be one <sch:name/> element
                                         within &lt;div&gt;.</sch:assert>
                                     <sch:assert test="count(parent::tei:div/*) = 1" xml:lang="en"
                                         >The <sch:name/> element must be the only element within
@@ -2179,7 +2205,7 @@
                                 </valItem>
                                 <valItem ident="archiving reference">
                                     <desc xml:lang="de">Registraturvermerk</desc>
-                                    <desc xml:lang="fr">Note issue des Archives</desc>
+                                    <desc xml:lang="fr">Note d’archives</desc>
                                     <desc xml:lang="en">Registratur’s sign</desc>
                                 </valItem>
                                 <valItem ident="computatio">
@@ -2456,7 +2482,7 @@
                                 </valItem>
                                 <valItem ident="other hand">
                                     <desc xml:lang="de">von anderer Hand</desc>
-                                    <desc xml:lang="fr">écrit d’une autre main</desc>
+                                    <desc xml:lang="fr">écrit de autre main</desc>
                                     <desc xml:lang="en">in another hand</desc>
                                 </valItem>
                                 <valItem ident="later hand">
@@ -2612,7 +2638,7 @@
                                 </valItem>
                                 <valItem ident="other hand">
                                     <desc xml:lang="de">von anderer Hand</desc>
-                                    <desc xml:lang="fr">écrit d’une autre main</desc>
+                                    <desc xml:lang="fr">écrit de autre main</desc>
                                     <desc xml:lang="en">in another hand</desc>
                                     <!-- erscheint in der Anmerkung -->
                                 </valItem>
@@ -2767,12 +2793,13 @@
                             </rng:choice>
                         </rng:zeroOrMore>
                     </content>
-<!--                    <classes mode="replace">
+                    <!--                    <classes mode="replace">
                         <memberOf key="model.global.edit"/>
                         <memberOf key="att.global"/>
                         <memberOf key="att.spanning"/>
                     </classes>
--->                    <attList>
+-->
+                    <attList>
                         <attDef ident="place" mode="replace" usage="req">
                             <desc xml:lang="de">Ort einer Ergänzung</desc>
                             <valList type="closed">
@@ -2959,7 +2986,7 @@
                                 </valItem>
                                 <valItem ident="other hand">
                                     <desc xml:lang="de">von anderer Hand</desc>
-                                    <desc xml:lang="fr">écrit d’une autre main</desc>
+                                    <desc xml:lang="fr">écrit de autre main</desc>
                                     <desc xml:lang="en">in another hand</desc>
                                     <!-- erscheint in der Anmerkung -->
                                 </valItem>
@@ -3361,47 +3388,47 @@
                             </valList>
                         </attDef>
                         <attDef ident="unit" mode="replace">
-                                <desc xml:lang="de">Angabe zur Masseinheit</desc>
-                                <desc xml:lang="fr">indication de l’unité de mesure</desc>
-                                <valList type="closed">
-                                    <valItem ident="character">
-                                        <desc xml:lang="de">Buchstabe</desc>
-                                        <desc xml:lang="de" type="plural">Buchstaben</desc>
-                                        <desc xml:lang="fr">lettre</desc>
-                                        <desc xml:lang="fr" type="plural">lettres</desc>
-                                        <desc xml:lang="en">character</desc>
-                                        <desc xml:lang="en" type="plural">characters</desc>
-                                    </valItem>
-                                    <valItem ident="cm">
-                                        <desc xml:lang="de">cm</desc>
-                                        <desc xml:lang="fr">cm</desc>
-                                        <desc xml:lang="en">cm</desc>
-                                    </valItem>
-                                    <valItem ident="line">
-                                        <desc xml:lang="de">Zeile</desc>
-                                        <desc xml:lang="de" type="plural">Zeilen</desc>
-                                        <desc xml:lang="fr">ligne</desc>
-                                        <desc xml:lang="fr" type="plural">lignes</desc>
-                                        <desc xml:lang="en">line</desc>
-                                        <desc xml:lang="en" type="plural">lines</desc>
-                                    </valItem>
-                                    <valItem ident="page">
-                                        <desc xml:lang="de">Seite</desc>
-                                        <desc xml:lang="de" type="plural">Seiten</desc>
-                                        <desc xml:lang="fr">page</desc>
-                                        <desc xml:lang="fr" type="plural">pages</desc> 
-                                        <desc xml:lang="en">page</desc>
-                                        <desc xml:lang="en" type="plural">pages</desc>
-                                    </valItem>
-                                    <valItem ident="word">
-                                        <desc xml:lang="de">Wort</desc>
-                                        <desc xml:lang="de" type="plural">Wörter</desc>
-                                        <desc xml:lang="fr">mot</desc>
-                                        <desc xml:lang="fr" type="plural">mots</desc>
-                                        <desc xml:lang="en">word</desc>
-                                        <desc xml:lang="en" type="plural">words</desc>
-                                    </valItem>
-                                </valList>
+                            <desc xml:lang="de">Angabe zur Masseinheit</desc>
+                            <desc xml:lang="fr">indication de l’unité de mesure</desc>
+                            <valList type="closed">
+                                <valItem ident="character">
+                                    <desc xml:lang="de">Buchstabe</desc>
+                                    <desc xml:lang="de" type="plural">Buchstaben</desc>
+                                    <desc xml:lang="fr">lettre</desc>
+                                    <desc xml:lang="fr" type="plural">lettres</desc>
+                                    <desc xml:lang="en">character</desc>
+                                    <desc xml:lang="en" type="plural">characters</desc>
+                                </valItem>
+                                <valItem ident="cm">
+                                    <desc xml:lang="de">cm</desc>
+                                    <desc xml:lang="fr">cm</desc>
+                                    <desc xml:lang="en">cm</desc>
+                                </valItem>
+                                <valItem ident="line">
+                                    <desc xml:lang="de">Zeile</desc>
+                                    <desc xml:lang="de" type="plural">Zeilen</desc>
+                                    <desc xml:lang="fr">ligne</desc>
+                                    <desc xml:lang="fr" type="plural">lignes</desc>
+                                    <desc xml:lang="en">line</desc>
+                                    <desc xml:lang="en" type="plural">lines</desc>
+                                </valItem>
+                                <valItem ident="page">
+                                    <desc xml:lang="de">Seite</desc>
+                                    <desc xml:lang="de" type="plural">Seiten</desc>
+                                    <desc xml:lang="fr">page</desc>
+                                    <desc xml:lang="fr" type="plural">pages</desc>
+                                    <desc xml:lang="en">page</desc>
+                                    <desc xml:lang="en" type="plural">pages</desc>
+                                </valItem>
+                                <valItem ident="word">
+                                    <desc xml:lang="de">Wort</desc>
+                                    <desc xml:lang="de" type="plural">Wörter</desc>
+                                    <desc xml:lang="fr">mot</desc>
+                                    <desc xml:lang="fr" type="plural">mots</desc>
+                                    <desc xml:lang="en">word</desc>
+                                    <desc xml:lang="en" type="plural">words</desc>
+                                </valItem>
+                            </valList>
                         </attDef>
                         <attDef ident="corresp" mode="delete"/>
                         <attDef ident="degree" mode="delete"/>
@@ -3427,13 +3454,13 @@
                             <valList type="closed">
                                 <valItem ident="later hand">
                                     <desc xml:lang="de">von späterer Hand</desc>
-                                    <desc xml:lang="fr">écrit d’une autre main</desc>
+                                    <desc xml:lang="fr">c’une main plus récente</desc>
                                     <desc xml:lang="en">in a later hand</desc>
                                     <!-- Text in den Anmerkungen -->
                                 </valItem>
                                 <valItem ident="other hand">
                                     <desc xml:lang="de">von anderer Hand</desc>
-                                    <desc xml:lang="fr">d’une main plus récente</desc>
+                                    <desc xml:lang="fr">écrit de autre main</desc>
                                     <desc xml:lang="en">in another hand</desc>
                                     <!-- Text im Haupttext -->
                                 </valItem>
@@ -3468,7 +3495,7 @@
                                     <desc xml:lang="fr">la suppression a été remplacée directement</desc>
                                     <desc xml:lang="en">deleted text directly overwritten</desc>
                                 </valItem>
-                               <valItem ident="strikethrough">
+                                <valItem ident="strikethrough">
                                     <desc xml:lang="de">Streichung durch einfache Durchstreichung</desc>
                                     <desc xml:lang="fr">suppression par biffage</desc>
                                     <desc xml:lang="en">deletion by strikethrough</desc>
@@ -3557,16 +3584,16 @@
                         <attDef ident="hand" mode="replace">
                             <desc xml:lang="de">gibt Informationen zur Hand bzw. zum Schreiber des Textes</desc>
                             <valList type="closed">
-                            <valItem ident="other hand">
-                                <desc xml:lang="de">von anderer Hand</desc>
-                                <desc xml:lang="fr">écrit d’une autre main</desc>
-                                <desc xml:lang="en">in another hand</desc>
-                            </valItem>
-                            <valItem ident="later hand">
-                                <desc xml:lang="de">von späterer Hand</desc>
-                                <desc xml:lang="fr">d’une main plus récente</desc>
-                                <desc xml:lang="en">in a later hand</desc>
-                            </valItem>
+                                <valItem ident="other hand">
+                                    <desc xml:lang="de">von anderer Hand</desc>
+                                    <desc xml:lang="fr">écrit de autre main</desc>
+                                    <desc xml:lang="en">in another hand</desc>
+                                </valItem>
+                                <valItem ident="later hand">
+                                    <desc xml:lang="de">von späterer Hand</desc>
+                                    <desc xml:lang="fr">d’une main plus récente</desc>
+                                    <desc xml:lang="en">in a later hand</desc>
+                                </valItem>
                             </valList>
                         </attDef>
                         <attDef ident="quantity" mode="delete"/>
@@ -3631,7 +3658,7 @@
                                 </valItem>
                                 <valItem ident="right">
                                     <desc xml:lang="de">rechtssbündig</desc>
-                                    <desc xml:lang="fr">droit</desc>
+                                    <desc xml:lang="fr">à droit</desc>
                                     <desc xml:lang="en">right</desc>
                                 </valItem>
                                 <valItem ident="rubricated">
@@ -3757,47 +3784,41 @@
                             </rng:choice>
                         </rng:zeroOrMore>
                     </content>
-                    <constraintSpec scheme="schematron" module="core" ident="sch-measure"
-                        mode="change">
+                    <constraintSpec scheme="schematron" module="core" ident="sch-measure" mode="change">
                         <desc>Attributes of tei:measure</desc>
                         <constraint>
                             <sch:pattern>
-                                <sch:rule
-                                    context="tei:measure[matches(@unit,'^(Ballen|Bürde|Dutzend|Fuder|Gaden|Loden|Maschen|Paar|Schubkarre|Seil|Sester|Stock|Stuck|Zeine)$')]">
-                                    <sch:assert test="exists(@type)">If @unit is specified on the
+                                <sch:rule context="tei:measure[matches(@unit,'^(Ballen|Bürde|Dutzend|Fuder|Gaden|Loden|Maschen|Paar|Schubkarre|Seil|Sester|Stock|Stuck|Zeine)$')]">
+                                    <sch:assert test="exists(@type)"
+                                        >If @unit is specified on the
                                         <sch:name/> element, @type must be present,
                                         too.</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='area']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Fuss|Gertel|Hube|Juchart|Kammer|Klafter|Kuhsömmerung|Kuhwinterung|Mal|Mannmad|Mannwerk|Mitmal|Mütt|Rute|Schritt|Schuh|Schuppose|Staffel|Tagwen|Vierdung|Vierling|Zeile)$')"
+                                        test="matches(@unit,'^(fauchée|Fuss|Gertel|Hube|Juchart|Kammer|Klafter|Kuhsömmerung|Kuhwinterung|Mal|Mannmad|Mannwerk|Mitmal|Mütt|Rute|Schritt|Schuh|Schuppose|Staffel|Tagwen|Vierdung|Vierling|Zeile)$')"
                                         >kein gültiges Flächenmass</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='currency']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Angster|écu blanc|écu d’or|écu petit|fl|franc|lb|ß|xr|d|Dicken|Doubloon|ducatoon|Dukat|bz|h|M|Mirliton|plp|Böhmischer Groschen|Gros|Grossi|k|livre faible|Kronentaler|Louis dor|Louistaler|Pistole|Ort|Quart|Vierer|Spagürli|S|sol faible|Sonnendublone|Taler|L|zecchino)$')"
+                                        test="matches(@unit,'^(Angster|écu blanc|écu|écu d’or|écu petit|fl|franc|lb|ß|xr|d|Dicken|Doubloon|ducatoon|Dukat|bz|h|M|Mirliton|plp|Böhmischer Groschen|Gros|Grossi|Halbgulden|Halbtaler|k|livre faible|Kronentaler|Louis dor|Louistaler|Pistole|Ort|Quart|Vierer|Spagürli|S|sol faible|Sonnendublone|Taler|L|zecchino)$')"
                                         >keine gültige Währung</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='length']">
-                                    <sch:assert
-                                        test="matches(@unit,'^(Daumen|Elle|Finger|Fuss|Klafter|Linie|Meile|Schuh|Stab|Vierling|Zoll)$')"
-                                        >kein gültiges Längenmass</sch:assert>
+                                    <sch:assert test="matches(@unit,'^(Daumen|Elle|Finger|Fuss|Klafter|Linie|Meile|Schuh|Stab|Vierling|Zoll)$')">kein gültiges Längenmass</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='volume']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Becher|Eimer|Garbe|Immi|Kanne|Kratten|Ledi|Malter|Mütt|Sack|Scheffel|Sester|Ster|Vierdung|Vierling|Viertel|Brenten|Fass|Kopf|Klafter|Legel|Mass|Mässli|Quart|Quartane|Saum|Schaffen|Tonne|Viertel|Zuber|Fass|Krötli|Röhrchen|Scheibe|Trinken)$')"
+                                        test="matches(@unit,'^(Becher|Eimer|Garbe|Immi|Kanne|Kratten|Ledi|Mäss|Malter|Mütt|Sack|Scheffel|Sester|Ster|Vierdung|Vierling|Viertel|Brenten|Fass|Kopf|Klafter|Legel|Mass|Mässli|Quart|Quartane|Saum|Schaffen|Tonne|Viertel|Zuber|Fass|Krötli|Röhrchen|Scheibe|Trinken)$')"
                                         >kein gültiges Hohlmass</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='weight']">
-                                    <sch:assert
-                                        test="matches(@unit,'^(Biner|Gewäg|Krinne|Lot|Pfund|Rupp|Quentli|Vierling|Unze|Zentner)$')"
-                                        >kein gültiges Gewicht</sch:assert>
+                                    <sch:assert test="matches(@unit,'^(Biner|Gewäg|Krinne|Lot|Pfund|Rupp|Quentli|Vierling|Unze|Zentner)$')">kein gültiges Gewicht</sch:assert>
                                 </sch:rule>
-                                <sch:rule context="tei:measure[@type='age']">
-                                </sch:rule>
+                                <sch:rule context="tei:measure[@type='age']"> </sch:rule>
                                 <sch:rule context="tei:measure[@type='undefined']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Ballen|Bürde|Dutzend|Fuder|Gaden|Kloben|Laib|Loden|Mal|Maschen|Paar|Riste|Schoch|Schubkarre|Seil|Sester|Stock|Stuck|Zeine)$')"
+                                        test="matches(@unit,'^(Ballen|Bürde|carriage|Dutzend|Fuder|Gaden|Kloben|Laib|Loden|Mal|Maschen|Paar|Riste|Schoch|Schubkarre|Seil|Sester|Stock|Stuck|Zeine)$')"
                                         >keine gültige Einheit für ungefähre
                                         Masse/Gewichte</sch:assert>
                                 </sch:rule>
@@ -3909,6 +3930,11 @@
                                     <desc xml:lang="fr">de Sargans</desc>
                                     <desc xml:lang="en">of Sargans</desc>
                                 </valItem>
+                                <valItem ident="Savoie">
+                                    <desc xml:lang="de">Savoyer</desc>
+                                    <desc xml:lang="fr">de la Savoie</desc>
+                                    <desc xml:lang="en">of Savoy</desc>
+                                </valItem>
                                 <valItem ident="SG">
                                     <desc xml:lang="de">St. Galler</desc>
                                     <desc xml:lang="fr">de Saint-Gall</desc>
@@ -3946,7 +3972,7 @@
                             <valList type="closed">
                                 <valItem ident="field">
                                     <desc xml:lang="de">Acker</desc>
-                                     <desc xml:lang="fr">champ</desc>
+                                    <desc xml:lang="fr">champ</desc>
                                     <desc xml:lang="fr" type="plural">champs</desc>
                                     <desc xml:lang="en">field</desc>
                                     <desc xml:lang="en" type="plural">fields</desc>
@@ -3966,12 +3992,12 @@
                                     <desc xml:lang="fr">haricots</desc>
                                     <desc xml:lang="en">beans</desc>
                                 </valItem>
-                            <valItem ident="bread">
-                                <desc xml:lang="de">Brot</desc>
-                                <desc xml:lang="fr">pain</desc>
-                                <desc xml:lang="en">bread</desc>
-                                <desc xml:lang="it">pane</desc>
-                            </valItem>
+                                <valItem ident="bread">
+                                    <desc xml:lang="de">Brot</desc>
+                                    <desc xml:lang="fr">pain</desc>
+                                    <desc xml:lang="en">bread</desc>
+                                    <desc xml:lang="it">pane</desc>
+                                </valItem>
                                 <valItem ident="butter">
                                     <desc xml:lang="de">Butter</desc>
                                     <desc xml:lang="fr">beurre</desc>
@@ -4015,12 +4041,12 @@
                                     <desc xml:lang="fr">viande</desc>
                                     <desc xml:lang="en">meat</desc>
                                 </valItem>
-                            <valItem ident="vegetables">
-                                <desc xml:lang="de">Gemüse</desc>
-                                <desc xml:lang="it">verdura</desc>
-                                <desc xml:lang="fr">légume</desc>
-                                <desc xml:lang="en">vegetables</desc>
-                            </valItem>
+                                <valItem ident="vegetables">
+                                    <desc xml:lang="de">Gemüse</desc>
+                                    <desc xml:lang="it">verdura</desc>
+                                    <desc xml:lang="fr">légume</desc>
+                                    <desc xml:lang="en">vegetables</desc>
+                                </valItem>
                                 <valItem ident="barley">
                                     <desc xml:lang="de">Gerste</desc>
                                     <desc xml:lang="fr">orge</desc>
@@ -4046,11 +4072,11 @@
                                     <desc xml:lang="fr">foin</desc>
                                     <desc xml:lang="en">hay</desc>
                                 </valItem>
-                                    <valItem ident="herring">
-                                        <desc xml:lang="de">Hering</desc>
-                                         <desc xml:lang="fr">hareng</desc>
-                                        <desc xml:lang="en">herring</desc>
-                                    </valItem>
+                                <valItem ident="herring">
+                                    <desc xml:lang="de">Hering</desc>
+                                    <desc xml:lang="fr">hareng</desc>
+                                    <desc xml:lang="en">herring</desc>
+                                </valItem>
                                 <valItem ident="millet">
                                     <desc xml:lang="de">Hirse</desc>
                                     <desc xml:lang="fr">millet</desc>
@@ -4068,7 +4094,7 @@
                                 </valItem>
                                 <valItem ident="pulses">
                                     <desc xml:lang="de">Hülsenfrüchte</desc>
-                                     <desc xml:lang="fr">légumineuses </desc>
+                                    <desc xml:lang="fr">légumineuses </desc>
                                     <desc xml:lang="en">pulses</desc>
                                 </valItem>
                                 <valItem ident="lime">
@@ -4099,7 +4125,7 @@
                                 </valItem>
                                 <valItem ident="grain">
                                     <desc xml:lang="de">Korn</desc>
-                                     <desc xml:lang="fr">grain</desc>
+                                    <desc xml:lang="fr">grain</desc>
                                     <desc xml:lang="en">grain</desc>
                                 </valItem>
                                 <valItem ident="grain_wheat">
@@ -4124,7 +4150,7 @@
                                 </valItem>
                                 <valItem ident="flour">
                                     <desc xml:lang="de">Mehl</desc>
-                                     <desc xml:lang="fr">farine</desc>
+                                    <desc xml:lang="fr">farine</desc>
                                     <desc xml:lang="en">flour</desc>
                                 </valItem>
                                 <valItem ident="milk">
@@ -4185,7 +4211,7 @@
                                 </valItem>
                                 <valItem ident="silk">
                                     <desc xml:lang="de">Seide</desc>
-                                   <desc xml:lang="fr">soie</desc>
+                                    <desc xml:lang="fr">soie</desc>
                                     <desc xml:lang="en">silk</desc>
                                 </valItem>
                                 <valItem ident="silver">
@@ -4205,12 +4231,12 @@
                                 </valItem>
                                 <valItem ident="straw">
                                     <desc xml:lang="de">Stroh</desc>
-                                   <desc xml:lang="fr">paille</desc>
+                                    <desc xml:lang="fr">paille</desc>
                                     <desc xml:lang="en">straw</desc>
                                 </valItem>
                                 <valItem ident="drapery">
                                     <desc xml:lang="de">Tuch</desc>
-                                     <desc xml:lang="fr">étoffe</desc>
+                                    <desc xml:lang="fr">étoffe</desc>
                                     <desc xml:lang="en">cloth</desc>
                                 </valItem>
                                 <valItem ident="tallow">
@@ -4235,7 +4261,7 @@
                                 </valItem>
                                 <valItem ident="wheat">
                                     <desc xml:lang="de">Weizen</desc>
-                                    <desc xml:lang="fr">blé</desc>
+                                    <desc xml:lang="fr">blé (froment)</desc>
                                     <desc xml:lang="en">wheat</desc>
                                 </valItem>
                                 <valItem ident="grassland">
@@ -4255,7 +4281,7 @@
                                 </valItem>
                                 <valItem ident="denim">
                                     <desc xml:lang="de">Zwillich</desc>
-                                     <desc xml:lang="fr">coutil</desc>
+                                    <desc xml:lang="fr">coutil</desc>
                                     <desc xml:lang="en">ticking</desc>
                                 </valItem>
                             </valList>
@@ -4320,6 +4346,12 @@
                                     <desc xml:lang="en">cup</desc>
                                     <desc xml:lang="en" type="plural">cups</desc>
                                 </valItem>
+                                <valItem ident="carriage">
+                                    <desc xml:lang="de">Wagen</desc>
+                                    <desc xml:lang="fr">charretée</desc>
+                                    <desc xml:lang="fr" type="plural">charretées</desc>
+                                    <desc xml:lang="en" type="plural">carriage</desc>
+                                </valItem>
                                 <valItem ident="Eimer">
                                     <desc xml:lang="de">Eimer</desc>
                                     <desc xml:lang="fr">setier</desc>
@@ -4372,6 +4404,12 @@
                                     <desc xml:lang="de">Malter</desc>
                                     <desc xml:lang="fr">malter</desc>
                                     <desc xml:lang="en">malter</desc>
+                                </valItem>
+                                <valItem ident="Mäss">
+                                    <desc xml:lang="de">Mäss</desc>
+                                    <desc xml:lang="fr">bichet</desc>
+                                    <desc xml:lang="fr" type="plural">bichets</desc>
+                                    <desc xml:lang="en">mäss</desc>
                                 </valItem>
                                 <valItem ident="Mütt">
                                     <desc xml:lang="de">Mütt</desc>
@@ -4856,6 +4894,14 @@
                                     <desc xml:lang="fr">gros bohêmien</desc>
                                     <desc xml:lang="en">Prague groschen</desc>
                                 </valItem>
+                                <valItem ident="écu">
+                                    <desc xml:lang="de">écu</desc>
+                                    <desc xml:lang="de" type="plural">écus</desc>
+                                    <desc xml:lang="fr">écu</desc>
+                                    <desc xml:lang="fr" type="plural">écus</desc>
+                                    <desc xml:lang="en">écu</desc>
+                                    <desc xml:lang="en" type="plural">écus</desc>
+                                </valItem>
                                 <valItem ident="écu blanc">
                                     <desc xml:lang="de">écu blanc</desc>
                                     <desc xml:lang="de" type="plural">écus blancs</desc>
@@ -4879,6 +4925,12 @@
                                     <desc xml:lang="fr" type="plural">écus petits</desc>
                                     <desc xml:lang="en">écu petit</desc>
                                     <desc xml:lang="en" type="plural">écus petits</desc>
+                                </valItem>
+                                <valItem ident="fauchée">
+                                    <desc xml:lang="de">Mahd</desc>
+                                    <desc xml:lang="fr">fauchée</desc>
+                                    <desc xml:lang="fr" type="plural">fauchées</desc>
+                                    <desc xml:lang="en">Mahd</desc>
                                 </valItem>
                                 <valItem ident="fl">
                                     <desc xml:lang="de">Gulden</desc>
@@ -4956,6 +5008,16 @@
                                     <desc xml:lang="fr">maille</desc>
                                     <desc xml:lang="fr" type="plural">mailles</desc>
                                     <desc xml:lang="en">haller</desc>
+                                </valItem>
+                                <valItem ident="Halbgulden">
+                                    <desc xml:lang="de">Halbgulden</desc>
+                                    <desc xml:lang="fr">Halbgulden</desc>
+                                    <desc xml:lang="en">Halbgulden</desc>
+                                </valItem>
+                                <valItem ident="Halbtaler">
+                                    <desc xml:lang="de">Halbtaler</desc>
+                                    <desc xml:lang="fr">Halbtaler</desc>
+                                    <desc xml:lang="en">Halbtaler</desc>
                                 </valItem>
                                 <valItem ident="k">
                                     <desc xml:lang="de">Krone</desc>
@@ -5176,46 +5238,46 @@
                                 </valItem>
                             </valList>
                         </attDef>
-                            <attDef ident="period" mode="replace" usage="opt">
-                                <desc xml:lang="de">benannte Periode</desc>
-                                <valList type="closed">
-                                    <valItem ident="P1WD">
-                                        <desc xml:lang="de">Sonntag</desc>
-                                        <desc xml:lang="fr">dimanche</desc>
-                                        <desc xml:lang="en">Sunday</desc>
-                                    </valItem>
-                                    <valItem ident="P2WD">
-                                        <desc xml:lang="de">Montag</desc>
-                                        <desc xml:lang="fr">lundi</desc>
-                                        <desc xml:lang="en">Monday</desc>
-                                    </valItem>
-                                    <valItem ident="P3WD">
-                                        <desc xml:lang="de">Dienstag</desc>
-                                        <desc xml:lang="fr">mardi</desc>
-                                        <desc xml:lang="en">Tuesday</desc>
-                                    </valItem>
-                                    <valItem ident="P4WD">
-                                        <desc xml:lang="de">Mittwoch</desc>
-                                        <desc xml:lang="fr">mercredi</desc>
-                                        <desc xml:lang="en">Wednesday</desc>
-                                    </valItem>
-                                    <valItem ident="P5WD">
-                                        <desc xml:lang="de">Donnerstag</desc>
-                                        <desc xml:lang="fr">jeudi</desc>
-                                        <desc xml:lang="en">Thursday</desc>
-                                    </valItem>
-                                    <valItem ident="P6WD">
-                                        <desc xml:lang="de">Freitag</desc>
-                                        <desc xml:lang="fr">vendredi</desc>
-                                        <desc xml:lang="en">Friday</desc>
-                                    </valItem>
-                                    <valItem ident="P7WD">
-                                        <desc xml:lang="de">Samstag</desc>
-                                        <desc xml:lang="fr">samedi</desc>
-                                        <desc xml:lang="en">Saturday</desc>
-                                    </valItem>
-                                </valList>
-                            </attDef>
+                        <attDef ident="period" mode="replace" usage="opt">
+                            <desc xml:lang="de">benannte Periode</desc>
+                            <valList type="closed">
+                                <valItem ident="P1WD">
+                                    <desc xml:lang="de">Sonntag</desc>
+                                    <desc xml:lang="fr">dimanche</desc>
+                                    <desc xml:lang="en">Sunday</desc>
+                                </valItem>
+                                <valItem ident="P2WD">
+                                    <desc xml:lang="de">Montag</desc>
+                                    <desc xml:lang="fr">lundi</desc>
+                                    <desc xml:lang="en">Monday</desc>
+                                </valItem>
+                                <valItem ident="P3WD">
+                                    <desc xml:lang="de">Dienstag</desc>
+                                    <desc xml:lang="fr">mardi</desc>
+                                    <desc xml:lang="en">Tuesday</desc>
+                                </valItem>
+                                <valItem ident="P4WD">
+                                    <desc xml:lang="de">Mittwoch</desc>
+                                    <desc xml:lang="fr">mercredi</desc>
+                                    <desc xml:lang="en">Wednesday</desc>
+                                </valItem>
+                                <valItem ident="P5WD">
+                                    <desc xml:lang="de">Donnerstag</desc>
+                                    <desc xml:lang="fr">jeudi</desc>
+                                    <desc xml:lang="en">Thursday</desc>
+                                </valItem>
+                                <valItem ident="P6WD">
+                                    <desc xml:lang="de">Freitag</desc>
+                                    <desc xml:lang="fr">vendredi</desc>
+                                    <desc xml:lang="en">Friday</desc>
+                                </valItem>
+                                <valItem ident="P7WD">
+                                    <desc xml:lang="de">Samstag</desc>
+                                    <desc xml:lang="fr">samedi</desc>
+                                    <desc xml:lang="en">Saturday</desc>
+                                </valItem>
+                            </valList>
+                        </attDef>
                         <attDef ident="corresp" mode="delete"/>
                         <attDef ident="n" mode="delete"/>
                         <attDef ident="rend" mode="delete"/>
@@ -5366,15 +5428,16 @@
                         <!- @resp->
                         <memberOf key="att.global"/>
                     </classes> -->
-                    <content> <!-- PS: das muss kontrolliert werden -->
+                    <content>
+                        <!-- PS: das muss kontrolliert werden -->
                         <rng:oneOrMore>
                             <rng:choice>
-                              <rng:text/>
-                              <rng:ref name="p"/>
+                                <rng:text/>
+                                <rng:ref name="p"/>
                                 <rng:ref name="anchor"/>
                                 <rng:ref name="label"/>
                                 <rng:ref name="macro.defaultContent"/>
-                           </rng:choice>
+                            </rng:choice>
                         </rng:oneOrMore>
                     </content>
                     <attList>
@@ -5524,7 +5587,8 @@
                         <constraint>
                             <sch:pattern>
                                 <sch:rule context="tei:supplied">
-                                    <sch:report test="@resp and @source">On the tei:supplied
+                                    <sch:report test="@resp and @source"
+                                        >On the tei:supplied
                                         element, @source cannot occur together with @resp. Those
                                         attributes are mutually exclusive.</sch:report>
                                 </sch:rule>
@@ -5771,7 +5835,7 @@
                         </valItem>
                         <valItem ident="sic">
                             <desc xml:lang="de">Auffällige Schreibung</desc>
-                            <desc xml:lang="fr">Erreur dans le texte source</desc>
+                            <desc xml:lang="fr">Ainsi</desc>
                             <desc xml:lang="en">Notable spelling</desc>
                         </valItem>
                         <valItem ident="origDate">
@@ -5988,7 +6052,7 @@
                         </valItem>
                         <valItem ident="corrected">
                             <desc xml:lang="de">Korrigiert</desc>
-                            <desc xml:lang="fr">Corrigé</desc>
+                            <desc xml:lang="fr">À corriger en</desc>
                             <desc xml:lang="en">Corrected</desc>
                         </valItem>
                         <valItem ident="corrected-from">
