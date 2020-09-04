@@ -16,9 +16,9 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 4748 $</p>
-                <p>Date of last commit:     $Date: 2020-08-28 16:32:04 +0200 (Fri, 28 Aug 2020) $</p>
-                <p>Author of last commit:   $Author: beni $</p>
+                <p>Revision of last commit: $Rev: 4764 $</p>
+                <p>Date of last commit:     $Date: 2020-09-02 16:49:39 +0200 (Wed, 02 Sep 2020) $</p>
+                <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
     </teiHeader>
@@ -2245,7 +2245,7 @@
                                 </valItem>
                                 <valItem ident="cover">
                                     <desc xml:lang="de">auf dem Umschlag</desc>
-                                    <desc xml:lang="fr">sur le couverture</desc>
+                                    <desc xml:lang="fr">sur la couverture</desc>
                                     <desc xml:lang="en">on the cover</desc>
                                 </valItem>
                                 <valItem ident="cover above">
@@ -2665,7 +2665,7 @@
                                 </valItem>
                                 <valItem ident="cover">
                                     <desc xml:lang="de">auf dem Umschlag</desc>
-                                    <desc xml:lang="fr">sur le couverture</desc>
+                                    <desc xml:lang="fr">sur la couverture</desc>
                                     <desc xml:lang="en">on the cover</desc>
                                 </valItem>
                                 <valItem ident="cover above">
@@ -5134,8 +5134,8 @@
                                 <valItem ident="year">
                                     <desc xml:lang="de">Jahr</desc>
                                     <desc xml:lang="de" type="plural">Jahre</desc>
-                                    <desc xml:lang="fr">année</desc>
-                                    <desc xml:lang="fr" type="plural">années</desc>
+                                    <desc xml:lang="fr">an</desc>
+                                    <desc xml:lang="fr" type="plural">ans</desc>
                                     <desc xml:lang="en" type="plural">years</desc>
                                     <desc xml:lang="en">year</desc>
                                 </valItem>
@@ -5805,7 +5805,7 @@
                     <valList>
                         <valItem ident="abbr-expanded">
                             <desc xml:lang="de">Aufgelöste Abkürzung</desc>
-                            <desc xml:lang="fr">Résolution d’abbréviation</desc>
+                            <desc xml:lang="fr">Résolution d’abréviation</desc>
                             <desc xml:lang="en">Resolved abbreviation</desc>
                         </valItem>
                         <valItem ident="abbr-nonexpanded">
@@ -5815,12 +5815,12 @@
                         </valItem>
                         <valItem ident="abbr-unclear">
                             <desc xml:lang="de">Abkürzung, unsichere Lesung</desc>
-                            <desc xml:lang="fr">Abbréviation, lecture incertaine</desc>
+                            <desc xml:lang="fr">Abréviation, lecture incertaine</desc>
                             <desc xml:lang="en">Abbreviation, uncertain reading</desc>
                         </valItem>
                         <valItem ident="abbr">
                             <desc xml:lang="de">Abkürzung</desc>
-                            <desc xml:lang="fr">Abbréviation</desc>
+                            <desc xml:lang="fr">Abréviation</desc>
                             <desc xml:lang="en">Abbreviation</desc>
                         </valItem>
                         <valItem ident="unclear-rdg">
@@ -5915,25 +5915,25 @@
                         </valItem>
                         <valItem ident="term">
                             <desc xml:lang="de">Begriff:</desc>
-                            <desc xml:lang="fr">Terme:</desc>
+                            <desc xml:lang="fr">Terme&#160;:</desc>
                             <desc xml:lang="it">Termine:</desc>
                             <desc xml:lang="en">Term:</desc>
                         </valItem>
                         <valItem ident="person">
                             <desc xml:lang="de">Person:</desc>
-                            <desc xml:lang="fr">Personne:</desc>
+                            <desc xml:lang="fr">Personne&#160;:</desc>
                             <desc xml:lang="it">Persona:</desc>
                             <desc xml:lang="en">Person:</desc>
                         </valItem>
                         <valItem ident="organisation">
                             <desc xml:lang="de">Organisation:</desc>
-                            <desc xml:lang="fr">Organisation:</desc>
+                            <desc xml:lang="fr">Organisation&#160;:</desc>
                             <desc xml:lang="it">Organizzazione:</desc>
                             <desc xml:lang="en">Organisation:</desc>
                         </valItem>
                         <valItem ident="place">
                             <desc xml:lang="de">Ort:</desc>
-                            <desc xml:lang="fr">Lieu:</desc>
+                            <desc xml:lang="fr">Lieu&#160;:</desc>
                             <desc xml:lang="it">Luogo:</desc>
                             <desc xml:lang="en">Place:</desc>
                         </valItem>
