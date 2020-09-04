@@ -288,7 +288,7 @@
                     </model>
                     <model behaviour="alternate">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('abbr'), ec:colon(), ec:abbr(.))"/>
+                        <param name="alternate" value="ec:label('abbr')"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="unclear" mode="change">
