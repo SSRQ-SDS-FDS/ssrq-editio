@@ -485,8 +485,8 @@ declare function app:origDate($node as node(), $model as map(*)) {
     let $header := root($model?data)//tei:teiHeader
     let $filiation := $header/tei:fileDesc//tei:msDesc/tei:msContents/tei:msItem/tei:filiation[@type='original'][tei:origDate]
     let $origin := $header/tei:fileDesc//tei:msDesc/tei:history/tei:origin
-    let $origDate := if (exists($filiation)) then $filiation/tei:origDate else $origin/tei:origDate
-    let $origPlace := if (exists($filiation)) then $filiation/tei:origPlace else $origin/tei:origPlace
+    let $origDate := if (exists($filiation/tei:origDate)) then $filiation/tei:origDate else $origin/tei:origDate
+    let $origPlace := if (exists($filiation/tei:origPlace)) then $filiation/tei:origPlace else $origin/tei:origPlace
     return
         app:show-if-exists($node, ($origDate/@when, $origDate/@from), function() {
             replace(common:print-date($origDate), '\.$', '') || '. ' || $origPlace
