@@ -92,6 +92,8 @@ declare function query:query-texts($subtypes as xs:string*, $query as xs:string)
             switch ($subtype)
                 case "title" return
                     collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:head[ft:query(., $query, $query:QUERY_OPTIONS)]
+                case "idno" return
+                    collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno[ft:query(., $query, $query:QUERY_OPTIONS)]
                 case "regest" return
                     collection($config:data-root)//tei:teiHeader//tei:msContents/tei:summary[ft:query(., $query, $query:QUERY_OPTIONS)]
                 case "comment" return
@@ -310,9 +312,9 @@ declare function query:highlight-texts($context as element()*, $subtypes as xs:s
     for $subtype in $subtypes
     return
         switch ($subtype)
-            case "title" case "seal" return
-                $context | $context[ft:query(., $query, $query:QUERY_OPTIONS)]
-            case "regest" case "comment" return
+            case "title" case "idno"
+            case "regest" case "comment"
+            case "seal" return
                 $context | $context[ft:query(., $query, $query:QUERY_OPTIONS)]
             case "notes" return
                 $context |
@@ -431,6 +433,7 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
 declare function query:category($hit as element()) {
     typeswitch($hit)
         case element(tei:head) return "title"
+        case element(tei:idno) return "idno"
         case element(tei:summary) return "regest"
         case element(tei:note) return "notes"
         case element(tei:back) return "comment"

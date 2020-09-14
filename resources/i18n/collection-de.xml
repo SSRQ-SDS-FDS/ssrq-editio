@@ -77,6 +77,7 @@
     <msg key="genre">Textgattung</msg>
     <msg key="searchText">durchsuche Bearbeitungstext</msg>
     <msg key="title">Titel</msg>
+    <msg key="idno">Signatur</msg>
     <msg key="regest">Regest</msg>
     <msg key="comment">Kommentar</msg>
     <msg key="notes">Anmerkungen</msg>

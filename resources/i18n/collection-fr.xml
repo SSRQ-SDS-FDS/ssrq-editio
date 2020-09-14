@@ -77,6 +77,7 @@
     <msg key="genre">Genre</msg>
     <msg key="searchText">Recherche dans les commentaires et annotations</msg>
     <msg key="title">Titre</msg>
+    <msg key="idno">Signature</msg>
     <msg key="regest">Résumé</msg>
     <msg key="comment">Commentaires</msg>
     <msg key="notes">Annotations</msg>
@@ -85,7 +86,7 @@
     <msg key="canton">Canton</msg>
     <msg key="section">Partie</msg>
     <msg key="loading">Il charge</msg>
-    <msg key="describe">Description d’une pièce source</msg>
+    <msg key="describe">Description de la source</msg>
     <msg key="addFill">Présentation de la situation de tradition</msg>
     <msg key="editionText">Texte édité</msg>
     <msg key="relevance">Importance</msg>
