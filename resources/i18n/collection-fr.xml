@@ -77,7 +77,7 @@
     <msg key="genre">Genre</msg>
     <msg key="searchText">Recherche dans les commentaires et annotations</msg>
     <msg key="title">Titre</msg>
-    <msg key="idno">Signature</msg>
+    <msg key="idno">Cote</msg>
     <msg key="regest">Résumé</msg>
     <msg key="comment">Commentaires</msg>
     <msg key="notes">Annotations</msg>

@@ -77,7 +77,7 @@
     <msg key="genre">Genre</msg>
     <msg key="searchText">Search Secondary Text</msg>
     <msg key="title">Title</msg>
-    <msg key="idno">Signature</msg>
+    <msg key="idno">Shelfmark</msg>
     <msg key="regest">Regest</msg>
     <msg key="comment">Comments</msg>
     <msg key="notes">Notes</msg>
