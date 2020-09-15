@@ -370,12 +370,12 @@
                     <model predicate="parent::del" behaviour="inline"/>
                     <model predicate="@hand!='other hand'" behaviour="note">
                         <desc>Show footnote only</desc>
-                        <param name="prefix" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ec:translate(@hand, 0, 'lowercase'), ec:translate(@rend, 0, 'lowercase'), ec:translate(@type, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('by', false()), ' ', ec:scribe(@scribe)) else (), ec:colon())))"/>
+                        <param name="prefix" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ec:translate(@hand, 0, 'lowercase'), ec:translate(@rend, 0, 'lowercase'), ec:translate(@type, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else (), ec:colon())))"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model behaviour="alternote" cssClass="text-critical">
                         <desc>Show text of add with popup and footnote</desc>
-                        <param name="alternate" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ec:translate(@hand, 0, 'lowercase'), ec:translate(@rend, 0, 'lowercase'), ec:translate(@type, 0, 'lowercase')), ' '))), if (@scribe) then (' ', ec:label('by', false()), ' ', ec:scribe(@scribe)) else ())"/>
+                        <param name="alternate" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ec:translate(@hand, 0, 'lowercase'), ec:translate(@rend, 0, 'lowercase'), ec:translate(@type, 0, 'lowercase')), ' '))), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else ())"/>
                         <param name="type" value="'text-critical'"/>
                         <param name="content" value="."/>
                     </model>
@@ -390,7 +390,7 @@
                     <model behaviour="note">
                         <desc>with @hand: just show footnote</desc>
                         <param name="place" value="&#34;footnote&#34;"/>
-                        <param name="content" value="(ec:label('add'), ' ', string-join((ec:translate(@place, 0, ()), ec:translate(@hand, 0, 'lowercase'), ec:translate(@rend, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('by', false()), ' ', ec:scribe(@scribe)) else ())"/>
+                        <param name="content" value="(ec:label('add'), ' ', string-join((ec:translate(@place, 0, ()), ec:translate(@hand, 0, 'lowercase'), ec:translate(@rend, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else ())"/>
                         <param name="type" value="'text-critical-start'"/>
                     </model>
                 </elementSpec>
@@ -579,10 +579,6 @@
                     <model output="latex" predicate="@rend='sup'" behaviour="inline">
                         <pb:template>\textsuperscript{[[content]]}</pb:template>
                     </model>
-                    <!--<model output="latex" predicate="not(@rend='sup')" behaviour="alternote">
-                        <param name="content" value="."/>
-                        <param name="alternate" value="ec:translate(@rend)"/>
-                    </model>-->
                     <model predicate="@rend='sup'" behaviour="inline">
                         <outputRendition>
                             font-size: 80%; vertical-align: top;
@@ -593,11 +589,16 @@
                         <param name="alternate" value="(ec:translate(@rend), ' ', ec:translate(@hand, 0, 'lowercase'))"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
-                    <model predicate="@rend!='sup'" behaviour="alternote">
-                        <param name="content" value="."/>
+                    <model predicate="@rend!='sup'" behaviour="alternate" cssClass="text-critical">
+                        <param name="default" value="."/>
                         <param name="alternate" value="ec:translate(@rend)"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
+                    <!--<model behaviour="alternate" cssClass="text-critical">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="ec:label('sic')"/>
+                        <param name="type" value="'text-critical'"/>
+                    </model>-->
                 </elementSpec>
                 <elementSpec ident="space" mode="change">
                     <model behaviour="alternote" cssClass="text-critical">
@@ -1012,7 +1013,7 @@
                 </elementSpec>
                 <elementSpec ident="ab" mode="change">
                     <model output="latex" behaviour="block">
-                        <param name="place" value="('[', string-join((ec:translate(@type, 0, 'lowercase'),ec:translate(@place, 0, 'lowercase'),ec:translate(@hand, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('by', false()), ' ', ec:scribe(@scribe)) else (), ec:punct(':', false()), ']')"/>
+                        <param name="place" value="('[', string-join((ec:translate(@type, 0, 'lowercase'),ec:translate(@place, 0, 'lowercase'),ec:translate(@hand, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else (), ec:punct(':', false()), ']')"/>
                         <pb:template>
                             \medskip
                             \noindent
@@ -1020,7 +1021,7 @@
                         </pb:template>
                     </model>
                     <model predicate="@place" behaviour="block" cssClass="ab">
-                        <param name="content" value="('[', string-join((ec:translate(@type, 0, 'lowercase'),ec:translate(@place, 0, 'lowercase'),ec:translate(@hand, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('by', false()), ' ', ec:scribe(@scribe)) else (), ec:punct(':', false()), '] ', .)"/>
+                        <param name="content" value="('[', string-join((ec:translate(@type, 0, 'lowercase'),ec:translate(@place, 0, 'lowercase'),ec:translate(@hand, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else (), ec:punct(':', false()), '] ', .)"/>
                         <outputRendition>
                             font-size: 1.5rem;
                         </outputRendition>
@@ -1029,7 +1030,7 @@
                 </elementSpec>
                 <elementSpec ident="label" mode="change">
                     <model predicate="@type='keyword'" behaviour="alternote">
-                        <param name="alternate" value="(ec:label('marginal-note'), ' ', ec:translate(@place, 0, 'lowercase'), if (@scribe) then (' ', ec:label('by', false()), ' ', ec:scribe(@scribe)) else ())"/>
+                        <param name="alternate" value="(ec:label('marginal-note'), ' ', ec:translate(@place, 0, 'lowercase'), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else ())"/>
                         <!--<param name="content" value="('/ ', .,  ' /')"/>-->
                         <param name="type" value="'text-critical'"/>
                         <outputRendition>
