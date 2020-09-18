@@ -16,8 +16,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 4780 $</p>
-                <p>Date of last commit:     $Date: 2020-09-07 14:36:55 +0200 (Mon, 07 Sep 2020) $</p>
+                <p>Revision of last commit: $Rev: 4891 $</p>
+                <p>Date of last commit:     $Date: 2020-09-17 11:15:22 +0200 (Thu, 17 Sep 2020) $</p>
                 <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
@@ -3472,7 +3472,7 @@
                             <valList type="closed">
                                 <valItem ident="blackened">
                                     <desc xml:lang="de">Streichung durch Schwärzen</desc>
-                                    <desc xml:lang="fr">la suppréssion a été noircie</desc>
+                                    <desc xml:lang="fr">la suppression a été noircie</desc>
                                     <desc xml:lang="en">deletion by blackening text</desc>
                                 </valItem>
                                 <valItem ident="bracketed">
@@ -3541,7 +3541,7 @@
                             <valList type="closed">
                                 <valItem ident="blackened">
                                     <desc xml:lang="de">Streichung durch Schwärzen</desc>
-                                    <desc xml:lang="fr">la suppréssion a été noircie</desc>
+                                    <desc xml:lang="fr">la suppression a été noircie</desc>
                                     <desc xml:lang="en">deletion by blackening text</desc>
                                 </valItem>
                                 <valItem ident="bracketed">
