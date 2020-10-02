@@ -144,9 +144,9 @@
                             
                             \thispagestyle{firstpage}
                             
-                            \sloppy
                             \setcounter{[[sectionType]]}{[[articleNr]]}  % Stücknummer - 1
-                            \[[articleType]]{[[title]]}
+                            \sloppy
+                            \[[articleType]]{[[title]]}{}
                             \fussy
                             \[[datingType]]{[[dating]][[place]][[keywords]]}
                             
