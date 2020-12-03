@@ -16,8 +16,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 4891 $</p>
-                <p>Date of last commit:     $Date: 2020-09-17 11:15:22 +0200 (Thu, 17 Sep 2020) $</p>
+                <p>Revision of last commit: $Rev: 5158 $</p>
+                <p>Date of last commit:     $Date: 2020-12-02 12:14:51 +0100 (Wed, 02 Dec 2020) $</p>
                 <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
@@ -2068,7 +2068,7 @@
                                 </valItem>
                                 <valItem ident="notarial sign">
                                     <desc xml:lang="de">Notarzeichen</desc>
-                                    <desc xml:lang="fr">seing/singe notarial</desc>
+                                    <desc xml:lang="fr">seing/signe notarial</desc>
                                     <desc xml:lang="en">notarial sign</desc>
                                 </valItem>
                                 <valItem ident="sign">
@@ -2342,6 +2342,11 @@
                                     <desc xml:lang="de">auf der Rückseite unten rechts</desc>
                                     <desc xml:lang="fr">au verso en bas à droite</desc>
                                     <desc xml:lang="en">at the bottom right of the verso</desc>
+                                </valItem>
+                                <valItem ident="verso middle">
+                                    <desc xml:lang="de">auf der Rückseite in der Mitte</desc>
+                                    <desc xml:lang="fr">au centre du verso de la page</desc>
+                                    <desc xml:lang="en">in the middle of the verso</desc>
                                 </valItem>
                                 <valItem ident="right margin">
                                     <desc xml:lang="de">am rechten Rand</desc>
@@ -2728,6 +2733,16 @@
                                     <desc xml:lang="fr">dans la marge de droite</desc>
                                     <desc xml:lang="en">on the right margin"</desc>
                                 </valItem>
+                                <valItem ident="right top">
+                                    <desc xml:lang="de">am rechten oberen Rand</desc>
+                                    <desc xml:lang="fr">en haut à droite</desc>
+                                    <desc xml:lang="en">on the right top</desc>
+                                </valItem>
+                                <valItem ident="left top">
+                                    <desc xml:lang="de">am linken oberen Rand</desc>
+                                    <desc xml:lang="fr">en haut à gauche</desc>
+                                    <desc xml:lang="en">on the left top</desc>
+                                </valItem>
                                 <valItem ident="top">
                                     <desc xml:lang="de">am oberen Rand</desc>
                                     <desc xml:lang="fr">en haut de page</desc>
@@ -2847,6 +2862,16 @@
                                     <desc xml:lang="de">am rechten Rand</desc>
                                     <desc xml:lang="fr">dans la marge de droite</desc>
                                     <desc xml:lang="en">on the right margin</desc>
+                                </valItem>
+                                <valItem ident="right top">
+                                    <desc xml:lang="de">am rechten oberen Rand</desc>
+                                    <desc xml:lang="fr">en haut à droite</desc>
+                                    <desc xml:lang="en">on the right top</desc>
+                                </valItem>
+                                <valItem ident="left top">
+                                    <desc xml:lang="de">am linken oberen Rand</desc>
+                                    <desc xml:lang="fr">en haut à gauche</desc>
+                                    <desc xml:lang="en">on the left top</desc>
                                 </valItem>
                                 <valItem ident="top">
                                     <desc xml:lang="de">am oberen Rand</desc>
@@ -3658,7 +3683,7 @@
                                 </valItem>
                                 <valItem ident="right">
                                     <desc xml:lang="de">rechtssbündig</desc>
-                                    <desc xml:lang="fr">Aligné à droit</desc>
+                                    <desc xml:lang="fr">Aligné à droite</desc>
                                     <desc xml:lang="en">right</desc>
                                 </valItem>
                                 <valItem ident="rubricated">
@@ -3887,7 +3912,7 @@
                                 </valItem>
                                 <valItem ident="Lausanne">
                                     <desc xml:lang="de">Lausanner</desc>
-                                    <desc xml:lang="fr">lausannois</desc>
+                                    <desc xml:lang="fr">Laus.</desc>
                                     <desc xml:lang="en">of Lausanne</desc>
                                 </valItem>
                                 <valItem ident="Lothringen">
