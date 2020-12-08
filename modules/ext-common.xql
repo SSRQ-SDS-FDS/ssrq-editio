@@ -215,7 +215,10 @@ declare function pmf:format-date($when as xs:string?, $language as xs:string?) {
                 else if (matches($when, "^\d+$")) then
                     @when
                 else
-                    format-date(xs:date($when), "[D1].[M1].[Y0001]", $language, (), ())
+                    if ($language = 'fr') then
+                        format-date(xs:date($when), "[D01].[M01].[Y0001]", $language, (), ())
+                    else
+                        format-date(xs:date($when), "[D1].[M1].[Y0001]", $language, (), ())
             } catch * {
                 @when
             }
@@ -329,32 +332,32 @@ declare function pmf:print-date($date as node()*) {
     (: save typing in ssrq.odd :)
 
     let $date-string :=
-    	if ($date/@when) then
-    	  if (matches($date/@when, "^\d{4}-\d{2}$")) then
+        if ($date/@when) then
+          if (matches($date/@when, "^\d{4}-\d{2}$")) then
             format-date(xs:date($date/@when || '-01'), "[MNn] [Y0001]", (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
           else
-        	format-date(xs:date($date/@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
-    	else if (matches($date/@from, '-01-01$') and matches($date/@to, '-12-31$')) then (: precision is one year :)
-    	    if (substring($date/@from, 1, 4) = substring($date/@to, 1, 4)) then
-    	        substring($date/@from, 1, 4)
+            format-date(xs:date($date/@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
+        else if (matches($date/@from, '-01-01$') and matches($date/@to, '-12-31$')) then (: precision is one year :)
+            if (substring($date/@from, 1, 4) = substring($date/@to, 1, 4)) then
+                substring($date/@from, 1, 4)
             else
                 pmf:print-date-period(xs:int(substring($date/@from, 1, 4)), xs:int(substring($date/@to, 1, 4)))
-    	else if (substring($date/@from, 1, 4) = substring($date/@to, 1, 4)) then (: within the same year :)
-    	    if (substring($date/@from, 6, 2) = substring($date/@to, 6, 2)) then (: within the same month :)
-    	        format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()) || ' – ' || format-date(xs:date($date/@to), '[D1]')
-    	    else
-    	        format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()) || ' – ' || format-date(xs:date($date/@to), '[MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
-    	else
-        	string-join((format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()),
-        	' – ',
-        	format-date(xs:date($date/@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())))
+        else if (substring($date/@from, 1, 4) = substring($date/@to, 1, 4)) then (: within the same year :)
+            if (substring($date/@from, 6, 2) = substring($date/@to, 6, 2)) then (: within the same month :)
+                format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()) || ' – ' || format-date(xs:date($date/@to), '[D1]')
+            else
+                format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()) || ' – ' || format-date(xs:date($date/@to), '[MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
+        else
+            string-join((format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()),
+            ' – ',
+            format-date(xs:date($date/@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())))
     let $old-style :=
-    	if ($date/@calendar='Julian') then
-    		' ' || pmf:label('old-style-abbr', false())
-    	else
-    		()
+        if ($date/@calendar='Julian') then
+            ' ' || pmf:label('old-style-abbr', false())
+        else
+            ()
  
-    	return $date-string || $old-style
+        return $date-string || $old-style
 };
 
 declare function pmf:print-date-period($from as xs:int, $to as xs:int) {
