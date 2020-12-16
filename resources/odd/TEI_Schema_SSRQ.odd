@@ -16,8 +16,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 5158 $</p>
-                <p>Date of last commit:     $Date: 2020-12-02 12:14:51 +0100 (Wed, 02 Dec 2020) $</p>
+                <p>Revision of last commit: $Rev: 5262 $</p>
+                <p>Date of last commit:     $Date: 2020-12-16 09:02:30 +0100 (Wed, 16 Dec 2020) $</p>
                 <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
@@ -5155,7 +5155,7 @@
                                     <desc xml:lang="en">zecchino</desc>
                                     <desc xml:lang="en" type="plural">zecchini</desc>
                                 </valItem>
-                                <!--  -->
+                                <!--  age -->
                                 <valItem ident="year">
                                     <desc xml:lang="de">Jahr</desc>
                                     <desc xml:lang="de" type="plural">Jahre</desc>
@@ -5163,6 +5163,14 @@
                                     <desc xml:lang="fr" type="plural">ans</desc>
                                     <desc xml:lang="en" type="plural">years</desc>
                                     <desc xml:lang="en">year</desc>
+                                </valItem>
+                                <valItem ident="month">
+                                    <desc xml:lang="de">Monat</desc>
+                                    <desc xml:lang="de" type="plural">Monate</desc>
+                                    <desc xml:lang="fr">mois</desc>
+                                    <desc xml:lang="fr" type="plural">mois</desc>
+                                    <desc xml:lang="en" type="plural">months</desc>
+                                    <desc xml:lang="en">month</desc>
                                 </valItem>
                                 <valItem ident="week">
                                     <desc xml:lang="de">Woche</desc>
