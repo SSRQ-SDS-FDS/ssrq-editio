@@ -119,11 +119,11 @@ declare function pmf:punct($char as xs:string, $spaceAfter as xs:boolean?) {
     let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
     let $punct :=
         switch ($lang)
-            case 'fr' return ' ' || $char
+            case 'fr' return ' ' || $char
             default return $char
     return
         if ($spaceAfter) then
-            $punct || ' '
+            $punct || ' '
         else
             $punct
 };
