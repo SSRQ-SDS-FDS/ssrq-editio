@@ -16,9 +16,9 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 5262 $</p>
-                <p>Date of last commit:     $Date: 2020-12-16 09:02:30 +0100 (Wed, 16 Dec 2020) $</p>
-                <p>Author of last commit:   $Author: pascale $</p>
+                <p>Revision of last commit: $Rev: 5961 $</p>
+                <p>Date of last commit:     $Date: 2021-02-18 10:01:18 +0100 (Thu, 18 Feb 2021) $</p>
+                <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
     </teiHeader>
@@ -29,9 +29,7 @@
         <body>
             <p>Beinhaltet alle benötigten TEI-Elemente (auch diejenigen für die
                 Retrodigitalisierung) sowie die Siegel-Erweiterungen. Folgende Elemente sind laut
-                    <ref
-                    target="http://www.ssrq-sds-fds.ch/wiki/index.php?title=Hauptseite"
-                >Wiki</ref> eingeschränkt: titleStmt, title, respStmt, resp, publicationStmt,
+                    <ref target="http://www.ssrq-sds-fds.ch/wiki/index.php?title=Hauptseite">Wiki</ref> eingeschränkt: titleStmt, title, respStmt, resp, publicationStmt,
                 editionStmt, extent, dimensions, seriesStmt, sourceDesc, encodingDesc,
                 editorialDecl, profileDesc, textClass, particDesc, settingDesc, revisionDesc,
                 facsimile, text, sealDesc, seal, time, occupation, damage</p>
@@ -46,10 +44,10 @@
 
                 <moduleRef key="tei"/>
                 <moduleRef key="core"
-                    include="abbr add author bibl cb choice corr date del expan foreign gap graphic head hi item label                     lb list listBibl measure measureGrp note num orig p pb q quote ref reg resp respStmt sic term textLang time title unclear"/>
+                    include="abbr add analytic author bibl biblScope biblStruct cb choice corr date del expan foreign gap graphic head hi imprint item label lb list listBibl measure measureGrp monogr note num orig p pb pubPlace publisher q quote ref reg resp respStmt series sic term textLang time title unclear"/>
                 <moduleRef key="header"
                     include="availability textClass profileDesc fileDesc idno editorialDecl encodingDesc extent keywords publicationStmt profileDesc seriesStmt sourceDesc teiHeader textClass titleStmt"/>
-                <moduleRef key="textstructure" include="TEI back body div front group signed text"/>
+                <moduleRef key="textstructure" include="TEI back body div docImprint front group signed text"/>
                 <moduleRef key="linking" include="ab anchor seg"/>
                 <moduleRef key="msdescription"
                     include="altIdentifier origDate origPlace dimensions height width support material condition msDesc physDesc sealDesc objectDesc supportDesc seal msContents history additional repository msItem filiation msIdentifier summary origin"/>
@@ -175,12 +173,10 @@
                     <constraint>
                         <sch:pattern>
                             <sch:rule context="tei:*">
-                                <sch:report test="@quantity and not(@unit)" xml:lang="en"
-                                    >If the
+                                <sch:report test="@quantity and not(@unit)" xml:lang="en">If the
                                     @quantity attribute is specified on the <sch:name/> element,
                                     @unit must be present, too.</sch:report>
-                                <sch:report test="@unit and not(@quantity)" xml:lang="en"
-                                    >If the
+                                <sch:report test="@unit and not(@quantity)" xml:lang="en">If the
                                     @unit attribute is specified on the <sch:name/> element,
                                     @quantity must be present, too.</sch:report>
                             </sch:rule>
@@ -469,6 +465,9 @@
 
                 <elementSpec ident="msIdentifier" module="msdescription" mode="change">
                     <content>
+                        <rng:optional>
+                            <rng:ref name="repository"/>
+                        </rng:optional>
                         <rng:ref name="idno"/>
                         <rng:optional>
                             <rng:ref name="altIdentifier"/>
@@ -1682,6 +1681,7 @@
                                 <rng:ref name="damage"/>
                                 <rng:ref name="damageSpan"/>
                                 <rng:ref name="anchor"/>
+                                <rng:ref name="listBibl"/>
                             </rng:choice>
                         </rng:zeroOrMore>
                     </content>
@@ -1837,24 +1837,20 @@
                         <constraint>
                             <sch:pattern>
                                 <sch:rule context="tei:gap[parent::tei:damage]">
-                                    <sch:report test="@reason" xml:lang="en"
-                                        >If tei:gap is a child
+                                    <sch:report test="@reason" xml:lang="en">If tei:gap is a child
                                         of tei:damage, @reason cannot be specififed on
                                         tei:gap.</sch:report>
                                 </sch:rule>
                                 <sch:rule context="tei:gap[not(parent::tei:damage) and @reason]">
-                                    <sch:report test="@reason = 'illegible' and (not(@unit) or not(@quantity))"
-                                        >If @reason is specified on the <sch:name/> element and its
+                                    <sch:report test="@reason = 'illegible' and (not(@unit) or not(@quantity))">If @reason is specified on the <sch:name/> element and its
                                         value is "illegible", @unit and @quantity must be present,
                                         too.</sch:report>
-                                    <sch:report test="@source"
-                                        >On the <sch:name/> element, @source
+                                    <sch:report test="@source">On the <sch:name/> element, @source
                                         cannot occur together with @reason. Those attributes are
                                         mutually exclusive.</sch:report>
                                 </sch:rule>
                                 <sch:rule context="tei:gap[not(parent::tei:damage) and @source]">
-                                    <sch:report test="@unit or @quantity or @reason"
-                                        >If @source is
+                                    <sch:report test="@unit or @quantity or @reason">If @source is
                                         specified on the <sch:name/> element, @unit, @quantity and
                                         @reason are forbidden.</sch:report>
                                     <!--  fakultativ <sch:assert test="following-sibling::*[position() = 1 and self::tei:note]"
@@ -2172,11 +2168,9 @@
                         <constraint>
                             <sch:pattern>
                                 <sch:rule context="tei:ab">
-                                    <sch:assert test="count(parent::tei:div/tei:ab) = 1" xml:lang="en"
-                                        >There can only be one <sch:name/> element
+                                    <sch:assert test="count(parent::tei:div/tei:ab) = 1" xml:lang="en">There can only be one <sch:name/> element
                                         within &lt;div&gt;.</sch:assert>
-                                    <sch:assert test="count(parent::tei:div/*) = 1" xml:lang="en"
-                                        >The <sch:name/> element must be the only element within
+                                    <sch:assert test="count(parent::tei:div/*) = 1" xml:lang="en">The <sch:name/> element must be the only element within
                                         &lt;div&gt;.</sch:assert>
                                     <!--<sch:assert test="name(./../..) = 'body'" xml:lang="en"
                                         >The <sch:name/> element must be the grandchild of body: body/div/<sch:name/>.</sch:assert>-->
@@ -3053,6 +3047,11 @@
                         <attDef ident="unit" mode="delete"/>
                     </attList>
                 </elementSpec>
+                <elementSpec ident="analytic" module="core" mode="change">
+                    <classes mode="change">
+                        <memberOf key="att.typed"/>
+                    </classes>
+                </elementSpec>
                 <elementSpec ident="anchor" module="linking" mode="change">
                     <content>
                         <rng:empty/>
@@ -3109,6 +3108,9 @@
                     <content>
                         <rng:zeroOrMore>
                             <rng:choice>
+                                <rng:ref name="hi"/>
+                                <rng:ref name="idno"/>
+                                <rng:ref name="note"/>
                                 <rng:ref name="ref"/>
                                 <rng:text/>
                             </rng:choice>
@@ -3479,7 +3481,7 @@
                             <valList type="closed">
                                 <valItem ident="later hand">
                                     <desc xml:lang="de">von späterer Hand</desc>
-                                    <desc xml:lang="fr">c’une main plus récente</desc>
+                                    <desc xml:lang="fr">d’une main plus récente</desc>
                                     <desc xml:lang="en">in a later hand</desc>
                                     <!-- Text in den Anmerkungen -->
                                 </valItem>
@@ -3800,6 +3802,18 @@
                         <attDef ident="wit" mode="delete"/>
                     </attList>
                 </elementSpec>
+                <elementSpec ident="listBibl" module="core" mode="change">
+                    <content>
+                        <rng:oneOrMore>
+                            <rng:choice>
+                                <rng:ref name="head"/>
+                                <rng:ref name="note"/>
+                                <rng:ref name="bibl"/>
+                                <rng:ref name="biblStruct"/>
+                            </rng:choice>
+                        </rng:oneOrMore>
+                    </content>
+                </elementSpec>
                 <elementSpec ident="measure" module="core" mode="change">
                     <content>
                         <rng:zeroOrMore>
@@ -3814,8 +3828,7 @@
                         <constraint>
                             <sch:pattern>
                                 <sch:rule context="tei:measure[matches(@unit,'^(Ballen|Bürde|Dutzend|Fuder|Gaden|Loden|Maschen|Paar|Schubkarre|Seil|Sester|Stock|Stuck|Zeine)$')]">
-                                    <sch:assert test="exists(@type)"
-                                        >If @unit is specified on the
+                                    <sch:assert test="exists(@type)">If @unit is specified on the
                                         <sch:name/> element, @type must be present,
                                         too.</sch:assert>
                                 </sch:rule>
@@ -5203,6 +5216,25 @@
                         </rng:zeroOrMore>
                     </content>
                 </elementSpec>
+                <elementSpec ident="monogr" module="core" mode="change">
+                    <classes mode="change">
+                        <memberOf key="att.typed"/>
+                    </classes>
+                    <content>
+                        <rng:zeroOrMore>
+                            <rng:ref name="author"/>
+                        </rng:zeroOrMore>
+                        <rng:oneOrMore>
+                            <rng:ref name="title"/>
+                        </rng:oneOrMore>
+                        <rng:optional>
+                            <rng:ref name="imprint"/>
+                        </rng:optional>
+                        <rng:zeroOrMore>
+                            <rng:ref name="biblScope"/>
+                        </rng:zeroOrMore>
+                    </content>
+                </elementSpec>
                 <elementSpec ident="num" module="core" mode="change">
                     <content>
                         <rng:zeroOrMore>
@@ -5381,10 +5413,10 @@
                     </attList>
                 </elementSpec>
                 <elementSpec ident="quote" module="core" mode="change">
-                    <classes mode="replace">
+                    <!--<classes mode="replace">
                         <memberOf key="model.qLike"/>
                         <memberOf key="att.global"/>
-                    </classes>
+                    </classes>-->
                     <content>
                         <rng:zeroOrMore>
                             <rng:choice>
@@ -5620,8 +5652,7 @@
                         <constraint>
                             <sch:pattern>
                                 <sch:rule context="tei:supplied">
-                                    <sch:report test="@resp and @source"
-                                        >On the tei:supplied
+                                    <sch:report test="@resp and @source">On the tei:supplied
                                         element, @source cannot occur together with @resp. Those
                                         attributes are mutually exclusive.</sch:report>
                                 </sch:rule>
@@ -6285,6 +6316,16 @@
                             <desc xml:lang="de">Viertel</desc>
                             <desc xml:lang="fr">quart du</desc>
                             <desc xml:lang="en">quarter</desc>
+                        </valItem>
+                        <valItem ident="edited-by">
+                            <desc xml:lang="de">bearb. von</desc>
+                            <desc xml:lang="fr">éd. par</desc>
+                            <desc xml:lang="en">ed. by</desc>
+                        </valItem>
+                        <valItem ident="in">
+                            <desc xml:lang="de">in</desc>
+                            <desc xml:lang="fr">dans</desc>
+                            <desc xml:lang="en">in</desc>
                         </valItem>
                     </valList>
                 </dataSpec>
