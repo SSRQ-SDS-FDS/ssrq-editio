@@ -123,7 +123,9 @@
                         <param name="dating" value="replace(if (exists(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original'][origDate])) then ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original']/origDate) else ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate), '\.$', '')"/>
                         <param name="place" value="if (teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace) then ('. ' || teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace/text()) else ()"/>
                         <param name="keywords" value="string-join(for $keyword in teiHeader/profileDesc/textClass/keywords/term return '\term{' || $keyword/@ref || '}{}')"/>
-                        <param name="content" value="(teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary, text//back, text//body)"/>
+                        <param name="summary" value="teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary"/>
+                        <param name="comments" value="text//back"/>
+                        <param name="content" value="text//body"/>
                         <param name="msdesc" value="teiHeader/fileDesc/sourceDesc/msDesc"/>
                         <param name="additionalSources" value="if (ec:existsAdditionalSource(teiHeader/fileDesc/seriesStmt/idno/text())) then ec:additionalSource(teiHeader/fileDesc/seriesStmt/idno/text()) else ''"/>
                         <param name="literature" value="teiHeader/fileDesc/sourceDesc/msDesc/additional/listBibl"/>
@@ -150,6 +152,8 @@
                             \fussy
                             \[[datingType]]{[[dating]][[place]][[keywords]]}
                             
+                            [[summary]]
+                            [[comments]]
                             [[content]]
                             
                             [[msdesc]]
@@ -195,8 +199,11 @@
                 <elementSpec ident="summary" mode="add">
                     <model output="latex" predicate="ancestor::TEI/text/group/text[@type='summary']" behaviour="omit"/>
                     <model output="latex" predicate="normalize-space(string())" behaviour="block">
+                        <param name="summaryTitle" value="ec:label('summary')"/>
                         <pb:template>
                             \begin{summary}
+                            \textbf{[[summaryTitle]]:}
+                            \noindent
                             [[content]]
                             \end{summary}
                         </pb:template>
@@ -932,8 +939,11 @@
                         </pb:template>
                     </model>
                     <model output="latex" predicate="normalize-space(string())" behaviour="block">
+                        <param name="commentsTitle" value="ec:label('comments')"/>
                         <pb:template>
                             \begin{intro}
+                            \textbf{[[commentsTitle]]:}
+                            \noindent
                             [[content]]
                             \end{intro}
                         </pb:template>

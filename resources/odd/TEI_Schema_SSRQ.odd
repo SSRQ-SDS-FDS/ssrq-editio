@@ -16,8 +16,8 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 5961 $</p>
-                <p>Date of last commit:     $Date: 2021-02-18 10:01:18 +0100 (Thu, 18 Feb 2021) $</p>
+                <p>Revision of last commit: $Rev: 6255 $</p>
+                <p>Date of last commit:     $Date: 2021-03-15 12:06:40 +0100 (Mon, 15 Mar 2021) $</p>
                 <p>Author of last commit:   $Author: beni $</p>
             </sourceDesc>
         </fileDesc>
@@ -6326,6 +6326,16 @@
                             <desc xml:lang="de">in</desc>
                             <desc xml:lang="fr">dans</desc>
                             <desc xml:lang="en">in</desc>
+                        </valItem>
+                        <valItem ident="summary">
+                            <desc xml:lang="de">Regest</desc>
+                            <desc xml:lang="fr">Résumé</desc>
+                            <desc xml:lang="en">Summary</desc>
+                        </valItem>
+                        <valItem ident="comments">
+                            <desc xml:lang="de">Kommentar</desc>
+                            <desc xml:lang="fr">Commentaires</desc>
+                            <desc xml:lang="en">Comments</desc>
                         </valItem>
                     </valList>
                 </dataSpec>
