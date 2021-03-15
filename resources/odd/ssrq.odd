@@ -1241,7 +1241,7 @@
                         <pb:template>[[summary]][[details]]</pb:template>
                     </model>
                     <model output="latex" predicate="seal and seal/node()" behaviour="inline">
-                        <param name="summary" value="(ec:label('sigle'), ec:colon())"/>
+                        <param name="summary" value="('1 ', ec:label('sigle'), ec:colon())"/>
                         <param name="details" value="string-join((seal/(persName|orgName)/text(), if (seal/(persName|orgName)/text()) then ', ' else (), string-join((seal/@nontei:material,seal/@nontei:shape,seal/@nontei:extent,seal/@nontei:attachment,seal/@nontei:condition) ! ec:translate(., 0, ()), ', ')))"/>
                         <pb:template>[[summary]][[details]]</pb:template>
                     </model>
