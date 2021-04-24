@@ -27,6 +27,14 @@
                         <p></p>
                         </desc>
                    </valItem>
+                    <valItem ident="Bibliographie der Schweizergeschichte (BSG)">
+                        <desc xml:lang="de">
+                        <p>Bibliographie der Schweizergeschichte (BSG)</p>
+                        </desc>
+                        <desc xml:lang="fr">
+                        <p>Bibliographie de l'histoire suisse (BHS)</p>
+                        </desc>
+                   </valItem>
                    <valItem ident="Bibliothèque publique et universitaire de Neuchâtel (BPUN)">
                         <desc xml:lang="fr">
                         <p></p>
