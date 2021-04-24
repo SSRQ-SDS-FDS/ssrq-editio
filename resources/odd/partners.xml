@@ -21,10 +21,18 @@
                 <valList>
                    <valItem ident="Archives cantonales vaudoises (ACV)">
                         <desc xml:lang="fr">
-                        <p></p>
+                        <p>Archives cantonales vaudoises (ACV)</p>
                         </desc>
                         <desc xml:lang="de">
-                        <p></p>
+                        <p>Archives cantonales vaudoises (ACV)</p>
+                        </desc>
+                   </valItem>
+                       <valItem ident="Archives de l'État de Neuchâtel (AEN)">
+                        <desc xml:lang="fr">
+                        <p>Archives de l'État de Neuchâtel (AEN)</p>
+                        </desc>
+                        <desc xml:lang="de">
+                        <p>Archives de l'État de Neuchâtel (AEN)</p>
                         </desc>
                    </valItem>
                     <valItem ident="Bibliographie der Schweizergeschichte (BSG)">
@@ -37,10 +45,10 @@
                    </valItem>
                    <valItem ident="Bibliothèque publique et universitaire de Neuchâtel (BPUN)">
                         <desc xml:lang="fr">
-                        <p></p>
+                        <p>Bibliothèque publique et universitaire de Neuchâtel (BPUN)</p>
                         </desc>
                         <desc xml:lang="de">
-                        <p></p>
+                        <p>Bibliothèque publique et universitaire de Neuchâtel (BPUN)</p>
                         </desc>
                     </valItem>
                     <valItem ident="Staatsarchiv Freiburg (StAFR)">
@@ -55,13 +63,83 @@
                     </valItem>
                     <valItem ident="Staatsarchiv St. Gallen (StASG)">
                         <desc xml:lang="de">
-                        <p></p>
+                        <p>Staatsarchiv St. Gallen (StASG)</p>
                         </desc>
                         <desc xml:lang="fr">
-                        <p></p>
+                        <p>Staatsarchiv St. Gallen (StASG)</p>
                         </desc>
                     </valItem>
                 </valList>
+            </dataSpec>
+               <dataSpec ident="funding">
+                <valList>
+                       <valItem ident="Archives de l'État de Neuchâtel (AEN)">
+                        <desc xml:lang="fr">
+                        <p>Archives de l'État de Neuchâtel (AEN)</p>
+                        </desc>
+                        <desc xml:lang="de">
+                        <p>Archives de l'État de Neuchâtel (AEN)</p>
+                        </desc>
+                   </valItem>
+                   <valItem ident="Friedrich-Emil-Welti-Fonds, Bern">
+                        <desc xml:lang="fr">
+                        <p>Friedrich-Emil-Welti-Fonds, Bern</p>
+                        </desc>
+                        <desc xml:lang="de">
+                        <p>Friedrich-Emil-Welti-Fonds, Bern</p>
+                        </desc>
+                   </valItem>
+                      <valItem ident="Historisch-Heimatkundlichen Vereinigung der Region Werdenberg">
+                        <desc xml:lang="fr">
+                        <p>Historisch-Heimatkundlichen Vereinigung der Region Werdenberg</p>
+                        </desc>
+                        <desc xml:lang="de">
+                        <p>Historisch-Heimatkundlichen Vereinigung der Region Werdenberg</p>
+                        </desc>
+                   </valItem>
+                      <valItem ident="Historischer Verein des Kantons St. Gallen">
+                        <desc xml:lang="fr">
+                        <p>Historischer Verein des Kantons St. Gallen</p>
+                        </desc>
+                        <desc xml:lang="de">
+                        <p>Historischer Verein des Kantons St. Gallen</p>
+                        </desc>
+                   </valItem>
+                        <valItem ident="Lotteriefonds der Kantone Freiburg, Glarus, Neuenburg, St. Gallen, Schwyz, Waadt und Zürich">
+                        <desc xml:lang="fr">
+                        <p>Fonds de loterie des cantons de Fribourg, Glaris, Neuchâtel, Saint-Gall, Schwyz, Vaud et Zurich</p>
+                        </desc>
+                        <desc xml:lang="de">
+                        <p>Lotteriefonds der Kantone Freiburg, Glarus, Neuenburg, St. Gallen, Schwyz, Waadt und Zürich</p>
+                        </desc>
+                   </valItem>
+                        <valItem ident="Politische Gemeinden und Ortsgemeinden Buchs, Gams, Grabs, Sennwald und Sevelen">
+                        <desc xml:lang="fr">
+                        <p>Historisch-Heimatkundlichen Vereinigung der Region Werdenberg</p>
+                        </desc>
+                        <desc xml:lang="de">
+                        <p>Communautés politiques et locales Buchs, Gams, Grabs, Sennwald et Sevelen</p>
+                        </desc>
+                   </valItem>
+                    <valItem ident="Staatsarchiv Freiburg (StAFR)">
+                        <desc xml:lang="de">
+                        <p>Staatsarchiv Freiburg (StAFR)</p>
+                        <ref>https://www.fr.ch/de/sk/staf</ref>
+                        </desc>
+                        <desc xml:lang="fr">
+                        <p>Archives de l'Etat Fribourg (AEF)</p>
+                        <ref>https://www.fr.ch/cha/aef</ref>
+                        </desc>
+                    </valItem>
+                    <valItem ident="Walter und Verena Spühl-Stiftung">
+                        <desc xml:lang="fr">
+                        <p>Walter und Verena Spühl-Stiftung</p>
+                        </desc>
+                        <desc xml:lang="de">
+                        <p>Walter und Verena Spühl-Stiftung</p>
+                        </desc>
+                   </valItem>
+                    </valList>
             </dataSpec>
         </body>
     </text>
