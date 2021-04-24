@@ -43,6 +43,16 @@
                         <p></p>
                         </desc>
                     </valItem>
+                    <valItem ident="Staatsarchiv Freiburg (StAFR)">
+                        <desc xml:lang="de">
+                        <p>Staatsarchiv Freiburg (StAFR)</p>
+                        <ref>https://www.fr.ch/de/sk/staf</ref>
+                        </desc>
+                        <desc xml:lang="fr">
+                        <p>Archives de l'Etat Fribourg (AEF)</p>
+                        <ref>https://www.fr.ch/cha/aef</ref>
+                        </desc>
+                    </valItem>
                     <valItem ident="Staatsarchiv St. Gallen (StASG)">
                         <desc xml:lang="de">
                         <p></p>
