@@ -73,7 +73,15 @@
             </dataSpec>
                <dataSpec ident="funding">
                 <valList>
-                       <valItem ident="Archives de l'État de Neuchâtel (AEN)">
+                    <valItem ident="Archives de la Ville de Neuchâtel">
+                        <desc xml:lang="fr">
+                        <p>Archives de la Ville de Neuchâtel</p>
+                        </desc>
+                        <desc xml:lang="de">
+                        <p>Archives de la Ville de Neuchâtel</p>
+                        </desc>
+                   </valItem>">
+                    <valItem ident="Archives de l'État de Neuchâtel (AEN)">
                         <desc xml:lang="fr">
                         <p>Archives de l'État de Neuchâtel (AEN)</p>
                         </desc>
@@ -121,6 +129,22 @@
                         <p>Communautés politiques et locales Buchs, Gams, Grabs, Sennwald et Sevelen</p>
                         </desc>
                    </valItem>
+                    <valItem ident="Schweizerische Akademie der Geistes- und Sozialwissenschaften (SAGW)">
+                        <desc xml:lang="de">
+                        <p>Schweizerische Akademie der Geistes- und Sozialwissenschaften (SAGW)</p>
+                        </desc>
+                        <desc xml:lang="fr">
+                        <p>L'Académie suisse des sciences humaines et sociales (ASSH)</p>
+                        </desc>
+                    </valItem>
+                  <valItem ident="Schweizerischer Nationalfonds (SNF)">
+                        <desc xml:lang="de">
+                        <p>Schweizerischer Nationalfonds (SNF)</p>
+                        </desc>
+                        <desc xml:lang="fr">
+                        <p>Fonds national suisse de la recherche scientifique (FNS)</p>
+                        </desc>
+                    </valItem>
                     <valItem ident="Staatsarchiv Freiburg (StAFR)">
                         <desc xml:lang="de">
                         <p>Staatsarchiv Freiburg (StAFR)</p>
