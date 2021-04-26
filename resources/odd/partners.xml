@@ -20,18 +20,24 @@
             <dataSpec ident="partners">
                 <valList>
                    <valItem ident="Archives cantonales vaudoises (ACV)">
+                        <desc xml:lang="de">
+                        <p>Archives cantonales vaudoises (ACV)</p>
+                        </desc>
                         <desc xml:lang="fr">
                         <p>Archives cantonales vaudoises (ACV)</p>
                         </desc>
-                        <desc xml:lang="de">
+                        <desc xml:lang="en">
                         <p>Archives cantonales vaudoises (ACV)</p>
                         </desc>
                    </valItem>
                        <valItem ident="Archives de l'État de Neuchâtel (AEN)">
+                        <desc xml:lang="de">
+                        <p>Archives de l'État de Neuchâtel (AEN)</p>
+                        </desc>
                         <desc xml:lang="fr">
                         <p>Archives de l'État de Neuchâtel (AEN)</p>
                         </desc>
-                        <desc xml:lang="de">
+                        <desc xml:lang="en">
                         <p>Archives de l'État de Neuchâtel (AEN)</p>
                         </desc>
                    </valItem>
@@ -42,12 +48,18 @@
                         <desc xml:lang="fr">
                         <p>Bibliographie de l'histoire suisse (BHS)</p>
                         </desc>
+                        <desc xml:lang="en">
+                        <p>Bibliographie der Schweizergeschichte (BSG)</p>
+                        </desc>
                    </valItem>
                    <valItem ident="Bibliothèque publique et universitaire de Neuchâtel (BPUN)">
+                        <desc xml:lang="de">
+                        <p>Bibliothèque publique et universitaire de Neuchâtel (BPUN)</p>
+                        </desc>
                         <desc xml:lang="fr">
                         <p>Bibliothèque publique et universitaire de Neuchâtel (BPUN)</p>
                         </desc>
-                        <desc xml:lang="de">
+                        <desc xml:lang="en">
                         <p>Bibliothèque publique et universitaire de Neuchâtel (BPUN)</p>
                         </desc>
                     </valItem>
@@ -57,6 +69,10 @@
                         <ref>https://www.fr.ch/de/sk/staf</ref>
                         </desc>
                         <desc xml:lang="fr">
+                        <p>Archives de l'Etat Fribourg (AEF)</p>
+                        <ref>https://www.fr.ch/cha/aef</ref>
+                        </desc>
+                        <desc xml:lang="en">
                         <p>Archives de l'Etat Fribourg (AEF)</p>
                         <ref>https://www.fr.ch/cha/aef</ref>
                         </desc>
@@ -68,73 +84,100 @@
                         <desc xml:lang="fr">
                         <p>Staatsarchiv St. Gallen (StASG)</p>
                         </desc>
+                        <desc xml:lang="en">
+                        <p>Staatsarchiv St. Gallen (StASG)</p>
+                        </desc>
                     </valItem>
                 </valList>
             </dataSpec>
                <dataSpec ident="funding">
                 <valList>
                     <valItem ident="Archives de la Ville de Neuchâtel">
-                        <desc xml:lang="fr">
-                        <p>Archives de la Ville de Neuchâtel</p>
-                        </desc>
                         <desc xml:lang="de">
                         <p>Archives de la Ville de Neuchâtel</p>
                         </desc>
-                   </valItem>">
+                        <desc xml:lang="fr">
+                        <p>Archives de la Ville de Neuchâtel</p>
+                        </desc>
+                        <desc xml:lang="en">
+                        <p>Archives de la Ville de Neuchâtel</p>
+                        </desc>
+                   </valItem>
                     <valItem ident="Archives de l'État de Neuchâtel (AEN)">
+                        <desc xml:lang="de">
+                        <p>Archives de l'État de Neuchâtel (AEN)</p>
+                        </desc>
                         <desc xml:lang="fr">
                         <p>Archives de l'État de Neuchâtel (AEN)</p>
                         </desc>
-                        <desc xml:lang="de">
+                        <desc xml:lang="en">
                         <p>Archives de l'État de Neuchâtel (AEN)</p>
                         </desc>
                    </valItem>
                        <valItem ident="Fondation pour la protection du patrimoine culturel, historique et artisanal (Lausanne)">
+                        <desc xml:lang="de">
+                        <p>Fondation pour la protection du patrimoine culturel, historique et artisanal (Lausanne)</p>
+                        </desc>
                         <desc xml:lang="fr">
                         <p>Fondation pour la protection du patrimoine culturel, historique et artisanal (Lausanne)</p>
                         </desc>
-                        <desc xml:lang="de">
+                        <desc xml:lang="en">
                         <p>Fondation pour la protection du patrimoine culturel, historique et artisanal (Lausanne)</p>
                         </desc>
                    </valItem>
                    <valItem ident="Friedrich-Emil-Welti-Fonds, Bern">
-                        <desc xml:lang="fr">
-                        <p>Friedrich-Emil-Welti-Fonds, Bern</p>
-                        </desc>
                         <desc xml:lang="de">
                         <p>Friedrich-Emil-Welti-Fonds, Bern</p>
+                        </desc>
+                        <desc xml:lang="fr">
+                        <p>Friedrich-Emil-Welti-Fonds, Berne</p>
+                        </desc>
+                        <desc xml:lang="en">
+                        <p>Friedrich-Emil-Welti-Fonds, Berne</p>
                         </desc>
                    </valItem>
-                      <valItem ident="Historisch-Heimatkundlichen Vereinigung der Region Werdenberg">
-                        <desc xml:lang="fr">
-                        <p>Historisch-Heimatkundlichen Vereinigung der Region Werdenberg</p>
-                        </desc>
+                      <valItem ident="Historisch-Heimatkundliche Vereinigung der Region Werdenberg">
                         <desc xml:lang="de">
-                        <p>Historisch-Heimatkundlichen Vereinigung der Region Werdenberg</p>
+                        <p>Historisch-Heimatkundliche Vereinigung der Region Werdenberg</p>
+                        </desc>
+                        <desc xml:lang="fr">
+                        <p>Historisch-Heimatkundliche Vereinigung der Region Werdenberg</p>
+                        </desc>
+                        <desc xml:lang="en">
+                        <p>Historisch-Heimatkundliche Vereinigung der Region Werdenberg</p>
                         </desc>
                    </valItem>
                       <valItem ident="Historischer Verein des Kantons St. Gallen">
+                        <desc xml:lang="de">
+                        <p>Historischer Verein des Kantons St. Gallen</p>
+                        </desc>
                         <desc xml:lang="fr">
                         <p>Historischer Verein des Kantons St. Gallen</p>
                         </desc>
-                        <desc xml:lang="de">
+                        <desc xml:lang="en">
                         <p>Historischer Verein des Kantons St. Gallen</p>
                         </desc>
                    </valItem>
                         <valItem ident="Lotteriefonds der Kantone Freiburg, Glarus, Neuenburg, St. Gallen, Schwyz, Waadt und Zürich">
+                        <desc xml:lang="de">
+                        <p>Lotteriefonds der Kantone Freiburg, Glarus, Neuenburg, St. Gallen, Schwyz, Waadt und Zürich</p>
+                        </desc>
                         <desc xml:lang="fr">
                         <p>Fonds de loterie des cantons de Fribourg, Glaris, Neuchâtel, Saint-Gall, Schwyz, Vaud et Zurich</p>
                         </desc>
-                        <desc xml:lang="de">
+                        <desc xml:lang="en">
                         <p>Lotteriefonds der Kantone Freiburg, Glarus, Neuenburg, St. Gallen, Schwyz, Waadt und Zürich</p>
                         </desc>
                    </valItem>
                         <valItem ident="Politische Gemeinden und Ortsgemeinden Buchs, Gams, Grabs, Sennwald und Sevelen">
-                        <desc xml:lang="fr">
-                        <p>Historisch-Heimatkundlichen Vereinigung der Region Werdenberg</p>
-                        </desc>
                         <desc xml:lang="de">
+                        <p>Politische Gemeinden und Ortsgemeinden Buchs, Gams, Grabs, Sennwald und Sevelen</p>
+                        </desc>
+                        <desc xml:lang="fr">
                         <p>Communautés politiques et locales Buchs, Gams, Grabs, Sennwald et Sevelen</p>
+                        </desc>
+                        <desc xml:lang="en">
+                        <p>Politische Gemeinden und Ortsgemeinden Buchs, Gams, Grabs, Sennwald und Sevelen</p>
                         </desc>
                    </valItem>
                     <valItem ident="Schweizerische Akademie der Geistes- und Sozialwissenschaften (SAGW)">
@@ -144,6 +187,9 @@
                         <desc xml:lang="fr">
                         <p>L'Académie suisse des sciences humaines et sociales (ASSH)</p>
                         </desc>
+                        <desc xml:lang="en">
+                        <p>Swiss Academy of Humanities and Social Sciences (SAHS)</p>
+                        </desc>
                     </valItem>
                   <valItem ident="Schweizerischer Nationalfonds (SNF)">
                         <desc xml:lang="de">
@@ -151,6 +197,9 @@
                         </desc>
                         <desc xml:lang="fr">
                         <p>Fonds national suisse de la recherche scientifique (FNS)</p>
+                        </desc>
+                        <desc xml:lang="en">
+                        <p>Swiss National Science Foundation (SNSF)</p>
                         </desc>
                     </valItem>
                     <valItem ident="Staatsarchiv Freiburg (StAFR)">
@@ -162,12 +211,19 @@
                         <p>Archives de l'Etat Fribourg (AEF)</p>
                         <ref>https://www.fr.ch/cha/aef</ref>
                         </desc>
+                        <desc xml:lang="en">
+                        <p>Archives de l'Etat Fribourg (AEF)</p>
+                        <ref>https://www.fr.ch/cha/aef</ref>
+                        </desc>
                     </valItem>
                     <valItem ident="Walter und Verena Spühl-Stiftung">
+                        <desc xml:lang="de">
+                        <p>Walter und Verena Spühl-Stiftung</p>
+                        </desc>
                         <desc xml:lang="fr">
                         <p>Walter und Verena Spühl-Stiftung</p>
                         </desc>
-                        <desc xml:lang="de">
+                        <desc xml:lang="en">
                         <p>Walter und Verena Spühl-Stiftung</p>
                         </desc>
                    </valItem>

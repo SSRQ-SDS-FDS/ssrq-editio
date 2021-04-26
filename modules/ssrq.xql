@@ -565,13 +565,17 @@ declare
 function app:partners($node as node(), $model as map(*)) {
     let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
     return
-        for $partner in $config:partners//tei:dataSpec/tei:valList/tei:valItem return
-            <div>
-                <h3>
-                    { data($partner/@ident) }
-                </h3>
-                { $partner/tei:desc[@xml:lang=$lang] }
-            </div>
+        (<h3 xmlns:i18n="http://exist-db.org/xquery/i18n"><i18n:text key="partners">Projektpartner</i18n:text></h3>,
+        for $partner in $config:partners//tei:dataSpec[@ident="partners"]/tei:valList/tei:valItem return
+            <p>
+                { $partner/tei:desc[@xml:lang=$lang]/tei:p }
+            </p>,
+        <h3 xmlns:i18n="http://exist-db.org/xquery/i18n"><i18n:text key="funding">Finanzielle Unterstützung</i18n:text></h3>,
+        for $partner in $config:partners//tei:dataSpec[@ident="funding"]/tei:valList/tei:valItem return
+            <p>
+                { $partner/tei:desc[@xml:lang=$lang]/tei:p/text() }
+            </p>
+        )
 };
 
 declare

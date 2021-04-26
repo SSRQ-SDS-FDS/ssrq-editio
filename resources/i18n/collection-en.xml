@@ -112,7 +112,9 @@
     <msg key="feedback">Feedback</msg>
     <msg key="registrierung">For an account or in case of problems please contact info@ssrq-sds-fds.ch or use the feedback button.</msg>
     <msg key="require-login">Please log in</msg>
+    <msg key="partners-and-funding">Project Partners and Funding</msg>
     <msg key="partners">Project Partners</msg>
+    <msg key="funding">Funding</msg>
     <msg key="credits">Facsimiles by courtesy of</msg>
     <msg key="by"> by </msg>
     <msg key="and"> and </msg>
