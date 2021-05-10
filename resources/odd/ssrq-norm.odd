@@ -58,12 +58,12 @@
                     <model output="plain" predicate="orig and reg" behaviour="inline">
                         <param name="content" value="reg[1]"/>
                     </model>
-                    <model predicate="sic/del and corr" behaviour="alternote" cssClass="text-critical">
+                    <model predicate="sic/del and corr" behaviour="alternate" cssClass="text-critical">
                         <param name="content" value="corr"/>
                         <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), normalize-space(string-join(sic//text())), ', ', ec:translate(sic/del/@rend, 0, 'uppercase'), ec:colon(), sic/del//text())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
-                    <model predicate="sic and corr" behaviour="alternote" cssClass="text-critical">
+                    <model predicate="sic and corr" behaviour="alternate" cssClass="text-critical">
                         <param name="content" value="corr"/>
                         <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), sic)"/>
                         <param name="type" value="'text-critical'"/>
