@@ -712,6 +712,10 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="origPlace" mode="add">
+                    <model output="latex" behaviour="inline">
+                        <param name="ref" value="@ref"/>
+                        <pb:template>\placename{[[ref]]}{[[content]]}</pb:template>
+                    </model>
                     <model predicate="parent::origin and node()" behaviour="listItem">
                         <param name="content" value="(ec:label('origPlace'), ec:colon(), .)"/>
                     </model>
