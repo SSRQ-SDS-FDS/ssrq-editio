@@ -497,9 +497,8 @@
                     <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="anchor" mode="change">
-                    <model output="latex">
-                        <param name="nr" value="a"/>
-                        <pb:template>\textnoteend{[[nr]]}</pb:template>
+                    <model output="latex" behaviour="inline">
+                        <pb:template>\textnoteend{a}</pb:template>
                     </model>
                     <model predicate="exists(root($parameters?root)//*[@spanTo = '#' || $node/@xml:id])" behaviour="notespan-end">
                         <param name="content" value="root($parameters?root)//*[@spanTo = '#' || $node/@xml:id]"/>
