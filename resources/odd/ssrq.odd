@@ -236,7 +236,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="figure" mode="change">
-                    <model behaviour="inline">
+                    <model predicate="not(parent::label)" behaviour="inline">
                         <param name="content" value="ec:translate(@type, 0, 'uppercase')"/>
                         <outputRendition scope="before">
                             content: '[';
@@ -1036,7 +1036,11 @@
                     <model behaviour="paragraph"/>
                 </elementSpec>
                 <elementSpec ident="label" mode="change">
-                    <model predicate="@type='keyword'" behaviour="alternote">
+                    <model output="latex" predicate="@type='keyword'" behaviour="inline">
+                        <param name="content" value="."/>
+                        <pb:template>\marginpar{\scriptsize\raggedright\hspace{0pt}[[content]]}</pb:template>
+                    </model>
+                    <model predicate="@type='keyword'" behaviour="alternate">
                         <param name="alternate" value="(ec:label('marginal-note'), ' ', ec:translate(@place, 0, 'lowercase'), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else ())"/>
                         <!--<param name="content" value="('/ ', .,  ' /')"/>-->
                         <param name="type" value="'text-critical'"/>
