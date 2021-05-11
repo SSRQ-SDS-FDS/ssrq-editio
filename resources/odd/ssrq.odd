@@ -462,43 +462,36 @@
                 <elementSpec ident="damage" mode="add">
                     <model predicate="gap" behaviour="alternate" cssClass="text-critical">
                         <param name="content" value="'[...]'"/>
-                        <param name="place" value="&#34;footnote&#34;"/>
                         <param name="type" value="'text-critical'"/>
                         <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ' (', gap/@quantity, ' ', ec:translate(gap/@unit, gap/@quantity, ()), ')')"/>
                     </model>
                     <model predicate="unclear" behaviour="alternate" cssClass="text-critical">
                         <param name="content" value="unclear/node()"/>
-                        <param name="place" value="&#34;footnote&#34;"/>
                         <param name="type" value="'text-critical'"/>
                         <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ', ', ec:label('unclear-rdg', false()))"/>
                     </model>
                     <model predicate="supplied/@source" behaviour="alternate" cssClass="text-critical">
                         <param name="content" value="supplied/node()"/>
-                        <param name="place" value="&#34;footnote&#34;"/>
                         <param name="type" value="'text-critical'"/>
                         <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ', ', ec:label('supplied-after', false()), ' ', supplied/@source)"/>
                     </model>
                     <model predicate="supplied" behaviour="alternate" cssClass="text-critical">
                         <param name="content" value="supplied/node()"/>
-                        <param name="place" value="&#34;footnote&#34;"/>
                         <param name="type" value="'text-critical'"/>
                         <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ', ', ec:label('supplied', false()))"/>
                     </model>
                     <model predicate="add" behaviour="alternate" cssClass="text-critical">
                         <param name="content" value="add/node()"/>
-                        <param name="place" value="&#34;footnote&#34;"/>
                         <param name="type" value="'text-critical'"/>
                         <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ', ', ec:span((ec:label('add'), ' ', string-join((ec:translate(add/@place, 0, 'lowercase'), ec:translate(add/@hand, 0, 'lowercase'), ec:translate(add/@rend, 0, 'lowercase'), ec:translate(add/@type, 0, 'lowercase')), ' '))))"/>
                     </model>
                     <model predicate="@agent" behaviour="alternate" cssClass="text-critical">
-                        <param name="place" value="&#34;footnote&#34;"/>
                         <param name="type" value="'text-critical'"/>
                         <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()))"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="damageSpan" mode="change">
                     <model predicate="@agent" behaviour="note">
-                        <param name="place" value="&#34;footnote&#34;"/>
                         <param name="type" value="'text-critical-start'"/>
                         <param name="content" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()))"/>
                     </model>
@@ -565,7 +558,6 @@
                 </elementSpec>
                 <elementSpec ident="handShift">
                     <model behaviour="note">
-                        <param name="place" value="'footnote'"/>
                         <param name="type" value="'text-critical'"/>
                         <param name="content" value="(ec:label('handswitch'), if (@scribe) then (ec:colon(), ec:scribe(@scribe)) else ())"/>
                     </model>
