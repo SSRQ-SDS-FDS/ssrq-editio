@@ -16,9 +16,9 @@
                 <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
             </notesStmt>
             <sourceDesc>
-                <p>Revision of last commit: $Rev: 6255 $</p>
-                <p>Date of last commit:     $Date: 2021-03-15 12:06:40 +0100 (Mon, 15 Mar 2021) $</p>
-                <p>Author of last commit:   $Author: beni $</p>
+                <p>Revision of last commit: $Rev: 7775 $</p>
+                <p>Date of last commit:     $Date: 2021-05-11 15:39:40 +0200 (Tue, 11 May 2021) $</p>
+                <p>Author of last commit:   $Author: pascale $</p>
             </sourceDesc>
         </fileDesc>
     </teiHeader>
@@ -3839,7 +3839,7 @@
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='currency']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Angster|écu blanc|écu|écu d’or|écu petit|fl|franc|lb|ß|xr|d|Dicken|Doubloon|ducatoon|Dukat|bz|h|M|Mirliton|plp|Böhmischer Groschen|Gros|Grossi|Halbgulden|Halbtaler|k|livre faible|Kronentaler|Louis dor|Louistaler|Pistole|Ort|Quart|Vierer|Spagürli|S|sol faible|Sonnendublone|Taler|L|zecchino)$')"
+                                        test="matches(@unit,'^(Angster|écu blanc|écu|écu d’or|écu petit|fl|franc|lb|ß|xr|d|Dicken|Doubloon|ducatoon|Dukat|bz|h|M|Mirliton|plp|Böhmischer Groschen|Gros|Grossi|Halbgulden|Halbtaler|k|livre faible|Kronentaler|Louis dor|Louistaler|Pistole|Ort|Quart|Vierer|Spagürli|S|sol faible|Sonnendublone|Taler|teston|L|zecchino)$')"
                                         >keine gültige Währung</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='length']">
@@ -3847,7 +3847,7 @@
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='volume']">
                                     <sch:assert
-                                        test="matches(@unit,'^(Becher|Eimer|Garbe|Immi|Kanne|Kratten|Ledi|Mäss|Malter|Mütt|Sack|Scheffel|Sester|Ster|Vierdung|Vierling|Viertel|Brenten|Fass|Kopf|Klafter|Legel|Mass|Mässli|Quart|Quartane|Saum|Schaffen|Tonne|Viertel|Zuber|Fass|Krötli|Röhrchen|Scheibe|Trinken)$')"
+                                        test="matches(@unit,'^(Becher|Eimer|Garbe|Immi|Kanne|Kratten|Ledi|Mäss|Malter|Mütt|Sack|Scheffel|Sechzehner|Sester|Ster|Vierdung|Vierling|Viertel|Brenten|Fass|Kopf|Klafter|Legel|Mass|Mässli|Quart|Quartane|Saum|Schaffen|Tonne|Viertel|Zuber|Fass|Krötli|Röhrchen|Scheibe|Trinken)$')"
                                         >kein gültiges Hohlmass</sch:assert>
                                 </sch:rule>
                                 <sch:rule context="tei:measure[@type='weight']">
@@ -4466,6 +4466,11 @@
                                     <desc xml:lang="de">Scheffel</desc>
                                     <desc xml:lang="fr">boisseau</desc>
                                     <desc xml:lang="en">bushel</desc>
+                                </valItem>
+                                <valItem ident="Sechzehner">
+                                    <desc xml:lang="de">Sechzehner</desc>
+                                    <desc xml:lang="fr">sechzehner</desc>
+                                    <desc xml:lang="en">sechzehner</desc>
                                 </valItem>
                                 <valItem ident="Sester">
                                     <desc xml:lang="de">Sester</desc>
@@ -5157,6 +5162,16 @@
                                     <desc xml:lang="de">Taler</desc>
                                     <desc xml:lang="fr">thaler</desc>
                                     <desc xml:lang="en">thaler</desc>
+                                </valItem>
+                                <valItem ident="teston">
+                                    <desc xml:lang="de">Testone</desc>
+                                    <desc xml:lang="de" type="plural">Testoni</desc>
+                                    <desc xml:lang="fr">teston</desc>
+                                    <desc xml:lang="fr" type="plural">testons</desc>
+                                    <desc xml:lang="en">testone</desc>
+                                    <desc xml:lang="en" type="plural">testoni</desc>
+                                    <desc xml:lang="it">testone</desc>
+                                    <desc xml:lang="it" type="plural">testoni</desc>
                                 </valItem>
                                 <valItem ident="zecchino">
                                     <desc xml:lang="de">Zechine</desc>

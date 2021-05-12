@@ -336,7 +336,10 @@
                     <model output="latex" predicate="request:get-parameter('introduction', ())" behaviour="inline">
                         <pb:template>\textit{[[content]]}</pb:template>
                     </model>
-                    <model output="latex" behaviour="textup"/>
+                    <model output="latex" behaviour="inline">
+                        <param name="content" value="replace(replace(., '^ ', ''), ' $', '')"/>
+                        <pb:template>\textup{[[content]]}</pb:template>
+                    </model>
                     <model behaviour="inline">
                         <param name="content" value="('«', ., '»')"/>
                     </model>
