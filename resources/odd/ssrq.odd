@@ -790,11 +790,11 @@
                     </model>
                     <model output="latex" predicate="@n and matches(@n, '[vr]$')" behaviour="inline">
                         <param name="page" value="('fol. ', @n)"/>
-                        <pb:template>\noindent \pb{} \textit{[[[page]]]}</pb:template>
+                        <pb:template>\noindent \pb{} \textit{[[[page]]]} </pb:template>
                     </model>
                     <model output="latex" predicate="@n" behaviour="inline">
                         <param name="page" value="(ec:label('page-abbr', false()), ' ', @n)"/>
-                        <pb:template>\noindent \pb{} \textit{[[[page]]]}</pb:template>
+                        <pb:template>\noindent \pb{} \textit{[[[page]]]} </pb:template>
                     </model>
                     <model output="latex" behaviour="omit"/>
                     <model predicate="following-sibling::node()[1][self::lb]" behaviour="copy">
@@ -1284,6 +1284,7 @@
                     <model output="latex" behaviour="block">
                         <pb:template>[[content]]</pb:template>
                     </model>
+                    <model behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="head" mode="change">
                     <model output="latex" predicate="request:get-parameter('introduction', ()) and @type='title' and @n" behaviour="block">
