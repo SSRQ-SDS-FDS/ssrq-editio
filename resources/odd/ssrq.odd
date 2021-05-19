@@ -121,7 +121,7 @@
                         <param name="articleNr" value="ec:get-article-nr(teiHeader/fileDesc/seriesStmt/idno/text()) - 1"/>
                         <param name="title" value="teiHeader/fileDesc/sourceDesc/msDesc/head/text()"/>
                         <param name="dating" value="replace(if (exists(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original'][origDate])) then ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original']/origDate) else ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate), '\.$', '')"/>
-                        <param name="place" value="if (teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace) then ('. ' || teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace/text()) else ()"/>
+                        <param name="place" value="if (teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace/text()) then ('. ' || teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace/text()) else ()"/>
                         <param name="keywords" value="string-join(for $keyword in teiHeader/profileDesc/textClass/keywords/term return '\term{' || $keyword/@ref || '}{}')"/>
                         <param name="summary" value="teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary"/>
                         <param name="comments" value="text//back"/>
