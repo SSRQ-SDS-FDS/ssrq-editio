@@ -588,10 +588,7 @@ function query:pubdate-range($node as node(), $model as map(*)) {
             try {
                 year-from-date(xs:date($when))
             } catch * {
-                if (matches($when, "^\d+$")) then
-                    number($when)
-                else
-                    ()
+                console:log("Invalid date: " || document-uri(root($when)))
             }
     return
         map {
