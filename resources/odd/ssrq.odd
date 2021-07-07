@@ -111,7 +111,7 @@
                         <param name="lang" value="(session:get-attribute('ssrq.lang'), 'de')[1]"/>
                         <param name="volume" value="teiHeader/fileDesc/titleStmt/title"/>
                         <param name="by" value="ec:label('by', false())"/>
-                        <param name="author" value="string-join(teiHeader/fileDesc/titleStmt/respStmt[resp[@key='transcript' or @key='headerinfo']]/persName, ' ' || ec:label('and', false()) || ' ')"/>
+                        <param name="author" value="ec:format-ssrq-author(teiHeader/fileDesc/titleStmt/respStmt[resp[@key='transcript' or @key='headerinfo']]/persName)"/>
                         <param name="year" value="substring(teiHeader/fileDesc/publicationStmt/date[@type='electronic']/@when, 1, 4)"/>
                         <param name="idno" value="replace(teiHeader/fileDesc/seriesStmt/idno/text(), '^(.+\d{3})(?:_\d{1,2})?$', '$1')"/>
                         <param name="canton" value="replace(teiHeader/fileDesc/seriesStmt/idno/text(), '^(?:SSRQ|SDS|FDS)_(..)_.+$', '$1')"/>
@@ -198,11 +198,12 @@
                 </elementSpec>
                 <elementSpec ident="summary" mode="add">
                     <model output="latex" predicate="ancestor::TEI/text/group/text[@type='summary']" behaviour="omit"/>
-                    <model output="latex" predicate="normalize-space(string()) and matches(../../../../seriesStmt/idno/text(), '^SSRQ_ZH')" behaviour="block">
+                    <model output="latex" predicate="normalize-space(string()) and matches(../../../../seriesStmt/idno/text(), '^(SSRQ_ZH|SDS_VD)')" behaviour="block">
                         <param name="summaryTitle" value="ec:label('summary')"/>
                         <pb:template>
                             \begin{summary}
                             \textbf{[[summaryTitle]]:}
+                            \noindent
                             [[content]]
                             \end{summary}
                         </pb:template>
@@ -328,6 +329,9 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="sic" mode="change">
+                    <model output="latex" predicate="(session:get-attribute('ssrq.lang'), 'de')[1]='fr' and not(parent::choice and count(parent::*/*) gt 1)" behaviour="inline">
+                        <pb:template>&lt;[[content]]&gt;</pb:template>
+                    </model>
                     <model output="latex" predicate="not(parent::choice and count(parent::*/*) gt 1)" behaviour="inline">
                         <pb:template>[[content]]\,[!]</pb:template>
                     </model>
@@ -658,6 +662,9 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="foreign" mode="change">
+                    <model output="latex" predicate="(session:get-attribute('ssrq.lang'), 'de')[1]='fr'" behaviour="inline">
+                        <pb:template>\textit{[[content]]}</pb:template>
+                    </model>
                     <model output="latex" behaviour="inline"/>
                     <model predicate="(session:get-attribute('ssrq.lang'), 'de')[1]='fr'" behaviour="alternate">
                         <param name="default" value="."/>
@@ -672,7 +679,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="term" mode="change">
-                    <model output="latex" predicate="not(text())" behaviour="omit"/>
+                    <!--<model output="latex" predicate="not(*)" behaviour="omit"/>-->
                     <model output="latex" behaviour="inline">
                         <param name="ref" value="@ref"/>
                         <pb:template>\term{[[ref]]}{[[content]]}</pb:template>
@@ -941,11 +948,12 @@
                             \end{introlist}
                         </pb:template>
                     </model>
-                    <model output="latex" predicate="normalize-space(string()) and matches(ancestor::TEI//seriesStmt/idno/text(), '^SSRQ_ZH')" behaviour="block">
+                    <model output="latex" predicate="normalize-space(string()) and matches(ancestor::TEI//seriesStmt/idno/text(), '^(SSRQ_ZH|SDS_VD)')" behaviour="block">
                         <param name="commentsTitle" value="ec:label('comments')"/>
                         <pb:template>
                             \begin{intro}
                             \textbf{[[commentsTitle]]:}
+                            \noindent
                             [[content]]
                             \end{intro}
                         </pb:template>

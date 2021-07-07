@@ -298,8 +298,18 @@ declare function pmf:url($url as xs:string) {
     return '\url{' || $url || '}'
 };
 
+declare function pmf:format-ssrq-author($author as node()*) {
+
+    if (count($author) > 2) then
+        $author[1]/text() || ', ' || $author[2]/text() || ' ' || pmf:label('and', false()) || ' ' || $author[3]/text()
+    else if (count($author) = 2) then
+        $author[1]/text() || ' ' || pmf:label('and', false()) || ' ' || $author[2]/text()
+    else
+        $author[1]/text()
+};
+
 declare function pmf:format-author($author as node()*) {
-    (: save typing in ssrq.odd :)
+    (: save typing in ssrq.odd, used in biblStruct :)
 
     if ($author) then
         if (count($author) > 2) then
@@ -316,13 +326,13 @@ declare function pmf:switch-name($name as node()*) {
 };
 
 declare function pmf:format-editor($editor as node()*) {
-    (: save typing in ssrq.odd :)
+    (: save typing in ssrq.odd, used in biblStruct :)
 
     if ($editor) then
         if (count($editor) > 2) then
             pmf:switch-name($editor[1]) || ', ' || pmf:switch-name($editor[2]) || ' et al.'
         else if (count($editor) = 2) then
-            pmf:switch-name($editor[1]) || ' und ' || pmf:switch-name($editor[2])
+            pmf:switch-name($editor[1]) || ' ' || pmf:label('and', false()) || ' ' || pmf:switch-name($editor[2])
         else
             pmf:switch-name($editor)
     else
