@@ -8,6 +8,7 @@ module namespace pmf="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-comm
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace counters="http://www.tei-c.org/tei-simple/xquery/counters";
 import module namespace functx="http://www.functx.com";
+import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
@@ -213,14 +214,14 @@ declare function pmf:format-date($when as xs:string?, $language as xs:string?) {
                 else if (matches($when, "^\d{4}-\d{2}$")) then
                     format-date($when || '-01', "[MNn] [Y0001]", $language, (), ())
                 else if (matches($when, "^\d+$")) then
-                    @when
+                    $when
                 else
                     if ($language = 'fr') then
                         format-date(xs:date($when), "[D01].[M01].[Y0001]", $language, (), ())
                     else
                         format-date(xs:date($when), "[D1].[M1].[Y0001]", $language, (), ())
             } catch * {
-                @when
+                console:log("Invalid date: " || $when)
             }
         }
     else
