@@ -203,8 +203,7 @@
                         <pb:template>
                             \begin{summary}
                             \textbf{[[summaryTitle]]:}
-                            \noindent
-                            [[content]]
+                            \noindent [[content]]
                             \end{summary}
                         </pb:template>
                     </model>
@@ -953,8 +952,7 @@
                         <pb:template>
                             \begin{intro}
                             \textbf{[[commentsTitle]]:}
-                            \noindent
-                            [[content]]
+                            \noindent [[content]]
                             \end{intro}
                         </pb:template>
                     </model>
@@ -1042,7 +1040,7 @@
                     <model output="latex" behaviour="block">
                         <param name="place" value="('[', string-join((ec:translate(@type, 0, 'lowercase'),ec:translate(@place, 0, 'lowercase'),ec:translate(@hand, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else (), ec:punct(':', false()), ']')"/>
                         <pb:template>
-                            \medskip
+                            % \medskip
                             \noindent
                             {\small \textit{[[place]]} [[content]]}
                         </pb:template>
