@@ -81,32 +81,6 @@
                             \end{document}
                         </pb:template>
                     </model>
-                    <model output="latex" predicate="request:get-parameter('book', ())" behaviour="section">
-                        <param name="title" value="teiHeader/fileDesc/sourceDesc/msDesc/head/text()"/>
-                        <param name="dating" value="if (exists(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original'][origDate])) then ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original']/origDate) else ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate)"/>
-                        <param name="place" value="if (teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace) then ('. ' || teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace/text()) else ()"/>
-                        <param name="content" value="(teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary, text//back, text//body)"/>
-                        <param name="msdesc" value="teiHeader/fileDesc/sourceDesc/msDesc"/>
-                        <param name="additionalSources" value="if (ec:existsAdditionalSource(teiHeader/fileDesc/seriesStmt/idno/text())) then ec:additionalSource(teiHeader/fileDesc/seriesStmt/idno/text()) else ''"/>
-                        <param name="literature" value="teiHeader/fileDesc/sourceDesc/msDesc/additional/listBibl"/>
-                        <pb:template>
-                            \sloppy
-                            \article{[[title]]}
-                            \fussy
-                            \dating{[[dating]][[place]]}
-                            
-                            [[content]]
-                            
-                            [[msdesc]]
-                            
-                            [[additionalSources]]
-                            
-                            [[literature]]
-                            
-                            \printnotes*
-                            
-                        </pb:template>
-                    </model>
                     <model output="latex" behaviour="section">
                         <param name="lang" value="(session:get-attribute('ssrq.lang'), 'de')[1]"/>
                         <param name="volume" value="teiHeader/fileDesc/titleStmt/title"/>
@@ -121,7 +95,7 @@
                         <param name="articleNr" value="ec:get-article-nr(teiHeader/fileDesc/seriesStmt/idno/text()) - 1"/>
                         <param name="title" value="teiHeader/fileDesc/sourceDesc/msDesc/head/text()"/>
                         <param name="dating" value="replace(if (exists(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original'][origDate])) then ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original']/origDate) else ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate), '\.$', '')"/>
-                        <param name="place" value="if (teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace/text()) then ('. ' || teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace/text()) else ()"/>
+                        <param name="place" value="if (teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace/text()) then ('. ' || string-join(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace/text(), ec:semicolon())) else ()"/>
                         <param name="keywords" value="string-join(for $keyword in teiHeader/profileDesc/textClass/keywords/term return '\term{' || $keyword/@ref || '}{}')"/>
                         <param name="summary" value="teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary"/>
                         <param name="comments" value="text//back"/>
@@ -993,7 +967,7 @@
                     </model>
                     <model output="latex" predicate="request:get-parameter('archives', ()) and listBibl" behaviour="block">
                         <param name="itemType" value="listBibl/head/text()"/>
-                        <param name="ident" value="string-join(listBibl/bibl/idno, '; ')"/>
+                        <param name="ident" value="string-join(listBibl/bibl/idno, ec:semicolon())"/>
                         <param name="note" value="if (listBibl/note) then ('\footnote{' || listBibl/note || '}') else ()"/>
                         <pb:template>
                             \item [[itemType]]: [[ident]][[note]]
@@ -1259,7 +1233,7 @@
                 <elementSpec ident="sealDesc">
                     <model output="latex" predicate="seal and seal/node() and count(seal) &gt; 1" behaviour="inline">
                         <param name="summary" value="(count(seal), ' ', ec:label('sigle', false(), count(seal)), ec:colon())"/>
-                        <param name="details" value="string-join(for $seal at $pos in seal return ($pos || '. ' || string-join(($seal/(persName|orgName)/text(), if ($seal/(persName|orgName)/text()) then ', ' else (), string-join(($seal/@nontei:material,$seal/@nontei:shape,$seal/@nontei:extent,$seal/@nontei:attachment,$seal/@nontei:condition) ! ec:translate(., 0, ()), ', ')))), '; ')"/>
+                        <param name="details" value="string-join(for $seal at $pos in seal return ($pos || '. ' || string-join(($seal/(persName|orgName)/text(), if ($seal/(persName|orgName)/text()) then ', ' else (), string-join(($seal/@nontei:material,$seal/@nontei:shape,$seal/@nontei:extent,$seal/@nontei:attachment,$seal/@nontei:condition) ! ec:translate(., 0, ()), ', ')))), ec:semicolon())"/>
                         <pb:template>[[summary]][[details]]</pb:template>
                     </model>
                     <model output="latex" predicate="seal and seal/node()" behaviour="inline">
