@@ -83,6 +83,7 @@
                     </model>
                     <model output="latex" behaviour="section">
                         <param name="lang" value="(session:get-attribute('ssrq.lang'), 'de')[1]"/>
+                        <param name="ssrq" value="substring-before(teiHeader/fileDesc/seriesStmt/idno/text(), '_')"/>
                         <param name="volume" value="teiHeader/fileDesc/titleStmt/title"/>
                         <param name="by" value="ec:label('by', false())"/>
                         <param name="author" value="ec:format-ssrq-author(teiHeader/fileDesc/titleStmt/respStmt[resp[@key='transcript' or @key='headerinfo']]/persName)"/>
@@ -112,7 +113,7 @@
                             \begin{document}
                             
                             % Variablen für Kopfzeile
-                            \def\volume{[[volume]] [[by]] [[author]], [[year]].}
+                            \def\volume{[[ssrq]], [[volume]] [[by]] [[author]], [[year]].}
                             \def\volid{\url{https://www.ssrq-sds-fds.ch/online/tei/[[canton]]/[[idno]].xml}}
 
                             \linenumbers				% Zeilennummern
@@ -375,6 +376,7 @@
                         <param name="type" value="'text-critical'"/>
                         <param name="content" value="."/>
                     </model>
+                    <model output="latex" predicate="@type='catchword'" behaviour="omit"/>
                     <model predicate="@type='catchword'" behaviour="alternote">
                         <param name="alternate" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ', ', ec:translate(@type, 0, 'lowercase'))))))"/>
                         <param name="type" value="'text-critical'"/>
@@ -768,19 +770,19 @@
                     <model output="latex" predicate="ancestor::body and not(preceding::pb[ancestor::body])" behaviour="omit">
                         <desc>Hide the first pagebreak in a document (beware: independent of position!)</desc>
                     </model>
-                    <model output="latex" predicate="ancestor::body and not(following::pb[ancestor::body]) and not(following::p[ancestor::body]) and not(following::seg[ancestor::body])" behaviour="omit">
+                    <!--<model output="latex" predicate="ancestor::body and not(following::pb[ancestor::body]) and not(following::p[ancestor::body]) and not(following::seg[ancestor::body])" behaviour="omit">
                         <desc>Hide the last pagebreak in a document if it's the last element besides div/ab (i.e. not followed by p or seg)</desc>
-                    </model>
+                    </model>-->
                     <model output="latex" predicate="preceding-sibling::*[1][self::seg]" behaviour="omit">
                         <desc>seg directly followed by pb is handled by seg</desc>
                     </model>
                     <model output="latex" predicate="@n and matches(@n, '[vr]$')" behaviour="inline">
                         <param name="page" value="('fol. ', @n)"/>
-                        <pb:template>\noindent \pb{} \textit{[[[page]]]} </pb:template>
+                        <pb:template>\pb{} \textit{[[[page]]]} </pb:template>
                     </model>
                     <model output="latex" predicate="@n" behaviour="inline">
                         <param name="page" value="(ec:label('page-abbr', false()), ' ', @n)"/>
-                        <pb:template>\noindent \pb{} \textit{[[[page]]]} </pb:template>
+                        <pb:template>\pb{} \textit{[[[page]]]} </pb:template>
                     </model>
                     <model output="latex" behaviour="omit"/>
                     <model predicate="following-sibling::node()[1][self::lb]" behaviour="copy">
@@ -1267,8 +1269,7 @@
                             [[content]]
                         </pb:template>
                     </model>
-                    <!--<model output="latex" predicate="preceding-sibling::*[1][self::head]" behaviour="block">-->
-                    <model output="latex" predicate="preceding-sibling::head[1]" behaviour="block">
+                    <model output="latex" predicate="preceding-sibling::*[1][self::head]" behaviour="block">
                         <pb:template>
                             \noindent
                             [[content]]
@@ -1325,7 +1326,7 @@
                         <pb:template>
                             \vspace{1.5mm}
                             \noindent
-                            \textbf{[[content]]}
+                            [[content]]
                             \vspace{1.5mm}
                         </pb:template>
                     </model>
