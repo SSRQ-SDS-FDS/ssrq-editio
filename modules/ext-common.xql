@@ -170,7 +170,7 @@ declare function pmf:get-canton($id as xs:string?) {
 };
 
 declare function pmf:format-id($id as xs:string?) {
-    let $temp  := replace($id, "^(.+?)_(\d{3}.*?)(?:_\d{1,2})?$", "$1 $2")
+    let $temp  := replace($id, "^(.+?)_(\d{3}.*?|[IV]+)(?:_\d{1,2})?$", "$1 $2")
     let $parts := tokenize($temp)
     let $ssrq  := substring-before($parts[1], '_')
     let $vol   := replace(substring-after($parts[1], '_'), '_', '/')
@@ -180,8 +180,10 @@ declare function pmf:format-id($id as xs:string?) {
             replace($parts[2], '_', '-')
         else if (matches($parts[2], '^\d{4}_\d{3}')) then
             number(substring-before($parts[2], '_')) || '-' || number(substring-after($parts[2], '_'))
-        else
+        else if (number($parts[2]) = number($parts[2])) then
             number($parts[2])
+        else
+            $parts[2]
     return
         $ssrq || ' ' || $vol || ' ' || $id
 };
