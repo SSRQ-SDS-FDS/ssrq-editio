@@ -57,8 +57,7 @@
                             \documentclass[10pt,twoside]{article}
                             
                             \usepackage{ssrq_intro_[[lang]]}  % here's all the magic...
-                            \usepackage{hyperref}
-                            
+
                             \begin{document}
 
                             \cleardoublepage			% Fortsetzung auf einer ungeraden Seite
@@ -108,8 +107,7 @@
                             \documentclass[10pt,twoside]{article}
                             
                             \usepackage{ssrq_[[lang]]}  % here's all the magic...
-                            \usepackage{hyperref}
-                            
+
                             \begin{document}
                             
                             % Variablen für Kopfzeile
