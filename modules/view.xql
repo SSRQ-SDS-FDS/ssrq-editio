@@ -18,6 +18,7 @@ import module namespace search="http://www.tei-c.org/tei-simple/search" at "lib/
 import module namespace query="http://existsolutions.com/ssrq/search" at "ssrq-search.xql";
 import module namespace i18n="http://exist-db.org/xquery/i18n/templates" at "lib/i18n-templates.xql";
 import module namespace app="http://existsolutions.com/ssrq/app" at "ssrq.xql";
+import module namespace ssrq-util="http://existsolutions.com/ssrq/utils" at "ssrq-util.xqm";
 
 declare namespace output = "http://www.w3.org/2010/xslt-xquery-serialization";
 
@@ -32,7 +33,7 @@ let $config := map {
             [
                 request:get-parameter($param, ()),
                 request:get-attribute($param)
-            ], (), 
+            ], (),
             function($zero, $current) {
                 if (exists($zero)) then
                     $zero

@@ -1,0 +1,132 @@
+{
+  "ZH": {
+    "department": "I. Abteilung: Die Rechtsquellen des Kantons Zürich",
+    "img": "ZH",
+    "order": 1
+  },
+  "BE": {
+    "department": "II. Abteilung: Die Rechtsquellen des Kantons Bern",
+    "img": "BE",
+    "order": 2
+  },
+  "LU": {
+    "department": "III. Abteilung: Die Rechtsquellen des Kantons Luzern",
+    "img": "LU",
+    "order": 3
+  },
+  "UR": {
+    "department": "IV. Abteilung: Die Rechtsquellen des Kantons Uri",
+    "img": "UR",
+    "order": 4
+  },
+  "SZ": {
+    "department": "V. Abteilung: Die Rechtsquellen des Kantons Schwyz",
+    "img": "SZ",
+    "order": 5
+  },
+  "OW-NW": {
+    "OW": {
+      "department": "VI. Abteilung: Die Rechtsquellen des Kantons Unterwalden",
+      "img": "OW"
+    },
+    "NW": {
+      "img": "NW"
+    },
+    "order": 6
+  },
+  "GL": {
+    "department": "VII. Abteilung: Die Rechtsquellen des Kantons Glarus",
+    "img": "GL",
+    "order": 7
+  },
+  "ZG": {
+    "department": "VIII. Abteilung: Die Rechtsquellen des Kantons Zug",
+    "img": "ZG",
+    "order": 8
+  },
+  "FR": {
+    "department": "IX<sup>e</sup> partie : Les sources du droit du canton de Fribourg<br/>IX. Abteilung: Die Rechtsquellen des Kantons",
+    "img": "FR",
+    "order": 9
+  },
+  "SO": {
+    "department": "X. Abteilung: Die Rechtsquellen des Kantons Solothurn",
+    "img": "SO",
+    "order": 10
+  },
+  "BS-BL": {
+    "BS": {
+      "department": "XI. Abteilung: Die Rechtsquellen der Kantone Basel",
+      "img": "BS"
+    },
+    "BL": {
+      "img": "BL"
+    },
+    "order": 11
+  },
+  "SH": {
+    "department": "XII. Abteilung: Die Rechtsquellen des Kantons Schaffhausen",
+    "img": "SH",
+    "order": 12
+  },
+  "AR-AI": {
+    "AR": {
+      "department": "XIII. Abteilung: Die Rechtsquellen der Kantone Appenzell",
+      "img": "AR"
+    },
+    "AI": {
+      "img": "AI"
+    },
+    "order": 13
+  },
+  "SG": {
+    "department": "XIV. Abteilung: Die Rechtsquellen des Kantons St. Gallen",
+    "img": "SG",
+    "order": 14
+  },
+  "GR": {
+    "department": "XV. Abteilung: Die Rechtsquellen des Kantons Graubünden<br/> XV. partiziun: Las funtaunas da dretg dal chantun Grischun<br/> XV sezione: Le fonti del diritto del cantone dei Grigioni",
+    "img": "GR",
+    "order": 15
+  },
+  "AG": {
+    "department": "XVI. Abteilung: Die Rechtsquellen des Kantons Aargau",
+    "img": "AG",
+    "order": 16
+  },
+  "TG": {
+    "department": "XVII. Abteilung: Die Rechtsquellen des Kantons Thurgau",
+    "img": "TG",
+    "order": 17
+  },
+  "TI": {
+    "department": "XVIII sezione: Le fonti del diritto del cantone Ticino",
+    "img": "TI",
+    "order": 18
+  },
+  "VD": {
+    "department": "XIX<sup>e</sup> partie : Les sources du droit du canton de Vaud",
+    "img": "VD",
+    "order": 19
+  },
+  "VS": {
+    "department": "XX<sup>e</sup> partie : Les sources du droit du canton du Valais<br/> XX. Abteilung: Die Rechtsquellen des Kantons Wallis",
+    "img": "VS",
+    "order": 20
+  },
+  "NE": {
+    "department": "XXI<sup>e</sup> partie : Les sources du droit du canton de Neuchâtel",
+    "img": "NE",
+    "order": 21
+  },
+  "GE": {
+    "department": "XXII<sup>e</sup> partie : Les sources du droit du canton de Genève",
+    "img": "GE",
+    "order": 22
+  },
+  "JU": {
+    "department": "XXIII<sup>e</sup> partie : Les sources du droit du canton du Jura",
+    "img": "JU",
+    "order": 23
+  }
+}

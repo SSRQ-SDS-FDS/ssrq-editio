@@ -1,364 +1,215 @@
-<div xmlns:i18n="http://exist-db.org/xquery/i18n" data-template="templates:surround" data-template-with="templates/page.html" data-template-at="content">
-    <div data-template="templates:include" data-template-path="templates/menu.html"/>
-    <section class="container-fluid">
-        <header class="row">
-            <div class="col-md-12">
-                <div class="page-header">
-<!--                    <h1 data-template="config:app-title"/>-->
-                        <h1>
-                        <i18n:text key="doctitel"/>
-                    </h1>
-                </div>
+<div
+  xmlns:i18n="http://exist-db.org/xquery/i18n"
+  data-template="templates:surround"
+  data-template-with="templates/page.html"
+  data-template-at="content"
+>
+  <div
+    data-template="templates:include"
+    data-template-path="templates/menu.html"
+  />
+  <section class="container-fluid">
+    <header class="row">
+      <div class="col-md-12">
+        <div class="page-header">
+          <!--                    <h1 data-template="config:app-title"/>-->
+          <h1>
+            <i18n:text key="doctitel" />
+          </h1>
+        </div>
+      </div>
+    </header>
+    <main class="row">
+      <section class="col-md-3 col-md-push-9">
+        <div
+          data-template="templates:include"
+          data-template-path="templates/search.html"
+        />
+        <div class="panel panel-info" data-template="browse:show-if-logged-in">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              <i18n:text key="upload" />
+            </h3>
+          </div>
+
+          <div class="panel-body">
+            <p>
+              <i18n:text key="upload-files" />
+            </p>
+
+            <span class="btn btn-success btn-block fileinput-button">
+              <i class="material-icons">file_upload</i>
+              <span>
+                <i18n:text key="select-files" />
+              </span>
+              <input
+                id="fileupload"
+                type="file"
+                name="files[]"
+                multiple="multiple"
+              />
+            </span>
+            <!-- The global progress bar -->
+            <div id="progress" class="progress">
+              <div class="progress-bar progress-bar-success" />
             </div>
-        </header>
-        <main class="row">
-            <section class="col-md-3 col-md-push-9">
-                <div data-template="templates:include" data-template-path="templates/search.html"/>
-                <div class="panel panel-info" data-template="browse:show-if-logged-in">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            <i18n:text key="upload"/>
-                        </h3>
-                    </div>
+            <!-- The container for the uploaded files -->
+            <table id="files-table" class="files table table-striped">
+              <thead>
+                <th colspan="2">
+                  <i18n:text key="uploaded-files" />
+                </th>
+              </thead>
+              <tbody id="files" />
+            </table>
+          </div>
+        </div>
+      </section>
+      <section class="col-md-9 col-md-pull-3">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              <i18n:text key="documents">Documents</i18n:text>
+            </h3>
+          </div>
+          <div class="panel-body">
+            <!--<div class="col-md-4">
 
-                    <div class="panel-body">
-                        <p>
-                            <i18n:text key="upload-files"/>
-                        </p>
-
-
-                        <span class="btn btn-success btn-block fileinput-button">
-                            <i class="material-icons">file_upload</i>
-                            <span>
-                                <i18n:text key="select-files"/>
-                            </span>
-                            <input id="fileupload" type="file" name="files[]" multiple="multiple"/>
-                        </span>
-                        <!-- The global progress bar -->
-                        <div id="progress" class="progress">
-                            <div class="progress-bar progress-bar-success"/>
-                        </div>
-                        <!-- The container for the uploaded files -->
-                        <table id="files-table" class="files table table-striped">
-                            <thead>
-                                <th colspan="2">
-                                    <i18n:text key="uploaded-files"/>
-                                </th>
-                            </thead>
-                            <tbody id="files"/>
-                        </table>
-                    </div>
-                </div>
-            </section>
-            <section class="col-md-9 col-md-pull-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            <i18n:text key="documents">Documents</i18n:text>
-                        </h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <table id="kantone" class="table">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="2">
-                                                <i18n:text key="canton"/>
-                                            </th>
-                                            <th>
-                                                <i18n:text key="section"/>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody data-template="app:kanton-auswahl">
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/ZH.png"/>
-                                            </td>
-                                            <td>ZH</td>
-                                            <td>I. Abteilung: Die Rechtsquellen des Kantons Zürich</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/BE.png"/>
-                                            </td>
-                                            <td>BE</td>
-                                            <td>II. Abteilung: Die Rechtsquellen des Kantons Bern</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/LU.png"/>
-                                            </td>
-                                            <td>LU</td>
-                                            <td>III. Abteilung: Die Rechtsquellen des Kantons Luzern</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/UR.png"/>
-                                            </td>
-                                            <td>UR</td>
-                                            <td>IV. Abteilung: Die Rechtsquellen des Kantons Uri</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/SZ.png"/>
-                                            </td>
-                                            <td>SZ</td>
-                                            <td>V. Abteilung: Die Rechtsquellen des Kantons Schwyz</td>
-                                        </tr>
-                                        <tr>
-
-                                                <td>
-                                                    <img src="resources/images/kantone/OW.png"/>
-                                                </td>
-                                                <td>OW</td>
-                                                <td rowspan="2">VI. Abteilung: Die Rechtsquellen des Kantons Unterwalden</td>
-                                        </tr>
-
-                                        <tr>
-                                                <td>
-                                                    <img src="resources/images/kantone/NW.png"/>
-                                                </td>
-                                                <td>NW</td>
-                                        </tr>
-
-
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/GL.png"/>
-                                            </td>
-                                            <td>GL</td>
-                                            <td>VII. Abteilung: Die Rechtsquellen des Kantons Glarus</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/ZG.png"/>
-                                            </td>
-                                            <td>ZG</td>
-                                            <td>VIII. Abteilung: Die Rechtsquellen des Kantons Zug</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/FR.png"/>
-                                            </td>
-                                            <td>FR</td>
-                                            <td>IX<sup>e</sup> partie : Les sources du droit du canton de Fribourg<br/> IX. Abteilung: Die Rechtsquellen des Kantons
-                                                Freiburg</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/SO.png"/>
-                                            </td>
-                                            <td>SO</td>
-                                            <td>X. Abteilung: Die Rechtsquellen des Kantons Solothurn</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/BS.png"/>
-                                            </td>
-                                            <td>BS</td>
-                                            <td rowspan="2">XI. Abteilung: Die Rechtsquellen der Kantone Basel</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/BL.png"/>
-                                            </td>
-                                            <td>BL</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/SH.png"/>
-                                            </td>
-                                            <td>SH</td>
-                                            <td>XII. Abteilung: Die Rechtsquellen des Kantons Schaffhausen</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/AR.png"/>
-
-                                            </td>
-                                            <td>AR</td>
-                                            <td rowspan="2">XIII. Abteilung: Die Rechtsquellen der Kantone Appenzell</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/AI.png"/>
-                                            </td>
-                                            <td>AI</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/SG.png"/>
-                                            </td>
-                                            <td>SG</td>
-                                            <td>XIV. Abteilung: Die Rechtsquellen des Kantons St. Gallen</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/GR.png"/>
-                                            </td>
-                                            <td>GR</td>
-                                            <td>XV. Abteilung: Die Rechtsquellen des Kantons Graubünden<br/> XV. partiziun: Las funtaunas da dretg dal chantun
-                                                Grischun<br/> XV sezione: Le fonti del diritto del cantone dei Grigioni</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/AG.png"/>
-                                            </td>
-                                            <td>AG</td>
-                                            <td>XVI. Abteilung: Die Rechtsquellen des Kantons Aargau</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/TG.png"/>
-                                            </td>
-                                            <td>TG</td>
-                                            <td>XVII. Abteilung: Die Rechtsquellen des Kantons Thurgau</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/TI.png"/>
-                                            </td>
-                                            <td>TI</td>
-                                            <td>XVIII sezione: Le fonti del diritto del cantone Ticino</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/VD.png"/>
-                                            </td>
-                                            <td>VD</td>
-                                            <td>XIX<sup>e</sup> partie : Les sources du droit du canton de Vaud</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/VS.png"/>
-                                            </td>
-                                            <td>VS</td>
-                                            <td>XX<sup>e</sup> partie : Les sources du droit du canton du Valais<br/> XX. Abteilung: Die Rechtsquellen des Kantons Wallis</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/NE.png"/>
-                                            </td>
-                                            <td>NE</td>
-                                            <td>XXI<sup>e</sup> partie : Les sources du droit du canton de Neuchâtel</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/GE.png"/>
-                                            </td>
-                                            <td>GE</td>
-                                            <td>XXII<sup>e</sup> partie : Les sources du droit du canton de Genève</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="resources/images/kantone/JU.png"/>
-                                            </td>
-                                            <td>JU</td>
-                                            <td>XXIII<sup>e</sup> partie : Les sources du droit du canton du Jura</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
                             </div>
                             <div class="col-md-8" id="documents-panel">
-                                <div data-template="templates:include" data-template-path="templates/doc-table.html"/>
-                            </div>
-                        </div>
-                    </div>
+
+                            </div> -->
+
+            <div
+              data-template="templates:if-parameter-unset"
+              data-template-param="collection"
+            >
+            <section id="cantonlist">
+              <div class="canton">
+                <div class="canton__title">
+                  <h4><i18n:text key="canton" /></h4>
                 </div>
+                <div class="canton__title--spaced">
+                  <h4><i18n:text key="section" /></h4>
+                </div>
+              </div>
+              <div
+                data-template="templates:include"
+                data-template-path="static/cantons.html"
+              />
             </section>
-        </main>
-        <footer class="footer">
-            <div class="col-md-4">
-                <h5>
-                    <i18n:text key="kontakt">Kontakt</i18n:text>
-                </h5>
-                <p>
-                        Rechtsquellenstiftung des <br/>
-                        Schweizerischen Juristenvereins<br/>
-                        Dr. Pascale Sutter<br/>
-                        c/o Prof. Dr. Lukas Gschwend<br/>
-                        Universität St. Gallen<br/>
-                        Tigerbergstr. 21<br/>
-                        CH-9000 St. Gallen<br/>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="col-md-4">
+        <h5>
+          <i18n:text key="kontakt">Kontakt</i18n:text>
+        </h5>
+        <p>
+          Rechtsquellenstiftung des <br />
+          Schweizerischen Juristenvereins<br />
+          Dr. Pascale Sutter<br />
+          c/o Prof. Dr. Lukas Gschwend<br />
+          Universität St. Gallen<br />
+          Tigerbergstr. 21<br />
+          CH-9000 St. Gallen<br />
 
+          email: <a href="mailto:info@ssrq-sds-fds.ch">info@ssrq-sds-fds.ch</a>
+          <br />
+          <a href="https://www.ssrq-sds-fds.ch">https://www.ssrq-sds-fds.ch</a>
+        </p>
+      </div>
+      <div class="col-md-3">
+        <h5>
+          <a href="partners.html">
+            <i18n:text key="partners-and-funding">Projektpartner</i18n:text>
+          </a>
+        </h5>
+        <h5>
+          <i18n:text key="realisierung">Realisierung</i18n:text>
+        </h5>
+        <p>
+          <a href="http://existsolutions.com">eXistSolutions GmbH</a>
+        </p>
+      </div>
+      <div class="col-md-3">
+        <h5>
+          <i18n:text key="transrichtlinien"
+            >Hinweis auf die Transkriptionsrichtlinien</i18n:text
+          >
+        </h5>
+        <h5>
+          <i18n:text key="datrichtlinien"
+            >Hinweis auf die Datierungsrichtlinien</i18n:text
+          >
+        </h5>
+      </div>
+      <div class="col-md-2">
+        <h5>
+          <i18n:text key="lizenz">Lizenz</i18n:text>
+        </h5>
+        <p>
+          <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+            >CC BY-NC-SA</a
+          >
+        </p>
+      </div>
+    </footer>
+  </section>
+  <script
+    type="text/javascript"
+    src="resources/scripts/vendor/jquery.ui.widget.js"
+  />
+  <script
+    type="text/javascript"
+    src="resources/scripts/vendor/jquery.iframe-transport.js"
+  />
+  <script
+    type="text/javascript"
+    src="resources/scripts/vendor/jquery.fileupload.js"
+  />
+  <script type="text/javascript">
+    $(function () {
+      'use strict';
 
-                        email: <a href="mailto:info@ssrq-sds-fds.ch">info@ssrq-sds-fds.ch</a>
-                    <br/>
-                        <a href="https://www.ssrq-sds-fds.ch">https://www.ssrq-sds-fds.ch</a>
-                </p>
-            </div>
-            <div class="col-md-3">
-                <h5>
-                    <a href="partners.html">
-                        <i18n:text key="partners-and-funding">Projektpartner</i18n:text>
-                    </a>
-                </h5>
-                <h5>
-                    <i18n:text key="realisierung">Realisierung</i18n:text>
-                </h5>
-                <p>
-                    <a href="http://existsolutions.com">eXistSolutions GmbH</a>
-                </p>
-            </div>
-            <div class="col-md-3">
-                <h5>
-                    <i18n:text key="transrichtlinien">Hinweis auf die Transkriptionsrichtlinien</i18n:text>
-                </h5>
-                <h5>
-                    <i18n:text key="datrichtlinien">Hinweis auf die Datierungsrichtlinien</i18n:text>
-                </h5>
-            </div>
-             <div class="col-md-2">
-                <h5>
-                    <i18n:text key="lizenz">Lizenz</i18n:text>
-                </h5>
-                <p>
-                    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA</a>
-                </p>
-            </div>
-        </footer>
-    </section>
-    <script type="text/javascript" src="resources/scripts/vendor/jquery.ui.widget.js"/>
-    <script type="text/javascript" src="resources/scripts/vendor/jquery.iframe-transport.js"/>
-    <script type="text/javascript" src="resources/scripts/vendor/jquery.fileupload.js"/>
-    <script type="text/javascript">
-        $(function () {
-            'use strict';
-
-            function reloadDocTable() {
-                $("#documents-panel").load("templates/doc-table.html");
-            }
-            $('#fileupload').fileupload({
-                url: "modules/lib/upload.xql",
-                dataType: 'json',
-                done: function(e, data) {
-                    $.each(data.result.files, function (index, file) {
-                        var tr = document.createElement("tr");
-                        var td = document.createElement("td");
-                        var link = document.createElement("a");
-                        link.href = file.path;
-                        link.target = "_blank";
-                        var icon = document.createElement("span");
-                        icon.className = "material-icons";
-                        icon.appendChild(document.createTextNode("open_in_new"));
-                        link.appendChild(icon);
-                        td.appendChild(link);
-                        tr.appendChild(td);
-                        td = document.createElement("td");
-                        td.appendChild(document.createTextNode(file.path));
-                        tr.appendChild(td);
-                        $("#files").append(tr);
-                    });
-                    reloadDocTable();
-                },
-                progressall: function (e, data) {
-                    var progress = parseInt(data.loaded / data.total * 100, 10);
-                    $('#progress .progress-bar').css( 'width', progress + '%' );
-                }
-            }).prop('disabled', !$.support.fileInput)
-                .parent().addClass($.support.fileInput ? undefined : 'disabled');
-        });
-    </script>
+      function reloadDocTable() {
+        $('#documents-panel').load('templates/doc-table.html');
+      }
+      $('#fileupload')
+        .fileupload({
+          url: 'modules/lib/upload.xql',
+          dataType: 'json',
+          done: function (e, data) {
+            $.each(data.result.files, function (index, file) {
+              var tr = document.createElement('tr');
+              var td = document.createElement('td');
+              var link = document.createElement('a');
+              link.href = file.path;
+              link.target = '_blank';
+              var icon = document.createElement('span');
+              icon.className = 'material-icons';
+              icon.appendChild(document.createTextNode('open_in_new'));
+              link.appendChild(icon);
+              td.appendChild(link);
+              tr.appendChild(td);
+              td = document.createElement('td');
+              td.appendChild(document.createTextNode(file.path));
+              tr.appendChild(td);
+              $('#files').append(tr);
+            });
+            reloadDocTable();
+          },
+          progressall: function (e, data) {
+            var progress = parseInt((data.loaded / data.total) * 100, 10);
+            $('#progress .progress-bar').css('width', progress + '%');
+          },
+        })
+        .prop('disabled', !$.support.fileInput)
+        .parent()
+        .addClass($.support.fileInput ? undefined : 'disabled');
+    });
+  </script>
 </div>

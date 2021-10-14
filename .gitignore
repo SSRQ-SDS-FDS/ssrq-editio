@@ -9,3 +9,6 @@ resources/css/style.css.map
 test/node_modules
 test/errorShots/
 test/reports/
+.existdb.json
+.DS_Store
+.existdb.json

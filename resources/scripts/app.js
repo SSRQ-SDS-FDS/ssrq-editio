@@ -203,7 +203,7 @@ $(document).ready(function() {
             elem.popover("hide");
         });
     }
-    
+
     function popupFixed() {
         var elem = $(this);
         elem.popover({
@@ -228,8 +228,8 @@ $(document).ready(function() {
             placement: "auto top"
         });
     }
-        
-    
+
+
 
     function initFootnote() {
         var elem = $(this);
@@ -475,7 +475,7 @@ $(document).ready(function() {
 
     // initialize popups for comment section
     $("#comment .alternate, #sourceDesc .alternate, #comment .reference, #sourceDesc .reference").each(initAlternate);
-    
+
     // initialize popups for sigle section
     $("#idno .alternate").each(popupFixed);
 
@@ -514,3 +514,5 @@ $(window).load(function () {
     }
     window.addEventListener("hashchange", shiftWindow);
 });
+
+
