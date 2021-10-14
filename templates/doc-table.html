@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <div data-template="app:list-works">
     <div xmlns:i18n="http://exist-db.org/xquery/i18n" data-template="i18n:translate" data-catalogues="../resources/i18n" class="list-works">
         <div class="row">
@@ -40,10 +39,8 @@
         </div>
         <div data-template="browse:dispatch-action"/>
         <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-12">
                 <ul class="pagination" data-template="browse:paginate" data-template-per-page="20" data-template-max-pages="5" data-template-min-hits="21" data-template-key="all"/>
-            </div>
-            <div class="col-md-5">
                 <h5 class="pull-right">
                     <i18n:text key="browsing"/> <span class="result-count text-success">
                         <span id="hit-count" data-template="browse:hit-count" data-template-key="all"/> <i18n:text key="documents"/>.</span>
