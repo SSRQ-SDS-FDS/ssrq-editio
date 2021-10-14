@@ -255,11 +255,15 @@
         color: @color-gray-light;
     }
     
-    li {
-        display: flex;
-        flex-direction: row;
+    ul.register-list {
+      padding-left: 1.35em;
+
+        li > input[type=checkbox] {
+            margin-left: -1.35em;
+	    float: left;
+        }
     }
-    
+
     input {
         display: block;
         margin-right: 10px;
