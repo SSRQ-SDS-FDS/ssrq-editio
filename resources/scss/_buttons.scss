@@ -16,20 +16,20 @@
 .btn:not(.btn-raised).btn-success,
 .fileinput-button,
 .btn-default.btn-block {
-  color: @color-body-text-default;
-  border: 1px solid @color-primary-lightest;
+  color: $color-body-text-default;
+  border: 1px solid $color-primary-lightest;
   margin: 20px 0;
 }
 
 // Buttons for download, zoom and home in document view
 .tp-toolbar {
   .btn-group.open>.dropdown-toggle.btn.btn-default {
-    background-color: lighten(@color-navigation-hover, 30%);
+    background-color: lighten($color-navigation-hover, 30%);
   }
 }
 
 .btn {
-  font-family: @font-sans-serif-default;
+  font-family: $font-sans-serif-default;
   .glyphicon-search {
     top: 3px;
     padding-right: 6px;

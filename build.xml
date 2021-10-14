@@ -8,20 +8,18 @@
     <property name="build.dir" value="build"/>
     <target name="xar">
         <mkdir dir="${build.dir}"/>
-        <echo message="Calling npm start..."/>
-        <exec executable="${npm}" outputproperty="npm.output">
-            <arg line="start"/>
+        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${build.dir}/* node_modules/** test/** resources/scss/**"/>
+        <mkdir dir="${build.dir}/resources/css"/>
+        <echo message="Compiling SCSS..."/>
+        <exec executable="sassc" outputproperty="sassc.output">
+            <arg line="-tcompressed"/>
+            <arg line="-mauto"/>
+            <arg line="./resources/scss/style.css"/>
+            <arg line="${build.dir}/resources/css/style.css"/>
         </exec>
-        <echo message="${npm.output}"/>
-        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${build.dir}/* node_modules/** test/**"/>
+        <echo message="${sassc.output}"/>
     </target>
     <target name="clean">
-        <echo message="Calling gulp clean..."/>
-        <exec executable="${gulp}" outputproperty="gulp.output">
-            <arg line="clean"/>
-            <env key="PATH" value="${env.PATH}:${node.PATH}"/>
-        </exec>
-        <echo message="${gulp.output}"/>
         <echo message="Deleting xar files..."/>
         <delete>
             <fileset dir="${build.dir}">

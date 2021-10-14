@@ -7,18 +7,18 @@
 
 .toc {
   position: fixed;
-  top: @toolbar-height + @navbar-height-small;
-  border-right: @default-border-style;
-  font-family: @font-serif;
+  top: $toolbar-height + $navbar-height-small;
+  border-right: $default-border-style;
+  font-family: $font-serif;
 
-  @media (min-width: @screen-lg-min) {
-    top: @toolbar-height + @navbar-height-large;
+  @media (min-width: $screen-lg-min) {
+    top: $toolbar-height + $navbar-height-large;
   }
   bottom: 0;
   display: block;
   padding: 0 20px 20px 20px;
   overflow: auto; /* Scrollable contents if viewport is shorter than content. */
-  background-color: @color-side-navigation-bg;
+  background-color: $color-side-navigation-bg;
   width: 20em;
   z-index: 2000;
   transition: right 0.3s ease-in-out 0s;
