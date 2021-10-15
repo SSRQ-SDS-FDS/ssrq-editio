@@ -14,7 +14,7 @@
         <exec executable="sassc" outputproperty="sassc.output">
             <arg line="-tcompressed"/>
             <arg line="-mauto"/>
-            <arg line="./resources/scss/style.css"/>
+            <arg line="./resources/scss/style.scss"/>
             <arg line="${build.dir}/resources/css/style.css"/>
         </exec>
         <echo message="${sassc.output}"/>
