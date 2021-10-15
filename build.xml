@@ -20,11 +20,6 @@
         <echo message="${sassc.output}"/>
     </target>
     <target name="clean">
-        <echo message="Deleting xar files..."/>
-        <delete>
-            <fileset dir="${build.dir}">
-                <include name="*.xar"/>
-            </fileset>
-        </delete>
+	<delete dir="${build.dir}"/>
     </target>
 </project>
