@@ -6,13 +6,13 @@
 /*********************************************************************/
 
 #results {
-  font-family: @font-serif;
+  font-family: $font-serif;
 
   td {
     border: 0;
   }
   .reference {
-    border-top: @default-border-style;
+    border-top: $default-border-style;
 
     .number, .headings {
       display: table-cell;
