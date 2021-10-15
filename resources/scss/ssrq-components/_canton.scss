@@ -1,21 +1,21 @@
 .canton {
   width: 100%;
   display: flex;
-  margin: @margin-vertical-base*2 0;
+  margin: $margin-vertical-base * 2 0;
 }
 
 .canton__title {
-  margin: @margin-horizontal-base;
+  margin: $margin-horizontal-base;
 }
 
 .canton__title--spaced {
-  margin: @margin-horizontal-base;
-  margin-left: @margin-horizontal-base*6;
+  margin: $margin-horizontal-base;
+  margin-left: $margin-horizontal-base * 6;
 }
 
 .canton__name {
-  margin-left: @margin-horizontal-base;
-  margin-right: @margin-horizontal-base*4;
+  margin-left: $margin-horizontal-base;
+  margin-right: $margin-horizontal-base * 4;
   display: flex;
   align-items: center;
 }
@@ -26,13 +26,13 @@
 }
 
 .canton__name--container .canton__name {
-  margin-top: @margin-vertical-base;
-  margin-bottom: @margin-vertical-base;
+  margin-top: $margin-vertical-base;
+  margin-bottom: $margin-vertical-base;
 }
 
 .canton__name img {
-  margin-left: @margin-horizontal-base / 2;
-  margin-right: @margin-horizontal-base*4;
+  margin-left: $margin-horizontal-base / 2;
+  margin-right: $margin-horizontal-base * 4;
 }
 
 .canton__department {
@@ -44,7 +44,7 @@
 .canton__badge {
   display: flex;
   align-items: center;
-  margin-left: @margin-horizontal-base;
+  margin-left: $margin-horizontal-base;
 }
 
 .canton__badge .badge {
