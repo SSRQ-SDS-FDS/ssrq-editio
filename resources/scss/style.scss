@@ -7,7 +7,7 @@
 
 /********************* Logo **************************/
 
-$application-logo:          '../images/LogoSSRQVecLexia4000.png';
+$application-logo:          '../images/SSRQganz-2020-350.png';
 $application-logo-width:    350px;
 $application-logo-width-small:    280px;
 $application-title-display: none;
@@ -254,11 +254,15 @@ $color-terms: #b5221f;*/
         color: $color-gray-light;
     }
     
-    li {
-        display: flex;
-        flex-direction: row;
+    ul.register-list {
+      padding-left: 1.35em;
+
+        li > input[type=checkbox] {
+            margin-left: -1.35em;
+	    float: left;
+        }
     }
-    
+
     input {
         display: block;
         margin-right: 10px;

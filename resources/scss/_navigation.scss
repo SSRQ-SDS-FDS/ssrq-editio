@@ -13,15 +13,7 @@
   width: $application-logo-width;
   margin-left: 0 !important;
 
-  @media (max-width: 1199px) {
-    background-position: 5px 5px;
-    background-size: auto 40px;
-  }
-
-  @media (min-width: $screen-lg-min) {
-    background-position: 7px 7px;
-    background-size: auto 46px;
-  }
+  background-size: 100% auto;
 
   span {
     margin-left: 60px;
