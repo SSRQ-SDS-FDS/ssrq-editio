@@ -8,7 +8,6 @@
     <property name="build.dir" value="build"/>
     <target name="xar">
         <mkdir dir="${build.dir}"/>
-        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${build.dir}/* node_modules/** test/** resources/scss/**"/>
         <mkdir dir="${build.dir}/resources/css"/>
         <echo message="Compiling SCSS..."/>
         <exec executable="sassc" outputproperty="sassc.output">
@@ -18,6 +17,7 @@
             <arg line="${build.dir}/resources/css/style.css"/>
         </exec>
         <echo message="${sassc.output}"/>
+        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${build.dir}/* node_modules/** test/** resources/scss/**"/>
     </target>
     <target name="clean">
 	<delete dir="${build.dir}"/>
