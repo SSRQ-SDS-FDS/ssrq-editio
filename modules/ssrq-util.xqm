@@ -48,7 +48,7 @@ declare function ssrq-utils:renderDepartment($data as map(*), $dep as xs:string)
     if (xmldb:collection-available($rootCollection))
     then
         (<div class="canton__department">
-            <a href="#" data-collection="{$dep}">
+            <a href="?collection={$dep}">
                 {
                 let $html := $data?department => util:parse-html()
                 return $html/*/*[last()]/node()
