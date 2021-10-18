@@ -369,7 +369,7 @@ declare function pmf:print-date($date as node()*) {
     		' ' || pmf:label('old-style-abbr', false())
     	else
     		()
- 
+
     	return $date-string || $old-style
 };
 
@@ -407,4 +407,16 @@ declare %private function pmf:footnote-label-recursive($nr as xs:int) {
         )
     else
         ()
+};
+
+declare function pmf:persName-list($namen as element(tei:persName)*) {
+    if (count($namen) > 1) then (
+        string-join(subsequence($namen, 1, count($namen) -1), ', '),
+        (:~
+        @ TODO: Internationalisierung...
+        :)
+        <span> und </span>,
+        $namen[last()]
+    ) else
+        $namen
 };

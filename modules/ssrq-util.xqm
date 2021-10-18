@@ -3,16 +3,73 @@ xquery version "3.1";
 module namespace ssrq-utils="http://existsolutions.com/ssrq/utils";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
+import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xql";
+import module namespace intl="http://exist-db.org/xquery/i18n/templates" at "lib/i18n-templates.xql";
 import module namespace functx="http://www.functx.com";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace util="http://exist-db.org/xquery/util";
+declare namespace i18n="http://exist-db.org/xquery/i18n";
 
 
 declare variable $ssrq-utils:TEMP_DOCS := collection($config:temp-root)/tei:TEI;
 declare variable $ssrq-utils:ALL_DOCS := collection($config:data-root);
 declare variable $ssrq-utils:SPECIAL_DOCS := collection($config:data-root)/tei:TEI[@type];
 declare variable $ssrq-utils:CANTONS := util:binary-doc($config:app-root || '/resources/json/cantons.json')  => util:binary-to-string() => parse-json();
+declare variable $ssrq-utils:STATIC := $config:app-root || '/static';
+
+
+(:~
+: A simple utility function to load static generated content
+:
+: @param $page name of the page as xs:string
+: @return static html content
+:)
+declare function ssrq-utils:loadStatic($node as node(), $model as map(*), $page as xs:string) as node()* {
+    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
+    let $path := $ssrq-utils:STATIC || '/' || $page || '_' || $lang || '.html'
+    return doc($path)
+};
+
+
+(:~
+: Filter docs in a collection by their tei:idno and count them
+:
+: @author Bastian
+: @param $path the root path the collection
+: @param $idno idno-schema of the collection
+: @return count as xs:string
+:)
+
+
+declare function ssrq-utils:countDocs($path as xs:string, $idno as xs:string) as xs:integer {
+    let $docs := for $doc in collection($path)/tei:TEI except(
+                          $ssrq-utils:TEMP_DOCS union
+                          $ssrq-utils:SPECIAL_DOCS
+                        )
+               let $id := $doc//tei:seriesStmt[@xml:id = 'ssrq-sds-fds']/tei:idno => functx:get-matches($idno || '_[0-9]{0,4}_{0,1}')
+                        group by $id
+                        return $id
+    return $docs => count()
+};
+
+(:~
+: Render cantons listed in $ssrq-utils:CANTONS as html
+:
+: @author Bastian Politycki
+: @return a html:div per canton
+:)
+declare function ssrq-utils:listCantons($node as node(), $model as map(*)) as node()* {
+    for $key in map:keys($ssrq-utils:CANTONS)
+    order by $ssrq-utils:CANTONS($key)?order
+    return
+        if ($key => contains('-'))
+        then ssrq-utils:renderMergedCantons($ssrq-utils:CANTONS($key))
+        else ssrq-utils:renderCanton($key, $ssrq-utils:CANTONS($key))
+};
+
+
+
 
 declare function ssrq-utils:renderCanton($key as xs:string, $data as map(*)) as node() {
     <div class="canton">
@@ -48,7 +105,7 @@ declare function ssrq-utils:renderDepartment($data as map(*), $dep as xs:string)
     if (xmldb:collection-available($rootCollection))
     then
         (<div class="canton__department">
-            <a href="?collection={$dep}">
+            <a href="?collection={$dep}" data-collection="{$dep}">
                 {
                 let $html := $data?department => util:parse-html()
                 return $html/*/*[last()]/node()
@@ -71,25 +128,54 @@ declare function ssrq-utils:renderDepartment($data as map(*), $dep as xs:string)
         </div>
 };
 
-declare function ssrq-utils:countDocs($path as xs:string, $idno as xs:string) as item() {
-    let $docs := for $doc in collection($path)/tei:TEI except(
-                          $ssrq-utils:TEMP_DOCS union
-                          $ssrq-utils:SPECIAL_DOCS
-                        )
-               let $id := $doc//tei:seriesStmt[@xml:id = 'ssrq-sds-fds']/tei:idno => functx:get-matches($idno || '_[0-9]{0,4}_{0,1}')
-                        group by $id
-                        return $id
-                        return $docs => count()
-};
 
-
-
-
-declare function ssrq-utils:listCantons($node as node(), $model as map(*)) as node()* {
-    for $key in map:keys($ssrq-utils:CANTONS)
-    order by $ssrq-utils:CANTONS($key)?order
-    return
-        if ($key => contains('-'))
-        then ssrq-utils:renderMergedCantons($ssrq-utils:CANTONS($key))
-        else ssrq-utils:renderCanton($key, $ssrq-utils:CANTONS($key))
+(:~
+: List volumes per canton
+:
+: @param $collection canton as xs:string
+: @return one html:div container per volume
+:)
+declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $collection as xs:string) as element(div)* {
+    for $volume in collection($config:data-root)/tei:TEI[@type = 'volinfo'][matches(.//tei:seriesStmt/tei:idno[@type="machine"], '^\w+_' || $collection)]
+        order by $volume//tei:seriesStmt/tei:idno[@type = 'sort']
+        let $idno := $volume//tei:seriesStmt/tei:idno[@type="machine"]
+        let $collection-name := util:collection-name($volume)
+        let $volume-collection := collection($collection-name)
+        let $content-types := map {
+            "introduction": $volume-collection/tei:TEI[@type='introduction'][.//tei:seriesStmt/tei:idno = $idno],
+            "archives": $volume-collection/tei:TEI[@type='archives'][.//tei:seriesStmt/tei:idno = $idno],
+            "editions": $volume-collection/tei:TEI[@type='editions'][.//tei:seriesStmt/tei:idno = $idno],
+            "literature":$volume-collection/tei:TEI[@type='biblio'][.//tei:seriesStmt/tei:idno = $idno],
+            "bailiffs": $volume-collection/tei:TEI[@type='bailiffs'][.//tei:seriesStmt/tei:idno = $idno],
+            "foreword": $volume-collection/tei:TEI[@type='foreword'][.//tei:seriesStmt/tei:idno = $idno],
+            "preface": $volume-collection/tei:TEI[@type='preface'][.//tei:seriesStmt/tei:idno = $idno],
+            "pdfdummy": $volume-collection/tei:TEI[@type='pdfdummy'][.//tei:seriesStmt/tei:idno = $idno]
+        }
+        return
+            <div class="volume">
+                <div class="volume-counter">
+                    <span class="volume-counter__badge">
+                        {ssrq-utils:countDocs($collection-name, $idno)}
+                    </span>
+                </div>
+                {$pm-config:web-transform($volume/tei:teiHeader/tei:fileDesc, map { "root": $volume, "view": "volumes" }, $config:odd) }
+                {
+                   for $key in $content-types => map:keys()
+                   return
+                        if ($content-types($key))
+                        then
+                            <span class="part">
+                                {
+                                    let $path := substring-after(document-uri(root($content-types($key))), $config:data-root || "/")
+                                    let $href := if ($key = 'pdfdummy') then request:get-context-path() || '/apps/ssrq-data/data/$resource' || replace($path, '^([A-Z]{2})/(.+?)/(.+?)(?:_\d{1,2})?\.xml$', '$1/$2/pdf/' || $idno || '.pdf') else $path || '?template=introduction.html'
+                                    return
+                                        <a href="{$href}">
+                                        (: TODO: Testen, ob Übersetzung funktioniert! :)
+                                            {intl:translate(<i18n:text key="{$key}">{$key}</i18n:text>, map{}, request:get-parameter('lang', 'de'), 'resources/i18n')}
+                                        </a>
+                                }
+                            </span>
+                        else ()
+                }
+            </div>
 };

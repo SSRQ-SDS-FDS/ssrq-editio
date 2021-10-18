@@ -39,13 +39,13 @@
                         <param name="literature" value="text/body/div/listBibl/biblStruct"/>
                         <pb:template>
                             \subsection{Literaturverzeichnis}
-
+                            
                             [[introduction]]
-
+                            
                             \begin{hangparas}{4.5mm}{1}
-
+                            
                             [[literature]]
-
+                            
                             \end{hangparas}
                         </pb:template>
                     </model>
@@ -57,15 +57,15 @@
                             \documentclass[10pt,twoside]{article}
                             
                             \usepackage{ssrq_intro_[[lang]]}  % here's all the magic...
-
+                            
                             \begin{document}
-
+                            
                             \cleardoublepage			% Fortsetzung auf einer ungeraden Seite
                             \pagestyle{plain}			% Beginn der Seitennummerierung
                             \pagenumbering{arabic}		% arabische Seitenzahlen, mit 1 beginnend
                             \footnotesize				% sehr platzsparend... (normalsize ist 8pt)
                             \tableofcontents			% Inhaltsverzeichnis
-
+                            
                             % Einleitung
                             \cleardoublepage			% Fortsetzung auf einer ungeraden Seite
                             \small						% platzsparend... (normalsize ist 9pt)
@@ -74,9 +74,9 @@
                             \thispagestyle{plain}							% aber nicht auf der ersten Seite
                             
                             [[content]]
-
+                            
                             [[literature]]
-
+                            
                             \end{document}
                         </pb:template>
                     </model>
@@ -107,13 +107,13 @@
                             \documentclass[10pt,twoside]{article}
                             
                             \usepackage{ssrq_[[lang]]}  % here's all the magic...
-
+                            
                             \begin{document}
                             
                             % Variablen für Kopfzeile
                             \def\volume{[[ssrq]], [[volume]] [[by]] [[author]], [[year]].}
                             \def\volid{\url{https://www.ssrq-sds-fds.ch/online/tei/[[canton]]/[[idno]].xml}}
-
+                            
                             \linenumbers				% Zeilennummern
                             \normalsize					% normale Grösse, d.h. Quellentext (source) ist 10pt
                             
@@ -281,11 +281,11 @@
                     <model predicate="ancestor::back//orig" behaviour="inline"/>
                     <model predicate="parent::del or parent::abbr or parent::corr or parent::lem or parent::rdg" behaviour="inline"/>
                     <!-- overridden by model for damage
-                    <model predicate="parent::damage" behaviour="alternote" cssClass="text-critical">
-                        <param name="content" value="."/>
-                        <param name="alternate" value="(ec:translate(parent::damage/@agent), ', ', ec:label('unclear-rdg', false()))"/>
-                        <param name="type" value="'text-critical'"/>
-                    </model>
+                         <model predicate="parent::damage" behaviour="alternote" cssClass="text-critical">
+                         <param name="content" value="."/>
+                         <param name="alternate" value="(ec:translate(parent::damage/@agent), ', ', ec:label('unclear-rdg', false()))"/>
+                         <param name="type" value="'text-critical'"/>
+                         </model>
                     -->
                     <model behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="."/>
@@ -578,11 +578,11 @@
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <!--<model behaviour="alternate" cssClass="text-critical">
-                        <param name="default" value="."/>
-                        <param name="alternate" value="ec:label('sic')"/>
-                        <param name="type" value="'text-critical'"/>
-                    </model>-->
-                </elementSpec>
+                         <param name="default" value="."/>
+                         <param name="alternate" value="ec:label('sic')"/>
+                         <param name="type" value="'text-critical'"/>
+                         </model>-->
+                 </elementSpec>
                 <elementSpec ident="space" mode="change">
                     <model behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="text{'...'}"/>
@@ -769,8 +769,8 @@
                         <desc>Hide the first pagebreak in a document (beware: independent of position!)</desc>
                     </model>
                     <!--<model output="latex" predicate="ancestor::body and not(following::pb[ancestor::body]) and not(following::p[ancestor::body]) and not(following::seg[ancestor::body])" behaviour="omit">
-                        <desc>Hide the last pagebreak in a document if it's the last element besides div/ab (i.e. not followed by p or seg)</desc>
-                    </model>-->
+                         <desc>Hide the last pagebreak in a document if it's the last element besides div/ab (i.e. not followed by p or seg)</desc>
+                         </model>-->
                     <model output="latex" predicate="preceding-sibling::*[1][self::seg]" behaviour="omit">
                         <desc>seg directly followed by pb is handled by seg</desc>
                     </model>
@@ -854,17 +854,17 @@
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <!-- overridden by model for damage
-                    <model predicate="parent::damage and @source" behaviour="alternote" cssClass="text-critical">
-                        <param name="content" value="."/>
-                        <param name="alternate" value="(ec:translate(parent::damage/@agent, 0, 'uppercase'), text{', '}, if (@reason) then text{ec:translate(@reason, 0, 'lowercase') || ', '} else (), ec:label('supplied-after', false()), ' ', @source)"/>
-                        <param name="type" value="'text-critical'"/>
-                        <outputRendition scope="before">
-                            content:"[";
-                        </outputRendition>
-                        <outputRendition scope="after">
-                            content:"]";
-                        </outputRendition>
-                    </model>
+                         <model predicate="parent::damage and @source" behaviour="alternote" cssClass="text-critical">
+                         <param name="content" value="."/>
+                         <param name="alternate" value="(ec:translate(parent::damage/@agent, 0, 'uppercase'), text{', '}, if (@reason) then text{ec:translate(@reason, 0, 'lowercase') || ', '} else (), ec:label('supplied-after', false()), ' ', @source)"/>
+                         <param name="type" value="'text-critical'"/>
+                         <outputRendition scope="before">
+                         content:"[";
+                         </outputRendition>
+                         <outputRendition scope="after">
+                         content:"]";
+                         </outputRendition>
+                         </model>
                     -->
                     <model behaviour="inline" cssClass="text-critical">
                         <param name="content" value="('[', ., ']')"/>
@@ -891,7 +891,7 @@
                 <elementSpec ident="fileDesc" mode="change">
                     <modelSequence predicate="$parameters?header='short'">
                         <desc>Output a short header to be used in document listings</desc>
-                        <model behaviour="block" cssClass="header-short">
+                        <model behaviour="block" cssClass="header-shorty">
                             <param name="content" value="ec:format-id(seriesStmt/idno)"/>
                         </model>
                         <model behaviour="link" cssClass="header-short">
@@ -911,6 +911,15 @@
                             <param name="content" value="titleStmt"/>
                         </model>
                     </modelSequence>
+                    <model behaviour="block" predicate="$parameters?view='volumes'" cssClass="volume__title">
+                        <param name="stmtTitle" value="seriesStmt/title"/>
+                        <param name="fileDescTitle" value="titleStmt/title"/>
+                        <param name="fileDescPerson" value="ec:persName-list(titleStmt/respStmt[1]/persName)"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <h3>[[stmtTitle]], [[fileDescTitle]]</h3>
+                            <p>[[fileDescPerson]]</p>
+                        </pb:template>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="back" mode="change">
                     <desc>back contains the commentary, which normally should appear as a numbered list</desc>
@@ -948,7 +957,7 @@
                         <param name="archive" value="div"/>
                         <pb:template>
                             \subsubsection{[[title]]}
-
+                            
                             \begin{hangparas}{4.5mm}{1}
                             [[archive]]
                             \end{hangparas}
@@ -1427,9 +1436,9 @@
                         <param name="literature" value="biblStruct"/>
                         <pb:template>
                             \begin{hangparas}{4.5mm}{1}
-
+                            
                             [[literature]]
-
+                            
                             \end{hangparas}
                         </pb:template>
                     </model>

@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<div>
-  <div data-template="ssrq-util:listCantons"></div>
-</div>
+<section id="cantonlist" xmlns:i18n="http://exist-db.org/xquery/i18n" data-template="i18n:translate">
+  <div class="canton">
+    <div class="canton__title">
+      <h4><i18n:text key="canton" /></h4>
+    </div>
+    <div class="canton__title--spaced">
+      <h4><i18n:text key="section" /></h4>
+    </div>
+  </div>
+  <div data-template="ssrq-utils:listCantons"></div>
+</section>

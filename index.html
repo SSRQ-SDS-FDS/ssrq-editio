@@ -84,20 +84,16 @@
               data-template="templates:if-parameter-unset"
               data-template-param="collection"
             >
-              <section id="cantonlist">
-                <div class="canton">
-                  <div class="canton__title">
-                    <h4><i18n:text key="canton" /></h4>
-                  </div>
-                  <div class="canton__title--spaced">
-                    <h4><i18n:text key="section" /></h4>
-                  </div>
-                </div>
-                <div
-                  data-template="templates:include"
-                  data-template-path="static/cantons.html"
-                />
-              </section>
+              <div
+                data-template="ssrq-utils:loadStatic"
+                data-template-page="cantons"
+              />
+            </div>
+            <div
+              data-template="templates:if-parameter-set"
+              data-template-param="collection"
+            >
+              <div data-template="ssrq-utils:listVolumes" />
             </div>
           </div>
         </div>
