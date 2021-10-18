@@ -84,80 +84,29 @@
               data-template="templates:if-parameter-unset"
               data-template-param="collection"
             >
-            <section id="cantonlist">
-              <div class="canton">
-                <div class="canton__title">
-                  <h4><i18n:text key="canton" /></h4>
+              <section id="cantonlist">
+                <div class="canton">
+                  <div class="canton__title">
+                    <h4><i18n:text key="canton" /></h4>
+                  </div>
+                  <div class="canton__title--spaced">
+                    <h4><i18n:text key="section" /></h4>
+                  </div>
                 </div>
-                <div class="canton__title--spaced">
-                  <h4><i18n:text key="section" /></h4>
-                </div>
-              </div>
-              <div
-                data-template="templates:include"
-                data-template-path="static/cantons.html"
-              />
-            </section>
+                <div
+                  data-template="templates:include"
+                  data-template-path="static/cantons.html"
+                />
+              </section>
             </div>
           </div>
         </div>
       </section>
     </main>
-    <footer class="footer">
-      <div class="col-md-4">
-        <h5>
-          <i18n:text key="kontakt">Kontakt</i18n:text>
-        </h5>
-        <p>
-          Rechtsquellenstiftung des <br />
-          Schweizerischen Juristenvereins<br />
-          Dr. Pascale Sutter<br />
-          c/o Prof. Dr. Lukas Gschwend<br />
-          Universität St. Gallen<br />
-          Tigerbergstr. 21<br />
-          CH-9000 St. Gallen<br />
-
-          email: <a href="mailto:info@ssrq-sds-fds.ch">info@ssrq-sds-fds.ch</a>
-          <br />
-          <a href="https://www.ssrq-sds-fds.ch">https://www.ssrq-sds-fds.ch</a>
-        </p>
-      </div>
-      <div class="col-md-3">
-        <h5>
-          <a href="partners.html">
-            <i18n:text key="partners-and-funding">Projektpartner</i18n:text>
-          </a>
-        </h5>
-        <h5>
-          <i18n:text key="realisierung">Realisierung</i18n:text>
-        </h5>
-        <p>
-          <a href="http://existsolutions.com">eXistSolutions GmbH</a>
-        </p>
-      </div>
-      <div class="col-md-3">
-        <h5>
-          <i18n:text key="transrichtlinien"
-            >Hinweis auf die Transkriptionsrichtlinien</i18n:text
-          >
-        </h5>
-        <h5>
-          <i18n:text key="datrichtlinien"
-            >Hinweis auf die Datierungsrichtlinien</i18n:text
-          >
-        </h5>
-      </div>
-      <div class="col-md-2">
-        <h5>
-          <i18n:text key="lizenz">Lizenz</i18n:text>
-        </h5>
-        <p>
-          <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
-            >CC BY-NC-SA</a
-          >
-        </p>
-      </div>
-    </footer>
+    <div
+      data-template="templates:include"
+      data-template-path="templates/footer.html"
+    />
   </section>
   <script
     type="text/javascript"
