@@ -1,0 +1,24 @@
+.back-button {
+  box-shadow: none;
+  border: none;
+  background: transparent;
+  color: $color-gray-dark;
+  border-radius: 0;
+  border-bottom: 0.5px solid $color-gray-light;
+  width: 100%;
+  padding: 0;
+  padding-bottom: $margin-vertical-base / 2;
+  display: flex;
+  align-items: center;
+  margin: $margin-vertical-base * 2 0;
+  text-transform: uppercase;
+}
+
+.back-button a {
+  margin: 0 $margin-horizontal-base;
+  color: $color-gray-dark;
+}
+
+.back-button a:hover {
+  text-decoration: none;
+}

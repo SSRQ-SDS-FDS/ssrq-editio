@@ -4,7 +4,6 @@ module namespace ssrq-utils="http://existsolutions.com/ssrq/utils";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xql";
-import module namespace intl="http://exist-db.org/xquery/i18n/templates" at "lib/i18n-templates.xql";
 import module namespace functx="http://www.functx.com";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
@@ -25,11 +24,19 @@ declare variable $ssrq-utils:STATIC := $config:app-root || '/static';
 : @param $page name of the page as xs:string
 : @return static html content
 :)
-declare function ssrq-utils:loadStatic($node as node(), $model as map(*), $page as xs:string) as node()* {
+declare function ssrq-utils:loadStatic($node as node(), $model as map(*), $page as xs:string, $collection as xs:string?) as node()* {
     let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
-    let $path := $ssrq-utils:STATIC || '/' || $page || '_' || $lang || '.html'
+    let $path := $ssrq-utils:STATIC || '/' || $page || '_' || string-join(($collection, $lang), '_') || '.html'
     return doc($path)
 };
+
+declare function ssrq-utils:findView($node as node(), $model as map(*), $collection as xs:string?, $volume as xs:string?) {
+    let $view := if ($volume and $collection) then 'works' else 'volumes'
+    return
+        ssrq-utils:loadStatic($node, $model, $view, $collection)
+};
+
+
 
 
 (:~
@@ -135,12 +142,13 @@ declare function ssrq-utils:renderDepartment($data as map(*), $dep as xs:string)
 : @param $collection canton as xs:string
 : @return one html:div container per volume
 :)
-declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $collection as xs:string) as element(div)* {
+declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $collection as xs:string) as node()* {
     for $volume in collection($config:data-root)/tei:TEI[@type = 'volinfo'][matches(.//tei:seriesStmt/tei:idno[@type="machine"], '^\w+_' || $collection)]
         order by $volume//tei:seriesStmt/tei:idno[@type = 'sort']
         let $idno := $volume//tei:seriesStmt/tei:idno[@type="machine"]
         let $collection-name := util:collection-name($volume)
         let $volume-collection := collection($collection-name)
+        let $context := request:get-context-path() || substring-after($config:app-root, "/db")
         let $content-types := map {
             "introduction": $volume-collection/tei:TEI[@type='introduction'][.//tei:seriesStmt/tei:idno = $idno],
             "archives": $volume-collection/tei:TEI[@type='archives'][.//tei:seriesStmt/tei:idno = $idno],
@@ -159,6 +167,11 @@ declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $coll
                     </span>
                 </div>
                 {$pm-config:web-transform($volume/tei:teiHeader/tei:fileDesc, map { "root": $volume, "view": "volumes" }, $config:odd) }
+                <span class="part">
+                    <a href="{$context}?collection={$collection}&amp;volume={substring-after($collection-name, $config:data-root || "/")}" >
+                        Stücke
+                    </a>
+                </span>
                 {
                    for $key in $content-types => map:keys()
                    return
@@ -170,8 +183,7 @@ declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $coll
                                     let $href := if ($key = 'pdfdummy') then request:get-context-path() || '/apps/ssrq-data/data/$resource' || replace($path, '^([A-Z]{2})/(.+?)/(.+?)(?:_\d{1,2})?\.xml$', '$1/$2/pdf/' || $idno || '.pdf') else $path || '?template=introduction.html'
                                     return
                                         <a href="{$href}">
-                                        (: TODO: Testen, ob Übersetzung funktioniert! :)
-                                            {intl:translate(<i18n:text key="{$key}">{$key}</i18n:text>, map{}, request:get-parameter('lang', 'de'), 'resources/i18n')}
+                                           {$key}
                                         </a>
                                 }
                             </span>

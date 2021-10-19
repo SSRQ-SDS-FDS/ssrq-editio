@@ -29,7 +29,7 @@ let $config := map {
     $templates:CONFIG_APP_ROOT : $config:app-root,
     $templates:CONFIG_STOP_ON_ERROR : true(),
     $templates:CONFIG_PARAM_RESOLVER : function($param) {
-        let $pval := array:fold-right(
+        let $pval := array:fold-right( 
             [
                 request:get-parameter($param, ()),
                 request:get-attribute($param)

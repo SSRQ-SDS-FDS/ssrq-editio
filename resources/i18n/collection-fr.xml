@@ -120,4 +120,14 @@
     <msg key="and"> et </msg>
     <msg key="zitation">Citation : </msg>
     <msg key="highlight-facet">Trier pour mettre les occurrences en évidence</msg>
+    <msg key="articles">Articles</msg>
+    <msg key="archives">Archive</msg>
+    <msg key="introduction">Introduction</msg>
+    <msg key="literature">Littérature</msg>
+    <msg key="editions">Editions</msg>
+    <msg key="foreword">Avant-Propos</msg>
+    <msg key="preface">Préface</msg>
+    <msg key="bailiffs">Officiers</msg>
+    <msg key="pdfdummy">Télécharger le pdf</msg>
+    <msg key="back-up">Aller au Parent</msg>
 </catalogue>

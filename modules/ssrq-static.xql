@@ -10,9 +10,10 @@ declare default element namespace "http://www.w3.org/1999/xhtml";
 
 declare variable $ssrq-static:path := $config:app-root || '/static';
 declare variable $ssrq-static:languages := ['de', 'fr', 'en'];
+declare variable $ssrq-static:debug := false();
 
 declare function ssrq-static:generateUrl($template as xs:string, $params as map(*)) as xs:string {
-    let $baseUrl := 'http://localhost:' || request:get-server-port() || '/' || $config:app-root => replace('db', 'exist') || '/templates/'
+    let $baseUrl := 'http://localhost:' || request:get-server-port() || $config:app-root => replace('db', 'exist') || '/templates/'
     let $query-params :=    for $param at $pos in $params => map:keys()
                             return
                                 if ($pos = 1)
@@ -30,7 +31,10 @@ declare function ssrq-static:fetch($url as xs:string) as node()* {
 };
 
 declare function ssrq-static:getPages($pages as map(*)) as array(*) {
-    $ssrq-static:languages => array:for-each(function($lang) {
+    array {
+    for $value in 1 to $ssrq-static:languages => array:size()
+    let $lang := $ssrq-static:languages($value)
+    let $entry :=
         for $page in $pages => map:keys()
         let $filename := $pages($page)?template
         let $params := map:merge((map:entry("lang", $lang), $pages($page)?params))
@@ -42,13 +46,16 @@ declare function ssrq-static:getPages($pages as map(*)) as array(*) {
                 "request-url": $url,
                 "content": $data
             }
-    })
+    return $entry
+    }
 };
 
 declare function ssrq-static:storePages($pages as array(*)) {
-    $pages => array:for-each(function($page) {
-         xmldb:store($ssrq-static:path, $page?static-filename, $page?content)
-    })
+    for $item in 1 to array:size($pages)
+    return
+        if ($ssrq-static:debug)
+        then $pages($item)
+        else xmldb:store($ssrq-static:path, $pages($item)?static-filename, $pages($item)?content)
 };
 
 declare function ssrq-static:addVolumesToPagelist($pages as map(*)) {
@@ -62,7 +69,7 @@ declare function ssrq-static:addVolumesToPagelist($pages as map(*)) {
                 "params": map {
                     "collection": $canton
                 },
-                "file": "volume_" || $canton
+                "file": "volumes_" || $canton
             })
     )
     return map:merge(($pages, $volumes))
@@ -76,5 +83,4 @@ let $pages := map {
     }
 }
 
-(: TODO: Testen, ob sich alle Seiten generieren lassen, dann Aufruf Volume-Seiten noch integrieren! :)
-return $pages => ssrq-static:addVolumesToPagelist() => ssrq-static:storePages()
+return $pages => ssrq-static:addVolumesToPagelist() => ssrq-static:getPages() => ssrq-static:storePages()

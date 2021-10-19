@@ -368,7 +368,7 @@ declare function app:home($node as node(), $model as map(*)) {
     templates:process(
         element { node-name($node) } {
             $node/@* except $node/@data-template,
-            attribute href { "$app"},
+            attribute href {"$app"},
             $node/node()
         },
         $model
