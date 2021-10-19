@@ -162,14 +162,14 @@ declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $coll
         return
             <div class="volume">
                 <div class="volume-counter">
-                    <span class="volume-counter__badge">
+                    <span class="badge">
                         {ssrq-utils:countDocs($collection-name, $idno)}
                     </span>
                 </div>
                 {$pm-config:web-transform($volume/tei:teiHeader/tei:fileDesc, map { "root": $volume, "view": "volumes" }, $config:odd) }
                 <span class="part">
                     <a href="{$context}?collection={$collection}&amp;volume={substring-after($collection-name, $config:data-root || "/")}" >
-                        Stücke
+                        <i18n:text key="articles">Stücke</i18n:text>
                     </a>
                 </span>
                 {
@@ -183,7 +183,7 @@ declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $coll
                                     let $href := if ($key = 'pdfdummy') then request:get-context-path() || '/apps/ssrq-data/data/$resource' || replace($path, '^([A-Z]{2})/(.+?)/(.+?)(?:_\d{1,2})?\.xml$', '$1/$2/pdf/' || $idno || '.pdf') else $path || '?template=introduction.html'
                                     return
                                         <a href="{$href}">
-                                           {$key}
+                                           <i18n:text key="{$key}">{$key}</i18n:text>
                                         </a>
                                 }
                             </span>

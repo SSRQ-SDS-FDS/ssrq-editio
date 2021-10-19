@@ -1,4 +1,4 @@
-<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" xml:lang="en">
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:pb="http://teipublisher.com/1.0" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" xml:lang="en">
     <teiHeader>
         <fileDesc>
             <titleStmt>
@@ -669,6 +669,8 @@
                         <param name="ref" value="@ref"/>
                         <pb:template>\persname{[[ref]]}{[[content]]}</pb:template>
                     </model>
+                    <model behaviour="inline" predicate="ancestor::TEI[@type='volinfo']">
+                    </model>
                     <model behaviour="reference" cssClass="semantic person">
                         <desc>Semantic highlighting of person with blue text color</desc>
                         <param name="content" value="."/>
@@ -917,7 +919,7 @@
                         <param name="fileDescPerson" value="ec:persName-list(titleStmt/respStmt[1]/persName)"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <h3>[[stmtTitle]], [[fileDescTitle]]</h3>
-                            <p>[[fileDescPerson]]</p>
+                            <p><i18n:text key="by">von</i18n:text> [[fileDescPerson]]</p>
                         </pb:template>
                     </model>
                 </elementSpec>
