@@ -81,6 +81,16 @@ declare function local:countDocs($path as xs:string, $idno as xs:string) {
 
 let $CANTONS := util:binary-doc($config:app-root || '/resources/json/cantons.json')  => util:binary-to-string() => parse-json()
 
+
+(:~~
+let $works := ssrq-utils:listWorks(<div/>, map{}, $canton, $volume, ())
+                    let $quantity := count($works?docs)
+                    let $pages := floor($quantity div 20) + (if ($quantity mod 20) then 1 else 0)
+                    for $page in 0 to $pages
+                    let $start := if ($page = 0) then 1 else $page*10 + 1
+
+:)
+
 for $key in map:keys($CANTONS)
 order by $CANTONS($key)?order
 return

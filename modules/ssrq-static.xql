@@ -11,6 +11,7 @@ declare default element namespace "http://www.w3.org/1999/xhtml";
 declare variable $ssrq-static:path := $config:app-root || '/static';
 declare variable $ssrq-static:languages := ['de', 'fr', 'en'];
 declare variable $ssrq-static:debug := false();
+declare variable $ssrq-static:cantons := for $canton in ssrq-utils:listCantons(<div/>, map{}) return $canton/node()[2]/node()[@data-collection]/@data-collection/data(.);
 
 declare function ssrq-static:generateUrl($template as xs:string, $params as map(*)) as xs:string {
     let $baseUrl := 'http://localhost:' || request:get-server-port() || $config:app-root => replace('db', 'exist') || '/templates/'
@@ -60,9 +61,7 @@ declare function ssrq-static:storePages($pages as array(*)) {
 
 declare function ssrq-static:addVolumesToPagelist($pages as map(*)) {
     let $volumes := map:merge(
-        let $cantons := for $canton in ssrq-utils:listCantons(<div/>, map{})
-                        return $canton/node()[2]/node()[@data-collection]/@data-collection/data(.)
-        for $canton in $cantons
+        for $canton in $ssrq-static:cantons
         return
             map:entry("volumes-" || $canton, map {
                 "template": "volumes.html",
@@ -75,6 +74,26 @@ declare function ssrq-static:addVolumesToPagelist($pages as map(*)) {
     return map:merge(($pages, $volumes))
 };
 
+declare function ssrq-static:addWorksToPagelist($pages as map(*)) {
+    let $works := map:merge(
+        for $canton in $ssrq-static:cantons
+            return
+                let $volumes := ssrq-utils:listVolumes(<div/>, map{}, $canton)
+                for $volume in $volumes//node()[@data-works]/@data-works/data(.)
+                return
+                     map:entry("works_" || $volume, map {
+                            "template": "works.html",
+                            "file": "works_" || $volume,
+                            "params": map {
+                                "collection": $canton,
+                                "volume": $volume
+                            }
+                        })
+    )
+    return map:merge(($pages, $works))
+};
+
+
 let $pages := map {
     "cantons": map {
         "template": "cantons.html",
@@ -83,4 +102,4 @@ let $pages := map {
     }
 }
 
-return $pages => ssrq-static:addVolumesToPagelist() => ssrq-static:getPages() => ssrq-static:storePages()
+return $pages => ssrq-static:addVolumesToPagelist() => ssrq-static:addWorksToPagelist() => ssrq-static:getPages() => ssrq-static:storePages()

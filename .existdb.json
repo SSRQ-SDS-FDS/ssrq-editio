@@ -1,7 +1,7 @@
 {
   "servers": {
     "localhost": {
-      "server": "http://132.195.235.200:8080/exist",
+      "server": "http://192.168.0.164:8080/exist",
       "user": "admin",
       "password": ""
     }
