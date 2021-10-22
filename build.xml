@@ -27,5 +27,12 @@
                 <include name="*.xar"/>
             </fileset>
         </delete>
+        <echo message="Deleting generated CSS..."/>
+        <delete>
+            <fileset dir="resources/css">
+                <include name="style.css"/>
+                <include name="style.css.map"/>
+	    </fileset>
+        </delete>
     </target>
 </project>
