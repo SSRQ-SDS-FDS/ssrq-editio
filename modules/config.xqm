@@ -140,39 +140,8 @@ declare variable $config:fop-config :=
  : arguments.
  :)
 declare variable $config:tex-command := function($file) {
-    ( "/usr/local/texlive/2018/bin/x86_64-darwin/xelatex", "-interaction=nonstopmode", $file )
+    ( "xelatex", "-interaction=nonstopmode", $file )
 };
-
-(:~
- : Configuration for epub files.
- :)
- declare variable $config:epub-config := function($root as element(), $langParameter as xs:string?) {
-     let $properties := tpu:parse-pi(root($root), ())
-     return
-         map {
-             "metadata": map {
-                 "title": $root/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title/string(),
-                 "creator": $root/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:author/string(),
-                 "urn": util:uuid(),
-                 "language": ($langParameter, $root/@xml:lang/string(), $root/tei:teiHeader/@xml:lang/string(), "en")[1]
-             },
-             "odd": $properties?odd,
-             "output-root": $config:odd-root,
-             "fonts": [
-                 $config:app-root || "/resources/fonts/LexiaFontes_Rg.ttf",
-                 $config:app-root || "/resources/fonts/LexiaFontes_Bd.ttf",
-                 $config:app-root || "/resources/fonts/LexiaFontes_BdIt.ttf",
-                 $config:app-root || "/resources/fonts/LexiaFontes_It.ttf"
-             ]
-         }
- };
-
-(:~
- : Root path where images to be included in the epub can be found.
- : Leave as empty sequence if images can be located within the data
- : collection using relative path.
- :)
-declare variable $config:epub-images-path := ();
 
 (:
     Determine the application root collection from the current module load path.

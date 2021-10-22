@@ -42,7 +42,7 @@ declare function local:get-line($src, $line as xs:int) {
 let $odd := ("ssrq.odd", "ssrq-norm.odd")
 let $result :=
     for $source in $odd
-        for $module in ("web", "print", "latex", "epub")
+        for $module in ("web", "latex")
         return
             try {
                 for $file in pmu:process-odd(

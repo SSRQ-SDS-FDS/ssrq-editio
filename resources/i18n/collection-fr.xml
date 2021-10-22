@@ -8,7 +8,6 @@
     <msg key="pdf-latex">PDF (version LaTeX)</msg>
     <msg key="latex-source">Source TeX</msg>
     <msg key="single-page">Page unique</msg>
-    <msg key="epub-download">Télécharger un ebook (format ePub)</msg>
     <msg key="view-tei">Voir la source XML TEI</msg>
     <msg key="plain">Page unique</msg>
     <msg key="admin">Admin</msg>

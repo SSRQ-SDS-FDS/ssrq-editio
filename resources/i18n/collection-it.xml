@@ -9,7 +9,6 @@
     <msg key="latex-source">TeX Quelle</msg>
     <msg key="plain">Eine Seite</msg>
     <msg key="single-page">Auf einer Seite anzeigen</msg>
-    <msg key="epub-download">Als epub ebook herunterladen</msg>
     <msg key="view-tei">TEI XML ansehen</msg>
     <msg key="admin">Admin</msg>
     <msg key="recompile">ODD neu kompilieren</msg>
