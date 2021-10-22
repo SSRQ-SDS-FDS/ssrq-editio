@@ -6,16 +6,17 @@
     <property name="project.version" value="${package(version)}"/>
     <property name="project.app" value="ssrq"/>
     <property name="build.dir" value="build"/>
-    <target name="xar">
+    <target name="xar" depends="style.css">
         <mkdir dir="${build.dir}"/>
-        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${build.dir}/* node_modules/** test/** resources/scss/**"/>
-        <mkdir dir="${build.dir}/resources/css"/>
+        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${build.dir}/** README.md build.xml .existdb.json node_modules/** test/** resources/scss/**"/>
+    </target>
+    <target name="style.css">
         <echo message="Compiling SCSS..."/>
         <exec executable="sassc" outputproperty="sassc.output">
             <arg line="-tcompressed"/>
             <arg line="-mauto"/>
-            <arg line="./resources/scss/style.css"/>
-            <arg line="${build.dir}/resources/css/style.css"/>
+            <arg line="./resources/scss/style.scss"/>
+            <arg line="./resources/css/style.css"/>
         </exec>
         <echo message="${sassc.output}"/>
     </target>
