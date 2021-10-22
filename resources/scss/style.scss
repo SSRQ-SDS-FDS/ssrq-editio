@@ -7,7 +7,7 @@
 
 /********************* Logo **************************/
 
-$application-logo:          '../images/LogoSSRQVecLexia4000.png';
+$application-logo:          '../images/SSRQganz-2020-350.png';
 $application-logo-width:    350px;
 $application-logo-width-small:    280px;
 $application-title-display: none;
@@ -228,7 +228,7 @@ $color-terms: #b5221f;*/
     right: 0;
     top: 120px;
     bottom: 0;
-    
+
     #image-container {
         height: 100%;
         padding-top: 20px;
@@ -252,12 +252,16 @@ $color-terms: #b5221f;*/
         margin-top: 20px;
         color: $color-gray-light;
     }
-    
-    li {
-        display: flex;
-        flex-direction: row;
+
+    ul.register-list {
+      padding-left: 1.35em;
+
+        li > input[type=checkbox] {
+            margin-left: -1.35em;
+	    float: left;
+        }
     }
-    
+
     input {
         display: block;
         margin-right: 10px;
@@ -562,7 +566,7 @@ label{
       margin-top: .5em;
       text-align: right;
     }
-    
+
 
     &>*>section {
       border-top: $default-border-style;
@@ -622,11 +626,11 @@ label{
     font-size: 80%;
     margin-right: 0.1em;
   }
-  
+
   .ab .note-wrap .note {
       font-size: 11px;
   }
-  
+
   .popover {
       background-color: $color-gray-light;
       font-variant: normal;
@@ -643,7 +647,7 @@ label{
           line-height: 1.42857143;
       }
   }
-    
+
   .note-wrap {
     vertical-align: super;
     cursor: pointer;
