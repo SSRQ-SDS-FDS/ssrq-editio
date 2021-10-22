@@ -2,4 +2,5 @@
     <title>SSRQ online · SDS online · FDS online</title>
     <dependency package="http://exist-db.org/apps/shared"/>
     <dependency package="http://existsolutions.com/apps/tei-publisher-lib"/>
+    <dependency package="http://www.functx.com"/>
 </package>
