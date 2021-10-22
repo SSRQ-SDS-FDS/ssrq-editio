@@ -7,23 +7,23 @@
 
 // Document headline
 .tp-document-title-wrapper {
-  border-bottom: 1px solid @color-gray-medium;
-  @media (min-width: @screen-sm) {
-    border-bottom: 2px solid @color-gray-medium;
+  border-bottom: 1px solid $color-gray-medium;
+  @media (min-width: $screen-sm) {
+    border-bottom: 2px solid $color-gray-medium;
   }
 
   h5 {
-    text-align: @text-align-headline-inner;
-    font-family: @font-family-headline-inner;
-    font-size: @font-size-headline-inner;
+    text-align: $text-align-headline-inner;
+    font-family: $font-family-headline-inner;
+    font-size: $font-size-headline-inner;
     padding: 5px 5px 5px 0;
-    direction: @direction-headline-inner;
-    @media (min-width: @screen-sm) {
+    direction: $direction-headline-inner;
+    @media (min-width: $screen-sm) {
       padding: 10px 10px 10px 0;
     }
   }
 
-  @media (max-width: @screen-sm -1px) {
+  @media (max-width: $screen-sm -1px) {
     .nav-next {
       right: 10px;
     }
@@ -33,18 +33,18 @@
 
 // Wrapper for content in view.html
 #main-wrapper {
-  margin-top: @navbar-offset-small;
-  @media (min-width: @screen-lg-min) {
-    margin-top: @navbar-offset-large;
+  margin-top: $navbar-offset-small;
+  @media (min-width: $screen-lg-min) {
+    margin-top: $navbar-offset-large;
   }
 }
 
 /* Page by page navigation */
 #document-wrapper {
   min-height: 450px;
-  font-family: @font-family-content-inner;
-  font-size: @font-size-content-inner;
-  direction: @direction-content-inner;
+  font-family: $font-family-content-inner;
+  font-size: $font-size-content-inner;
+  direction: $direction-content-inner;
 }
 
 #document-pane {
@@ -53,7 +53,7 @@
   animation-duration: 400ms;
   overflow-wrap: break-word;
 
-  @media (max-width: @screen-sm -1px) {
+  @media (max-width: $screen-sm -1px) {
     margin-bottom: 5em;
   }
 }

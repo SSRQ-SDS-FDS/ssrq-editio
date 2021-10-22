@@ -8,26 +8,26 @@
 
 // Make space for fixed top-navigation
 nav + * {
-  margin-top: @navbar-height-small;
-  @media (min-width: @screen-lg-min) {
-    margin-top: @navbar-height-large;
+  margin-top: $navbar-height-small;
+  @media (min-width: $screen-lg-min) {
+    margin-top: $navbar-height-large;
   }
 }
 
 // Main container
 .container {
-  @media screen and (min-width: @screen-sm-min) and (max-width: @screen-lg) {
+  @media screen and (min-width: $screen-sm-min) and (max-width: $screen-lg) {
     width: 85%;
   }
-  @media screen and (min-width: @screen-lg-min) {
+  @media screen and (min-width: $screen-lg-min) {
     width: 100%;
   }
 }
 
 // Main container layout
 .tp-main {
-  @media screen and (max-width: @screen-lg) {
-    background-color: @color-white;
+  @media screen and (max-width: $screen-lg) {
+    background-color: $color-white;
   }
 }
 
@@ -37,9 +37,9 @@ nav + * {
     margin-bottom: 0 !important;
   }
   border-top: none !important;
-  @media screen and (min-width: @screen-lg-min) {
-    margin-bottom: @margin-horizontal-base;
-    background-color: @color-white;
+  @media screen and (min-width: $screen-lg-min) {
+    margin-bottom: $margin-horizontal-base;
+    background-color: $color-white;
   }
 }
 .tp-main-content {
@@ -51,10 +51,10 @@ nav + * {
 
 .btn-group > div > ul > li {
   > a {
-    font-family: @font-sans-serif-default !important;
+    font-family: $font-sans-serif-default !important;
     &:hover {
-      color: @color-link-hover !important;
-      background-color: @color-link-hover-bg;
+      color: $color-link-hover !important;
+      background-color: $color-link-hover-bg;
     }
   }
 }
@@ -64,12 +64,12 @@ nav + * {
   border: none;
   padding-bottom: 0;
   margin: 2rem 0 1rem;
-  @media (min-width: @screen-sm-min) {
+  @media (min-width: $screen-sm-min) {
     margin: 2rem 0 2rem;
   }
 }
 
-@media screen and (min-width: @screen-sm) {
+@media screen and (min-width: $screen-sm) {
   .tp-title,
   .tp-subtitle {
     display: inline-block;
@@ -83,7 +83,7 @@ nav + * {
 .tp-subtitle {
   font-weight: 400;
   line-height: 1.3;
-  color: @color-gray-light;
+  color: $color-gray-light;
   font-size: 26px;
   margin-top: 12px;
 }
@@ -92,7 +92,7 @@ nav + * {
   font-size: 1em !important;
 
   td:nth-child(2), td:nth-child(3), td:nth-child(4) {
-    font-family: @font-serif;
+    font-family: $font-serif;
   }
   td:nth-child(5) {
     width: 180px;
@@ -114,12 +114,12 @@ nav + * {
   margin-bottom: 0;
 
   h5 {
-    font-family: @font-sans-serif-default;
+    font-family: $font-sans-serif-default;
     font-size: 14px;
   }
 
   .header-short {
-    &:extend(.h5);
+    @extend .h5;
   }
 
   .toolbar {
@@ -134,7 +134,7 @@ nav + * {
     }
   }
   >li.active {
-      background-color: @color-gray-lightest;
+      background-color: $color-gray-lightest;
   }
   >li {
       display: table;
@@ -151,7 +151,7 @@ nav + * {
         display: table-cell;
     }
     &:not(:last-of-type) {
-      border-bottom: 1px solid @color-gray-medium;
+      border-bottom: 1px solid $color-gray-medium;
       margin-bottom: 15px;
     }
   }
@@ -159,7 +159,7 @@ nav + * {
 
 .odd-table {
   width: 100%;
-  @media screen and (min-width: @screen-md-min) and (max-width: 1100px) {
+  @media screen and (min-width: $screen-md-min) and (max-width: 1100px) {
     span.hidden-xs {
         font-size: 12px;
     }
@@ -197,7 +197,7 @@ nav + * {
 //}
 
 mark {
-  background-color: @color-text-marker;
+  background-color: $color-text-marker;
 }
 
 // Pagination
@@ -207,30 +207,30 @@ mark {
 .pagination > .active > span,
 .pagination > .active > span:hover,
 .pagination > .active > span:focus {
-  background-color: @btn-primary-bg;
-  border-color: @btn-primary-border;
-  color: @btn-primary-color;
+  background-color: $btn-primary-bg;
+  border-color: $btn-primary-border;
+  color: $btn-primary-color;
 }
 
 .pagination > li > a,
 .pagination > li > span {
-  color: @btn-primary-bg;
+  color: $btn-primary-bg;
 }
 
 // File upload button
 .fileinput-button {
-  color: @color-gray-dark;
-  border: @default-border-style;
+  color: $color-gray-dark;
+  border: $default-border-style;
 }
 
 // Color for search icon button and message for found results
 .input-group-btn .btn:not(.btn-raised).btn-primary,
 .text-success {
-  color: @color-primary-light;
+  color: $color-primary-light;
 }
 
 .form-group.is-focused label, .form-group.is-focused label.control-label {
-  color: @color-primary-light;
+  color: $color-primary-light;
 }
 
 .modal-dialog {
@@ -238,7 +238,7 @@ mark {
 }
 
 .disabled {
-  color: @color-disabled;
+  color: $color-disabled;
 }
 
 // Hide elements
@@ -260,7 +260,7 @@ mark {
 
 // PDF and ePub Icons toolbar on start page
 #documents .toolbar {
-  @media screen and (min-width: @screen-md-min) {
+  @media screen and (min-width: $screen-md-min) {
     width: 50vw;
   }
 }
@@ -268,22 +268,22 @@ mark {
 // Colors for input's underline when focused
 #searchPageForm {
   .is-focused .form-control {
-    background-image: -webkit-gradient(linear,left top,left bottom,from(@color-toolbar-bg),to(@color-toolbar-bg)),-webkit-gradient(linear,left top,left bottom,from(@color-gray-lightest),to(@color-gray-lightest));
-    background-image: -webkit-linear-gradient(@color-toolbar-bg,@color-toolbar-bg),-webkit-linear-gradient(@color-gray-lightest,@color-gray-lightest);
-    background-image: -o-linear-gradient(@color-toolbar-bg,@color-toolbar-bg),-o-linear-gradient(@color-gray-lightest,@color-gray-lightest);
-    background-image: linear-gradient(@color-toolbar-bg,@color-toolbar-bg),linear-gradient(@color-gray-lightest,@color-gray-lightest);
+    background-image: -webkit-gradient(linear,left top,left bottom,from($color-toolbar-bg),to($color-toolbar-bg)),-webkit-gradient(linear,left top,left bottom,from($color-gray-lightest),to($color-gray-lightest));
+    background-image: -webkit-linear-gradient($color-toolbar-bg,$color-toolbar-bg),-webkit-linear-gradient($color-gray-lightest,$color-gray-lightest);
+    background-image: -o-linear-gradient($color-toolbar-bg,$color-toolbar-bg),-o-linear-gradient($color-gray-lightest,$color-gray-lightest);
+    background-image: linear-gradient($color-toolbar-bg,$color-toolbar-bg),linear-gradient($color-gray-lightest,$color-gray-lightest);
   }
 }
 
 .form-group.is-focused {
   .form-control {
-    background-image: -webkit-gradient(linear,left top,left bottom,from(@color-primary),to(@color-primary)),-webkit-gradient(linear,left top,left bottom,from(@color-body-bg),to(@color-body-bg));
-    background-image: -webkit-linear-gradient(@color-primary,@color-primary),-webkit-linear-gradient(@color-body-bg,@color-body-bg);
-    background-image: -o-linear-gradient(@color-primary,@color-primary),-o-linear-gradient(@color-body-bg,@color-body-bg);
-    background-image: linear-gradient(@color-primary,@color-primary),linear-gradient(@color-body-bg,@color-body-bg);
+    background-image: -webkit-gradient(linear,left top,left bottom,from($color-primary),to($color-primary)),-webkit-gradient(linear,left top,left bottom,from($color-body-bg),to($color-body-bg));
+    background-image: -webkit-linear-gradient($color-primary,$color-primary),-webkit-linear-gradient($color-body-bg,$color-body-bg);
+    background-image: -o-linear-gradient($color-primary,$color-primary),-o-linear-gradient($color-body-bg,$color-body-bg);
+    background-image: linear-gradient($color-primary,$color-primary),linear-gradient($color-body-bg,$color-body-bg);
   }
 }
 
 .odd-table i.material-icons {
-  color: @color-primary-light;
+  color: $color-primary-light;
 }

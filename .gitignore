@@ -1,6 +1,8 @@
 /build
 /.existdb.json
 /transform/*
+/resources/css/style.css
+/resources/css/style.css.map
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/emacs,intellij,java,linux,macos,sass,vim,visualstudiocode,windows
