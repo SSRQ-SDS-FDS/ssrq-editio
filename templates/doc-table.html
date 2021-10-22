@@ -38,7 +38,6 @@
                 <input type="hidden" name="refresh" value="true"/>
             </form>
         </div>
-        <div data-template="browse:dispatch-action"/>
         <div class="row">
             <div class="col-md-7">
                 <ul class="pagination" data-template="browse:paginate" data-template-per-page="20" data-template-max-pages="5" data-template-min-hits="21" data-template-key="all"/>
@@ -95,9 +94,6 @@
 <!--                                <a class="btn btn-default" data-template="pages:xml-link" title="i18n(view-tei)">-->
 <!--                                    <i class="material-icons">code</i>-->
 <!--                                </a>-->
-<!--                                <a class="btn btn-default delete" title="i18n(delete)" data-template="browse:show-if-logged-in">-->
-<!--                                    <i class="material-icons">delete</i>-->
-<!--                                </a>-->
                             </div>
                             <br class="clear"/>
                         </div>
@@ -107,63 +103,11 @@
                 </ul>
             </div>
         </div>
-        <div id="confirm" class="modal fade" tabindex="-1" style="display: none;">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title">
-                            <i18n:text key="delete"/>?</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            <i18n:text key="delete-confirmation"/>
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" id="confirm-delete">
-                            <i18n:text key="yes"/>
-                        </button>
-                        <button type="submit" class="btn btn-primary" data-dismiss="modal">
-                            <i18n:text key="no"/>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     <script type="text/javascript">
         $(document).ready(function() {
             $("#documents input[type=checkbox]").on("change", function() {
                 $(this).parents("li").toggleClass("active");
-            });
-
-            var selection;
-            $(".delete").on("click", function(ev) {
-                selection = [];
-                var checked = $("#documents input:checked").parents(".document");
-                if (checked.length &gt; 0) {
-                    checked.each(function() {
-                        selection.push($(this).attr("data-doc"));
-                    });
-                } else {
-                    selection.push($(this).parents(".document").attr("data-doc"));
-                }
-                $("#docs-to-delete").text(selection.length);
-                $("#confirm").modal("show");
-            });
-            $("#confirm-delete").on("click", function(ev) {
-                $("#confirm").modal("hide");
-                $.ajax({
-                    method: "POST",
-                    url: "templates/doc-table.html",
-                    data: {
-                        action: "delete",
-                        docs: selection
-                    }
-                }).done(function(data) {
-                    $("#documents-panel").replaceWith(data);
-                });
             });
             setTimeout(function() { $("#action-alert").hide(); }, 2000);
         });

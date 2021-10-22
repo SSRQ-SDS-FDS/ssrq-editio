@@ -334,21 +334,3 @@ declare function app:fix-links($nodes as node()*) {
             default return
                 $node
 };
-
-declare function app:dispatch-action($node as node(), $model as map(*), $action as xs:string?) {
-    switch ($action)
-        case "delete" return
-            let $docs := request:get-parameter("docs[]", ())
-            return
-                <div id="action-alert" class="alert alert-success">
-                    <p>Removed {count($docs)} documents.</p>
-                    {
-                        for $path in $docs
-                        let $doc := pages:get-document($path)
-                        return
-                            xmldb:remove(util:collection-name($doc), util:document-name($doc))
-                    }
-                </div>
-        default return
-            ()
-};
