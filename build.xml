@@ -18,6 +18,21 @@
             <arg line="./resources/scss/style.scss"/>
             <arg line="./resources/css/style.css"/>
         </exec>
-        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${build.dir}/* node_modules/** test/** resources/scss/**"/>
+        <echo message="${sassc.output}"/>
+    </target>
+    <target name="clean">
+        <echo message="Deleting xar files..."/>
+        <delete>
+            <fileset dir="${build.dir}">
+                <include name="*.xar"/>
+            </fileset>
+        </delete>
+        <echo message="Deleting generated CSS..."/>
+        <delete>
+            <fileset dir="resources/css">
+                <include name="style.css"/>
+                <include name="style.css.map"/>
+	    </fileset>
+        </delete>
     </target>
 </project>
