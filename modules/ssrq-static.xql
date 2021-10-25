@@ -1,35 +1,55 @@
 xquery version "3.1";
 
-import module namespace templates="http://exist-db.org/xquery/templates";
+import module namespace templates="http://exist-db.org/xquery/templates" ;
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace ssrq-utils="http://existsolutions.com/ssrq/utils" at "ssrq-util.xqm";
-import module namespace http = "http://expath.org/ns/http-client";
+import module namespace i18n="http://exist-db.org/xquery/i18n/templates" at "lib/i18n-templates.xql";
 
 declare namespace ssrq-static="http://existsolutions.com/ssrq/static";
 declare default element namespace "http://www.w3.org/1999/xhtml";
 
+
 declare variable $ssrq-static:path := $config:app-root || '/static';
 declare variable $ssrq-static:languages := ['de', 'fr', 'en'];
 declare variable $ssrq-static:debug := false();
-declare variable $ssrq-static:cantons := for $canton in ssrq-utils:listCantons(<div/>, map{}) return $canton/node()[2]/node()[@data-collection]/@data-collection/data(.);
+declare variable $ssrq-static:cantons := ssrq-utils:listCantons(<div/>, map{})//node()[@data-collection]/@data-collection/data(.);
+declare variable $ssrq-static:config := map {
+    $templates:CONFIG_APP_ROOT : $config:app-root,
+    $templates:CONFIG_STOP_ON_ERROR : true()};
 
-declare function ssrq-static:generateUrl($template as xs:string, $params as map(*)) as xs:string {
-    let $baseUrl := 'http://localhost:' || request:get-server-port() || $config:app-root => replace('db', 'exist') || '/templates/'
-    let $query-params :=    for $param at $pos in $params => map:keys()
-                            return
-                                if ($pos = 1)
-                                then '?' || $param || '=' || $params($param)
-                                else '&amp;' || $param || '=' || $params($param)
+declare function ssrq-static:get-template-config($config as map(*), $parameters as map(*)) {
+    map:merge((
+        $config,
+        map {
+            $templates:CONFIG_PARAM_RESOLVER : function($param) {
+                let $pval := array:fold-right(
+                    [
+                        $parameters($param)
+                    ], (),
+                    function($zero, $current) {
+                        if (exists($zero)) then
+                            $zero
+                        else
+                            $current
+                    }
+                )
+                return
+                    $pval
+            }
+        }))
+};
+
+
+declare function ssrq-static:applyTemplates($name as xs:string, $params as map(*)) {
+    let $template := doc($config:app-root || '/templates/' || $name)
+    let $lookup := function($functionName as xs:string, $arity as xs:int) {
+        try { function-lookup(xs:QName($functionName), $arity) }
+        catch * {()}
+    }
     return
-        $baseUrl || $template || $query-params => string-join('')
-
+        templates:apply($template, $lookup, (), ssrq-static:get-template-config($ssrq-static:config, $params))
 };
 
-declare function ssrq-static:fetch($url as xs:string) as node()* {
-    let $req := <http:request href="{$url}" method="GET"/>
-    let $result :=  http:send-request($req)[2]
-    return $result
-};
 
 declare function ssrq-static:getPages($pages as map(*)) as array(*) {
     array {
@@ -39,12 +59,10 @@ declare function ssrq-static:getPages($pages as map(*)) as array(*) {
         for $page in $pages => map:keys()
         let $filename := $pages($page)?template
         let $params := map:merge((map:entry("lang", $lang), $pages($page)?params))
-        let $url := ssrq-static:generateUrl($filename, $params)
-        let $data := ssrq-static:fetch($url)
+        let $data := ssrq-static:applyTemplates($filename, $params)
         return
             map {
                 "static-filename": $pages($page)?file || '_' || $lang || '.html',
-                "request-url": $url,
                 "content": $data
             }
     return $entry
@@ -102,4 +120,4 @@ let $pages := map {
     }
 }
 
-return $pages => ssrq-static:addVolumesToPagelist() => ssrq-static:addWorksToPagelist() => ssrq-static:getPages() => ssrq-static:storePages()
+return $pages => ssrq-static:addWorksToPagelist() => ssrq-static:addWorksToPagelist() => ssrq-static:getPages() => ssrq-static:storePages()

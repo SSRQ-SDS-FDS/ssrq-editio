@@ -46,6 +46,22 @@
     data-template="i18n:translate"
     data-catalogues="../resources/i18n"
   >
+    <div class="flex-row-spaced">
+        <ul
+          class="pagination"
+          data-template="ssrq-utils:paginate"
+          data-template-per-page="20"
+          data-template-max-pages="5"
+          data-template-min-hits="21"
+        />
+        <h5>
+          <span class="result-count text-success">
+            <a data-template="ssrq-utils:hits"/>
+            <i18n:text key="found"
+          /></span>
+        </h5>
+    </div>
+
     <button class="back-button">
       <a data-template="ssrq-utils:browseUp">
         <i class="material-icons">arrow_upward</i> <i18n:text key="back-up"
@@ -53,7 +69,7 @@
     </button>
   </div>
   <div class="row">
-    <div class="col-md-12" id="documents">
+    <div class="col-md-12">
       <ul data-template="ssrq-utils:browse"></ul>
     </div>
   </div>

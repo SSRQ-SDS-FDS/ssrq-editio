@@ -382,7 +382,7 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
     let $loc :=
         <div class="reference" xmlns:i18n="http://exist-db.org/xquery/i18n">
             <h5><span class="number">{$start + $p - 1}</span>
-                <span class="badge"><i18n:text key="{query:category($hit)}"/></span>
+                <span class="w"><i18n:text key="{query:category($hit)}"/></span>
                 <i18n:text key="canton">Kanton</i18n:text>: <span>{query:view-kanton($work)}</span>,
                 <i18n:text key="work-id">Stück</i18n:text>: <span>{query:view-idno($work)}</span>,
                 <i18n:text key="orig-date">Datum</i18n:text>: <span>{query:view-origDate($work)}</span>

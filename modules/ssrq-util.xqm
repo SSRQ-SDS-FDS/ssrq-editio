@@ -3,7 +3,7 @@ xquery version "3.1";
 module namespace ssrq-utils="http://existsolutions.com/ssrq/utils";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
-import module namespace templates="http://exist-db.org/xquery/templates" at "templates.xql";
+import module namespace templates="http://exist-db.org/xquery/templates" ;
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xql";
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
 import module namespace functx="http://www.functx.com";
@@ -75,6 +75,40 @@ declare function ssrq-utils:filterCollection($collection as item()*, $idno as xs
 };
 
 
+declare
+    %templates:wrap
+function ssrq-utils:fixLinks($node as node(), $model as map(*)) {
+    ssrq-utils:fixLinks(templates:process($node/node(), $model))
+};
+
+declare function ssrq-utils:fixLinks($nodes as node()*) {
+    for $node in $nodes
+    return
+        typeswitch($node)
+            case element(a) | element(link) return
+                (: skip links with @data-template attributes; otherwise we can run into duplicate @href errors :)
+                if ($node/@data-template) then
+                    $node
+                else
+                    let $href :=
+                        replace(
+                            $node/@href,
+                            "\$app",
+                            (request:get-context-path() || substring-after($config:app-root, "/db"))
+                        )
+                    return
+                        element { node-name($node) } {
+                            attribute href {$href}, $node/@* except $node/@href, ssrq-utils:fixLinks($node/node())
+                        }
+            case element() return
+                element { node-name($node) } {
+                    $node/@*, ssrq-utils:fixLinks($node/node())
+                }
+            default return
+                $node
+};
+
+
 (:~
 : Filter docs in a collection by their tei:idno and count them
 :
@@ -139,15 +173,19 @@ declare function ssrq-utils:sortCollection($items as map(*)*, $sortBy as xs:stri
 : Render cantons listed in $ssrq-utils:CANTONS as html
 :
 : @author Bastian Politycki
-: @return a html:div per canton
+: @return a html:div per canton and wrap it in a html:div
 :)
-declare function ssrq-utils:listCantons($node as node(), $model as map(*)) as node()* {
-    for $key in map:keys($ssrq-utils:CANTONS)
+declare function ssrq-utils:listCantons($node as node(), $model as map(*)) as node() {
+    <div class="cantons">
+    {
+        for $key in map:keys($ssrq-utils:CANTONS)
     order by $ssrq-utils:CANTONS($key)?order
     return
         if ($key => contains('-'))
         then ssrq-utils:renderMergedCantons($ssrq-utils:CANTONS($key))
         else ssrq-utils:renderCanton($key, $ssrq-utils:CANTONS($key))
+    }
+    </div>
 };
 
 
@@ -218,6 +256,8 @@ declare function ssrq-utils:renderDepartment($data as map(*), $dep as xs:string)
 : @return one html:div container per volume
 :)
 declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $collection as xs:string) as node()* {
+    <div class="volumes">
+    {
     for $volume in collection($config:data-root)/tei:TEI[@type = 'volinfo'][matches(.//tei:seriesStmt/tei:idno[@type="machine"], '^\w+_' || $collection)]
         order by $volume//tei:seriesStmt/tei:idno[@type = 'sort']
         let $idno := $volume//tei:seriesStmt/tei:idno[@type="machine"]
@@ -269,6 +309,7 @@ declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $coll
                         else ()
                 }
             </div>
+    }</div>
 };
 
 (:
@@ -299,7 +340,7 @@ function ssrq-utils:renderWork($node as node(), $model as map(*)) {
      let $relPath := config:get-identifier($doc)
      let $root := $doc/ancestor-or-self::tei:TEI
     return
-        <li class="document">
+        <li class="document ml-1">
         {
             $pm-config:web-transform($root/tei:teiHeader, map {
                     "header": "short",
@@ -317,7 +358,7 @@ declare
     function ssrq-utils:loadWorks($node as node(), $model as map(*), $collection as xs:string, $volume as xs:string, $start as xs:int, $per-page as xs:int) {
         let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
         let $path := $ssrq-utils:STATIC || '/' || 'works' || '_' || string-join(($volume, $lang), '_') || '.html'
-        let $documents := doc($path)//*[@class = 'document']
+        let $documents := doc($path)//*[@class = 'document ml-1']
         return
             map {
                 "total": count($documents),
@@ -336,4 +377,82 @@ declare function ssrq-utils:browseUp($node as node(), $model as map(*), $collect
         attribute href {'?collection=' || $collection},
         $node/node()
     }
+};
+
+
+
+declare function ssrq-utils:linkPagination($collection as xs:string, $volume as xs:string, $start) {
+   let $link := '?collection=' || $collection || '&amp;volume=' || $volume || '&amp;start=' || $start
+   return $link
+};
+
+(:~
+: Builds an bootstrap-based-pagination bar
+:
+: @param $key the default key to look up the total value in the $model
+: @param $start starting page
+:)
+declare
+    %templates:default('key', 'total')
+    %templates:default('start', 1)
+    %templates:default("per-page", 10)
+    %templates:default("min-hits", 0)
+    %templates:default("max-pages", 10)
+function ssrq-utils:paginate($node as node(), $model as map(*), $key as xs:string, $start as xs:int, $per-page as xs:int, $min-hits as xs:int,
+    $max-pages as xs:int, $collection as xs:string, $volume as xs:string) {
+    if (($min-hits < 0 or $model($key) >= $min-hits) and $model($key) != $per-page) then
+        element { node-name($node) } {
+            $node/@*,
+            let $count := xs:integer(ceiling($model($key)) div $per-page) + 1
+            let $middle := ($max-pages + 1) idiv 2
+            return (
+                if ($start = 1) then (
+                    <li class="disabled">
+                        <a><i class="glyphicon glyphicon-fast-backward"/></a>
+                    </li>,
+                    <li class="disabled">
+                        <a><i class="glyphicon glyphicon-backward"/></a>
+                    </li>
+                ) else (
+                    <li>
+                        <a href="{ssrq-utils:linkPagination($collection, $volume, 1)}"><i class="glyphicon glyphicon-fast-backward"/></a>
+                    </li>,
+                    <li><a href="{ssrq-utils:linkPagination($collection, $volume, max( ($start - $per-page, 1 ) ))}"><i class="glyphicon glyphicon-backward"/>
+                       </a></li>
+                ),
+                let $startPage := xs:integer(ceiling($start div $per-page))
+                let $lowerBound := max(($startPage - ($max-pages idiv 2), 1))
+                let $upperBound := min(($lowerBound + $max-pages - 1, $count))
+                let $lowerBound := max(($upperBound - $max-pages + 1, 1))
+                for $i in $lowerBound to $upperBound
+                return
+                    if ($i = ceiling($start div $per-page)) then
+                        <li class="active"><a href="{ssrq-utils:linkPagination($collection, $volume, max( (($i - 1) * $per-page + 1, 1) ))}">{$i}</a></li>
+                    else
+                        let $page := max((($i - 1) * $per-page + 1, 1))
+                        return
+                        <li><a href="{ssrq-utils:linkPagination($collection, $volume, $page)}">{$i}</a></li>,
+                if ($start + $per-page < $model($key)) then (
+                    <li>
+                        <a href="{ssrq-utils:linkPagination($collection, $volume,$start + $per-page)}"><i class="glyphicon glyphicon-forward"/></a>
+                    </li>,
+                    <li>
+                        <a href="{ssrq-utils:linkPagination($collection, $volume, max( (($count - 1) * $per-page + 1, 1)))}"><i class="glyphicon glyphicon-fast-forward"/></a>
+                    </li>
+                ) else (
+                    <li class="disabled">
+                        <a><i class="glyphicon glyphicon-forward"/></a>
+                    </li>,
+                    <li>
+                        <a><i class="glyphicon glyphicon-fast-forward"/></a>
+                    </li>
+                )
+            )
+        }
+    else
+        ()
+};
+
+declare function ssrq-utils:hits($node as node(), $model as map(*), $collection as xs:string, $volume as xs:string) {
+       <a href="?collection={$collection}&amp;volume={$volume}&amp;per-page={$model?total}">{$model?total}</a>
 };

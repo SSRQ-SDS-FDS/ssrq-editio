@@ -206,6 +206,9 @@ $color-footer-bg: $color-gray-lightest;
 @import 'ssrq-components/_volume.scss';
 @import 'ssrq-components/_footer.scss';
 
+// Helper Classes //
+@import 'ssrq-components/_helpers.scss';
+
 // Generated Content Pages -------- //
 
 @import '_inner-document.scss';
@@ -283,13 +286,13 @@ $color-terms: #b5221f;*/
   }
 }
 
-.documents {
+/* .documents {
   display: table;
 
   li {
     display: table-row;
   }
-}
+} */
 
 .advanced-search {
   .info-btn:link {

@@ -1,0 +1,14 @@
+.flex-row {
+  display: flex;
+  align-items: center;
+}
+
+.flex-row-spaced {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ml-1 {
+  margin-left: $margin-horizontal-base;
+}
