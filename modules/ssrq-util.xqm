@@ -456,3 +456,55 @@ function ssrq-utils:paginate($node as node(), $model as map(*), $key as xs:strin
 declare function ssrq-utils:hits($node as node(), $model as map(*), $collection as xs:string, $volume as xs:string) {
        <a href="?collection={$collection}&amp;volume={$volume}&amp;per-page={$model?total}">{$model?total}</a>
 };
+
+
+(:~
+: Renndering functions used for ?template=introduction.html
+:
+:
+:
+:)
+
+declare function ssrq-utils:getSubsections($root as node()) {
+    $root//tei:div[tei:head] except $root//tei:div[tei:head]//tei:div
+};
+
+
+declare function ssrq-utils:renderHeadings($section as node(), $pos) {
+    let $section-heading := $section/tei:head
+    let $subsections := $section/tei:div
+    let $output :=
+            if ($section-heading/*)
+            (:~To_DO Rendering durch PM :)
+            then ()
+            else $section-heading/string()
+    return
+        <li>
+            <a href="#section-{$pos}">{$output}</a>
+                {
+                if ($subsections)
+                then
+                    <ul>
+                        {
+                        for $subsection at $subpos in $subsections
+                        return
+                        ssrq-utils:renderHeadings($subsection, $pos || '-' || $subpos)
+                        }
+                    </ul>
+                else ()
+                }
+        </li>
+};
+
+declare function ssrq-utils:printToc($node as node(), $model as map(*)) {
+    let $divs := $model?data => ssrq-utils:getSubsections()
+    return
+        <ul>
+            {
+            for $div at $pos in $divs
+            let $html := ssrq-utils:renderHeadings($div, $pos)
+            return
+                $html
+            }
+        </ul>
+};

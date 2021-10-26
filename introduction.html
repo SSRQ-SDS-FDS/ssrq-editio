@@ -1,11 +1,54 @@
-<html>
-    <head data-template="templates:include" data-template-path="templates/head.html"/>
-    <body>
-        <div
+<div
+  xmlns:i18n="http://exist-db.org/xquery/i18n"
+  data-template="templates:surround"
+  data-template-with="templates/page.html"
+  data-template-at="content"
+>
+  <div
+    data-template="templates:include"
+    data-template-path="templates/menu.html"
+  />
+  <section class="container-fluid" data-template="app:load">
+    <div
+      data-template="templates:include"
+      data-template-path="templates/toolbar.html"
+    />
+    <main class="row" id="main-wrapper">
+      <div class="tp-document-title-wrapper tp-row">
+        <div class="tp-column">
+          <!-- Document title -->
+          <h5 id="idno" data-template="app:idno-popup" />
+          <h3><i18n:text key="toc" /></h3>
+          <div data-template="ssrq-utils:printToc"/>
+        </div>
+      </div>
+      <section class="tp-row">
+        <div class="tp-column">
+          <h4 class="block-title"></h4>
+          <div id="document-wrapper">
+            <!-- Document pane -->
+            <div id="document-panel">
+              <div data-template="pages:view" class="content" />
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <div
       data-template="templates:include"
       data-template-path="templates/footer.html"
     />
-    <main>Hier muss jetzt was stehen....</main>
-    <footer data-template="templates:include" data-template-path="templates/foooter.html"/>
-    </body>
-</html>
+  </section>
+  <script
+    type="text/javascript"
+    src="resources/scripts/vendor/jquery.ui.widget.js"
+  />
+  <script
+    type="text/javascript"
+    src="resources/scripts/vendor/jquery.iframe-transport.js"
+  />
+  <script
+    type="text/javascript"
+    src="resources/scripts/vendor/jquery.fileupload.js"
+  />
+</div>

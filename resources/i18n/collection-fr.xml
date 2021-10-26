@@ -130,4 +130,5 @@
     <msg key="bailiffs">Officiers</msg>
     <msg key="pdfdummy">Télécharger le pdf</msg>
     <msg key="back-up">Aller au Parent</msg>
+    <msg key="toc">Table des matières</msg>
 </catalogue>

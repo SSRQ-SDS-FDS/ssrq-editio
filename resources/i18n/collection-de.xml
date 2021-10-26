@@ -130,4 +130,5 @@
     <msg key="bailiffs">Amtleute</msg>
     <msg key="pdfdummy">Gesamt-PDF herunterladen</msg>
     <msg key="back-up">Übergeordnetes Verzeichnis</msg>
+    <msg key="toc">Inhaltsverzeichnis</msg>
 </catalogue>
