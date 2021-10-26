@@ -108,6 +108,7 @@ else if (ends-with($exist:resource, ".html")) then (
         else
     let $mode := request:get-parameter("mode", ())
     let $facsimiles := request:get-parameter("facs", ())
+    let $template := request:get-parameter("template", ())
     let $html :=
         if ($exist:resource = "" and not(request:get-parameter("id", ()))) then
             "index.html"
@@ -117,6 +118,8 @@ else if (ends-with($exist:resource, ".html")) then (
             $exist:resource
         else if ($facsimiles) then
             "view-facs.html"
+        else if ($template and $template = "introduction.html") then
+            "introduction.html"
         else
             "view.html"
     return

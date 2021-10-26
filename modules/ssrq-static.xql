@@ -120,4 +120,4 @@ let $pages := map {
     }
 }
 
-return $pages => ssrq-static:addWorksToPagelist() => ssrq-static:addWorksToPagelist() => ssrq-static:getPages() => ssrq-static:storePages()
+return $pages => ssrq-static:addVolumesToPagelist() => ssrq-static:addWorksToPagelist() => ssrq-static:getPages() => ssrq-static:storePages()
