@@ -219,7 +219,7 @@ declare function pages:xml-link($node as node(), $model as map(*), $source as xs
 
 declare
     %templates:default("action", "browse")
-function pages:view($node as node(), $model as map(*), $action as xs:string, $sr as xs:string*) {
+function pages:view($node as node(), $model as map(*), $action as xs:string, $sr as xs:string*, $template as xs:string?) {
     let $view := pages:determine-view($model?config?view, $model?data)
     let $data :=
         if ($action = "search" and exists(session:get-attribute("ssrq.query"))) then
@@ -247,11 +247,12 @@ function pages:view($node as node(), $model as map(*), $action as xs:string, $sr
         else
             $model?data//*:body/*
     return
-        pages:process-content($xml, $model?data, $model?config?odd)
+        pages:process-content($xml, $model?data, $model?config?odd, if ($template) then $template => substring-before('.html') else ())
 };
 
-declare function pages:process-content($xml as element()*, $root as element()*, $odd as xs:string) {
-	let $html := $pm-config:web-transform($xml, map { "root": $root }, $odd)
+declare function pages:process-content($xml as element()*, $root as element()*, $odd as xs:string, $view as xs:string?) {
+    let $parameters := if ($view) then map {"root": $root, "view": $view} else map{"root": $root}
+	let $html := $pm-config:web-transform($xml, $parameters, $odd)
     let $class := if ($html//*[@class = ('margin-note')]) then "margin-right" else ()
     let $body := pages:clean-footnotes($html)
     return

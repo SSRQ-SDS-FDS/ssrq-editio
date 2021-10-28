@@ -3,3 +3,7 @@
     max-width: 1170px;
   }
 }
+
+.headingnumber::after {
+  content: '\00a0';
+}
