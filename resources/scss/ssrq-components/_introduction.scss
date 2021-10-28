@@ -7,3 +7,23 @@
 .headingnumber::after {
   content: '\00a0';
 }
+
+.to-top-button {
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.5s;
+  position: fixed;
+  bottom: 1.2rem;
+  right: 3rem;
+  z-index: 50;
+}
+
+.to-top-button svg {
+  height: 4rem;
+  width: 4rem;
+}
+
+.to-top-button.is-active {
+  opacity: 1;
+  visibility: visible;
+}

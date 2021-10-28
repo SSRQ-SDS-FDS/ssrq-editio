@@ -423,7 +423,9 @@ declare function pmf:persName-list($namen as element(tei:persName)*) {
 
 declare function pmf:heading-id($head as node()) {
     let $group := $head/ancestor::tei:group/preceding-sibling::tei:group => count() + 1
-    let $n := if ($head/@n) then $head/@n/data(.) => replace('\.', '-') else ()
+    let $n := if ($head/@n) then $head/@n/data(.) => replace('\.', '-')
+            else if (not($head/@title)) then $head/ancestor::tei:div/preceding-sibling::tei:div => count() + 1
+            else ()
     return
         ('section', $group, $n) => string-join('-')
 };

@@ -480,11 +480,11 @@ declare function ssrq-utils:renderHeadings($section as node(), $pos) {
             else $section-heading/string()
     return
         <li>
-            <a href="#section-{$pos}">{$output}</a>
+            <a href="#section-{$pos}" class="toc-anchor">{$output}</a>
                 {
                 if ($subsections)
                 then
-                    <ul>
+                    <ul id="toc">
                         {
                         for $subsection at $subpos in $subsections
                         return
