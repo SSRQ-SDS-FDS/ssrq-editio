@@ -24,7 +24,8 @@
 
 // Columns
 
-.tp-column, .tp-columns {
+.tp-column,
+.tp-columns {
   position: relative;
   padding-left: 1.3rem;
   padding-right: 1.3rem;
@@ -48,8 +49,9 @@
   }
 }
 
-.tp-row:before, .tp-row:after {
-  content: " ";
+.tp-row:before,
+.tp-row:after {
+  content: ' ';
   display: table;
 }
 
