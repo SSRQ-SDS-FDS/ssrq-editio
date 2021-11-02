@@ -178,7 +178,7 @@ declare function ssrq-utils:sortCollection($items as map(*)*, $sortBy as xs:stri
 declare function ssrq-utils:listCantons($node as node(), $model as map(*)) as node() {
     <div class="cantons">
     {
-        for $key in map:keys($ssrq-utils:CANTONS)
+    for $key in map:keys($ssrq-utils:CANTONS)
     order by $ssrq-utils:CANTONS($key)?order
     return
         if ($key => contains('-'))

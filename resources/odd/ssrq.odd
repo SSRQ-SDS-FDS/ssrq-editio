@@ -215,6 +215,8 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="figure" mode="change">
+                    <model predicate="$parameters?view='introduction' and ends-with(./graphic/@url, 'svg')" behaviour="svg">
+                    </model>
                     <model predicate="not(parent::label)" behaviour="inline">
                         <param name="content" value="ec:translate(@type, 0, 'uppercase')"/>
                         <outputRendition scope="before">

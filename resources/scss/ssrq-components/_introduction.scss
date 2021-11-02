@@ -1,11 +1,7 @@
 .introduction {
   @media screen and (min-width: $screen-xs-min) {
-    max-width: 1170px;
+    max-width: 1200px;
   }
-}
-
-.headingnumber::after {
-  content: '\00a0';
 }
 
 .to-top-button {
@@ -26,4 +22,39 @@
 .to-top-button.is-active {
   opacity: 1;
   visibility: visible;
+}
+
+.introduction .headingnumber::after {
+  content: '\00a0';
+}
+
+.introduction .tei-p4 {
+  margin: $margin-vertical-base * 1.5 0;
+}
+
+// SVG-Rendering
+.svg-container {
+  max-height: 70vh;
+  overflow: hidden;
+  margin: $margin-vertical-base * 2 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.svg-container svg {
+  border: 0.5px solid $color-gray-light;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+// CSS-Hacks for Whitespace-Handling
+.introduction .note-wrap {
+  margin-left: -4px;
+}
+
+.introduction .fn-content * {
+  margin-right: -4px;
+  margin-left: -4px;
 }

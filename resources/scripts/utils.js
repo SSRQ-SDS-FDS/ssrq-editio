@@ -3,6 +3,7 @@
 const tocAnchors = document.querySelectorAll('.toc-anchor');
 const toTopButton = document.querySelector('.to-top-button');
 const toc = document.querySelector('#toc');
+const svgs = document.querySelectorAll('.svg-container svg');
 
 // Callback-functions
 const clickHandler = (e) => {
@@ -40,6 +41,18 @@ if (toc) {
     scroll({
       top: 0,
       behavior: 'smooth',
+    });
+  });
+}
+
+if (svgs) {
+  svgs.forEach((svg, index) => {
+    const id = `svg-${index}`;
+    svg.id = id;
+    svgPanZoom(`#${id}`, {
+      zoomEnabled: true,
+      controlIconsEnabled: true,
+      fit: true,
     });
   });
 }

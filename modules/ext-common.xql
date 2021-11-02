@@ -429,3 +429,20 @@ declare function pmf:heading-id($head as node()) {
     return
         ('section', $group, $n) => string-join('-')
 };
+
+declare function pmf:svg($config as map(*), $node as element(), $class as xs:string+, $content as node()*) {
+    let $collection := util:collection-name($node)
+    let $svg := doc($collection || '/' ||  $node/tei:graphic/@url/data(.))
+    return
+        if ($svg)
+        then
+               <div class="svg-container">
+                    {$svg}
+                    {
+                    if ($node/tei:head)
+                    then <p class="svg-container__title">{$node/tei:head/text()}</p>
+                    else ()
+                    }
+               </div>
+        else <p>Sorry, could not load SVG</p>
+};
