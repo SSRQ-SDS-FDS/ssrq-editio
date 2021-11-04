@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<section id="cantonlist" xmlns:i18n="http://exist-db.org/xquery/i18n" data-template="i18n:translate">
-  <div class="canton">
-    <div class="canton__title">
-      <h4><i18n:text key="canton" /></h4>
-    </div>
-    <div class="canton__title--spaced">
-      <h4><i18n:text key="section" /></h4>
-    </div>
-  </div>
-  <div data-template="ssrq-utils:listCantons"></div>
+<section
+  id="cantonlist"
+  xmlns:i18n="http://exist-db.org/xquery/i18n"
+  data-template="i18n:translate"
+>
+  <table id="cantons" class="table">
+    <thead>
+      <tr>
+        <th colspan="2">
+          <i18n:text key="canton" />
+        </th>
+        <th>
+          <i18n:text key="section" />
+        </th>
+      </tr>
+    </thead>
+    <tbody data-template="ssrq-utils:listCantons"></tbody>
+  </table>
 </section>

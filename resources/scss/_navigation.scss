@@ -7,17 +7,11 @@
 
 // the application logo to be shown top left in the navigation bar
 .logo {
-  background-image: url($application-logo);
-  background-repeat: no-repeat;
   //padding-left: $application-logo-width;
-  width: $application-logo-width;
   margin-left: 0 !important;
-
-  background-size: 100% auto;
-
-  span {
-    margin-left: 60px;
-    display: $application-title-display;
+  padding: 0 !important;
+  img {
+    max-width: 350px;
   }
 }
 
@@ -29,12 +23,12 @@
     color: $color-navigation-text;
   }
   @media (min-width: 991px) and (max-width: 1200px) {
-    .navbar-nav>li {
+    .navbar-nav > li {
       font-size: 14px;
     }
   }
 
-  .navbar-nav>li>a:hover {
+  .navbar-nav > li > a:hover {
     background-color: $color-navigation-hover;
   }
   padding: 0;
@@ -46,7 +40,8 @@
   a {
     max-height: $navbar-height-small;
   }
-  li, span {
+  li,
+  span {
     margin-bottom: 0;
   }
   @media (min-width: $screen-lg-min) {
@@ -63,7 +58,7 @@
     padding-top: 0;
     padding-bottom: 0;
 
-    li>a {
+    li > a {
       padding: 5px 15px 5px 25px !important;
       font-weight: 300 !important;
       line-height: 30px !important;
@@ -74,7 +69,9 @@
     }
   }
 
-  .navbar-brand, .navbar-brand:focus, .navbar-brand:hover {
+  .navbar-brand,
+  .navbar-brand:focus,
+  .navbar-brand:hover {
     @extend .logo;
   }
 }
@@ -178,7 +175,7 @@
     left: 2%;
   }
   &.nav-next {
-    right: 2%
+    right: 2%;
   }
 
   // Arrows inside the buttons
@@ -230,7 +227,8 @@
   .navbar-header {
     float: none;
   }
-  .navbar-left,.navbar-right {
+  .navbar-left,
+  .navbar-right {
     float: none !important;
   }
   .navbar-toggle {
@@ -244,22 +242,22 @@
     //border-width: 0 0 1px;
   }
   .navbar-collapse.collapse {
-    display: none!important;
+    display: none !important;
   }
   .navbar-nav {
-    float: none!important;
+    float: none !important;
     //margin-top: 7.5px;
   }
-  .navbar-nav>li {
+  .navbar-nav > li {
     float: none;
   }
-  .collapse.in{
+  .collapse.in {
     display: block !important;
   }
-  .container-fluid>.navbar-collapse,
-  .container-fluid>.navbar-header,
-  .container>.navbar-collapse,
-  .container>.navbar-header {
+  .container-fluid > .navbar-collapse,
+  .container-fluid > .navbar-header,
+  .container > .navbar-collapse,
+  .container > .navbar-header {
     margin-right: -15px;
     margin-left: -15px;
   }

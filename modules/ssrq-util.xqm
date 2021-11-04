@@ -108,6 +108,15 @@ declare function ssrq-utils:fixLinks($nodes as node()*) {
                 $node
 };
 
+(:~~
+: Utility Function to insert an alt-Attribute into html:img
+:
+: @return $node as node()
+:)
+declare function ssrq-utils:insertAlt($node as node(), $model as map(*)) as node() {
+    <img src="{$node/@src/data(.)}" alt="{config:app-title($node, $model)}"/>
+};
+
 
 (:~
 : Filter docs in a collection by their tei:idno and count them
@@ -176,7 +185,7 @@ declare function ssrq-utils:sortCollection($items as map(*)*, $sortBy as xs:stri
 : @return a html:div per canton and wrap it in a html:div
 :)
 declare function ssrq-utils:listCantons($node as node(), $model as map(*)) as node() {
-    <div class="cantons">
+    <tbody>
     {
     for $key in map:keys($ssrq-utils:CANTONS)
     order by $ssrq-utils:CANTONS($key)?order
@@ -185,38 +194,36 @@ declare function ssrq-utils:listCantons($node as node(), $model as map(*)) as no
         then ssrq-utils:renderMergedCantons($ssrq-utils:CANTONS($key))
         else ssrq-utils:renderCanton($key, $ssrq-utils:CANTONS($key))
     }
-    </div>
+    </tbody>
 };
 
 
 
 
 declare function ssrq-utils:renderCanton($key as xs:string, $data as map(*)) as node() {
-    <div class="canton">
-        <div class="canton__name">
-            <img src="{concat('resources/images/kantone/', $data?img, '.png')}"/>
-            <span>{$key}</span>
-        </div>
+    <tr>
+            <td><img src="{concat('resources/images/kantone/', $data?img, '.png')}"/></td>
+            <td>{$key}</td>
         {ssrq-utils:renderDepartment($data,$key)}
-    </div>
+    </tr>
 };
 
 declare function ssrq-utils:renderMergedCantons($data as map(*)) as node()* {
     let $keys :=  map:keys($data)
     return
-    <div class="canton">
-        <div class="canton__name--container">
+    <tr>
+        <td>
             {
-               for $key in $keys[not(. = 'order')]
+                for $key in $keys[not(. = 'order')]
                 return
-                    <div class="canton__name">
-                        <img src="{concat('resources/images/kantone/', $data($key)?img,  '.png')}"/>
-                        <span>{$key}</span>
-                    </div>
+                    <img src="{concat('resources/images/kantone/', $data($key)?img,  '.png')}"/>
             }
-        </div>
+        </td>
+        <td>
+            {$keys[not(. = 'order')] => string-join('/')}
+        </td>
         {ssrq-utils:renderDepartment($data($keys[1]),$keys[1])}
-    </div>
+    </tr>
 };
 
 declare function ssrq-utils:renderDepartment($data as map(*), $dep as xs:string) as node()* {
@@ -224,28 +231,28 @@ declare function ssrq-utils:renderDepartment($data as map(*), $dep as xs:string)
     return
     if (xmldb:collection-available($rootCollection))
     then
-        (<div class="canton__department">
-            <a href="?collection={$dep}" data-collection="{$dep}">
-                {
-                let $html := $data?department => util:parse-html()
-                return $html/*/*[last()]/node()
-                }
-            </a>
-        </div>,
-        <div class="canton__badge">
-            <span class="badge">{
-                sum(let $childCollections := xmldb:get-child-collections($rootCollection)
-                for $collection in $childCollections
-                return ssrq-utils:countDocs($rootCollection || '/' || $collection, $collection))
-            }</span>
-        </div>)
+        <td>
+            <div class="canton--badge">
+                <a href="?collection={$dep}" data-collection="{$dep}">
+                    {
+                    let $html := $data?department => util:parse-html()
+                    return $html/*/*[last()]/node()
+                    }
+                </a>
+                <span class="badge">{
+                    sum(let $childCollections := xmldb:get-child-collections($rootCollection)
+                    for $collection in $childCollections
+                    return ssrq-utils:countDocs($rootCollection || '/' || $collection, $collection))
+                }</span>
+            </div>
+        </td>
     else
-        <div class="canton__department">
-            <p>{
+        <td>
+            {
                 let $html := $data?department => util:parse-html()
                 return $html/*/*[last()]/node()
-            }</p>
-        </div>
+            }
+        </td>
 };
 
 
@@ -312,7 +319,7 @@ declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $coll
     }</div>
 };
 
-(:
+(:~
 : List works per volume
 : Replaces app:list-works
 :
@@ -351,11 +358,17 @@ function ssrq-utils:renderWork($node as node(), $model as map(*)) {
         </li>
 };
 
+
+(:~
+: Load a subsequence of works stored in /static and pass them to the $model
+:
+: @return $model as map(*)
+:)
 declare
 %templates:wrap
 %templates:default("start", 1)
 %templates:default("per-page", 10)
-    function ssrq-utils:loadWorks($node as node(), $model as map(*), $collection as xs:string, $volume as xs:string, $start as xs:int, $per-page as xs:int) {
+    function ssrq-utils:loadWorks($node as node(), $model as map(*), $collection as xs:string, $volume as xs:string, $start as xs:int, $per-page as xs:int) as map(*) {
         let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
         let $path := $ssrq-utils:STATIC || '/' || 'works' || '_' || string-join(($volume, $lang), '_') || '.html'
         let $documents := doc($path)//*[@class = 'document ml-1']
@@ -366,13 +379,23 @@ declare
             }
 };
 
-declare function ssrq-utils:browse($node as node(), $model as map(*)) {
+(:~
+: Display current works on selected page
+:
+: @return html:ul
+:)
+declare function ssrq-utils:browse($node as node(), $model as map(*)) as element(ul) {
         <ul class="documents">
             {$model?page}
         </ul>
 };
 
-declare function ssrq-utils:browseUp($node as node(), $model as map(*), $collection as xs:string) {
+(:~
+: Helper-Function to construct a browse-up-link
+:
+: @return $node as node()
+:)
+declare function ssrq-utils:browseUp($node as node(), $model as map(*), $collection as xs:string) as node() {
     element { node-name($node) } {
         attribute href {'?collection=' || $collection},
         $node/node()
@@ -453,6 +476,14 @@ function ssrq-utils:paginate($node as node(), $model as map(*), $key as xs:strin
         ()
 };
 
+
+(:~
+: Build a simple counter and enable function to show all hits
+:
+: @param $collection the current canton
+: @param $volume the current volume inside a canton
+: @return total count inside a html:a
+:)
 declare function ssrq-utils:hits($node as node(), $model as map(*), $collection as xs:string, $volume as xs:string) {
        <a href="?collection={$collection}&amp;volume={$volume}&amp;per-page={$model?total}">{$model?total}</a>
 };
@@ -464,12 +495,6 @@ declare function ssrq-utils:hits($node as node(), $model as map(*), $collection 
 :
 :
 :)
-
-declare function ssrq-utils:getSubsections($root as node()) {
-    $root//tei:div[tei:head] except $root//tei:div[tei:head]//tei:div
-};
-
-
 declare function ssrq-utils:renderHeadings($section as node(), $pos) {
     let $section-heading := $section/tei:head
     let $subsections := $section/tei:div
@@ -496,7 +521,12 @@ declare function ssrq-utils:renderHeadings($section as node(), $pos) {
         </li>
 };
 
-declare function ssrq-utils:printToc($node as node(), $model as map(*)) {
+(:~
+: Print a TOC on introduction page
+:
+: @return TOC as html:ul
+:)
+declare function ssrq-utils:printToc($node as node(), $model as map(*)) as element(ul) {
     let $divs := $model?data => ssrq-utils:getSubsections()
     return
         <ul>
@@ -507,4 +537,14 @@ declare function ssrq-utils:printToc($node as node(), $model as map(*)) {
                 $html
             }
         </ul>
+};
+
+
+(:~
+: Get subsection from an introduction text
+:
+: @return all tei:divs with tei:head as a direct child
+:)
+declare function ssrq-utils:getSubsections($root as node()) as node()* {
+    $root//tei:div[tei:head] except $root//tei:div[tei:head]//tei:div
 };

@@ -1,54 +1,18 @@
-.canton {
-  width: 100%;
-  display: flex;
-  margin: $margin-vertical-base * 2 0;
+#cantons img {
+  display: block;
+  margin: $margin-vertical-base / 2 0;
+  height: 2.5rem;
 }
 
-.canton__title {
-  margin: $margin-horizontal-base;
+#cantons td {
+  vertical-align: middle !important;
 }
 
-.canton__title--spaced {
-  margin: $margin-horizontal-base;
-  margin-left: $margin-horizontal-base * 6;
+#cantons tbody td {
+  border-top: none;
 }
 
-.canton__name {
-  margin-left: $margin-horizontal-base;
-  margin-right: $margin-horizontal-base * 4;
+#cantons .canton--badge {
   display: flex;
   align-items: center;
-}
-
-.canton__name--container {
-  display: flex;
-  flex-direction: column;
-}
-
-.canton__name--container .canton__name {
-  margin-top: $margin-vertical-base;
-  margin-bottom: $margin-vertical-base;
-}
-
-.canton__name img {
-  margin-left: $margin-horizontal-base / 2;
-  margin-right: $margin-horizontal-base * 4;
-}
-
-.canton__department {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.canton__badge {
-  @media screen and (max-width: 768px) {
-    display: none !important;
-  }
-}
-
-.canton__badge {
-  display: flex;
-  align-items: center;
-  margin-left: $margin-horizontal-base;
 }
