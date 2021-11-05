@@ -8,10 +8,16 @@
 // the application logo to be shown top left in the navigation bar
 .logo {
   //padding-left: $application-logo-width;
-  margin-left: 0 !important;
   padding: 0 !important;
   img {
     max-width: 350px;
+    margin-left: 10px;
+    width: 100%;
+  }
+  @media (min-width: 768px) and (max-width: 991px) {
+    img {
+      padding-left: 15px;
+    }
   }
 }
 

@@ -128,7 +128,7 @@ declare function ssrq-utils:fixLinks($nodes as node()*) {
 : @return $node as node()
 :)
 declare function ssrq-utils:insertAlt($node as node(), $model as map(*)) as node() {
-    <img src="{$node/@src/data(.)}" alt="{config:app-title($node, $model)}"/>
+    <img class="{$node/@class/data(.)}" src="{$node/@src/data(.)}" alt="{config:app-title($node, $model)}"/>
 };
 
 
