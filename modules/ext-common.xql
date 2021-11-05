@@ -446,3 +446,10 @@ declare function pmf:svg($config as map(*), $node as element(), $class as xs:str
                </div>
         else <p>Sorry, could not load SVG</p>
 };
+
+declare function pmf:short-doc-info($idno as item()) as xs:string {
+    let $doc := doc(util:collection-name($idno) || '/' || $idno || '.xml')
+    let $head := $doc//tei:sourceDesc/tei:msDesc/tei:head/text()
+    let $date := $doc//tei:teiHeader//tei:origDate => pmf:print-date()
+    return $head || ', ' || $date || ' (' || pmf:format-id($idno) || ')'
+};

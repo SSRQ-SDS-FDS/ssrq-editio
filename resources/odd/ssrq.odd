@@ -1432,7 +1432,7 @@
                     <model predicate="ancestor::div/@type='collection'" behaviour="link">
                         <desc>Link in Klammerdokument</desc>
                         <param name="link" value="string() || '.xml'"/>
-                        <param name="content" value="(doc(util:collection-name(.) || '/' || . || '.xml')//sourceDesc/msDesc/head/text(), ' (', ec:format-id(.), ')')"/>
+                        <param name="content" value="ec:short-doc-info(.)"/>
                     </model>
                     <model predicate="not(@target) and matches(., '^(?:SSRQ|SDS|FDS)_')" behaviour="link">
                         <desc>Link auf ein anderes Dokument innerhalb Portal</desc>
