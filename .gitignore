@@ -1,6 +1,7 @@
 /build
 /.existdb.json
 /transform/*
+/resources/css
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/emacs,intellij,java,linux,macos,sass,vim,visualstudiocode,windows
