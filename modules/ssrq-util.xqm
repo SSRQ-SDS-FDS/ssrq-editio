@@ -53,6 +53,20 @@ declare function ssrq-utils:findView($node as node(), $model as map(*), $collect
 
 
 (:~
+: Utility function to sort multiple items (Unterstücke) of one article (Stück) by their tei:idno
+:
+: @author Bastian Politycki
+: @param $items the article as item()*
+: @return sorted list of items as item()*
+:)
+declare function ssrq-utils:sortArticle($items as item()*) as item()* {
+    for $item in $items
+    order by $item//tei:seriesStmt/tei:idno/text()
+    return $item
+};
+
+
+(:~
 : Utility function to filter a collection of documents by tei:idno
 :
 : @author Bastian Politycki
@@ -69,7 +83,7 @@ declare function ssrq-utils:filterCollection($collection as item()*, $idno as xs
                 return
                     map {
                         "key": $id,
-                        "doc": $doc
+                        "doc": if($doc => count() > 1) then $doc => ssrq-utils:sortArticle() else $doc
                     }
     return $docs
 };
