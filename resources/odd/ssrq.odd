@@ -892,6 +892,9 @@
                     </modelSequence>
                     <model output="web" behaviour="block"/>
                 </elementSpec>
+                <elementSpec ident="title" mode="change">
+                    <model predicate="$parameters?view='infopopup'" behaviour="inline"/>
+                </elementSpec>
                 <elementSpec ident="fileDesc" mode="change">
                     <modelSequence predicate="$parameters?header='short'">
                         <desc>Output a short header to be used in document listings</desc>
