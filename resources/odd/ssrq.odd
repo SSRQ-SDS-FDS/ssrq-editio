@@ -1168,6 +1168,7 @@
                     <model output="latex" behaviour="inline">
                         <param name="content" value="string-join((idno, altIdentifier/idno), ', ')"/>
                     </model>
+                    <model behaviour="omit" predicate="not(idno/text())"/>
                     <modelSequence>
                         <model behaviour="listItem">
                             <param name="content" value="idno"/>
