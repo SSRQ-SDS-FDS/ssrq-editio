@@ -49,10 +49,13 @@ if (svgs) {
   svgs.forEach((svg, index) => {
     const id = `svg-${index}`;
     svg.id = id;
-    svgPanZoom(`#${id}`, {
-      zoomEnabled: true,
+    let panZoom = svgPanZoom(`#${id}`, {
       controlIconsEnabled: true,
-      fit: true,
+    });
+    window.addEventListener('resize', () => {
+      panZoom.resize();
+      panZoom.contain();
+      panZoom.center();
     });
   });
 }
