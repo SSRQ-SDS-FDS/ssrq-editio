@@ -40,7 +40,7 @@ declare function pmf:reference($config as map(*), $node as element(), $class as 
         <span class="reference {$class}">
             <span><span data-url="{$url}">{$config?apply-children($config, $node, $content)}</span></span>
             <span class="altcontent">
-                {$label, if (empty($ref)) then () else <span class="ref" data-ref="{$ref}"/>}
+                {if ($label => ends-with(':')) then concat($label, ' ' ) else $label, if (empty($ref)) then () else <span class="ref" data-ref="{$ref}"/>}
             </span>
         </span>
 };
