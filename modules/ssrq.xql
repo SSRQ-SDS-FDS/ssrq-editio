@@ -70,6 +70,7 @@ function app:load($node as node(), $model as map(*), $doc as xs:string, $root as
         map {
             "config": $data?config,
             "data": $node,
+            "doc-type": $node/ancestor::tei:TEI/@type/data(.),
             "body-class": if ($hasFacs) then 'col-md-6' else 'col-md-10',
             "facs-class": if ($hasFacs) then 'col-md-6' else 'hidden',
             "sidebar-class": if ($hasFacs) then 'hidden' else 'col-md-2'

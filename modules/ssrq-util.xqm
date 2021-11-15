@@ -6,6 +6,7 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 import module namespace templates="http://exist-db.org/xquery/templates" ;
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xql";
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
+import module namespace pmf="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xql";
 import module namespace functx="http://www.functx.com";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
@@ -509,30 +510,35 @@ declare function ssrq-utils:hits($node as node(), $model as map(*), $collection 
 :
 :
 :)
-declare function ssrq-utils:renderHeadings($section as node(), $pos) {
+declare function ssrq-utils:renderHeadings($section as node(), $pos, $type as xs:string) {
     let $section-heading := $section/tei:head
-    let $subsections := $section/tei:div
-    let $output :=
-            if ($section-heading/*)
-            (:~To_DO Rendering durch PM :)
-            then ()
-            else $section-heading/string()
     return
-        <li>
-            <a href="#section-{$pos}" class="toc-anchor">{$output}</a>
-                {
-                if ($subsections)
-                then
-                    <ul id="toc">
-                        {
-                        for $subsection at $subpos in $subsections
-                        return
-                        ssrq-utils:renderHeadings($subsection, $pos || '-' || $subpos)
-                        }
-                    </ul>
-                else ()
-                }
-        </li>
+    if ($section-heading/@type = 'title' or $section-heading/@type = 'subtitle')
+    then
+        let $subsections := $section => ssrq-utils:getSubsections()
+        let $output :=
+                if ($section-heading/*)
+                (:~To_DO Rendering durch PM :)
+                then ()
+                else $section-heading/string()
+        let $link := if ($type = 'introduction') then ('#section-' || $pos) else ('#' || pmf:heading-id($section-heading))
+        return
+            <li>
+                <a href="{$link}" class="toc-anchor">{$output}</a>
+                    {
+                    if ($subsections)
+                    then
+                        <ul>
+                            {
+                            for $subsection at $subpos in $subsections
+                            return
+                            ssrq-utils:renderHeadings($subsection, $pos || '-' || $subpos, $type)
+                            }
+                        </ul>
+                    else ()
+                    }
+            </li>
+    else ()
 };
 
 (:~
@@ -543,10 +549,10 @@ declare function ssrq-utils:renderHeadings($section as node(), $pos) {
 declare function ssrq-utils:printToc($node as node(), $model as map(*)) as element(ul) {
     let $divs := $model?data => ssrq-utils:getSubsections()
     return
-        <ul>
+        <ul id="toc" data-type="{$model?doc-type}">
             {
             for $div at $pos in $divs
-            let $html := ssrq-utils:renderHeadings($div, $pos)
+            let $html := ssrq-utils:renderHeadings($div, $pos, $model?doc-type)
             return
                 $html
             }

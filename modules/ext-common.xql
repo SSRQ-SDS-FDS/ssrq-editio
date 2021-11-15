@@ -453,3 +453,17 @@ declare function pmf:short-doc-info($idno as item()) as xs:string {
     let $date := $doc//tei:teiHeader//tei:origDate => pmf:print-date()
     return $head || ', ' || $date || ' (' || pmf:format-id($idno) || ')'
 };
+
+declare function pmf:biblList($config as map(*), $node as element(), $class as xs:string+, $content as node()*) {
+    <div class="tei-div7 biblList">
+        <h4 class="archivelocation">{$node/tei:head/text()}</h4>
+        <ul>
+            {
+                for $div in $node/tei:div
+                return
+                    <li>{$div/tei:listBibl/tei:head/text()}: {string-join($div/tei:listBibl/tei:bibl/tei:idno, '; ')}</li>
+
+            }
+        </ul>
+    </div>
+};

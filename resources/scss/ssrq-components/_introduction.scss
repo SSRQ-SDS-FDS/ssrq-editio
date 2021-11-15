@@ -32,6 +32,14 @@
   margin: $margin-vertical-base * 1.5 0;
 }
 
+.introduction #document-wrapper h3.archivelocation {
+  font-weight: normal !important;
+}
+
+.introduction .biblList ul {
+  list-style-type: '— ' !important;
+}
+
 // SVG-Rendering
 .svg-container {
   //max-height: 70vh;

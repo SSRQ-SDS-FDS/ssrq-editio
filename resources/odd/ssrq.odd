@@ -989,6 +989,8 @@
                             \item [[itemType]]: [[ident]][[note]]
                         </pb:template>
                     </model>
+                    <model predicate="$parameters?view='introduction' and div/listBibl/head" behaviour="biblList">
+                    </model>
                     <model predicate="parent::back and @n" behaviour="listItem">
                         <desc>output as list item if in commentary</desc>
                     </model>
@@ -1389,6 +1391,9 @@
                     </model>
                     <model predicate="@type='subtitle'" behaviour="heading">
                         <param name="level" value="2"/>
+                    </model>
+                    <model predicate="$parameters?view='introduction' and @type='archivelocation'" behaviour="heading" cssClass="archivelocation">
+                        <param name="level" value="3"/>
                     </model>
                     <model behaviour="block" predicate="$parameters?view='introduction'">
                         <param name="id" value="ec:heading-id(.)"/>
