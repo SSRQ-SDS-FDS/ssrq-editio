@@ -32,11 +32,12 @@
   margin: $margin-vertical-base * 1.5 0;
 }
 
-.introduction #document-wrapper h3.archivelocation {
+.introduction #document-wrapper h4.archivelocation {
   font-weight: normal !important;
 }
 
-.introduction .biblList ul {
+.introduction .biblList ul,
+.introduction ul.biblioList {
   list-style-type: '— ' !important;
 }
 
