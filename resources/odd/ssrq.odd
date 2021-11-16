@@ -1303,9 +1303,6 @@
                     <model output="latex" behaviour="block">
                         <pb:template>[[content]]</pb:template>
                     </model>
-                    <model>
-                        
-                    </model>
                     <model behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="head" mode="change">
