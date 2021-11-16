@@ -52,17 +52,6 @@
                             <p>Bibliographie der Schweizergeschichte (BSG)</p>
                         </desc>
                     </valItem>
-                    <valItem ident="e-editiones">
-                        <desc xml:lang="de">
-                            <p>e-editiones</p>
-                        </desc>
-                        <desc xml:lang="fr">
-                            <p>e-editiones</p>
-                        </desc>
-                        <desc xml:lang="en">
-                            <p>e-editiones</p>
-                        </desc>
-                    </valItem>
                     <valItem ident="Bibliothèque publique et universitaire de Neuchâtel (BPUN)">
                         <desc xml:lang="de">
                             <p>Bibliothèque publique et universitaire de Neuchâtel (BPUN)</p>
@@ -72,6 +61,17 @@
                         </desc>
                         <desc xml:lang="en">
                             <p>Bibliothèque publique et universitaire de Neuchâtel (BPUN)</p>
+                        </desc>
+                    </valItem>
+                    <valItem ident="e-editiones">
+                        <desc xml:lang="de">
+                            <p>e-editiones</p>
+                        </desc>
+                        <desc xml:lang="fr">
+                            <p>e-editiones</p>
+                        </desc>
+                        <desc xml:lang="en">
+                            <p>e-editiones</p>
                         </desc>
                     </valItem>
                     <valItem ident="Staatsarchiv Freiburg (StAFR)">
@@ -123,17 +123,6 @@
                         </desc>
                         <desc xml:lang="en">
                             <p>Archives de l'État de Neuchâtel (AEN)</p>
-                        </desc>
-                    </valItem>
-                    <valItem ident="e-editiones">
-                        <desc xml:lang="de">
-                            <p>e-editiones</p>
-                        </desc>
-                        <desc xml:lang="fr">
-                            <p>e-editiones</p>
-                        </desc>
-                        <desc xml:lang="en">
-                            <p>e-editiones</p>
                         </desc>
                     </valItem>
                     <valItem ident="Fondation pour la protection du patrimoine culturel, historique et artisanal (Lausanne)">

@@ -32,6 +32,14 @@
   margin: $margin-vertical-base * 1.5 0;
 }
 
+.introduction span.is-italic {
+  font-style: italic;
+}
+
+.introduction span.is-italic ~ .note-wrap {
+  margin-left: 0.1em;
+}
+
 .introduction #document-wrapper h4.archivelocation {
   font-weight: normal !important;
 }
