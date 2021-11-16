@@ -11,6 +11,7 @@ import module namespace console="http://exist-db.org/xquery/console" at "java:or
 import module namespace query="http://existsolutions.com/ssrq/search" at "ssrq-search.xql";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xql";
 import module namespace http="http://expath.org/ns/http-client" at "java:org.expath.exist.HttpClientModule";
+import module namespace functx="http://www.functx.com";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
@@ -671,16 +672,18 @@ function app:download-xml($node as node(), $model as map(*), $doc as xs:string?)
 };
 
 declare
-    %templates:wrap
 function app:download-pdf($node as node(), $model as map(*), $doc as xs:string?) {
-    let $resource := replace($doc, '^/([A-Z]{2})/(.+?)(?:_\d{1,2})?\.xml$', '$1/pdf/$2.pdf')
+    let $resource := $doc => functx:substring-before-last-match('/') || '/pdf/' || $doc => functx:substring-after-last-match('/') => replace('(?:_\d{1,2})?\.xml', '.pdf')
     return
-        <a href="{request:get-context-path()}/apps/ssrq-data/data/{$resource}">
-        {
-            $node/@*,
-            templates:process($node/node(), $model)
-        }
-        </a>
+        if (('/db/apps/ssrq-data/data' || $resource) => util:binary-doc-available())
+        then
+            <a href="{request:get-context-path()}/apps/ssrq-data/data{$resource}" data-pdf="/db/apps/ssrq-data/data{$resource}">
+            {
+                $node/@*,
+                templates:process($node/node(), $model)
+            }
+            </a>
+        else()
 };
 
 declare function app:show-if-logged-in($node as node(), $model as map(*)) {
