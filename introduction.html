@@ -18,7 +18,6 @@
         <div class="tp-column">
           <!-- Document title -->
           <h5 id="idno" data-template="app:idno-popup" />
-          <h3><i18n:text key="toc" /></h3>
           <div data-template="ssrq-utils:printToc" />
         </div>
       </div>
@@ -34,6 +33,11 @@
         </div>
       </section>
     </main>
+    <aside id="aside" style="display: hidden;" class="${sidebar-class}" data-template="app:parse-params">
+      <p class="loading">
+        <i18n:text key="loading-facets" />
+      </p>
+    </aside>
     <div
       data-template="templates:include"
       data-template-path="templates/footer.html"
@@ -52,6 +56,7 @@
       </svg>
     </a>
   </section>
+  <script type="text/javascript" src="resources/scripts/services.js" />
   <script
     type="text/javascript"
     src="resources/scripts/vendor/jquery.ui.widget.js"

@@ -49,6 +49,10 @@
   list-style-type: '— ' !important;
 }
 
+.introduction table.table tbody tr td {
+  border: none !important;
+}
+
 // SVG-Rendering
 .svg-container {
   //max-height: 70vh;

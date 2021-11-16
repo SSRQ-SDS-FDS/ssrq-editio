@@ -879,6 +879,9 @@
                         <param name="content" value="('[', ., ']')"/>
                     </model>
                 </elementSpec>
+                <elementSpec mode="change" ident="table">
+                    <model predicate="$parameters?view='introduction'" behaviour="table" cssClass="table"/>
+                </elementSpec>
                 <elementSpec ident="titleStmt" mode="change">
                     <model output="latex" behaviour="meta">
                         <param name="content" value="."/>
@@ -1300,6 +1303,9 @@
                     <model output="latex" behaviour="block">
                         <pb:template>[[content]]</pb:template>
                     </model>
+                    <model>
+                        
+                    </model>
                     <model behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="head" mode="change">
@@ -1361,6 +1367,9 @@
                         </pb:template>
                     </model>
                     <model predicate="@resp" behaviour="omit"/>
+                    <model behaviour="heading" predicate="$parameters?view='introduction' and ancestor::TEI/@type = 'bailiffs' and ancestor::group and @type = 'title'">
+                        <param name="level" value="2"/>
+                    </model>
                     <model behaviour="block" predicate="$parameters?view='introduction' and @type = 'title' and @n">
                         <param name="id" value="ec:heading-id(.)"/>
                         <param name="content" value="./text()"></param>

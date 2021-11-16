@@ -546,17 +546,22 @@ declare function ssrq-utils:renderHeadings($section as node(), $pos, $type as xs
 :
 : @return TOC as html:ul
 :)
-declare function ssrq-utils:printToc($node as node(), $model as map(*)) as element(ul) {
-    let $divs := $model?data => ssrq-utils:getSubsections()
-    return
-        <ul id="toc" data-type="{$model?doc-type}">
-            {
-            for $div at $pos in $divs
-            let $html := ssrq-utils:renderHeadings($div, $pos, $model?doc-type)
-            return
-                $html
-            }
-        </ul>
+declare function ssrq-utils:printToc($node as node(), $model as map(*)) as node()* {
+    if (not($model?doc-type = 'bailiffs'))
+    then
+        let $divs := $model?data => ssrq-utils:getSubsections()
+        let $head := <h3><i18n:text key="toc"/></h3>
+        return
+            (templates:process($head, $model),
+            <ul id="toc">
+                {
+                for $div at $pos in $divs
+                let $html := ssrq-utils:renderHeadings($div, $pos, $model?doc-type)
+                return
+                    $html
+                }
+            </ul>)
+    else ()
 };
 
 
