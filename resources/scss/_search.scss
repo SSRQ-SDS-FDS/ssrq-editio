@@ -14,11 +14,15 @@
   .reference {
     border-top: $default-border-style;
 
-    .number, .headings {
+    .number,
+    .headings {
       display: table-cell;
     }
     .number {
       padding-right: 1em;
     }
+  }
+  .w::after {
+    content: '\00a0 ';
   }
 }
