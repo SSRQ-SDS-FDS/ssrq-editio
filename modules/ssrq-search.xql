@@ -218,13 +218,6 @@ declare function query:filter($hits as element()*) {
                                 $context[ancestor-or-self::tei:TEI//tei:history/tei:origin/tei:origDate/@when <= $dateMax]
                         case "filter-language" return
                             $context[ancestor-or-self::tei:TEI/@xml:lang = $value]
-                        case "filter-condition" return
-                            if ($value = "yes") then
-                                $context[ancestor-or-self::tei:TEI//tei:supportDesc/tei:condition]
-                            else
-                                $context[not(ancestor-or-self::tei:TEI//tei:supportDesc/tei:condition)]
-                        case "filter-material" return
-                            $context[ancestor-or-self::tei:TEI//tei:support/tei:material = $value]
                         case "filter-seal" return
                             if ($value = "yes") then
                                 $context[ancestor-or-self::tei:TEI//tei:sealDesc/tei:seal]
@@ -254,19 +247,6 @@ declare function query:filter($hits as element()*) {
                                 $context[not(ancestor-or-self::tei:TEI//tei:history/tei:origin/tei:origPlace)]
                         case "filter-archive" return
                             $context[starts-with(ancestor-or-self::tei:TEI//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno, $value)]
-                        case "filter-filiation" return
-                            for $node in $context
-                            let $idno := $node/ancestor-or-self::tei:TEI//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno
-                            let $filiations :=
-                                collection($config:data-root)//tei:teiHeader//tei:filiation/tei:idno[. = $idno]
-                            let $log := console:log(($idno, count($filiations)))
-                            return
-                                if ($value = "yes" and exists($filiations)) then
-                                    $node
-                                else if ($value = "no" and empty($filiations)) then
-                                    $node
-                                else
-                                    ()
                         default return
                             $context
                 else
