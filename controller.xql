@@ -54,13 +54,18 @@ else if (contains($exist:path, "/components")) then
         <forward url="{$exist:controller}/components/{substring-after($exist:path, '/components/')}"/>
     </dispatch>
 
+else if(contains($exist:path, "/api")) then
+    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+            <forward url="{$exist:controller}/modules/ssrq-rest.xql">
+            </forward>
+    </dispatch>
+
 else if (ends-with($exist:resource, ".xql")) then (
     login:set-user($config:login-domain, (), false()),
     <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
         <forward url="{$exist:controller}/modules/{substring-after($exist:path, '/modules/')}"/>
         <cache-control cache="no"/>
     </dispatch>
-
 ) else if ($logout or $login) then
     (: Spracheinstellung geht verloren bei Login :)
     let $lang := session:get-attribute("ssrq.lang")
