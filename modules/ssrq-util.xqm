@@ -526,7 +526,7 @@ declare function ssrq-utils:renderHeadings($section as node(), $pos, $type as xs
             <li>
                 <a href="{$link}" class="toc-anchor">{$output}</a>
                     {
-                    if ($subsections)
+                    if ($subsections and ($subsections//tei:head/@type = 'title' or $subsections//tei:head/@type = 'subtitle'))
                     then
                         <ul>
                             {
