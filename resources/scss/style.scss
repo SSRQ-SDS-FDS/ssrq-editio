@@ -308,6 +308,10 @@ $color-terms: #b5221f;*/
     margin-bottom: 8px;
   }
 
+  li ul li {
+    margin-bottom: 2px;
+  }
+
   .control-list {
     label,
     select,
@@ -329,6 +333,10 @@ $color-terms: #b5221f;*/
         height: auto;
       }
     }
+  }
+
+  .form-group ~ .form-group {
+    margin-top: 10px;
   }
 }
 

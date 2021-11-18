@@ -102,6 +102,8 @@
     </msg>
     <msg key="realisierung">Réalisation</msg>
     <msg key="search">Recherche</msg>
+    <msg key="doSearch">Recherche</msg>
+    <msg key="reset">Réinitialiser</msg>
     <msg key="lizenz">Licence : </msg>
     <msg key="sorting">Trier par</msg>
     <msg key="loading-facets">Ça charge ...</msg>

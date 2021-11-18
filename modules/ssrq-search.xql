@@ -555,7 +555,6 @@ declare function query:period-range($node as node(), $model as map(*)) {
 };
 
 declare
-    %templates:wrap
 function query:pubdate-range($node as node(), $model as map(*)) {
     let $context :=
         if ($model?hits) then

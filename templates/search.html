@@ -38,14 +38,7 @@
 
                 <div class="form-group">
                     <div class="col-md-12 col-xs-12">
-                        <span class="input-group">
-                            <input name="query" type="search" class="form-control typeahead-search" placeholder="i18n(search-query-attr)" autocomplete="off" data-template="templates:form-control"/>
-                            <span class="input-group-btn">
-                                <button id="f-btn-search" type="submit" class="btn btn-primary">
-                                    <span class="material-icons">search</span>
-                                </button>
-                            </span>
-                        </span>
+                        <input name="query" type="search" class="form-control typeahead-search" placeholder="i18n(search-query-attr)" autocomplete="off" data-template="templates:form-control"/>
                         <input type="hidden" name="doc" data-template="search:form-current-doc"/>
                     </div>
                 </div>
@@ -94,12 +87,12 @@
                 </ul>
                 <h4>
                     <i18n:text key="filters"/>:</h4>
-                <ul class="control-list">
+                <ul class="control-list mb-2">
                     <li>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">
-                                <i18n:text key="period"/>: </label>
-                            <div class="col-sm-8" data-template="query:period-range">
+                        <div class="form-group row">
+                            <label class="col-4 control-label">
+                            <i18n:text key="period"/>: </label>
+                            <div data-template="query:period-range">
                                 <input type="number" name="filter-period-min" placeholder="${min}" min="${min}" max="${max}" value="${filter-period-min}" data-template="app:parse-params"/>
                                 <span>-</span>
                                 <input type="number" name="filter-period-max" placeholder="${max}" min="${min}" max="${max}" value="${filter-period-max}" data-template="app:parse-params"/>
@@ -204,10 +197,10 @@
                         </div>
                     </li>
                     <li>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">
+                        <div class="form-group row">
+                            <label class="col-4 control-label">
                                 <i18n:text key="pubdate"/>: </label>
-                            <div class="col-sm-8" data-template="query:pubdate-range">
+                            <div data-template="query:pubdate-range">
                                 <input type="number" name="filter-pubdate-min" placeholder="${min}" min="${min}" max="${max}" value="${filter-pubdate-min}" data-template="app:parse-params"/>
                                 <span>-</span>
                                 <input type="number" name="filter-pubdate-max" placeholder="${max}" min="${min}" max="${max}" value="${filter-pubdate-max}" data-template="app:parse-params"/>
@@ -215,6 +208,14 @@
                         </div>
                     </li>
                 </ul>
+                <div class="btn-group input-group-btn btn-group-stretched">
+                    <button id="f-btn-search" type="submit" class="btn btn-primary">
+                        <i class="material-icons">search</i> <i18n:text key="doSearch"/>
+                    <div class="ripple-container"></div></button>
+                    <button class="btn btn-primary" type="reset">
+                        <i class="material-icons">delete</i> <i18n:text key="reset"/>
+                    </button>
+                </div>
             </div>
         </div>
     </form>

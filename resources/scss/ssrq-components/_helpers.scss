@@ -17,4 +17,7 @@
   .mb-#{$i} {
     margin-bottom: $margin-vertical-base * $i;
   }
+  .mt-#{$i} {
+    margin-top: $margin-vertical-base * $i;
+  }
 }

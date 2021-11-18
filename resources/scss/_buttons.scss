@@ -6,10 +6,10 @@
 /*********************************************************************/
 
 .btn-group .hidden-xs {
-  margin-left: .5em;
+  margin-left: 0.5em;
 }
 .btn-group .hidden-xs + span {
-  margin-left: .5em;
+  margin-left: 0.5em;
 }
 
 // File upload button
@@ -23,7 +23,7 @@
 
 // Buttons for download, zoom and home in document view
 .tp-toolbar {
-  .btn-group.open>.dropdown-toggle.btn.btn-default {
+  .btn-group.open > .dropdown-toggle.btn.btn-default {
     background-color: lighten($color-navigation-hover, 30%);
   }
 }
@@ -34,4 +34,11 @@
     top: 3px;
     padding-right: 6px;
   }
+}
+
+.btn-group-stretched {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
