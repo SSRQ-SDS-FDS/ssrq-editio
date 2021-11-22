@@ -11,6 +11,7 @@ import module namespace functx="http://www.functx.com";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
+declare namespace i18n="http://exist-db.org/xquery/i18n";
 
 declare variable $pmf:COUNTER_TEXTCRITICAL := "text-critical-" || util:uuid();
 declare variable $pmf:COUNTER_NOTE := "note-" || util:uuid();
@@ -415,7 +416,7 @@ declare function pmf:persName-list($namen as element(tei:persName)*) {
         (:~
         @ TODO: Internationalisierung...
         :)
-        <span> und </span>,
+        <i18n:text key="and"> und </i18n:text>,
         $namen[last()]
     ) else
         $namen
