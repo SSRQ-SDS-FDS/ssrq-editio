@@ -103,6 +103,8 @@ declare function query:query-texts($subtypes as xs:string*, $query as xs:string)
                     collection($config:data-root)//tei:back//tei:note[ft:query(., $query, $query:QUERY_OPTIONS)]
                 case "seal" return
                     collection($config:data-root)//tei:teiHeader//tei:msDesc/tei:physDesc/tei:sealDesc/tei:seal[ft:query(., $query, $query:QUERY_OPTIONS)]
+                case "literature" return
+                    collection($config:data-root)//tei:teiHeader//tei:msDesc//tei:listBibl[ft:query(., $query, $query:QUERY_OPTIONS)]
                 (: Editionstext: body + orig in Kommentar und Fussnoten :)
                 default return
                     collection($config:data-root)//tei:body[ft:query(., $query, $query:QUERY_OPTIONS)] |
