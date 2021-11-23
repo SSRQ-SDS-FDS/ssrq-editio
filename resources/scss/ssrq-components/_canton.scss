@@ -15,3 +15,7 @@
   display: flex;
   align-items: center;
 }
+
+#cantons.table > thead > tr > th {
+  border-bottom: 2px solid $color-gray-lighter;
+}
