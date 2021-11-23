@@ -18,19 +18,6 @@
   background-repeat: no-repeat !important;
 }
 
-.form-control.has-dropdown:focus {
-  background-image: linear-gradient(
-      45deg,
-      $color-primary-light 50%,
-      transparent 50%
-    ),
-    linear-gradient(135deg, transparent 50%, $color-primary-light 50%) !important;
-  background-position: calc(100% - 15px) 1em, calc(100% - 20px) 1em !important;
-  background-size: 5px 5px, 5px 5px, 1px 1.5em;
-  background-repeat: no-repeat !important;
-  outline: 0 !important;
-}
-
 .form-check-label ~ .form-check-label {
   margin-left: $margin-horizontal-base / 3;
 }
