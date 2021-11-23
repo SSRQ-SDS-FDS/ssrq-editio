@@ -34,3 +34,7 @@
 .form-check-label ~ .form-check-label {
   margin-left: $margin-horizontal-base / 3;
 }
+
+.control-wrapper {
+  margin: 8px 4px !important;
+}

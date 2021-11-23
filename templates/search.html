@@ -171,80 +171,81 @@
         <h4><i18n:text key="filters" />:</h4>
         <ul class="control-list mb-2">
           <li>
-            <div class="form-group row">
+            <div class="form-group">
               <label class="col-4 control-label">
                 <i18n:text key="period" />:
               </label>
-              <div data-template="query:period-range">
-                <input
-                  type="number"
-                  name="filter-period-min"
-                  placeholder="${min}"
-                  min="${min}"
-                  max="${max}"
-                  value="${filter-period-min}"
-                  data-template="app:parse-params"
-                />
-                <span>-</span>
-                <input
-                  type="number"
-                  name="filter-period-max"
-                  placeholder="${max}"
-                  min="${min}"
-                  max="${max}"
-                  value="${filter-period-max}"
-                  data-template="app:parse-params"
-                />
+              <div class="row control-wrapper">
+                <div data-template="query:period-range">
+                  <input
+                    type="number"
+                    name="filter-period-min"
+                    placeholder="${min}"
+                    min="${min}"
+                    max="${max}"
+                    value="${filter-period-min}"
+                    data-template="app:parse-params"
+                  />
+                  <span>-</span>
+                  <input
+                    type="number"
+                    name="filter-period-max"
+                    placeholder="${max}"
+                    min="${min}"
+                    max="${max}"
+                    value="${filter-period-max}"
+                    data-template="app:parse-params"
+                  />
+                </div>
               </div>
             </div>
           </li>
           <li>
             <div class="form-group">
-              <label class="col-sm-4 control-label">
+              <label class="row control-label">
                 <i18n:text key="language" />:
               </label>
-              <div class="col-sm-8">
-                    <label class="form-check-label">
-                      <input
-                        class="form-check-input"
-                        name="filter-language"
-                        type="checkbox"
-                        value="de"
-                        data-template="templates:form-control"
-                      />
-                      de
-                    </label>
-                    <label class="form-check-label">
-                      <input
-                        class="form-check-input"
-                        name="filter-language"
-                        type="checkbox"
-                        value="fr"
-                        data-template="templates:form-control"
-                      />
-                      fr
-                    </label>
-                    <label class="form-check-label">
-                      <input
-                        class="form-check-input"
-                        name="filter-language"
-                        type="checkbox"
-                        value="it"
-                        data-template="templates:form-control"
-                      />
-                      it
-                    </label>
-                    <label class="form-check-label">
-                      <input
-                        class="form-check-input"
-                        name="filter-language"
-                        type="checkbox"
-                        value="la"
-                        data-template="templates:form-control"
-                      />
-                      la
-                    </label>
-
+              <div class="row control-wrapper">
+                <label class="form-check-label">
+                  <input
+                    class="form-check-input"
+                    name="filter-language"
+                    type="checkbox"
+                    value="de"
+                    data-template="templates:form-control"
+                  />
+                  de
+                </label>
+                <label class="form-check-label">
+                  <input
+                    class="form-check-input"
+                    name="filter-language"
+                    type="checkbox"
+                    value="fr"
+                    data-template="templates:form-control"
+                  />
+                  fr
+                </label>
+                <label class="form-check-label">
+                  <input
+                    class="form-check-input"
+                    name="filter-language"
+                    type="checkbox"
+                    value="it"
+                    data-template="templates:form-control"
+                  />
+                  it
+                </label>
+                <label class="form-check-label">
+                  <input
+                    class="form-check-input"
+                    name="filter-language"
+                    type="checkbox"
+                    value="la"
+                    data-template="templates:form-control"
+                  />
+                  la
+                </label>
               </div>
             </div>
           </li>
@@ -362,26 +363,28 @@
               <label class="col-4 control-label">
                 <i18n:text key="pubdate" />:
               </label>
-              <div data-template="query:pubdate-range">
-                <input
-                  type="number"
-                  name="filter-pubdate-min"
-                  placeholder="${min}"
-                  min="${min}"
-                  max="${max}"
-                  value="${filter-pubdate-min}"
-                  data-template="app:parse-params"
-                />
-                <span>-</span>
-                <input
-                  type="number"
-                  name="filter-pubdate-max"
-                  placeholder="${max}"
-                  min="${min}"
-                  max="${max}"
-                  value="${filter-pubdate-max}"
-                  data-template="app:parse-params"
-                />
+              <div class="row control-wrapper">
+                <div data-template="query:pubdate-range">
+                  <input
+                    type="number"
+                    name="filter-pubdate-min"
+                    placeholder="${min}"
+                    min="${min}"
+                    max="${max}"
+                    value="${filter-pubdate-min}"
+                    data-template="app:parse-params"
+                  />
+                  <span>-</span>
+                  <input
+                    type="number"
+                    name="filter-pubdate-max"
+                    placeholder="${max}"
+                    min="${min}"
+                    max="${max}"
+                    value="${filter-pubdate-max}"
+                    data-template="app:parse-params"
+                  />
+                </div>
               </div>
             </div>
           </li>
