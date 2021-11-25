@@ -89,14 +89,14 @@ else if (ends-with($exist:resource, ".html")) then (
     return
         (: the html page is run through view.xql to expand templates :)
         <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-            <forward url="{$exist:controller}/{$resource}">
+            <forward url="{$exist:controller}/routes/{$resource}">
                 <set-header name="Cache-Control" value="no-cache"/>
             </forward>
             <view>
                 <forward url="{$exist:controller}/modules/view.xql"/>
             </view>
     		<error-handler>
-    			<forward url="{$exist:controller}/error-page.html" method="get"/>
+    			<forward url="{$exist:controller}/routes/error-page.html" method="get"/>
     			<forward url="{$exist:controller}/modules/view.xql"/>
     		</error-handler>
         </dispatch>
@@ -116,17 +116,17 @@ else if (ends-with($exist:resource, ".html")) then (
     let $template := request:get-parameter("template", ())
     let $html :=
         if ($exist:resource = "" and not(request:get-parameter("id", ()))) then
-            "index.html"
+            "routes/index.html"
         else if ($exist:resource = "doc-table.html") then
             "templates/doc-table.html"
         else if ($exist:resource = ("search.html", "toc.html")) then
-            $exist:resource
+            "routes/" || $exist:resource
         else if ($facsimiles) then
-            "view-facs.html"
+            "routes/view-facs.html"
         else if ($template and $template = "introduction.html") then
-            "introduction.html"
+            "routes/introduction.html"
         else
-            "view.html"
+            "routes/view.html"
     return
         if (matches($exist:resource, "\.(png|jpg|jpeg|gif|tif|tiff|txt)$", "s")) then
             <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
@@ -138,7 +138,7 @@ else if (ends-with($exist:resource, ".html")) then (
                     <add-parameter name="id" value="{$path}{$id}"/>
                 </forward>
                 <error-handler>
-                    <forward url="{$exist:controller}/error-page.html" method="get"/>
+                    <forward url="{$exist:controller}/routes/error-page.html" method="get"/>
                     <forward url="{$exist:controller}/modules/view.xql"/>
                 </error-handler>
             </dispatch>
@@ -148,7 +148,7 @@ else if (ends-with($exist:resource, ".html")) then (
                     <add-parameter name="doc" value="{$path}{$id}"/>
                 </forward>
                 <error-handler>
-                    <forward url="{$exist:controller}/error-page.html" method="get"/>
+                    <forward url="{$exist:controller}/routes/error-page.html" method="get"/>
                     <forward url="{$exist:controller}/modules/view.xql"/>
                 </error-handler>
             </dispatch>
@@ -158,7 +158,7 @@ else if (ends-with($exist:resource, ".html")) then (
                     <add-parameter name="doc" value="{$path}{$id}"/>
                 </forward>
                 <error-handler>
-                    <forward url="{$exist:controller}/error-page.html" method="get"/>
+                    <forward url="{$exist:controller}/routes/error-page.html" method="get"/>
                     <forward url="{$exist:controller}/modules/view.xql"/>
                 </error-handler>
             </dispatch>
@@ -177,7 +177,7 @@ else if (ends-with($exist:resource, ".html")) then (
                     </forward>
                 </view>
                 <error-handler>
-                    <forward url="{$exist:controller}/error-page.html" method="get"/>
+                    <forward url="{$exist:controller}/routes/error-page.html" method="get"/>
                     <forward url="{$exist:controller}/modules/view.xql"/>
                 </error-handler>
             </dispatch>
