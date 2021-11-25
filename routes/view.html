@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html data-template="pages:app-root">
+    <head data-template="templates:include" data-template-path="templates/head.html"/>
+    <body xmlns:i18n="http://exist-db.org/xquery/i18n">
+        <div data-template="templates:surround" data-template-with="templates/page.html" data-template-at="content" data-template-using="body">
+            <div data-template="app:load">
+                <!-- Navigation -->
+                <div data-template="templates:include" data-template-path="templates/menu.html"/>
+                <!-- Toolbar -->
+                <div data-template="templates:include" data-template-path="templates/toolbar.html"/>
+
+                <section id="tp-canvas" data-template="pages:navigation">
+                    <!-- Table of contents -->
+                    <nav id="sidebar" class="toc offcanvas">
+                        <h3>
+                            <i18n:text key="contents">Contents</i18n:text>
+                        </h3>
+                        <div id="toc">
+                            <span id="toc-loading"> <i18n:text key="loading"/> ...</span>
+                        </div>
+                    </nav>
+                    <main id="main-wrapper" class="${body-class}" data-template="app:parse-params">
+                        <div class="tp-document-title-wrapper tp-row">
+                            <div class="tp-column">
+                                <!-- Document title -->
+                                <h5 id="idno" data-template="app:idno-popup"/>
+                                <h4 data-template="app:header-short"/>
+                                <h5 data-template="app:origDate"/>
+                            </div>
+                        </div>
+                        <div class="comment tp-row" data-template="app:regest">
+                            <div class="tp-column">
+                                <h4 class="block-title">
+                                    <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#regest" aria-expanded="false" aria-controls="regest">
+                                        <i18n:text key="regest"/>
+                                    </a>
+                                </h4>
+                                <div id="regest" class="collapse" data-template="app:display-data"/>
+                            </div>
+                        </div>
+                        <div class="comment tp-row" data-template="app:source-description">
+                            <div class="tp-column">
+                                <h4 class="block-title">
+                                    <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#sourceDesc" aria-expanded="false" aria-controls="regest">
+                                        <i18n:text key="describe"/>
+
+                                    </a>
+                                </h4>
+                                <div id="sourceDesc" class="collapse" data-template="app:display-data"/>
+                            </div>
+                        </div>
+                        <div class="comment tp-row" data-template="app:additionalSource">
+                            <div class="tp-column">
+                                <h4 class="block-title">
+                                    <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#additional" aria-expanded="false" aria-controls="additonal">
+                                        <i18n:text key="addFill"/>
+                                    </a>
+                                </h4>
+                                <div id="additional" class="collapse" data-template="app:display-data" data-template-mode="filiation"/>
+                            </div>
+                        </div>
+                        <div class="comment tp-row" data-template="app:comment">
+                            <div class="tp-column">
+                                <h4 class="block-title">
+                                    <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#comment" aria-expanded="false" aria-controls="comment">
+                                        <i18n:text key="comment"/>
+                                    </a>
+                                </h4>
+                                <div id="comment" class="collapse" data-template="app:display-data"/>
+                            </div>
+                        </div>
+                        <section class="tp-row">
+                            <div class="tp-column">
+                                <h4 class="block-title">
+                                    <i18n:text key="editionText"/>
+                                </h4>
+                                <div id="document-wrapper">
+                                    <!-- Document pane -->
+                                    <div id="document-pane">
+                                        <div data-template="pages:view" class="content"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </main>
+                    <aside id="aside" class="${sidebar-class}" data-template="app:parse-params">
+                        <p class="loading">
+                            <i18n:text key="loading-facets"/>
+                        </p>
+                    </aside>
+                    <aside id="image-aside" class="${facs-class}" data-template="app:parse-params">
+                        <div id="credits-container" class="credits" data-template="app:show-credits"/>
+                        <div id="image-container" class="openseadragon"/>
+                    </aside>
+                </section>
+                <div data-template="templates:include" data-template-path="templates/footer-navigation.html"/>
+            </div>
+        </div>
+        <div class="modal fade" id="pdf-info">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span class="fa fa-times" aria-hidden="true"/>
+                            <span class="sr-only">
+                                <i18n:text key="close">Close</i18n:text>
+                            </span>
+                        </button>
+                        <h4 class="modal-title">
+                            <i18n:text key="generating-file">Generating File...</i18n:text>
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <i18n:text key="download-message"/>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <i class="glyphicon glyphicon-remove"/> <i18n:text key="close">Close</i18n:text>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="resources/scripts/search.js"/>
+        <script type="text/javascript" src="resources/scripts/vendor/openseadragon.min.js"/>
+    </body>
+</html>
