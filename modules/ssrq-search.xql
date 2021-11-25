@@ -227,7 +227,7 @@ declare function query:filter($hits as element()*) {
                             return
                                 $context[ancestor-or-self::tei:TEI//tei:history/tei:origin/tei:origDate/@when <= $dateMax]
                         case "filter-language" return
-                            $context[ancestor-or-self::tei:TEI/@xml:lang = $value]
+                            $context[ancestor-or-self::tei:TEI//tei:textLang/@xml:lang = $value]
                         case "filter-seal" return
                             if ($value = "yes") then
                                 $context[ancestor-or-self::tei:TEI//tei:sealDesc/tei:seal]
