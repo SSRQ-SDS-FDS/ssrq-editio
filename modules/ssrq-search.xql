@@ -117,7 +117,9 @@ declare function query:query-texts($subtypes as xs:string*, $query as xs:string)
                 default return
                     collection($config:data-root)//tei:body[ft:query(., $query, $query:QUERY_OPTIONS)] |
                     collection($config:data-root)//tei:back[.//tei:orig[ft:query(., $query, $query:QUERY_OPTIONS)]] |
-                    collection($config:data-root)//tei:body[.//tei:note//tei:orig[ft:query(., $query, $query:QUERY_OPTIONS)]]
+                    collection($config:data-root)//tei:body[.//tei:note//tei:orig[ft:query(., $query, $query:QUERY_OPTIONS)]] |
+                    collection($config:data-root)//tei:body[not(*)]
+
     return
         map {
             "hits":
@@ -211,7 +213,8 @@ declare function query:api-filter-subtype($id as xs:string*, $type as xs:string,
  :)
 declare function query:filter($hits as element()*) {
     (: Entferne Dokumente ohne body :)
-    let $hits := $hits[root(.)//tei:text/tei:body/*]
+    (:let $hits := $hits[root(.)//tei:text/tei:body/*]:)
+    let $hits := $hits
     return
         fold-right(request:get-parameter-names()[starts-with(., 'filter-')], $hits, function($filter, $context) {
             let $value := filter(request:get-parameter($filter, ()), function($param) { $param != "" })
@@ -256,7 +259,7 @@ declare function query:filter($hits as element()*) {
                             else
                                 $context[not(ancestor-or-self::tei:TEI//tei:history/tei:origin/tei:origPlace)]
                         case "filter-archive" return
-                            $context[starts-with(ancestor-or-self::tei:TEI//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno, $value)]
+                            $context[contains(ancestor-or-self::tei:TEI//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno, $value)]
                         default return
                             $context
                 else
