@@ -468,3 +468,34 @@ declare function pmf:biblList($config as map(*), $node as element(), $class as x
         </ul>
     </div>
 };
+
+(:~
+: Format the link of an external literature-reference
+:
+: @param $id the external id
+: @return the formated url as a string
+:
+:)
+declare function pmf:format-link($id as xs:string*) as xs:string* {
+    let $link-base := map {
+        "national-bib": "http://permalink.snl.ch/bib/",
+        "ssrq-old": "https://www.ssrq-sds-fds.ch/online/",
+        "ssrq-new": request:get-context-path() || '/apps/ssrq/'
+    }
+    return
+        if ($id => contains('bsg') or $id => contains('sz'))
+        then
+            $link-base?national-bib || $id
+        else
+            if ($id => contains('SSRQ'))
+            then
+                let $volume := $id => substring-after('SSRQ_')
+                let $collection := $volume => substring-before ('_')
+                return
+                    if (($config:data-root || '/' || $collection || '/' || $volume) => xmldb:collection-available())
+                    then
+                        $link-base?ssrq-new || '?collection=' || $collection || '&amp;volume=' || $volume
+                    else
+                        $link-base?ssrq-old || $volume
+            else ()
+};
