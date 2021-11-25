@@ -16,6 +16,7 @@ import module namespace app="http://existsolutions.com/ssrq/app" at "ssrq.xql";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xql";
 import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xql";
 import module namespace intl="http://exist-db.org/xquery/i18n/templates" at "lib/i18n-templates.xql";
+import module namespace functx="http://www.functx.com";
 
 
 declare variable $query:QUERY_OPTIONS :=
@@ -23,6 +24,13 @@ declare variable $query:QUERY_OPTIONS :=
         <leading-wildcard>yes</leading-wildcard>
         <filter-rewrite>yes</filter-rewrite>
     </options>;
+
+declare variable $query:corretion-list := map {
+        "Burgarchiv": "Burgarchiv Grabs",
+        "Germanisches": "Germanisches Nationalmuseum Nürnberg",
+        "Fürstlich": "Fürstlich Fürstenbergisches Archiv Donaueschingen",
+        "KKGA Gams": "KKGA"
+    };
 
 (:~
  : Execute query. Dispatches the query to either query:query-texts or query:query-api depending on $type.
@@ -588,21 +596,20 @@ function query:list-archives($node as node(), $model as map(*), $filter-archive 
             $model?hits ! root(.)
         else
             collection($config:data-root)
-    for $idno in distinct-values(
-            for-each($context//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno, function($id) {
-                replace($id, "^\s*(\w+).*$", "$1")
-            })
-        )
-        order by $idno
+    for $archive in $context//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno[./text() => string-length() > 0]
+    let $archive-id := $archive  => replace("^\s*(\w+).*$", "$1") =>  functx:substring-before-if-contains(',')
+    let $archive-title := if ($query:corretion-list($archive-id)) then $query:corretion-list($archive-id) else $archive-id
+    group by $archive-title
+    order by $archive-title
     return
         <option>
 
         {
-            if ($idno = $filter-archive) then
+            if ($archive-title = $filter-archive) then
                 attribute selected { "selected" }
             else
                 ()
         }
-        {$idno}
+        {$archive-title}
         </option>
 };
