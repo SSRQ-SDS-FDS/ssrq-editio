@@ -602,6 +602,8 @@ function query:list-archives($node as node(), $model as map(*), $filter-archive 
     group by $archive-title
     order by $archive-title
     return
+        if (not($archive-title = 'Fehlt'))
+        then
         <option>
 
         {
@@ -612,4 +614,5 @@ function query:list-archives($node as node(), $model as map(*), $filter-archive 
         }
         {$archive-title}
         </option>
+        else ()
 };
