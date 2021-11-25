@@ -7,6 +7,7 @@ import module namespace templates="http://exist-db.org/xquery/templates" ;
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xql";
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
 import module namespace pmf="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xql";
+import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 import module namespace functx="http://www.functx.com";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
@@ -255,9 +256,11 @@ declare function ssrq-utils:renderDepartment($data as map(*), $dep as xs:string)
                     }
                 </a>
                 <span class="badge">{
-                    sum(let $childCollections := xmldb:get-child-collections($rootCollection)
-                    for $collection in $childCollections
-                    return ssrq-utils:countDocs($rootCollection || '/' || $collection, $collection))
+                    try {
+                        sum(let $childCollections := xmldb:get-child-collections($rootCollection)
+                        for $collection in $childCollections
+                        return ssrq-utils:countDocs($rootCollection || '/' || $collection, $collection))
+                    } catch * {console:log('Problem while filtering ' || $dep), 'Error! ' || $dep}
                 }</span>
             </div>
         </td>
