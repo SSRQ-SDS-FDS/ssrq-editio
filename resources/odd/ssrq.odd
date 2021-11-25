@@ -1610,7 +1610,36 @@
                             </div>
                         </pb:template>
                     </model>
-                    <model predicate="analytic[@type='edition'] and @xml:id" behaviour="listItem" cssClass="biblio">
+                    <model predicate="analytic[@type='edition'] and @xml:id and monogr/imprint" behaviour="listItem" cssClass="biblio">
+                        <param name="author" value="if (ec:format-editor(analytic/author)) then (', bearb. von ' || ec:format-editor(analytic/author)) else ()"/>
+                        <param name="title" value="replace(analytic/title[not(@type='short')], ' : ', ' – ')"/>
+                        <param name="short-title" value="analytic/title[@type='short']"/>
+                        <param name="link" value="ec:format-link(@xml:id)"/>
+                        <param name="journal" value="monogr/title"/>
+                        <param name="editor" value="if(monogr/author) then (' hrsg. von ' || ec:format-editor(monogr/author)) || ', ' else ()"/>
+                        <param name="place" value="string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date || ', '"/>
+                        <param name="scope" value="string-join(monogr/imprint/biblScope, ', ')"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <!--  Edition (in Zeitschrift) -->
+                            <div>[[title]][[author]], in: [[journal]], [[editor]][[place]][[scope]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
+                            </div>
+                        </pb:template>
+                    </model>
+                    <model predicate="analytic[@type='edition'] and monogr/imprint" behaviour="listItem" cssClass="biblio">
+                        <param name="author" value="if (ec:format-editor(analytic/author)) then (', bearb. von ' || ec:format-editor(analytic/author)) else ()"/>
+                        <param name="title" value="replace(analytic/title[not(@type='short')], ' : ', ' – ')"/>
+                        <param name="short-title" value="analytic/title[@type='short']"/>
+                        <param name="journal" value="monogr/title"/>
+                        <param name="editor" value="if(monogr/author) then (' hrsg. von ' || ec:format-editor(monogr/author)) || ', ' else ()"/>
+                        <param name="place" value="string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date || ', '"/>
+                        <param name="scope" value="string-join(monogr/imprint/biblScope, ', ')"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <!--  Edition (in Zeitschrift) -->
+                            <div>[[title]][[author]], in: [[journal]], [[editor]][[place]][[scope]] ([[short-title]]).
+                            </div>
+                        </pb:template>
+                    </model>
+                    <model predicate="analytic[@type='edition'] and @xml:id and monogr[not(imprint)]" behaviour="listItem" cssClass="biblio">
                         <param name="author" value="if (ec:format-editor(analytic/author)) then (', bearb. von ' || ec:format-editor(analytic/author)) else ()"/>
                         <param name="title" value="replace(analytic/title[not(@type='short')], ' : ', ' – ')"/>
                         <param name="short-title" value="analytic/title[@type='short']"/>
@@ -1623,7 +1652,7 @@
                             </div>
                         </pb:template>
                     </model>
-                    <model predicate="analytic[@type='edition']" behaviour="listItem" cssClass="biblio">
+                    <model predicate="analytic[@type='edition'] and monogr[not(imprint)]" behaviour="listItem" cssClass="biblio">
                         <param name="author" value="if (ec:format-editor(analytic/author)) then (', bearb. von ' || ec:format-editor(analytic/author)) else ()"/>
                         <param name="title" value="replace(analytic/title[not(@type='short')], ' : ', ' – ')"/>
                         <param name="short-title" value="analytic/title[@type='short']"/>
