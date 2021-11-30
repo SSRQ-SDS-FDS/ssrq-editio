@@ -85,11 +85,11 @@ else if (ends-with($exist:resource, ".html")) then (
         if (contains($exist:path, "/templates/")) then
             "templates/" || $exist:resource
         else
-            $exist:resource
+            "routes/" || $exist:resource
     return
         (: the html page is run through view.xql to expand templates :)
         <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-            <forward url="{$exist:controller}/routes/{$resource}">
+            <forward url="{$exist:controller}/{$resource}">
                 <set-header name="Cache-Control" value="no-cache"/>
             </forward>
             <view>
