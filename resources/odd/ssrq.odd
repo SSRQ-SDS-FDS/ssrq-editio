@@ -358,7 +358,7 @@
                     </model>
                     <model behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('origDate'), ec:colon(), ec:format-date(@when))"/>
+                        <param name="alternate" value="(ec:label('origDate'), ec:colon(), if(@when) then ec:format-date(@when) else 'date')"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="add" mode="change">
@@ -1602,7 +1602,7 @@
                         <param name="series" value="if (series) then (series/title || ', ' || series/biblScope || ': ') else ()"/>
                         <param name="title" value="replace(monogr/title[not(@type='short')], ' : ', ' – ')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
-                        <param name="journal" value="if (monogr/imprint) then 'in: ' || monogr/imprint/biblScope || ', ' else ()"/>
+                        <param name="journal" value="if (monogr/imprint/biblScope) then 'in: ' || monogr/imprint/biblScope || ', ' else ()"/>
                         <param name="link" value="ec:format-link(@xml:id)"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
                         <param name="date" value="monogr/imprint/date/text()"/>
@@ -1617,7 +1617,7 @@
                         <param name="series" value="if (series) then (series/title || ', ' || series/biblScope || ': ') else ()"/>
                         <param name="title" value="replace(monogr/title[not(@type='short')], ' : ', ' – ')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
-                        <param name="journal" value="if (monogr/imprint) then 'in: ' || monogr/imprint/biblScope || ', ' else ()"/>
+                        <param name="journal" value="if (monogr/imprint/biblScope) then 'in: ' || monogr/imprint/biblScope || ', ' else ()"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
                         <param name="date" value="monogr/imprint/date/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
