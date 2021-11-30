@@ -44,34 +44,43 @@
                     <valItem ident="Bibliographie der Schweizergeschichte (BSG)">
                         <desc xml:lang="de">
                             <p>Bibliographie der Schweizergeschichte (BSG)</p>
+                            <ref>https://www.bsg.nb.admin.ch/</ref>
                         </desc>
                         <desc xml:lang="fr">
                             <p>Bibliographie de l'histoire suisse (BHS)</p>
+                            <ref>https://www.bsg.nb.admin.ch/</ref>
                         </desc>
                         <desc xml:lang="en">
                             <p>Bibliographie der Schweizergeschichte (BSG)</p>
+                            <ref>https://www.bsg.nb.admin.ch/</ref>
                         </desc>
                     </valItem>
                     <valItem ident="Bibliothèque publique et universitaire de Neuchâtel (BPUN)">
                         <desc xml:lang="de">
                             <p>Bibliothèque publique et universitaire de Neuchâtel (BPUN)</p>
+                            <ref>http://bpun.unine.ch/</ref>
                         </desc>
                         <desc xml:lang="fr">
                             <p>Bibliothèque publique et universitaire de Neuchâtel (BPUN)</p>
+                            <ref>http://bpun.unine.ch/</ref>
                         </desc>
                         <desc xml:lang="en">
                             <p>Bibliothèque publique et universitaire de Neuchâtel (BPUN)</p>
+                            <ref>http://bpun.unine.ch/</ref>
                         </desc>
                     </valItem>
                     <valItem ident="e-editiones">
                         <desc xml:lang="de">
                             <p>e-editiones</p>
+                            <ref>https://e-editiones.org/</ref>
                         </desc>
                         <desc xml:lang="fr">
                             <p>e-editiones</p>
+                            <ref>https://e-editiones.org/</ref>
                         </desc>
                         <desc xml:lang="en">
                             <p>e-editiones</p>
+                            <ref>https://e-editiones.org/</ref>
                         </desc>
                     </valItem>
                     <valItem ident="Staatsarchiv Freiburg (StAFR)">
@@ -106,12 +115,15 @@
                     <valItem ident="Archives de la Ville de Neuchâtel">
                         <desc xml:lang="de">
                             <p>Archives de la Ville de Neuchâtel</p>
+                            <ref>https://www.neuchatelville.ch/de/etudier/archives-de-la-ville/</ref>
                         </desc>
                         <desc xml:lang="fr">
                             <p>Archives de la Ville de Neuchâtel</p>
+                            <ref>https://www.neuchatelville.ch/de/etudier/archives-de-la-ville/</ref>
                         </desc>
                         <desc xml:lang="en">
                             <p>Archives de la Ville de Neuchâtel</p>
+                            <ref>https://www.neuchatelville.ch/de/etudier/archives-de-la-ville/</ref>
                         </desc>
                     </valItem>
                     <valItem ident="Archives de l'État de Neuchâtel (AEN)">
@@ -128,12 +140,15 @@
                     <valItem ident="Fondation pour la protection du patrimoine culturel, historique et artisanal (Lausanne)">
                         <desc xml:lang="de">
                             <p>Fondation pour la protection du patrimoine culturel, historique et artisanal (Lausanne)</p>
+                            <ref>https://fppcha.com/</ref>
                         </desc>
                         <desc xml:lang="fr">
                             <p>Fondation pour la protection du patrimoine culturel, historique et artisanal (Lausanne)</p>
+                            <ref>https://fppcha.com/</ref>
                         </desc>
                         <desc xml:lang="en">
                             <p>Fondation pour la protection du patrimoine culturel, historique et artisanal (Lausanne)</p>
+                            <ref>https://fppcha.com/</ref>
                         </desc>
                     </valItem>
                     <valItem ident="Friedrich-Emil-Welti-Fonds, Bern">
@@ -150,23 +165,29 @@
                     <valItem ident="Historisch-Heimatkundliche Vereinigung der Region Werdenberg">
                         <desc xml:lang="de">
                             <p>Historisch-Heimatkundliche Vereinigung der Region Werdenberg</p>
+                            <ref>https://www.hv-werdenberg.ch/</ref>
                         </desc>
                         <desc xml:lang="fr">
                             <p>Historisch-Heimatkundliche Vereinigung der Region Werdenberg</p>
+                            <ref>https://www.hv-werdenberg.ch/</ref>
                         </desc>
                         <desc xml:lang="en">
                             <p>Historisch-Heimatkundliche Vereinigung der Region Werdenberg</p>
+                            <ref>https://www.hv-werdenberg.ch/</ref>
                         </desc>
                     </valItem>
                     <valItem ident="Historischer Verein des Kantons St. Gallen">
                         <desc xml:lang="de">
                             <p>Historischer Verein des Kantons St. Gallen</p>
+                            <ref>https://www.hvsg.ch/</ref>
                         </desc>
                         <desc xml:lang="fr">
                             <p>Historischer Verein des Kantons St. Gallen</p>
+                            <ref>https://www.hvsg.ch/</ref>
                         </desc>
                         <desc xml:lang="en">
                             <p>Historischer Verein des Kantons St. Gallen</p>
+                            https://www.hvsg.ch/
                         </desc>
                     </valItem>
                     <valItem ident="Lotteriefonds der Kantone Freiburg, Glarus, Neuenburg, St. Gallen, Schwyz, Waadt und Zürich">
@@ -194,23 +215,29 @@
                     <valItem ident="Schweizerische Akademie der Geistes- und Sozialwissenschaften (SAGW)">
                         <desc xml:lang="de">
                             <p>Schweizerische Akademie der Geistes- und Sozialwissenschaften (SAGW)</p>
+                            <ref>https://www.sagw.ch/sagw/</ref>
                         </desc>
                         <desc xml:lang="fr">
                             <p>L'Académie suisse des sciences humaines et sociales (ASSH)</p>
+                            <ref>https://www.sagw.ch/sagw/</ref>
                         </desc>
                         <desc xml:lang="en">
                             <p>Swiss Academy of Humanities and Social Sciences (SAHS)</p>
+                            <ref>https://www.sagw.ch/sagw/</ref>
                         </desc>
                     </valItem>
                     <valItem ident="Schweizerischer Nationalfonds (SNF)">
                         <desc xml:lang="de">
                             <p>Schweizerischer Nationalfonds (SNF)</p>
+                            <ref>https://www.snf.ch/de</ref>
                         </desc>
                         <desc xml:lang="fr">
                             <p>Fonds national suisse de la recherche scientifique (FNS)</p>
+                            <ref>https://www.snf.ch/de</ref>
                         </desc>
                         <desc xml:lang="en">
                             <p>Swiss National Science Foundation (SNSF)</p>
+                            <ref>https://www.snf.ch/de</ref>
                         </desc>
                     </valItem>
                     <valItem ident="Staatsarchiv Freiburg (StAFR)">

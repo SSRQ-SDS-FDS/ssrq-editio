@@ -544,19 +544,29 @@ function app:partners($node as node(), $model as map(*)) {
     return
         (<h3 xmlns:i18n="http://exist-db.org/xquery/i18n"><i18n:text key="partners">Projektpartner</i18n:text></h3>,
         for $partner in $config:partners//tei:dataSpec[@ident="partners"]/tei:valList/tei:valItem
-        let $value := $partner/tei:desc[@xml:lang=$lang]/tei:p/text()
+        let $desc := $partner/tei:desc[@xml:lang=$lang]
+        let $value := $desc/tei:p/text()
         order by $value => substring(1, 1) => upper-case()
         return
             <p>
-                {$value}
+                {
+                    if ($desc/tei:ref)
+                    then <a href="{$desc/tei:ref}">{$value}</a>
+                    else $value
+                }
             </p>,
         <h3 xmlns:i18n="http://exist-db.org/xquery/i18n"><i18n:text key="funding">Finanzielle Unterstützung</i18n:text></h3>,
         for $partner in $config:partners//tei:dataSpec[@ident="funding"]/tei:valList/tei:valItem
-        let $value := $partner/tei:desc[@xml:lang=$lang]/tei:p/text()
+        let $desc := $partner/tei:desc[@xml:lang=$lang]
+        let $value := $desc/tei:p/text()
         order by $value => substring(1, 1) => upper-case()
         return
             <p>
-                {$value}
+                {
+                    if ($desc/tei:ref)
+                    then <a href="{$desc/tei:ref}">{$value}</a>
+                    else $value
+                }
             </p>
         )
 };
