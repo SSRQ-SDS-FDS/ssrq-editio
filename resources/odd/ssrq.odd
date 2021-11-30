@@ -1583,6 +1583,20 @@
                         </pb:template>
                     </model>
                     <model output="latex" behaviour="omit"/>
+                    <model predicate="monogr[@type='enc']" behaviour="listItem" cssClass="biblio">
+                        <param name="editor" value="' hrsg. von ' || ec:format-enc-editor(monogr/author)"/>
+                        <param name="title" value="replace(monogr/title[not(@type='short')], ' : ', ' – ')"/>
+                        <param name="link" value="if (@xml:id) then ec:format-link(@xml:id) else monogr/ref/@target"/>
+                        <param name="short-title" value="monogr/title[@type='short']"/>
+                        <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
+                        <param name="date" value="monogr/imprint/date/text()"/>
+                        <param name="additional-infos" value="if (monogr/imprint/biblScope) then monogr/imprint/biblScope || ', ' else()"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <!-- Lexika -->
+                            <div>[[title]][[editor]], [[additional]] [[place]][[date]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
+                            </div>
+                        </pb:template>
+                    </model>
                     <model predicate="monogr[@type='edition'] and @xml:id" behaviour="listItem" cssClass="biblio">
                         <param name="author" value="if (ec:format-editor(monogr/author)) then (', bearb. von ' || ec:format-editor(monogr/author)) else ()"/>
                         <param name="series" value="if (series) then (series/title || ', ' || series/biblScope || ': ') else ()"/>

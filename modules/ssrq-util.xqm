@@ -119,6 +119,7 @@ declare function ssrq-utils:fixLinks($nodes as node()*) {
             case element() return
                 element { node-name($node) } {
                     $node/@*, ssrq-utils:fixLinks($node/node())
+                    
                 }
             default return
                 $node
@@ -513,7 +514,7 @@ declare function ssrq-utils:hits($node as node(), $model as map(*), $collection 
 :
 :
 :)
-declare function ssrq-utils:renderHeadings($section as node(), $pos, $type as xs:string) {
+declare function ssrq-utils:renderHeadings($section as node(), $pos, $type as xs:string*) {
     let $section-heading := $section/tei:head
     return
     if ($section-heading/@type = 'title' or $section-heading/@type = 'subtitle')

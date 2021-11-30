@@ -323,6 +323,14 @@ declare function pmf:format-author($author as node()*) {
         ()
 };
 
+declare function pmf:format-enc-editor($editors as node()*) {
+    if ($editors) then
+        if (count($editors) > 2 or $editors[last()] => contains('et.'))
+        then ($editors[1], $editors[2]) => string-join(', ') || ', et al.'
+        else $editors => string-join(', ')
+    else ()
+};
+
 declare function pmf:switch-name($name as node()*) {
 
     substring-after($name, ', ') || ' ' || substring-before($name, ', ')
