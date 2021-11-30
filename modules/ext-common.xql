@@ -490,14 +490,15 @@ declare function pmf:format-link($id as xs:string*) as xs:string* {
         "ssrq-old": "https://www.ssrq-sds-fds.ch/online/",
         "ssrq-new": request:get-context-path() || '/apps/ssrq/'
     }
+    let $ssrq-names := ('SDS', 'SSRQ', 'FDS')
     return
         if ($id => contains('bsg') or $id => contains('sz'))
         then
             $link-base?national-bib || $id
         else
-            if ($id => contains('SSRQ'))
+            if (some $name in $ssrq-names satisfies $id => contains($name))
             then
-                let $volume := $id => substring-after('SSRQ_')
+                let $volume := $id => substring-after('_')
                 let $collection := $volume => substring-before ('_')
                 return
                     if (($config:data-root || '/' || $collection || '/' || $volume) => xmldb:collection-available())

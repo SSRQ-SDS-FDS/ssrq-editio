@@ -1603,7 +1603,7 @@
                         <param name="title" value="replace(monogr/title[not(@type='short')], ' : ', ' – ')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="journal" value="if (monogr/imprint/biblScope) then 'in: ' || monogr/imprint/biblScope || ', ' else ()"/>
-                        <param name="link" value="ec:format-link(@xml:id)"/>
+                        <param name="link" value="if (monogr/ref) then monogr/ref/@target else ec:format-link(@xml:id)"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
                         <param name="date" value="monogr/imprint/date/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
@@ -1659,7 +1659,7 @@
                         <param name="author" value="if (ec:format-editor(analytic/author)) then (', bearb. von ' || ec:format-editor(analytic/author)) else ()"/>
                         <param name="title" value="replace(analytic/title[not(@type='short')], ' : ', ' – ')"/>
                         <param name="short-title" value="analytic/title[@type='short']"/>
-                        <param name="link" value="ec:format-link(@xml:id)"/>
+                        <param name="link" value="if (analytic/ref) then analytic/ref/@target else ec:format-link(@xml:id)"/>
                         <param name="journal" value="monogr/title"/>
                         <param name="scope" value="string-join(monogr/biblScope, ', ')"/>
                         <pb:template xmlns="" xml:space="preserve">
@@ -1672,11 +1672,12 @@
                         <param name="author" value="if (ec:format-editor(analytic/author)) then (', bearb. von ' || ec:format-editor(analytic/author)) else ()"/>
                         <param name="title" value="replace(analytic/title[not(@type='short')], ' : ', ' – ')"/>
                         <param name="short-title" value="analytic/title[@type='short']"/>
+                        <param name="link" value="if (analytic/ref) then analytic/ref/@target else ec:format-link(@xml:id)"/>
                         <param name="journal" value="monogr/title"/>
                         <param name="scope" value="string-join(monogr/biblScope, ', ')"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <!--  Edition (in Zeitschrift) -->
-                            <div>[[title]][[author]], in: [[journal]], [[scope]] ([[short-title]]).
+                            <div>[[title]][[author]], in: [[journal]], [[scope]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
                             </div>
                         </pb:template>
                     </model>
