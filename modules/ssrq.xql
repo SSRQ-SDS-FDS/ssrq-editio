@@ -543,14 +543,20 @@ function app:partners($node as node(), $model as map(*)) {
     let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
     return
         (<h3 xmlns:i18n="http://exist-db.org/xquery/i18n"><i18n:text key="partners">Projektpartner</i18n:text></h3>,
-        for $partner in $config:partners//tei:dataSpec[@ident="partners"]/tei:valList/tei:valItem return
+        for $partner in $config:partners//tei:dataSpec[@ident="partners"]/tei:valList/tei:valItem
+        let $value := $partner/tei:desc[@xml:lang=$lang]/tei:p/text()
+        order by $value => substring(1, 1) => upper-case()
+        return
             <p>
-                { $partner/tei:desc[@xml:lang=$lang]/tei:p }
+                {$value}
             </p>,
         <h3 xmlns:i18n="http://exist-db.org/xquery/i18n"><i18n:text key="funding">Finanzielle Unterstützung</i18n:text></h3>,
-        for $partner in $config:partners//tei:dataSpec[@ident="funding"]/tei:valList/tei:valItem return
+        for $partner in $config:partners//tei:dataSpec[@ident="funding"]/tei:valList/tei:valItem
+        let $value := $partner/tei:desc[@xml:lang=$lang]/tei:p/text()
+        order by $value => substring(1, 1) => upper-case()
+        return
             <p>
-                { $partner/tei:desc[@xml:lang=$lang]/tei:p/text() }
+                {$value}
             </p>
         )
 };
