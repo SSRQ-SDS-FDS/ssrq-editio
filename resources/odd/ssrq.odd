@@ -1585,7 +1585,7 @@
                     <model output="latex" behaviour="omit"/>
                     <model predicate="monogr[@type='edition'] and @xml:id" behaviour="listItem" cssClass="biblio">
                         <param name="author" value="if (ec:format-editor(monogr/author)) then (', bearb. von ' || ec:format-editor(monogr/author)) else ()"/>
-                        <param name="series" value="if (monogr/series) then (monogr/series/title || ', ' || monogr/series/biblScope || ': ') else ()"/>
+                        <param name="series" value="if (series) then (series/title || ', ' || series/biblScope || ': ') else ()"/>
                         <param name="title" value="replace(monogr/title[not(@type='short')], ' : ', ' – ')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="link" value="ec:format-link(@xml:id)"/>
@@ -1599,7 +1599,7 @@
                     </model>
                     <model predicate="monogr[@type='edition']" behaviour="listItem" cssClass="biblio">
                         <param name="author" value="if (ec:format-editor(monogr/author)) then (', bearb. von ' || ec:format-editor(monogr/author)) else ()"/>
-                        <param name="series" value="if (monogr/series) then (monogr/series/title || ', ' || monogr/series/biblScope || ': ') else ()"/>
+                        <param name="series" value="if (series) then (series/title || ', ' || series/biblScope || ': ') else ()"/>
                         <param name="title" value="replace(monogr/title[not(@type='short')], ' : ', ' – ')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
