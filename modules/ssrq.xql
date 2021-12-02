@@ -679,7 +679,7 @@ function app:download-xml($node as node(), $model as map(*), $doc as xs:string?)
         else
             $doc
     return
-        <a href="{request:get-context-path()}/apps/ssrq-data/{$resource}">
+        <a href="{request:get-context-path()}{$config:data-root => replace('/db', '')}{$resource}">
         {
             $node/@*,
             templates:process($node/node(), $model)
@@ -691,7 +691,7 @@ declare
 function app:download-pdf($node as node(), $model as map(*), $doc as xs:string?) {
     let $resource := $doc => functx:substring-before-last-match('/') || '/pdf/' || $doc => functx:substring-after-last-match('/') => replace('(?:_\d{1,2})?\.xml', '.pdf')
     return
-        if (('/db/apps/ssrq-data/data' || $resource) => util:binary-doc-available())
+        if (($config:data-root || $resource) => util:binary-doc-available())
         then
             <a href="{request:get-context-path()}/apps/ssrq-data/data{$resource}" data-pdf="/db/apps/ssrq-data/data{$resource}">
             {
