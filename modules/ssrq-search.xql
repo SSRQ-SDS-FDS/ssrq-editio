@@ -118,7 +118,7 @@ declare function query:query-texts($subtypes as xs:string*, $query as xs:string)
                     collection($config:data-root)//tei:body[ft:query(., $query, $query:QUERY_OPTIONS)] |
                     collection($config:data-root)//tei:back[.//tei:orig[ft:query(., $query, $query:QUERY_OPTIONS)]] |
                     collection($config:data-root)//tei:body[.//tei:note//tei:orig[ft:query(., $query, $query:QUERY_OPTIONS)]] |
-                    collection($config:data-root)//tei:body[not(*)]
+                    collection($config:data-root)//tei:TEI[not(@type="volinfo")]//tei:body[not(*)]
 
     return
         map {
