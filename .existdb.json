@@ -1,9 +1,9 @@
 {
   "servers": {
     "localhost": {
-      "server": "http://localhost:8082/exist",
+      "server": "http://localhost:8080/exist",
       "user": "admin",
-      "password": "O7beHDC7j2WjpfgQ4ZJwWzho"
+      "password": ""
     }
   },
   "sync": {
@@ -16,6 +16,7 @@
       "node_modules/**",
       "bower_components/**",
       "test/**",
+      "build/*",
       ".DS_Store"
     ]
   }

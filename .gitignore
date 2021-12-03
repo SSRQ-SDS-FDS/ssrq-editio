@@ -1,5 +1,5 @@
 /build
-/.existdb.json
+.existdb.json
 /transform/*
 /resources/css
 
@@ -301,4 +301,3 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/emacs,intellij,java,linux,macos,sass,vim,visualstudiocode,windows
-.existdb.json
