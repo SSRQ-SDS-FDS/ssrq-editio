@@ -62,7 +62,7 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
                 pmc:footnote-label($nr)
             default return
                 $nr
-    let $enclose := $type = "text-critical" and matches($content, "\s")
+    let $enclose := $type = "text-critical" and matches($content, "\s") or $node/@type = 'keyword'
     let $labelStart := string-join(($label, if ($enclose) then "–" else ()))
     let $labelEnd := string-join((if ($enclose) then "–" else (), $label))
     return (
