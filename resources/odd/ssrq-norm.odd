@@ -36,10 +36,10 @@
                     <model predicate=". is (ancestor::quote[1]/seg[last()-1])" behaviour="block">
                         <desc>Add missing margin</desc>
                         <outputRendition>
-
+                            
                             margin-top: 1ex;
                             margin-bottom: 1ex;
-
+                            
                         </outputRendition>
                     </model>
                     <model behaviour="block">
@@ -79,6 +79,9 @@
                 </elementSpec>
                 <elementSpec ident="expan" mode="change">
                     <model behaviour="inline"/>
+                </elementSpec>
+                <elementSpec ident="add" mode="change">
+                    <model predicate="@type='catchword'" behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="p" mode="change">
                     <model predicate="parent::seg[@n] and parent::seg/*[1] is ." behaviour="paragraph" useSourceRendition="true">
@@ -155,15 +158,15 @@
                     <model predicate="ancestor::app" behaviour="inline" cssClass="head">
                         <desc>Heading in app</desc>
                         <outputRendition>
-
-
+                            
+                            
                             display: block;
-font-weight: 700;
-line-height: 1.2;
-margin-top: 20px;
-margin-bottom: 10px;
-
-
+                            font-weight: 700;
+                            line-height: 1.2;
+                            margin-top: 20px;
+                            margin-bottom: 10px;
+                            
+                            
                         </outputRendition>
                     </model>
                     <model predicate="parent::div[@n][@type=('chapter', 'section')]/*[1] is ." behaviour="heading">

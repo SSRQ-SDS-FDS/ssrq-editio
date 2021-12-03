@@ -10,6 +10,7 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 import module namespace html="http://www.tei-c.org/tei-simple/xquery/functions";
 import module namespace pmc="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xql";
 
+
 declare function pmf:link($config as map(*), $node as node(), $class as xs:string+, $content, $link, $target) {
     <a href="{$link}" class="{$class}">
     {
@@ -76,6 +77,54 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
             (),
         <span class="alternate {$class}">
             <span>{html:apply-children($config, $node, $content)}</span>
+            <span class="altcontent">{$prefix}{$alternate}</span>
+        </span>,
+        <span id="fnref:{$id}" class="note-wrap">
+            <a class="note note-end" rel="footnote" href="#fn:{$id}">
+            { $labelEnd }
+            </a>
+        </span>,
+        <li class="footnote" id="fn:{$id}" value="{$nr}"
+            type="{if ($type = 'text-critical') then 'a' else '1'}">
+            <span class="fn-content">
+                {$prefix}{$alternate}
+            </span>
+            <a class="fn-back" href="#fnref:{$id}">↩</a>
+        </li>
+    )
+};
+
+(: Custom behaviour, which will just render a footnote-mark without preceding content :)
+declare function pmf:mark($config as map(*), $node as element(), $class as xs:string+, $content,
+    $label, $type, $alternate, $optional as map(*)) {
+    let $nodeId :=
+        if ($node/@exist:id) then
+            $node/@exist:id
+        else
+            util:node-id($node)
+    let $id := translate($nodeId, "-", "_")
+    let $nr := pmc:increment-counter($type)
+    let $alternate := $config?apply-children($config, $node, $alternate)
+    let $prefix := $config?apply-children($config, $node, $optional?prefix)
+    let $label :=
+        switch($type)
+            case "text-critical" return
+                pmc:footnote-label($nr)
+            default return
+                $nr
+    let $enclose := $type = "text-critical" and matches($content, "\s") or $node/@type = 'keyword'
+    let $labelStart := string-join(($label, if ($enclose) then "–" else ()))
+    let $labelEnd := string-join((if ($enclose) then "–" else (), $label))
+    return (
+        if ($enclose) then
+            <span class="note-wrap">
+                <a class="note note-start" rel="footnote" href="#fn:{$id}">
+                { $labelStart }
+                </a>
+            </span>
+        else
+            (),
+        <span class="alternate {$class}">
             <span class="altcontent">{$prefix}{$alternate}</span>
         </span>,
         <span id="fnref:{$id}" class="note-wrap">
