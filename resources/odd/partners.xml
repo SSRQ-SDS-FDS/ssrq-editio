@@ -138,12 +138,15 @@
                     <valItem ident="Archives de l'État de Neuchâtel (AEN)">
                         <desc xml:lang="de">
                             <p>Archives de l'État de Neuchâtel (AEN)</p>
+                            <ref>https://www.ne.ch/autorites/DESC/SCNE/archives-etat/Pages/accueil.aspx</ref>
                         </desc>
                         <desc xml:lang="fr">
                             <p>Archives de l'État de Neuchâtel (AEN)</p>
+                            <ref>https://www.ne.ch/autorites/DESC/SCNE/archives-etat/Pages/accueil.aspx</ref>
                         </desc>
                         <desc xml:lang="en">
                             <p>Archives de l'État de Neuchâtel (AEN)</p>
+                            <ref>https://www.ne.ch/autorites/DESC/SCNE/archives-etat/Pages/accueil.aspx</ref>
                         </desc>
                     </valItem>
                     <valItem ident="Fondation pour la protection du patrimoine culturel, historique et artisanal (Lausanne)">
