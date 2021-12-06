@@ -22,23 +22,29 @@
                     <valItem ident="Archives cantonales vaudoises (ACV)">
                         <desc xml:lang="de">
                             <p>Archives cantonales vaudoises (ACV)</p>
+                            <ref>https://www.vd.ch/toutes-les-autorites/archives-cantonales-vaudoises-acv/</ref>
                         </desc>
                         <desc xml:lang="fr">
                             <p>Archives cantonales vaudoises (ACV)</p>
+                            <ref>https://www.vd.ch/toutes-les-autorites/archives-cantonales-vaudoises-acv/</ref>
                         </desc>
                         <desc xml:lang="en">
                             <p>Archives cantonales vaudoises (ACV)</p>
+                            <ref>https://www.vd.ch/toutes-les-autorites/archives-cantonales-vaudoises-acv/</ref>
                         </desc>
                     </valItem>
                     <valItem ident="Archives de l'État de Neuchâtel (AEN)">
                         <desc xml:lang="de">
                             <p>Archives de l'État de Neuchâtel (AEN)</p>
+                            <ref>https://www.ne.ch/autorites/DESC/SCNE/archives-etat/Pages/accueil.aspx</ref>
                         </desc>
                         <desc xml:lang="fr">
                             <p>Archives de l'État de Neuchâtel (AEN)</p>
+                            <ref>https://www.ne.ch/autorites/DESC/SCNE/archives-etat/Pages/accueil.aspx</ref>
                         </desc>
                         <desc xml:lang="en">
                             <p>Archives de l'État de Neuchâtel (AEN)</p>
+                            <ref>https://www.ne.ch/autorites/DESC/SCNE/archives-etat/Pages/accueil.aspx</ref>
                         </desc>
                     </valItem>
                     <valItem ident="Bibliographie der Schweizergeschichte (BSG)">
@@ -100,12 +106,15 @@
                     <valItem ident="Staatsarchiv St. Gallen (StASG)">
                         <desc xml:lang="de">
                             <p>Staatsarchiv St. Gallen (StASG)</p>
+                            <ref>https://www.sg.ch/kultur/staatsarchiv.html</ref>
                         </desc>
                         <desc xml:lang="fr">
                             <p>Staatsarchiv St. Gallen (StASG)</p>
+                            <ref>https://www.sg.ch/kultur/staatsarchiv.html</ref>
                         </desc>
                         <desc xml:lang="en">
                             <p>Staatsarchiv St. Gallen (StASG)</p>
+                            <ref>https://www.sg.ch/kultur/staatsarchiv.html</ref>
                         </desc>
                     </valItem>
                 </valList>
