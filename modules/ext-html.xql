@@ -124,9 +124,6 @@ declare function pmf:mark($config as map(*), $node as element(), $class as xs:st
             </span>
         else
             (),
-        <span class="alternate {$class}">
-            <span class="altcontent">{$prefix}{$alternate}</span>
-        </span>,
         <span id="fnref:{$id}" class="note-wrap">
             <a class="note note-end" rel="footnote" href="#fn:{$id}">
             { $labelEnd }
@@ -135,7 +132,7 @@ declare function pmf:mark($config as map(*), $node as element(), $class as xs:st
         <li class="footnote" id="fn:{$id}" value="{$nr}"
             type="{if ($type = 'text-critical') then 'a' else '1'}">
             <span class="fn-content">
-                {$prefix}{$alternate}
+                {$prefix}{$alternate}{pmc:colon()}{$config?apply-children($config, $node, $node)}
             </span>
             <a class="fn-back" href="#fnref:{$id}">↩</a>
         </li>

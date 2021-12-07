@@ -41,10 +41,13 @@ $(function () {
   });
 });
 
+// Handling Reset Action in the Seach-Form
 const resetButton = document.querySelector("button[type='reset']");
-resetButton.addEventListener('click', (e) => {
-  handleReset(e);
-});
+if (resetButton) {
+  resetButton.addEventListener('click', (e) => {
+    handleReset(e);
+  });
+}
 
 function handleReset(e) {
   e.preventDefault();
