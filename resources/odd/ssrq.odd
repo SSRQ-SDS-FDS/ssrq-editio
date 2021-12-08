@@ -30,7 +30,7 @@
                         <pb:template>
                             \subsection{Ungedruckte Quellen}
                             \setcounter{footnote}{0}
-
+                            
                             [[archiveType]]
                         </pb:template>
                     </model>
@@ -39,13 +39,13 @@
                         <param name="literature" value="text/body/div/listBibl/biblStruct"/>
                         <pb:template>
                             \subsection{Literaturverzeichnis}
-
+                            
                             [[introduction]]
-
+                            
                             \begin{hangparas}{4.5mm}{1}
-
+                            
                             [[literature]]
-
+                            
                             \end{hangparas}
                         </pb:template>
                     </model>
@@ -55,28 +55,28 @@
                         <param name="literature" value="teiHeader/fileDesc/sourceDesc/msDesc/additional/listBibl"/>
                         <pb:template>
                             \documentclass[10pt,twoside]{article}
-
+                            
                             \usepackage{ssrq_intro_[[lang]]}  % here's all the magic...
-
+                            
                             \begin{document}
-
+                            
                             \cleardoublepage			% Fortsetzung auf einer ungeraden Seite
                             \pagestyle{plain}			% Beginn der Seitennummerierung
                             \pagenumbering{arabic}		% arabische Seitenzahlen, mit 1 beginnend
                             \footnotesize				% sehr platzsparend... (normalsize ist 8pt)
                             \tableofcontents			% Inhaltsverzeichnis
-
+                            
                             % Einleitung
                             \cleardoublepage			% Fortsetzung auf einer ungeraden Seite
                             \small						% platzsparend... (normalsize ist 9pt)
                             \addcontentsline{toc}{section}{Einleitung}
                             \fancyhead[LE,RO]{\small Einleitung}			% Kopfzeile aussen
                             \thispagestyle{plain}							% aber nicht auf der ersten Seite
-
+                            
                             [[content]]
-
+                            
                             [[literature]]
-
+                            
                             \end{document}
                         </pb:template>
                     </model>
@@ -105,38 +105,38 @@
                         <param name="literature" value="teiHeader/fileDesc/sourceDesc/msDesc/additional/listBibl"/>
                         <pb:template>
                             \documentclass[10pt,twoside]{article}
-
+                            
                             \usepackage{ssrq_[[lang]]}  % here's all the magic...
-
+                            
                             \begin{document}
-
+                            
                             % Variablen für Kopfzeile
                             \def\volume{[[ssrq]], [[volume]] [[by]] [[author]], [[year]].}
                             \def\volid{\url{https://www.ssrq-sds-fds.ch/online/tei/[[canton]]/[[idno]].xml}}
-
+                            
                             \linenumbers				% Zeilennummern
                             \normalsize					% normale Grösse, d.h. Quellentext (source) ist 10pt
-
+                            
                             \thispagestyle{firstpage}
-
+                            
                             \setcounter{[[sectionType]]}{[[articleNr]]}  % Stücknummer - 1
                             \sloppy
                             \[[articleType]]{[[title]]}{}
                             \fussy
                             \[[datingType]]{[[dating]][[place]][[keywords]]}
-
+                            
                             [[summary]]
                             [[comments]]
                             [[content]]
-
+                            
                             [[msdesc]]
-
+                            
                             [[additionalSources]]
-
+                            
                             [[literature]]
-
+                            
                             \printnotes*
-
+                            
                             \end{document}
                         </pb:template>
                     </model>
@@ -972,7 +972,7 @@
                         <param name="archive" value="div"/>
                         <pb:template>
                             \subsubsection{[[title]]}
-
+                            
                             \begin{hangparas}{4.5mm}{1}
                             [[archive]]
                             \end{hangparas}
@@ -1497,9 +1497,9 @@
                         <param name="literature" value="biblStruct"/>
                         <pb:template>
                             \begin{hangparas}{4.5mm}{1}
-
+                            
                             [[literature]]
-
+                            
                             \end{hangparas}
                         </pb:template>
                     </model>
@@ -1584,7 +1584,7 @@
                     </model>
                     <model output="latex" behaviour="omit"/>
                     <model predicate="monogr[@type='enc']" behaviour="listItem" cssClass="biblio">
-                        <param name="editor" value="' hrsg. von ' || ec:format-enc-editor(monogr/author)"/>
+                        <param name="editor" value="', hrsg. von ' || ec:format-enc-editor(monogr/author)"/>
                         <param name="title" value="replace(monogr/title[not(@type='short')], ' : ', ' – ')"/>
                         <param name="link" value="if (@xml:id) then ec:format-link(@xml:id) else monogr/ref/@target"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
