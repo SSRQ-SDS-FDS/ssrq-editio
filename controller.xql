@@ -2,6 +2,7 @@ xquery version "3.1";
 
 import module namespace login="http://exist-db.org/xquery/login" at "resource:org/exist/xquery/modules/persistentlogin/login.xql";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "modules/config.xqm";
+import module namespace functx="http://www.functx.com";
 
 declare variable $exist:path external;
 declare variable $exist:resource external;
@@ -11,6 +12,68 @@ declare variable $exist:root external;
 
 declare variable $logout := request:get-parameter("logout", ());
 declare variable $login := request:get-parameter("user", ());
+declare variable $site-prefix := request:get-header('X-Site-Prefix');
+declare variable $routeBase := '/routes/';
+declare variable $language := map {
+    'ssrq-online.ch': 'de',
+    'fds-online.ch': 'it',
+    'sds-online.ch': 'fr',
+    'sls-online.ch': 'en'
+};
+
+declare function local:setLanguage($key as xs:string) {
+    let $lang := if ($language($key)) then $language($key) else request:get-parameter("lang", "de")
+    return
+       if (session:get-attribute("ssrq.lang") != $lang)
+       then session:set-attribute("ssrq.lang", $lang)
+       else ()
+};
+
+declare function local:resolveView($error as node()) {
+    let $type := $exist:resource => substring-after('.') => functx:substring-before-if-contains('?')
+    let $id := xmldb:decode($exist:resource)
+    let $path := substring-before($exist:path, $exist:resource)
+    return
+        local:handleResolveCases($type, $path, $id, $error)
+};
+
+declare function local:handleResolveCases($type as xs:string, $path as xs:string, $id as xs:string, $error as node()) {
+    switch ($type)
+            case 'html'
+            return ()
+            case 'xml'
+            return
+                 let $template := request:get-parameter("template", ())
+                 let $route := if ($template and $template = 'introduction') then $routeBase || 'introduction.html' else $routeBase || 'view.html'
+                 return
+                    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+                        <forward url="{$exist:controller}{$route}"></forward>
+                        <view>
+                            <forward url="{$exist:controller}/modules/view.xql">
+                                <add-parameter name="id" value="{$id => replace('.xml', '')}"/>
+                                <add-parameter name="doc" value="{$path}{$id}"/>
+                                <set-header name="Cache-Control" value="no-cache"/>
+                            </forward>
+                        </view>
+                        {$error}
+                    </dispatch>
+            case 'tex'
+            return
+                <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+                    <forward url="{$exist:controller}/modules/lib/latex.xql">
+                        <add-parameter name="id" value="{$path}{$id => replace('.tex', '.xml')}"/>
+                    </forward>
+                    {$error}
+                </dispatch>
+            case 'pdf'
+            return ()
+            default return
+                (: Error Handling for old .xml.tex :)
+                if ($type => contains('.'))
+                then local:handleResolveCases($type => substring-after('.'), $path, $id => functx:substring-before-last('.'), $error)
+                else $error
+};
+
 
 declare function local:resolve($path as xs:string, $name as xs:string) {
     if (doc-available(``[`{$config:data-root}`/`{$path}`/`{$name}`]``)) then
@@ -28,57 +91,43 @@ declare function local:resolve($path as xs:string, $name as xs:string) {
                 ()
 };
 
+let $set-prefix := if ($site-prefix => exists()) then session:set-attribute('ssrq.prefix', '/exist/apps/ssrq') else session:set-attribute('ssrq.prefix', $site-prefix)
+let $error-handler := <error-handler>
+                        <forward url="{$exist:controller}/routes/error-page.html" method="get"/>
+                        <forward url="{$exist:controller}/modules/view.xql"/>
+                        </error-handler>
 
+return
+
+(: Redirect if path is empty :)
 if ($exist:path eq '') then
     <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-        <redirect url="{request:get-uri()}/"/>
+        <redirect url="{session:get-attribute('ssrq.prefix')}/"/>
     </dispatch>
 
-else if (contains($exist:path, "/$shared/")) then
-    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-        <forward url="/shared-resources/{substring-after($exist:path, '/$shared/')}"/>
-    </dispatch>
-
+(: Serve Resources :)
 else if (contains($exist:path, "/resources")) then
     <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-        <forward url="{$exist:controller}/resources/{substring-after($exist:path, '/resources/')}"/>
+        <forward url="{$exist:controller}/resources/{$exist:path => substring-after('/resources/')}"/>
     </dispatch>
 
-else if (contains($exist:path, "/transform")) then
+(: Handle User Login-State :)
+else if ($login or $logout) then
+   (login:set-user($config:login-domain, (), false()),
+    (:session:create(),:)
+    local:setLanguage($site-prefix),
     <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-        <forward url="{$exist:controller}/transform/{substring-after($exist:path, '/transform/')}"/>
+            <redirect url="{session:get-attribute('ssrq.prefix')}/{$exist:path}/{$exist:resource}"/>
     </dispatch>
-
-else if (contains($exist:path, "/components")) then
-    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-        <forward url="{$exist:controller}/components/{substring-after($exist:path, '/components/')}"/>
-    </dispatch>
-
-else if(contains($exist:path, "/api")) then
-    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-            <forward url="{$exist:controller}/modules/ssrq-rest.xql">
-            </forward>
-    </dispatch>
-
-else if (ends-with($exist:resource, ".xql")) then (
-    login:set-user($config:login-domain, (), false()),
-    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-        <forward url="{$exist:controller}/modules/{substring-after($exist:path, '/modules/')}"/>
-        <cache-control cache="no"/>
-    </dispatch>
-) else if ($logout or $login) then
-    (: Spracheinstellung geht verloren bei Login :)
-    let $lang := session:get-attribute("ssrq.lang")
-    return (
-        login:set-user($config:login-domain, (), false()),
-        session:create(),
-        try {
-            session:set-attribute("ssrq.lang", $lang)
-        } catch * {()},
-        <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-            <redirect url="{replace(request:get-uri(), "^(.*)\?", "$1")}"/>
-        </dispatch>
     )
+
+else if ($exist:resource => contains('.')) then
+    (login:set-user($config:login-domain, (), false()),
+    local:resolveView($error-handler))
+else ()
+(:~
+
+
 else if (ends-with($exist:resource, ".html")) then (
     login:set-user($config:login-domain, (), false()),
     let $resource :=
@@ -87,7 +136,6 @@ else if (ends-with($exist:resource, ".html")) then (
         else
             "routes/" || $exist:resource
     return
-        (: the html page is run through view.xql to expand templates :)
         <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
             <forward url="{$exist:controller}/{$resource}">
                 <set-header name="Cache-Control" value="no-cache"/>
@@ -103,7 +151,6 @@ else if (ends-with($exist:resource, ".html")) then (
 
 ) else (
     login:set-user($config:login-domain, (), false()),
-    (: let $id := replace(xmldb:decode($exist:resource), "^(.*)\..*$", "$1") :)
     let $id := xmldb:decode($exist:resource)
     let $path := substring-before($exist:path, $exist:resource)
     let $redir := local:resolve($path, $id)
@@ -182,4 +229,4 @@ else if (ends-with($exist:resource, ".html")) then (
                 </error-handler>
             </dispatch>
 
-)
+) ~:)
