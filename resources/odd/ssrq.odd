@@ -1364,11 +1364,16 @@
                         </pb:template>
                     </model>
                     <model predicate="@resp" behaviour="omit"/>
-                    <model behaviour="heading" predicate="$parameters?view='introduction' and ancestor::TEI/@type = 'bailiffs' and ancestor::group and @type = 'title'">
-                        <param name="level" value="2"/>
+                    <model behaviour="block" predicate="$parameters?view='introduction' and ancestor::TEI/@type = 'bailiffs' and ancestor::group and @type = 'title'">
+                        <param name="id" value="ec:unique-id(.)"/>
+                        <param name="content" value="./text()"></param>
+                        <param name="n" value="@n"></param>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <h2 class="tei-head14" id="[[id]]"><span class="headingnumber">[[n]]</span> [[content]]</h2>
+                        </pb:template>
                     </model>
                     <model behaviour="block" predicate="$parameters?view='introduction' and @type = 'title' and @n">
-                        <param name="id" value="ec:heading-id(.)"/>
+                        <param name="id" value="ec:unique-id(.)"/>
                         <param name="content" value="./text()"></param>
                         <param name="n" value="@n"/>
                         <pb:template xmlns="" xml:space="preserve">
@@ -1376,7 +1381,7 @@
                         </pb:template>
                     </model>
                     <model behaviour="block" predicate="$parameters?view='introduction' and @type = 'title'">
-                        <param name="id" value="ec:heading-id(.)"/>
+                        <param name="id" value="ec:unique-id(.)"/>
                         <param name="content" value="./text()"></param>
                         <pb:template xmlns="" xml:space="preserve">
                             <h1 class="tei-head11" id="[[id]]">[[content]]</h1>
@@ -1386,7 +1391,7 @@
                         <param name="level" value="1"/>
                     </model>
                     <model behaviour="block" predicate="$parameters?view='introduction' and @type = 'subtitle' and @n">
-                        <param name="id" value="ec:heading-id(.)"/>
+                        <param name="id" value="ec:unique-id(.)"/>
                         <param name="content" value="./text()"></param>
                         <param name="n" value="@n"></param>
                         <pb:template xmlns="" xml:space="preserve">
@@ -1394,7 +1399,7 @@
                         </pb:template>
                     </model>
                     <model behaviour="block" predicate="$parameters?view='introduction' and @type = 'subtitle'">
-                        <param name="id" value="ec:heading-id(.)"/>
+                        <param name="id" value="ec:unique-id(.)"/>
                         <param name="content" value="./text()"></param>
                         <pb:template xmlns="" xml:space="preserve">
                             <h2 class="tei-head14" id="[[id]]">[[content]]</h2>
@@ -1407,7 +1412,7 @@
                         <param name="level" value="3"/>
                     </model>
                     <model behaviour="block" predicate="$parameters?view='introduction'">
-                        <param name="id" value="ec:heading-id(.)"/>
+                        <param name="id" value="ec:unique-id(.)"/>
                         <param name="content" value="./text()"></param>
                         <pb:template xmlns="" xml:space="preserve">
                             <h2 class="tei-head14" id="[[id]]">[[content]]</h2>

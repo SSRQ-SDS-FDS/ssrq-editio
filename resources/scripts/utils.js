@@ -12,10 +12,12 @@ const persons = document.querySelectorAll(
 const clickHandler = (e) => {
   e.preventDefault();
   const href = e.target.getAttribute('href');
-  const offsetTop = document.querySelector(href).offsetTop;
+  const target = document.getElementById(href.split('#').pop());
+  const offSet = target.offsetTop + window.innerHeight / 4;
   scroll({
-    top: offsetTop + window.innerHeight / 2,
+    target,
     behavior: 'smooth',
+    top: offSet,
   });
 };
 

@@ -439,6 +439,10 @@ declare function pmf:heading-id($head as node()) {
         ('section', $group, $n) => string-join('-')
 };
 
+declare function pmf:unique-id($node as node()) as xs:string {
+    util:node-id($node)
+};
+
 declare function pmf:svg($config as map(*), $node as element(), $class as xs:string+, $content as node()*) {
     let $collection := util:collection-name($node)
     let $svg := doc($collection || '/' ||  $node/tei:graphic/@url/data(.))

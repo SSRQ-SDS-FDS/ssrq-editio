@@ -119,7 +119,7 @@ declare function ssrq-utils:fixLinks($nodes as node()*) {
             case element() return
                 element { node-name($node) } {
                     $node/@*, ssrq-utils:fixLinks($node/node())
-                    
+
                 }
             default return
                 $node
@@ -514,29 +514,24 @@ declare function ssrq-utils:hits($node as node(), $model as map(*), $collection 
 :
 :
 :)
-declare function ssrq-utils:renderHeadings($section as node(), $pos, $type as xs:string*) {
+declare function ssrq-utils:renderHeadings($section as node()) as element(li)* {
     let $section-heading := $section/tei:head
     return
     if ($section-heading/@type = 'title' or $section-heading/@type = 'subtitle')
     then
         let $subsections := $section => ssrq-utils:getSubsections()
-        let $output :=
-                if ($section-heading/*)
-                (:~To_DO Rendering durch PM :)
-                then ()
-                else $section-heading/string()
-        let $link := if ($type = 'introduction') then ('#section-' || $pos) else ('#' || pmf:heading-id($section-heading))
+        let $output := $section-heading/text()
         return
             <li>
-                <a href="{$link}" class="toc-anchor">{$output}</a>
+                <a href="#{util:node-id($section-heading)}" class="toc-anchor">{$output}</a>
                     {
                     if ($subsections and ($subsections//tei:head/@type = 'title' or $subsections//tei:head/@type = 'subtitle'))
                     then
                         <ul>
                             {
-                            for $subsection at $subpos in $subsections
+                            for $subsection in $subsections
                             return
-                            ssrq-utils:renderHeadings($subsection, $pos || '-' || $subpos, $type)
+                                ssrq-utils:renderHeadings($subsection)
                             }
                         </ul>
                     else ()
@@ -551,21 +546,18 @@ declare function ssrq-utils:renderHeadings($section as node(), $pos, $type as xs
 : @return TOC as html:ul
 :)
 declare function ssrq-utils:printToc($node as node(), $model as map(*)) as node()* {
-    if (not($model?doc-type = 'bailiffs'))
-    then
-        let $divs := $model?data => ssrq-utils:getSubsections()
-        let $head := <h3><i18n:text key="toc"/></h3>
-        return
-            (templates:process($head, $model),
-            <ul id="toc">
-                {
-                for $div at $pos in $divs
-                let $html := ssrq-utils:renderHeadings($div, $pos, $model?doc-type)
-                return
-                    $html
-                }
-            </ul>)
-    else ()
+    let $divs := $model?data => ssrq-utils:getSubsections()
+    let $head := <h3><i18n:text key="toc"/></h3>
+    return
+        (templates:process($head, $model),
+        <ul id="toc">
+            {
+            for $div in $divs
+            let $html := ssrq-utils:renderHeadings($div)
+            return
+                $html
+            }
+        </ul>)
 };
 
 
