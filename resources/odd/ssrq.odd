@@ -462,13 +462,8 @@
                         <param name="type" value="'text-critical'"/>
                         <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ', ', ec:label('supplied-after', false()), ' ', supplied/@source)"/>
                     </model>
-                    <model predicate="supplied[unclear]" behaviour="alternote" cssClass="text-critical">
-                        <param name="content" value="('[', supplied/node(), ']')"/>
-                        <param name="type" value="'text-critical'"/>
-                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ', ', ec:label('supplied', false()))"/>
-                    </model>
                     <model predicate="supplied" behaviour="alternote" cssClass="text-critical">
-                        <param name="content" value="supplied/node()"/>
+                        <param name="content" value="('[', supplied/node(), ']')"/>
                         <param name="type" value="'text-critical'"/>
                         <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ', ', ec:label('supplied', false()))"/>
                     </model>
