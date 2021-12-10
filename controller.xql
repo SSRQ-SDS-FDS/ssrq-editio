@@ -4,6 +4,8 @@ import module namespace login="http://exist-db.org/xquery/login" at "resource:or
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "modules/config.xqm";
 import module namespace functx="http://www.functx.com";
 
+declare namespace tei="http://www.tei-c.org/ns/1.0";
+
 declare variable $exist:path external;
 declare variable $exist:resource external;
 declare variable $exist:controller external;
@@ -20,6 +22,7 @@ declare variable $language := map {
     'sds-online.ch': 'fr',
     'sls-online.ch': 'en'
 };
+declare variable $idnoSchema := '[A-Z]{3,4}_[A-Z]{2}_.*';
 
 declare function local:setLanguage($key as xs:string) {
     let $lang := if ($language($key)) then $language($key) else request:get-parameter("lang", "de")
@@ -27,6 +30,16 @@ declare function local:setLanguage($key as xs:string) {
        if (session:get-attribute("ssrq.lang") != $lang)
        then session:set-attribute("ssrq.lang", $lang)
        else ()
+};
+
+declare function local:resolveId($id as xs:string) as xs:string {
+    if ($id => matches($idnoSchema))
+    then
+        if (collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id])
+        then $id
+        else $id || "_1"
+    else $id
+
 };
 
 declare function local:resolveView($error as node()) {
@@ -40,33 +53,60 @@ declare function local:resolveView($error as node()) {
 declare function local:handleResolveCases($type as xs:string, $path as xs:string, $id as xs:string, $error as node()) {
     switch ($type)
             case 'html'
-            return ()
-            case 'xml'
             return
-                 let $template := request:get-parameter("template", ())
-                 let $route := if ($template and $template = 'introduction') then $routeBase || 'introduction.html' else $routeBase || 'view.html'
-                 return
+                let $template := request:get-parameter('template', ())
+                let $route := if ($template and $template = 'introduction') then $routeBase || 'introduction.html' else $routeBase || 'view.html'
+                return
                     <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
                         <forward url="{$exist:controller}{$route}"></forward>
                         <view>
                             <forward url="{$exist:controller}/modules/view.xql">
-                                <add-parameter name="id" value="{$id => replace('.xml', '')}"/>
-                                <add-parameter name="doc" value="{$path}{$id}"/>
+                                {
+                                if ($id => matches($idnoSchema))
+                                then
+                                (: This will load texts by their tei:idno instead of using the filename :)
+                                <add-parameter name="id" value="{$id => replace('.html', '')}"/>
+                                else ()
+                                }
+                                <add-parameter name="doc" value="{$path}{$id => replace('.html', '.xml')}"/>
                                 <set-header name="Cache-Control" value="no-cache"/>
                             </forward>
                         </view>
                         {$error}
                     </dispatch>
+            case 'xml'
+            return
+                <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+                    <forward url="{$exist:controller}/modules/ssrq-rest.xql">
+                        {
+                        if ($id => matches($idnoSchema))
+                        then
+
+                        <add-parameter name="id" value="{$id => replace('.xml', '')}"/>
+                        else ()
+                        }
+                        <add-parameter name="route" value="xml"/>
+                        <add-parameter name="doc" value="{$path}{$id}"/>
+                    </forward>
+                    {$error}
+                </dispatch>
             case 'tex'
             return
                 <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
                     <forward url="{$exist:controller}/modules/lib/latex.xql">
-                        <add-parameter name="id" value="{$path}{$id => replace('.tex', '.xml')}"/>
+                        <add-parameter name="id" value="{$path}{($id => substring-before('.tex') => local:resolveId()) || '.xml'}"/>
                     </forward>
                     {$error}
                 </dispatch>
             case 'pdf'
-            return ()
+            return
+                <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+                    <forward url="{$exist:controller}/modules/ssrq-rest.xql">
+                        <add-parameter name="doc" value="{$path}pdf/{$id => replace('_[0-9].pdf', '.pdf')}"/>
+                        <add-parameter name="route" value="pdf"/>
+                    </forward>
+                    {$error}
+                </dispatch>
             default return
                 (: Error Handling for old .xml.tex :)
                 if ($type => contains('.'))
@@ -75,21 +115,6 @@ declare function local:handleResolveCases($type as xs:string, $path as xs:string
 };
 
 
-declare function local:resolve($path as xs:string, $name as xs:string) {
-    if (doc-available(``[`{$config:data-root}`/`{$path}`/`{$name}`]``)) then
-        ()
-    else
-        let $basename := replace($name, "^([^\.]+)\..*$", "$1")
-        let $suffix := replace($name, "^[^\.]+(\..*)$", "$1")
-        let $name := $basename || "_1" || $suffix
-        return
-            if (doc-available(``[`{$config:data-root}`/`{$path}`/`{$name}`]``)) then
-                <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-                    <redirect url="{replace(request:get-uri(), '^(.*/ssrq/).*$', '$1')}{$path}/{$name}"/>
-                </dispatch>
-            else
-                ()
-};
 
 let $set-prefix := if ($site-prefix => exists()) then session:set-attribute('ssrq.prefix', '/exist/apps/ssrq') else session:set-attribute('ssrq.prefix', $site-prefix)
 let $error-handler := <error-handler>

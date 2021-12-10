@@ -6,15 +6,18 @@ xquery version "3.1";
 
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xql";
 import module namespace app="http://existsolutions.com/ssrq/app" at "ssrq.xql";
+import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 
 declare namespace api = "http://existsolutions.com/ssrq/api";
 
 declare namespace request = "http://exist-db.org/xquery/request";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace output = "http://www.w3.org/2010/xslt-xquery-serialization";
-declare option output:method "json";
-declare option output:media-type "application/json";
-declare option output:indent "yes";
+declare variable $api:jsonSerializationParams := <output:serialization-parameters
+        xmlns:output="http://www.w3.org/2010/xslt-xquery-serialization">
+    <output:method value="json"/>
+    <output:media-type value="application/json"/>
+</output:serialization-parameters>;
 
 declare function api:list-persons($model as map(*)) {
     let $persons :=
@@ -32,8 +35,7 @@ declare function api:list-persons($model as map(*)) {
 
 
 declare function api:main() {
-    let $path := request:get-attribute("$exist:path") => substring-after('api/')
-    let $route := $path => tokenize('/') => head()
+    let $route := request:get-parameter("route", ())
     return
         switch($route)
         (: Route >>> /persons?doc=XYZ.xml :)
@@ -43,14 +45,27 @@ declare function api:main() {
             let $xml := pages:load(<div/>, map{}, $doc, (), (), ())
             let $data := api:list-persons($xml)
             return
-                map {
+                serialize(map {
                     "doc": $doc,
                     "persons": $data
-                }
+                }, $api:jsonSerializationParams)
+        case 'xml'
+        return
+            let $data := app:load(<div/>, map{}, request:get-parameter("doc", ""), (), request:get-parameter("id", ""), ())
+            return
+                root($data?data)
+        case 'pdf'
+        return
+            let $path := request:get-parameter("doc", "")
+            let $doc := $config:data-root || $path
+            return
+                if ($doc => util:binary-doc-available())
+                then $doc => util:binary-doc() => response:stream-binary("media-type=application/pdf", $path => substring-after('_pdf_'))
+                else <error>Did not found {$doc}</error>
         default return
-            map {
+            serialize(map {
                 "error": "No route found for '" || $route || "'"
-            }
+            }, $api:jsonSerializationParams)
 };
 
 
