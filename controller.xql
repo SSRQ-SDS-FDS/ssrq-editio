@@ -15,6 +15,7 @@ declare variable $exist:root external;
 declare variable $logout := request:get-parameter("logout", ());
 declare variable $login := request:get-parameter("user", ());
 declare variable $site-prefix := request:get-header('X-Site-Prefix');
+declare variable $default-prefix := '/exist/apps/ssrq';
 declare variable $routeBase := '/routes/';
 declare variable $language := map {
     'ssrq-online.ch': 'de',
@@ -24,12 +25,27 @@ declare variable $language := map {
 };
 declare variable $idnoSchema := '[A-Z]{3,4}_[A-Z]{2}_.*';
 
-declare function local:setLanguage($key as xs:string) {
-    let $lang := if ($language($key)) then $language($key) else request:get-parameter("lang", "de")
+declare function local:setLanguage($key as xs:string*) {
+    let $langParam := request:get-parameter("lang", ())
+    let $lang := if ($key => exists() and $language($key)) then $language($key) else $langParam
+    let $lang-selected := session:get-attribute("ssrq.lang")
     return
-       if (session:get-attribute("ssrq.lang") != $lang)
-       then session:set-attribute("ssrq.lang", $lang)
-       else ()
+        if ($lang and $lang-selected and $lang-selected != $lang)
+        then session:set-attribute("ssrq.lang", $lang)
+        else if ($lang => empty() and $lang-selected)
+        then session:set-attribute("ssrq.lang", $lang-selected)
+        else if ($lang and $lang-selected => empty())
+        then session:set-attribute("ssrq.lang", $lang)
+        else session:set-attribute("ssrq.lang", "de")
+};
+
+declare function local:setSessionPrefix ($prefix as xs:string*) {
+    if (not(session:get-attribute('ssrq.prefix')))
+    then
+        if (not($prefix => exists()))
+        then session:set-attribute('ssrq.prefix', $default-prefix)
+        else session:set-attribute('ssrq.prefix', $prefix)
+    else ()
 };
 
 declare function local:resolveId($id as xs:string) as xs:string {
@@ -49,6 +65,44 @@ declare function local:resolveView($error as node()) {
     return
         local:handleResolveCases($type, $path, $id, $error)
 };
+
+declare function local:findRouteFromList($routes as map(*), $resource as xs:string, $error as node()) {
+    let $route := for $key in $routes => map:keys()
+                    return
+                        if ($resource => matches($routes($key)?schema))
+                        then $routes($key)
+                        else ()
+    return
+        if (not($route => empty()))
+        then
+            <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+                <forward url="{$exist:controller}{$routeBase}{$route?file}"></forward>
+                <view>
+                    <forward url="{$exist:controller}/modules/view.xql">
+                    {
+                        if ($route => map:contains('params'))
+                        then
+                            for $param in $route?params => map:keys()
+                            return
+                                <add-parameter name="{$param}" value="{$route?params($param)}"/>
+                        else ()
+                    }
+                        <set-header name="Cache-Control" value="no-cache"/>
+                    </forward>
+                </view>
+                {$error}
+            </dispatch>
+        else
+            <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+                <forward url="{$exist:controller}{$routeBase}error-page.html"></forward>
+                <view>
+                    <forward url="{$exist:controller}{$routeBase}error-page.html" method="get"/>
+                    <forward url="{$exist:controller}/modules/view.xql"/>
+                </view>
+            </dispatch>
+
+};
+
 
 declare function local:handleResolveCases($type as xs:string, $path as xs:string, $id as xs:string, $error as node()) {
     switch ($type)
@@ -114,9 +168,9 @@ declare function local:handleResolveCases($type as xs:string, $path as xs:string
                 else $error
 };
 
-
-
-let $set-prefix := if ($site-prefix => exists()) then session:set-attribute('ssrq.prefix', '/exist/apps/ssrq') else session:set-attribute('ssrq.prefix', $site-prefix)
+let $set-prefix := local:setSessionPrefix($site-prefix)
+(: To-Do: Test if language Switching Works correct with urls... :)
+(:~ let $lang := local:setLanguage($site-prefix) ~:)
 let $error-handler := <error-handler>
                         <forward url="{$exist:controller}/routes/error-page.html" method="get"/>
                         <forward url="{$exist:controller}/modules/view.xql"/>
@@ -137,19 +191,62 @@ else if (contains($exist:path, "/resources")) then
     </dispatch>
 
 (: Handle User Login-State :)
-else if ($login or $logout) then
-   (login:set-user($config:login-domain, (), false()),
-    (:session:create(),:)
-    local:setLanguage($site-prefix),
-    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-            <redirect url="{session:get-attribute('ssrq.prefix')}/{$exist:path}/{$exist:resource}"/>
-    </dispatch>
+else if (request:get-method() = 'POST' and $login or $logout) then
+    let $lang := session:get-attribute("ssrq.lang")
+    return
+    (
+        login:set-user($config:login-domain, (), false()),
+        session:create(),
+        try {
+            local:setSessionPrefix($site-prefix),
+            session:set-attribute("ssrq.lang", $lang)
+        } catch * {()},
+        <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+                <redirect url="{session:get-attribute('ssrq.prefix')}/{request:get-uri() => substring-after($default-prefix)}"/>
+        </dispatch>
     )
 
-else if ($exist:resource => contains('.')) then
-    (login:set-user($config:login-domain, (), false()),
-    local:resolveView($error-handler))
-else ()
+(: Handle all Routes with a ., except /templates/xyz.html :)
+else if ($exist:resource => contains('.') and not(contains($exist:path, "/templates/"))) then
+    (
+        login:set-user($config:login-domain, (), false()),
+        local:resolveView($error-handler)
+    )
+
+(: Handle all the rest :)
+else
+    (
+        login:set-user($config:login-domain, (), false()),
+        let $resource := $exist:path
+        let $routes := map {
+            'about': map {
+                'schema': '/about/[a-z]*',
+                'file' : $resource => substring-after('about/') || '.html'
+            },
+            'templates': map {
+                'schema': '/templates/[a-z]*',
+                'file': $resource => substring-after('templates/')
+            },
+            'canton': map {
+                'schema': '^/[A-Z]{2}/?$',
+                'file': 'index.html',
+                'params': map {
+                    'collection': $resource => substring(2,2)
+                    }
+            },
+            'volume': map {
+                'schema': '^/[A-Z]{2}/.*[\S]/?$',
+                'file': 'index.html',
+                'params': map {
+                    'collection': $resource => substring(2,2),
+                    'volume': $resource => substring(4) => replace('/', '')
+                    }
+            }
+
+        }
+        return
+            local:findRouteFromList($routes, $resource, $error-handler)
+    )
 (:~
 
 
