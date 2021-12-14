@@ -29,7 +29,7 @@
         <body>
             <p>Beinhaltet alle benötigten TEI-Elemente (auch diejenigen für die
                 Retrodigitalisierung) sowie die Siegel-Erweiterungen. Folgende Elemente sind laut
-                    <ref target="http://www.ssrq-sds-fds.ch/wiki/index.php?title=Hauptseite">Wiki</ref> eingeschränkt: titleStmt, title, respStmt, resp, publicationStmt,
+                <ref target="http://www.ssrq-sds-fds.ch/wiki/index.php?title=Hauptseite">Wiki</ref> eingeschränkt: titleStmt, title, respStmt, resp, publicationStmt,
                 editionStmt, extent, dimensions, seriesStmt, sourceDesc, encodingDesc,
                 editorialDecl, profileDesc, textClass, particDesc, settingDesc, revisionDesc,
                 facsimile, text, sealDesc, seal, time, occupation, damage</p>
@@ -44,13 +44,13 @@
 
                 <moduleRef key="tei"/>
                 <moduleRef key="core"
-                    include="abbr add analytic author bibl biblScope biblStruct cb choice corr date del expan foreign gap graphic head hi imprint item label lb list listBibl measure measureGrp monogr note num orig p pb pubPlace publisher q quote ref reg resp respStmt series sic term textLang time title unclear"/>
+                           include="abbr add analytic author bibl biblScope biblStruct cb choice corr date del expan foreign gap graphic head hi imprint item label lb list listBibl measure measureGrp monogr note num orig p pb pubPlace publisher q quote ref reg resp respStmt series sic term textLang time title unclear"/>
                 <moduleRef key="header"
-                    include="availability textClass profileDesc fileDesc idno editorialDecl encodingDesc extent keywords publicationStmt profileDesc seriesStmt sourceDesc teiHeader textClass titleStmt"/>
+                           include="availability textClass profileDesc fileDesc idno editorialDecl encodingDesc extent keywords publicationStmt profileDesc seriesStmt sourceDesc teiHeader textClass titleStmt"/>
                 <moduleRef key="textstructure" include="TEI back body div docImprint front group signed text"/>
                 <moduleRef key="linking" include="ab anchor seg"/>
                 <moduleRef key="msdescription"
-                    include="altIdentifier origDate origPlace dimensions height width support material condition msDesc physDesc sealDesc objectDesc supportDesc seal msContents history additional repository msItem filiation msIdentifier summary origin"/>
+                           include="altIdentifier origDate origPlace dimensions height width support material condition msDesc physDesc sealDesc objectDesc supportDesc seal msContents history additional repository msItem filiation msIdentifier summary origin"/>
                 <moduleRef key="transcr" include="addSpan damage damageSpan delSpan facsimile fw handShift space subst surface supplied zone"/>
                 <moduleRef key="textcrit" include="app lem listWit rdg witness"/>
                 <moduleRef key="namesdates" include="listOrg listPerson listPlace orgName persName placeName"/>
@@ -197,29 +197,29 @@
                 </constraintSpec>
 
                 <!-- wird gar nicht verwendet
-                <constraintSpec scheme="isoschematron" ident="sch-damageSpan">
-                    <desc>Always required on the damageSpan, delSpan or addSpan element: the @spanTo
-                        attribute</desc>
-                    <constraint>
-                        <sch:pattern>
-                            <sch:rule context="tei:addSpan">
-                                <sch:assert test="@spanTo"
-                                    >The @spanTo attribute must be specified
-                                    on the <sch:name/> element.</sch:assert>
-                            </sch:rule>
-                            <sch:rule context="tei:delSpan">
-                                <sch:assert test="@spanTo"
-                                    >The @spanTo attribute must be specified
-                                    on the <sch:name/> element.</sch:assert>
-                            </sch:rule>
-                            <sch:rule context="tei:damageSpan">
-                                <sch:assert test="@spanTo"
-                                    >The @spanTo attribute must be specified
-                                    on the <sch:name/> element.</sch:assert>
-                            </sch:rule>
-                        </sch:pattern>
-                    </constraint>
-                </constraintSpec>
+                     <constraintSpec scheme="isoschematron" ident="sch-damageSpan">
+                     <desc>Always required on the damageSpan, delSpan or addSpan element: the @spanTo
+                     attribute</desc>
+                     <constraint>
+                     <sch:pattern>
+                     <sch:rule context="tei:addSpan">
+                     <sch:assert test="@spanTo"
+                     >The @spanTo attribute must be specified
+                     on the <sch:name/> element.</sch:assert>
+                     </sch:rule>
+                     <sch:rule context="tei:delSpan">
+                     <sch:assert test="@spanTo"
+                     >The @spanTo attribute must be specified
+                     on the <sch:name/> element.</sch:assert>
+                     </sch:rule>
+                     <sch:rule context="tei:damageSpan">
+                     <sch:assert test="@spanTo"
+                     >The @spanTo attribute must be specified
+                     on the <sch:name/> element.</sch:assert>
+                     </sch:rule>
+                     </sch:pattern>
+                     </constraint>
+                     </constraintSpec>
                 -->
 
                 <!--END GLOBAL SCH CONSTRAINTS-->
@@ -487,10 +487,10 @@
                 <!-- ebene 4 unterbaum teiHeader/fileDesc/titleStmt -->
                 <elementSpec ident="title" module="core" mode="change">
                     <!-- classes mode="replace">
-                        <memberOf key="model.emphLike"/>
-                        <memberOf key="model.msQuoteLike"/>
-                        <memberOf key="att.global"/>
-                    </classes> -->
+                         <memberOf key="model.emphLike"/>
+                         <memberOf key="model.msQuoteLike"/>
+                         <memberOf key="att.global"/>
+                         </classes> -->
                     <content>
                         <rng:zeroOrMore>
                             <rng:choice>
@@ -707,12 +707,12 @@
                 <!-- ebene 5 unterbaum teiHeader/fileDesc/titleStmt/respStmt -->
                 <elementSpec ident="persName" module="namesdates" mode="change">
                     <!-- classes mode="replace">
-                        <memberOf key="model.nameLike.agent"/>
-                        <memberOf key="model.persStateLike"/>
-                        <memberOf key="att.naming"/>
-                        <!- @role ->
-                        <memberOf key="att.global"/>
-                    </classes> -->
+                         <memberOf key="model.nameLike.agent"/>
+                         <memberOf key="model.persStateLike"/>
+                         <memberOf key="att.naming"/>
+                         <!- @role ->
+                         <memberOf key="att.global"/>
+                         </classes> -->
                     <content>
                         <rng:zeroOrMore>
                             <rng:choice>
@@ -856,11 +856,11 @@
                 </elementSpec>
                 <elementSpec ident="orgName" module="namesdates" mode="change">
                     <!-- classes mode="replace">
-                        <memberOf key="model.nameLike.agent"/>
-                        <memberOf key="att.naming"/>
-                        <!- @role ->
-                        <memberOf key="att.global"/>
-                    </classes> -->
+                         <memberOf key="model.nameLike.agent"/>
+                         <memberOf key="att.naming"/>
+                         <!- @role ->
+                         <memberOf key="att.global"/>
+                         </classes> -->
                     <content>
                         <rng:zeroOrMore>
                             <rng:choice>
@@ -933,10 +933,10 @@
                 </elementSpec>
                 <elementSpec ident="resp" module="core" mode="change">
                     <!-- classes mode="replace">
-                        <memberOf key="att.canonical"/>
-                        <!- @key ->
-                        <memberOf key="att.global"/>
-                    </classes> -->
+                         <memberOf key="att.canonical"/>
+                         <!- @key ->
+                         <memberOf key="att.global"/>
+                         </classes> -->
                     <content>
                         <rng:text/>
                     </content>
@@ -977,12 +977,12 @@
                 <!-- ebene 5 unterbaum teiHeader/fileDesc/publicationStmt/date -->
                 <elementSpec ident="precision" module="certainty" mode="change">
                     <!-- classes mode="replace">
-                        <memberOf key="model.certLike"/>
-                        <memberOf key="model.global.meta"/>
-                        <memberOf key="att.scoping"/>
-                        <!- @match ->
-                        <memberOf key="att.global"/>
-                    </classes> -->
+                         <memberOf key="model.certLike"/>
+                         <memberOf key="model.global.meta"/>
+                         <memberOf key="att.scoping"/>
+                         <!- @match ->
+                         <memberOf key="att.global"/>
+                         </classes> -->
                     <content>
                         <rng:empty/>
                     </content>
@@ -1104,11 +1104,11 @@
                                 <rng:ref name="corr"/>
                             </rng:group>
                             <!--
-                            <rng:group>
-                                <rng:ref name="orig"/>
-                                <rng:ref name="reg"/>
-                            </rng:group>
-                             -->
+                                 <rng:group>
+                                 <rng:ref name="orig"/>
+                                 <rng:ref name="reg"/>
+                                 </rng:group>
+                            -->
                         </rng:choice>
                     </content>
                     <attList>
@@ -1290,25 +1290,25 @@
                         </rng:zeroOrMore>
                     </content>
                     <!--constraintSpec scheme="isoschematron" ident="sch-seal">
-                        <desc>Attributes of tei:seal</desc>
-                        <constraint>
-                            <sch:pattern>
-                                <sch:rule context="tei:seal">
-                                    <sch:assert test="@n" xml:lang="en">The @n attribute must be
-                                        specified on the <sch:name/> element.</sch:assert>
-                                    <sch:assert test="@*[local-name() = 'condition']" xml:lang="en"
-                                        >The @condition attribute must be specified on the
-                                        <sch:name/> element.</sch:assert>
-                                </sch:rule>
-                            </sch:pattern>
-                        </constraint>
-                    </constraintSpec-->
+                         <desc>Attributes of tei:seal</desc>
+                         <constraint>
+                         <sch:pattern>
+                         <sch:rule context="tei:seal">
+                         <sch:assert test="@n" xml:lang="en">The @n attribute must be
+                         specified on the <sch:name/> element.</sch:assert>
+                         <sch:assert test="@*[local-name() = 'condition']" xml:lang="en"
+                         >The @condition attribute must be specified on the
+                         <sch:name/> element.</sch:assert>
+                         </sch:rule>
+                         </sch:pattern>
+                         </constraint>
+                         </constraintSpec-->
                     <attList>
                         <!-- <attDef ident="n">
-                            <datatype>
-                                <rng:text/>
-                            </datatype>
-                        </attDef> -->
+                             <datatype>
+                             <rng:text/>
+                             </datatype>
+                             </attDef> -->
                         <attDef ident="material" ns="http://ssrq-sds-fds.ch/ns/nonTEI" mode="add">
                             <desc>material beschreibt das Material des Siegels</desc>
                             <valList type="closed">
@@ -1454,8 +1454,8 @@
                                     <desc xml:lang="en">ex and enclosed</desc>
                                 </valItem>
                                 <!-- PS: Weggelassen, da absent genügt mit Kombinatin @attachment <valItem ident="ex and absent">
-                                    <desc xml:lang="de">ab und fehlend</desc>
-                                </valItem> -->
+                                     <desc xml:lang="de">ab und fehlend</desc>
+                                     </valItem> -->
                                 <valItem ident="damaged">
                                     <desc xml:lang="de">beschädigt</desc>
                                     <desc xml:lang="fr">endommagé</desc>
@@ -1568,10 +1568,10 @@
                 <!-- ebene 2 unterbaum text -->
                 <elementSpec ident="back" module="textstructure" mode="change">
                     <!-- classes mode="replace">
-                        <memberOf key="att.global.linking"/>
-                        <!- @corresp ->
-                        <memberOf key="att.global"/>
-                    </classes> -->
+                         <memberOf key="att.global.linking"/>
+                         <!- @corresp ->
+                         <memberOf key="att.global"/>
+                         </classes> -->
                     <content>
                         <rng:zeroOrMore>
                             <rng:ref name="list"/>
@@ -1655,11 +1655,11 @@
                 <!-- ebene 3 unterbaum text/back -->
                 <elementSpec ident="div" module="textstructure" mode="change">
                     <!-- classes mode="replace">
-                        <memberOf key="model.divLike"/>
-                        <memberOf key="att.typed"/>
-                        <!- @type ->
-                        <memberOf key="att.global"/>
-                    </classes> -->
+                         <memberOf key="model.divLike"/>
+                         <memberOf key="att.typed"/>
+                         <!- @type ->
+                         <memberOf key="att.global"/>
+                         </classes> -->
                     <content>
                         <rng:zeroOrMore>
                             <rng:choice>
@@ -1761,12 +1761,12 @@
                 </elementSpec>
                 <elementSpec ident="pb" module="core" mode="change">
                     <!--classes mode="replace">
-                        <memberOf key="model.emphLike"/>
-                        <memberOf key="att.typed"/>
-                        <!- @type ->
-                        <memberOf key="att.global"/>
-                        <!- @facs, @n, @xml:lang ->
-                    </classes> -->
+                         <memberOf key="model.emphLike"/>
+                         <memberOf key="att.typed"/>
+                         <!- @type ->
+                         <memberOf key="att.global"/>
+                         <!- @facs, @n, @xml:lang ->
+                         </classes> -->
                     <classes mode="change">
                         <memberOf key="att.global.facs"/>
                     </classes>
@@ -1789,11 +1789,11 @@
                 </elementSpec>
                 <elementSpec ident="lb" module="core" mode="change">
                     <!-- classes mode="replace">
-                        <memberOf key="model.milestoneLike"/>
-                        <memberOf key="att.typed"/>
-                        <!- @type ->
-                        <memberOf key="att.global"/>
-                    </classes> -->
+                         <memberOf key="model.milestoneLike"/>
+                         <memberOf key="att.typed"/>
+                         <!- @type ->
+                         <memberOf key="att.global"/>
+                         </classes> -->
                     <classes mode="change">
                         <memberOf key="att.global.facs"/>
                     </classes>
@@ -1854,8 +1854,8 @@
                                         specified on the <sch:name/> element, @unit, @quantity and
                                         @reason are forbidden.</sch:report>
                                     <!--  fakultativ <sch:assert test="following-sibling::*[position() = 1 and self::tei:note]"
-                                        >If @source is specified on the <sch:name/> element, the <sch:name/> element must be immediately followed by a tei:note element.</sch:assert> -->
-                                </sch:rule>
+                                         >If @source is specified on the <sch:name/> element, the <sch:name/> element must be immediately followed by a tei:note element.</sch:assert> -->
+                                 </sch:rule>
                             </sch:pattern>
                         </constraint>
                     </constraintSpec>
@@ -2092,25 +2092,25 @@
                 </elementSpec>
                 <!-- ebene 4 unterbaum text/front/head -->
                 <!--  <elementSpec ident="orig" module="core" mode="change">
-                    <content>
-                        <rng:zeroOrMore>
-                            <rng:choice>
-                                <rng:text/>
-                                <rng:ref name="unclear"/>
-                                <rng:ref name="choice"/>
-                                <rng:ref name="gap"/>
-                                <rng:ref name="damage"/>
-                                <rng:ref name="del"/>
-                                <rng:ref name="abbr"/>
-                                <rng:ref name="add"/>
-                                <rng:ref name="sic"/>
-                                <rng:ref name="p"/>
-                                <rng:ref name="lb"/>
-                                <rng:ref name="note"/>
-                            </rng:choice>
-                        </rng:zeroOrMore>
-                    </content>
-                </elementSpec> -->
+                     <content>
+                     <rng:zeroOrMore>
+                     <rng:choice>
+                     <rng:text/>
+                     <rng:ref name="unclear"/>
+                     <rng:ref name="choice"/>
+                     <rng:ref name="gap"/>
+                     <rng:ref name="damage"/>
+                     <rng:ref name="del"/>
+                     <rng:ref name="abbr"/>
+                     <rng:ref name="add"/>
+                     <rng:ref name="sic"/>
+                     <rng:ref name="p"/>
+                     <rng:ref name="lb"/>
+                     <rng:ref name="note"/>
+                     </rng:choice>
+                     </rng:zeroOrMore>
+                     </content>
+                     </elementSpec> -->
                 <!-- ebene 4 unterbaum text/body/p -->
                 <!-- ebene 5 unterbaum text/back/div/table -->
                 <elementSpec ident="row" module="figures" mode="change">
@@ -2173,8 +2173,8 @@
                                     <sch:assert test="count(parent::tei:div/*) = 1" xml:lang="en">The <sch:name/> element must be the only element within
                                         &lt;div&gt;.</sch:assert>
                                     <!--<sch:assert test="name(./../..) = 'body'" xml:lang="en"
-                                        >The <sch:name/> element must be the grandchild of body: body/div/<sch:name/>.</sch:assert>-->
-                                </sch:rule>
+                                         >The <sch:name/> element must be the grandchild of body: body/div/<sch:name/>.</sch:assert>-->
+                                 </sch:rule>
                             </sch:pattern>
                         </constraint>
                     </constraintSpec>
@@ -2803,11 +2803,11 @@
                         </rng:zeroOrMore>
                     </content>
                     <!--                    <classes mode="replace">
-                        <memberOf key="model.global.edit"/>
-                        <memberOf key="att.global"/>
-                        <memberOf key="att.spanning"/>
-                    </classes>
--->
+                         <memberOf key="model.global.edit"/>
+                         <memberOf key="att.global"/>
+                         <memberOf key="att.spanning"/>
+                         </classes>
+                    -->
                     <attList>
                         <attDef ident="place" mode="replace" usage="req">
                             <desc xml:lang="de">Ort einer Ergänzung</desc>
@@ -3244,9 +3244,9 @@
                                     <desc xml:lang="en">restoration</desc>
                                 </valItem>
                                 <!-- <valItem ident="rubbing">
-                                    <desc xml:lang="de">Rasur</desc>
-                                    DEL verwenden
-                                </valItem>-->
+                                     <desc xml:lang="de">Rasur</desc>
+                                     DEL verwenden
+                                     </valItem>-->
                                 <valItem ident="smoke">
                                     <desc xml:lang="de">Rauch/Brandschaden</desc>
                                     <desc xml:lang="fr">la fumée/le feu</desc>
@@ -3394,9 +3394,9 @@
                                     <desc xml:lang="en">restoration</desc>
                                 </valItem>
                                 <!-- <valItem ident="rubbing">
-                                    <desc xml:lang="de">Rasur</desc>
-                                    DEL verwenden
-                                </valItem>-->
+                                     <desc xml:lang="de">Rasur</desc>
+                                     DEL verwenden
+                                     </valItem>-->
                                 <valItem ident="smoke">
                                     <desc xml:lang="de">Rauch/Brandschaden</desc>
                                     <desc xml:lang="fr">la fumée/le feu</desc>
@@ -3637,9 +3637,9 @@
                 </elementSpec>
                 <elementSpec ident="hi" module="core" mode="change">
                     <!-- classes mode="replace">
-                        <memberOf key="model.hiLike"/>
-                        <memberOf key="att.global"/>
-                    </classes> -->
+                         <memberOf key="model.hiLike"/>
+                         <memberOf key="att.global"/>
+                         </classes> -->
                     <content>
                         <rng:zeroOrMore>
                             <rng:choice>
@@ -3722,8 +3722,8 @@
                 </elementSpec>
                 <elementSpec ident="keywords" module="header" mode="change">
                     <!-- classes mode="replace">
-                        <memberOf key="att.global"/>
-                    </classes> -->
+                         <memberOf key="att.global"/>
+                         </classes> -->
                     <content>
                         <rng:choice>
                             <rng:oneOrMore>
@@ -3776,9 +3776,9 @@
                 </elementSpec>
                 <elementSpec ident="lem" module="textcrit" mode="change">
                     <!-- classes mode="replace">
-                        <memberOf key="att.witnessed"/>
-                        <!- @wit ->
-                    </classes> -->
+                         <memberOf key="att.witnessed"/>
+                         <!- @wit ->
+                         </classes> -->
                     <content>
                         <rng:zeroOrMore>
                             <rng:choice>
@@ -4365,15 +4365,15 @@
                             </valList>
                         </attDef>
                         <!--
-                        <attDef ident="quantity" mode="replace">
-                            <desc/>
-                            <valList type="closed">
-                                <valItem ident="undefined">
-                                    <desc xml:lang="de">Undefiniert</desc>
-                                </valItem>
-                            </valList>
-                        </attDef>
--->
+                             <attDef ident="quantity" mode="replace">
+                             <desc/>
+                             <valList type="closed">
+                             <valItem ident="undefined">
+                             <desc xml:lang="de">Undefiniert</desc>
+                             </valItem>
+                             </valList>
+                             </attDef>
+                        -->
                         <attDef ident="unit" mode="replace">
                             <desc/>
                             <valList type="closed">
@@ -5275,11 +5275,11 @@
                 </elementSpec>
                 <elementSpec ident="origDate" module="msdescription" mode="change">
                     <!-- classes mode="replace">
-                        <memberOf key="model.pPart.msdesc"/>
-                        <memberOf key="att.datable.w3c"/>
-                        <!- @when->
-                        <memberOf key="att.global"/>
-                    </classes> -->
+                         <memberOf key="model.pPart.msdesc"/>
+                         <memberOf key="att.datable.w3c"/>
+                         <!- @when->
+                         <memberOf key="att.global"/>
+                         </classes> -->
                     <content>
                         <rng:zeroOrMore>
                             <rng:choice>
@@ -5407,9 +5407,9 @@
                 </elementSpec>
                 <elementSpec ident="q" module="core" mode="change">
                     <!-- classes mode="replace">
-                        <memberOf key="model.qLike"/>
-                        <memberOf key="att.global"/>
-                    </classes> -->
+                         <memberOf key="model.qLike"/>
+                         <memberOf key="att.global"/>
+                         </classes> -->
                     <content>
                         <rng:zeroOrMore>
                             <rng:choice>
@@ -5429,9 +5429,9 @@
                 </elementSpec>
                 <elementSpec ident="quote" module="core" mode="change">
                     <!--<classes mode="replace">
-                        <memberOf key="model.qLike"/>
-                        <memberOf key="att.global"/>
-                    </classes>-->
+                         <memberOf key="model.qLike"/>
+                         <memberOf key="att.global"/>
+                         </classes>-->
                     <content>
                         <rng:zeroOrMore>
                             <rng:choice>
@@ -5448,13 +5448,13 @@
                 </elementSpec>
                 <elementSpec ident="rdg" module="textcrit" mode="change">
                     <!-- classes mode="replace">
-                        <memberOf key="model.prdgLike"/>
-                        <memberOf key="att.responsibility"/>
-                        <!- @resp->
-                        <memberOf key="att.witnessed"/>
-                        <!- @wit->
-                        <memberOf key="att.global"/>
-                    </classes> -->
+                         <memberOf key="model.prdgLike"/>
+                         <memberOf key="att.responsibility"/>
+                         <!- @resp->
+                         <memberOf key="att.witnessed"/>
+                         <!- @wit->
+                         <memberOf key="att.global"/>
+                         </classes> -->
                     <content>
                         <rng:zeroOrMore>
                             <rng:choice>
@@ -5476,11 +5476,11 @@
                 </elementSpec>
                 <elementSpec ident="ref" module="core" mode="change">
                     <!-- classes mode="replace">
-                        <memberOf key="model.prtLike"/>
-                        <memberOf key="att.pointing"/>
-                        <!- @target->
-                        <memberOf key="att.global"/>
-                    </classes> -->
+                         <memberOf key="model.prtLike"/>
+                         <memberOf key="att.pointing"/>
+                         <!- @target->
+                         <memberOf key="att.global"/>
+                         </classes> -->
                     <content>
                         <rng:zeroOrMore>
                             <rng:choice>
@@ -5503,11 +5503,11 @@
                 </elementSpec>
                 <elementSpec ident="seg" module="linking" mode="change">
                     <!--  classes mode="replace">
-                        <memberOf key="model.choicePart"/>
-                        <memberOf key="att.responsibility"/>
-                        <!- @resp->
-                        <memberOf key="att.global"/>
-                    </classes> -->
+                         <memberOf key="model.choicePart"/>
+                         <memberOf key="att.responsibility"/>
+                         <!- @resp->
+                         <memberOf key="att.global"/>
+                         </classes> -->
                     <content>
                         <!-- PS: das muss kontrolliert werden -->
                         <rng:oneOrMore>
@@ -5588,38 +5588,38 @@
                 <elementSpec ident="subst" module="transcr" mode="change">
                     <!-- mit Beni anschauen -->
                     <!-- classes mode="replace">
-                        <memberOf key="model.pPart.editorial"/>
-                        <memberOf key="att.global"/>
-                    </classes> -->
+                         <memberOf key="model.pPart.editorial"/>
+                         <memberOf key="att.global"/>
+                         </classes> -->
                     <content>
                         <!-- <rng:zeroOrMore>
-                            <rng:choice>
-                                <rng:ref name="lb"/>
-                                <rng:ref name="note"/>
-                                <rng:text/>
-                            </rng:choice>
-                        </rng:zeroOrMore>
-                        <rng:oneOrMore>
-                            <rng:choice>
-                                <rng:ref name="add"/>
-                                <rng:ref name="addSpan"/>
-                                <rng:ref name="del"/>
-                                <rng:ref name="delSpan"/>
-                                <rng:ref name="orig"/>
-                                <rng:ref name="anchor"/>
-                                <rng:ref name="persName"/>
-                                <rng:ref name="orgName"/>
-                                <rng:ref name="placeName"/>
-                                <rng:text/>
-                            </rng:choice>
-                        </rng:oneOrMore>
-                        <rng:zeroOrMore>
-                            <rng:choice>
-                                <rng:ref name="lb"/>
-                                <rng:ref name="note"/>
-                                <rng:ref name="anchor"/>
-                            </rng:choice>
-                        </rng:zeroOrMore> -->
+                             <rng:choice>
+                             <rng:ref name="lb"/>
+                             <rng:ref name="note"/>
+                             <rng:text/>
+                             </rng:choice>
+                             </rng:zeroOrMore>
+                             <rng:oneOrMore>
+                             <rng:choice>
+                             <rng:ref name="add"/>
+                             <rng:ref name="addSpan"/>
+                             <rng:ref name="del"/>
+                             <rng:ref name="delSpan"/>
+                             <rng:ref name="orig"/>
+                             <rng:ref name="anchor"/>
+                             <rng:ref name="persName"/>
+                             <rng:ref name="orgName"/>
+                             <rng:ref name="placeName"/>
+                             <rng:text/>
+                             </rng:choice>
+                             </rng:oneOrMore>
+                             <rng:zeroOrMore>
+                             <rng:choice>
+                             <rng:ref name="lb"/>
+                             <rng:ref name="note"/>
+                             <rng:ref name="anchor"/>
+                             </rng:choice>
+                             </rng:zeroOrMore> -->
                         <rng:oneOrMore>
                             <rng:choice>
                                 <rng:ref name="add"/>
@@ -5743,13 +5743,13 @@
                 </elementSpec>
                 <elementSpec ident="time" module="core" mode="change">
                     <!-- classes mode="replace">
-                        <memberOf key="model.dateLike"/>
-                        <memberOf key="att.duration"/>
-                        <!- @dur->
-                        <memberOf key="att.datable"/>
-                        <!- @from, @notAfter, @notBefore, @to, @when->
-                        <memberOf key="att.global"/>
-                    </classes> -->
+                         <memberOf key="model.dateLike"/>
+                         <memberOf key="att.duration"/>
+                         <!- @dur->
+                         <memberOf key="att.datable"/>
+                         <!- @from, @notAfter, @notBefore, @to, @when->
+                         <memberOf key="att.global"/>
+                         </classes> -->
                     <content>
                         <rng:zeroOrMore>
                             <rng:choice>
@@ -5767,25 +5767,25 @@
                             </datatype>
                         </attDef>
                         <!--
-                    <attDef ident="dur"/>
-                        <attDef ident="dur" mode="replace">
-                            <desc xml:lang="de">Angabe von Zeitperiode oder Zeitpunkt</desc>
-                            <valList type="closed">
-                                <valItem ident="P">
-                                    <desc xml:lang="de">Periode gefolgt von Anzahl in arabischen Ziffern und
-                                        Angabe</desc>
-                                <valItem ident="H">
-                                    <desc xml:lang="de">Stunde</desc>
-                                </valItem>
-                                <valItem ident="M">
-                                    <desc xml:lang="de">Minute</desc>
-                                </valItem>
-                                <valItem ident="S">
-                                    <desc xml:lang="de">Sekunde</desc>
-                                </valItem>
-                            </valList>
-                        </attDef>
--->
+                             <attDef ident="dur"/>
+                             <attDef ident="dur" mode="replace">
+                             <desc xml:lang="de">Angabe von Zeitperiode oder Zeitpunkt</desc>
+                             <valList type="closed">
+                             <valItem ident="P">
+                             <desc xml:lang="de">Periode gefolgt von Anzahl in arabischen Ziffern und
+                             Angabe</desc>
+                             <valItem ident="H">
+                             <desc xml:lang="de">Stunde</desc>
+                             </valItem>
+                             <valItem ident="M">
+                             <desc xml:lang="de">Minute</desc>
+                             </valItem>
+                             <valItem ident="S">
+                             <desc xml:lang="de">Sekunde</desc>
+                             </valItem>
+                             </valList>
+                             </attDef>
+                        -->
                         <attDef ident="period" mode="replace">
                             <desc xml:lang="de">benannte Periode</desc>
                             <valList type="closed">
@@ -6110,6 +6110,11 @@
                             <desc xml:lang="de">Sprache</desc>
                             <desc xml:lang="fr">Langue</desc>
                             <desc xml:lang="en">Language</desc>
+                        </valItem>
+                        <valItem ident="languages">
+                            <desc xml:lang="de">Sprachen</desc>
+                            <desc xml:lang="fr">Langues</desc>
+                            <desc xml:lang="en">Languages</desc>
                         </valItem>
                         <valItem ident="format">
                             <desc xml:lang="de">Format B × H</desc>

@@ -1741,9 +1741,9 @@
                     <model behaviour="listItem"/>
                 </elementSpec>
                 <elementSpec ident="textLang" mode="add">
-                    <model behaviour="listItem">
+                    <model predicate="not(./following-sibling::textLang)" behaviour="listItem">
                         <desc>Ausgabe Sprache in "weitere Überlieferungen"</desc>
-                        <param name="content" value="(ec:label('language'), ec:colon(), string-join(for $lang in tokenize(., ', *') return ec:label($lang, false()), ', '))"/>
+                        <param name="content" value="(ec:label(if (preceding-sibling::textLang) then 'languages' else 'language'), ec:colon(), string-join(for $lang in ./@xml:lang | preceding-sibling::textLang/@xml:lang return ec:label($lang, false()), ', '))"/>
                     </model>
                 </elementSpec>
             </schemaSpec>
