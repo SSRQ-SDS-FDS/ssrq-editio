@@ -47,7 +47,7 @@ declare function ssrq-utils:findView($node as node(), $model as map(*), $collect
         switch($view)
         case 'works' return <div>{
             let $works := ssrq-utils:listWorks($node, $model, $collection, $volume, ())
-            return ssrq-utils:renderWork($node, $works)
+            return ssrq-utils:renderWork($node, $works, $volume)
 
             }</div>
         default return ssrq-utils:loadStatic($node, $model, $view, $collection)
@@ -360,10 +360,10 @@ function ssrq-utils:listWorks($node as node(), $model as map(*), $collection as 
 };
 
 declare
-function ssrq-utils:renderWork($node as node(), $model as map(*)) {
+function ssrq-utils:renderWork($node as node(), $model as map(*), $volume as xs:string?) {
    for $doc in $model?docs
      let $config := tpu:parse-pi(root($doc), ())
-     let $relPath := config:get-identifier($doc)
+     let $relPath := config:get-identifier($doc) => replace($volume || '/', '')
      let $root := $doc/ancestor-or-self::tei:TEI
     return
         <li class="document ml-1">

@@ -380,7 +380,7 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
                 <i18n:text key="work-id">Stück</i18n:text>: <span>{query:view-idno($work)}</span>,
                 <i18n:text key="orig-date">Datum</i18n:text>: <span>{query:view-origDate($work)}</span>
             </h5>
-            <h4>{query:view-header($work, $parent-id)}</h4>
+            <h4>{query:view-header($work, $parent-id => replace('/.*/', '/'))}</h4>
         </div>
     let $expanded :=
         if (exists($model?ids)) then
