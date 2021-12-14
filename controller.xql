@@ -77,6 +77,12 @@ declare function local:findRouteFromList($routes as map(*), $resource as xs:stri
     return
         if (not($route => empty()))
         then
+            if (not($resource => ends-with('/')) and $route?redirect)
+            then
+                <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+                    <redirect url="{session:get-attribute('ssrq.prefix')}{$resource}/"/>
+                </dispatch>
+            else
             <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
                 <forward url="{$exist:controller}{$route?file}"></forward>
                 <view>
@@ -231,22 +237,26 @@ else
         let $main-routes := map {
             'about': map {
                 'schema': '/about/[a-z]*',
-                'file' : $routeBase || $resource => substring-after('about/') || '.html'
+                'file' : $routeBase || $resource => substring-after('about/') || '.html',
+                'redirect': false()
             },
             'templates': map {
                 'schema': '/templates/[a-z]*',
-                'file': '/templates/' || $resource => substring-after('templates/')
+                'file': '/templates/' || $resource => substring-after('templates/'),
+                'redirect': false()
             },
             'start': map {
                 'schema': '^/$',
-                'file': $routeBase || 'index.html'
+                'file': $routeBase || 'index.html',
+                'redirect': false()
             },
             'canton': map {
                 'schema': '^/[A-Z]{2}/?$',
                 'file': $routeBase || 'index.html',
                 'params': map {
                     'collection': $resource => substring(2,2)
-                    }
+                    },
+                'redirect': true()
             },
             'volume': map {
                 'schema': '^/[A-Z]{2}/.*[\S]/?$',
@@ -254,14 +264,10 @@ else
                 'params': map {
                     'collection': $resource => substring(2,2),
                     'volume': $resource => substring(4) => replace('/', '')
-                    }
+                    },
+                'redirect': true()
             }}
         return
-            if ($exist:path => ends-with('/'))
-            then
-                local:findRouteFromList($main-routes, $resource, $error-handler)
-            else
-                <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-                    <redirect url="{session:get-attribute('ssrq.prefix')}{$exist:path}/"/>
-                </dispatch>
+            local:findRouteFromList($main-routes, $resource, $error-handler)
+
     )
