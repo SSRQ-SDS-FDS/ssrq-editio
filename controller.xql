@@ -11,6 +11,7 @@ declare variable $exist:root external;
 
 declare variable $logout := request:get-parameter("logout", ());
 declare variable $login := request:get-parameter("user", ());
+declare variable $idnoSchema := '[A-Z]{3,4}_[A-Z]{2}_.*';
 
 declare function local:resolve($path as xs:string, $name as xs:string) {
     if (doc-available(``[`{$config:data-root}`/`{$path}`/`{$name}`]``)) then
@@ -171,7 +172,10 @@ else if (ends-with($exist:resource, ".html")) then (
                         if ($exist:resource != "toc.html") then
                             <add-parameter name="doc" value="{$path}{$id}"/>
                         else
-                            ()
+                            (),
+                        if ($exist:path => matches('[A-Z]{2}' || '/' || $idnoSchema)) then
+                            <add-parameter name="id" value="{tokenize($exist:path, '/')[last()] => substring-before('.')}"/>
+                        else ()
                     }
                         <set-header name="Cache-Control" value="no-cache"/>
                     </forward>
