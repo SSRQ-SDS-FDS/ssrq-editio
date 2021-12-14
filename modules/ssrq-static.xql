@@ -17,6 +17,8 @@ declare variable $ssrq-static:config := map {
     $templates:CONFIG_APP_ROOT : $config:app-root,
     $templates:CONFIG_STOP_ON_ERROR : true()};
 
+declare variable $ssrq-static:prefix := request:get-parameter('prefix', '/exist/apps/ssrq');
+
 declare function ssrq-static:get-template-config($config as map(*), $parameters as map(*)) {
     map:merge((
         $config,
@@ -119,5 +121,7 @@ let $pages := map {
         "file": "cantons"
     }
 }
+
+let $session := (session:create(), session:set-attribute('ssrq.prefix', $ssrq-static:prefix))
 
 return $pages => ssrq-static:addVolumesToPagelist() => ssrq-static:addWorksToPagelist() => ssrq-static:getPages() => ssrq-static:storePages()

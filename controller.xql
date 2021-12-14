@@ -238,7 +238,7 @@ else
                 'file': '/templates/' || $resource => substring-after('templates/')
             },
             'start': map {
-                'schema': '/$',
+                'schema': '^/$',
                 'file': $routeBase || 'index.html'
             },
             'canton': map {
@@ -257,5 +257,11 @@ else
                     }
             }}
         return
-            local:findRouteFromList($main-routes, $resource, $error-handler)
+            if ($exist:path => ends-with('/'))
+            then
+                local:findRouteFromList($main-routes, $resource, $error-handler)
+            else
+                <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+                    <redirect url="{session:get-attribute('ssrq.prefix')}{$exist:path}/"/>
+                </dispatch>
     )

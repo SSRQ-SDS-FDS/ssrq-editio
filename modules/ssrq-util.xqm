@@ -250,7 +250,7 @@ declare function ssrq-utils:renderDepartment($data as map(*), $dep as xs:string)
     then
         <td>
             <div class="canton--badge">
-                <a href="?collection={$dep}" data-collection="{$dep}">
+                <a href="{$dep}/" data-collection="{$dep}">
                     {
                     let $html := $data?department => util:parse-html()
                     return $html/*/*[last()]/node()
@@ -312,7 +312,7 @@ declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $coll
                 {
                     let $works-id := substring-after($collection-name, $collection || "/")
                     return
-                    <a href="?collection={$collection}&amp;volume={$works-id}" data-works="{$works-id}" >
+                    <a href="{$works-id}/" data-works="{$works-id}" >
                         <i18n:text key="articles">Stücke</i18n:text>
                     </a>
                 }
@@ -416,7 +416,7 @@ declare function ssrq-utils:browse($node as node(), $model as map(*)) as element
 :)
 declare function ssrq-utils:browseUp($node as node(), $model as map(*), $collection as xs:string) as node() {
     element { node-name($node) } {
-        attribute href {'?collection=' || $collection},
+        attribute href {session:get-attribute('ssrq.prefix') || '/' || $collection || '/'},
         $node/node()
     }
 };
@@ -424,7 +424,7 @@ declare function ssrq-utils:browseUp($node as node(), $model as map(*), $collect
 
 
 declare function ssrq-utils:linkPagination($collection as xs:string, $volume as xs:string, $start) {
-   let $link := '?collection=' || $collection || '&amp;volume=' || $volume || '&amp;start=' || $start
+   let $link := session:get-attribute('ssrq.prefix') || '/' || $collection || '/' || $volume || '/' || '?start=' || $start
    return $link
 };
 
