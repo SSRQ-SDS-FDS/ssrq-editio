@@ -671,16 +671,27 @@ function app:show-help($node as node(), $model as map(*), $field as xs:string) {
 };
 
 declare
+%templates:wrap
+function app:download($node as node(), $model as map(*), $doc as xs:string?) {
+    let $pathInfos := map {
+        "collection": $model?data => util:collection-name(),
+        "file":$model?data => util:document-name()
+    }
+    return
+        map:merge(($model, $pathInfos))
+};
+
+declare
 function app:download-xml($node as node(), $model as map(*), $doc as xs:string?) {
     let $resource :=
         if ($model?work) then
             config:get-identifier($model?work)
         else if ($model?data) then
-            $model?data => util:collection-name() => substring-after($config:data-root) || '/' || tokenize($doc, '/')[last()]
+            $model?file
         else
             $doc
     return
-        <a href="{request:get-context-path()}{$config:data-root => replace('/db', '')}{$resource}">
+        <a href="{request:get-context-path()}{$model?collection => replace('/db', '')}/{$resource}">
         {
             $node/@*,
             templates:process($node/node(), $model)
@@ -690,17 +701,28 @@ function app:download-xml($node as node(), $model as map(*), $doc as xs:string?)
 
 declare
 function app:download-pdf($node as node(), $model as map(*), $doc as xs:string?) {
-    let $resource := $model?data => util:collection-name() => substring-after($config:data-root) || '/pdf/' || $doc => functx:substring-after-last-match('/') => replace('(?:_\d{1,2})?\.xml', '.pdf')
+    let $pdf-name := if ($model?data//tei:div[@type = 'collection']) then
+                        if($model?file => contains('FR')) then
+                        $model?file => replace('_[0-9]{3}.xml', '.pdf')
+                        else $model?file => replace('.xml', '.pdf')
+                    else if (collection($config:data-root)//tei:div[@type = 'collection']//*[contains(., $model?file => substring-before('.xml'))] ) then
+                        if($model?file => contains('FR')) then
+                        $model?file => replace('_[0-9]{3}.xml', '.pdf')
+                        else $model?file => replace('.xml', '.pdf')
+                    else if ($model?file => matches('(?:_\d{1,2})?\.xml')) then
+                    $model?file => replace('(?:_\d{1,2})?\.xml', '.pdf')
+                    else $model?file => replace('.xml', '.pdf')
+    let $resource := $model?collection || '/pdf/' || $pdf-name
     return
-        if (($config:data-root || $resource) => util:binary-doc-available())
+        if ($resource => util:binary-doc-available())
         then
-            <a href="{request:get-context-path()}{$config:data-root => replace('/db', '')}{$resource}">
+            <a href="{request:get-context-path()}{$resource => replace('/db', '')}">
             {
                 $node/@*,
                 templates:process($node/node(), $model)
             }
             </a>
-        else()
+        else ()
 };
 
 declare function app:show-if-logged-in($node as node(), $model as map(*)) {
