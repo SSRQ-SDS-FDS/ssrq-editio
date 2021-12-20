@@ -674,8 +674,8 @@ declare
 %templates:wrap
 function app:download($node as node(), $model as map(*), $doc as xs:string?) {
     let $pathInfos := map {
-        "collection": $model?data => util:collection-name(),
-        "file":$model?data => util:document-name()
+        "collection": if ($model?data) then $model?data => util:collection-name() else(),
+        "file": if ($model?data) then $model?data => util:document-name() else()
     }
     return
         map:merge(($model, $pathInfos))
