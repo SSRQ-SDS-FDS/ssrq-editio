@@ -80,7 +80,7 @@
                 <elementSpec ident="expan" mode="change">
                     <model behaviour="inline"/>
                 </elementSpec>
-                <elementSpec ident="add" mode="change">
+                <elementSpec ident="add" mode="add">
                     <model predicate="@type='catchword'" behaviour="mark">
                         <param name="alternate" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ', ', ec:translate(@type, 0, 'lowercase'))))))"/>
                         <param name="type" value="'text-critical'"/>
