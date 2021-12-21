@@ -1078,9 +1078,9 @@
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="add[@hand='later hand'] and del[@hand='later hand']" behaviour="alternote" cssClass="text-critical">
-                        <param name="content" value="add"/>
-                        <param name="prefix" value="(ec:label('corr', true()), ' ', ec:translate(add/@hand, 0, 'lowercase'), ' ', ec:translate(add/@place, 0, 'lowercase'), ', ', ec:label('replace', false()), ec:colon())"/>
-                        <param name="alternate" value="del"/>
+                        <param name="content" value="del"/>
+                        <param name="prefix" value="(ec:label('corr', true()), ' ', ec:translate(add/@hand, 0, 'lowercase'), ' ', ec:translate(add/@place, 0, 'lowercase'), ec:colon())"/>
+                        <param name="alternate" value="add"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="add/@hand" behaviour="alternote" cssClass="text-critical">

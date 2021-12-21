@@ -56,6 +56,7 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
     let $id := translate($nodeId, "-", "_")
     let $nr := pmc:increment-counter($type)
     let $alternate := $config?apply-children($config, $node, $alternate)
+    let $breaks := if ($node => name() = 'subst' and $node[tei:lb or tei:pb]) then $config?apply-children($config, $node, $node/tei:lb | $node/tei:pb) else()
     let $prefix := $config?apply-children($config, $node, $optional?prefix)
     let $label :=
         switch($type)
@@ -75,6 +76,7 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
             </span>
         else
             (),
+        $breaks,
         <span class="alternate {$class}">
             <span>{html:apply-children($config, $node, $content)}</span>
             <span class="altcontent">{$prefix}{$alternate}</span>
