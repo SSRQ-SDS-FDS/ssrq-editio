@@ -25,7 +25,7 @@ declare variable $query:QUERY_OPTIONS :=
         <filter-rewrite>yes</filter-rewrite>
     </options>;
 
-declare variable $query:corretion-list := map {
+declare variable $query:correction-list := map {
         "Burgarchiv": "Burgarchiv Grabs",
         "Germanisches": "Germanisches Nationalmuseum Nürnberg",
         "Fürstlich": "Fürstlich Fürstenbergisches Archiv Donaueschingen",
@@ -601,7 +601,7 @@ function query:list-archives($node as node(), $model as map(*), $filter-archive 
             collection($config:data-root)
     for $archive in $context//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno[./text() => string-length() > 0]
     let $archive-id := $archive  => replace("^\s*(\w+).*$", "$1") =>  functx:substring-before-if-contains(',')
-    let $archive-title := if ($query:corretion-list($archive-id)) then $query:corretion-list($archive-id) else $archive-id
+    let $archive-title := if ($query:correction-list($archive-id)) then $query:correction-list($archive-id) else $archive-id
     group by $archive-title
     order by $archive-title
     return
