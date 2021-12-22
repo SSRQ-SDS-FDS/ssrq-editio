@@ -42,6 +42,11 @@ declare function local:generate-code($collection as xs:string) {
         )
     )
 };
+
+xmldb:create-collection($target, "temp"),
+sm:chown(xs:anyURI($target || "/temp"), "ssrq"),
+sm:chgrp(xs:anyURI($target || "/temp"), "tei"),
+
 xmldb:create-collection($target, "transform"),
 sm:chown(xs:anyURI($target || "/transform"), "ssrq"),
 sm:chgrp(xs:anyURI($target || "/transform"), "tei"),
