@@ -438,7 +438,7 @@ declare function query:sort($items as element()*, $sortBy as xs:string?) {
     switch($sortBy)
         case "kanton" return
             for $item in $items
-            order by replace(root($item)//tei:teiHeader//tei:seriesStmt/tei:idno, "^(?:SSRQ|SDS|FDS)_([^_]+).*$", "$1")
+            order by query:view-kanton($item)
             return
                 $item
         case "title" return
@@ -448,21 +448,34 @@ declare function query:sort($items as element()*, $sortBy as xs:string?) {
                 ($header//tei:msDesc/tei:head/string(), $header//tei:titleStmt/tei:title/string())[1]
             return
                 $item
-        case "id" return
-            for $item in $items
-            order by root($item)//tei:teiHeader/tei:fileDesc/tei:seriesStmt/tei:idno
-            return
-                $item
         case "relevance" return
             for $item in $items
             order by ft:score($item)
             return
                 $item
-        default return
+        default return (: id :)
             for $item in $items
-            order by root($item)//tei:teiHeader/tei:fileDesc/tei:seriesStmt/tei:idno
+            order by query:get-ssrq-idno($item, ("sort", "human", "machine"))
             return
                 $item
+};
+
+declare %private
+function query:get-ssrq-idno($work, $preferred-types) {
+    let $seriesStmt := $work//tei:teiHeader//tei:seriesStmt
+    return (
+        (: preferred types first :)
+        for $ptype in $preferred-types
+        return $seriesStmt/tei:idno[@type=$ptype],
+
+        (: otherwise, any idno :)
+        $seriesStmt/tei:idno[1]
+    )[1]/text()
+};
+
+declare %private
+function query:get-ssrq-idno($work) {
+    query:get-ssrq-idno($work, ())
 };
 
 declare function query:view-header($work as element(), $parent-id as xs:string) {
@@ -473,14 +486,12 @@ declare function query:view-header($work as element(), $parent-id as xs:string) 
 };
 
 declare function query:view-kanton($work as element()) {
-    replace($work//tei:teiHeader//tei:seriesStmt/tei:idno, "^(?:SSRQ|SDS|FDS)_([^_]+).*$", "$1")
+    let $idno := query:get-ssrq-idno($work, ("machine", "human"))
+    return replace($idno, "^(?:SSRQ|SDS|FDS)[_ ]([^_ ]+).*$", "$1")
 };
 
 declare function query:view-idno($work as element()) {
-    let $header := $work//tei:teiHeader
-    let $idno := $header/tei:fileDesc/tei:seriesStmt/tei:idno
-    return
-        common:format-id($idno)
+    query:get-ssrq-idno($work, ("machine")) => common:format-id()
 };
 
 declare function query:view-origDate($work as element()) {
