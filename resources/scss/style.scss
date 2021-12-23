@@ -295,8 +295,13 @@ $color-terms: #b5221f;*/
 
 .advanced-search {
   .info-btn:link {
-    margin-left: 1em;
+    margin-left: .5em;
     color: $color-white;
+
+    i.material-icons {
+      font-size: 16px;
+      vertical-align: baseline;
+    }
   }
 
   div > ul {
