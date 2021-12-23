@@ -263,31 +263,6 @@ declare function app:work-title($work as element(tei:TEI)?) {
         $main-title
 };
 
-declare function app:download-link($node as node(), $model as map(*), $type as xs:string,
-    $doc as xs:string?, $source as xs:boolean?, $mode as xs:string?, $odd as xs:string?) {
-    let $file :=
-        if ($model?work) then
-            config:get-identifier($model?work)
-        else
-            $doc
-    let $file :=
-        if ($doc) then
-            replace($file, "^.*?([^/]*)$", "$1")
-        else
-            $file
-    let $uuid := util:uuid()
-    return
-        element { node-name($node) } {
-            $node/@*,
-            attribute data-token { $uuid },
-            attribute href { $node/@href || $file || "." || $type || "?token=" || $uuid || "&amp;cache=no"
-                || "&amp;odd=" || ($model?config?odd, $config:odd)[1]
-                || (if ($source) then "&amp;source=yes" else ()) || (if ($mode) then "&amp;mode=" || $mode else ())
-            },
-            $node/node()
-        }
-};
-
 declare function app:recompile-link($node as node(), $model as map(*)) {
     let $odd :=
         if ($model?work) then

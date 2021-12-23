@@ -528,19 +528,6 @@ $(document).ready(function () {
     },
   });
 
-  $('.download-link').click(function (ev) {
-    $('#pdf-info').modal('show');
-    var token = $(this).attr('data-token');
-    downloadCheck = window.setInterval(function () {
-      var cookieValue = $.macaroon('simple.token');
-      if (cookieValue == token) {
-        window.clearInterval(downloadCheck);
-        $.macaroon('simple.token', null);
-        $('#pdf-info').modal('hide');
-      }
-    });
-  });
-
   $('.eXide-open').click(eXide);
 
   initContent();
