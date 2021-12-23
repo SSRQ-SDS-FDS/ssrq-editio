@@ -7,6 +7,8 @@ declare namespace json="http://www.json.org";
 declare option exist:serialize "method=json media-type=application/json";
 
 declare function local:upload($root, $paths, $payloads) {
+    (: FIXME: collection-uri should be dynaimc so that it doesn't break when temp is moved :)
+    let $collection-uri := $config:app-root
     let $paths :=
         for-each-pair($paths, $payloads, function($path, $data) {
             if (ends-with($path, ".odd")) then
@@ -20,12 +22,13 @@ declare function local:upload($root, $paths, $payloads) {
         map {
             "files": array {
                 for $path in $paths
+                let $url := substring-after($path, $collection-uri || "/")
                 return
                     map {
                         "name": $path,
-                        "path": substring-after($path, $config:data-root || "/"),
+                        "path": $url,
                         "type": xmldb:get-mime-type($path),
-                        "size": 93928
+                        "size": xmldb:size($config:temp-root, substring-after($path, $config:temp-root || "/"))
                     }
             }
         }
