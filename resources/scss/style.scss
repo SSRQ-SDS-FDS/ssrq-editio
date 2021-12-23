@@ -14,12 +14,9 @@ $application-title-display: none;
 
 /********************* Colors ************************/
 
-$color-primary: #35424b;
-$color-primary-light: #607d8b;
+$color-primary: #911917;
+$color-primary-light: #994443;
 $color-primary-lightest: #d1dae0;
-
-$color-secondary: #f6a623;
-$color-secondary-darker: #d6911f;
 
 $color-white: #ffffff;
 $color-gray-lightest: #f1f1f1;
@@ -42,6 +39,7 @@ $color-link-hover-bg: $color-gray-medium;
 $color-navigation-bg: $color-white;
 $color-navigation-text: $color-body-text-default;
 $color-navigation-hover: $color-primary-light;
+$color-navigation-hover-text: $color-white;
 
 // Toolbar-Color
 $color-toolbar-bg: $color-primary-lightest;
@@ -61,6 +59,10 @@ $color-text-highlight: #7777ff;
 $btn-primary-color: $color-white;
 $btn-primary-bg: $color-primary-light;
 $btn-primary-border: $color-primary-light;
+
+.btn.btn-primary {
+	color: $color-primary !important;
+}
 
 // Borders
 $default-border-style: 1px solid $color-gray-lighter;
