@@ -18,19 +18,14 @@ import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions
 import module namespace intl="http://exist-db.org/xquery/i18n/templates" at "lib/i18n-templates.xql";
 import module namespace functx="http://www.functx.com";
 
+import module namespace data-filters="http://existsolutions.com/ssrq-data/filters" at "/db/apps/ssrq-data/filters.xql";
+
 
 declare variable $query:QUERY_OPTIONS :=
     <options>
         <leading-wildcard>yes</leading-wildcard>
         <filter-rewrite>yes</filter-rewrite>
     </options>;
-
-declare variable $query:correction-list := map {
-        "Burgarchiv": "Burgarchiv Grabs",
-        "Germanisches": "Germanisches Nationalmuseum Nürnberg",
-        "Fürstlich": "Fürstlich Fürstenbergisches Archiv Donaueschingen",
-        "KKGA Gams": "KKGA"
-    };
 
 (:~
  : Execute query. Dispatches the query to either query:query-texts or query:query-api depending on $type.
@@ -557,76 +552,40 @@ declare %private function query:get-current($config as map(*), $div as element()
                 $div
 };
 
-declare function query:period-range($node as node(), $model as map(*)) {
-    let $context :=
-        if ($model?hits) then
-            $model?hits ! root(.)
-        else
-            collection($config:data-root)
-    let $dates :=
-        for $when in $context//tei:teiHeader//tei:history/tei:origin/tei:origDate/@when
-        return
-            try {
-                year-from-date(xs:date($when))
-            } catch * {
-                console:log("Invalid date: " || document-uri(root($when)))
-            }
-    return
-        map {
-            "min": min($dates),
-            "max": max($dates)
-        }
+declare
+function query:period-range($node as node(), $model as map(*)) {
+    if ($model?hits) then
+        data-filters:period-range($model?hits ! root(.))
+    else
+        data-filters:period-range()
 };
 
 declare
 function query:pubdate-range($node as node(), $model as map(*)) {
-    let $context :=
-        if ($model?hits) then
-            $model?hits ! root(.)
-        else
-            collection($config:data-root)
-    let $dates :=
-        for $when in $context//tei:teiHeader//tei:publicationStmt/tei:date[@type='electronic']/@when
-        return
-            try {
-                year-from-date(xs:date($when))
-            } catch * {
-                console:log("Invalid date: " || document-uri(root($when)))
-            }
-    return
-        map {
-            "min": min($dates),
-            "max": max($dates)
-        }
+    if ($model?hits) then
+        data-filters:pubdate-range($model?hits ! root(.))
+    else
+        data-filters:pubdate-range()
 };
-
 
 declare
     %templates:wrap
 function query:list-archives($node as node(), $model as map(*), $filter-archive as xs:string?) {
     $node/*,
-    let $context :=
+    let $archives :=
         if ($model?hits) then
-            $model?hits ! root(.)
+            data-filters:archive-list($model?hits ! root(.))
         else
-            collection($config:data-root)
-    for $archive in $context//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno[./text() => string-length() > 0]
-    let $archive-id := $archive  => replace("^\s*(\w+).*$", "$1") =>  functx:substring-before-if-contains(',')
-    let $archive-title := if ($query:correction-list($archive-id)) then $query:correction-list($archive-id) else $archive-id
-    group by $archive-title
-    order by $archive-title
+            data-filters:archive-list()
+    for $archive-title in $archives
     return
-        if (not($archive-title = 'Fehlt'))
-        then
         <option>
-
-        {
-            if ($archive-title = $filter-archive) then
-                attribute selected { "selected" }
-            else
-                ()
-        }
-        {$archive-title}
+            {
+                if ($archive-title = $filter-archive) then
+                    attribute selected { "selected" }
+                else
+                    ()
+            }
+            {$archive-title}
         </option>
-        else ()
 };
