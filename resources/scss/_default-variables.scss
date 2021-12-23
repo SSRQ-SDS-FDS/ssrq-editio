@@ -70,7 +70,7 @@ $color-disabled:                  $color-gray-lighter;
 /********************* Fonts ************************/
 
 $font-serif:                      "Junicode", Georgia, "Times New Roman", serif;
-$font-sans-serif:                 "Oswald", Verdana, "Helvetica", sans-serif;
+$font-sans-serif:                 "Open Sans", Verdana, "Helvetica", sans-serif;
 $font-sans-serif-default:         "Open Sans", Verdana, "Helvetica", sans-serif;
 $font-monospace:                  "Ubuntu Mono", Menlo, Consolas, Courier, monospace;
 
@@ -82,7 +82,7 @@ $font-size-large:                 1.7rem;
 $font-size-small:                 1.3rem;
 
 // Headings
-$font-family-heading:             $font-sans-serif;
+$font-family-heading:             $font-serif;
 
 $direction-left-to-right:         ltr;  /* Left to Right */
 $direction-right-ro-left:         rtl;  /* Right to Left */

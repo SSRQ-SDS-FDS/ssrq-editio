@@ -71,7 +71,7 @@ $color-disabled: $color-gray-lighter;
 /********************* Fonts ************************/
 
 $font-serif: 'Lexia Fontes', Georgia, 'Times New Roman', serif;
-$font-sans-serif: 'Oswald', Verdana, 'Helvetica', sans-serif;
+$font-sans-serif: 'Open Sans', Verdana, 'Helvetica', sans-serif;
 $font-sans-serif-default: 'Open Sans', Verdana, 'Helvetica', sans-serif;
 $font-monospace: 'Ubuntu Mono', Menlo, Consolas, Courier, monospace;
 
@@ -83,7 +83,7 @@ $font-size-large: 1.7rem;
 $font-size-small: 1.5rem;
 
 // Headings
-$font-family-heading: $font-sans-serif;
+$font-family-heading: $font-serif;
 
 $direction-left-to-right: ltr; /* Left to Right */
 $direction-right-ro-left: rtl; /* Right to Left */
@@ -180,7 +180,6 @@ $color-footer-bg: $color-gray-lightest;
 
 // Core --------------------------- //
 
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400|Oswald');
 //@import "_default-variables.scss";
 @import '_base.scss';
 @import '_utilities.scss';
