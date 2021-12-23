@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="xar" name="ssrq">
     <property file="local.build.properties"/>
-    <property file="build.properties"/>
     <xmlproperty file="expath-pkg.xml"/>
     <property name="project.version" value="${package(version)}"/>
     <property name="project.app" value="ssrq"/>
