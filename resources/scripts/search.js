@@ -8,7 +8,11 @@ $(function () {
     }
   });
   $('.bearbeitungstext').on('change', function () {
-    $('#bearbeitungstext').prop('checked', false);
+      var cb_checked = $(".bearbeitungstext:checked").length;
+      var cb_total = $(".bearbeitungstext").length;
+      var cb_top = document.getElementById("bearbeitungstext");
+      cb_top.checked = cb_checked === cb_total;
+      cb_top.indeterminate = cb_checked > 0 && cb_checked !== cb_total;
   });
 
   var val = $('#bearbeitungstext').prop('value');
