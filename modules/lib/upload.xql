@@ -7,8 +7,8 @@ declare namespace json="http://www.json.org";
 declare option exist:serialize "method=json media-type=application/json";
 
 declare function local:upload($root, $paths, $payloads) {
-    (: FIXME: collection-uri should be dynaimc so that it doesn't break when temp is moved :)
-    let $collection-uri := $config:app-root
+    (: FIXME: collection-uri should be dynamic so that it doesn't break when temp is moved :)
+    let $collection-uri := $config:data-root (: $config:app-root :)
     let $paths :=
         for-each-pair($paths, $payloads, function($path, $data) {
             if (ends-with($path, ".odd")) then
