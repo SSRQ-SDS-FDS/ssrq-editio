@@ -217,13 +217,9 @@ declare function query:filter($hits as element()*) {
                 if (exists($value)) then
                     switch ($filter)
                         case "filter-period-min" return
-                            let $dateMin := xs:date($value || "-01-01")
-                            return
-                                $context[ancestor-or-self::tei:TEI//tei:history/tei:origin/tei:origDate/@when >= $dateMin]
+                                $context[substring(ancestor-or-self::tei:TEI//tei:history/tei:origin/tei:origDate/@when, 1, 4) >= $value]
                         case "filter-period-max" return
-                            let $dateMax := xs:date($value || "-12-31")
-                            return
-                                $context[ancestor-or-self::tei:TEI//tei:history/tei:origin/tei:origDate/@when <= $dateMax]
+                                $context[substring(ancestor-or-self::tei:TEI//tei:history/tei:origin/tei:origDate/@when, 1, 4) <= $value]
                         case "filter-language" return
                             $context[ancestor-or-self::tei:TEI//tei:textLang/@xml:lang = $value]
                         case "filter-seal" return
@@ -241,13 +237,9 @@ declare function query:filter($hits as element()*) {
                             return
                                 $context[ancestor-or-self::tei:TEI[matches(tei:teiHeader//tei:seriesStmt/tei:idno, ``[^(?:SSRQ|SDS|FDS)_`{$v}`.*$]``)]]
                         case "filter-pubdate-min" return
-                            let $dateMin := xs:date($value || "-01-01")
-                            return
-                                $context[ancestor-or-self::tei:TEI//tei:publicationStmt/tei:date[@type='electronic']/@when >= $dateMin]
+                                $context[substring(ancestor-or-self::tei:TEI//tei:publicationStmt/tei:date[@type='electronic']/@when, 1, 4) >= $value]
                         case "filter-pubdate-max" return
-                            let $dateMax := xs:date($value || "-12-31")
-                            return
-                                $context[ancestor-or-self::tei:TEI//tei:publicationStmt/tei:date[@type='electronic'][@when <= $dateMax]]
+                                $context[substring(ancestor-or-self::tei:TEI//tei:publicationStmt/tei:date[@type='electronic']/@when, 1, 4) <= $value]
                         case "filter-pubplace" return
                             if ($value = "yes") then
                                 $context[ancestor-or-self::tei:TEI//tei:history/tei:origin/tei:origPlace]
