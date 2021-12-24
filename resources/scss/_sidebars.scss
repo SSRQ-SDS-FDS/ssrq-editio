@@ -16,3 +16,7 @@
 .panel.panel-default>.panel-heading {
   background-color: $panel-default-heading-bg-color;
 }
+
+.panel-heading > .panel-title {
+  font-family: $font-sans-serif;
+}
