@@ -489,45 +489,6 @@ $(document).ready(function () {
     });
   });
 
-  $('.typeahead-meta').typeahead({
-    items: 20,
-    minLength: 4,
-    source: function (query, callback) {
-      var type = $("select[name='browse']").val() || 'tei-text';
-      $.getJSON(
-        'modules/autocomplete.xql?q=' + query + '&type=' + type,
-        function (data) {
-          callback(data || []);
-        }
-      );
-    },
-    updater: function (item) {
-      if (/[\s,]/.test(item)) {
-        return '"' + item + '"';
-      }
-      return item;
-    },
-  });
-  $('.typeahead-search').typeahead({
-    items: 30,
-    minLength: 4,
-    source: function (query, callback) {
-      var type = $("select[name='tei-target']").val() || 'tei-text';
-      var doc = $("#searchPageForm input[name='doc']").val();
-      $.getJSON(
-        'modules/autocomplete.xql?q=' +
-          query +
-          '&type=' +
-          type +
-          '&doc=' +
-          encodeURIComponent(doc),
-        function (data) {
-          callback(data || []);
-        }
-      );
-    },
-  });
-
   $('.eXide-open').click(eXide);
 
   initContent();
