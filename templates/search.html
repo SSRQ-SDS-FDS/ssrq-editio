@@ -1,6 +1,6 @@
 <div xmlns:i18n="http://exist-db.org/xquery/i18n">
   <form action="search.html" class="form form-horizontal advanced-search" id="searchPanel">
-    <input type="hidden" name="refresh" value="true" />
+    <input type="hidden" name="refresh" value="true"/>
     <div
       class="panel panel-info"
       data-template="i18n:translate"
@@ -28,22 +28,22 @@
               data-template="templates:form-control"
             >
               <option value="text">
-                <i18n:text key="text" />
+                <i18n:text key="text"/>
               </option>
               <option value="person">
-                <i18n:text key="person" />
+                <i18n:text key="person"/>
               </option>
               <option value="organisation">
-                <i18n:text key="organisation" />
+                <i18n:text key="organisation"/>
               </option>
               <option value="places">
-                <i18n:text key="places" />
+                <i18n:text key="places"/>
               </option>
               <option value="lemma">
-                <i18n:text key="lemma" />
+                <i18n:text key="lemma"/>
               </option>
               <option value="keywords">
-                <i18n:text key="keywords" />
+                <i18n:text key="keywords"/>
               </option>
             </select>
           </div>
@@ -58,15 +58,15 @@
               placeholder="i18n(search-query-attr)"
               autocomplete="off"
               data-template="templates:form-control"
-            />
+           />
             <input
               type="hidden"
               name="doc"
               data-template="search:form-current-doc"
-            />
+           />
           </div>
         </div>
-        <h4><i18n:text key="genre" />:</h4>
+        <h4><i18n:text key="genre"/>:</h4>
         <ul class="control-list genre">
           <li>
             <label class="form-check-label">
@@ -76,8 +76,8 @@
                 type="checkbox"
                 value="${query}"
                 data-template="app:parse-params"
-              />
-              <i18n:text key="searchText" />
+             />
+              <i18n:text key="searchText"/>
             </label>
             <ul>
               <li>
@@ -88,8 +88,8 @@
                     type="checkbox"
                     value="title"
                     data-template="templates:form-control"
-                  />
-                  <i18n:text key="title" />
+                 />
+                  <i18n:text key="title"/>
                 </label>
               </li>
               <li>
@@ -100,8 +100,8 @@
                     type="checkbox"
                     value="idno"
                     data-template="templates:form-control"
-                  />
-                  <i18n:text key="idno" />
+                 />
+                  <i18n:text key="idno"/>
                 </label>
               </li>
               <li>
@@ -112,8 +112,8 @@
                     type="checkbox"
                     value="regest"
                     data-template="templates:form-control"
-                  />
-                  <i18n:text key="regest" />
+                 />
+                  <i18n:text key="regest"/>
                 </label>
               </li>
               <li>
@@ -124,8 +124,8 @@
                     type="checkbox"
                     value="comment"
                     data-template="templates:form-control"
-                  />
-                  <i18n:text key="comment" />
+                 />
+                  <i18n:text key="comment"/>
                 </label>
               </li>
               <li>
@@ -136,8 +136,8 @@
                     type="checkbox"
                     value="notes"
                     data-template="templates:form-control"
-                  />
-                  <i18n:text key="notes" />
+                 />
+                  <i18n:text key="notes"/>
                 </label>
               </li>
               <li>
@@ -148,8 +148,8 @@
                     type="checkbox"
                     value="seal"
                     data-template="templates:form-control"
-                  />
-                  <i18n:text key="seal" />
+                 />
+                  <i18n:text key="seal"/>
                 </label>
               </li>
               <li>
@@ -160,8 +160,8 @@
                     type="checkbox"
                     value="literature"
                     data-template="templates:form-control"
-                  />
-                  <i18n:text key="literature" />
+                 />
+                  <i18n:text key="literature"/>
                 </label>
               </li>
             </ul>
@@ -175,22 +175,23 @@
                 value="edition"
                 checked="checked"
                 data-template="templates:form-control"
-              />
-              <i18n:text key="searchEdition" />
+             />
+              <i18n:text key="searchEdition"/>
             </label>
           </li>
         </ul>
-        <h4><i18n:text key="filters" />:</h4>
+        <h4><i18n:text key="filters"/>:</h4>
         <ul class="control-list mb-2">
           <li>
             <div class="form-group">
-              <label class="col-4 control-label">
-                <i18n:text key="period" />:
+              <label class="col-4 control-label" for="filter-period-min">
+                <i18n:text key="period"/>:
               </label>
               <div class="row control-wrapper">
                 <div data-template="query:period-range">
                   <input
                     type="number"
+                    id="filter-period-min"
                     name="filter-period-min"
                     placeholder="${min}"
                     min="${min}"
@@ -198,9 +199,10 @@
                     value="${filter-period-min}"
                     data-template="app:parse-params"
                   />
-                  <span>-</span>
+                  &#8211;
                   <input
                     type="number"
+                    id="filter-period-max"
                     name="filter-period-max"
                     placeholder="${max}"
                     min="${min}"
@@ -215,7 +217,7 @@
           <li>
             <div class="form-group">
               <label class="row control-label">
-                <i18n:text key="language" />:
+                <i18n:text key="language"/>:
               </label>
               <div class="row control-wrapper">
                 <label class="form-check-label">
@@ -225,7 +227,7 @@
                     type="checkbox"
                     value="de"
                     data-template="templates:form-control"
-                  />
+                 />
                   de
                 </label>
                 <label class="form-check-label">
@@ -235,7 +237,7 @@
                     type="checkbox"
                     value="fr"
                     data-template="templates:form-control"
-                  />
+                 />
                   fr
                 </label>
                 <label class="form-check-label">
@@ -245,7 +247,7 @@
                     type="checkbox"
                     value="it"
                     data-template="templates:form-control"
-                  />
+                 />
                   it
                 </label>
                 <label class="form-check-label">
@@ -255,7 +257,7 @@
                     type="checkbox"
                     value="la"
                     data-template="templates:form-control"
-                  />
+                 />
                   la
                 </label>
               </div>
@@ -263,32 +265,34 @@
           </li>
           <li>
             <div class="form-group">
-              <label class="col-sm-4 control-label">
-                <i18n:text key="archive" />:
+              <label class="col-sm-4 control-label" for="filter-archive">
+                <i18n:text key="archive"/>:
               </label>
               <div class="col-sm-8">
                 <select
+                  id="filter-archive"
                   name="filter-archive"
                   class="form-control has-dropdown"
                   data-template="query:list-archives"
                 >
-                  <option />
+                  <option/>
                 </select>
               </div>
             </div>
           </li>
 <!--           <li> -->
 <!--             <div class="form-group"> -->
-<!--               <label class="col-sm-4 control-label"> -->
-<!--                 <i18n:text key="origPlace" />: -->
+<!--               <label class="col-sm-4 control-label" for="filter-pubplace"> -->
+<!--                 <i18n:text key="origPlace"/>: -->
 <!--               </label> -->
 <!--               <div class="col-sm-8"> -->
 <!--                 <select -->
+<!--                   id="filter-pubplace" -->
 <!--                   name="filter-pubplace" -->
 <!--                   class="form-control has-dropdown" -->
 <!--                   data-template="templates:form-control" -->
 <!--                 > -->
-<!--                   <option /> -->
+<!--                   <option/> -->
 <!--                   <option value="yes">ja</option> -->
 <!--                   <option value="no">nein</option> -->
 <!--                 </select> -->
@@ -297,16 +301,17 @@
 <!--           </li> -->
 <!--           <li> -->
 <!--             <div class="form-group"> -->
-<!--               <label class="col-sm-4 control-label"> -->
-<!--                 <i18n:text key="scribe" />: -->
+<!--               <label class="col-sm-4 control-label" for="filter-author"> -->
+<!--                 <i18n:text key="scribe"/>: -->
 <!--               </label> -->
 <!--               <div class="col-sm-8"> -->
 <!--                 <select -->
+<!--                   id="filter-author" -->
 <!--                   name="filter-author" -->
 <!--                   class="form-control has-dropdown" -->
 <!--                   data-template="templates:form-control" -->
 <!--                 > -->
-<!--                   <option /> -->
+<!--                   <option/> -->
 <!--                   <option value="yes">ja</option> -->
 <!--                   <option value="no">nein</option> -->
 <!--                 </select> -->
@@ -315,16 +320,17 @@
 <!--           </li> -->
 <!--           <li> -->
 <!--             <div class="form-group"> -->
-<!--               <label class="col-sm-4 control-label"> -->
-<!--                 <i18n:text key="seal" />: -->
+<!--               <label class="col-sm-4 control-label" for="filter-seal"> -->
+<!--                 <i18n:text key="seal"/>: -->
 <!--               </label> -->
 <!--               <div class="col-sm-8"> -->
 <!--                 <select -->
+<!--                   id="filter-seal" -->
 <!--                   name="filter-seal" -->
 <!--                   class="form-control has-dropdown" -->
 <!--                   data-template="templates:form-control" -->
 <!--                 > -->
-<!--                   <option /> -->
+<!--                   <option/> -->
 <!--                   <option value="yes">ja</option> -->
 <!--                   <option value="no">nein</option> -->
 <!--                 </select> -->
@@ -333,11 +339,12 @@
 <!--           </li> -->
           <li>
             <div class="form-group">
-              <label class="col-sm-12 control-label">
-                <i18n:text key="volume" />:
+              <label class="col-sm-12 control-label" for="filter-kanton">
+                <i18n:text key="volume"/>:
               </label>
               <div class="col-sm-12">
                 <select
+                  id="filter-kanton"
                   name="filter-kanton"
                   class="form-control"
                   multiple="multiple"
@@ -372,13 +379,14 @@
           </li>
           <li>
             <div class="form-group row">
-              <label class="col-4 control-label">
-                <i18n:text key="pubdate" />:
+              <label class="col-4 control-label" for="filter-pubdate-min">
+                <i18n:text key="pubdate"/>:
               </label>
               <div class="row control-wrapper">
                 <div data-template="query:pubdate-range">
                   <input
                     type="number"
+                    id="filter-pubdate-min"
                     name="filter-pubdate-min"
                     placeholder="${min}"
                     min="${min}"
@@ -386,9 +394,10 @@
                     value="${filter-pubdate-min}"
                     data-template="app:parse-params"
                   />
-                  <span>-</span>
+                  &#8211;
                   <input
                     type="number"
+                    id="filter-pubdate-max"
                     name="filter-pubdate-max"
                     placeholder="${max}"
                     min="${min}"
@@ -403,11 +412,11 @@
         </ul>
         <div class="btn-group btn-group-stretched">
           <button id="f-btn-search" type="submit" class="btn btn-primary">
-            <i class="material-icons">search</i> <i18n:text key="doSearch" />
+            <i class="material-icons">search</i> <i18n:text key="doSearch"/>
             <div class="ripple-container"></div>
           </button>
           <button class="btn btn-primary" type="reset">
-            <i class="material-icons">delete</i> <i18n:text key="reset" />
+            <i class="material-icons">delete</i> <i18n:text key="reset"/>
           </button>
         </div>
       </div>
@@ -420,14 +429,14 @@
           <button type="button" class="close" data-dismiss="modal">
             <span class="material-icons" aria-hidden="true">close</span>
             <span class="sr-only">
-              <i18n:text key="close" />
+              <i18n:text key="close"/>
             </span>
           </button>
           <h4
             class="modal-title"
             data-template="app:show-help"
             data-template-field="title"
-          />
+         />
         </div>
         <div
           class="modal-body content"
@@ -437,5 +446,5 @@
       </div>
     </div>
   </div>
-  <script type="text/javascript" src="resources/scripts/search.js" />
+  <script type="text/javascript" src="resources/scripts/search.js"/>
 </div>
