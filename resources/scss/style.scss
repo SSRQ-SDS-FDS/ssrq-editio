@@ -296,6 +296,12 @@ $color-terms: #b5221f;*/
 } */
 
 .advanced-search {
+  .panel-body {
+    h1, h2, h3, h4, h5, h6 {
+      font-family: $font-sans-serif !important;
+    }
+  }
+
   .info-btn:link {
     margin-left: .5em;
     color: $color-white;

@@ -71,7 +71,7 @@ $color-disabled:                  $color-gray-lighter;
 
 $font-serif:                      "Junicode", Georgia, "Times New Roman", serif;
 $font-sans-serif:                 "Open Sans", Verdana, "Helvetica", sans-serif;
-$font-sans-serif-default:         "Open Sans", Verdana, "Helvetica", sans-serif;
+$font-sans-serif-default:         $font-sans-serif;
 $font-monospace:                  "Ubuntu Mono", Menlo, Consolas, Courier, monospace;
 
 // Body
