@@ -195,6 +195,29 @@ declare function ssrq-utils:sortCollection($items as map(*)*, $sortBy as xs:stri
 :
 :)
 
+declare
+function ssrq-utils:cantonslist-container($node as node(), $model as map(*)) {
+    let $style :=
+        element style {
+            attribute type { "text/css" },
+            text {
+                (
+                    "",
+                    ".canton-img { display: inline-block; margin: 0 .375rem; }",
+                    util:binary-doc("/db/apps/ssrq/resources/images/kantone/sprite.css")
+                    => util:binary-to-string()
+                    => replace("url\(sprite\.png\)", "url(resources/images/kantone/sprite.png)") (: FIXME: no hard-coded paths :)
+                ) => string-join("&#10;")
+            }
+        }
+    return
+        element { node-name($node) } {
+            $node/@*,
+            $style,
+            templates:process($node/node(), $model)
+        }
+};
+
 (:~
 : Render cantons listed in $ssrq-utils:CANTONS as html
 :
@@ -219,7 +242,7 @@ declare function ssrq-utils:listCantons($node as node(), $model as map(*)) as no
 
 declare function ssrq-utils:renderCanton($key as xs:string, $data as map(*)) as node() {
     <tr>
-            <td><img src="{concat('resources/images/kantone/', $data?img, '.png')}"/></td>
+            <td><div class="canton-img {concat('canton-', $data?img)}"></div></td>
             <td>{$key}</td>
         {ssrq-utils:renderDepartment($data,$key)}
     </tr>
@@ -233,7 +256,7 @@ declare function ssrq-utils:renderMergedCantons($data as map(*)) as node()* {
             {
                 for $key in $keys[not(. = 'order')]
                 return
-                    <img src="{concat('resources/images/kantone/', $data($key)?img,  '.png')}"/>
+                    <div class="canton-img {concat('canton-', $data($key)?img)}"></div>
             }
         </td>
         <td>
