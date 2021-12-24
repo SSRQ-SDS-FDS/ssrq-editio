@@ -28,9 +28,9 @@ declare variable $ssrq-utils:STATIC := $config:app-root || '/static';
 : @param $page name of the page as xs:string
 : @return static html content
 :)
-declare function ssrq-utils:loadStatic($node as node(), $model as map(*), $page as xs:string, $collection as xs:string?) as node()* {
+declare function ssrq-utils:loadStatic($node as node(), $model as map(*), $page as xs:string, $kanton as xs:string?) as node()* {
     let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
-    let $path := $ssrq-utils:STATIC || '/' || $page || '_' || string-join(($collection, $lang), '_') || '.html'
+    let $path := $ssrq-utils:STATIC || '/' || string-join(($page, $kanton, $lang), '_') || '.html'
     return doc($path)
 };
 
@@ -273,7 +273,7 @@ declare function ssrq-utils:renderDepartment($data as map(*), $dep as xs:string)
     then
         <td>
             <div class="canton--badge">
-                <a href="?collection={$dep}" data-collection="{$dep}">
+                <a href="?kanton={$dep}" data-collection="{$dep}">
                     {
                     let $html := $data?department => util:parse-html()
                     return $html/*/*[last()]/node()
@@ -335,7 +335,7 @@ declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $coll
                 {
                     let $works-id := substring-after($collection-name, $collection || "/")
                     return
-                    <a href="?collection={$collection}&amp;volume={$works-id}" data-works="{$works-id}" >
+                    <a href="?kanton={$collection}&amp;volume={$works-id}" data-works="{$works-id}" >
                         <i18n:text key="articles">Stücke</i18n:text>
                     </a>
                 }
@@ -410,9 +410,9 @@ declare
 %templates:wrap
 %templates:default("start", 1)
 %templates:default("per-page", 10)
-    function ssrq-utils:loadWorks($node as node(), $model as map(*), $collection as xs:string, $volume as xs:string, $start as xs:int, $per-page as xs:int) as map(*) {
+    function ssrq-utils:loadWorks($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $start as xs:int, $per-page as xs:int) as map(*) {
         let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
-        let $path := $ssrq-utils:STATIC || '/' || 'works' || '_' || string-join(($volume, $lang), '_') || '.html'
+        let $path := $ssrq-utils:STATIC || '/' || string-join(('works', $volume, $lang), '_') || '.html'
         let $documents := doc($path)//*[@class = 'document ml-1']
         return
             map {
@@ -437,9 +437,9 @@ declare function ssrq-utils:browse($node as node(), $model as map(*)) as element
 :
 : @return $node as node()
 :)
-declare function ssrq-utils:browseUp($node as node(), $model as map(*), $collection as xs:string) as node() {
+declare function ssrq-utils:browseUp($node as node(), $model as map(*), $kanton as xs:string) as node() {
     element { node-name($node) } {
-        attribute href {'?collection=' || $collection},
+        attribute href {'?kanton=' || $kanton},
         $node/node()
     }
 };
@@ -447,7 +447,7 @@ declare function ssrq-utils:browseUp($node as node(), $model as map(*), $collect
 
 
 declare function ssrq-utils:linkPagination($collection as xs:string, $volume as xs:string, $start) {
-   let $link := '?collection=' || $collection || '&amp;volume=' || $volume || '&amp;start=' || $start
+   let $link := '?kanton=' || $collection || '&amp;volume=' || $volume || '&amp;start=' || $start
    return $link
 };
 
@@ -464,7 +464,7 @@ declare
     %templates:default("min-hits", 0)
     %templates:default("max-pages", 10)
 function ssrq-utils:paginate($node as node(), $model as map(*), $key as xs:string, $start as xs:int, $per-page as xs:int, $min-hits as xs:int,
-    $max-pages as xs:int, $collection as xs:string, $volume as xs:string) {
+    $max-pages as xs:int, $kanton as xs:string, $volume as xs:string) {
     if (($min-hits < 0 or $model($key) >= $min-hits) and $model($key) != $per-page) then
         element { node-name($node) } {
             $node/@*,
@@ -480,9 +480,9 @@ function ssrq-utils:paginate($node as node(), $model as map(*), $key as xs:strin
                     </li>
                 ) else (
                     <li>
-                        <a href="{ssrq-utils:linkPagination($collection, $volume, 1)}"><i class="glyphicon glyphicon-fast-backward"/></a>
+                        <a href="{ssrq-utils:linkPagination($kanton, $volume, 1)}"><i class="glyphicon glyphicon-fast-backward"/></a>
                     </li>,
-                    <li><a href="{ssrq-utils:linkPagination($collection, $volume, max( ($start - $per-page, 1 ) ))}"><i class="glyphicon glyphicon-backward"/>
+                    <li><a href="{ssrq-utils:linkPagination($kanton, $volume, max( ($start - $per-page, 1 ) ))}"><i class="glyphicon glyphicon-backward"/>
                        </a></li>
                 ),
                 let $startPage := xs:integer(ceiling($start div $per-page))
@@ -492,17 +492,17 @@ function ssrq-utils:paginate($node as node(), $model as map(*), $key as xs:strin
                 for $i in $lowerBound to $upperBound
                 return
                     if ($i = ceiling($start div $per-page)) then
-                        <li class="active"><a href="{ssrq-utils:linkPagination($collection, $volume, max( (($i - 1) * $per-page + 1, 1) ))}">{$i}</a></li>
+                        <li class="active"><a href="{ssrq-utils:linkPagination($kanton, $volume, max( (($i - 1) * $per-page + 1, 1) ))}">{$i}</a></li>
                     else
                         let $page := max((($i - 1) * $per-page + 1, 1))
                         return
-                        <li><a href="{ssrq-utils:linkPagination($collection, $volume, $page)}">{$i}</a></li>,
+                        <li><a href="{ssrq-utils:linkPagination($kanton, $volume, $page)}">{$i}</a></li>,
                 if ($start + $per-page < $model($key)) then (
                     <li>
-                        <a href="{ssrq-utils:linkPagination($collection, $volume,$start + $per-page)}"><i class="glyphicon glyphicon-forward"/></a>
+                        <a href="{ssrq-utils:linkPagination($kanton, $volume,$start + $per-page)}"><i class="glyphicon glyphicon-forward"/></a>
                     </li>,
                     <li>
-                        <a href="{ssrq-utils:linkPagination($collection, $volume, max( (($count - 1) * $per-page + 1, 1)))}"><i class="glyphicon glyphicon-fast-forward"/></a>
+                        <a href="{ssrq-utils:linkPagination($kanton, $volume, max( (($count - 1) * $per-page + 1, 1)))}"><i class="glyphicon glyphicon-fast-forward"/></a>
                     </li>
                 ) else (
                     <li class="disabled">
@@ -526,8 +526,8 @@ function ssrq-utils:paginate($node as node(), $model as map(*), $key as xs:strin
 : @param $volume the current volume inside a canton
 : @return total count inside a html:a
 :)
-declare function ssrq-utils:hits($node as node(), $model as map(*), $collection as xs:string, $volume as xs:string) {
-       <a href="?collection={$collection}&amp;volume={$volume}&amp;per-page={$model?total}">{$model?total}</a>
+declare function ssrq-utils:hits($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string) {
+       <a href="?kanton={$kanton}&amp;volume={$volume}&amp;per-page={$model?total}">{$model?total}</a>
 };
 
 

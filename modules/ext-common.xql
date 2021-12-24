@@ -507,7 +507,7 @@ declare function pmf:format-link($id as xs:string*) as xs:string* {
                 return
                     if (($config:data-root || '/' || $collection || '/' || $volume) => xmldb:collection-available())
                     then
-                        $link-base?ssrq-new || '?collection=' || $collection || '&amp;volume=' || $volume
+                        $link-base?ssrq-new || '?kanton=' || $collection || '&amp;volume=' || $volume
                     else
                         $link-base?ssrq-old || $volume
             else ()
