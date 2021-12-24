@@ -11,26 +11,8 @@ declare namespace output="http://www.w3.org/2010/xslt-xquery-serialization";
 declare option output:method "html5";
 declare option output:media-type "text/html";
 
-declare variable $local:EXIDE :=
-    let $path := collection(repo:get-root())//expath:package[@name = "http://exist-db.org/apps/eXide"]
-    return
-        if ($path) then
-            substring-after(util:collection-name($path), repo:get-root())
-        else
-            ();
-
 declare function local:load-source($href as xs:string, $line as xs:int?) {
-    let $link :=
-        let $path := string-join(
-            (request:get-context-path(), request:get-attribute("$exist:prefix"), $local:EXIDE,
-            "index.html?open=" || $href)
-            , "/"
-        )
-        return
-            replace($path, "/+", "/")
-    return
-        <a href="{$link}" target="eXide" class="eXide-open" data-exide-open="{$href}"
-            data-exide-line="{$line}">{$href}</a>
+    <a data-exide-open="{$href}" data-exide-line="{$line}">{$href}</a>
 };
 
 declare function local:get-line($src, $line as xs:int) {

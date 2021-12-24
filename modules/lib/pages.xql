@@ -37,28 +37,6 @@ import module namespace query="http://existsolutions.com/ssrq/search" at "../ssr
 
 declare variable $pages:app-root := request:get-context-path() || substring-after($config:app-root, "/db");
 
-declare variable $pages:EXIDE :=
-    let $pkg := collection(repo:get-root())//expath:package[@name = "http://exist-db.org/apps/eXide"]
-    let $appLink :=
-        if ($pkg) then
-            substring-after(util:collection-name($pkg), repo:get-root())
-        else
-            ()
-    let $path := string-join((request:get-context-path(), request:get-attribute("$exist:prefix"), $appLink, "index.html"), "/")
-    return
-        replace($path, "/+", "/");
-
-declare variable $pages:EDIT_ODD_LINK :=
-    let $pkg := collection(repo:get-root())//expath:package[@name = "http://existsolutions.com/apps/tei-publisher"]
-    let $appLink :=
-        if ($pkg) then
-            substring-after(util:collection-name($pkg), repo:get-root())
-        else
-            ()
-    let $path := string-join((request:get-context-path(), request:get-attribute("$exist:prefix"), $appLink, "odd-editor.html"), "/")
-    return
-        replace($path, "/+", "/");
-
 declare
     %templates:wrap
 function pages:load($node as node(), $model as map(*), $doc as xs:string, $root as xs:string?,
@@ -175,46 +153,6 @@ declare function pages:single-page-link($node as node(), $model as map(*), $doc 
         attribute href { "?view=plain&amp;odd=" || $config:odd },
         $node/node()
     }
-};
-
-declare function pages:edit-odd-link($node as node(), $model as map(*)) {
-    element { node-name($node) } {
-        $node/@* except $node/@href,
-        attribute href { $pages:EDIT_ODD_LINK || "?odd=" || $config:odd || "&amp;root=" || $config:odd-root ||
-            "&amp;output-root=" || $config:output-root },
-        $node/node()
-    }
-};
-
-declare function pages:xml-link($node as node(), $model as map(*), $source as xs:string?) {
-    let $doc-path :=
-        if ($source = "odd") then
-            $config:odd-root || "/" || $config:odd
-        else if ($source) then
-            $config:app-root || "/" || $source
-        else if ($model?work) then
-            document-uri(root($model?work))
-        else if ($model?data) then
-            document-uri(root($model?data))
-        else
-            ()
-    let $eXide-link := $pages:EXIDE || "?open=" || $doc-path
-    let $rest-link := '/exist/rest' || $doc-path
-    return
-        element { node-name($node) } {
-            $node/@* except ($node/@href, $node/@class),
-            if ($pages:EXIDE)
-            then (
-                attribute href { $eXide-link },
-                attribute data-exide-open { $doc-path },
-                attribute class { "eXide-open " || $node/@class },
-                attribute target { "eXide" }
-            ) else (
-                attribute href { $rest-link },
-                attribute target { "_blank" }
-            ),
-            $node/node()
-        }
 };
 
 declare
