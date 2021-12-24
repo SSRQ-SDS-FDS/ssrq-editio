@@ -1,10 +1,4 @@
 $(document).ready(function () {
-  var HOST = 'https://www.ssrq-sds-fds.ch';
-  var PLACES_API = HOST + '/places-db-edit/views/get-info.xq';
-  var KEYWORD_API = HOST + '/lemma-db-edit/views/get-key-info.xq';
-  var LEMMA_API = HOST + '/lemma-db-edit/views/get-lem-info.xq';
-  var PERSON_API = HOST + '/persons-db-api/';
-
   var aside = $('#aside');
   var root = $(document.documentElement).attr('data-app');
   var docPath = location.pathname.substr(root.length + 1);
@@ -16,7 +10,7 @@ $(document).ready(function () {
       pathArray[pathArray.length - 1].split('.')[0],
     function () {
       var lang = $('#lang-select').val();
-      var colon = lang == 'fr' ? ' : ' : ': ';
+      var colon = lang === 'fr' ? ' : ' : ': ';
       aside.find('li').each(function () {
         var key = $(this).attr('data-ref');
         var label = $(this).text();
