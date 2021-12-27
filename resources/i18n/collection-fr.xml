@@ -132,4 +132,8 @@
     <msg key="pdfdummy">Télécharger le pdf</msg>
     <msg key="back-up">Aller au Parent</msg>
     <msg key="toc">Table des matières</msg>
+    <msg key="known">connu</msg>
+    <msg key="unknown">inconnu</msg>
+    <msg key="existent">existant</msg>
+    <msg key="nonexistent">pas existant</msg>
 </catalogue>

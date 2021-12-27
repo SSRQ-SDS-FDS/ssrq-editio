@@ -132,4 +132,8 @@
     <msg key="pdfdummy">Download PDF</msg>
     <msg key="back-up">Go To Parent</msg>
     <msg key="toc">Table of Contents</msg>
+    <msg key="known">known</msg>
+    <msg key="unknown">unknown</msg>
+    <msg key="existent">existent</msg>
+    <msg key="nonexistent">non-existent</msg>
 </catalogue>

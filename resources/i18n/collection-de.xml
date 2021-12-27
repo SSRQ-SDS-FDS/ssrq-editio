@@ -132,4 +132,8 @@
     <msg key="pdfdummy">Gesamt-PDF herunterladen</msg>
     <msg key="back-up">Übergeordnetes Verzeichnis</msg>
     <msg key="toc">Inhaltsverzeichnis</msg>
+    <msg key="known">bekannt</msg>
+    <msg key="unknown">unbekannt</msg>
+    <msg key="existent">vorhanden</msg>
+    <msg key="nonexistent">nicht vorhanden</msg>
 </catalogue>
