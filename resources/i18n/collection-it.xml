@@ -117,4 +117,8 @@
     <msg key="and"> und </msg>
     <msg key="zitation">Zitation: </msg>
     <msg key="highlight-facet">Select to highlight occurrences</msg>
+    <msg key="known">conosciuto</msg>
+    <msg key="unknown">sconosciuto</msg>
+    <msg key="existent">esistente</msg>
+    <msg key="nonexistent">non esistente</msg>
 </catalogue>
