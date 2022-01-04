@@ -1,17 +1,25 @@
 #!/bin/sh -e
 
-sprite_png=sprite.png
-sprite_css=sprite.css
+base_dir=$(cd "${0%/*}/.." && pwd -P)
+res_dir=${base_dir}/resources/images/kantone
 
-rm "${sprite_png}"
+sprite_png=${res_dir}/sprite.png
+sprite_css=${res_dir}/sprite.css
+
+command -v convert >/dev/null 2>&1 || {
+	echo 'Cannot find convert binary.' >&2
+	exit 1
+}
+
+test ! -f "${sprite_png}" || rm "${sprite_png}"
 
 while read -r c1 c2
 do
 	if test -n "${c2}"
 	then
-		convert "${c1}.png" "${c2}.png" -background 'rgba(0,0,0,0)' +append _t.png
+		convert "${res_dir}/${c1}.png" "${res_dir}/${c2}.png" -background 'rgba(0,0,0,0)' +append _t.png
 	else
-		cat "${c1}.png" >_t.png
+		cat "${res_dir}/${c1}.png" >_t.png
 	fi
 
 	set --
@@ -28,27 +36,27 @@ do
 
 	rm _t.png
 
-	c1_sz=$(identify -format '%g' "${c1}.png")
+	c1_sz=$(identify -format '%g' "${res_dir}/${c1}.png")
 	c1_width=$(expr "${c1_sz}" : '\([0-9]\{1,\}\)x')
 	c1_height=$(expr "${c1_sz}" : '[0-9]\{1,\}x\([0-9]\{1,\}\)')
 
 	printf '.canton-%s {\n  width: %upx;\n  height: %upx;\n  background: url(%s) 0px -%upx;\n}\n' \
 		"${c1}" \
 		$((c1_width)) $((c1_height)) \
-		"${sprite_png}" $((offset_y))
+		"${sprite_png#${res_dir}/}" $((offset_y))
 
 	if test -n "${c2}"
 	then
 		offset_x=$((c1_width))
 
-		c2_sz=$(identify -format '%g' "${c2}.png")
+		c2_sz=$(identify -format '%g' "${res_dir}/${c2}.png")
 		c2_width=$(expr "${c2_sz}" : '\([0-9]\{1,\}\)x')
 		c2_height=$(expr "${c2_sz}" : '[0-9]\{1,\}x\([0-9]\{1,\}\)')
 
 		printf '.canton-%s {\n  width: %upx;\n  height: %upx;\n  background: url(%s) -%upx -%upx;\n}\n' \
 			"${c2}" \
 			$((c2_width)) $((c2_height)) \
-			"${sprite_png}" $((offset_x)) $((offset_y))
+			"${sprite_png#${res_dir}/}" $((offset_x)) $((offset_y))
 	fi
 
 	: $((offset_y += t_height))

@@ -7,7 +7,7 @@
     <property name="build.dir" value="build"/>
     <target name="xar" depends="style.css">
         <mkdir dir="${build.dir}"/>
-        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${build.dir}/** README.md build.xml *.sh .existdb.json node_modules/** test/** resources/scss/**"/>
+        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${build.dir}/** _scripts/** README.md build.xml .existdb.json node_modules/** test/** resources/scss/**"/>
     </target>
     <target name="style.css">
         <echo message="Compiling SCSS..."/>
