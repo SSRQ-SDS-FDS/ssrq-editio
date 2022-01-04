@@ -274,29 +274,6 @@ mark {
   }
 }
 
-// Colors for input's underline when focused
-#searchPageForm {
-  .is-focused .form-control {
-    background-image: -webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        from($color-toolbar-bg),
-        to($color-toolbar-bg)
-      ),
-      -webkit-gradient(linear, left top, left bottom, from($color-gray-lightest), to($color-gray-lightest));
-    background-image: -webkit-linear-gradient(
-        $color-toolbar-bg,
-        $color-toolbar-bg
-      ),
-      -webkit-linear-gradient($color-gray-lightest, $color-gray-lightest);
-    background-image: -o-linear-gradient($color-toolbar-bg, $color-toolbar-bg),
-      -o-linear-gradient($color-gray-lightest, $color-gray-lightest);
-    background-image: linear-gradient($color-toolbar-bg, $color-toolbar-bg),
-      linear-gradient($color-gray-lightest, $color-gray-lightest);
-  }
-}
-
 .form-group.is-focused {
   .form-control {
     background-image: -webkit-gradient(

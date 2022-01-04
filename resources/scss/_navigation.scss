@@ -99,35 +99,6 @@
   }
 }
 
-#searchPageForm {
-  font-size: $font-size-small !important;
-
-  @media screen and (min-width: $screen-xs-min) {
-    margin: 11px 0;
-    font-size: $font-size-body-default !important;
-  }
-  @media screen and (min-width: $screen-lg-min) {
-    margin: 15px 0 14px 0;
-  }
-
-  @media (max-width: 991px) {
-    display: none;
-  }
-
-  input {
-    width: 16vw;
-    @media (min-width: 1200px) {
-      width: 20vw;
-    }
-  }
-
-  i.glyphicon-search {
-    top: 5px;
-    padding-right: 10px;
-    cursor: pointer;
-  }
-}
-
 /********************* Page Navigation Styles ************************/
 /* Default TEI Publisher theme                                       */
 /* Do not modify                                                     */
