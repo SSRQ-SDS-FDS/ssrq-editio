@@ -15,8 +15,10 @@ $application-title-display: none;
 /********************* Colors ************************/
 
 $color-primary: #911917;
+// Shaded from $color-primary
 $color-primary-light: #994443;
-$color-primary-lightest: #d1dae0;
+$color-primary-lighter: #c17371;
+$color-primary-lightest: #d39d9c;
 
 $color-white: #ffffff;
 $color-gray-lightest: #f1f1f1;
@@ -42,12 +44,15 @@ $color-navigation-hover: $color-primary-light;
 $color-navigation-hover-text: $color-white;
 
 // Toolbar-Color
-$color-toolbar-bg: $color-primary-lightest;
+$color-toolbar-bg: $color-primary-light;
 
 // Sidebars and Panels
 $panel-default-heading-bg-color: $color-primary-lightest;
 $panel-info-heading-bg-color: $color-primary-light;
 $panel-primary-heading-bg-color: #c5cae9;
+[class*='panel-'] > .panel-heading {
+  color: $color-white;
+}
 
 // Off Canvas Navigation
 $color-side-navigation-bg: $color-white;
@@ -61,7 +66,7 @@ $btn-primary-bg: $color-primary-light;
 $btn-primary-border: $color-primary-light;
 
 .btn.btn-primary {
-	color: $color-primary !important;
+  color: $color-primary !important;
 }
 
 // Borders
@@ -85,7 +90,7 @@ $font-size-large: 1.7rem;
 $font-size-small: 1.5rem;
 
 // Headings
-$font-family-heading: $font-serif;
+$font-family-heading: $font-sans-serif;
 
 $direction-left-to-right: ltr; /* Left to Right */
 $direction-right-ro-left: rtl; /* Right to Left */
@@ -297,13 +302,18 @@ $color-terms: #b5221f;*/
 
 .advanced-search {
   .panel-body {
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
       font-family: $font-sans-serif !important;
     }
   }
 
   .info-btn:link {
-    margin-left: .5em;
+    margin-left: 0.5em;
     color: $color-white;
 
     i.material-icons {
@@ -769,6 +779,10 @@ label {
 
 .zitation {
   color: #607d8b;
+}
+
+.id {
+  color: $color-primary-light;
 }
 
 #idno .id {

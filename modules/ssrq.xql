@@ -448,7 +448,7 @@ declare function app:idno-popup($node as node(), $model as map(*)) {
     return
         app:show-if-exists($node, $idno, function() {
             <span class="alternate">
-                <span class="id" style="color:#607D8B;">{common:format-id($idno)} <i class="glyphicon glyphicon-info-sign"/></span>
+                <span class="id">{common:format-id($idno)} <i class="glyphicon glyphicon-info-sign"/></span>
                 <span class="altcontent" xmlns:i18n="http://exist-db.org/xquery/i18n" popover-class="increase-popover-width">
                     <p>{$stmtTitle}, {$pm-config:web-transform($fileDescTitle, map { "root": $fileDescTitle, "view": "infopopup"}, $config:odd)}, <i18n:text key="by">von</i18n:text> {app:pers-names($header)}</p>
                     <p><i18n:text key="zitation">Zitation:</i18n:text> <a href="{$link}">{common:format-id($idno)}</a></p>
