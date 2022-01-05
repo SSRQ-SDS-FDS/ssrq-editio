@@ -55,24 +55,6 @@ declare variable $config:pagination-depth := 0;
 declare variable $config:pagination-fill := 5;
 
 (:
- : The function to be called to determine the next content chunk to display.
- : It takes two parameters:
- :
- : * $elem as element(): the current element displayed
- : * $view as xs:string: the view, either 'div', 'page' or 'body'
- :)
-declare variable $config:next-page := nav:get-next#3;
-
-(:
- : The function to be called to determine the previous content chunk to display.
- : It takes two parameters:
- :
- : * $elem as element(): the current element displayed
- : * $view as xs:string: the view, either 'div', 'page' or 'body'
- :)
-declare variable $config:previous-page := nav:get-previous#3;
-
-(:
  : The CSS class to declare on the main text content div.
  :)
 declare variable $config:css-content-class := "content";

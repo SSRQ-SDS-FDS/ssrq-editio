@@ -35,8 +35,6 @@
     <msg key="browsing">Browsing</msg>
     <msg key="login-message">Please login to upload some documents!</msg>
     <msg key="contents">Contents</msg>
-    <msg key="previous-page">Previous page [left arrow on keyboard]</msg>
-    <msg key="next-page">Next page [right arrow on keyboard]</msg>
     <msg key="close">Close</msg>
     <msg key="generating-file">Generating File...</msg>
     <msg key="download-message">Generating a file for download may take up to a few minutes. Please wait. This dialog should close automatically when the download has completed.</msg>

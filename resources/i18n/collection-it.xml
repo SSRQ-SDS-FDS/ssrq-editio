@@ -35,8 +35,6 @@
     <msg key="browsing">Zeige</msg>
     <msg key="login-message">Bitte einloggen um Dokumente hochzuladen!</msg>
     <msg key="contents">Inhalt</msg>
-    <msg key="previous-page">Vorherige Seite [Pfeil links auf der Tastatur]</msg>
-    <msg key="next-page">Nächste Seite [Pfeil rechts auf der Tastatur]</msg>
     <msg key="close">Schließen</msg>
     <msg key="generating-file">Erzeuge Datei...</msg>
     <msg key="download-message">
