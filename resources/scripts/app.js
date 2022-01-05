@@ -60,8 +60,6 @@ $(document).ready(function () {
     }
   }
 
-  function resize() {}
-
   function getFontSize() {
     var size = $('#document-wrapper').css('font-size');
     return parseInt(size.replace(/^(\d+)px/, '$1'));
@@ -335,7 +333,6 @@ $(document).ready(function () {
     $('.toc-link').click(initLinks);
   }
 
-  resize();
   $('.page-nav').click(initLinks);
 
   $('#zoom-in').click(function (ev) {
@@ -364,8 +361,7 @@ $(document).ready(function () {
       } else {
         window.location.reload();
       }
-    })
-    .on('resize', resize);
+    });
 
   $('#logout').on('click', function (ev) {
     ev.preventDefault();
