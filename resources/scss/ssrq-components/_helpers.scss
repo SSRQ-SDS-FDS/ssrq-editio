@@ -11,6 +11,7 @@
 
 .ml-1 {
   margin-left: $margin-horizontal-base;
+  width: auto !important;
 }
 
 @for $i from 1 through 5 {
