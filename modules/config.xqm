@@ -135,14 +135,6 @@ declare variable $config:fop-config :=
         </fop>
 ;
 
-(:~
- : The command to run when generating PDF via LaTeX. Should be a sequence of
- : arguments.
- :)
-declare variable $config:tex-command := function($file) {
-    ( "xelatex", "-interaction=nonstopmode", $file )
-};
-
 (:
     Determine the application root collection from the current module load path.
 :)
