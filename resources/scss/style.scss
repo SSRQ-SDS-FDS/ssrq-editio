@@ -47,10 +47,10 @@ $color-navigation-hover-text: $color-white;
 $color-toolbar-bg: $color-primary-light;
 
 // Sidebars and Panels
-$panel-default-heading-bg-color: $color-primary-lightest;
+$panel-default-heading-bg-color: $color-primary-light;
 $panel-info-heading-bg-color: $color-primary-light;
-$panel-primary-heading-bg-color: #c5cae9;
-[class*='panel-'] > .panel-heading {
+$panel-primary-heading-bg-color: $color-primary-light;
+.panel > .panel-heading {
   color: $color-white;
 }
 
