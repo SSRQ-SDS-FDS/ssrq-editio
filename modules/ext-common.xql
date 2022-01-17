@@ -323,36 +323,30 @@ declare function pmf:format-author($author as node()*) {
         ()
 };
 
-declare function pmf:format-enc-editor($editors as node()*) {
-    if ($editors) then
-        if (count($editors) > 2 or $editors[last()] => contains('et.'))
-        then ($editors[1], $editors[2]) => string-join(', ') || ', et al.'
-        else $editors => string-join(', ')
-    else ()
-};
-
 declare function pmf:switch-name($name as node()*) {
-
+    if ($name => contains(', ')) then
     substring-after($name, ', ') || ' ' || substring-before($name, ', ')
+    else $name
 };
 
-declare function pmf:format-editor($editor as node()*) {
-    (: save typing in ssrq.odd, used in biblStruct :)
-
-    if ($editor) then
-        if (count($editor) > 2) then
-            pmf:switch-name($editor[1]) || ', ' || pmf:switch-name($editor[2]) || ' et al.'
-        else if (count($editor) = 2) then
-            pmf:switch-name($editor[1]) || ' ' || pmf:label('and', false()) || ' ' || pmf:switch-name($editor[2])
+declare function pmf:format-editor($editors as node()*) {
+    let $count := $editors => count()
+    return
+        if ($editors) then
+            if ($count > 2 or $editors[last()] => matches('et[\.]?\s?[al]?')) then
+                ($editors !
+                (if(not(. => matches('et[\.]?\s?[al]?')) and (position() <= 2)) then pmf:switch-name(.) else()))
+                 => string-join(', ') || ' et al.'
+            else if ($count = 2) then
+                ($editors ! pmf:switch-name(.)) => string-join(' ' || pmf:label('and', false()) || ' ')
+            else
+                pmf:switch-name($editors)
         else
-            pmf:switch-name($editor)
-    else
-        ()
+            ()
 };
 
 declare function pmf:print-date($date as node()*) {
     (: save typing in ssrq.odd :)
-
     let $date-string :=
     	if ($date/@when) then
     	  if (matches($date/@when, "^\d{4}-\d{2}$")) then
