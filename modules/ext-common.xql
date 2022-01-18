@@ -333,9 +333,9 @@ declare function pmf:format-editor($editors as node()*) {
     let $count := $editors => count()
     return
         if ($editors) then
-            if ($count > 2 or $editors[last()] => matches('et[\.]?\s?[al]?')) then
+            if ($count > 2 or $editors[last()] => matches('et[\.]?\sal')) then
                 ($editors !
-                (if(not(. => matches('et[\.]?\s?[al]?')) and (position() <= 2)) then pmf:switch-name(.) else()))
+                (if(not(. => matches('et[\.]?\sal')) and (position() <= 2)) then pmf:switch-name(.) else()))
                  => string-join(', ') || ' et al.'
             else if ($count = 2) then
                 ($editors ! pmf:switch-name(.)) => string-join(' ' || pmf:label('and', false()) || ' ')
