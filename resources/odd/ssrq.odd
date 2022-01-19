@@ -1612,7 +1612,8 @@
                     <!-- Rendering von Editionsangaben WEB -->
                     <model predicate="monogr[@type='edition'] and @xml:id" behaviour="listItem" cssClass="biblio">
                         <param name="author" value="if (ec:format-editor(monogr/author)) then (', bearb. von ' || ec:format-editor(monogr/author)) else ()"/>
-                        <param name="series" value="if (series) then (series/title || ', ' || series/biblScope || ': ') else ()"/>
+                        <param name="series-ssrq" value="if (series and @xml:id => matches('SSRQ|SDS|FDS')) then (series/title || ', ' || series/biblScope || ec:colon()) else ()"/>
+                        <param name="series-misc" value="if (series and not(@xml:id => matches('SSRQ|SDS|FDS'))) then (series/title || ', ' || series/biblScope || ', ') else ()"/>
                         <param name="title" value="replace(monogr/title[not(@type='short')], ' : ', ' – ')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="link" value="if (monogr/ref) then monogr/ref/@target else ec:format-link(@xml:id)"/>
@@ -1620,20 +1621,20 @@
                         <param name="date" value="monogr/imprint/date/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <!--  Selbstständige Edition mit externem Verweis -->
-                            <div>[[series]][[title]][[author]], [[place]][[date]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
+                            <div>[[series-ssrq]][[title]][[author]], [[series-misc]][[place]][[date]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
                             </div>
                         </pb:template>
                     </model>
                     <model predicate="monogr[@type='edition']" behaviour="listItem" cssClass="biblio">
                         <param name="author" value="if (ec:format-editor(monogr/author)) then (', bearb. von ' || ec:format-editor(monogr/author)) else ()"/>
-                        <param name="series" value="if (series) then (series/title || ', ' || series/biblScope || ': ') else ()"/>
+                        <param name="series" value="if (series) then (series/title || ', ' || series/biblScope || ', ') else ()"/>
                         <param name="title" value="replace(monogr/title[not(@type='short')], ' : ', ' – ')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
                         <param name="date" value="monogr/imprint/date/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <!--  Selbstständige Edition ohne externen Verweis -->
-                            <div>[[series]][[title]][[author]], [[place]][[date]] ([[short-title]]).
+                            <div>[[title]][[author]], [[series]][[place]][[date]] ([[short-title]]).
                             </div>
                         </pb:template>
                     </model>
