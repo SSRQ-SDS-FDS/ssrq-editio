@@ -1545,7 +1545,7 @@
                         <param name="author" value="if (ec:format-editor(monogr/author)) then (', bearb. von ' || ec:format-editor(monogr/author)) else ()"/>
                         <param name="series-ssrq" value="series/title"/>
                         <param name="series-ssrq-scope" value="', ' || series/biblScope || ec:colon()"/>
-                        <param name="title" value="ec:render-title-with-hi(analytic/title[not(@type='short')], 'latex')"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'latex')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
                         <param name="date" value="monogr/imprint/date/text()"/>
@@ -1558,7 +1558,7 @@
                     <model predicate="monogr[@type='edition']" behaviour="block" output="latex">
                         <param name="author" value="if (ec:format-editor(monogr/author)) then (', bearb. von ' || ec:format-editor(monogr/author)) else ()"/>
                         <param name="series" value="if (series) then (series/title || ', ' || series/biblScope || ', ') else ()"/>
-                        <param name="title" value="ec:render-title-with-hi(analytic/title[not(@type='short')], 'latex')"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'latex')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
                         <param name="date" value="monogr/imprint/date/text()"/>
@@ -1586,7 +1586,7 @@
                     <!-- Rendering von sonstiger Sekundärliteratur WEB -->
                     <model predicate="monogr[@type='enc']" behaviour="block" output="latex">
                         <param name="editor" value="ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ec:colon()"/>
-                        <param name="title" value="ec:render-title-with-hi(analytic/title[not(@type='short')], 'latex')"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'latex')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
                         <param name="date" value="monogr/imprint/date/text()"/>
@@ -1599,7 +1599,7 @@
                     </model>
                     <model predicate="monogr[not(@type='edition')] and not(analytic)" behaviour="block" output="latex">
                         <param name="author" value="if (ec:format-author(monogr/author)) then (ec:format-author(monogr/author) || ': ') else ()"/>
-                        <param name="title" value="ec:render-title-with-hi(analytic/title[not(@type='short')], 'latex')"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'latex')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
                         <param name="date" value="monogr/imprint/date/text()"/>
@@ -1630,7 +1630,7 @@
                         <param name="author" value="if (ec:format-editor(monogr/author)) then (', ' || ec:label('edited-by') || ' ' || ec:format-editor(monogr/author)) else ()"/>
                         <param name="series-ssrq" value="series/title"/>
                         <param name="series-ssrq-scope" value="', ' || series/biblScope || ec:colon()"/>
-                        <param name="title" value="ec:render-title-with-hi(analytic/title[not(@type='short')], 'web')"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="link" value="if (monogr/ref) then monogr/ref/@target else ec:format-link(@xml:id)"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
@@ -1644,7 +1644,7 @@
                     <model predicate="monogr[@type='edition'] and (@xml:id or monogr/ref)" behaviour="listItem" cssClass="biblio">
                         <param name="author" value="if (ec:format-editor(monogr/author)) then (', ' || ec:label('edited-by') || ' ' || ec:format-editor(monogr/author)) else ()"/>
                         <param name="series-misc" value="if (series and not(@xml:id => matches('SSRQ|SDS|FDS'))) then (series/title || ', ' || series/biblScope || ', ') else ()"/>
-                        <param name="title" value="ec:render-title-with-hi(analytic/title[not(@type='short')], 'web')"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="link" value="if (monogr/ref) then monogr/ref/@target else ec:format-link(@xml:id)"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
@@ -1658,7 +1658,7 @@
                     <model predicate="monogr[@type='edition']" behaviour="listItem" cssClass="biblio">
                         <param name="author" value="if (ec:format-editor(monogr/author)) then (', ' || ec:label('edited-by') || ' ' || ec:format-editor(monogr/author)) else ()"/>
                         <param name="series" value="if (series) then (series/title || ', ' || series/biblScope || ', ') else ()"/>
-                        <param name="title" value="ec:render-title-with-hi(analytic/title[not(@type='short')], 'web')"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
                         <param name="date" value="monogr/imprint/date/text()"/>
@@ -1705,7 +1705,7 @@
                     <!-- Rendering von sonstiger Sekundärliteratur WEB -->
                     <model predicate="monogr[@type='enc'] and @xml:id or monogr/ref" behaviour="listItem" cssClass="biblio">
                         <param name="editor" value="ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ec:colon()"/>
-                        <param name="title" value="ec:render-title-with-hi(analytic/title[not(@type='short')], 'web')"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
                         <param name="link" value="if (@xml:id) then ec:format-link(@xml:id) else monogr/ref/@target"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
@@ -1719,7 +1719,7 @@
                     </model>
                     <model predicate="monogr[@type='enc']" behaviour="listItem" cssClass="biblio">
                         <param name="editor" value="ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ec:colon()"/>
-                        <param name="title" value="ec:render-title-with-hi(analytic/title[not(@type='short')], 'web')"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
                         <param name="date" value="monogr/imprint/date/text()"/>
@@ -1732,7 +1732,7 @@
                     </model>
                     <model predicate="monogr[not(@type='edition')] and not(analytic) and (@xml:id or monogr/ref)" behaviour="listItem" cssClass="biblio">
                         <param name="author" value="if (ec:format-author(monogr/author)) then (ec:format-author(monogr/author) || ec:colon()) else ()"/>
-                        <param name="title" value="ec:render-title-with-hi(analytic/title[not(@type='short')], 'web')"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="link" value="if (monogr/ref) then monogr/ref/@target else ec:format-link(@xml:id)"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
@@ -1745,7 +1745,7 @@
                     </model>
                     <model predicate="monogr[not(@type='edition')] and not(analytic)" behaviour="listItem" cssClass="biblio">
                         <param name="author" value="if (ec:format-author(monogr/author)) then (ec:format-author(monogr/author) || ec:colon()) else ()"/>
-                        <param name="title" value="ec:render-title-with-hi(analytic/title[not(@type='short')], 'web')"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
                         <param name="date" value="monogr/imprint/date/text()"/>
