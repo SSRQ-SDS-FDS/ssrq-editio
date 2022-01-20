@@ -9,6 +9,7 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 import module namespace counters="http://www.tei-c.org/tei-simple/xquery/counters";
 import module namespace functx="http://www.functx.com";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
+import module namespace html="http://www.tei-c.org/tei-simple/xquery/functions";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace i18n="http://exist-db.org/xquery/i18n";
@@ -505,4 +506,29 @@ declare function pmf:format-link($id as xs:string*) as xs:string* {
                     else
                         $link-base?ssrq-old || $volume
             else ()
+};
+
+
+
+declare function pmf:render-title-with-hi($title as node()*, $mode as xs:string) {
+    let $titleRendition :=
+    for $node in $title
+    return
+        typeswitch($node)
+            case element(tei:title)
+                return
+                    pmf:render-title-with-hi($node/node(), $mode)
+            case element(tei:hi)
+                return
+                    if ($mode = 'web')
+                    then
+                        <span class="{string-join(($node/@rend, 'tei-hi3'), ' ')}">{pmf:render-title-with-hi($node/node(), $mode)}</span>
+                    else
+                        '\textsuperscript{' || pmf:render-title-with-hi($node/node(), $mode) || '}'
+            case text()
+                return
+                    $node => replace(' : ', ' – ')
+            default return
+                ()
+    return $titleRendition
 };

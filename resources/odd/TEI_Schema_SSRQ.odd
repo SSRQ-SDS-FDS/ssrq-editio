@@ -33,15 +33,15 @@
                 editionStmt, extent, dimensions, seriesStmt, sourceDesc, encodingDesc,
                 editorialDecl, profileDesc, textClass, particDesc, settingDesc, revisionDesc,
                 facsimile, text, sealDesc, seal, time, occupation, damage</p>
-            
+
             <!--BEGIN ODD SCHEMA SPEC-->
-            
+
             <!--  <schemaSpec ident="essrq_2d" docLang="fr" prefix="" xml:lang="en">  -->
             <schemaSpec ident="essrq_2d" docLang="de" xml:lang="en">
-                
+
                 <!--BEGIN MODULE REFERENCES AND ELEMENTS THAT ARE INCLUDED-->
                 <!-- Koenigsfelden: Added surface, zone, graphic -->
-                
+
                 <moduleRef key="tei"/>
                 <moduleRef key="core"
                            include="abbr add analytic author bibl biblScope biblStruct cb choice corr date del expan foreign gap graphic head hi imprint item label lb list listBibl measure measureGrp monogr note num orig p pb pubPlace publisher q quote ref reg resp respStmt series sic term textLang time title unclear"/>
@@ -57,10 +57,10 @@
                 <moduleRef key="certainty" include="precision"/>
                 <moduleRef key="figures" include="figure table row cell"/>
                 <moduleRef key="corpus" include="particDesc settingDesc"/>
-                
+
                 <!--END MODULE REFERENCES-->
                 <!--BEGIN WHOLESALE DELETIONS OF ATTRIBUTE CLASSES-->
-                
+
                 <classSpec ident="att.edition" type="atts" mode="delete"/>
                 <classSpec ident="att.sortable" type="atts" mode="delete"/>
                 <classSpec ident="att.cReferencing" type="atts" mode="delete"/>
@@ -70,10 +70,10 @@
                 <classSpec ident="att.datable.iso" type="atts" mode="delete"/>
                 <classSpec ident="att.fragmentable" type="atts" mode="delete"/>
                 <classSpec ident="att.datcat" type="atts" mode="delete"/>
-                
+
                 <!--END WHOLESALE DELETIONS OF ATTRIBUTE CLASSES-->
                 <!--BEGIN CHANGES TO ATTRIBUTE CLASSES-->
-                
+
                 <!-- Koenigsfelden: enable rendition attributes in global -->
                 <classSpec ident="att.global" type="atts" mode="change">
                     <classes mode="replace">
@@ -88,7 +88,7 @@
                         <attDef ident="xml:space" mode="delete"/>
                     </attList>
                 </classSpec>
-                
+
                 <!-- Koenigsfelden: enable rendition attribute (so zone can make use of it) -->
                 <classSpec ident="att.global.rendition" type="atts" mode="change">
                     <attList>
@@ -96,7 +96,7 @@
                         <!--<attDef ident="rendition" mode="delete"/>-->
                     </attList>
                 </classSpec>
-                
+
                 <classSpec ident="att.transcriptional" type="atts" mode="change">
                     <attList>
                         <attDef ident="cause" mode="delete"/>
@@ -104,39 +104,39 @@
                         <attDef ident="status" mode="delete"/>
                     </attList>
                 </classSpec>
-                
+
                 <classSpec ident="att.damaged" type="atts" mode="change">
                     <attList>
                         <attDef ident="group" mode="delete"/>
                     </attList>
                 </classSpec>
-                
+
                 <classSpec ident="att.editLike" type="atts" mode="change">
                     <attList>
                         <attDef ident="evidence" mode="delete"/>
                         <attDef ident="instant" mode="delete"/>
                     </attList>
                 </classSpec>
-                
+
                 <classSpec ident="att.typed" type="atts" mode="change">
                     <attList>
                         <attDef ident="subtype" mode="delete"/>
                     </attList>
                 </classSpec>
-                
+
                 <classSpec ident="att.dimensions" type="atts" mode="change">
                     <attList>
                         <attDef ident="scope" mode="delete"/>
                     </attList>
                 </classSpec>
-                
+
                 <classSpec ident="att.pointing" type="atts" mode="change">
                     <attList>
                         <attDef ident="targetLang" mode="delete"/>
                         <attDef ident="evaluate" mode="delete"/>
                     </attList>
                 </classSpec>
-                
+
                 <!-- Koenigsfelden: copyOf is now allowed -->
                 <classSpec ident="att.global.linking" type="atts" mode="change">
                     <attList>
@@ -149,7 +149,7 @@
                         <attDef ident="select" mode="delete"/>
                     </attList>
                 </classSpec>
-                
+
                 <classSpec ident="att.handFeatures" type="atts" mode="change">
                     <attList>
                         <attDef ident="scribe" mode="replace">
@@ -164,10 +164,10 @@
                         <attDef ident="scriptRef" mode="delete"/>
                     </attList>
                 </classSpec>
-                
+
                 <!--END CHANGES TO ATTRIBUTE CLASSES-->
                 <!---BEGIN GLOBAL SCH CONSTRAINTS-->
-                
+
                 <constraintSpec scheme="schematron" module="core" ident="sch-gl-1" mode="change">
                     <desc>Mutually dependent for all elements: @unit and @quantity</desc>
                     <constraint>
@@ -183,7 +183,7 @@
                         </sch:pattern>
                     </constraint>
                 </constraintSpec>
-                
+
                 <constraintSpec scheme="schematron" module="core" ident="sch-gl-2" mode="change">
                     <desc>Value of @scribe attribute</desc>
                     <constraint>
@@ -195,7 +195,7 @@
                         </sch:pattern>
                     </constraint>
                 </constraintSpec>
-                
+
                 <!-- wird gar nicht verwendet
                      <constraintSpec scheme="isoschematron" ident="sch-damageSpan">
                      <desc>Always required on the damageSpan, delSpan or addSpan element: the @spanTo
@@ -221,10 +221,10 @@
                      </constraint>
                      </constraintSpec>
                 -->
-                
+
                 <!--END GLOBAL SCH CONSTRAINTS-->
                 <!--BEGIN ADDITIONAL MACROSPECS-->
-                
+
                 <macroSpec ident="macro.defaultContent" mode="add">
                     <content>
                         <rng:text/>
@@ -294,9 +294,9 @@
                     </content>
                 </macroSpec>
                 <!--END ADDITIONAL MACROSPECS-->
-                
+
                 <!--BEGIN ELEMENT SPECIFICATIONS-->
-                
+
                 <!-- ebene 0 -->
                 <!-- Koenigsfelden: Added Optional Facsimile -->
                 <elementSpec ident="TEI" module="textstructure" mode="change">
@@ -462,7 +462,7 @@
                         </rng:zeroOrMore>
                     </content>
                 </elementSpec>
-                
+
                 <elementSpec ident="msIdentifier" module="msdescription" mode="change">
                     <content>
                         <rng:optional>
@@ -475,7 +475,7 @@
                     </content>
                     <constraintSpec scheme="isoschematron" ident="msId_minimal" mode="delete"/>
                 </elementSpec>
-                
+
                 <elementSpec ident="additional" module="msdescription" mode="change">
                     <content>
                         <rng:oneOrMore>
@@ -483,7 +483,7 @@
                         </rng:oneOrMore>
                     </content>
                 </elementSpec>
-                
+
                 <!-- ebene 4 unterbaum teiHeader/fileDesc/titleStmt -->
                 <elementSpec ident="title" module="core" mode="change">
                     <!-- classes mode="replace">
@@ -6365,7 +6365,7 @@
                     </valList>
                 </dataSpec>
             </schemaSpec>
-            
+
             <!--END ODD SCHEMA SPEC-->
         </body>
     </text>
