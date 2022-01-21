@@ -554,3 +554,23 @@ declare function pmf:render-title-with-hi($title as node()*, $mode as xs:string)
                 ()
     return $titleRendition
 };
+
+
+declare function pmf:parse-biblScope($node as node(), $part as xs:string) as xs:string? {
+    switch($part)
+        case 'series'
+            return
+                if($node/tei:monogr/tei:imprint and $node/tei:monogr/tei:imprint/tei:biblScope => string-length() > 0 and $node/tei:monogr/tei:imprint/tei:biblScope => contains(',')) then
+                    ', ' || string-join($node/tei:monogr/tei:imprint/tei:biblScope, ', ') => replace(',?\s?[S|p]\.\s?\d*.?\d*', '')
+                else if ($node/tei:monogr/tei:biblScope and $node/tei:monogr/tei:biblScope => string-length() > 0 and $node/tei:monogr/tei:biblScope => contains(',')) then
+                    ', ' || string-join($node/tei:monogr/tei:biblScope, ', ') => replace(',?\s?[S|p]\.\s?\d*.?\d*', '')
+                else ()
+        case 'scope'
+            return
+                if ($node/tei:monogr/tei:imprint and $node/tei:monogr/tei:imprint/tei:biblScope => string-length() > 0) then
+                    ', ' || pmf:label('page-abbr', false()) || ' ' || string-join($node/tei:monogr/tei:imprint/tei:biblScope, ', ') => replace('^.*[S|p]\. ([0-9]*-?[0-9]*)', '$1')
+                else if ($node/tei:monogr/tei:biblScope and $node/tei:monogr/tei:biblScope => string-length() > 0) then
+                    ', ' || pmf:label('page-abbr', false()) || ' ' || string-join($node/tei:monogr/tei:biblScope, ', ') => replace('^.*[S|p]\. ([0-9]*-?[0-9]*)', '$1')
+                else ()
+        default return ()
+};
