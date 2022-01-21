@@ -1574,7 +1574,7 @@
                         <param name="short-title" value="analytic/title[@type='short']"/>
                         <param name="journal" value="monogr/title"/>
                         <param name="editor" value="if(monogr/author) then ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ', ' else ()"/>
-                        <param name="series-biblscope" value="if(monogr/imprint) then ', ' || string-join(monogr/imprint/biblScope, ', ') => replace(',?\s?([S|p]\. [0-9]*-?[0-9]*)', '') else ', ' || string-join(monogr/biblScope, ', ') => replace(',?\s?([S|p]\. [0-9]*-?[0-9]*)', '') "/>
+                        <param name="series-biblscope" value="if(monogr/imprint) then ', ' || string-join(monogr/imprint/biblScope, ', ') => replace(',?\s?[S|p]\.\s?\d*.?\d*', '') else ', ' || string-join(monogr/biblScope, ', ') => replace(',?\s?[S|p]\.\s?\d*.?\d*', '') "/>
                         <param name="place" value="if (monogr/imprint) then string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date || ', ' else ()"/>
                         <param name="scope" value="if (monogr/imprint) then ec:label('page-abbr') || ' ' || string-join(monogr/imprint/biblScope, ', ') => replace('^.*[S|p]\. ([0-9]*-?[0-9]*)', '$1') else ec:label('page-abbr') || ' ' || string-join(monogr/biblScope, ', ') => replace('^.*[S|p]\. ([0-9]*-?[0-9]*)', '$1')"/>
                         <pb:template xmlns="" xml:space="preserve">
@@ -1676,7 +1676,7 @@
                         <param name="journal" value="monogr/title"/>
                         <param name="in" value="'in' || ec:colon()"/>
                         <param name="editor" value="if(monogr/author) then ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ', ' else ()"/>
-                        <param name="series-biblscope" value="if(monogr/imprint) then ', ' || string-join(monogr/imprint/biblScope, ', ') => replace(',?\s?([S|p]\. [0-9]*-?[0-9]*)', '') else ', ' || string-join(monogr/biblScope, ', ') => replace(',?\s?([S|p]\. [0-9]*-?[0-9]*)', '') "/>
+                        <param name="series-biblscope" value="if(monogr/imprint) then ', ' || string-join(monogr/imprint/biblScope, ', ') => replace(',?\s?[S|p]\.\s?\d*.?\d*', '') else ', ' || string-join(monogr/biblScope, ', ') => replace(',?\s?[S|p]\.\s?\d*.?\d*', '') "/>
                         <param name="place" value="if (monogr/imprint) then string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date || ', ' else ()"/>
                         <param name="scope" value="if (monogr/imprint) then ec:label('page-abbr') || ' ' || string-join(monogr/imprint/biblScope, ', ') => replace('^.*[S|p]\. ([0-9]*-?[0-9]*)', '$1') else ec:label('page-abbr') || ' ' || string-join(monogr/biblScope, ', ') => replace('^.*[S|p]\. ([0-9]*-?[0-9]*)', '$1')"/>
                         <pb:template xmlns="" xml:space="preserve">
@@ -1691,7 +1691,7 @@
                         <param name="short-title" value="analytic/title[@type='short']"/>
                         <param name="journal" value="monogr/title"/>
                         <param name="in" value="'in' || ec:colon()"/>
-                        <param name="series-biblscope" value="if(monogr/imprint) then ', ' || string-join(monogr/imprint/biblScope, ', ') => replace(',?\s?([S|p]\. [0-9]*-?[0-9]*)', '') else ', ' || string-join(monogr/biblScope, ', ') => replace(',?\s?([S|p]\. [0-9]*-?[0-9]*)', '') "/>
+                        <param name="series-biblscope" value="if(monogr/imprint) then ', ' || string-join(monogr/imprint/biblScope, ', ') => replace(',?\s?[S|p]\.\s?\d*.?\d*', '') else ', ' || string-join(monogr/biblScope, ', ') => replace(',?\s?[S|p]\.\s?\d*.?\d*', '') "/>
                         <param name="editor" value="if(monogr/author) then ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ', ' else ()"/>
                         <param name="place" value="if (monogr/imprint) then string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date || ', ' else ()"/>
                         <param name="scope" value="if (monogr/imprint) then ec:label('page-abbr') || ' ' || string-join(monogr/imprint/biblScope, ', ') => replace('^.*[S|p]\. ([0-9]*-?[0-9]*)', '$1') else ec:label('page-abbr') || ' ' || string-join(monogr/biblScope, ', ') => replace('^.*[S|p]\. ([0-9]*-?[0-9]*)', '$1')"/>
@@ -1777,7 +1777,7 @@
                         <param name="short-title" value="analytic/title[@type='short']"/>
                         <param name="in" value="'in' || ec:colon()"/>
                         <param name="journal" value="monogr/title"/>
-                        <param name="series-biblscope" value="if(monogr/imprint) then ', ' || string-join(monogr/imprint/biblScope, ', ') => replace(',?\s?([S|p]\. [0-9]*-?[0-9]*)', '') else ', ' || string-join(monogr/biblScope, ', ') => replace(',?\s?([S|p]\. [0-9]*-?[0-9]*)', '') "/>
+                        <param name="series-biblscope" value="if(monogr/imprint) then ', ' || string-join(monogr/imprint/biblScope, ', ') => replace(',?\s?[S|p]\.\s?\d*.?\d*', '') else ', ' || string-join(monogr/biblScope, ', ') => replace(',?\s?[S|p]\.\s?\d*.?\d*', '') "/>
                         <param name="editor" value="if(monogr/author) then ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ', ' else ()"/>
                         <param name="place" value="if (monogr/imprint) then string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date || ', ' else ()"/>
                         <param name="scope" value="if (monogr/imprint) then ec:label('page-abbr') || ' ' || string-join(monogr/imprint/biblScope, ', ') => replace('^.*[S|p]\. ([0-9]*-?[0-9]*)', '$1') else ec:label('page-abbr') || ' ' || string-join(monogr/biblScope, ', ') => replace('^.*[S|p]\. ([0-9]*-?[0-9]*)', '$1')"/>
