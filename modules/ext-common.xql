@@ -522,9 +522,31 @@ declare function pmf:render-title-with-hi($title as node()*, $mode as xs:string)
                 return
                     if ($mode = 'web')
                     then
-                        <span class="{string-join(($node/@rend, 'tei-hi3'), ' ')}">{pmf:render-title-with-hi($node/node(), $mode)}</span>
+                        switch ($node/@rend/data(.))
+                            case 'sup'
+                                return
+                                    <sup>{pmf:render-title-with-hi($node/node(), $mode)}</sup>
+                            case 'sub'
+                                return
+                                    <sub>{pmf:render-title-with-hi($node/node(), $mode)}</sub>
+                            case 'italic'
+                                return
+                                    <span class="is-italic">{pmf:render-title-with-hi($node/node(), $mode)}</span>
+                            default return
+                                    <span>{pmf:render-title-with-hi($node/node(), $mode)}</span>
                     else
-                        '\textsuperscript{' || pmf:render-title-with-hi($node/node(), $mode) || '}'
+                        switch ($node/@rend/data(.))
+                            case 'sup'
+                                return
+                                   '\textsuperscript{' || pmf:render-title-with-hi($node/node(), $mode) || '}'
+                            case 'sub'
+                                return
+                                   '\textsubscript{' || pmf:render-title-with-hi($node/node(), $mode) || '}'
+                            case 'italic'
+                                return
+                                    '\emph{' || pmf:render-title-with-hi($node/node(), $mode) || '}'
+                            default return
+                                    pmf:render-title-with-hi($node/node(), $mode)
             case text()
                 return
                     $node => replace(' : ', ' – ')
