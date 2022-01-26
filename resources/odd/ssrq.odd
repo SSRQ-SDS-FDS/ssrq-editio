@@ -1,4 +1,4 @@
-<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:pb="http://teipublisher.com/1.0" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" xml:lang="en">
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" xml:lang="en">
     <teiHeader>
         <fileDesc>
             <titleStmt>
@@ -1366,15 +1366,15 @@
                     <model predicate="@resp" behaviour="omit"/>
                     <model behaviour="block" predicate="$parameters?view='introduction' and ancestor::TEI/@type = 'bailiffs' and ancestor::group and @type = 'title'">
                         <param name="id" value="ec:unique-id(.)"/>
-                        <param name="content" value="./text()"></param>
-                        <param name="n" value="@n"></param>
+                        <param name="content" value="./text()"/>
+                        <param name="n" value="@n"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <h2 class="tei-head14" id="[[id]]"><span class="headingnumber">[[n]]</span> [[content]]</h2>
                         </pb:template>
                     </model>
                     <model behaviour="block" predicate="$parameters?view='introduction' and @type = 'title' and @n">
                         <param name="id" value="ec:unique-id(.)"/>
-                        <param name="content" value="./text()"></param>
+                        <param name="content" value="./text()"/>
                         <param name="n" value="@n"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <h1 class="tei-head11" id="[[id]]"><span class="headingnumber">[[n]]</span> [[content]]</h1>
@@ -1382,7 +1382,7 @@
                     </model>
                     <model behaviour="block" predicate="$parameters?view='introduction' and @type = 'title'">
                         <param name="id" value="ec:unique-id(.)"/>
-                        <param name="content" value="./text()"></param>
+                        <param name="content" value="./text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <h1 class="tei-head11" id="[[id]]">[[content]]</h1>
                         </pb:template>
@@ -1392,15 +1392,15 @@
                     </model>
                     <model behaviour="block" predicate="$parameters?view='introduction' and @type = 'subtitle' and @n">
                         <param name="id" value="ec:unique-id(.)"/>
-                        <param name="content" value="./text()"></param>
-                        <param name="n" value="@n"></param>
+                        <param name="content" value="./text()"/>
+                        <param name="n" value="@n"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <h2 class="tei-head14" id="[[id]]"><span class="headingnumber">[[n]]</span> [[content]]</h2>
                         </pb:template>
                     </model>
                     <model behaviour="block" predicate="$parameters?view='introduction' and @type = 'subtitle'">
                         <param name="id" value="ec:unique-id(.)"/>
-                        <param name="content" value="./text()"></param>
+                        <param name="content" value="./text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <h2 class="tei-head14" id="[[id]]">[[content]]</h2>
                         </pb:template>
@@ -1413,7 +1413,7 @@
                     </model>
                     <model behaviour="block" predicate="$parameters?view='introduction'">
                         <param name="id" value="ec:unique-id(.)"/>
-                        <param name="content" value="./text()"></param>
+                        <param name="content" value="./text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <h2 class="tei-head14" id="[[id]]">[[content]]</h2>
                         </pb:template>
@@ -1541,7 +1541,7 @@
                 </elementSpec>
                 <elementSpec ident="biblStruct" mode="change">
                     <!-- Rendering von Editionsangaben LaTeX -->
-                    <model predicate="monogr[@type='edition'] and (@xml:id => matches('SSRQ|SDS|FDS'))" behaviour="block" output="latex">
+                    <model predicate="monogr[@type='edition'] and (@xml:id =&gt; matches('SSRQ|SDS|FDS'))" behaviour="block" output="latex">
                         <param name="author" value="if (ec:format-editor(monogr/author)) then (', bearb. von ' || ec:format-editor(monogr/author)) else ()"/>
                         <param name="series-ssrq" value="series/title"/>
                         <param name="series-ssrq-scope" value="', ' || series/biblScope || ec:colon()"/>
@@ -1585,15 +1585,15 @@
                     </model>
                     <!-- Rendering von sonstiger Sekundärliteratur WEB -->
                     <model predicate="monogr[@type='enc']" behaviour="block" output="latex">
-                        <param name="editor" value="ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ec:colon()"/>
+                        <param name="editor" value="ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')'"/>
                         <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'latex')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
                         <param name="date" value="monogr/imprint/date/text()"/>
-                        <param name="additional-infos" value="if (monogr/imprint/biblScope) then monogr/imprint/biblScope || ', ' else()"/>
+                        <param name="additional-infos" value="if (monogr/imprint/biblScope) then ', ' || monogr/imprint/biblScope else()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             % Lexika
-                            <div>[[editor]] [[title]], [[additional]] [[place]][[date]] ([[short-title]]).
+                            <div>[[title]], [[editor]], [[place]][[date]][[additional-infos]] ([[short-title]]).
                             </div>
                         </pb:template>
                     </model>
@@ -1626,7 +1626,7 @@
                     </model>
                     <model output="latex" behaviour="omit"/>
                     <!-- Rendering von Editionsangaben WEB -->
-                    <model predicate="monogr[@type='edition'] and (@xml:id or monogr/ref) and (@xml:id => matches('SSRQ|SDS|FDS'))" behaviour="listItem" cssClass="biblio">
+                    <model predicate="monogr[@type='edition'] and (@xml:id or monogr/ref) and (@xml:id =&gt; matches('SSRQ|SDS|FDS'))" behaviour="listItem" cssClass="biblio">
                         <param name="author" value="if (ec:format-editor(monogr/author)) then (', ' || ec:label('edited-by', false()) || ' ' || ec:format-editor(monogr/author)) else ()"/>
                         <param name="series-ssrq" value="series/title"/>
                         <param name="series-ssrq-scope" value="', ' || series/biblScope || ec:colon()"/>
@@ -1643,7 +1643,7 @@
                     </model>
                     <model predicate="monogr[@type='edition'] and (@xml:id or monogr/ref)" behaviour="listItem" cssClass="biblio">
                         <param name="author" value="if (ec:format-editor(monogr/author)) then (', ' || ec:label('edited-by', false()) || ' ' || ec:format-editor(monogr/author)) else ()"/>
-                        <param name="series-misc" value="if (series and not(@xml:id => matches('SSRQ|SDS|FDS'))) then (series/title || ', ' || series/biblScope || ', ') else ()"/>
+                        <param name="series-misc" value="if (series and not(@xml:id =&gt; matches('SSRQ|SDS|FDS'))) then (series/title || ', ' || series/biblScope || ', ') else ()"/>
                         <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="link" value="if (monogr/ref) then monogr/ref/@target else ec:format-link(@xml:id)"/>
@@ -1703,29 +1703,29 @@
                     </model>
                     <!-- Rendering von sonstiger Sekundärliteratur WEB -->
                     <model predicate="monogr[@type='enc'] and @xml:id or monogr/ref" behaviour="listItem" cssClass="biblio">
-                        <param name="editor" value="ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ec:colon()"/>
+                        <param name="editor" value="ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')'"/>
                         <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
                         <param name="link" value="if (@xml:id) then ec:format-link(@xml:id) else monogr/ref/@target"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
                         <param name="date" value="monogr/imprint/date/text()"/>
-                        <param name="additional-infos" value="if (monogr/imprint/biblScope) then monogr/imprint/biblScope || ', ' else()"/>
+                        <param name="additional-infos" value="if (monogr/imprint/biblScope) then ', ' || monogr/imprint/biblScope else()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <!-- Lexika mit externem Verweis -->
-                            <div>[[editor]] [[title]], [[additional]] [[place]][[date]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
+                            <div>[[title]], [[editor]], [[place]][[date]][[additional-infos]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
                             </div>
                         </pb:template>
                     </model>
                     <model predicate="monogr[@type='enc']" behaviour="listItem" cssClass="biblio">
-                        <param name="editor" value="ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ec:colon()"/>
+                        <param name="editor" value="ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')'"/>
                         <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
                         <param name="date" value="monogr/imprint/date/text()"/>
-                        <param name="additional-infos" value="if (monogr/imprint/biblScope) then monogr/imprint/biblScope || ', ' else()"/>
+                        <param name="additional-infos" value="if (monogr/imprint/biblScope) then ', ' || monogr/imprint/biblScope else()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <!-- Lexika ohne externem Verweis -->
-                            <div>[[editor]] [[title]], [[additional]] [[place]][[date]] ([[short-title]]).
+                            <div>[[title]], [[editor]], [[place]][[date]][[additional-infos]] ([[short-title]]).
                             </div>
                         </pb:template>
                     </model>

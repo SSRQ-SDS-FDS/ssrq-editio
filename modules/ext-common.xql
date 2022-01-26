@@ -538,13 +538,13 @@ declare function pmf:render-title-with-hi($title as node()*, $mode as xs:string)
                         switch ($node/@rend/data(.))
                             case 'sup'
                                 return
-                                   '\textsuperscript{' || pmf:render-title-with-hi($node/node(), $mode) || '}'
+                                   '\lss{' || pmf:render-title-with-hi($node/node(), $mode) || '}'
                             case 'sub'
                                 return
                                    '\textsubscript{' || pmf:render-title-with-hi($node/node(), $mode) || '}'
                             case 'italic'
                                 return
-                                    '\emph{' || pmf:render-title-with-hi($node/node(), $mode) || '}'
+                                    '\textit{' || pmf:render-title-with-hi($node/node(), $mode) || '}'
                             default return
                                     pmf:render-title-with-hi($node/node(), $mode)
             case text()
