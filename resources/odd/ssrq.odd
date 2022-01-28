@@ -458,7 +458,7 @@
                         <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ', ', ec:label('unclear-rdg', false()))"/>
                     </model>
                     <model predicate="supplied/@source" behaviour="alternote" cssClass="text-critical">
-                        <param name="content" value="supplied/node()"/>
+                        <param name="content" value="('[', supplied/node(), ']')"/>
                         <param name="type" value="'text-critical'"/>
                         <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ', ', ec:label('supplied-after', false()), ' ', supplied/@source)"/>
                     </model>
@@ -997,7 +997,7 @@
                             \item [[itemType]]: [[ident]][[note]]
                         </pb:template>
                     </model>
-                    <model predicate="$parameters?view='introduction' and div/listBibl/head" behaviour="biblList">
+                    <model predicate="$parameters?view='introduction' and (div/listBibl/head or div/listBibl[bibl])" behaviour="biblList">
                     </model>
                     <model predicate="parent::back and @n" behaviour="listItem">
                         <desc>output as list item if in commentary</desc>
