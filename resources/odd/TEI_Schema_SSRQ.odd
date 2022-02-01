@@ -1840,6 +1840,8 @@
                                     <sch:report test="@reason" xml:lang="en">If tei:gap is a child
                                         of tei:damage, @reason cannot be specififed on
                                         tei:gap.</sch:report>
+                                    <sch:report test="not(@unit) or not(@quantity)" xml:lang="en">
+                                        If tei:gap is a child of tei:damage, @unit and @quantity need to specified on tei:gap.</sch:report>
                                 </sch:rule>
                                 <sch:rule context="tei:gap[not(parent::tei:damage) and @reason]">
                                     <sch:report test="@reason = 'illegible' and (not(@unit) or not(@quantity))">If @reason is specified on the <sch:name/> element and its
@@ -3125,6 +3127,9 @@
                     </attList>
                 </elementSpec>
                 <elementSpec ident="damage" module="transcr" mode="change">
+                    <classes mode="change">
+                        <memberOf key="att.dimensions" mode="delete"/>
+                    </classes>
                     <content>
                         <rng:zeroOrMore>
                             <rng:choice>
