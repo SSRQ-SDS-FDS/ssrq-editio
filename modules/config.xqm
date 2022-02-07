@@ -175,9 +175,9 @@ declare variable $config:odd-root := $config:app-root || "/resources/odd";
 
 declare variable $config:schema-odd := doc($config:odd-root || "/TEI_Schema_SSRQ.odd")/*;
 
-declare variable $config:abbr := doc($config:odd-root || "/abbr.xml")/*;
+declare variable $config:abbr := doc($config:data-root || "/misc/abbr.xml")/*;
 
-declare variable $config:partners := doc($config:odd-root || "/partners.xml")/*;
+declare variable $config:partners := doc($config:data-root || "/misc/partners.xml")/*;
 
 declare variable $config:output := "transform";
 
