@@ -6091,6 +6091,11 @@
                             <desc xml:lang="fr">Durée répétée</desc>
                             <desc xml:lang="en">Repeated duration</desc>
                         </valItem>
+                        <valItem ident="rubbing">
+                            <desc xml:lang="de">Streichung durch Textlöschung/Rasur</desc>
+                            <desc xml:lang="fr">suppression par grattage</desc>
+                            <desc xml:lang="en">deletion by scraping</desc>
+                        </valItem>
                         <valItem ident="signature">
                             <desc xml:lang="de">Signatur</desc>
                             <desc xml:lang="fr">Cote</desc>
