@@ -511,7 +511,7 @@ function app:additionalSource($node as node(), $model as map(*)) {
 declare
      %templates:wrap
 function app:abbr-blocks($node as node(), $model as map(*)) {
-    $pm-config:web-transform($config:abbr//tei:dataSpec, map { "root": $config:abbr//tei:dataSpec, "lang": (session:get-attribute("ssrq.lang"), "de")[1]}, $config:odd)
+    $pm-config:web-transform($config:abbr//tei:dataSpec, map { "root": $config:abbr//tei:dataSpec}, $config:odd)
 };
 
 declare

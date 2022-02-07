@@ -1101,10 +1101,10 @@
                     <model behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="desc" mode="change">
-                    <model predicate="parent::dataSpec and @xml:lang = $parameters?lang" behaviour="heading">
+                    <model predicate="parent::dataSpec and @xml:lang = (session:get-attribute('ssrq.lang'), 'de')[1]" behaviour="heading">
                         <param name="level" value="3"/>
                     </model>
-                    <model predicate="parent::valItem and @xml:lang = $parameters?lang" behaviour="listItem"/>
+                    <model predicate="parent::valItem and @xml:lang = (session:get-attribute('ssrq.lang'), 'de')[1]" behaviour="listItem"/>
                     <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="date" mode="change">
@@ -1808,7 +1808,7 @@
                 </elementSpec>
                 <elementSpec ident="valItem" mode="change">
                     <model predicate="ancestor::dataSpec" behaviour="listItem">
-                        <param name="content" value="@ident/string() || ' = ' || (if (desc[@xml:lang = $parameters?lang]) then desc[@xml:lang = $parameters?lang]/text() else desc[1]/text())"></param>
+                        <param name="content" value="@ident/string() || ' = ' || (if (desc[@xml:lang = (session:get-attribute('ssrq.lang'), 'de')[1]]) then desc[@xml:lang = (session:get-attribute('ssrq.lang'), 'de')[1]]/text() else desc[1]/text())"></param>
                     </model>
                 </elementSpec>
                 <elementSpec ident="valList" mode="change">
