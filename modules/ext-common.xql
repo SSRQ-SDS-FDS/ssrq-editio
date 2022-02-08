@@ -547,9 +547,9 @@ declare function pmf:parse-biblScope($node as node(), $part as xs:string) as xs:
         case 'series'
             return
                 if($node/tei:monogr/tei:imprint and $node/tei:monogr/tei:imprint/tei:biblScope => string-length() > 0 and $node/tei:monogr/tei:imprint/tei:biblScope => contains(',')) then
-                    ', ' || string-join($node/tei:monogr/tei:imprint/tei:biblScope, ', ') => replace(',?\s?[S|p]\.\s?\d*.?\d*', '')
+                    ' ' || string-join($node/tei:monogr/tei:imprint/tei:biblScope, ', ') => replace(',?\s?[S|p]\.\s?\d*.?\d*', '')
                 else if ($node/tei:monogr/tei:biblScope and $node/tei:monogr/tei:biblScope => string-length() > 0 and $node/tei:monogr/tei:biblScope => contains(',')) then
-                    ', ' || string-join($node/tei:monogr/tei:biblScope, ', ') => replace(',?\s?[S|p]\.\s?\d*.?\d*', '')
+                    ' ' || string-join($node/tei:monogr/tei:biblScope, ', ') => replace(',?\s?[S|p]\.\s?\d*.?\d*', '')
                 else ()
         case 'scope'
             return
