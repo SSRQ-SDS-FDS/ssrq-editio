@@ -1612,11 +1612,12 @@
                         <param name="author" value="if (ec:format-author(monogr/author)) then (ec:format-author(monogr/author) || ': ') else ()"/>
                         <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'latex')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
+                        <param name="series" value="if (series) then (series/title || ' ' || series/biblScope || ', ') else ()"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
                         <param name="date" value="monogr/imprint/date/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             % Selbstständige Publikation
-                            <div>[[author]][[title]], [[place]][[date]] ([[short-title]]).
+                            <div>[[author]][[title]], [[series]][[place]][[date]] ([[short-title]]).
                             </div>
                         </pb:template>
                     </model>
