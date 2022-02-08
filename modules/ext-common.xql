@@ -543,20 +543,36 @@ declare function pmf:render-title-with-hi($title as node()*, $mode as xs:string)
 
 
 declare function pmf:parse-biblScope($node as node(), $part as xs:string) as xs:string? {
-    switch($part)
-        case 'series'
-            return
-                if($node/tei:monogr/tei:imprint and $node/tei:monogr/tei:imprint/tei:biblScope => string-length() > 0 and $node/tei:monogr/tei:imprint/tei:biblScope => contains(',')) then
-                    ' ' || string-join($node/tei:monogr/tei:imprint/tei:biblScope, ', ') => replace(',?\s?[S|p]\.\s?\d*.?\d*', '')
-                else if ($node/tei:monogr/tei:biblScope and $node/tei:monogr/tei:biblScope => string-length() > 0 and $node/tei:monogr/tei:biblScope => contains(',')) then
-                    ' ' || string-join($node/tei:monogr/tei:biblScope, ', ') => replace(',?\s?[S|p]\.\s?\d*.?\d*', '')
-                else ()
-        case 'scope'
-            return
-                if ($node/tei:monogr/tei:imprint and $node/tei:monogr/tei:imprint/tei:biblScope => string-length() > 0) then
-                    ', ' || pmf:label('page-abbr', false()) || ' ' || string-join($node/tei:monogr/tei:imprint/tei:biblScope, ', ') => replace('^.*[S|p]\. ([0-9]*-?[0-9]*)', '$1')
-                else if ($node/tei:monogr/tei:biblScope and $node/tei:monogr/tei:biblScope => string-length() > 0) then
-                    ', ' || pmf:label('page-abbr', false()) || ' ' || string-join($node/tei:monogr/tei:biblScope, ', ') => replace('^.*[S|p]\. ([0-9]*-?[0-9]*)', '$1')
-                else ()
-        default return ()
+    if ($node//tei:biblScope => count() < 2 and $node//tei:pubPlace) then
+        switch($part)
+            case 'series'
+                return
+                    if($node/tei:monogr/tei:imprint and $node/tei:monogr/tei:imprint/tei:biblScope[1] => string-length() > 0 and $node/tei:monogr/tei:imprint/tei:biblScope[1] => contains(',')) then
+                        ' ' || pmf:join-series($node/tei:monogr/tei:imprint/tei:biblScope)
+                    else if ($node/tei:monogr/tei:biblScope and $node/tei:monogr/tei:biblScope[1] => string-length() > 0 and $node/tei:monogr/tei:biblScope[1] => contains(',')) then
+                        ' ' || pmf:join-series($node/tei:monogr/tei:biblScope)
+                    else ()
+            case 'scope'
+                return
+                    if ($node/tei:monogr/tei:imprint and $node/tei:monogr/tei:imprint/tei:biblScope[1] => string-length() > 0) then
+                        ', ' || pmf:join-scopes($node/tei:monogr/tei:imprint/tei:biblScope)
+                    else if ($node/tei:monogr/tei:biblScope and $node/tei:monogr/tei:biblScope[1] => string-length() > 0) then
+                        ', ' || pmf:join-scopes($node/tei:monogr/tei:biblScope)
+                    else ()
+            default return ()
+    else if ($part = 'series') then
+        ' ' || ($node//tei:biblScope !  (.=> replace('[S|p]\.', pmf:label('page-abbr', false())))) => string-join('; ')
+    else ()
+};
+
+declare function pmf:join-series($series as node()*) as xs:string {
+    let $strings := $series ! (. => replace(',?\s?[S|p]\.\s?\d*.?\d*.*', ''))
+    return
+        $strings => string-join('; ')
+};
+
+declare function pmf:join-scopes($scopes as node()*) as xs:string {
+    let $strings := $scopes ! (pmf:label('page-abbr', false()) || ' ' || . => replace('^.*[S|p]\. ([0-9]*-?[0-9]*.*)', '$1'))
+    return
+        $strings => string-join('; ')
 };
