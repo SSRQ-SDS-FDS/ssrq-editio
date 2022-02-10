@@ -1555,11 +1555,11 @@
                     <model predicate="monogr[@type='edition'] and (@xml:id =&gt; matches('SSRQ|SDS|FDS'))" behaviour="block" output="latex">
                         <param name="author" value="if (ec:format-editor(monogr/author)) then (', bearb. von ' || ec:format-editor(monogr/author)) else ()"/>
                         <param name="series-ssrq" value="series/title"/>
-                        <param name="series-ssrq-scope" value="', ' || series/biblScope || ec:colon()"/>
+                        <param name="series-ssrq-scope" value="', ' || series/biblScope => string-join(' ') || ec:colon()"/>
                         <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'latex')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="', ' || string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
-                        <param name="date" value="monogr/imprint/date/text()"/>
+                        <param name="date" value="monogr/imprint/date[1]/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             % Selbstständige Edition aus der SSRQ-Reihe
                             <div>[[series-ssrq]][[series-ssrq-scope]][[title]][[author]][[place]][[date]] ([[short-title]]).
@@ -1568,11 +1568,11 @@
                     </model>
                     <model predicate="monogr[@type='edition']" behaviour="block" output="latex">
                         <param name="author" value="if (ec:format-editor(monogr/author)) then (', bearb. von ' || ec:format-editor(monogr/author)) else ()"/>
-                        <param name="series" value="if (series) then (series/title || ' ' || series/biblScope || ', ') else ()"/>
+                        <param name="series" value="if (series) then ec:join-series-with-scope(series) else ()"/>
                         <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'latex')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
-                        <param name="date" value="monogr/imprint/date/text()"/>
+                        <param name="date" value="monogr/imprint/date[1]/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             % Selbstständige Edition
                             <div>[[title]][[author]], [[series]][[place]][[date]] ([[short-title]]).
@@ -1586,7 +1586,7 @@
                         <param name="journal" value="monogr/title"/>
                         <param name="editor" value="if(monogr/author) then ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ', ' else ()"/>
                         <param name="series-biblscope" value="ec:parse-biblScope(., 'series')"/>
-                        <param name="place" value="if (monogr/imprint) then ', ' || string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date else ()"/>
+                        <param name="place" value="if (monogr/imprint) then ', ' || string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date[1] else ()"/>
                         <param name="scope" value="ec:parse-biblScope(., 'scope')"/>
                         <pb:template xmlns="" xml:space="preserve">
                             % Unselbstständige Edition
@@ -1594,13 +1594,12 @@
                             </div>
                         </pb:template>
                     </model>
-                    <!-- Rendering von sonstiger Sekundärliteratur WEB -->
                     <model predicate="monogr[@type='enc']" behaviour="block" output="latex">
                         <param name="editor" value="ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')'"/>
                         <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'latex')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
-                        <param name="date" value="monogr/imprint/date/text()"/>
+                        <param name="date" value="monogr/imprint/date[1]/text()"/>
                         <param name="additional-infos" value="if (monogr/imprint/biblScope) then ', ' || monogr/imprint/biblScope else()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             % Lexika
@@ -1612,9 +1611,9 @@
                         <param name="author" value="if (ec:format-author(monogr/author)) then (ec:format-author(monogr/author) || ': ') else ()"/>
                         <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'latex')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
-                        <param name="series" value="if (series) then (series/title || ' ' || series/biblScope || ', ') else ()"/>
+                        <param name="series" value="if (series) then ec:join-series-with-scope(series) else ()"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
-                        <param name="date" value="monogr/imprint/date/text()"/>
+                        <param name="date" value="monogr/imprint/date[1]/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             % Selbstständige Publikation
                             <div>[[author]][[title]], [[series]][[place]][[date]] ([[short-title]]).
@@ -1628,7 +1627,7 @@
                         <param name="journal" value="monogr/title"/>
                         <param name="series-biblscope" value="ec:parse-biblScope(., 'series')"/>
                         <param name="editor" value="if(monogr/author) then ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ', ' else ()"/>
-                        <param name="place" value="if (monogr/imprint) then ', ' || string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date else ()"/>
+                        <param name="place" value="if (monogr/imprint) then ', ' || string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date[1] else ()"/>
                         <param name="scope" value="ec:parse-biblScope(., 'scope')"/>
                         <pb:template xmlns="" xml:space="preserve">
                             % Unselbstständige Publikation
@@ -1641,12 +1640,12 @@
                     <model predicate="monogr[@type='edition'] and (@xml:id or monogr/ref) and (@xml:id =&gt; matches('SSRQ|SDS|FDS'))" behaviour="listItem" cssClass="biblio">
                         <param name="author" value="if (ec:format-editor(monogr/author)) then (', ' || ec:label('edited-by', false()) || ' ' || ec:format-editor(monogr/author)) else ()"/>
                         <param name="series-ssrq" value="series/title"/>
-                        <param name="series-ssrq-scope" value="', ' || series/biblScope || ec:colon()"/>
+                        <param name="series-ssrq-scope" value="', ' || series/biblScope => string-join(' ') || ec:colon()"/>
                         <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="link" value="if (monogr/ref) then monogr/ref/@target else ec:format-link(@xml:id)"/>
                         <param name="place" value="', ' || string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
-                        <param name="date" value="monogr/imprint/date/text()"/>
+                        <param name="date" value="monogr/imprint/date[1]/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <!--  SSRQ Edition mit externem Verweis -->
                             <div>[[series-ssrq]][[series-ssrq-scope]][[title]][[author]][[place]][[date]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
@@ -1655,12 +1654,12 @@
                     </model>
                     <model predicate="monogr[@type='edition'] and (@xml:id or monogr/ref)" behaviour="listItem" cssClass="biblio">
                         <param name="author" value="if (ec:format-editor(monogr/author)) then (', ' || ec:label('edited-by', false()) || ' ' || ec:format-editor(monogr/author)) else ()"/>
-                        <param name="series-misc" value="if (series and not(@xml:id =&gt; matches('SSRQ|SDS|FDS'))) then (series/title || ' ' || series/biblScope || ', ') else ()"/>
+                        <param name="series-misc" value="if (series and not(@xml:id =&gt; matches('SSRQ|SDS|FDS'))) then ec:join-series-with-scope(series) else ()"/>
                         <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="link" value="if (monogr/ref) then monogr/ref/@target else ec:format-link(@xml:id)"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
-                        <param name="date" value="monogr/imprint/date/text()"/>
+                        <param name="date" value="monogr/imprint/date[1]/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <!--  Selbstständige Edition mit externem Verweis -->
                             <div>[[title]][[author]], [[series-misc]][[place]][[date]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
@@ -1669,11 +1668,11 @@
                     </model>
                     <model predicate="monogr[@type='edition']" behaviour="listItem" cssClass="biblio">
                         <param name="author" value="if (ec:format-editor(monogr/author)) then (', ' || ec:label('edited-by', false()) || ' ' || ec:format-editor(monogr/author)) else ()"/>
-                        <param name="series" value="if (series) then (series/title || ' ' || series/biblScope || ', ') else ()"/>
+                        <param name="series" value="if (series) then ec:join-series-with-scope(series) else ()"/>
                         <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
-                        <param name="date" value="monogr/imprint/date/text()"/>
+                        <param name="date" value="monogr/imprint/date[1]/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <!--  Selbstständige Edition ohne externen Verweis -->
                             <div>[[title]][[author]], [[series]][[place]][[date]] ([[short-title]]).
@@ -1689,7 +1688,7 @@
                         <param name="in" value="'in' || ec:colon()"/>
                         <param name="editor" value="if(monogr/author) then ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ', ' else ()"/>
                         <param name="series-biblscope" value="ec:parse-biblScope(., 'series')"/>
-                        <param name="place" value="if (monogr/imprint) then ', ' || string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date else ()"/>
+                        <param name="place" value="if (monogr/imprint) then ', ' || string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date[1] else ()"/>
                         <param name="scope" value="ec:parse-biblScope(., 'scope')"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <!--  Unselbstständige Edition mit externem Verweis -->
@@ -1705,7 +1704,7 @@
                         <param name="in" value="'in' || ec:colon()"/>
                         <param name="series-biblscope" value="ec:parse-biblScope(., 'series')"/>
                         <param name="editor" value="if(monogr/author) then ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ', ' else ()"/>
-                        <param name="place" value="if (monogr/imprint) then ', ' || string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date else ()"/>
+                        <param name="place" value="if (monogr/imprint) then ', ' || string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date[1] else ()"/>
                         <param name="scope" value="ec:parse-biblScope(., 'scope')"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <!--  Unselbstständige Edition ohne externen Verweis -->
@@ -1720,7 +1719,7 @@
                         <param name="link" value="if (@xml:id) then ec:format-link(@xml:id) else monogr/ref/@target"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
-                        <param name="date" value="monogr/imprint/date/text()"/>
+                        <param name="date" value="monogr/imprint/date[1]/text()"/>
                         <param name="additional-infos" value="if (monogr/imprint/biblScope) then ', ' || monogr/imprint/biblScope else()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <!-- Lexika mit externem Verweis -->
@@ -1733,7 +1732,7 @@
                         <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
-                        <param name="date" value="monogr/imprint/date/text()"/>
+                        <param name="date" value="monogr/imprint/date[1]/text()"/>
                         <param name="additional-infos" value="if (monogr/imprint/biblScope) then ', ' || monogr/imprint/biblScope else()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <!-- Lexika ohne externem Verweis -->
@@ -1744,11 +1743,11 @@
                     <model predicate="monogr[not(@type='edition')] and not(analytic) and (@xml:id or monogr/ref)" behaviour="listItem" cssClass="biblio">
                         <param name="author" value="if (ec:format-author(monogr/author)) then (ec:format-author(monogr/author) || ec:colon()) else ()"/>
                         <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
-                        <param name="series" value="if (series) then (series/title || ' ' || series/biblScope || ', ') else ()"/>
+                        <param name="series" value="if (series) then ec:join-series-with-scope(series) else ()"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="link" value="if (monogr/ref) then monogr/ref/@target else ec:format-link(@xml:id)"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
-                        <param name="date" value="monogr/imprint/date/text()"/>
+                        <param name="date" value="monogr/imprint/date[1]/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <!-- Selbstständige Publikation mit externem Verweis -->
                             <div>[[author]][[title]], [[series]][[place]][[date]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
@@ -1758,10 +1757,10 @@
                     <model predicate="monogr[not(@type='edition')] and not(analytic)" behaviour="listItem" cssClass="biblio">
                         <param name="author" value="if (ec:format-author(monogr/author)) then (ec:format-author(monogr/author) || ec:colon()) else ()"/>
                         <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
-                        <param name="series" value="if (series) then (series/title || ' ' || series/biblScope || ', ') else ()"/>
+                        <param name="series" value="if (series) then ec:join-series-with-scope(series) else ()"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
-                        <param name="date" value="monogr/imprint/date/text()"/>
+                        <param name="date" value="monogr/imprint/date[1][1]/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <!-- Selbstständige Publikation ohne externen Verweis-->
                             <div>[[author]][[title]], [[series]][[place]][[date]] ([[short-title]]).
@@ -1774,10 +1773,10 @@
                         <param name="short-title" value="analytic/title[@type='short']"/>
                         <param name="in" value="'in' || ec:colon()"/>
                         <param name="editor" value="if(monogr/author) then ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ', ' else ()"/>
-                        <param name="link" value="if (analytic/ref) then analytic/ref/@target else ec:format-link(@xml:id)"/>
+                        <param name="link" value="if (analytic/ref[1]) then analytic/ref/@target else ec:format-link(@xml:id)"/>
                         <param name="journal" value="monogr/title"/>
                         <param name="series-biblscope" value="ec:parse-biblScope(., 'series')"/>
-                        <param name="place" value="if (monogr/imprint) then ', ' || string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date else ()"/>
+                        <param name="place" value="if (monogr/imprint) then ', ' || string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date[1] else ()"/>
                         <param name="scope" value="ec:parse-biblScope(., 'scope')"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <!-- Unselbstständige Publikation mit externem Verweis -->
@@ -1793,7 +1792,7 @@
                         <param name="journal" value="monogr/title"/>
                         <param name="series-biblscope" value="ec:parse-biblScope(., 'series')"/>
                         <param name="editor" value="if(monogr/author) then ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ', ' else ()"/>
-                        <param name="place" value="if (monogr/imprint) then ', ' || string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date else ()"/>
+                        <param name="place" value="if (monogr/imprint) then ', ' || string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date[1] else ()"/>
                         <param name="scope" value="ec:parse-biblScope(., 'scope')"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <!-- Unselbstständige Publikation ohne externen Verweis -->

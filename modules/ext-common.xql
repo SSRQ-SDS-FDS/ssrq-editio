@@ -576,3 +576,8 @@ declare function pmf:join-scopes($scopes as node()*) as xs:string {
     return
         $strings => string-join('; ')
 };
+
+declare function pmf:join-series-with-scope($series as node()*) as xs:string  {
+    ($series ! ((./tei:title, ./tei:biblScope) => string-join(' ')))
+     => string-join('; ') || ', '
+};
