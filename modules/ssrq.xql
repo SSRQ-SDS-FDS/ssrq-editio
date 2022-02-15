@@ -31,21 +31,22 @@ function app:load($node as node(), $model as map(*), $doc as xs:string, $root as
     let $doc := xmldb:decode($doc)
     let $data :=
         if ($id) then
-            let $node := collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id]/tei:text
-            let $node :=
-                if ($node) then
-                    $node
+            let $xml := collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id]/tei:text
+            let $result :=
+                if ($xml) then
+                    $xml => app:query-view(if($view) then $view else $config:default-view)
                 else
                     collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id || "_1"]/tei:text
-            let $config := if ($node) then tpu:parse-pi(root($node), $view) else ()
+                    => app:query-view(if($view) then $view else $config:default-view)
+            let $config := if ($result) then tpu:parse-pi(root($result), $view) else ()
             return
                 map {
                     "config": $config,
-                    "data": $node
+                    "data": $result
                 }
         else
             pages:load-xml($view, $root, $doc)
-    let $node :=
+    let $xml :=
         if ($data?data) then
             $data?data
         else
@@ -66,16 +67,28 @@ function app:load($node as node(), $model as map(*), $doc as xs:string, $root as
                     </body>
                 </text>
             </TEI>//tei:div
-    let $hasFacs := exists($node//tei:pb[@facs]) and $data?config?odd = "ssrq.odd"
+    let $hasFacs := exists($xml//tei:pb[@facs]) and $data?config?odd = "ssrq.odd"
     return
         map {
             "config": $data?config,
-            "data": $node,
-            "doc-type": $node/ancestor::tei:TEI/@type/data(.),
+            "data": $xml,
+            "doc-type": $xml/ancestor::tei:TEI/@type/data(.),
             "body-class": if ($hasFacs) then 'col-md-6' else 'col-md-10',
             "facs-class": if ($hasFacs) then 'col-md-6' else 'hidden',
             "sidebar-class": if ($hasFacs) then 'hidden' else 'col-md-2'
         }
+};
+
+declare function app:query-view($context as node(), $view as xs:string?) as node()* {
+    switch ($view)
+        case 'body'
+           return $context//tei:body
+        case 'back'
+            return $context//tei:back
+        case 'group'
+            return $context//tei:group
+        default return
+            $context
 };
 
 declare function app:switch-view($node as node(), $model as map(*), $odd as xs:string?) {
