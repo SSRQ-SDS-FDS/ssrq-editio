@@ -173,7 +173,7 @@ declare variable $config:odd-normalized := "ssrq-norm.odd";
 
 declare variable $config:odd-root := $config:app-root || "/resources/odd";
 
-declare variable $config:schema-odd := doc($config:odd-root || "/TEI_Schema_SSRQ.odd")/*;
+declare variable $config:schema-odd := doc($config:data-root || "/misc/TEI_Schema_SSRQ.odd")/*;
 
 declare variable $config:abbr := doc($config:data-root || "/misc/abbr.xml")/*;
 
