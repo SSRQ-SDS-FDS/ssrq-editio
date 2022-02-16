@@ -7,43 +7,38 @@ declare namespace json="http://www.json.org";
 
 declare option exist:serialize "method=json media-type=application/json";
 
-declare function local:upload($root, $paths, $payloads) {
-    (: FIXME: collection-uri should be dynamic so that it doesn't break when temp is moved :)
-    let $collection-uri := $config:data-root (: $config:app-root :)
-    let $paths :=
-        for-each-pair($paths, $payloads, function($path, $data) {
-            if (ends-with($path, ".odd")) then
-                xmldb:store($config:temp-root, $path, $data)
-            else (
-                xmldb:store(utils:path-concat-safe(($config:temp-root, $root)), $path, $data),
-                sm:chmod(xs:anyURI(utils:path-concat-safe(($config:temp-root, $root, $path))), "rw-r-----")
-            )
-        })
+declare function local:upload($name, $data) {
+    let $path :=
+        (
+            xmldb:store($config:temp-root, $name, $data),
+            sm:chmod(xs:anyURI(utils:path-concat-safe(($config:temp-root, $name))), "rw-r-----")
+        )
     return
         map {
             "files": array {
-                for $path in $paths
-                let $url := substring-after($path, $collection-uri || "/")
-                return
-                    map {
-                        "name": $path,
-                        "path": $url,
-                        "type": xmldb:get-mime-type($path),
-                        "size": xmldb:size($config:temp-root, substring-after($path, $config:temp-root || "/"))
-                    }
+                map {
+                    "name": $name,
+                    "path": substring-after($path, $config:data-root || "/"),
+                    "type": xmldb:get-mime-type($path),
+                    "size": xmldb:size($config:temp-root, $name)
+                }
             }
         }
 };
 
 let $name := request:get-uploaded-file-name("files[]")
 let $data := request:get-uploaded-file-data("files[]")
-let $root := request:get-parameter("root", "")
 return
-    try {
-        local:upload($root, $name, $data)
-    } catch * {
-        map {
-            "name": $name,
-            "error": $err:description
+    if (count($name) > 1) then
+       map { "error": "only one file, please" }
+    else if (not(utils:is-file-name($name))) then
+        map { "error": "only a filename, please, no paths" }
+    else
+        try {
+            local:upload($name, $data)
+        } catch * {
+            map {
+                "name": $name,
+                "error": $err:description
+            }
         }
-    }
