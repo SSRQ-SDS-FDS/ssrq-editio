@@ -1,7 +1,6 @@
 $(document).ready(function () {
   var historySupport = !!(window.history && window.history.pushState);
   var appRoot = $('html').data('app');
-  var tableOfContents = false;
 
   var iiifApi = 'https://facsimiles.ssrq-sds-fds.ch/iiif/2/';
 
@@ -320,19 +319,6 @@ $(document).ready(function () {
     load(url, this.className.split(' ')[0]);
   }
 
-  function tocLoaded() {
-    $("#toc a[data-toggle='collapse']").click(function (ev) {
-      var icon = $(this).find('span').text();
-      $(this)
-        .find('span')
-        .text(icon == 'expand_less' ? 'expand_more' : 'expand_less');
-    });
-    $('.toc-link').click(function (ev) {
-      $('#sidebar').offcanvas('hide');
-    });
-    $('.toc-link').click(initLinks);
-  }
-
   $('.page-nav').click(initLinks);
 
   $('#zoom-in').click(function (ev) {
@@ -366,21 +352,6 @@ $(document).ready(function () {
   $('#logout').on('click', function (ev) {
     ev.preventDefault();
     window.location.search = window.location.search + '&logout=true';
-  });
-
-  $('.toc-toggle').click(function (ev) {
-    $('#toc-loading').each(function () {
-      console.log('Loading toc...');
-      var doc =
-        $('.nav-next').attr('data-doc') || $('.nav-prev').attr('data-doc');
-      $('#toc').load(
-        'templates/toc.html?doc=' +
-          doc +
-          '&' +
-          window.location.search.substring(1),
-        tocLoaded
-      );
-    });
   });
 
   if (isMobile()) {
