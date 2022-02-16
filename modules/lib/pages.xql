@@ -35,6 +35,9 @@ import module namespace console="http://exist-db.org/xquery/console" at "java:or
 import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "../navigation.xql";
 import module namespace query="http://existsolutions.com/ssrq/search" at "../ssrq-search.xql";
 
+import module namespace utils="http://ssrq-sds-fds.ch/utils" at "../utils.xqm";
+
+
 declare variable $pages:app-root := request:get-context-path() || substring-after($config:app-root, "/db");
 
 declare
@@ -44,7 +47,7 @@ function pages:load($node as node(), $model as map(*), $doc as xs:string, $root 
     let $doc := xmldb:decode($doc)
     let $data :=
         if ($id) then
-            let $node := doc($config:data-root || "/" || $doc)/id($id)
+            let $node := doc(utils:path-concat-safe(($config:data-root, $doc)))/id($id)
             let $div := $node/ancestor-or-self::tei:div[1]
             let $config := tpu:parse-pi(root($node), $view)
             return
@@ -95,7 +98,7 @@ declare function pages:load-xml($view as xs:string?, $root as xs:string?, $doc a
             "config": $config,
             "data":
                 switch ($config?view)
-            	    case "div" return
+                    case "div" return
                         if ($root) then
                             let $node := util:node-by-id($data, $root)
                             return
@@ -134,7 +137,7 @@ declare function pages:get-document($idOrName as xs:string) {
     if ($config:address-by-id) then
         root(collection($config:data-root)/id($idOrName))
     else
-        doc(xmldb:encode($config:data-root || "/" || $idOrName))
+        doc(xmldb:encode(utils:path-concat-safe(($config:data-root, $idOrName))))
 };
 
 declare function pages:back-link($node as node(), $model as map(*)) {
@@ -190,7 +193,7 @@ function pages:view($node as node(), $model as map(*), $action as xs:string, $sr
 
 declare function pages:process-content($xml as element()*, $root as element()*, $odd as xs:string, $view as xs:string?) {
     let $parameters := if ($view) then map {"root": $root, "view": $view} else map{"root": $root}
-	let $html := $pm-config:web-transform($xml, $parameters, $odd)
+    let $html := $pm-config:web-transform($xml, $parameters, $odd)
     let $class := if ($html//*[@class = ('margin-note')]) then "margin-right" else ()
     let $body := pages:clean-footnotes($html)
     return
@@ -232,7 +235,7 @@ function pages:styles($node as node(), $model as map(*)) {
     attribute href {
         let $name := replace($config:odd, "^([^/\.]+).*$", "$1")
         return
-            $pages:app-root || "/" || $config:output || "/" || $name || ".css"
+            utils:path-concat-safe(($pages:app-root, $config:output, $name || ".css"))
     }
 };
 
