@@ -143,16 +143,6 @@ else if (ends-with($exist:resource, ".html")) then (
                     <forward url="{$exist:controller}/modules/view.xql"/>
                 </error-handler>
             </dispatch>
-        else if (ends-with($exist:resource, ".pdf")) then
-            <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-                <forward url="{$exist:controller}/modules/lib/pdf.xql">
-                    <add-parameter name="doc" value="{$path}{$id}"/>
-                </forward>
-                <error-handler>
-                    <forward url="{$exist:controller}/routes/error-page.html" method="get"/>
-                    <forward url="{$exist:controller}/modules/view.xql"/>
-                </error-handler>
-            </dispatch>
         else if ($mode = "plain") then
             <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
                 <forward url="{$exist:controller}/modules/lib/transform.xql">
@@ -175,7 +165,8 @@ else if (ends-with($exist:resource, ".html")) then (
                             (),
                         if ($exist:path => matches('[A-Z]{2}' || '/' || $idnoSchema)) then
                             <add-parameter name="id" value="{tokenize($exist:path, '/')[last()] => substring-before('.')}"/>
-                        else ()
+                        else
+                            ()
                     }
                         <set-header name="Cache-Control" value="no-cache"/>
                     </forward>
@@ -185,5 +176,4 @@ else if (ends-with($exist:resource, ".html")) then (
                     <forward url="{$exist:controller}/modules/view.xql"/>
                 </error-handler>
             </dispatch>
-
 )
