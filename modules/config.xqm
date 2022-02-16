@@ -6,6 +6,7 @@ xquery version "3.1";
  :)
 module namespace config="http://www.tei-c.org/tei-simple/config";
 
+import module namespace utils="http://ssrq-sds-fds.ch/utils" at "utils.xqm";
 import module namespace http="http://expath.org/ns/http-client" at "java:org.exist.xquery.modules.httpclient.HTTPClientModule";
 import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "navigation.xql";
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
@@ -145,22 +146,25 @@ declare variable $config:odd-diplomatic := "ssrq.odd";
 
 declare variable $config:odd-normalized := "ssrq-norm.odd";
 
-declare variable $config:odd-root := $config:app-root || "/resources/odd";
+declare variable $config:odd-root := utils:path-concat-safe(($config:app-root, "resources/odd"));
 
-declare variable $config:schema-odd := doc($config:data-root || "/misc/TEI_Schema_SSRQ.odd")/*;
+declare variable $config:schema-odd := doc(utils:path-concat-safe(($config:data-root, "misc/TEI_Schema_SSRQ.odd")))/*;
 
-declare variable $config:abbr := doc($config:data-root || "/misc/abbr.xml")/*;
+declare variable $config:abbr := doc(utils:path-concat-safe(($config:data-root, "misc/abbr.xml")))/*;
 
-declare variable $config:partners := doc($config:data-root || "/misc/partners.xml")/*;
+declare variable $config:partners := doc(utils:path-concat-safe(($config:data-root, "misc/partners.xml")))/*;
 
 declare variable $config:output := "transform";
 
-declare variable $config:output-root := $config:app-root || "/" || $config:output;
+declare variable $config:output-root := utils:path-concat-safe(($config:app-root, $config:output));
 
-declare variable $config:module-config := doc($config:odd-root || "/configuration.xml")/*;
+declare variable $config:module-config := doc(utils:path-concat-safe(($config:odd-root, "configuration.xml")))/*;
 
-declare variable $config:repo-descriptor := doc(concat($config:app-root, "/repo.xml"))/repo:meta;
+declare variable $config:repo-descriptor := doc(utils:path-concat-safe(($config:app-root, "repo.xml")))/repo:meta;
 
+(: FIXME: using path-concat-safe here results in a NullPointerException
+ : declare variable $config:expath-descriptor := doc(utils:path-concat-safe(($config:app-root, "expath-pkg.xml")))/expath:package;
+ :)
 declare variable $config:expath-descriptor := doc(concat($config:app-root, "/expath-pkg.xml"))/expath:package;
 
 (:~
@@ -192,11 +196,13 @@ declare function config:get-identifier($node as node()) {
  : Resolve the given path using the current application context.
  : If the app resides in the file system,
  :)
-declare function config:resolve($relPath as xs:string) {
-    if (starts-with($config:app-root, "/db")) then
-        doc(concat($config:app-root, "/", $relPath))
-    else
-        doc(concat("file://", $config:app-root, "/", $relPath))
+declare function config:resolve($rel-path as xs:string) {
+    let $path := utils:path-concat-safe(($config:app-root, $rel-path))
+    return
+        if (starts-with($config:app-root, "/db")) then
+            doc($path)
+        else
+            doc("file://" || $path)
 };
 
 (:~
@@ -268,21 +274,21 @@ declare function config:get-data-dir() as xs:string? {
 };
 
 declare function config:get-repo-dir() {
-    let $dataDir := config:get-data-dir()
-    let $pkgRoot := $config:expath-descriptor/@abbrev || "-" || $config:expath-descriptor/@version
+    let $data-dir := config:get-data-dir()
+    let $pkg-root := $config:expath-descriptor/@abbrev || "-" || $config:expath-descriptor/@version
     return
-        if ($dataDir) then
-            $dataDir || "/expathrepo/" || $pkgRoot
+        if ($data-dir) then
+            utils:path-concat(($data-dir, "expathrepo", $pkg-root))
         else
             ()
 };
 
 
 declare function config:get-fonts-dir() as xs:string? {
-    let $repoDir := config:get-repo-dir()
+    let $repo-dir := config:get-repo-dir()
     return
-        if ($repoDir) then
-            $repoDir || "/resources/fonts"
+        if ($repo-dir) then
+            utils:path-concat(($repo-dir, "resources", "fonts"))
         else
             ()
 };
