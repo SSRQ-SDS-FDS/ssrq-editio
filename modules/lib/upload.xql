@@ -1,6 +1,7 @@
 xquery version "3.1";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
+import module namespace utils="http://ssrq-sds-fds.ch/utils" at "../utils.xqm";
 
 declare namespace json="http://www.json.org";
 
@@ -14,8 +15,8 @@ declare function local:upload($root, $paths, $payloads) {
             if (ends-with($path, ".odd")) then
                 xmldb:store($config:temp-root, $path, $data)
             else (
-                xmldb:store($config:temp-root || "/" || $root, $path, $data),
-                sm:chmod(xs:anyURI($config:temp-root || "/" || $root || "/" || $path), "rw-r-----")
+                xmldb:store(utils:path-concat-safe(($config:temp-root, $root)), $path, $data),
+                sm:chmod(xs:anyURI(utils:path-concat-safe(($config:temp-root, $root, $path))), "rw-r-----")
             )
         })
     return
