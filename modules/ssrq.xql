@@ -24,6 +24,31 @@ declare variable $app:PERSONS := $app:HOST || "/persons-db-api/";
 declare variable $app:LEMMA := $app:HOST || "/lemma-db-edit/views/get-lem-infos.xq";
 declare variable $app:KEYWORDS := $app:HOST || "/lemma-db-edit/views/get-key-infos.xq";
 
+
+declare function app:coalesce($a, $b) {
+  if $a then $a else $b
+}
+
+declare function app:failed-to-load($doc) {
+    <TEI xmlns="http://www.tei-c.org/ns/1.0">
+        <teiHeader>
+            <fileDesc>
+                <titleStmt>
+                    <title>Not found</title>
+                </titleStmt>
+            </fileDesc>
+        </teiHeader>
+        <text>
+            <body>
+                <div>
+                    <head>Failed to load!</head>
+                    <p>Could not load document {$doc}. Maybe it is not valid TEI or not in the TEI namespace?</p>
+                </div>
+            </body>
+        </text>
+    </TEI>
+};
+
 declare
     %templates:wrap
 function app:load($node as node(), $model as map(*), $doc as xs:string, $root as xs:string?,
@@ -31,51 +56,36 @@ function app:load($node as node(), $model as map(*), $doc as xs:string, $root as
     let $doc := xmldb:decode($doc)
     let $data :=
         if ($id) then
-            let $xml := collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id]/tei:text
-            let $result :=
-                if ($xml) then
-                    $xml => app:query-view(if($view) then $view else $config:default-view)
+            let $tei :=
+                app:coalesce(
+                    collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id],
+                    collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id || "_1"]
+                )
+            let $data :=
+                app:query-view($tei/tei:text, app:coalesce($view, $config:default-view))
+            let $config :=
+                if ($result) then
+                    tpu:parse-pi(root($data), $view)
                 else
-                    collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id || "_1"]/tei:text
-                    => app:query-view(if($view) then $view else $config:default-view)
-            let $config := if ($result) then tpu:parse-pi(root($result), $view) else ()
+                    ()
             return
                 map {
                     "config": $config,
-                    "data": $result
+                    "data": $data
                 }
         else
             pages:load-xml($view, $root, $doc)
-    let $xml :=
-        if ($data?data) then
-            $data?data
-        else
-            <TEI xmlns="http://www.tei-c.org/ns/1.0">
-                <teiHeader>
-                    <fileDesc>
-                        <titleStmt>
-                            <title>Not found</title>
-                        </titleStmt>
-                    </fileDesc>
-                </teiHeader>
-                <text>
-                    <body>
-                        <div>
-                            <head>Failed to load!</head>
-                            <p>Could not load document {$doc}. Maybe it is not valid TEI or not in the TEI namespace?</p>
-                        </div>
-                    </body>
-                </text>
-            </TEI>//tei:div
-    let $hasFacs := exists($xml//tei:pb[@facs]) and $data?config?odd = "ssrq.odd"
+    let $has-facs := exists($xml//tei:pb[@facs]) and $data?config?odd = "ssrq.odd"
     return
         map {
             "config": $data?config,
-            "data": $xml,
+            "data": app:coalesce(
+                $data?data,
+                app:failed-to-load($doc)),
             "doc-type": $xml/ancestor::tei:TEI/@type/data(.),
-            "body-class": if ($hasFacs) then 'col-md-6' else 'col-md-10',
-            "facs-class": if ($hasFacs) then 'col-md-6' else 'hidden',
-            "sidebar-class": if ($hasFacs) then 'hidden' else 'col-md-2'
+            "body-class": if ($has-facs) then 'col-md-6' else 'col-md-10',
+            "facs-class": if ($has-facs) then 'col-md-6' else 'hidden',
+            "sidebar-class": if ($has-facs) then 'hidden' else 'col-md-2'
         }
 };
 
@@ -87,8 +97,8 @@ declare function app:query-view($context as node(), $view as xs:string?) as node
             return $context//tei:back
         case 'group'
             return $context//tei:group
-        default return
-            $context
+        default
+            return $context
 };
 
 declare function app:switch-view($node as node(), $model as map(*), $odd as xs:string?) {
