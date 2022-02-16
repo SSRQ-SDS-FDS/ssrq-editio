@@ -236,26 +236,6 @@ function pages:styles($node as node(), $model as map(*)) {
     }
 };
 
-declare
-    %templates:wrap
-function pages:navigation($node as node(), $model as map(*), $view as xs:string?) {
-    let $view := pages:determine-view($view, $model?data)
-    let $div := $model?data
-    let $work := $div/ancestor-or-self::tei:TEI
-    let $map := map {
-        "div" : $div,
-        "work" : $work
-    }
-    return
-        if ($view = "single") then
-            $map
-        else
-            map:merge(($map, map {
-                "previous": $config:previous-page($model?config, $div, $view),
-                "next": $config:next-page($model?config, $div, $view)
-            }))
-};
-
 declare function pages:get-content($config as map(*), $div as element()) {
     typeswitch ($div)
         case element(tei:teiHeader) return
@@ -322,35 +302,10 @@ declare %private function pages:milestone-chunk($ms1 as element(), $ms2 as eleme
 declare function pages:title($work as element()) {
     let $main-title := $work/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[@type = 'main']/string()
     return
-        if ($main-title) then $main-title else $work/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[1]/string()
-};
-
-declare function pages:navigation-link($node as node(), $model as map(*), $direction as xs:string) {
-        if ($model?config?view = "single") then
-            ()
-        else if ($model($direction)) then
-            let $doc :=
-                config:get-identifier($model($direction))
-            return
-                <a data-doc="{$doc}"
-                    data-root="{util:node-id($model($direction))}"
-                    data-current="{util:node-id($model('div'))}"
-                    data-odd="{$config:odd}">
-                {
-                    $node/@* except $node/@href,
-                    let $id := $doc || "?root=" || util:node-id($model($direction))
-                        || "&amp;odd=" || $config:odd || "&amp;view=" || $model?config?view
-                    return
-                        attribute href { $id },
-                    $node/node()
-                }
-                </a>
+        if ($main-title) then
+            $main-title
         else
-            let $doc :=
-                config:get-identifier($model?data)
-            return
-                <a href="#" style="visibility: hidden;"
-                    data-doc="{$doc}">{$node/@class, $node/node()}</a>
+            $work/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[1]/string()
 };
 
 declare function pages:app-root($node as node(), $model as map(*)) {
