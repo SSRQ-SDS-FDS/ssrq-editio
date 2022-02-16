@@ -20,47 +20,18 @@ declare option output:method "text";
 declare option output:html-version "5.0";
 declare option output:media-type "text/text";
 
-declare variable $local:WORKING_DIR := system:get-exist-home() || "/webapp";
-
 let $dummy := session:set-attribute("ssrq.lang", request:get-parameter("lang", "de"))
 
 let $id := request:get-parameter("id", ())
-let $token := request:get-parameter("token", ())
 let $source := request:get-parameter("source", ())
 return (
-    if ($token) then
-        response:set-cookie("simple.token", $token)
-    else
-        (),
     if ($id) then
         let $id := replace($id, "^(.*)\..*", "$1")
         let $xml := pages:get-document($id)/tei:TEI
         let $config := tpu:parse-pi(root($xml), ())
         let $tex := string-join($pm-config:latex-transform($xml, map { "image-dir": config:get-repo-dir() || "/" || $config:data-root[1] || "/" }, $config?odd))
-        let $file :=
-            replace($id, "^.*?([^/]+)$", "$1") || format-dateTime(current-dateTime(), "-[Y0000][M00][D00]-[H00][m00]")
         return
-            if ($source) then
-                $tex
-            else
-                let $serialized := file:serialize-binary(util:string-to-binary($tex), $local:WORKING_DIR || "/" || $file || ".tex")
-                let $options :=
-                    <option>
-                        <workingDir>{$local:WORKING_DIR}</workingDir>
-                    </option>
-                let $output :=
-                    for $i in 1 to 3
-                    return
-                        process:execute(
-                            ( $config:tex-command($file) ), $options
-                        )
-                return
-                    if ($output[last()]/@exitCode < 2) then
-                        let $pdf := file:read-binary($local:WORKING_DIR || "/" || $file || ".pdf")
-                        return
-                            response:stream-binary($pdf, "media-type=application/pdf", $file || ".pdf")
-                    else
-                        $output
+            $tex
     else
-        <p>No document specified</p>
+        ()
 )
