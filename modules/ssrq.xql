@@ -13,6 +13,8 @@ import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pa
 import module namespace http="http://expath.org/ns/http-client" at "java:org.expath.exist.HttpClientModule";
 import module namespace functx="http://www.functx.com";
 
+import module namespace utils="http://ssrq-sds-fds.ch/utils" at "utils.xqm";
+
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 declare variable $app:single-body-div-max := 7;
@@ -24,10 +26,6 @@ declare variable $app:PERSONS := $app:HOST || "/persons-db-api/";
 declare variable $app:LEMMA := $app:HOST || "/lemma-db-edit/views/get-lem-infos.xq";
 declare variable $app:KEYWORDS := $app:HOST || "/lemma-db-edit/views/get-key-infos.xq";
 
-
-declare function app:coalesce($a, $b) {
-  if ($a) then $a else $b
-};
 
 declare function app:failed-to-load($doc) {
     <TEI xmlns="http://www.tei-c.org/ns/1.0">
@@ -57,12 +55,12 @@ function app:load($node as node(), $model as map(*), $doc as xs:string, $root as
     let $data :=
         if ($id) then
             let $tei :=
-                app:coalesce(
+                utils:coalesce(
                     collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id],
                     collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id || "_1"]
                 )
             let $data :=
-                app:query-view($tei/tei:text, app:coalesce($view, $config:default-view))
+                app:query-view($tei/tei:text, utils:coalesce($view, $config:default-view))
             let $config :=
                 if ($result) then
                     tpu:parse-pi(root($data), $view)
@@ -79,7 +77,7 @@ function app:load($node as node(), $model as map(*), $doc as xs:string, $root as
     return
         map {
             "config": $data?config,
-            "data": app:coalesce(
+            "data": utils:coalesce(
                 $data?data,
                 app:failed-to-load($doc)),
             "doc-type": $xml/ancestor::tei:TEI/@type/data(.),

@@ -161,3 +161,15 @@ declare function utils:realpath($path as xs:string, $cwd as xs:string) as xs:str
     => utils:pathcomp-remove-backdirs()
     => utils:path-concat()
 };
+
+(:~
+ : The coalesce function evaluates the expressions $a and $b and always returns
+ : the first truthy value.
+ :
+ : @param $a the first value
+ : @param $b the second value
+ : @return either $a or $b
+ :)
+declare function utils:coalesce($a, $b) {
+  if ($a) then $a else $b
+};
