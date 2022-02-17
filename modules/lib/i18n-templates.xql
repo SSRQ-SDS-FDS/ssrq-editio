@@ -7,6 +7,8 @@ import module namespace i18n="http://exist-db.org/xquery/i18n" at "i18n.xql";
 import module namespace templates="http://exist-db.org/xquery/templates";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
 
+import module namespace utils="http://ssrq-sds-fds.ch/utils" at "../utils.xqm";
+
 (:~
  : Template function: calls i18n:process on the child nodes of $node.
  : Template parameters:
@@ -46,7 +48,7 @@ declare function intl:translate($node as node(), $model as map(*), $lang as xs:s
         if (starts-with($catalogues, "/")) then
             $catalogues
         else
-            concat($config:app-root, "/", $catalogues)
+            utils:path-concat-safe(($config:app-root, $catalogues))
     let $processed := templates:process($node/*, $model)
     let $translated :=
         i18n:process($processed, $lang, $cpath, ())

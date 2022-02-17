@@ -10,6 +10,8 @@ import module namespace pmf="http://www.tei-c.org/tei-simple/xquery/functions/ss
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 import module namespace functx="http://www.functx.com";
 
+import module namespace utils="http://ssrq-sds-fds.ch/utils" at "utils.xqm";
+
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace util="http://exist-db.org/xquery/util";
 declare namespace i18n="http://exist-db.org/xquery/i18n";
@@ -348,7 +350,11 @@ declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $coll
                             <span class="part">
                                 {
                                     let $path := substring-after(document-uri(root($content-types($key))), $config:data-root || "/")
-                                    let $href := if ($key = 'pdfdummy') then request:get-context-path() || '/apps/ssrq-data/data/' || replace($path, '^([A-Z]{2})/(.+?)/(.+?)(?:_\d{1,2})?\.xml$', '$1/$2/pdf/' || $idno || '.pdf') else $path || '?template=introduction.html'
+                                    let $href :=
+                                        if ($key = 'pdfdummy') then
+                                            utils:path-concat-safe((request:get-context-path(), 'apps/ssrq-data/data', replace($path, '^([A-Z]{2})/(.+?)/(.+?)(?:_\d{1,2})?\.xml$', '$1/$2/pdf'), $idno || '.pdf'))
+                                        else
+                                            $path || '?template=introduction.html'
                                     return
                                         <a href="{$href}">
                                            <i18n:text key="{$key}">{$key}</i18n:text>
