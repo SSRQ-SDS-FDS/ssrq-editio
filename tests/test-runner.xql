@@ -8,7 +8,7 @@ import module namespace inspect = "http://exist-db.org/xquery/inspection";
 let $tests := inspect:inspect-module(xs:anyURI('tests.xqm'))
 
 let $test-results :=
-                        for $function in $tests//function
+                        for $function in $tests//function[not(ancestor::function)]
                         let $result := function-lookup(xs:QName(xs:string($function/@name)), 0)
                         return $result()
 
