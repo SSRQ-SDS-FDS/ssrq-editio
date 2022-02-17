@@ -161,7 +161,7 @@ declare function pages:single-page-link($node as node(), $model as map(*), $doc 
 declare
     %templates:default("action", "browse")
 function pages:view($node as node(), $model as map(*), $action as xs:string, $sr as xs:string*, $template as xs:string?) {
-    let $view := pages:determine-view($model?config?view, $model?data)
+    let $pages-view := pages:determine-view($model?config?view, $model?data)
     let $data :=
         if ($action = "search" and exists(session:get-attribute("ssrq.query"))) then
             let $div :=
@@ -183,7 +183,7 @@ function pages:view($node as node(), $model as map(*), $action as xs:string, $sr
         else
             $model?data
     let $xml :=
-        if ($view = ("div", "page", "body")) then
+        if ($pages-view = ("div", "page", "body")) then
             pages:get-content($model?config, $data[1])
         else
             $model?data//*:body/*

@@ -136,7 +136,12 @@ else if (ends-with($exist:resource, ".html")) then (
         else if (ends-with($exist:resource, ".tex")) then
             <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
                 <forward url="{$exist:controller}/modules/lib/latex.xql">
-                    <add-parameter name="id" value="{$path}{$id}"/>
+                    {
+                        if ($exist:path => matches('[A-Z]{2}' || '/' || $idnoSchema)) then
+                        <add-parameter name="id" value="{tokenize($exist:path, '/')[last()] => substring-before('.')}"/>
+                        else ()
+                    }
+                    <add-parameter name="doc" value="{$path}{$id}"/>
                 </forward>
                 <error-handler>
                     <forward url="{$exist:controller}/routes/error-page.html" method="get"/>
