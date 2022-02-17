@@ -36,26 +36,72 @@ declare %private function utils:pathcomp-remove-backdirs($components as xs:strin
         })
 };
 
+(:~
+ : Tells if the given argument denotes a file name, i.e. is not a path.
+ :
+ : @param $name the path/file name to check
+ : @return boolean
+ :)
 declare function utils:is-file-name($name as xs:string) as xs:boolean {
     not($name => contains("/"))
 };
 
+(:~
+ : Tokenizes a given path into its components.
+ : e.g. /foo/bar/baz will become ("foo", "bar", "baz")
+ :
+ : NB: . or .. will not be resolved.
+ :     /foo/bar/../baz will become ("foo", "bar", "..", "baz")
+ :
+ : @param $path the path to tokenize
+ : @return a sequence of strings
+ :)
 declare function utils:path-tokenize($path as xs:string) as xs:string* {
     $path => tokenize("/")
 };
 
+(:~
+ : Concatenates a sequence of path components to a path string.
+ : To get an absolute path, the first component must be prefixed with a /.
+ :
+ : The function will remove double-slashes (e.g. foo//bar).
+ :
+ : NB: . or .. will not be resolved.
+ :     /foo/bar/../baz will become ("foo", "bar", "..", "baz")
+ :
+ : @param $components a sequence of path components.
+ : @return string
+ :)
 declare function utils:path-concat($components as xs:string*) as xs:string {
     $components
     => utils:pathcomp-remove-double-slashes()
     => string-join("/")
 };
 
+(:~
+ : Tells if a given path is absolute.
+ :
+ : @param $path the path string to check
+ : @return string
+ :)
 declare function utils:is-abs-path($path as xs:string) as xs:boolean {
     $path => starts-with("/")
 };
 
+(:~
+ : A safer version of path-concat.
+ : path-concat-safe will take the first path component as the "container" and
+ : produce an error if evaluating the reslulting path would result in a path
+ : that escapes the container, e.g. ("/some/safe/place", "../../foo.xml").
+ :
+ : The first component must thus be an absolute path.
+ : Not passing an absolute path as the first item of the $components sequence is
+ : considered an error.
+ :
+ : @param $components a non-empty sequence of path components
+ : @return string
+ :)
 declare function utils:path-concat-safe($components as xs:string+) as xs:string {
-    (: the first component will be used as the sandbox and must be an absolute path :)
     let $container := head($components)
     return
         if (utils:is-abs-path($container)) then
@@ -77,6 +123,14 @@ declare function utils:path-concat-safe($components as xs:string+) as xs:string 
                   $container)
 };
 
+(:~
+ : Converts a given path to an absolute path (if not already), by interpreting
+ : non-absolute paths relative to the given $cwd.
+ :
+ : @param $path the path
+ : @param $cwd the anchor directory for relative paths
+ : @return string
+ :)
 declare function utils:abspath($path as xs:string, $cwd as xs:string) as xs:string {
     if ($path => starts-with("/")) then
         $path
@@ -90,6 +144,15 @@ declare function utils:abspath($path as xs:string, $cwd as xs:string) as xs:stri
             utils:path-concat(($cwd, $path))
 };
 
+(:~
+ : Pendant to realpath(3) for eXist.
+ : This function resolves . and .. path components and removes double-slashes
+ : from the paths.
+ :
+ : @param $path the path
+ : @param $cwd anchor for relative paths
+ : @return string
+ :)
 declare function utils:realpath($path as xs:string, $cwd as xs:string) as xs:string {
     utils:abspath($path, $cwd)
     => utils:path-tokenize()
