@@ -15,13 +15,13 @@ import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "pages.
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
 import module namespace app="http://existsolutions.com/ssrq/app" at "../ssrq.xql";
 
+import module namespace utils="http://ssrq-sds-fds.ch/utils" at "../utils.xqm";
+
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 declare option output:method "text";
 declare option output:html-version "5.0";
 declare option output:media-type "text/text";
-
-declare variable $local:WORKING_DIR := system:get-exist-home() || "/webapp";
 
 let $dummy := session:set-attribute("ssrq.lang", request:get-parameter("lang", "de"))
 
@@ -37,31 +37,8 @@ return (
     if ($id or $doc) then
         let $xml := if ($id) then app:load(<div/>, map {}, $doc, (), $id, ())?data => root()  else pages:get-document($id)/tei:TEI
         let $config := tpu:parse-pi(root($xml), ())
-        let $tex := string-join($pm-config:latex-transform($xml, map { "image-dir": config:get-repo-dir() || "/" || $config:data-root[1] || "/" }, $config?odd))
-        let $file :=
-            replace($id, "^.*?([^/]+)$", "$1") || format-dateTime(current-dateTime(), "-[Y0000][M00][D00]-[H00][m00]")
-        return
-            if ($source) then
-                $tex
-            else
-                let $serialized := file:serialize-binary(util:string-to-binary($tex), $local:WORKING_DIR || "/" || $file || ".tex")
-                let $options :=
-                    <option>
-                        <workingDir>{$local:WORKING_DIR}</workingDir>
-                    </option>
-                let $output :=
-                    for $i in 1 to 3
-                    return
-                        process:execute(
-                            ( $config:tex-command($file) ), $options
-                        )
-                return
-                    if ($output[last()]/@exitCode < 2) then
-                        let $pdf := file:read-binary($local:WORKING_DIR || "/" || $file || ".pdf")
-                        return
-                            response:stream-binary($pdf, "media-type=application/pdf", $file || ".pdf")
-                    else
-                        $output
+		return
+			string-join($pm-config:latex-transform($xml, map { "image-dir": utils:path-concat-safe((config:get-repo-dir(), $config:data-root)) || "/" }, $config?odd))
     else
-        <p>No document specified</p>
+        ()
 )

@@ -534,30 +534,7 @@ function app:additionalSource($node as node(), $model as map(*)) {
 declare
      %templates:wrap
 function app:abbr-blocks($node as node(), $model as map(*)) {
-    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
-    let $blocks := $config:abbr//tei:dataSpec/tei:desc[@xml:lang=$lang]
-    return
-
-         for $block in $blocks
-            return
-                <div>
-                    <h3>
-                        { $block}
-                    </h3>
-
-                        {for $item in $block/../tei:valList/tei:valItem
-                        return
-                            <li>
-
-
-                                {$item/@ident/string()} = {($item/tei:desc[@xml:lang=$lang], $item/tei:desc[1])[1]/text()}
-
-
-                            </li>
-                        }
-
-              </div>
-
+    $pm-config:web-transform($config:abbr//tei:dataSpec, map { "root": $config:abbr//tei:dataSpec}, $config:odd)
 };
 
 declare

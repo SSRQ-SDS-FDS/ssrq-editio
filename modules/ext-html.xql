@@ -250,3 +250,23 @@ declare function pmf:content($config as map(*), $node as node(), $class as xs:st
         default return
             text { $content }
 };
+
+
+(:~ Custom behaviour for rendering biblLists...
+:
+:)
+declare function pmf:biblList($config as map(*), $node as element(), $class as xs:string+, $content as node()*) {
+    <div class="tei-div7 biblList">
+        <h4 class="archivelocation">{$node/tei:head/text()}</h4>
+        <ul>
+            {
+                for $div in $node/tei:div
+                return
+                    <li>{if ($div/tei:listBibl/tei:head) then
+                        $div/tei:listBibl/tei:head/text() || pmc:colon()
+                        else ()} {string-join($div/tei:listBibl/tei:bibl/tei:idno, '; ')}</li>
+
+            }
+        </ul>
+    </div>
+};
