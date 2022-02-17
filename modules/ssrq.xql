@@ -26,8 +26,8 @@ declare variable $app:KEYWORDS := $app:HOST || "/lemma-db-edit/views/get-key-inf
 
 
 declare function app:coalesce($a, $b) {
-  if $a then $a else $b
-}
+  if ($a) then $a else $b
+};
 
 declare function app:failed-to-load($doc) {
     <TEI xmlns="http://www.tei-c.org/ns/1.0">
