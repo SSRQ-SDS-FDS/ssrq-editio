@@ -58,22 +58,23 @@ declare function utils:path-concat-safe($components as xs:string+) as xs:string 
     (: the first component will be used as the sandbox and must be an absolute path :)
     let $container := head($components)
     return
-        if (not(utils:is-abs-path($container))) then
-            error(
-                QName('http://ssrq-sds-fds.ch/err',
-                      'AbsContainerPathRequired'),
-                $container)
-        else
+        if (utils:is-abs-path($container)) then
             let $result := utils:path-concat($components)
             let $real-result := utils:realpath($result, "")
             return
-                if ($result = $real-result or $real-result => starts-with($container || "/")) then
+                if ($result = $real-result
+                    or $real-result => starts-with($container || "/")) then
                     $result
                 else
                     error(
-                        QName('http://ssrq-sds-fds.ch/err',
-                              'PathEscapesContainer'),
-                        string-join($components, "/"))
+                          QName('http://ssrq-sds-fds.ch/err',
+                                'PathEscapesContainer'),
+                          string-join($components, "/"))
+        else
+            error(
+                  QName('http://ssrq-sds-fds.ch/err',
+                        'AbsContainerPathRequired'),
+                  $container)
 };
 
 declare function utils:abspath($path as xs:string, $cwd as xs:string) as xs:string {
