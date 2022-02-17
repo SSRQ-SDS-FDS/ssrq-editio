@@ -189,24 +189,6 @@ $(document).ready(function () {
     });
   }
 
-  function initLinks(ev) {
-    ev && ev.preventDefault();
-    // var relPath = this.pathname.replace(/^.*?\/([^\/]+)$/, "$1");
-    var relPath = $(this).attr('data-doc');
-    var url = 'doc=' + relPath + '&' + this.search.substring(1);
-    if (historySupport) {
-      history.pushState(
-        {
-          path: relPath,
-        },
-        'Navigate page',
-        this.href.replace(/^.*?\/([^\/]+)$/, '$1')
-      );
-    }
-    load(url, this.className.split(' ')[0]);
-  }
-
-
   $('#zoom-in').click(function (ev) {
     ev.preventDefault();
     var size = getFontSize();
