@@ -83,7 +83,7 @@ declare function tests:count-docs() as map(*)* {
         map {
         "name": "tests:count-docs()",
         "description": "Count docs for " || $canton,
-        "expr": true(),
+        "exp": true(),
         "result":
             try {
                 sum(for $volume in xmldb:get-child-collections(($config:data-root, $canton) => string-join('/'))

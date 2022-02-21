@@ -52,7 +52,7 @@ declare
 function app:load($node as node(), $model as map(*), $doc as xs:string, $root as xs:string?,
     $id as xs:string?, $view as xs:string?) {
     let $doc := xmldb:decode($doc)
-    let $data :=
+    let $result :=
         if ($id) then
             let $tei :=
                 utils:coalesce(
@@ -62,7 +62,7 @@ function app:load($node as node(), $model as map(*), $doc as xs:string, $root as
             let $data :=
                 app:query-view($tei/tei:text, utils:coalesce($view, $config:default-view))
             let $config :=
-                if ($result) then
+                if ($data) then
                     tpu:parse-pi(root($data), $view)
                 else
                     ()
@@ -73,14 +73,14 @@ function app:load($node as node(), $model as map(*), $doc as xs:string, $root as
                 }
         else
             pages:load-xml($view, $root, $doc)
-    let $has-facs := exists($xml//tei:pb[@facs]) and $data?config?odd = "ssrq.odd"
+    let $has-facs := exists($result?data//tei:pb[@facs]) and $result?config?odd = "ssrq.odd"
     return
         map {
-            "config": $data?config,
+            "config": $result?config,
             "data": utils:coalesce(
-                $data?data,
+                $result?data,
                 app:failed-to-load($doc)),
-            "doc-type": $xml/ancestor::tei:TEI/@type/data(.),
+            "doc-type": $result?data/ancestor::tei:TEI/@type/data(.),
             "body-class": if ($has-facs) then 'col-md-6' else 'col-md-10',
             "facs-class": if ($has-facs) then 'col-md-6' else 'hidden',
             "sidebar-class": if ($has-facs) then 'hidden' else 'col-md-2'
