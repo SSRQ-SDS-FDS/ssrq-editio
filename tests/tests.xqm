@@ -60,7 +60,7 @@ declare function tests:non-existent-search-terms() as map(*)* {
             "name": "tests:non-existent-search-terms()",
             "description": "Test if there is no search result for " || $term,
             "exp": 0,
-            "result": let $search := query:query-texts((), $term)
+            "result": let $search := query:query-texts('', $term)
                         return $search?hits => count()
         }
 };
@@ -72,7 +72,7 @@ declare function tests:existing-search-terms() as map(*)* {
             "name": "tests:existing-search-terms()",
             "description": "Test if there are search results for " || $term,
             "exp": true(),
-            "result": let $search := query:query-texts((), $term)
+            "result": let $search := query:query-texts('', $term)
                         return $search?hits => count() > 0
         }
 };
