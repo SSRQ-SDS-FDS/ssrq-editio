@@ -4,6 +4,8 @@ import module namespace templates="http://exist-db.org/xquery/templates" ;
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace ssrq-utils="http://existsolutions.com/ssrq/utils" at "ssrq-util.xqm";
 
+import module namespace i18n="http://exist-db.org/xquery/i18n/templates" at "lib/i18n-templates.xqm";
+
 declare namespace ssrq-static="http://existsolutions.com/ssrq/static";
 declare default element namespace "http://www.w3.org/1999/xhtml";
 

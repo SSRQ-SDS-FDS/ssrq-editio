@@ -6,7 +6,6 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 import module namespace templates="http://exist-db.org/xquery/templates" ;
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xqm";
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xqm";
-import module namespace pmf="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xqm";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 import module namespace functx="http://www.functx.com";
 

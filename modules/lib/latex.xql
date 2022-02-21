@@ -10,7 +10,6 @@ declare namespace output="http://www.w3.org/2010/xslt-xquery-serialization";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../pm-config.xqm";
-import module namespace process="http://exist-db.org/xquery/process" at "java:org.exist.xquery.modules.process.ProcessModule";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "pages.xqm";
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xqm";
 import module namespace app="http://existsolutions.com/ssrq/app" at "../ssrq.xqm";

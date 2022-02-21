@@ -11,7 +11,6 @@ import module namespace console="http://exist-db.org/xquery/console" at "java:or
 import module namespace query="http://existsolutions.com/ssrq/search" at "ssrq-search.xqm";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xqm";
 import module namespace http="http://expath.org/ns/http-client" at "java:org.expath.exist.HttpClientModule";
-import module namespace functx="http://www.functx.com";
 
 import module namespace utils="http://ssrq-sds-fds.ch/utils" at "utils.xqm";
 
