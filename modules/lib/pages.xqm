@@ -26,14 +26,13 @@ module namespace pages="http://www.tei-c.org/tei-simple/pages";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace expath="http://expath.org/ns/pkg";
 
-import module namespace templates="http://exist-db.org/xquery/templates" at "../templates.xql";
+import module namespace templates="http://exist-db.org/xquery/templates" at "../templates.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
-import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../pm-config.xql";
-import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
-import module namespace search="http://www.tei-c.org/tei-simple/search" at "search.xql";
+import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../pm-config.xqm";
+import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "util.xqm";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
-import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "../navigation.xql";
-import module namespace query="http://existsolutions.com/ssrq/search" at "../ssrq-search.xql";
+import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "../navigation.xqm";
+import module namespace query="http://existsolutions.com/ssrq/search" at "../ssrq-search.xqm";
 
 import module namespace utils="http://ssrq-sds-fds.ch/utils" at "../utils.xqm";
 
