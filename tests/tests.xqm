@@ -16,7 +16,8 @@ import module namespace app="http://existsolutions.com/ssrq/app" at "../modules/
 import module namespace test-utils="https://www.ssrq-sds-fds.ch/test-utilts" at "test-utils.xqm";
 import module namespace query="http://existsolutions.com/ssrq/search" at "../modules/ssrq-search.xql";
 import module namespace request ="http://exist-db.org/xquery/request";
-
+import module namespace ssrq-utils="http://existsolutions.com/ssrq/utils" at "../modules/ssrq-util.xqm";
+import module namespace config="http://www.tei-c.org/tei-simple/config" at "../modules/config.xqm";
 
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 
@@ -45,7 +46,7 @@ declare function tests:edition-text() as map(*)* {
             "description": "Check if the rendering of the edition text is correct for " || tokenize($id, '/')[last()],
             "exp": true(),
             "result": let $data := test-utils:fetch-get($tests:host || $id)
-                        return 
+                        return
                             if ($data//*[@id = 'document-pane']//*[@class = 'tei-body5'] and not($data//*[@id = 'document-pane']//*[contains(./@class, 'tei-back')]))
                             then true()
                             else false()
@@ -73,5 +74,24 @@ declare function tests:existing-search-terms() as map(*)* {
             "exp": true(),
             "result": let $search := query:query-texts((), $term)
                         return $search?hits => count() > 0
+        }
+};
+
+declare function tests:count-docs() as map(*)* {
+    for $canton in xmldb:get-child-collections($config:data-root)[not(. = 'temp') and not(. = 'misc')]
+    return
+        map {
+        "name": "tests:count-docs()",
+        "description": "Count docs for " || $canton,
+        "expr": true(),
+        "result":
+            try {
+                sum(for $volume in xmldb:get-child-collections(($config:data-root, $canton) => string-join('/'))
+                return
+                    ssrq-utils:countDocs(($config:data-root, $canton, $volume) => string-join('/'), $volume))
+                > 0
+            } catch * {
+                error(xs:QName($err:code), $err:description)
+            }
         }
 };
