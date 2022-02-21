@@ -118,6 +118,26 @@ declare variable $config:fop-config :=
         </fop>
 ;
 
+declare variable $config:user-agent :=
+    let $default-ua :=
+        try {
+            let $request := <http:request method="GET" href="http://localhost:{request:get-server-port()}/{request:get-context-path()}/rest/?_query=request:get-header(%27User-Agent%27)"/>
+            let $response := http:send-request($request)
+            return
+                if ($response[1]/@status = "200") then
+                    " " || $response[2]/exist:result/exist:value/string()
+                else
+                    ""
+        } catch * {
+            ""
+        }
+    let $expath-descriptor := config:expath-descriptor()
+    let $app-ua :=
+        $expath-descriptor/@abbrev || "/" || $expath-descriptor/@version
+    return
+        $app-ua || $default-ua
+;
+
 (:
     Determine the application root collection from the current module load path.
 :)

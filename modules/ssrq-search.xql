@@ -141,7 +141,9 @@ declare function query:query-api($type as xs:string, $subtypes as xs:string*, $q
                 "https://www.ssrq-sds-fds.ch/lemma-db-edit/views/key-search.xq?query="
     let $log := console:log("Request: " || $url || encode-for-uri($query))
     let $request :=
-        <http:request method="GET" href="{$url}{encode-for-uri($query)}"/>
+        <http:request method="GET" href="{$url}{encode-for-uri($query)}">
+            <http:header name="User-Agent" value="{$config:user-agent}"/>
+        </http:request>
     let $response := http:send-request($request)
     return
         if ($response[1]/@status = "200") then
