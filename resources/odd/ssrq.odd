@@ -879,9 +879,6 @@
                         <param name="content" value="('[', ., ']')"/>
                     </model>
                 </elementSpec>
-                <elementSpec mode="change" ident="table">
-                    <model predicate="$parameters?view='introduction'" behaviour="table" cssClass="table"/>
-                </elementSpec>
                 <elementSpec ident="titleStmt" mode="change">
                     <model output="latex" behaviour="meta">
                         <param name="content" value="."/>
