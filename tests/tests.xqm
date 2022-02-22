@@ -21,7 +21,7 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "../m
 
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 
-declare variable $tests:host := 'http://localhost:' || request:get-server-port() || '/exist/apps/ssrq';
+declare variable $tests:host := substring-before(request:get-url(), '/exist') || '/exist/apps/ssrq';
 
 declare function tests:find-document() as map(*)*{
     for $id in ('SSRQ_FR_I_2_8_0001', 'SSRQ_FR_I_2_8_0002_000', 'SSRQ_SG_III_4_015_1')
