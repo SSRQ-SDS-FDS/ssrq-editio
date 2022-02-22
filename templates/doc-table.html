@@ -9,21 +9,20 @@
     data-catalogues="../resources/i18n"
   >
     <div class="flex-row-spaced">
-	  <ul
-		class="pagination"
-		data-template="ssrq-utils:paginate"
-		data-template-per-page="20"
-		data-template-max-pages="5"
-		data-template-min-hits="21"
-	  />
-	  <h5>
-		<span class="result-count">
-		  <a data-template="ssrq-utils:hits"/>
-		  <i18n:text key="found"
-		/></span>
-	  </h5>
+      <ul
+        class="pagination"
+        data-template="ssrq-utils:paginate"
+        data-template-per-page="20"
+        data-template-max-pages="5"
+        data-template-min-hits="21"
+      >
+        <h5>
+          <span class="result-count">
+            <a data-template="ssrq-utils:hits"/> <i18n:text key="found"
+          /></span>
+        </h5>
+      </ul>
     </div>
-
     <button class="back-button">
       <a data-template="ssrq-utils:browseUp">
         <i class="material-icons">arrow_upward</i> <i18n:text key="back-up"

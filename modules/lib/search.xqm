@@ -120,31 +120,31 @@ declare function search:query-default($query as xs:string, $target-texts as xs:s
                 if ($target-texts) then
                     for $text in $target-texts
                     return
-						doc(utils:path-concat-safe(($config:data-root, $text)))//tei:div[ft:query(., $query)][not(tei:div)]
-				else
+                        doc(utils:path-concat-safe(($config:data-root, $text)))//tei:div[ft:query(., $query)][not(tei:div)]
+                else
                     collection($config:data-root)//tei:div[ft:query(., $query)][not(tei:div)]
             case "tei:body" return
                 if ($target-texts) then
                     for $text in $target-texts
                     return
-						utils:path-concat-safe(($config:data-root, $text))//tei:body[ft:query(., $query)]
-				else
+                        utils:path-concat-safe(($config:data-root, $text))//tei:body[ft:query(., $query)]
+                else
                     collection($config:data-root)//tei:body[ft:query(., $query)]
             default return
                 if ($target-texts) then
-					for $text in $target-texts
-					return doc(utils:path-concat-safe(($config:data-root, $text)))//tei:body[ft:query(., $query)]
+                    for $text in $target-texts
+                    return doc(utils:path-concat-safe(($config:data-root, $text)))//tei:body[ft:query(., $query)]
                 else
                     util:eval("collection($config:data-root)//" || $config:search-default || "[ft:query(., $query)]")
     else
-		()
+        ()
 };
 
 declare function search:query-headings($query as xs:string, $target-texts as xs:string*) {
     if ($target-texts) then
         for $text in $target-texts
         return
-			utils:path-concat-safe(($config:data-root, $text))//tei:head[ft:query(., $query)]
+            utils:path-concat-safe(($config:data-root, $text))//tei:head[ft:query(., $query)]
     else
         collection($config:data-root)//tei:head[ft:query(., $query)]
 };
@@ -232,7 +232,7 @@ declare %private function search:get-current($config as map(*), $div as element(
         ()
     else
         if ($div instance of element(tei:teiHeader)) then
-			$div
+            $div
         else
             if (
                 empty($div/preceding-sibling::tei:div)  (: first div in section :)

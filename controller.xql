@@ -96,10 +96,10 @@ else if (ends-with($exist:resource, ".html")) then (
             <view>
                 <forward url="{$exist:controller}/modules/view.xql"/>
             </view>
-    		<error-handler>
-    			<forward url="{$exist:controller}/routes/error-page.html" method="get"/>
-    			<forward url="{$exist:controller}/modules/view.xql"/>
-    		</error-handler>
+            <error-handler>
+                <forward url="{$exist:controller}/routes/error-page.html" method="get"/>
+                <forward url="{$exist:controller}/modules/view.xql"/>
+            </error-handler>
         </dispatch>
 
 ) else (
