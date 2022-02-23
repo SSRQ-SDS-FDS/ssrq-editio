@@ -35,11 +35,6 @@ if ($exist:path eq '') then
         <redirect url="{request:get-uri()}/"/>
     </dispatch>
 
-else if (contains($exist:path, "/$shared/")) then
-    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-        <forward url="/shared-resources/{substring-after($exist:path, '/$shared/')}"/>
-    </dispatch>
-
 else if (contains($exist:path, "/resources")) then
     <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
         <forward url="{$exist:controller}/resources/{substring-after($exist:path, '/resources/')}"/>
@@ -136,16 +131,11 @@ else if (ends-with($exist:resource, ".html")) then (
         else if (ends-with($exist:resource, ".tex")) then
             <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
                 <forward url="{$exist:controller}/modules/lib/latex.xql">
-                    <add-parameter name="id" value="{$path}{$id}"/>
-                </forward>
-                <error-handler>
-                    <forward url="{$exist:controller}/routes/error-page.html" method="get"/>
-                    <forward url="{$exist:controller}/modules/view.xql"/>
-                </error-handler>
-            </dispatch>
-        else if (ends-with($exist:resource, ".pdf")) then
-            <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-                <forward url="{$exist:controller}/modules/lib/pdf.xql">
+                    {
+                        if ($exist:path => matches('[A-Z]{2}' || '/' || $idnoSchema)) then
+                        <add-parameter name="id" value="{tokenize($exist:path, '/')[last()] => substring-before('.')}"/>
+                        else ()
+                    }
                     <add-parameter name="doc" value="{$path}{$id}"/>
                 </forward>
                 <error-handler>
@@ -175,7 +165,8 @@ else if (ends-with($exist:resource, ".html")) then (
                             (),
                         if ($exist:path => matches('[A-Z]{2}' || '/' || $idnoSchema)) then
                             <add-parameter name="id" value="{tokenize($exist:path, '/')[last()] => substring-before('.')}"/>
-                        else ()
+                        else
+                            ()
                     }
                         <set-header name="Cache-Control" value="no-cache"/>
                     </forward>
@@ -185,5 +176,4 @@ else if (ends-with($exist:resource, ".html")) then (
                     <forward url="{$exist:controller}/modules/view.xql"/>
                 </error-handler>
             </dispatch>
-
 )

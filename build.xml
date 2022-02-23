@@ -7,7 +7,7 @@
     <property name="build.dir" value="build"/>
     <property name="env" value="prod"/>
     <property name="cache" value="true"/>
-    
+   
     <!-- Guard clause to check the env-variable -->
     <fail message="Wrong env-variable. Set it to &quot;dev&quot; or &quot;prod&quot;." >
         <condition>
@@ -16,24 +16,24 @@
             </not>
         </condition>
     </fail>
-    
+
     <!-- The main target will call the build-targets based on ${env} -->
     <target name="main">
         <echo message="Building .xar for ${env}-environment."/>
         <mkdir dir="${build.dir}"/>
         <antcall target="${env}"/>
     </target>
-    
+
     <target name="dev" depends="clean,set-env,style.css">
         <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${build.dir}/** _scripts/** README.md build.xml .existdb.json node_modules/** resources/scss/** transform/**"/>
         <delete file="env.xml"/>
     </target>
-    
+
     <target name="prod" depends="clean,set-env,style.css">
         <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${build.dir}/** _scripts/** README.md build.xml .existdb.json node_modules/** test/** resources/scss/** transform/** modules/create-biblstruct.xql modules/regenerate.xql"/>
         <delete file="env.xml"/>
     </target>
-    
+
     <target name="set-env">
         <echo message="Writing env-settings to &quot;env.xml&quot;"/>
         <echoxml file="env.xml">
@@ -43,7 +43,7 @@
             </settings>
         </echoxml>
     </target>
-    
+
     <target name="style.css">
         <echo message="Compiling SCSS..."/>
         <exec executable="sassc" outputproperty="sassc.output">
@@ -54,7 +54,7 @@
         </exec>
         <echo message="${sassc.output}"/>
     </target>
-    
+
     <target name="clean">
         <echo message="Cleaning /${build.dir}..."/>
         <delete dir="${build.dir}"/>
@@ -66,5 +66,5 @@
             </fileset>
         </delete>
     </target>
-    
+
 </project>

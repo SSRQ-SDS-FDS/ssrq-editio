@@ -46,14 +46,6 @@ xmldb:create-collection($target, "transform"),
 sm:chown(xs:anyURI($target || "/transform"), "ssrq"),
 sm:chgrp(xs:anyURI($target || "/transform"), "tei"),
 
-(: sm:chmod(xs:anyURI($target || "/modules/view.xql"), "rwsr-xr-x"), :)
-(:sm:chmod(xs:anyURI($target || "/modules/transform.xql"), "rwsr-xr-x"),:)
-sm:chmod(xs:anyURI($target || "/modules/lib/pdf.xql"), "rwsr-xr-x"),
-sm:chmod(xs:anyURI($target || "/modules/lib/ajax.xql"), "rwsr-xr-x"),
 sm:chmod(xs:anyURI($target || "/modules/lib/upload.xql"), "rwsr-xr-x"),
-
-(: LaTeX requires dba permissions to execute shell process :)
-sm:chmod(xs:anyURI($target || "/modules/lib/latex.xql"), "rwxr-Sr-x"),
-sm:chgrp(xs:anyURI($target || "/modules/lib/latex.xql"), "dba"),
 
 local:generate-code($target)

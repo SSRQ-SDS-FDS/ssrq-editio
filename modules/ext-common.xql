@@ -9,6 +9,7 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 import module namespace counters="http://www.tei-c.org/tei-simple/xquery/counters";
 import module namespace functx="http://www.functx.com";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
+import module namespace html="http://www.tei-c.org/tei-simple/xquery/functions";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace i18n="http://exist-db.org/xquery/i18n";
@@ -323,67 +324,60 @@ declare function pmf:format-author($author as node()*) {
         ()
 };
 
-declare function pmf:format-enc-editor($editors as node()*) {
-    if ($editors) then
-        if (count($editors) > 2 or $editors[last()] => contains('et.'))
-        then ($editors[1], $editors[2]) => string-join(', ') || ', et al.'
-        else $editors => string-join(', ')
-    else ()
-};
-
 declare function pmf:switch-name($name as node()*) {
-
+    if ($name => contains(', ')) then
     substring-after($name, ', ') || ' ' || substring-before($name, ', ')
+    else $name
 };
 
-declare function pmf:format-editor($editor as node()*) {
-    (: save typing in ssrq.odd, used in biblStruct :)
-
-    if ($editor) then
-        if (count($editor) > 2) then
-            pmf:switch-name($editor[1]) || ', ' || pmf:switch-name($editor[2]) || ' et al.'
-        else if (count($editor) = 2) then
-            pmf:switch-name($editor[1]) || ' ' || pmf:label('and', false()) || ' ' || pmf:switch-name($editor[2])
+declare function pmf:format-editor($editors as node()*) {
+    let $count := $editors => count()
+    return
+        if ($editors) then
+            if ($count > 2 or $editors[last()] => matches('et[\.]?\sal')) then
+                ($editors !
+                (if(not(. => matches('et[\.]?\sal')) and (position() <= 2)) then pmf:switch-name(.) else()))
+                 => string-join(', ') || ' et al.'
+            else if ($count = 2) then
+                ($editors ! pmf:switch-name(.)) => string-join(' ' || pmf:label('and', false()) || ' ')
+            else
+                pmf:switch-name($editors)
         else
-            pmf:switch-name($editor)
-    else
-        ()
+            ()
 };
 
 declare function pmf:print-date($date as node()*) {
     (: save typing in ssrq.odd :)
-
     let $date-string :=
-    	if ($date/@when) then
-    	  if (matches($date/@when, "^\d{4}-\d{2}$")) then
+        if ($date/@when) then
+          if (matches($date/@when, "^\d{4}-\d{2}$")) then
             format-date(xs:date($date/@when || '-01'), "[MNn] [Y0001]", (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
           else
-        	format-date(xs:date($date/@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
-    	else if (matches($date/@from, '-01-01$') and matches($date/@to, '-12-31$')) then (: precision is one year :)
-    	    if (substring($date/@from, 1, 4) = substring($date/@to, 1, 4)) then
-    	        substring($date/@from, 1, 4)
+            format-date(xs:date($date/@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
+        else if (matches($date/@from, '-01-01$') and matches($date/@to, '-12-31$')) then (: precision is one year :)
+            if (substring($date/@from, 1, 4) = substring($date/@to, 1, 4)) then
+                substring($date/@from, 1, 4)
             else
                 pmf:print-date-period(xs:int(substring($date/@from, 1, 4)), xs:int(substring($date/@to, 1, 4)))
-    	else if (substring($date/@from, 1, 4) = substring($date/@to, 1, 4)) then (: within the same year :)
-    	    if (substring($date/@from, 6, 2) = substring($date/@to, 6, 2)) then (: within the same month :)
-    	        format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()) || ' – ' || format-date(xs:date($date/@to), '[D1]')
-    	    else
-    	        format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()) || ' – ' || format-date(xs:date($date/@to), '[MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
-    	else
-        	string-join((format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()),
-        	' – ',
-        	format-date(xs:date($date/@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())))
+        else if (substring($date/@from, 1, 4) = substring($date/@to, 1, 4)) then (: within the same year :)
+            if (substring($date/@from, 6, 2) = substring($date/@to, 6, 2)) then (: within the same month :)
+                format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()) || ' – ' || format-date(xs:date($date/@to), '[D1]')
+            else
+                format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()) || ' – ' || format-date(xs:date($date/@to), '[MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
+        else
+            string-join((format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()),
+            ' – ',
+            format-date(xs:date($date/@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())))
     let $old-style :=
-    	if ($date/@calendar='Julian') then
-    		' ' || pmf:label('old-style-abbr', false())
-    	else
-    		()
+        if ($date/@calendar='Julian') then
+            ' ' || pmf:label('old-style-abbr', false())
+        else
+            ()
 
-    	return $date-string || $old-style
+    return $date-string || $old-style
 };
 
 declare function pmf:print-date-period($from as xs:int, $to as xs:int) {
-
     let $century := $from idiv 100 + 1
     let $default := string-join(('ca. ', $from, ' – ', $to))
     return
@@ -467,20 +461,6 @@ declare function pmf:short-doc-info($idno as item()) as xs:string {
     return $head || ', ' || $date || ' (' || pmf:format-id($idno) || ')'
 };
 
-declare function pmf:biblList($config as map(*), $node as element(), $class as xs:string+, $content as node()*) {
-    <div class="tei-div7 biblList">
-        <h4 class="archivelocation">{$node/tei:head/text()}</h4>
-        <ul>
-            {
-                for $div in $node/tei:div
-                return
-                    <li>{$div/tei:listBibl/tei:head/text()}: {string-join($div/tei:listBibl/tei:bibl/tei:idno, '; ')}</li>
-
-            }
-        </ul>
-    </div>
-};
-
 (:~
 : Format the link of an external literature-reference
 :
@@ -511,4 +491,92 @@ declare function pmf:format-link($id as xs:string*) as xs:string* {
                     else
                         $link-base?ssrq-old || $volume
             else ()
+};
+
+
+
+declare function pmf:render-title-with-hi($title as node()*, $mode as xs:string) {
+    let $titleRendition :=
+    for $node in $title
+    return
+        typeswitch($node)
+            case element(tei:title)
+                return
+                    pmf:render-title-with-hi($node/node(), $mode)
+            case element(tei:hi)
+                return
+                    if ($mode = 'web')
+                    then
+                        switch ($node/@rend/data(.))
+                            case 'sup'
+                                return
+                                    <sup>{pmf:render-title-with-hi($node/node(), $mode)}</sup>
+                            case 'sub'
+                                return
+                                    <sub>{pmf:render-title-with-hi($node/node(), $mode)}</sub>
+                            case 'italic'
+                                return
+                                    <span class="is-italic">{pmf:render-title-with-hi($node/node(), $mode)}</span>
+                            default return
+                                    <span>{pmf:render-title-with-hi($node/node(), $mode)}</span>
+                    else
+                        switch ($node/@rend/data(.))
+                            case 'sup'
+                                return
+                                   '\lss{' || pmf:render-title-with-hi($node/node(), $mode) || '}'
+                            case 'sub'
+                                return
+                                   '\textsubscript{' || pmf:render-title-with-hi($node/node(), $mode) || '}'
+                            case 'italic'
+                                return
+                                    '\textit{' || pmf:render-title-with-hi($node/node(), $mode) || '}'
+                            default return
+                                    pmf:render-title-with-hi($node/node(), $mode)
+            case text()
+                return
+                    $node => replace(' : ', ' – ')
+            default return
+                ()
+    return $titleRendition
+};
+
+
+declare function pmf:parse-biblScope($node as node(), $part as xs:string) as xs:string? {
+    if ($node//tei:biblScope => count() < 2 and $node//tei:pubPlace) then
+        switch($part)
+            case 'series'
+                return
+                    if($node/tei:monogr/tei:imprint and $node/tei:monogr/tei:imprint/tei:biblScope[1] => string-length() > 0 and $node/tei:monogr/tei:imprint/tei:biblScope[1] => contains(',')) then
+                        ' ' || pmf:join-series($node/tei:monogr/tei:imprint/tei:biblScope)
+                    else if ($node/tei:monogr/tei:biblScope and $node/tei:monogr/tei:biblScope[1] => string-length() > 0 and $node/tei:monogr/tei:biblScope[1] => contains(',')) then
+                        ' ' || pmf:join-series($node/tei:monogr/tei:biblScope)
+                    else ()
+            case 'scope'
+                return
+                    if ($node/tei:monogr/tei:imprint and $node/tei:monogr/tei:imprint/tei:biblScope[1] => string-length() > 0) then
+                        ', ' || pmf:join-scopes($node/tei:monogr/tei:imprint/tei:biblScope)
+                    else if ($node/tei:monogr/tei:biblScope and $node/tei:monogr/tei:biblScope[1] => string-length() > 0) then
+                        ', ' || pmf:join-scopes($node/tei:monogr/tei:biblScope)
+                    else ()
+            default return ()
+    else if ($part = 'series') then
+        ' ' || ($node//tei:biblScope !  (.=> replace('[S|p]\.', pmf:label('page-abbr', false())))) => string-join('; ')
+    else ()
+};
+
+declare function pmf:join-series($series as node()*) as xs:string {
+    let $strings := $series ! (. => replace(',?\s?[S|p]\.\s?\d*.?\d*.*', ''))
+    return
+        $strings => string-join('; ')
+};
+
+declare function pmf:join-scopes($scopes as node()*) as xs:string {
+    let $strings := $scopes ! (pmf:label('page-abbr', false()) || ' ' || . => replace('^.*[S|p]\. ([0-9]*-?[0-9]*.*)', '$1'))
+    return
+        $strings => string-join('; ')
+};
+
+declare function pmf:join-series-with-scope($series as node()*) as xs:string  {
+    ($series ! ((./tei:title, ./tei:biblScope) => string-join(' ')))
+     => string-join('; ') || ', '
 };

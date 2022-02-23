@@ -13,6 +13,8 @@ import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pa
 import module namespace http="http://expath.org/ns/http-client" at "java:org.expath.exist.HttpClientModule";
 import module namespace functx="http://www.functx.com";
 
+import module namespace utils="http://ssrq-sds-fds.ch/utils" at "utils.xqm";
+
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 declare variable $app:single-body-div-max := 7;
@@ -24,58 +26,77 @@ declare variable $app:PERSONS := $app:HOST || "/persons-db-api/";
 declare variable $app:LEMMA := $app:HOST || "/lemma-db-edit/views/get-lem-infos.xq";
 declare variable $app:KEYWORDS := $app:HOST || "/lemma-db-edit/views/get-key-infos.xq";
 
+
+declare function app:failed-to-load($doc) {
+    <TEI xmlns="http://www.tei-c.org/ns/1.0">
+        <teiHeader>
+            <fileDesc>
+                <titleStmt>
+                    <title>Not found</title>
+                </titleStmt>
+            </fileDesc>
+        </teiHeader>
+        <text>
+            <body>
+                <div>
+                    <head>Failed to load!</head>
+                    <p>Could not load document {$doc}. Maybe it is not valid TEI or not in the TEI namespace?</p>
+                </div>
+            </body>
+        </text>
+    </TEI>
+};
+
 declare
     %templates:wrap
 function app:load($node as node(), $model as map(*), $doc as xs:string, $root as xs:string?,
     $id as xs:string?, $view as xs:string?) {
     let $doc := xmldb:decode($doc)
-    let $data :=
+    let $result :=
         if ($id) then
-            let $node := collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id]/tei:text
-            let $node :=
-                if ($node) then
-                    $node
+            let $tei :=
+                utils:coalesce(
+                    collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id],
+                    collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id || "_1"]
+                )
+            let $data :=
+                app:query-view($tei/tei:text, utils:coalesce($view, $config:default-view))
+            let $config :=
+                if ($data) then
+                    tpu:parse-pi(root($data), $view)
                 else
-                    collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id || "_1"]/tei:text
-            let $config := if ($node) then tpu:parse-pi(root($node), $view) else ()
+                    ()
             return
                 map {
                     "config": $config,
-                    "data": $node
+                    "data": $data
                 }
         else
             pages:load-xml($view, $root, $doc)
-    let $node :=
-        if ($data?data) then
-            $data?data
-        else
-            <TEI xmlns="http://www.tei-c.org/ns/1.0">
-                <teiHeader>
-                    <fileDesc>
-                        <titleStmt>
-                            <title>Not found</title>
-                        </titleStmt>
-                    </fileDesc>
-                </teiHeader>
-                <text>
-                    <body>
-                        <div>
-                            <head>Failed to load!</head>
-                            <p>Could not load document {$doc}. Maybe it is not valid TEI or not in the TEI namespace?</p>
-                        </div>
-                    </body>
-                </text>
-            </TEI>//tei:div
-    let $hasFacs := exists($node//tei:pb[@facs]) and $data?config?odd = "ssrq.odd"
+    let $has-facs := exists($result?data//tei:pb[@facs]) and $result?config?odd = "ssrq.odd"
     return
         map {
-            "config": $data?config,
-            "data": $node,
-            "doc-type": $node/ancestor::tei:TEI/@type/data(.),
-            "body-class": if ($hasFacs) then 'col-md-6' else 'col-md-10',
-            "facs-class": if ($hasFacs) then 'col-md-6' else 'hidden',
-            "sidebar-class": if ($hasFacs) then 'hidden' else 'col-md-2'
+            "config": $result?config,
+            "data": utils:coalesce(
+                $result?data,
+                app:failed-to-load($doc)),
+            "doc-type": $result?data/ancestor::tei:TEI/@type/data(.),
+            "body-class": if ($has-facs) then 'col-md-6' else 'col-md-10',
+            "facs-class": if ($has-facs) then 'col-md-6' else 'hidden',
+            "sidebar-class": if ($has-facs) then 'hidden' else 'col-md-2'
         }
+};
+
+declare function app:query-view($context as node(), $view as xs:string?) as node()* {
+    switch ($view)
+        case 'body'
+           return $context//tei:body
+        case 'back'
+            return $context//tei:back
+        case 'group'
+            return $context//tei:group
+        default
+            return $context
 };
 
 declare function app:switch-view($node as node(), $model as map(*), $odd as xs:string?) {
@@ -109,7 +130,10 @@ declare function app:api-lookup($api as xs:string, $list as map(*)*, $param as x
         'en'     : 'eng'
     }
     let $refs := string-join(for $item in $list return $item?ref, ",")
-    let $request := <http:request method="GET" href="{$api}?{$param}={$refs}&amp;lang={$iso-639-3($lang)}"/>
+    let $request :=
+        <http:request method="GET" href="{$api}?{$param}={$refs}&amp;lang={$iso-639-3($lang)}">
+            <http:header name="User-Agent" value="{$config:user-agent}"/>
+        </http:request>
     let $response := http:send-request($request)
     return
         if ($response[1]/@status = "200") then
@@ -511,30 +535,7 @@ function app:additionalSource($node as node(), $model as map(*)) {
 declare
      %templates:wrap
 function app:abbr-blocks($node as node(), $model as map(*)) {
-    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
-    let $blocks := $config:abbr//tei:dataSpec/tei:desc[@xml:lang=$lang]
-    return
-
-         for $block in $blocks
-            return
-                <div>
-                    <h3>
-                        { $block}
-                    </h3>
-
-                        {for $item in $block/../tei:valList/tei:valItem
-                        return
-                            <li>
-
-
-                                {$item/@ident/string()} = {($item/tei:desc[@xml:lang=$lang], $item/tei:desc[1])[1]/text()}
-
-
-                            </li>
-                        }
-
-              </div>
-
+    $pm-config:web-transform($config:abbr//tei:dataSpec, map { "root": $config:abbr//tei:dataSpec}, $config:odd)
 };
 
 declare
