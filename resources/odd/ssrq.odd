@@ -1099,10 +1099,16 @@
                     <model behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="desc" mode="change">
-                    <model predicate="parent::dataSpec and @xml:lang = (session:get-attribute('ssrq.lang'), 'de')[1]" behaviour="heading">
+                    <model predicate="parent::dataSpec[ancestor::TEI/@type = 'abbr'] and @xml:lang = (session:get-attribute('ssrq.lang'), 'de')[1]" behaviour="heading">
+                        <desc>Spezifisches Rendering von Beschreibungen im Abkürzungsverzeichnis</desc>
                         <param name="level" value="3"/>
                     </model>
-                    <model predicate="parent::valItem and @xml:lang = (session:get-attribute('ssrq.lang'), 'de')[1]" behaviour="listItem"/>
+                    <model predicate="parent::valItem[ancestor::TEI/@type = 'abbr'] and @xml:lang = (session:get-attribute('ssrq.lang'), 'de')[1]" behaviour="listItem">
+                        <desc>Spezifisches Rendering von Beschreibungen im Abkürzungsverzeichnis</desc>
+                    </model>
+                    <model predicate="ancestor::dataSpec[@ident = 'ssrq.labels']" behaviour="inline">
+                        <desc>Auslesen von Übersetzungen aus ssrq.labels</desc>
+                    </model>
                     <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="date" mode="change">
@@ -1808,16 +1814,16 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="valItem" mode="change">
-                    <model predicate="ancestor::dataSpec" behaviour="block" output="latex">
+                    <model predicate="ancestor::dataSpec[ancestor::TEI/@type = 'abbr']" behaviour="block" output="latex">
                         <param name="content" value="@ident/string() || ' &amp;amp; ' || (if(desc[@xml:lang = 'de']) then desc[@xml:lang = 'de']/text() else desc[1]/text()) || '\\'"/>
                     </model>
-                    <model predicate="ancestor::dataSpec" behaviour="listItem">
-                        <param name="content" value="@ident/string() || ' = ' || (if (desc[@xml:lang = (session:get-attribute('ssrq.lang'), 'de')[1]]) then desc[@xml:lang = (session:get-attribute('ssrq.lang'), 'de')[1]]/text() else desc[1]/text())"></param>
+                    <model predicate="ancestor::dataSpec[ancestor::TEI/@type = 'abbr']" behaviour="listItem">
+                        <param name="content" value="@ident/string() || ' = ' || (if (desc[@xml:lang = (session:get-attribute('ssrq.lang'), 'de')[1]]) then desc[@xml:lang = (session:get-attribute('ssrq.lang'), 'de')[1]]/text() else desc[1]/text())"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="valList" mode="change">
-                    <model predicate="parent::dataSpec" behaviour="block" output="latex"/>
-                    <model predicate="parent::dataSpec" behaviour="list"/>
+                    <model predicate="parent::dataSpec[ancestor::TEI/@type = 'abbr']" behaviour="block" output="latex"/>
+                    <model predicate="parent::dataSpec[ancestor::TEI/@type = 'abbr']" behaviour="list"/>
                 </elementSpec>
             </schemaSpec>
         </body>
