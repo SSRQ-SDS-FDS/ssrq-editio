@@ -349,7 +349,7 @@ declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $kant
                 {
                     let $works-id := substring-after($collection-name, $kanton || "/")
                     return
-                    <a href="?kanton={$kanton}&amp;volume={$works-id}" data-works="{$works-id}" >
+                    <a href="?kanton={$kanton}&amp;volume={$works-id}&amp;=start=1" data-works="{$works-id}" >
                         <i18n:text key="articles">Stücke</i18n:text>
                     </a>
                 }
