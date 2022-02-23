@@ -9,9 +9,10 @@ import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/ut
 import module namespace pmf="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xql";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 import module namespace functx="http://www.functx.com";
-
+import module namespace cache="http://exist-db.org/xquery/cache";
 import module namespace utils="http://ssrq-sds-fds.ch/utils" at "utils.xqm";
-
+import module namespace config-data="http:///www.ssrq-sds-fds.ch/ssrq-data/config" at "/db/apps/ssrq-data/modules/config.xqm";
+import module namespace count="http:///www.ssrq-sds-fds.ch/ssrq-data/count" at "/db/apps/ssrq-data/modules/count.xqm";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace util="http://exist-db.org/xquery/util";
 declare namespace i18n="http://exist-db.org/xquery/i18n";
@@ -36,23 +37,40 @@ declare function ssrq-utils:loadStatic($node as node(), $model as map(*), $page 
     return doc($path)
 };
 
-(:~
-: Utility function to find a view by url-params
-:
-: @param $collection selected canton
-: @param $volume selected volume
-: @return static html content
-:)
-declare function ssrq-utils:findView($node as node(), $model as map(*), $collection as xs:string?, $volume as xs:string?) as node()*  {
-    let $view := if ($volume and $collection) then 'works' else 'volumes'
-    return
-        switch($view)
-        case 'works' return <div>{
-            let $works := ssrq-utils:listWorks($node, $model, $collection, $volume, ())
-            return ssrq-utils:renderWork($node, $works, $volume)
+declare function ssrq-utils:cache-page($node as node(), $model as map(*)) as node() {
+    ssrq-utils:cache-control($node, $model, (request:get-url() => substring-after('apps') => replace('/', ''), ssrq-utils:get-param-values()) => string-join('_'))
+};
 
-            }</div>
-        default return ssrq-utils:loadStatic($node, $model, $view, $collection)
+declare function ssrq-utils:get-param-values() as xs:string* {
+    let $param-names := request:get-parameter-names()
+    let $param-values := $param-names[not(. = 'lang') and not(. = 'doc')] ! request:get-parameter(., ())
+    return
+        $param-values
+};
+
+declare function ssrq-utils:cache-control($content as item(), $model as map(*), $key as xs:string) {
+    if (cache:names() => index-of($config-data:CACHE))
+    then
+        ssrq-utils:cache-store-retrieve($content, $model, $config-data:CACHE, $key)
+    else
+        (cache:create($config-data:CACHE, map{}), ssrq-utils:cache-store-retrieve($content, $model, $config-data:CACHE, $key))[2]
+};
+
+declare function ssrq-utils:cache-store-retrieve($content as item(), $model as map(*), $name as xs:string, $key as xs:string) as item() {
+    let $cache-key := ($key, utils:coalesce(request:get-parameter('lang', ()), (session:get-attribute("ssrq.lang"), "de")[1])) => string-join('_')
+    let $cached-content := cache:get($name, $cache-key)
+    return
+        if ($cached-content)
+        then $cached-content
+        else (cache:put($name, $cache-key, ssrq-utils:cache-render-content($content, $model)), cache:get($name, $cache-key))[2]
+};
+
+declare function ssrq-utils:cache-render-content($node as node(), $model as map(*)) as node() {
+    element { node-name($node) } {
+                $node/@*,
+                attribute data-app { request:get-context-path() || substring-after($config:app-root, "/db") },
+                templates:process($node/*, $model)
+            }
 };
 
 
@@ -71,7 +89,7 @@ declare function ssrq-utils:sortArticle($items as item()*) as item()* {
 
 
 (:~
-: Utility function to filter a collection of documents by tei:idno
+: Utility function to module namespace count="http:///www.ssrq-sds-fds.ch/ssrq-data/count"; a collection of documents by tei:idno
 :
 : @author Bastian Politycki
 : @param $path the root path the collection
@@ -281,13 +299,7 @@ declare function ssrq-utils:renderDepartment($data as map(*), $dep as xs:string)
                     return $html/*/*[last()]/node()
                     }
                 </a>
-                <span class="badge">{
-                    try {
-                        sum(let $childCollections := xmldb:get-child-collections($rootCollection)
-                        for $collection in $childCollections
-                        return ssrq-utils:countDocs($rootCollection || '/' || $collection, $collection))
-                    } catch * {console:log('Problem while filtering ' || $dep), 'Error! ' || $dep}
-                }</span>
+                <span class="badge">{count:get($dep)}</span>
             </div>
         </td>
     else
@@ -306,10 +318,10 @@ declare function ssrq-utils:renderDepartment($data as map(*), $dep as xs:string)
 : @param $collection canton as xs:string
 : @return one html:div container per volume
 :)
-declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $collection as xs:string) as node()* {
+declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $kanton as xs:string) as node()* {
     <div class="volumes">
     {
-    for $volume in collection($config:data-root)/tei:TEI[@type = 'volinfo'][matches(.//tei:seriesStmt/tei:idno[@type="machine"], '^\w+_' || $collection)]
+    for $volume in collection($config:data-root)/tei:TEI[@type = 'volinfo'][matches(.//tei:seriesStmt/tei:idno[@type="machine"], '^\w+_' || $kanton)]
         order by $volume//tei:seriesStmt/tei:idno[@type = 'sort']
         let $idno := $volume//tei:seriesStmt/tei:idno[@type="machine"]
         let $collection-name := util:collection-name($volume)
@@ -329,15 +341,15 @@ declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $coll
             <div class="volume">
                 <div class="volume-counter">
                     <span class="badge">
-                        {ssrq-utils:countDocs($collection-name, $idno)}
+                        {count:get($idno => substring-after('_'))}
                     </span>
                 </div>
                 {$pm-config:web-transform($volume/tei:teiHeader/tei:fileDesc, map { "root": $volume, "view": "volumes" }, $config:odd) }
                 <span class="part">
                 {
-                    let $works-id := substring-after($collection-name, $collection || "/")
+                    let $works-id := substring-after($collection-name, $kanton || "/")
                     return
-                    <a href="?kanton={$collection}&amp;volume={$works-id}" data-works="{$works-id}" >
+                    <a href="?kanton={$kanton}&amp;volume={$works-id}" data-works="{$works-id}" >
                         <i18n:text key="articles">Stücke</i18n:text>
                     </a>
                 }
@@ -376,21 +388,18 @@ declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $coll
 : @return a sorted list of documents inside a volume-collection as map(*)
 :)
 declare
-    %templates:default("sort", "date")
-function ssrq-utils:listWorks($node as node(), $model as map(*), $collection as xs:string, $volume as xs:string, $sort as xs:string?) as map(*)  {
-    let $volume-collection := collection(string-join(($config:data-root, $collection, $volume), '/'))/tei:TEI
+function ssrq-utils:listWorks($kanton as xs:string, $volume as xs:string, $sort as xs:string?) as node()*  {
+    let $volume-collection := collection(string-join(($config:data-root, $kanton, $volume), '/'))/tei:TEI
     (: TO-DO Implement a better function, which sorts the collection-map... :)
     let $volume-docs := ssrq-utils:filterCollection($volume-collection, $volume)
     let $volume-sorted := ssrq-utils:sortCollection($volume-docs, $sort)
     return
-        map {
-            "docs": $volume-sorted
-        }
+        $volume-sorted
 };
 
 declare
-function ssrq-utils:renderWork($node as node(), $model as map(*), $volume as xs:string?) {
-   for $doc in $model?docs
+function ssrq-utils:renderWork($node as node(), $model as map(*), $volume as xs:string?) as element(li)* {
+   for $doc in $model?page
      let $config := tpu:parse-pi(root($doc), ())
      let $relPath := config:get-identifier($doc) => replace($volume || '/', '')
      let $root := $doc/ancestor-or-self::tei:TEI
@@ -416,10 +425,9 @@ declare
 %templates:wrap
 %templates:default("start", 1)
 %templates:default("per-page", 10)
-    function ssrq-utils:loadWorks($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $start as xs:int, $per-page as xs:int) as map(*) {
-        let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
-        let $path := $ssrq-utils:STATIC || '/' || string-join(('works', $volume, $lang), '_') || '.html'
-        let $documents := doc($path)//*[@class = 'document ml-1']
+%templates:default("sort", "date")
+    function ssrq-utils:loadWorks($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $start as xs:int, $per-page as xs:int, $sort as xs:string?) as map(*) {
+        let $documents := ssrq-utils:listWorks($kanton, $volume, $sort)
         return
             map {
                 "total": count($documents),
