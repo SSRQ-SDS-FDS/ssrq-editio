@@ -9,7 +9,6 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 import module namespace counters="http://www.tei-c.org/tei-simple/xquery/counters";
 import module namespace functx="http://www.functx.com";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
-import module namespace html="http://www.tei-c.org/tei-simple/xquery/functions";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace i18n="http://exist-db.org/xquery/i18n";

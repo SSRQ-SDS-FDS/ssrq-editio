@@ -5,19 +5,19 @@
  :)
 xquery version "3.1";
 
-import module namespace templates="http://exist-db.org/xquery/templates" at "templates.xql";
+import module namespace templates="http://exist-db.org/xquery/templates" at "templates.xqm";
 
 (:
  : The following modules provide functions which will be called by the
  : templating.
  :)
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
-import module namespace browse="http://www.tei-c.org/tei-simple/templates" at "lib/browse.xql";
-import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xql";
-import module namespace search="http://www.tei-c.org/tei-simple/search" at "lib/search.xql";
-import module namespace query="http://existsolutions.com/ssrq/search" at "ssrq-search.xql";
-import module namespace i18n="http://exist-db.org/xquery/i18n/templates" at "lib/i18n-templates.xql";
-import module namespace app="http://existsolutions.com/ssrq/app" at "ssrq.xql";
+import module namespace app="http://existsolutions.com/ssrq/app" at "ssrq.xqm";
+import module namespace browse="http://www.tei-c.org/tei-simple/templates" at "lib/browse.xqm";
+import module namespace i18n="http://exist-db.org/xquery/i18n/templates" at "lib/i18n-templates.xqm";
+import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xqm";
+import module namespace query="http://existsolutions.com/ssrq/search" at "ssrq-search.xqm";
+import module namespace search="http://www.tei-c.org/tei-simple/search" at "lib/search.xqm";
 import module namespace ssrq-utils="http://existsolutions.com/ssrq/utils" at "ssrq-util.xqm";
 
 declare namespace output = "http://www.w3.org/2010/xslt-xquery-serialization";

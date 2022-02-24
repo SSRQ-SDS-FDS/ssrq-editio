@@ -12,9 +12,9 @@ xquery version "3.1";
 
 module namespace tests="https://www.ssrq-sds-fds.ch/tests";
 
-import module namespace app="http://existsolutions.com/ssrq/app" at "../modules/ssrq.xql";
+import module namespace app="http://existsolutions.com/ssrq/app" at "../modules/ssrq.xqm";
 import module namespace test-utils="https://www.ssrq-sds-fds.ch/test-utilts" at "test-utils.xqm";
-import module namespace query="http://existsolutions.com/ssrq/search" at "../modules/ssrq-search.xql";
+import module namespace query="http://existsolutions.com/ssrq/search" at "../modules/ssrq-search.xqm";
 import module namespace request ="http://exist-db.org/xquery/request";
 import module namespace ssrq-utils="http://existsolutions.com/ssrq/utils" at "../modules/ssrq-util.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../modules/config.xqm";

@@ -21,14 +21,11 @@ module namespace app="http://www.tei-c.org/tei-simple/templates";
 
 import module namespace templates="http://exist-db.org/xquery/templates";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
-import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "pages.xql";
-import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
-import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../pm-config.xql";
-import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
+import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "util.xqm";
+import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../pm-config.xqm";
 
 import module namespace utils="http://ssrq-sds-fds.ch/utils" at "../utils.xqm";
 
-declare namespace expath="http://expath.org/ns/pkg";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 declare

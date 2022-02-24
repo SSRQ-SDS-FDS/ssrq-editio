@@ -8,8 +8,6 @@ module namespace config="http://www.tei-c.org/tei-simple/config";
 
 import module namespace utils="http://ssrq-sds-fds.ch/utils" at "utils.xqm";
 import module namespace http="http://expath.org/ns/http-client" at "java:org.exist.xquery.modules.httpclient.HTTPClientModule";
-import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "navigation.xql";
-import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
 
 declare namespace templates="http://exist-db.org/xquery/templates";
 

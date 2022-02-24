@@ -8,7 +8,7 @@ module namespace pmf="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-late
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 import module namespace latex="http://www.tei-c.org/tei-simple/xquery/functions/latex";
-import module namespace pmc="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xql";
+import module namespace pmc="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xqm";
 import module namespace functx="http://www.functx.com";
 
 declare function pmf:alternate($config as map(*), $node as node(), $class as xs:string+, $content, $default,

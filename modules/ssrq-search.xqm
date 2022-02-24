@@ -8,15 +8,12 @@ import module namespace templates="http://exist-db.org/xquery/templates";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace http="http://expath.org/ns/http-client";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
-import module namespace browse="http://www.tei-c.org/tei-simple/templates" at "lib/browse.xql";
-import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
+import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xqm";
 import module namespace kwic="http://exist-db.org/xquery/kwic";
-import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "navigation.xql";
-import module namespace app="http://existsolutions.com/ssrq/app" at "ssrq.xql";
-import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xql";
-import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xql";
-import module namespace intl="http://exist-db.org/xquery/i18n/templates" at "lib/i18n-templates.xql";
-import module namespace functx="http://www.functx.com";
+import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "navigation.xqm";
+import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xqm";
+import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xqm";
+import module namespace intl="http://exist-db.org/xquery/i18n/templates" at "lib/i18n-templates.xqm";
 
 import module namespace data-filters="http://existsolutions.com/ssrq-data/filters" at "/db/apps/ssrq-data/filters.xql";
 

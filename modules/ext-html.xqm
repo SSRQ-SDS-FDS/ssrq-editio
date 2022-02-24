@@ -8,7 +8,7 @@ module namespace pmf="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-web"
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 import module namespace html="http://www.tei-c.org/tei-simple/xquery/functions";
-import module namespace pmc="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xql";
+import module namespace pmc="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xqm";
 
 
 declare function pmf:link($config as map(*), $node as node(), $class as xs:string+, $content, $link, $target) {
