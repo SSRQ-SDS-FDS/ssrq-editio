@@ -15,7 +15,7 @@ import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at
 import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xqm";
 import module namespace intl="http://exist-db.org/xquery/i18n/templates" at "lib/i18n-templates.xqm";
 
-import module namespace data-filters="http://existsolutions.com/ssrq-data/filters" at "/db/apps/ssrq-data/filters.xql";
+import module namespace data-filters="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/filters" at "/db/apps/ssrq-data/modules/filters.xql";
 
 
 declare variable $query:QUERY_OPTIONS :=
