@@ -2,5 +2,5 @@
     <title>SSRQ online · SDS online · FDS online</title>
     <dependency package="http://www.functx.com"/>
     <dependency package="http://existsolutions.com/apps/tei-publisher-lib"/>
-    <dependency package="http://ssrq-sds-fds.ch/exist/apps/ssrq-data"/>
+    <dependency package="http://ssrq-sds-fds.ch/exist/apps/ssrq-data" semver-min="2022.02"/>
 </package>
