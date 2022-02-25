@@ -18,10 +18,19 @@ import module namespace query="http://existsolutions.com/ssrq/search" at "../mod
 import module namespace request ="http://exist-db.org/xquery/request";
 import module namespace ssrq-utils="http://existsolutions.com/ssrq/utils" at "../modules/ssrq-util.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../modules/config.xqm";
+import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../modules/pm-config.xql";
 
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 
 declare variable $tests:host := substring-before(request:get-url(), '/exist') || '/exist/apps/ssrq';
+
+
+(:~ *********************
+: Tests to check general functionality
+:
+:
+: ***********************
+:)
 
 declare function tests:find-document() as map(*)*{
     for $id in ('SSRQ_FR_I_2_8_0001', 'SSRQ_FR_I_2_8_0002_000', 'SSRQ_SG_III_4_015_1')
@@ -35,21 +44,6 @@ declare function tests:find-document() as map(*)*{
                         if (exists($data?data) and $data?data => name() = 'body' )
                         then true()
                         else false()
-        }
-};
-
-declare function tests:edition-text() as map(*)* {
-    for $id in ('/FR/SSRQ_FR_I_2_8_0001.xml', '/FR/SSRQ_FR_I_2_8_0002_000.xml', '/SG/SSRQ_SG_III_4_015_1.xml')
-    return
-        map {
-            "name": "edition-text()",
-            "description": "Check if the rendering of the edition text is correct for " || tokenize($id, '/')[last()],
-            "exp": true(),
-            "result": let $data := test-utils:fetch-get($tests:host || $id)
-                        return
-                            if ($data//*[@id = 'document-pane']//*[@class = 'tei-body5'] and not($data//*[@id = 'document-pane']//*[contains(./@class, 'tei-back')]))
-                            then true()
-                            else false()
         }
 };
 
@@ -93,5 +87,57 @@ declare function tests:count-docs() as map(*)* {
             } catch * {
                 error(xs:QName($err:code), $err:description)
             }
+        }
+};
+
+(:~ *********************
+: Tests to check TEI rendering
+:
+:
+: ***********************
+:)
+
+declare function tests:edition-text() as map(*)* {
+    for $id in ('/FR/SSRQ_FR_I_2_8_0001.xml', '/FR/SSRQ_FR_I_2_8_0002_000.xml', '/SG/SSRQ_SG_III_4_015_1.xml')
+    return
+        map {
+            "name": "tests:edition-text()",
+            "description": "Check if the rendering of the edition text is correct for " || tokenize($id, '/')[last()],
+            "exp": true(),
+            "result": let $data := test-utils:fetch-get($tests:host || $id)
+                        return
+                            if ($data//*[@id = 'document-pane']//*[@class = 'tei-body5'] and not($data//*[@id = 'document-pane']//*[contains(./@class, 'tei-back')]))
+                            then true()
+                            else false()
+        }
+};
+
+declare function tests:pagebreak() as map(*) {
+    let $pb := <pb n="481" xmlns="http://www.tei-c.org/ns/1.0"/>
+    return
+        map {
+            "name": "tests:pagebreak()",
+            "description": "Check if the rendering for tei:pb is correct",
+            "exp": <span class="alternate tei-pb11 pb-pagination"><span>[<span class="tei-desc3">S.</span> 481]</span><span class="altcontent">Seitenumbruch</span></span>,
+            "result": $pm-config:web-transform($pb, map { "root": $pb }, $config:odd)
+        }
+};
+
+declare function tests:abbr-list() as map(*) {
+    let $abbr-list := <TEI xmlns="http://www.tei-c.org/ns/1.0" type="abbr">
+                        <dataSpec ident="xxx">
+                            <valList>
+                                <valItem ident="ao">
+                                    <desc xml:lang="de">anno</desc>
+                                </valItem>
+                            </valList>
+                        </dataSpec>
+                     </TEI>
+    return
+        map {
+            "name": "tests:abbr-list()",
+            "description": "Check if the rendering for abbr-lists is correct",
+            "exp": <div class="tei-dataSpec2"><ul class="tei-valList2"><li class="tei-valItem2">ao = anno</li></ul></div>,
+            "result": $pm-config:web-transform($abbr-list/tei:dataSpec, map { "root": $abbr-list}, $config:odd)
         }
 };
