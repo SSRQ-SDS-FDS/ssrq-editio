@@ -73,7 +73,9 @@
             src="resources/scripts/vendor/jquery.fileupload.js"
           />
           <script type="text/javascript">
-            $('<link rel="stylesheet" type="text/css" href="resources/css/vendor/jquery.fileupload.css"/>').appendTo(document.head);
+            $(
+              '<link rel="stylesheet" type="text/css" href="resources/css/vendor/jquery.fileupload.css"/>'
+            ).appendTo(document.head);
 
             $(function () {
               'use strict';
@@ -106,7 +108,10 @@
                     reloadDocTable();
                   },
                   progressall: function (e, data) {
-                    var progress = parseInt((data.loaded / data.total) * 100, 10);
+                    var progress = parseInt(
+                      (data.loaded / data.total) * 100,
+                      10
+                    );
                     $('#progress .progress-bar').css('width', progress + '%');
                   },
                 })
@@ -143,9 +148,14 @@
                 data-template-param="volume"
               >
                 <div
-                  data-template="templates:include"
-                  data-template-path="templates/volumes.html"
-                />
+                  data-template="ssrq-utils:cache-content"
+                  data-template-prefix="volumes"
+                >
+                  <div
+                    data-template="templates:include"
+                    data-template-path="templates/volumes.html"
+                  />
+                </div>
               </div>
               <div
                 data-template="templates:if-parameter-set"

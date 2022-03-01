@@ -23,24 +23,25 @@ declare variable $ssrq-utils:ALL_DOCS := collection($config:data-root);
 declare variable $ssrq-utils:SPECIAL_DOCS := collection($config:data-root)/tei:TEI[@type];
 declare variable $ssrq-utils:CANTONS := util:binary-doc($config:app-root || '/resources/json/cantons.json')  => util:binary-to-string() => parse-json();
 declare variable $ssrq-utils:STATIC := $config:app-root || '/static';
+declare variable $ssrq-utils:ENV := doc($config:app-root || '/env.xml');
 
 
 (:~
-: A simple utility function to load static generated content
+: This function is called by the eXist-templating engine and
+: will cache the inner content of a $node if caching in env.xml is enabled
 :
-: @param $page name of the page as xs:string
-: @return static html content
+: @return the rendered (cached or compiled JIT) result as node()
 :)
-declare function ssrq-utils:loadStatic($node as node(), $model as map(*), $page as xs:string, $kanton as xs:string?) as node()* {
-    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
-    let $path := $ssrq-utils:STATIC || '/' || string-join(($page, $kanton, $lang), '_') || '.html'
-    return doc($path)
+declare function ssrq-utils:cache-content($node as node(), $model as map(*), $prefix as xs:string?) as node() {
+    if (xs:boolean($ssrq-utils:ENV//cache/text()))
+    then
+        let $key := ($prefix, request:get-url() => substring-after('apps') => replace('/', ''), ssrq-utils:get-param-values()) => string-join('_')
+        return ssrq-utils:cache-control($node, $model, $key)
+    else templates:process($node/*, $model)
 };
 
-declare function ssrq-utils:cache-page($node as node(), $model as map(*)) as node() {
-    ssrq-utils:cache-control($node, $model, (request:get-url() => substring-after('apps') => replace('/', ''), ssrq-utils:get-param-values()) => string-join('_'))
-};
 
+(: A small helper function to generate a mostly unique key by the request-parameter-names :)
 declare function ssrq-utils:get-param-values() as xs:string* {
     let $param-names := request:get-parameter-names()
     let $param-values := $param-names[not(. = 'lang') and not(. = 'doc')] ! request:get-parameter(., ())
@@ -49,7 +50,7 @@ declare function ssrq-utils:get-param-values() as xs:string* {
 };
 
 declare function ssrq-utils:cache-control($content as item(), $model as map(*), $key as xs:string) {
-    if (cache:names() => index-of($config-data:CACHE))
+    if (cache:names() => index-of($config-data:CACHE) => exists())
     then
         ssrq-utils:cache-store-retrieve($content, $model, $config-data:CACHE, $key)
     else
@@ -60,17 +61,13 @@ declare function ssrq-utils:cache-store-retrieve($content as item(), $model as m
     let $cache-key := ($key, utils:coalesce(request:get-parameter('lang', ()), (session:get-attribute("ssrq.lang"), "de")[1])) => string-join('_')
     let $cached-content := cache:get($name, $cache-key)
     return
-        if ($cached-content)
-        then $cached-content
-        else (cache:put($name, $cache-key, ssrq-utils:cache-render-content($content, $model)), cache:get($name, $cache-key))[2]
-};
-
-declare function ssrq-utils:cache-render-content($node as node(), $model as map(*)) as node() {
-    element { node-name($node) } {
-                $node/@*,
-                attribute data-app { request:get-context-path() || substring-after($config:app-root, "/db") },
-                templates:process($node/*, $model)
-            }
+        if ($cached-content => empty())
+        then
+            let $output := templates:process($content/*, $model)
+            (: Put things in cache, but return $output, becacuse cache:put returns an empty sequence altough $output is not empty... :)
+            let $put :=  cache:put($name, $cache-key, $output)
+            return $output
+        else $cached-content
 };
 
 
@@ -349,7 +346,7 @@ declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $kant
                 {
                     let $works-id := substring-after($collection-name, $kanton || "/")
                     return
-                    <a href="?kanton={$kanton}&amp;volume={$works-id}&amp;=start=1" data-works="{$works-id}" >
+                    <a href="?kanton={$kanton}&amp;volume={$works-id}&amp;start=1" data-works="{$works-id}" >
                         <i18n:text key="articles">Stücke</i18n:text>
                     </a>
                 }
