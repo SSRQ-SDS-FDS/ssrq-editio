@@ -19,6 +19,7 @@ import module namespace request ="http://exist-db.org/xquery/request";
 import module namespace ssrq-utils="http://existsolutions.com/ssrq/utils" at "../modules/ssrq-util.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../modules/config.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../modules/pm-config.xql";
+import module namespace cache="http://exist-db.org/xquery/cache";
 
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 
@@ -88,6 +89,23 @@ declare function tests:count-docs() as map(*)* {
                 error(xs:QName($err:code), $err:description)
             }
         }
+};
+
+declare function tests:cache-handling() as map(*)* {
+    for $fragment in ('/?kanton=SG', '/?kanton=SG&amp;volume=SG_III_4&amp;start=41', '/NE/SDS_NE_3_002.xml?odd=ssrq.odd&amp;view=body')
+    let $destroy := cache:destroy('ssrq-cache')
+    return
+        map {
+            "name": "tests:cache-handling()",
+            "description": "Test if caching implementation is working for " || $fragment,
+            "exp": "element()",
+            "result":
+                        let $request := test-utils:fetch-get($tests:host || $fragment)
+                        let $key := cache:keys('ssrq-cache')[1]
+                        return
+                            cache:get('ssrq-cache', $key) => util:get-sequence-type()
+            }
+
 };
 
 (:~ *********************
