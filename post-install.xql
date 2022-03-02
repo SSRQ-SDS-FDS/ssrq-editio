@@ -2,6 +2,7 @@ xquery version "3.0";
 
 import module namespace pmu="http://www.tei-c.org/tei-simple/xquery/util";
 import module namespace odd="http://www.tei-c.org/tei-simple/odd2odd";
+import module namespace cache="http://exist-db.org/xquery/cache";
 
 declare namespace repo="http://exist-db.org/xquery/repo";
 
@@ -47,5 +48,5 @@ sm:chown(xs:anyURI($target || "/transform"), "ssrq"),
 sm:chgrp(xs:anyURI($target || "/transform"), "tei"),
 
 sm:chmod(xs:anyURI($target || "/modules/lib/upload.xql"), "rwsr-xr-x"),
-
+cache:destroy('ssrq-cache'),
 local:generate-code($target)
