@@ -141,3 +141,17 @@ declare function tests:abbr-list() as map(*) {
             "result": $pm-config:web-transform($abbr-list/tei:dataSpec, map { "root": $abbr-list}, $config:odd)
         }
 };
+
+declare function tests:paragraph() as map(*)* {
+    let $para := <p xmlns="http://www.tei-c.org/ns/1.0">This is a paragraph</p>
+    let $results := ($pm-config:web-transform($para, map{"root": $para}, $config:odd), $pm-config:latex-transform($para, map{"root": $para}, $config:odd)[1])
+    let $exp := (<div class="tei-p4">This is a paragraph</div>, "This is a paragraph")
+    for $case at $i in ('web', 'print')
+    return
+        map {
+            "name": "tests:paragraph()",
+            "description": "Tests the rendering of tei:p for " || $case,
+            "exp": $exp[$i],
+            "result": $results[$i]
+        }
+};
