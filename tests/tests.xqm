@@ -20,6 +20,7 @@ import module namespace ssrq-utils="http://existsolutions.com/ssrq/utils" at "..
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../modules/config.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../modules/pm-config.xql";
 import module namespace cache="http://exist-db.org/xquery/cache";
+import module namespace doc-list="http:///www.ssrq-sds-fds.ch/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
 
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 
@@ -73,21 +74,14 @@ declare function tests:existing-search-terms() as map(*)* {
 };
 
 declare function tests:count-docs() as map(*)* {
-    for $canton in xmldb:get-child-collections($config:data-root)[not(. = 'temp') and not(. = 'misc')]
+    let $exp := (259, 208)
+    for $volume at $i in ('SG_III_4', 'FR_I_2_8')
     return
         map {
-        "name": "tests:count-docs()",
-        "description": "Count docs for " || $canton,
-        "exp": true(),
-        "result":
-            try {
-                sum(for $volume in xmldb:get-child-collections(($config:data-root, $canton) => string-join('/'))
-                return
-                    ssrq-utils:countDocs(($config:data-root, $canton, $volume) => string-join('/'), $volume))
-                > 0
-            } catch * {
-                error(xs:QName($err:code), $err:description)
-            }
+            "name": "tests:count-docs()",
+            "description": "Test if the number of docs in docs.xml is correct",
+            "exp": $exp[$i],
+            "result": doc-list:get($volume) => count()
         }
 };
 

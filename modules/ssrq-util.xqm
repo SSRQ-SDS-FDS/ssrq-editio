@@ -12,7 +12,7 @@ import module namespace functx="http://www.functx.com";
 import module namespace cache="http://exist-db.org/xquery/cache";
 import module namespace utils="http://ssrq-sds-fds.ch/utils" at "utils.xqm";
 import module namespace config-data="http:///www.ssrq-sds-fds.ch/ssrq-data/config" at "/db/apps/ssrq-data/modules/config.xqm";
-import module namespace count="http:///www.ssrq-sds-fds.ch/ssrq-data/count" at "/db/apps/ssrq-data/modules/count.xqm";
+import module namespace doc-list="http:///www.ssrq-sds-fds.ch/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace util="http://exist-db.org/xquery/util";
 declare namespace i18n="http://exist-db.org/xquery/i18n";
@@ -71,43 +71,6 @@ declare function ssrq-utils:cache-store-retrieve($content as item(), $model as m
 };
 
 
-(:~
-: Utility function to sort multiple items (Unterstücke) of one article (Stück) by their tei:idno
-:
-: @author Bastian Politycki
-: @param $items the article as item()*
-: @return sorted list of items as item()*
-:)
-declare function ssrq-utils:sortArticle($items as item()*) as item()* {
-    for $item in $items
-    order by $item//tei:seriesStmt/tei:idno/text()
-    return $item
-};
-
-
-(:~
-: Utility function to module namespace count="http:///www.ssrq-sds-fds.ch/ssrq-data/count"; a collection of documents by tei:idno
-:
-: @author Bastian Politycki
-: @param $path the root path the collection
-: @param $idno idno-schema of the collection
-: @return filtered list as map(*)*
-:)
-declare function ssrq-utils:filterCollection($collection as item()*, $idno as xs:string) as map(*)* {
-    let $docs := for $doc in $collection except(
-                          $ssrq-utils:TEMP_DOCS union
-                          $ssrq-utils:SPECIAL_DOCS
-                        )
-                group by $id := $doc//tei:seriesStmt[@xml:id = 'ssrq-sds-fds']/tei:idno => functx:get-matches($idno || '_[0-9]{0,4}_{0,1}')
-                return
-                    map {
-                        "key": $id,
-                        "doc": if($doc => count() > 1) then $doc => ssrq-utils:sortArticle() else $doc
-                    }
-    return $docs
-};
-
-
 declare
     %templates:wrap
 function ssrq-utils:fixLinks($node as node(), $model as map(*)) {
@@ -150,56 +113,6 @@ declare function ssrq-utils:fixLinks($nodes as node()*) {
 declare function ssrq-utils:insertAlt($node as node(), $model as map(*)) as node() {
     <img class="{$node/@class/data(.)}" src="{$node/@src/data(.)}" alt="{config:app-title($node, $model)}"/>
 };
-
-
-(:~
-: Filter docs in a collection by their tei:idno and count them
-:
-: @author Bastian Politycki
-: @param $path the root path the collection
-: @param $idno idno-schema of the collection
-: @return count as xs:string
-:)
-declare function ssrq-utils:countDocs($path as xs:string, $idno as xs:string) as xs:integer {
-    let $docs := collection($path)/tei:TEI => ssrq-utils:filterCollection($idno)
-    return $docs => count()
-};
-
-
-declare function ssrq-utils:sortCollection($items as map(*)*, $sortBy as xs:string?) {
-    let $items := $items ! .?doc[1]
-    return
-    switch($sortBy)
-        case "kanton" return
-            for $item in $items
-            order by replace(root($item)//tei:teiHeader//tei:seriesStmt/tei:idno, "^(?:SSRQ|SDS|FDS)_([^_]+).*$", "$1")
-            return
-               $item
-        (:~
-        case "title" return
-            for $item in $items
-            let $header := root($item)//tei:teiHeader
-            order by
-                ($header//tei:msDesc/tei:head/string(), $header//tei:titleStmt/tei:title/string())[1]
-            return
-                $item
-        case "id" return
-            for $item in $items
-            order by root($item)//tei:teiHeader/tei:fileDesc/tei:seriesStmt/tei:idno
-            return
-                $item
-        case "relevance" return
-            for $item in $items
-            order by ft:score($item)
-            return
-                $item ~:)
-        default return
-            for $item in $items
-            order by root($item)//tei:teiHeader/tei:fileDesc/tei:seriesStmt/tei:idno
-            return
-               $item
-};
-
 
 (:~
 :
@@ -289,14 +202,14 @@ declare function ssrq-utils:renderDepartment($data as map(*), $dep as xs:string)
     if (xmldb:collection-available($rootCollection))
     then
         <td>
-            <div class="canton--badge">
+            <div>
                 <a href="?kanton={$dep}" data-collection="{$dep}">
                     {
                     let $html := $data?department => util:parse-html()
                     return $html/*/*[last()]/node()
                     }
                 </a>
-                <span class="badge">{count:get($dep)}</span>
+                <span class="badge">{doc-list:get($dep) => count()}</span>
             </div>
         </td>
     else
@@ -338,7 +251,7 @@ declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $kant
             <div class="volume">
                 <div class="volume-counter">
                     <span class="badge">
-                        {count:get($idno => substring-after('_'))}
+                        {doc-list:get($idno => substring-after('_')) => count()}
                     </span>
                 </div>
                 {$pm-config:web-transform($volume/tei:teiHeader/tei:fileDesc, map { "root": $volume, "view": "volumes" }, $config:odd) }
@@ -376,37 +289,19 @@ declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $kant
     }</div>
 };
 
-(:~
-: List works per volume
-: Replaces app:list-works
-:
-: @param $collection selected canton
-: @param volume selected volue
-: @return a sorted list of documents inside a volume-collection as map(*)
-:)
-declare
-function ssrq-utils:listWorks($kanton as xs:string, $volume as xs:string, $sort as xs:string?) as node()*  {
-    let $volume-collection := collection(string-join(($config:data-root, $kanton, $volume), '/'))/tei:TEI
-    (: TO-DO Implement a better function, which sorts the collection-map... :)
-    let $volume-docs := ssrq-utils:filterCollection($volume-collection, $volume)
-    let $volume-sorted := ssrq-utils:sortCollection($volume-docs, $sort)
-    return
-        $volume-sorted
-};
 
 declare
-function ssrq-utils:renderWork($node as node(), $model as map(*), $volume as xs:string?) as element(li)* {
+function ssrq-utils:render-work($node as node(), $model as map(*), $volume as xs:string?) as element(li)* {
    for $doc in $model?page
-     let $config := tpu:parse-pi(root($doc), ())
+     let $config := tpu:parse-pi($doc, ())
      let $relPath := config:get-identifier($doc) => replace($volume || '/', '')
-     let $root := $doc/ancestor-or-self::tei:TEI
     return
         <li class="document ml-1">
         {
-            $pm-config:web-transform($root/tei:teiHeader, map {
+            $pm-config:web-transform($doc//tei:teiHeader, map {
                     "header": "short",
                     "doc": $relPath || "?odd=" || $config:odd || "&amp;view=" || $config?view,
-                    "root": $root
+                    "root": $doc
                 }, $config:odd)
         }
         </li>
@@ -423,12 +318,13 @@ declare
 %templates:default("start", 1)
 %templates:default("per-page", 10)
 %templates:default("sort", "date")
-    function ssrq-utils:loadWorks($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $start as xs:int, $per-page as xs:int, $sort as xs:string?) as map(*) {
-        let $documents := ssrq-utils:listWorks($kanton, $volume, $sort)
+    function ssrq-utils:load-works($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $start as xs:int, $per-page as xs:int, $sort as xs:string?) as map(*) {
+        let $doc-list := doc-list:get($volume)
+        let $documents := collection($config:data-root)//tei:idno[text() = ($doc-list => subsequence($start, $per-page))] ! root(.)
         return
             map {
-                "total": count($documents),
-                "page": subsequence($documents, $start, $per-page)
+                "total": count($doc-list),
+                "page": $documents
             }
 };
 
