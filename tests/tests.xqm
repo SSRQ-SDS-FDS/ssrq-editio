@@ -32,6 +32,17 @@ declare variable $tests:host := substring-before(request:get-url(), '/exist') ||
 : ***********************
 :)
 
+declare function tests:get-relpath() as map(*)* {
+    for $doc in ('FR/FR_I_2_8/SSRQ_FR_I_2_8_0001.xml', 'SG/SG_III_4/SSRQ_SG_III_4_001_1.xml')
+    return
+        map {
+           "name": "tests:get-relpath()",
+           "description": "Tests if correct relational path in SSRQ-data is found for " || ($doc => tokenize('/'))[last()],
+           "exp": $doc,
+           "result": doc(($config:data-root, $doc) => string-join('/'))/tei:TEI => config:get-relpath()
+        }
+};
+
 declare function tests:find-document() as map(*)*{
     for $id in ('SSRQ_FR_I_2_8_0001', 'SSRQ_FR_I_2_8_0002_000', 'SSRQ_SG_III_4_015_1')
     return
