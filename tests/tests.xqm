@@ -19,6 +19,7 @@ import module namespace request ="http://exist-db.org/xquery/request";
 import module namespace ssrq-utils="http://existsolutions.com/ssrq/utils" at "../modules/ssrq-util.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../modules/config.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../modules/pm-config.xql";
+import module namespace templates="http://exist-db.org/xquery/templates" at "../modules/templates.xqm";
 
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 
@@ -47,7 +48,7 @@ declare function tests:find-document() as map(*)*{
     for $id in ('SSRQ_FR_I_2_8_0001', 'SSRQ_FR_I_2_8_0002_000', 'SSRQ_SG_III_4_015_1')
     return
         map {
-            "name": "find-document()",
+            "name": "tests:find-document()",
             "description": "Check if " || $id || " is loaded and tei:body found.",
             "exp": true(),
             "result": let $data := app:load(<div/>, map{}, $id, (), $id, ())
@@ -71,7 +72,7 @@ declare function tests:non-existent-search-terms() as map(*)* {
 };
 
 declare function tests:existing-search-terms() as map(*)* {
-    for $term in ('Hexe', 'Gericht', 'Richter')
+    for $term in ('Hexe', 'Gericht', 'Richter', 'Urkunde')
     return
         map {
             "name": "tests:existing-search-terms()",
@@ -79,6 +80,23 @@ declare function tests:existing-search-terms() as map(*)* {
             "exp": true(),
             "result": let $search := query:query-texts('', $term)
                         return $search?hits => count() > 0
+        }
+};
+
+declare function tests:search-hit-rendering() as map(*)*{
+    let $config-map := map {
+        $templates:CONFIG_APP_ROOT : $config:app-root,
+        $templates:CONFIG_STOP_ON_ERROR : true()
+        }
+    for $term in('Hexe', 'Gericht', 'Richter', 'Urkunde')
+    let $result := query:query(<div/>, map{}, 'text', ('title', 'comment', 'idno', 'notes', 'seal', 'literature', 'edition', 'regest'), $term, (), (), true())
+    return
+        map {
+            "name": "tests:search-hit-rendering()",
+            "description": "Basic test to check the rendering of search results for a given term. Query was: " || $term,
+            "exp": $result?hits => count(),
+            "result": let $rendered-results := query:show-hits(<div/>, $result => map:put("configuration", $config-map), 1, $result?hits => count(), (), ()) ! .[1]
+                        return $rendered-results => count()
         }
 };
 

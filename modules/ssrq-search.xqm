@@ -346,6 +346,7 @@ declare
 function query:show-hits($node as node()*, $model as map(*), $start as xs:integer, $per-page as xs:integer, $view as xs:string?, $lang as xs:string?) {
     for $hit at $p in subsequence($model("hits"), $start, $per-page)
     let $parent := ($hit/self::tei:body, $hit/ancestor-or-self::tei:div[1])[1]
+    let $log := console:log($view)
     let $parent := ($parent, $hit/ancestor-or-self::tei:teiHeader, $hit)[1]
     let $parent-id := config:get-identifier($parent)
     let $parent-id :=
