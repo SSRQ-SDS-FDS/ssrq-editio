@@ -34,7 +34,7 @@ return (
     else
         (),
     if ($id or $doc) then
-        let $xml := if ($id) then app:load(<div/>, map {}, $doc, (), $id, ())?data => root()  else pages:get-document($id)/tei:TEI
+        let $xml := if ($id) then app:load(<div/>, map {}, $doc, (), $id, ())?data => root()  else pages:get-document($doc => substring-before('.tex'))/tei:TEI
         let $config := tpu:parse-pi(root($xml), ())
         return
             string-join($pm-config:latex-transform($xml, map { "image-dir": utils:path-concat-safe((config:get-repo-dir(), $config:data-root)) || "/" }, $config?odd))
