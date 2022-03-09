@@ -153,6 +153,38 @@ declare function tests:abbr-list() as map(*) {
         }
 };
 
+declare function tests:bibl-struct-thesis() as map(*)* {
+    let $bibl := <biblStruct xmlns="http://www.tei-c.org/ns/1.0" xml:id="chbsg000145044">
+                    <!-- Thesis -->
+                    <monogr>
+                        <!-- author origin: MARC 100 -->
+                        <author>Frey, Stefan</author>
+                        <title>Fromme feste Junker : neuer Stadtadel im spätmittelalterlichen Zürich</title>
+                        <title type="short">Frey 2017</title>
+                        <note>Dissertation</note>
+                        <imprint>
+                        <!-- publisher origin: MARC 502 -->
+                        <publisher>Universität Zürich</publisher>
+                        <!-- pubPlace origin: MARC 264 -->
+                        <pubPlace>Zürich</pubPlace>
+                        <!-- date origin: MARC 264 -->
+                        <date>[2017]</date>
+                        <date>© 2017</date>
+                        </imprint>
+                    </monogr>
+                </biblStruct>
+    let $exp := 'Frey, Stefan: Fromme feste Junker – neuer Stadtadel im spätmittelalterlichen Zürich, Dissertation Universität Zürich, Zürich [2017] (Frey 2017).'
+    let $results := ($pm-config:web-transform($bibl, map{"root": $bibl, "template": "introduction"}, $config:odd)//string() => normalize-space(), $pm-config:latex-transform($bibl, map{"root": $bibl}, $config:odd)[1] => normalize-space())
+    for $result in $results
+    return
+        map {
+            "name": "tests:bibl-struct-thesis()",
+            "description": "Tests the rendering of tei:biblStruct for theses",
+            "exp": $exp,
+            "result": $result
+        }
+};
+
 declare function tests:paragraph() as map(*)* {
     let $para := <p xmlns="http://www.tei-c.org/ns/1.0">This is a paragraph</p>
     let $results := ($pm-config:web-transform($para, map{"root": $para}, $config:odd), $pm-config:latex-transform($para, map{"root": $para}, $config:odd)[1])
