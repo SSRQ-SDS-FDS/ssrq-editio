@@ -1615,11 +1615,12 @@
                         <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'latex')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="series" value="if (series) then ec:join-series-with-scope(series) else ()"/>
+                        <param name="thesis-statement" value="if (monogr/note and not(monogr/note => matches(' '))) then string-join((monogr/note, monogr/imprint/publisher[1]), ' ') || ', ' else if (monogr/note) then monogr/note || ', ' else ()"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
                         <param name="date" value="monogr/imprint/date[1]/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             % Selbstständige Publikation
-                            <div>[[author]][[title]], [[series]][[place]][[date]] ([[short-title]]).
+                            <div>[[author]][[title]], [[series]][[thesis-statement]][[place]][[date]] ([[short-title]]).
                             </div>
                         </pb:template>
                     </model>
@@ -1747,13 +1748,14 @@
                         <param name="author" value="if (ec:format-author(monogr/author)) then (ec:format-author(monogr/author) || ec:colon()) else ()"/>
                         <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
                         <param name="series" value="if (series) then ec:join-series-with-scope(series) else ()"/>
+                        <param name="thesis-statement" value="if (monogr/note and not(monogr/note => matches(' '))) then string-join((monogr/note, monogr/imprint/publisher[1]), ' ') || ', ' else if (monogr/note) then monogr/note || ', ' else ()"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="link" value="if (monogr/ref) then monogr/ref/@target else ec:format-link(@xml:id)"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
                         <param name="date" value="monogr/imprint/date[1]/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <!-- Selbstständige Publikation mit externem Verweis -->
-                            <div>[[author]][[title]], [[series]][[place]][[date]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
+                            <div>[[author]][[title]], [[series]][[thesis-statement]][[place]][[date]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
                             </div>
                         </pb:template>
                     </model>
