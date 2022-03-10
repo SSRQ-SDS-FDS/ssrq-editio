@@ -161,7 +161,7 @@ declare function tests:bibl-struct-thesis() as map(*)* {
                         <author>Frey, Stefan</author>
                         <title>Fromme feste Junker : neuer Stadtadel im spätmittelalterlichen Zürich</title>
                         <title type="short">Frey 2017</title>
-                        <note>Dissertation</note>
+                        <note>Dissertation phil. xyz</note>
                         <imprint>
                         <!-- publisher origin: MARC 502 -->
                         <publisher>Universität Zürich</publisher>
@@ -173,7 +173,7 @@ declare function tests:bibl-struct-thesis() as map(*)* {
                         </imprint>
                     </monogr>
                 </biblStruct>
-    let $exp := 'Frey, Stefan: Fromme feste Junker – neuer Stadtadel im spätmittelalterlichen Zürich, Dissertation Universität Zürich, Zürich [2017] (Frey 2017).'
+    let $exp := 'Frey, Stefan: Fromme feste Junker – neuer Stadtadel im spätmittelalterlichen Zürich, Dissertation, Zürich [2017] (Frey 2017).'
     let $results := ($pm-config:web-transform($bibl, map{"root": $bibl, "template": "introduction"}, $config:odd)//string() => normalize-space(), $pm-config:latex-transform($bibl, map{"root": $bibl}, $config:odd)[1] => normalize-space())
     for $result in $results
     return
