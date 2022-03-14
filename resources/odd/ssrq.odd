@@ -1131,6 +1131,10 @@
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('date'), ec:colon(), ec:format-date(@when), ' (', ec:translate(@calendar, 0, ()), ')')"/>
                     </model>
+                    <model output="web" predicate="@when and @period" behaviour="alternate" cssClass="text-critical">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="(ec:label('date'), ec:colon(), ec:label(@period, false()) || ', ' || ec:format-date(@when))"/>
+                    </model>
                     <model output="web" predicate="@when" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('date'), ec:colon(), ec:format-date(@when))"/>
