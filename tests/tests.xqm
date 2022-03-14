@@ -185,6 +185,20 @@ declare function tests:bibl-struct-thesis() as map(*)* {
         }
 };
 
+declare function tests:date-tooltips() as map(*)* {
+    let $cases := (<date xmlns="http://www.tei-c.org/ns/1.0" when="2020-03-21">Samedi 21 mars 2020</date>, <date xmlns="http://www.tei-c.org/ns/1.0" when="2020-03-21" period="P7WD">Samedi 21 mars 2020</date>)
+    let $exp := ('Datum: 21.3.2020', 'Datum: Samstag, 21.3.2020')
+    for $case at $i in $cases
+    return
+        map {
+            "name": "tests:date-tooltips()",
+            "description": "Tests the content of the tooltip for tei:date in different circumstances",
+            "exp": $exp[$i],
+            "result": $pm-config:web-transform($case, map {"root": $case }, $config:odd)//span[@class = 'altcontent']/text() => normalize-space()
+        }
+
+};
+
 declare function tests:paragraph() as map(*)* {
     let $para := <p xmlns="http://www.tei-c.org/ns/1.0">This is a paragraph</p>
     let $results := ($pm-config:web-transform($para, map{"root": $para}, $config:odd), $pm-config:latex-transform($para, map{"root": $para}, $config:odd)[1])
