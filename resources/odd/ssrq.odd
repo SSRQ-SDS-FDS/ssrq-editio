@@ -1381,6 +1381,7 @@
                             \vspace{1.5mm}
                         </pb:template>
                     </model>
+                    <model predicate="parent::table" output="web" behaviour="thead"/>
                     <model predicate="@resp" behaviour="omit"/>
                     <model behaviour="block" predicate="$parameters?view='introduction' and ancestor::TEI/@type = 'bailiffs' and ancestor::group and @type = 'title'">
                         <param name="id" value="ec:unique-id(.)"/>

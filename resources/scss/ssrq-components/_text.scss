@@ -5,3 +5,13 @@
 .tei-cell:last-child {
   padding-right: 8px;
 }
+
+th.px-0 {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Add a bit of space between two tei-divs */
+.tei-div7 + .tei-div7 {
+  margin-top: $margin-vertical-base;
+}

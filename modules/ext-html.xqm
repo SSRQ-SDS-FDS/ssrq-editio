@@ -270,3 +270,16 @@ declare function pmf:biblList($config as map(*), $node as element(), $class as x
         </ul>
     </div>
 };
+
+(:~
+: Custom behaviour to render tei:head inside tei:table as thead
+: @author: B. Politycki
+: @date: 14.03.2022
+:)
+declare function pmf:thead($config as map(*), $node as element(), $class as xs:string+, $content as item()) as element(thead) {
+    <thead>
+        <tr>
+            <th class="px-0" colspan="100">{html:apply-children($config, $node, $content)}</th>
+        </tr>
+    </thead>
+};
