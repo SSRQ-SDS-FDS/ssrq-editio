@@ -15,3 +15,8 @@ th.px-0 {
 .tei-div7 + .tei-div7 {
   margin-top: $margin-vertical-base;
 }
+
+.seg *:first-child:not(p) + p,
+.seg *:first-child:not(div) + div {
+  display: inline;
+}
