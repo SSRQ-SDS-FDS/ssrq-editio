@@ -18,11 +18,12 @@ import module namespace query="http://existsolutions.com/ssrq/search" at "../mod
 import module namespace request ="http://exist-db.org/xquery/request";
 import module namespace ssrq-utils="http://existsolutions.com/ssrq/utils" at "../modules/ssrq-util.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../modules/config.xqm";
-import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../modules/pm-config.xql";
+import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../modules/pm-config.xqm";
 
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 
 declare variable $tests:host := substring-before(request:get-url(), '/exist') || '/exist/apps/ssrq';
+
 
 
 (:~ *********************
@@ -223,5 +224,45 @@ declare function tests:table-web() as map(*)* {
             "description": "Tests the rendition of a table for the web",
             "exp": $results[$i],
             "result": $pm-config:web-transform($case, map { "root": $case }, $config:odd)
+        }
+};
+
+declare function tests:seg() as map(*)* {
+    let $test-case := <seg xmlns="http://www.tei-c.org/ns/1.0" n="1"><p>Hier steht Text</p></seg>
+    let $results := (
+        map {
+            "result": <span class="tei-seg5"><div class="tei-p4">Hier steht Text</div></span>,
+            "odd": $config:odd,
+            "test": $test-case,
+            "case": "web"
+        },
+        map {
+            "result": <div class="tei-seg5"><p class="tei-p1">[1] Hier steht Text</p></div>,
+            "odd": $config:odd-normalized,
+            "test": $test-case,
+            "case": "web"
+        },
+        map {
+            "result": <div class="tei-seg1">[1] <p class="tei-p3">Hier steht Text</p></div>,
+            "odd": $config:odd-normalized,
+            "test":  <seg xmlns="http://www.tei-c.org/ns/1.0" n="1"><lb/><p>Hier steht Text</p></seg>,
+            "case": "web"
+        },
+        map {
+            "result": "[1] Hier steht Text",
+            "odd": $config:odd,
+            "test": $test-case,
+            "case": "LaTeX"
+        }
+    )
+    for $result in $results
+    return
+        map {
+            "name": "tests:seg()",
+            "description": "Tests the rendition of tei:seg for " || string-join(($result?case, $result?odd), ' rendered with ' ),
+            "exp": $result?result,
+            "result": if ($result?case = 'web') then
+                        $pm-config:web-transform($result?test, map { "root": $result?test}, $result?odd)
+                        else $pm-config:latex-transform($result?test, map { "root": $result?test}, $result?odd)[1] => normalize-space()
         }
 };

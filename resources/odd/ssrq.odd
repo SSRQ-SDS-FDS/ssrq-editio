@@ -1133,7 +1133,7 @@
                     </model>
                     <model output="web" predicate="@when and @period" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:translate('date'), ec:colon(), ec:translate(@period, 0, ()) || ', ' || ec:format-date(@when))"/>
+                        <param name="alternate" value="(ec:label('date'), ec:colon(), ec:translate(@period, 0, ()) || ', ' || ec:format-date(@when))"/>
                     </model>
                     <model output="web" predicate="@when" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>

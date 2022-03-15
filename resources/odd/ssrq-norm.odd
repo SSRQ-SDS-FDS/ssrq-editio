@@ -21,7 +21,7 @@
                     <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="seg" mode="change">
-                    <model predicate="@n and not(p)" behaviour="block">
+                    <model predicate="@n and not(*[1] => local-name() = 'p')" behaviour="block">
                         <param name="content" value="(text{'['}, @n, text{'] '}, .)"/>
                         <outputRendition>
                             margin-top: 1ex;
