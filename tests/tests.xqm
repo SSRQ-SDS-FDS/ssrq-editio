@@ -212,3 +212,16 @@ declare function tests:paragraph() as map(*)* {
             "result": $results[$i]
         }
 };
+
+declare function tests:table-web() as map(*)* {
+    let $cases := (<table xmlns="http://www.tei-c.org/ns/1.0"><row><cell>Inhalt</cell></row></table>, <table xmlns="http://www.tei-c.org/ns/1.0"><head>head</head><row><cell>Inhalt</cell></row></table>)
+    let $results := (<table class="tei-table"><tr class="tei-row2"><td class="tei-cell">Inhalt</td></tr></table>, <table class="tei-table"><thead><tr><th class="px-0" colspan="100">head</th></tr></thead><tr class="tei-row2"><td class="tei-cell">Inhalt</td></tr></table>)
+    for $case at $i in $cases
+    return
+        map {
+            "name": "tests:table-web()",
+            "description": "Tests the rendition of a table for the web",
+            "exp": $results[$i],
+            "result": $pm-config:web-transform($case, map { "root": $case }, $config:odd)
+        }
+};
