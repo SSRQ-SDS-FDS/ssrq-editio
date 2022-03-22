@@ -200,6 +200,39 @@ declare function tests:date-tooltips() as map(*)* {
 
 };
 
+declare function tests:heading-web() as map(*)* {
+    let $cases := (
+        <head xmlns="http://www.tei-c.org/ns/1.0"  type="title">Titel 1</head>,
+        <head xmlns="http://www.tei-c.org/ns/1.0"  type="subtitle">Titel 2</head>,
+        <head xmlns="http://www.tei-c.org/ns/1.0"  type="subsubtitle">Titel 3</head>
+        )
+    let $exp := ('h1', 'h2', 'h3')
+    for $case at $i in $cases
+    return
+        map {
+            "name": "tests:heading-web()",
+            "description": "Test rendering of heading with @type eq " || $case/@type/data(.),
+            "exp": $exp[$i],
+            "result": $pm-config:web-transform($case, map { "root": $case}, $config:odd) => name()
+        }
+};
+
+declare function tests:heading-tex() as map(*)* {
+    let $cases := (
+        <head xmlns="http://www.tei-c.org/ns/1.0"  type="title">Titel 1</head>,
+        <head xmlns="http://www.tei-c.org/ns/1.0"  type="subtitle">Titel 2</head>,
+        <head xmlns="http://www.tei-c.org/ns/1.0"  type="subsubtitle">Titel 3</head>
+        )
+    for $case in $cases
+    return
+        map {
+            "name": "tests:heading-tex()",
+            "description": "Test the rendering of heading @type eq " || $case/@type/data(.),
+            "exp": "\vspace{1.5mm} \noindent "|| $case/text() || " \vspace{1.5mm}",
+            "result": $pm-config:latex-transform($case, map{ "root": $case}, $config:odd)[1] => normalize-space()
+        }
+};
+
 declare function tests:paragraph() as map(*)* {
     let $para := <p xmlns="http://www.tei-c.org/ns/1.0">This is a paragraph</p>
     let $results := ($pm-config:web-transform($para, map{"root": $para}, $config:odd), $pm-config:latex-transform($para, map{"root": $para}, $config:odd)[1])
@@ -243,7 +276,7 @@ declare function tests:seg() as map(*)* {
             "case": "web"
         },
         map {
-            "result": <div class="tei-seg1">[1] <p class="tei-p3">Hier steht Text</p></div>,
+            "result": <div class="tei-seg1 seg">[1] <p class="tei-p3">Hier steht Text</p></div>,
             "odd": $config:odd-normalized,
             "test":  <seg xmlns="http://www.tei-c.org/ns/1.0" n="1"><lb/><p>Hier steht Text</p></seg>,
             "case": "web"

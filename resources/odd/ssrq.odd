@@ -1368,15 +1368,7 @@
                             \vspace{1.5mm}
                         </pb:template>
                     </model>
-                    <model output="latex" predicate="@type='title'" behaviour="block">
-                        <pb:template>
-                            \vspace{1.5mm}
-                            \noindent
-                            [[content]]
-                            \vspace{1.5mm}
-                        </pb:template>
-                    </model>
-                    <model output="latex" predicate="@type='subtitle'" behaviour="block">
+                    <model output="latex" predicate="@type= ('title', 'subtitle', 'subsubtitle')" behaviour="block">
                         <pb:template>
                             \vspace{1.5mm}
                             \noindent
@@ -1439,6 +1431,9 @@
                         <pb:template xmlns="" xml:space="preserve">
                             <h2 class="tei-head14" id="[[id]]">[[content]]</h2>
                         </pb:template>
+                    </model>
+                    <model predicate="@type = 'subsubtitle'" behaviour="heading">
+                        <param name="level" value="3"/>
                     </model>
                     <model behaviour="heading" useSourceRendition="true">
                         <param name="level" value="2"/>
