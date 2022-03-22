@@ -63,11 +63,17 @@
                         <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), normalize-space(string-join(sic//text())), ', ', ec:translate(sic/del/@rend, 0, 'uppercase'), ec:colon(), sic/del//text())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
-                    <model predicate="sic and corr" behaviour="alternate" cssClass="text-critical">
-                        <param name="default" value="corr"/>
-                        <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), sic)"/>
-                        <param name="type" value="'text-critical'"/>
-                    </model>
+                    <modelSequence>
+                        <model predicate="sic and sic/pb[@n] and corr" behaviour="inline" cssClass="pb-pagination">
+                            <desc>Show pagebreak before tei:corr</desc>
+                            <param name="content" value="('[', if (sic/pb[matches(@n, '[vr]$')]) then 'fol.' else ec:label('page-abbr', false()), ' ', sic/pb/@n, ']')"/>
+                        </model>
+                        <model predicate="sic and corr" behaviour="alternate" cssClass="text-critical">
+                            <param name="default" value="corr"/>
+                            <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), sic)"/>
+                            <param name="type" value="'text-critical'"/>
+                        </model>
+                    </modelSequence>
                     <model predicate="abbr and expan" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="expan[1]"/>
                         <param name="alternate" value="(ec:label('abbr-nonexpanded'), ec:colon(), abbr[1])"/>
