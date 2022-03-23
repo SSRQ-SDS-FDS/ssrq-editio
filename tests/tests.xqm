@@ -19,6 +19,7 @@ import module namespace request ="http://exist-db.org/xquery/request";
 import module namespace ssrq-utils="http://existsolutions.com/ssrq/utils" at "../modules/ssrq-util.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../modules/config.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../modules/pm-config.xqm";
+import module namespace templates="http://exist-db.org/xquery/templates" at "../modules/templates.xqm";
 
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 
