@@ -32,12 +32,18 @@ declare variable $ssrq-utils:ENV := doc($config:app-root || '/env.xml');
 :
 : @return the rendered (cached or compiled JIT) result as node()
 :)
-declare function ssrq-utils:cache-content($node as node(), $model as map(*), $prefix as xs:string?) as node() {
-    if (xs:boolean($ssrq-utils:ENV//cache/text()))
-    then
-        let $key := ($prefix, request:get-url() => substring-after('apps') => replace('/', ''), ssrq-utils:get-param-values()) => string-join('_')
-        return ssrq-utils:cache-store-retrieve($node, $model, $config-data:CACHE, $key)
-    else templates:process($node/*, $model)
+declare function ssrq-utils:cache-store-retrieve($node as node(), $model as map(*), $prefix as xs:string?) as node() {
+    let $use-cache := xs:boolean($ssrq-utils:ENV//cache/text())
+    let $cache-key := if ($use-cache) then ssrq-utils:make-cache-key($prefix) else ()
+    let $cached-content := if ($use-cache) then cache:get($config-data:CACHE, $cache-key) else ()
+    return
+        if (not($use-cache) or $cached-content => empty())
+        then
+            let $output := templates:process($node/*, $model)
+            (: Put things in cache, but return $output, becacuse cache:put returns an empty sequence altough $output is not empty... :)
+            let $put :=  if ($use-cache) then cache:put($config-data:CACHE, $cache-key, $output) else ()
+            return $output
+        else $cached-content
 };
 
 
@@ -49,19 +55,14 @@ declare function ssrq-utils:get-param-values() as xs:string* {
         $param-values
 };
 
-declare function ssrq-utils:cache-store-retrieve($content as item(), $model as map(*), $name as xs:string, $key as xs:string) as item() {
-    let $cache-key := ($key, utils:coalesce(request:get-parameter('lang', ()), (session:get-attribute("ssrq.lang"), "de")[1])) => string-join('_')
-    let $cached-content := cache:get($name, $cache-key)
+declare function ssrq-utils:make-cache-key($prefix as xs:string) as xs:string {
+    let $context := request:get-url() => substring-after('apps') => replace('/', '')
+    let $params := ssrq-utils:get-param-values()
+    let $lang := utils:coalesce(request:get-parameter('lang', ()), (session:get-attribute("ssrq.lang"), "de")[1])
     return
-        if ($cached-content => empty())
-        then
-            let $output := templates:process($content/*, $model)
-            (: Put things in cache, but return $output, becacuse cache:put returns an empty sequence altough $output is not empty... :)
-            let $put :=  cache:put($name, $cache-key, $output)
-            return $output
-        else $cached-content
-};
+        ($prefix, $context, $params, $lang) => string-join('_')
 
+};
 
 declare
     %templates:wrap

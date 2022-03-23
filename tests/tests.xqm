@@ -87,7 +87,7 @@ declare function tests:count-docs() as map(*)* {
 
 declare function tests:cache-handling() as map(*)* {
     for $fragment in ('/?kanton=SG', '/?kanton=SG&amp;volume=SG_III_4&amp;start=41', '/NE/SDS_NE_3_002.xml?odd=ssrq.odd&amp;view=body')
-    let $destroy := cache:destroy('ssrq-cache')
+    let $clear := cache:clear('ssrq-cache')
     return
         map {
             "name": "tests:cache-handling()",
