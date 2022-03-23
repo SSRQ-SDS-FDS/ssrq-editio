@@ -3,6 +3,7 @@ xquery version "3.1";
 module namespace query="http://existsolutions.com/ssrq/search";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
+declare namespace i18n="http://exist-db.org/xquery/i18n";
 
 import module namespace templates="http://exist-db.org/xquery/templates";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
@@ -343,65 +344,16 @@ declare
     %templates:wrap
     %templates:default("start", 1)
     %templates:default("per-page", 10)
-function query:show-hits($node as node()*, $model as map(*), $start as xs:integer, $per-page as xs:integer, $view as xs:string?, $lang as xs:string?) {
-    for $hit at $p in subsequence($model("hits"), $start, $per-page)
-    let $parent := ($hit/self::tei:body, $hit/ancestor-or-self::tei:div[1])[1]
-    let $parent := ($parent, $hit/ancestor-or-self::tei:teiHeader, $hit)[1]
-    let $parent-id := config:get-identifier($parent)
-    let $parent-id :=
-        if ($model?docs) then replace($parent-id, "^.*?([^/]*)$", "$1") else $parent-id
+function query:show-hits($node as node()*, $model as map(*), $start as xs:integer, $per-page as xs:integer, $view as xs:string?, $lang as xs:string?) as element(div)* {
+    for $hit at $index in $model?hits => subsequence($start, $per-page)
     let $work := $hit/ancestor::tei:TEI
     let $config := tpu:parse-pi(root($work), $view)
-    let $div := query:get-current($config, $parent)
-    let $loc :=
-        <div class="reference" xmlns:i18n="http://exist-db.org/xquery/i18n">
-            <h5><span class="number">{$start + $p - 1}</span>
-                <span class="w"><i18n:text key="{query:category($hit)}"/></span>
-                <i18n:text key="canton">Kanton</i18n:text>: <span>{query:view-kanton($work)}</span>,
-                <i18n:text key="work-id">Stück</i18n:text>: <span>{query:view-idno($work)}</span>,
-                <i18n:text key="orig-date">Datum</i18n:text>: <span>{query:view-origDate($work)}</span>
-            </h5>
-            <h4>{query:view-header($work, $parent-id => replace('/.*/', '/'))}</h4>
+    let $relpath := config:get-identifier($work) => replace('/.*/', '/')
+    return
+        <div class="reference">
+            {query:view-header($work, $relpath, $hit, $start, $index)}
+            {query:view-snippets($hit, $model, $config, $relpath)}
         </div>
-    let $expanded :=
-        if (exists($model?ids)) then
-            (: Suche in Sachregister, $hit ist placeName :)
-            query:expand($parent, $model?ids)
-        else
-            util:expand($hit, "add-exist-id=all")
-    let $docId := config:get-identifier($div)
-    let $docId :=
-        if ($model?docs) then
-            replace($docId, "^.*?([^/]*)$", "$1")
-        else
-            $docId
-    return (
-        intl:translate($loc, $model, $lang, ()),
-        for $match in subsequence($expanded//exist:match, 1, 5)
-        let $matchId := $match/../@exist:id
-        let $docLink :=
-            if ($hit/ancestor-or-self::tei:back) then
-                ()
-            else if ($config?view = "page") then
-                let $contextNode := util:node-by-id($div, $matchId)
-                let $page := $contextNode/preceding::tei:pb[1]
-                return
-                    util:node-id($page)
-            else
-                util:node-id($div)
-        let $action := if (exists($model?ids)) then "" else "search"
-        let $config :=
-            if (exists($model?ids)) then
-                let $idList := string-join(for $id in $model?ids return "sr=" || $id, "&amp;")
-                return
-                    <config width="60" table="no"
-                        link="{$docId}?view={$config?view}&amp;action=search&amp;odd={$config?odd}&amp;{$idList}#{$matchId}"/>
-            else
-                <config width="60" table="no"
-                    link="{$docId}?root={$docLink}&amp;action=search&amp;view={$config?view}&amp;odd={$config?odd}#{$matchId}"/>
-        return
-            kwic:get-summary($expanded, $match, $config)
-    )
 };
 
 declare function query:category($hit as element()) {
@@ -459,11 +411,55 @@ function query:get-ssrq-idno($work) {
     query:get-ssrq-idno($work, ())
 };
 
-declare function query:view-header($work as element(), $parent-id as xs:string) {
+declare
+    %private
+function query:view-header($work as node(), $relpath as xs:string, $hit as item(), $start as xs:integer, $index as xs:integer) as element(header) {
     let $header := $work//tei:teiHeader
     let $head := ($header//tei:msDesc/tei:head/node(), $header//tei:titleStmt/tei:title/node())[1]
     return
-        <a href="{$parent-id}">{$pm-config:web-transform($head, map { "root": $head }, $config:odd)}</a>
+        <header>
+            <h5>
+                <span class="number">{$start + $index - 1}</span>
+                <span class="badge ml-0"><i18n:text key="{query:category($hit)}"/></span>
+                <i18n:text key="canton">Kanton</i18n:text>: <span>{query:view-kanton($work)}</span>,
+                <i18n:text key="work-id">Stück</i18n:text>: <span>{query:view-idno($work)}</span>,
+                <i18n:text key="orig-date">Datum</i18n:text>: <span>{query:view-origDate($work)}</span>
+            </h5>
+            <h4>
+                <a href="{$relpath}">{$pm-config:web-transform($head, map { "root": $head}, $config:odd)}</a>
+            </h4>
+        </header>
+};
+
+declare
+    %private
+function query:view-snippets($hit as item(), $model as map(*), $config as map(*), $relpath as xs:string) as element(article) {
+    let $mark-matches :=
+        if (exists($model?ids)) then
+            let $parent := ($hit/self::tei:body, $hit/ancestor-or-self::tei:div[1],  $hit/ancestor-or-self::tei:teiHeader, $hit)[1]
+            return
+                query:expand($parent, $model?ids)
+        else
+            util:expand($hit, "add-exist-id=all")
+    return
+        <article>
+            {
+            for $match in subsequence($mark-matches//exist:match, 1, 5)
+            let $matchId := $match/../@exist:id
+            let $action := if (exists($model?ids)) then "" else "search"
+            let $kwic-config :=
+                if (exists($model?ids)) then
+                    let $idList := string-join(for $id in $model?ids return "sr=" || $id, "&amp;")
+                    return
+                        <config width="60" table="no"
+                            link="{$relpath}?view={$config?view}&amp;action=search&amp;odd={$config?odd}&amp;{$idList}#{$matchId}"/>
+                else
+                    <config width="60" table="no"
+                        link="{$relpath}?root=body&amp;action=search&amp;view={$config?view}&amp;odd={$config?odd}#{$matchId}"/>
+            return
+                kwic:get-summary($mark-matches, $match, $kwic-config)
+            }
+        </article>
 };
 
 declare function query:view-kanton($work as element()) {
