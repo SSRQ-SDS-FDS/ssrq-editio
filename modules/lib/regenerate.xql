@@ -4,7 +4,7 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "../c
 
 import module namespace pmu="http://www.tei-c.org/tei-simple/xquery/util";
 import module namespace odd="http://www.tei-c.org/tei-simple/odd2odd";
-import module namespace config-data="http:///www.ssrq-sds-fds.ch/ssrq-data/config" at "/db/apps/ssrq-data/modules/config.xqm";
+import module namespace config-data="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/config" at "/db/apps/ssrq-data/modules/config.xqm";
 import module namespace cache="http://exist-db.org/xquery/cache";
 
 declare namespace expath="http://expath.org/ns/pkg";
