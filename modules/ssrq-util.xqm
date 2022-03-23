@@ -34,30 +34,27 @@ declare variable $ssrq-utils:ENV := doc($config:app-root || '/env.xml');
 :)
 declare function ssrq-utils:cache-store-retrieve($node as node(), $model as map(*), $prefix as xs:string?) as node() {
     let $use-cache := xs:boolean($ssrq-utils:ENV//cache/text())
-    let $cache-key := if ($use-cache) then ssrq-utils:make-cache-key($prefix) else ()
-    let $cached-content := if ($use-cache) then cache:get($config-data:CACHE, $cache-key) else ()
+    let $cache-key := ssrq-utils:make-cache-key($prefix)
+    let $cached-content := 
+        if ($use-cache) then
+            cache:get($config-data:CACHE, $cache-key)
+        else
+            ()
     return
-        if (not($use-cache) or $cached-content => empty())
-        then
+        if (not(empty($cached-content))) then
+            $cached-content
+        else
             let $output := templates:process($node/*, $model)
             (: Put things in cache, but return $output, becacuse cache:put returns an empty sequence altough $output is not empty... :)
-            let $put :=  if ($use-cache) then cache:put($config-data:CACHE, $cache-key, $output) else ()
-            return $output
-        else $cached-content
+            let $put := if ($use-cache) then cache:put($config-data:CACHE, $cache-key, $output) else ()
+            return
+                $output
 };
-
 
 (: A small helper function to generate a mostly unique key by the request-parameter-names :)
-declare function ssrq-utils:get-param-values() as xs:string* {
-    let $param-names := request:get-parameter-names()
-    let $param-values := $param-names[not(. = 'lang') and not(. = 'doc')] ! request:get-parameter(., ())
-    return
-        $param-values
-};
-
 declare function ssrq-utils:make-cache-key($prefix as xs:string) as xs:string {
     let $context := request:get-url() => substring-after('apps') => replace('/', '')
-    let $params := ssrq-utils:get-param-values()
+    let $params := request:get-parameter-names()[not(. = 'lang') and not(. = 'doc')] ! request:get-parameter(., ())
     let $lang := utils:coalesce(request:get-parameter('lang', ()), (session:get-attribute("ssrq.lang"), "de")[1])
     return
         ($prefix, $context, $params, $lang) => string-join('_')
