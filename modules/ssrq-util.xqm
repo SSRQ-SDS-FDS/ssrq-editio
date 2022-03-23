@@ -36,7 +36,7 @@ declare function ssrq-utils:cache-content($node as node(), $model as map(*), $pr
     if (xs:boolean($ssrq-utils:ENV//cache/text()))
     then
         let $key := ($prefix, request:get-url() => substring-after('apps') => replace('/', ''), ssrq-utils:get-param-values()) => string-join('_')
-        return ssrq-utils:cache-control($node, $model, $key)
+        return ssrq-utils:cache-store-retrieve($node, $model, $config-data:CACHE, $key)
     else templates:process($node/*, $model)
 };
 
@@ -47,14 +47,6 @@ declare function ssrq-utils:get-param-values() as xs:string* {
     let $param-values := $param-names[not(. = 'lang') and not(. = 'doc')] ! request:get-parameter(., ())
     return
         $param-values
-};
-
-declare function ssrq-utils:cache-control($content as item(), $model as map(*), $key as xs:string) {
-    if (cache:names() => index-of($config-data:CACHE) => exists())
-    then
-        ssrq-utils:cache-store-retrieve($content, $model, $config-data:CACHE, $key)
-    else
-        (cache:create($config-data:CACHE, map{}), ssrq-utils:cache-store-retrieve($content, $model, $config-data:CACHE, $key))[2]
 };
 
 declare function ssrq-utils:cache-store-retrieve($content as item(), $model as map(*), $name as xs:string, $key as xs:string) as item() {
