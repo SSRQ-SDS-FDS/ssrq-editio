@@ -8,18 +8,18 @@
     <property name="env" value="prod"/>
     <property name="cache" value="true"/>
    
-    <!-- Guard clause to check the env-variable -->
-    <fail message="Wrong env-variable. Set it to &quot;dev&quot; or &quot;prod&quot;." >
+    <!-- Guard clause to check the "env" variable -->
+    <fail message="Wrong &quot;env&quot; variable. Set it to &quot;dev&quot; or &quot;prod&quot;." >
         <condition>
             <not>
-                <matches pattern="^dev$|^prod$" string="${env}"/>
+                <matches pattern="^dev|prod$" string="${env}"/>
             </not>
         </condition>
     </fail>
 
-    <!-- The main target will call the build-targets based on ${env} -->
+    <!-- The main target will call the build targets based on ${env} -->
     <target name="main">
-        <echo message="Building .xar for ${env}-environment."/>
+        <echo message="Building .xar for ${env} environment."/>
         <mkdir dir="${build.dir}"/>
         <antcall target="${env}"/>
     </target>
@@ -30,12 +30,12 @@
     </target>
 
     <target name="prod" depends="clean,set-env,style.css">
-        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${build.dir}/** _scripts/** README.md build.xml .existdb.json node_modules/** test/** resources/scss/** transform/** modules/create-biblstruct.xql modules/regenerate.xql"/>
+        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${build.dir}/** _scripts/** README.md build.xml .existdb.json node_modules/** resources/scss/** transform/** test/** modules/regenerate.xql"/>
         <delete file="env.xml"/>
     </target>
 
     <target name="set-env">
-        <echo message="Writing env-settings to &quot;env.xml&quot;"/>
+        <echo message="Writing env settings to &quot;env.xml&quot;"/>
         <echoxml file="env.xml">
             <settings>
                 <env>${env}</env>
@@ -56,7 +56,7 @@
     </target>
 
     <target name="clean">
-        <echo message="Cleaning /${build.dir}..."/>
+        <echo message="Cleaning ${build.dir}..."/>
         <delete dir="${build.dir}"/>
         <echo message="Deleting generated CSS..."/>
         <delete>
@@ -66,5 +66,4 @@
             </fileset>
         </delete>
     </target>
-
 </project>

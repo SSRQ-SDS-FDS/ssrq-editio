@@ -27,10 +27,10 @@ declare variable $ssrq-utils:ENV := doc($config:app-root || '/env.xml');
 
 
 (:~
-: This function is called by the eXist-templating engine and
-: will cache the inner content of a $node if caching in env.xml is enabled
+: This function is called by the eXist templating engine and
+: will cache the inner content of a $node if caching is enabled in env.xml.
 :
-: @return the rendered (cached or compiled JIT) result as node()
+: @return the rendered (cached or compiled) result as node()
 :)
 declare function ssrq-utils:cache-store-retrieve($node as node(), $model as map(*), $prefix as xs:string?) as node() {
     let $use-cache := xs:boolean($ssrq-utils:ENV//cache/text())
