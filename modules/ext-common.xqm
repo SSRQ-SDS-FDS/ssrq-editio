@@ -234,21 +234,25 @@ declare function pmf:format-date($when as xs:string?, $language as xs:string?) {
 declare function pmf:format-duration($duration as xs:string) {
     try {
         let $duration := xs:duration($duration)
-        let $components := map:merge((
+        let $components := (
             pmf:get-duration-label("year", years-from-duration($duration)),
             pmf:get-duration-label("month", months-from-duration($duration)),
             pmf:get-duration-label("day", days-from-duration($duration)),
-            pmf:get-duration-label("hour", hours-from-duration($duration))
-        ))
+            pmf:get-duration-label("hour", hours-from-duration($duration)),
+            pmf:get-duration-label("minute", minutes-from-duration($duration))
+        )
         return
             string-join(
-                map:for-each($components, function($key, $value) {
+                (
+                for $component in $components
+                let $key := $component => map:keys()
+                let $value := $component($key)
+                return
                     if ($value > 0) then
                         $value || " " || $key
                     else
                         ()
-                }),
-                " "
+                ), " "
             )
     } catch * {
         $duration

@@ -754,6 +754,11 @@
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('duration'), ec:colon(), ec:format-duration(@dur))"/>
                     </model>
+                    <model predicate="@from and @to" behaviour="alternate" cssClass="text-critical">
+                        <desc>Display a period of time in tooltip</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="(ec:label('duration'), ec:colon(), string-join((ec:label('from', false()), format-time(@from, '[H]:[m]'), ec:label('to', false()), format-time(@to, '[H]:[m]')), ' '))"/>
+                    </model>
                     <model behaviour="alternate" cssClass="text-critical">
                         <desc>Display time in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
