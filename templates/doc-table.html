@@ -9,19 +9,19 @@
     data-catalogues="../resources/i18n"
   >
     <div class="flex-row-spaced">
-	  <ul
-		class="pagination"
-		data-template="ssrq-utils:paginate"
-		data-template-per-page="20"
-		data-template-max-pages="5"
-		data-template-min-hits="21"
-	  />
-	  <h5>
-		<span class="result-count">
-		  <a data-template="ssrq-utils:hits"/>
-		  <i18n:text key="found"
-		/></span>
-	  </h5>
+    <ul
+      class="pagination"
+      data-template="ssrq-utils:paginate"
+      data-template-per-page="20"
+      data-template-max-pages="5"
+      data-template-min-hits="21"
+    />
+    <h5>
+      <span class="result-count">
+        <a data-template="ssrq-utils:hits"/>
+        <i18n:text key="found"
+      /></span>
+    </h5>
     </div>
 
     <button class="back-button">
@@ -33,14 +33,14 @@
   <div class="row" data-template="i18n:translate">
     <div class="col-md-12">
       <div class="row">
-            <div class="col-md-12" id="documents">
-                <div data-template="ssrq-utils:cache-store-retrieve" data-template-prefix="docs">
-                    <ul class="documents">
-                        <li data-template="ssrq-utils:render-work"/>
-                    </ul>
-                </div>
+        <div class="col-md-12" id="documents">
+          <div data-template="ssrq-utils:cache-store-retrieve" data-template-prefix="docs">
+            <ul class="documents">
+              <li data-template="ssrq-utils:render-work"/>
+            </ul>
+          </div>
         </div>
-    </div>
+      </div>
     </div>
   </div>
 </section>
