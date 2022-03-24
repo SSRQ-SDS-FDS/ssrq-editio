@@ -7,7 +7,7 @@ import module namespace i18n="http://exist-db.org/xquery/i18n" at "i18n.xqm";
 import module namespace templates="http://exist-db.org/xquery/templates";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
 
-import module namespace utils="http://ssrq-sds-fds.ch/utils" at "../utils.xqm";
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
 
 (:~
  : Template function: calls i18n:process on the child nodes of $node.

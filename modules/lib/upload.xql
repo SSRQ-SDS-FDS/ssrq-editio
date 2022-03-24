@@ -1,7 +1,7 @@
 xquery version "3.1";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
-import module namespace utils="http://ssrq-sds-fds.ch/utils" at "../utils.xqm";
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
 
 declare namespace json="http://www.json.org";
 

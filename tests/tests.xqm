@@ -10,17 +10,17 @@ xquery version "3.1";
 :
 :)
 
-module namespace tests="https://www.ssrq-sds-fds.ch/tests";
+module namespace tests="http://ssrq-sds-fds.ch/exist/apps/ssrq/tests";
 
-import module namespace app="http://existsolutions.com/ssrq/app" at "../modules/ssrq.xqm";
-import module namespace test-utils="https://www.ssrq-sds-fds.ch/test-utilts" at "test-utils.xqm";
-import module namespace query="http://existsolutions.com/ssrq/search" at "../modules/ssrq-search.xqm";
+import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "../modules/ssrq.xqm";
+import module namespace test-utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/test-utils" at "test-utils.xqm";
+import module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/search" at "../modules/ssrq-search.xqm";
 import module namespace request ="http://exist-db.org/xquery/request";
-import module namespace ssrq-utils="http://existsolutions.com/ssrq/utils" at "../modules/ssrq-util.xqm";
+import module namespace ssrq-utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../modules/ssrq-util.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../modules/config.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../modules/pm-config.xql";
 import module namespace cache="http://exist-db.org/xquery/cache";
-import module namespace doc-list="http:///www.ssrq-sds-fds.ch/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
+import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
 
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 

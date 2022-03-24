@@ -32,9 +32,9 @@ import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "util.xqm";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "../navigation.xqm";
-import module namespace query="http://existsolutions.com/ssrq/search" at "../ssrq-search.xqm";
+import module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/search" at "../ssrq-search.xqm";
 
-import module namespace utils="http://ssrq-sds-fds.ch/utils" at "../utils.xqm";
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
 
 
 declare variable $pages:app-root := request:get-context-path() || substring-after($config:app-root, "/db");

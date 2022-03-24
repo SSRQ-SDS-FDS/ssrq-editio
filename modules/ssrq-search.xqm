@@ -1,6 +1,6 @@
 xquery version "3.1";
 
-module namespace query="http://existsolutions.com/ssrq/search";
+module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/search";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace i18n="http://exist-db.org/xquery/i18n";
@@ -12,7 +12,7 @@ import module namespace console="http://exist-db.org/xquery/console" at "java:or
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xqm";
 import module namespace kwic="http://exist-db.org/xquery/kwic";
 import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "navigation.xqm";
-import module namespace app="http://existsolutions.com/ssrq/app" at "ssrq.xqm";
+import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "ssrq.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xqm";
 import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xqm";
 import module namespace intl="http://exist-db.org/xquery/i18n/templates" at "lib/i18n-templates.xqm";

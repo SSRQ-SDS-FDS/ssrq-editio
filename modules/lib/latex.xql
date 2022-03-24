@@ -12,9 +12,9 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "../c
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../pm-config.xqm";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "pages.xqm";
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xqm";
-import module namespace app="http://existsolutions.com/ssrq/app" at "../ssrq.xqm";
+import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "../ssrq.xqm";
 
-import module namespace utils="http://ssrq-sds-fds.ch/utils" at "../utils.xqm";
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 

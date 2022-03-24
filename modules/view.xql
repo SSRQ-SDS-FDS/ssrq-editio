@@ -12,13 +12,13 @@ import module namespace templates="http://exist-db.org/xquery/templates" at "tem
  : templating.
  :)
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
-import module namespace app="http://existsolutions.com/ssrq/app" at "ssrq.xqm";
+import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "ssrq.xqm";
 import module namespace browse="http://www.tei-c.org/tei-simple/templates" at "lib/browse.xqm";
 import module namespace i18n="http://exist-db.org/xquery/i18n/templates" at "lib/i18n-templates.xqm";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xqm";
-import module namespace query="http://existsolutions.com/ssrq/search" at "ssrq-search.xqm";
+import module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/search" at "ssrq-search.xqm";
 import module namespace search="http://www.tei-c.org/tei-simple/search" at "lib/search.xqm";
-import module namespace ssrq-utils="http://existsolutions.com/ssrq/utils" at "ssrq-util.xqm";
+import module namespace ssrq-utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "ssrq-util.xqm";
 
 declare namespace output = "http://www.w3.org/2010/xslt-xquery-serialization";
 
@@ -29,7 +29,7 @@ let $config := map {
     $templates:CONFIG_APP_ROOT : $config:app-root,
     $templates:CONFIG_STOP_ON_ERROR : true(),
     $templates:CONFIG_PARAM_RESOLVER : function($param) {
-        let $pval := array:fold-right( 
+        let $pval := array:fold-right(
             [
                 request:get-parameter($param, ()),
                 request:get-attribute($param)

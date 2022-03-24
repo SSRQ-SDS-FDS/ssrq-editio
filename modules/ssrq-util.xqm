@@ -1,6 +1,6 @@
 xquery version "3.1";
 
-module namespace ssrq-utils="http://existsolutions.com/ssrq/utils";
+module namespace ssrq-utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace templates="http://exist-db.org/xquery/templates" ;
@@ -9,7 +9,7 @@ import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/ut
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 import module namespace functx="http://www.functx.com";
 import module namespace cache="http://exist-db.org/xquery/cache";
-import module namespace utils="http://ssrq-sds-fds.ch/utils" at "utils.xqm";
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 import module namespace config-data="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/config" at "/db/apps/ssrq-data/modules/config.xqm";
 import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
 declare namespace tei="http://www.tei-c.org/ns/1.0";

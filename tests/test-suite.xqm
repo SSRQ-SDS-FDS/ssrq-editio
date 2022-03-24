@@ -1,6 +1,6 @@
 xquery version "3.1";
 
-module namespace test-suite="https://www.ssrq-sds-fds.ch/test-suite";
+module namespace test-suite="http://ssrq-sds-fds.ch/exist/apps/ssrq/test-suite";
 
 (:~
 : Simple testing-suite in pure XQuery

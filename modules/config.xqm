@@ -6,7 +6,7 @@ xquery version "3.1";
  :)
 module namespace config="http://www.tei-c.org/tei-simple/config";
 
-import module namespace utils="http://ssrq-sds-fds.ch/utils" at "utils.xqm";
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 import module namespace http="http://expath.org/ns/http-client" at "java:org.exist.xquery.modules.httpclient.HTTPClientModule";
 
 declare namespace templates="http://exist-db.org/xquery/templates";

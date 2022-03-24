@@ -16,7 +16,7 @@ import module namespace repo="http://exist-db.org/xquery/repo";
 import module namespace session="http://exist-db.org/xquery/session";
 import module namespace util="http://exist-db.org/xquery/util";
 
-import module namespace utils="http://ssrq-sds-fds.ch/utils" at "utils.xqm";
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 
 
 declare namespace expath="http://expath.org/ns/pkg";

@@ -24,7 +24,7 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "../c
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "util.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../pm-config.xqm";
 
-import module namespace utils="http://ssrq-sds-fds.ch/utils" at "../utils.xqm";
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 

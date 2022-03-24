@@ -1,6 +1,6 @@
 xquery version "3.1";
 
-module namespace app="http://existsolutions.com/ssrq/app";
+module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app";
 
 import module namespace templates="http://exist-db.org/xquery/templates" at "templates.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
@@ -8,11 +8,11 @@ import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xqm";
 import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "/db/apps/ssrq/modules/ext-common.xqm";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
-import module namespace query="http://existsolutions.com/ssrq/search" at "ssrq-search.xqm";
+import module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/search" at "ssrq-search.xqm";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xqm";
 import module namespace http="http://expath.org/ns/http-client" at "java:org.expath.exist.HttpClientModule";
 
-import module namespace utils="http://ssrq-sds-fds.ch/utils" at "utils.xqm";
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 

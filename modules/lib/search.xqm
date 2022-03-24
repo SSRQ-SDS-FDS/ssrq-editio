@@ -33,7 +33,7 @@ import module namespace browse="http://www.tei-c.org/tei-simple/templates" at "b
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 
-import module namespace utils="http://ssrq-sds-fds.ch/utils" at "../utils.xqm";
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
 
 (:~
 : Execute the query. The search results are not output immediately. Instead they

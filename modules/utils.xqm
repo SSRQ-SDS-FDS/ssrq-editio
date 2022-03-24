@@ -1,6 +1,6 @@
 xquery version "3.1";
 
-module namespace utils="http://ssrq-sds-fds.ch/utils";
+module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils";
 
 declare %private function utils:pathcomp-remove-double-slashes($components as xs:string*) as xs:string* {
     for $comp at $i in $components
