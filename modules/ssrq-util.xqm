@@ -35,7 +35,7 @@ declare variable $ssrq-utils:ENV := doc($config:app-root || '/env.xml');
 declare function ssrq-utils:cache-store-retrieve($node as node(), $model as map(*), $prefix as xs:string?) as node() {
     let $use-cache := xs:boolean($ssrq-utils:ENV//cache/text())
     let $cache-key := ssrq-utils:make-cache-key($prefix)
-    let $cached-content := 
+    let $cached-content :=
         if ($use-cache) then
             cache:get($config-data:CACHE, $cache-key)
         else
@@ -282,9 +282,10 @@ declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $kant
 
 declare
 function ssrq-utils:render-work($node as node(), $model as map(*), $volume as xs:string?) as element(li)* {
-   for $doc in $model?page
-     let $config := tpu:parse-pi($doc, ())
-     let $relPath := config:get-identifier($doc) => replace($volume || '/', '')
+    for $doc in $model?page
+    let $config := tpu:parse-pi($doc, ())
+    let $relPath := config:get-identifier($doc) => replace($volume || '/', '')
+    order by $doc//tei:seriesStmt[@xml:id = 'ssrq-sds-fds']//tei:idno
     return
         <li class="document ml-1">
         {
