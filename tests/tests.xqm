@@ -18,8 +18,9 @@ import module namespace query="http://existsolutions.com/ssrq/search" at "../mod
 import module namespace request ="http://exist-db.org/xquery/request";
 import module namespace ssrq-utils="http://existsolutions.com/ssrq/utils" at "../modules/ssrq-util.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../modules/config.xqm";
-import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../modules/pm-config.xqm";
-import module namespace templates="http://exist-db.org/xquery/templates" at "../modules/templates.xqm";
+import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../modules/pm-config.xql";
+import module namespace cache="http://exist-db.org/xquery/cache";
+import module namespace doc-list="http:///www.ssrq-sds-fds.ch/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
 
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 
@@ -102,22 +103,32 @@ declare function tests:search-hit-rendering() as map(*)*{
 };
 
 declare function tests:count-docs() as map(*)* {
-    for $canton in xmldb:get-child-collections($config:data-root)[not(. = 'temp') and not(. = 'misc')]
+    let $exp := (259, 208)
+    for $volume at $i in ('SG_III_4', 'FR_I_2_8')
     return
         map {
-        "name": "tests:count-docs()",
-        "description": "Count docs for " || $canton,
-        "exp": true(),
-        "result":
-            try {
-                sum(for $volume in xmldb:get-child-collections(($config:data-root, $canton) => string-join('/'))
-                return
-                    ssrq-utils:countDocs(($config:data-root, $canton, $volume) => string-join('/'), $volume))
-                > 0
-            } catch * {
-                error(xs:QName($err:code), $err:description)
-            }
+            "name": "tests:count-docs()",
+            "description": "Test if the number of docs in docs.xml is correct",
+            "exp": $exp[$i],
+            "result": doc-list:get($volume) => count()
         }
+};
+
+declare function tests:cache-handling() as map(*)* {
+    for $fragment in ('/?kanton=SG', '/?kanton=SG&amp;volume=SG_III_4&amp;start=41', '/NE/SDS_NE_3_002.xml?odd=ssrq.odd&amp;view=body')
+    let $clear := cache:clear('ssrq-cache')
+    return
+        map {
+            "name": "tests:cache-handling()",
+            "description": "Test if caching implementation is working for " || $fragment,
+            "exp": "element()",
+            "result":
+                        let $request := test-utils:fetch-get($tests:host || $fragment)
+                        let $key := cache:keys('ssrq-cache')[1]
+                        return
+                            cache:get('ssrq-cache', $key) => util:get-sequence-type()
+            }
+
 };
 
 (:~ *********************

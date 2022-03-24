@@ -12,12 +12,12 @@ import module namespace console="http://exist-db.org/xquery/console" at "java:or
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xqm";
 import module namespace kwic="http://exist-db.org/xquery/kwic";
 import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "navigation.xqm";
+import module namespace app="http://existsolutions.com/ssrq/app" at "ssrq.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xqm";
 import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xqm";
 import module namespace intl="http://exist-db.org/xquery/i18n/templates" at "lib/i18n-templates.xqm";
-
-import module namespace data-filters="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/filters" at "/db/apps/ssrq-data/modules/filters.xql";
-
+import module namespace functx="http://www.functx.com";
+import module namespace data-filters="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/filters" at "/db/apps/ssrq-data/modules/filters.xqm";
 
 declare variable $query:QUERY_OPTIONS :=
     <options>

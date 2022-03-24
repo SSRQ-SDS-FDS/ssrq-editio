@@ -1,14 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project default="xar" name="ssrq">
+<project default="main" name="ssrq">
     <property file="local.build.properties"/>
     <xmlproperty file="expath-pkg.xml"/>
     <property name="project.version" value="${package(version)}"/>
     <property name="project.app" value="ssrq"/>
     <property name="build.dir" value="build"/>
-    <target name="xar" depends="style.css">
+    <property name="env" value="prod"/>
+    <property name="cache" value="true"/>
+
+    <!-- Guard clause to check the "env" variable -->
+    <fail message="Wrong &quot;env&quot; variable. Set it to &quot;dev&quot; or &quot;prod&quot;." >
+        <condition>
+            <not>
+                <matches pattern="^dev|prod$" string="${env}"/>
+            </not>
+        </condition>
+    </fail>
+
+    <!-- The main target will call the build targets based on ${env} -->
+    <target name="main">
+        <echo message="Building .xar for ${env} environment."/>
         <mkdir dir="${build.dir}"/>
-        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${build.dir}/** _scripts/** README.md build.xml .existdb.json node_modules/** resources/scss/** transform/**"/>
+        <antcall target="${env}"/>
     </target>
+
+    <target name="dev" depends="clean,set-env,style.css">
+        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${build.dir}/** _scripts/** README.md build.xml .existdb.json node_modules/** resources/scss/** transform/**"/>
+        <delete file="env.xml"/>
+    </target>
+
+    <target name="prod" depends="clean,set-env,style.css">
+        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${build.dir}/** _scripts/** README.md build.xml .existdb.json node_modules/** resources/scss/** transform/** test/** modules/regenerate.xql"/>
+        <delete file="env.xml"/>
+    </target>
+
+    <target name="set-env">
+        <echo message="Writing env settings to &quot;env.xml&quot;"/>
+        <echoxml file="env.xml">
+            <settings>
+                <env>${env}</env>
+                <cache>${cache}</cache>
+            </settings>
+        </echoxml>
+    </target>
+
     <target name="style.css">
         <echo message="Compiling SCSS..."/>
         <exec executable="sassc" outputproperty="sassc.output">
@@ -19,19 +54,16 @@
         </exec>
         <echo message="${sassc.output}"/>
     </target>
+
     <target name="clean">
-        <echo message="Deleting xar files..."/>
-        <delete>
-            <fileset dir="${build.dir}">
-                <include name="*.xar"/>
-            </fileset>
-        </delete>
+        <echo message="Cleaning ${build.dir}..."/>
+        <delete dir="${build.dir}"/>
         <echo message="Deleting generated CSS..."/>
         <delete>
             <fileset dir="resources/css">
                 <include name="style.css"/>
                 <include name="style.css.map"/>
-	    </fileset>
+            </fileset>
         </delete>
     </target>
 </project>
