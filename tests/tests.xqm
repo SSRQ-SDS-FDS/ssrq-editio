@@ -21,6 +21,7 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "../m
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../modules/pm-config.xql";
 import module namespace cache="http://exist-db.org/xquery/cache";
 import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
+import module namespace templates="http://exist-db.org/xquery/templates" at "../modules/templates.xqm";
 
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 

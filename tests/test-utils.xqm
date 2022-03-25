@@ -1,6 +1,6 @@
 xquery version "3.1";
 
-module namespace test-utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/test-utilts";
+module namespace test-utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/test-utils";
 
 import module namespace http="http://expath.org/ns/http-client";
 
