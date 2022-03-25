@@ -18,7 +18,7 @@ import module namespace i18n="http://exist-db.org/xquery/i18n/templates" at "lib
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xqm";
 import module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/search" at "ssrq-search.xqm";
 import module namespace search="http://www.tei-c.org/tei-simple/search" at "lib/search.xqm";
-import module namespace ssrq-utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "ssrq-util.xqm";
+import module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/helper" at "ssrq-helper.xqm";
 
 declare namespace output = "http://www.w3.org/2010/xslt-xquery-serialization";
 

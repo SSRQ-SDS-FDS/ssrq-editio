@@ -1,6 +1,6 @@
 xquery version "3.1";
 
-module namespace ssrq-utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils";
+module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/helper";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace templates="http://exist-db.org/xquery/templates" ;
@@ -17,12 +17,12 @@ declare namespace util="http://exist-db.org/xquery/util";
 declare namespace i18n="http://exist-db.org/xquery/i18n";
 
 
-declare variable $ssrq-utils:TEMP_DOCS := collection($config:temp-root)/tei:TEI;
-declare variable $ssrq-utils:ALL_DOCS := collection($config:data-root);
-declare variable $ssrq-utils:SPECIAL_DOCS := collection($config:data-root)/tei:TEI[@type];
-declare variable $ssrq-utils:CANTONS := util:binary-doc($config:app-root || '/resources/json/cantons.json')  => util:binary-to-string() => parse-json();
-declare variable $ssrq-utils:STATIC := $config:app-root || '/static';
-declare variable $ssrq-utils:ENV := doc($config:app-root || '/env.xml');
+declare variable $ssrq-helper:TEMP_DOCS := collection($config:temp-root)/tei:TEI;
+declare variable $ssrq-helper:ALL_DOCS := collection($config:data-root);
+declare variable $ssrq-helper:SPECIAL_DOCS := collection($config:data-root)/tei:TEI[@type];
+declare variable $ssrq-helper:CANTONS := util:binary-doc($config:app-root || '/resources/json/cantons.json')  => util:binary-to-string() => parse-json();
+declare variable $ssrq-helper:STATIC := $config:app-root || '/static';
+declare variable $ssrq-helper:ENV := doc($config:app-root || '/env.xml');
 
 
 (:~
@@ -31,9 +31,9 @@ declare variable $ssrq-utils:ENV := doc($config:app-root || '/env.xml');
 :
 : @return the rendered (cached or compiled) result as node()
 :)
-declare function ssrq-utils:cache-store-retrieve($node as node(), $model as map(*), $prefix as xs:string?) as node() {
-    let $use-cache := xs:boolean($ssrq-utils:ENV//cache/text())
-    let $cache-key := ssrq-utils:make-cache-key($prefix)
+declare function ssrq-helper:cache-store-retrieve($node as node(), $model as map(*), $prefix as xs:string?) as node() {
+    let $use-cache := xs:boolean($ssrq-helper:ENV//cache/text())
+    let $cache-key := ssrq-helper:make-cache-key($prefix)
     let $cached-content :=
         if ($use-cache) then
             cache:get($config-data:CACHE, $cache-key)
@@ -51,7 +51,7 @@ declare function ssrq-utils:cache-store-retrieve($node as node(), $model as map(
 };
 
 (: A small helper function to generate a mostly unique key by the request-parameter-names :)
-declare function ssrq-utils:make-cache-key($prefix as xs:string) as xs:string {
+declare function ssrq-helper:make-cache-key($prefix as xs:string) as xs:string {
     let $context := request:get-url() => substring-after('apps') => replace('/', '')
     let $params := request:get-parameter-names()[not(. = 'lang') and not(. = 'doc')] ! request:get-parameter(., ())
     let $lang := utils:coalesce(request:get-parameter('lang', ()), (session:get-attribute("ssrq.lang"), "de")[1])
@@ -62,11 +62,11 @@ declare function ssrq-utils:make-cache-key($prefix as xs:string) as xs:string {
 
 declare
     %templates:wrap
-function ssrq-utils:fixLinks($node as node(), $model as map(*)) {
-    ssrq-utils:fixLinks(templates:process($node/node(), $model))
+function ssrq-helper:fixLinks($node as node(), $model as map(*)) {
+    ssrq-helper:fixLinks(templates:process($node/node(), $model))
 };
 
-declare function ssrq-utils:fixLinks($nodes as node()*) {
+declare function ssrq-helper:fixLinks($nodes as node()*) {
     for $node in $nodes
     return
         typeswitch($node)
@@ -83,11 +83,11 @@ declare function ssrq-utils:fixLinks($nodes as node()*) {
                         )
                     return
                         element { node-name($node) } {
-                            attribute href {$href}, $node/@* except $node/@href, ssrq-utils:fixLinks($node/node())
+                            attribute href {$href}, $node/@* except $node/@href, ssrq-helper:fixLinks($node/node())
                         }
             case element() return
                 element { node-name($node) } {
-                    $node/@*, ssrq-utils:fixLinks($node/node())
+                    $node/@*, ssrq-helper:fixLinks($node/node())
 
                 }
             default return
@@ -99,7 +99,7 @@ declare function ssrq-utils:fixLinks($nodes as node()*) {
 :
 : @return $node as node()
 :)
-declare function ssrq-utils:insertAlt($node as node(), $model as map(*)) as node() {
+declare function ssrq-helper:insertAlt($node as node(), $model as map(*)) as node() {
     <img class="{$node/@class/data(.)}" src="{$node/@src/data(.)}" alt="{config:app-title($node, $model)}"/>
 };
 
@@ -115,7 +115,7 @@ declare function ssrq-utils:insertAlt($node as node(), $model as map(*)) as node
 :)
 
 declare
-function ssrq-utils:cantonslist-container($node as node(), $model as map(*)) {
+function ssrq-helper:cantonslist-container($node as node(), $model as map(*)) {
     let $style :=
         element style {
             attribute type { "text/css" },
@@ -138,20 +138,20 @@ function ssrq-utils:cantonslist-container($node as node(), $model as map(*)) {
 };
 
 (:~
-: Render cantons listed in $ssrq-utils:CANTONS as html
+: Render cantons listed in $ssrq-helper:CANTONS as html
 :
 : @author Bastian Politycki
 : @return a html:div per canton and wrap it in a html:div
 :)
-declare function ssrq-utils:listCantons($node as node(), $model as map(*)) as node() {
+declare function ssrq-helper:listCantons($node as node(), $model as map(*)) as node() {
     <tbody>
     {
-    for $key in map:keys($ssrq-utils:CANTONS)
-    order by $ssrq-utils:CANTONS($key)?order
+    for $key in map:keys($ssrq-helper:CANTONS)
+    order by $ssrq-helper:CANTONS($key)?order
     return
         if ($key => contains('-'))
-        then ssrq-utils:renderMergedCantons($ssrq-utils:CANTONS($key))
-        else ssrq-utils:renderCanton($key, $ssrq-utils:CANTONS($key))
+        then ssrq-helper:renderMergedCantons($ssrq-helper:CANTONS($key))
+        else ssrq-helper:renderCanton($key, $ssrq-helper:CANTONS($key))
     }
     </tbody>
 };
@@ -159,15 +159,15 @@ declare function ssrq-utils:listCantons($node as node(), $model as map(*)) as no
 
 
 
-declare function ssrq-utils:renderCanton($key as xs:string, $data as map(*)) as node() {
+declare function ssrq-helper:renderCanton($key as xs:string, $data as map(*)) as node() {
     <tr>
             <td><div class="canton-img {concat('canton-', $data?img)}"></div></td>
             <td>{$key}</td>
-        {ssrq-utils:renderDepartment($data,$key)}
+        {ssrq-helper:renderDepartment($data,$key)}
     </tr>
 };
 
-declare function ssrq-utils:renderMergedCantons($data as map(*)) as node()* {
+declare function ssrq-helper:renderMergedCantons($data as map(*)) as node()* {
     let $keys :=  map:keys($data)
     return
     <tr>
@@ -181,11 +181,11 @@ declare function ssrq-utils:renderMergedCantons($data as map(*)) as node()* {
         <td>
             {$keys[not(. = 'order')] => string-join('/')}
         </td>
-        {ssrq-utils:renderDepartment($data($keys[1]),$keys[1])}
+        {ssrq-helper:renderDepartment($data($keys[1]),$keys[1])}
     </tr>
 };
 
-declare function ssrq-utils:renderDepartment($data as map(*), $dep as xs:string) as node()* {
+declare function ssrq-helper:renderDepartment($data as map(*), $dep as xs:string) as node()* {
     let $rootCollection := $config:data-root || '/' || $dep
     return
     if (xmldb:collection-available($rootCollection))
@@ -217,7 +217,7 @@ declare function ssrq-utils:renderDepartment($data as map(*), $dep as xs:string)
 : @param $collection canton as xs:string
 : @return one html:div container per volume
 :)
-declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $kanton as xs:string) as node()* {
+declare function ssrq-helper:listVolumes($node as node(), $model as map(*), $kanton as xs:string) as node()* {
     <div class="volumes">
     {
     for $volume in collection($config:data-root)/tei:TEI[@type = 'volinfo'][matches(.//tei:seriesStmt/tei:idno[@type="machine"], '^\w+_' || $kanton)]
@@ -280,7 +280,7 @@ declare function ssrq-utils:listVolumes($node as node(), $model as map(*), $kant
 
 
 declare
-function ssrq-utils:render-work($node as node(), $model as map(*), $volume as xs:string?) as element(li)* {
+function ssrq-helper:render-work($node as node(), $model as map(*), $volume as xs:string?) as element(li)* {
     for $doc in $model?page
     let $config := tpu:parse-pi($doc, ())
     let $relPath := config:get-identifier($doc) => replace($volume || '/', '')
@@ -308,7 +308,7 @@ declare
 %templates:default("start", 1)
 %templates:default("per-page", 10)
 %templates:default("sort", "date")
-    function ssrq-utils:load-works($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $start as xs:int, $per-page as xs:int, $sort as xs:string?) as map(*) {
+    function ssrq-helper:load-works($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $start as xs:int, $per-page as xs:int, $sort as xs:string?) as map(*) {
         let $doc-list := doc-list:get($volume)
         let $documents := collection($config:data-root)//tei:idno[text() = ($doc-list => subsequence($start, $per-page))] ! root(.)
         return
@@ -323,7 +323,7 @@ declare
 :
 : @return html:ul
 :)
-declare function ssrq-utils:browse($node as node(), $model as map(*)) as element(ul) {
+declare function ssrq-helper:browse($node as node(), $model as map(*)) as element(ul) {
         <ul class="documents">
             {$model?page}
         </ul>
@@ -334,7 +334,7 @@ declare function ssrq-utils:browse($node as node(), $model as map(*)) as element
 :
 : @return $node as node()
 :)
-declare function ssrq-utils:browseUp($node as node(), $model as map(*), $kanton as xs:string) as node() {
+declare function ssrq-helper:browseUp($node as node(), $model as map(*), $kanton as xs:string) as node() {
     element { node-name($node) } {
         attribute href {'?kanton=' || $kanton},
         $node/node()
@@ -343,7 +343,7 @@ declare function ssrq-utils:browseUp($node as node(), $model as map(*), $kanton 
 
 
 
-declare function ssrq-utils:linkPagination($collection as xs:string, $volume as xs:string, $start) {
+declare function ssrq-helper:linkPagination($collection as xs:string, $volume as xs:string, $start) {
    let $link := '?kanton=' || $collection || '&amp;volume=' || $volume || '&amp;start=' || $start
    return $link
 };
@@ -360,7 +360,7 @@ declare
     %templates:default("per-page", 10)
     %templates:default("min-hits", 0)
     %templates:default("max-pages", 10)
-function ssrq-utils:paginate($node as node(), $model as map(*), $key as xs:string, $start as xs:int, $per-page as xs:int, $min-hits as xs:int,
+function ssrq-helper:paginate($node as node(), $model as map(*), $key as xs:string, $start as xs:int, $per-page as xs:int, $min-hits as xs:int,
     $max-pages as xs:int, $kanton as xs:string, $volume as xs:string) {
     if (($min-hits < 0 or $model($key) >= $min-hits) and $model($key) != $per-page) then
         element { node-name($node) } {
@@ -377,9 +377,9 @@ function ssrq-utils:paginate($node as node(), $model as map(*), $key as xs:strin
                     </li>
                 ) else (
                     <li>
-                        <a href="{ssrq-utils:linkPagination($kanton, $volume, 1)}"><i class="glyphicon glyphicon-fast-backward"/></a>
+                        <a href="{ssrq-helper:linkPagination($kanton, $volume, 1)}"><i class="glyphicon glyphicon-fast-backward"/></a>
                     </li>,
-                    <li><a href="{ssrq-utils:linkPagination($kanton, $volume, max( ($start - $per-page, 1 ) ))}"><i class="glyphicon glyphicon-backward"/>
+                    <li><a href="{ssrq-helper:linkPagination($kanton, $volume, max( ($start - $per-page, 1 ) ))}"><i class="glyphicon glyphicon-backward"/>
                        </a></li>
                 ),
                 let $startPage := xs:integer(ceiling($start div $per-page))
@@ -389,17 +389,17 @@ function ssrq-utils:paginate($node as node(), $model as map(*), $key as xs:strin
                 for $i in $lowerBound to $upperBound
                 return
                     if ($i = ceiling($start div $per-page)) then
-                        <li class="active"><a href="{ssrq-utils:linkPagination($kanton, $volume, max( (($i - 1) * $per-page + 1, 1) ))}">{$i}</a></li>
+                        <li class="active"><a href="{ssrq-helper:linkPagination($kanton, $volume, max( (($i - 1) * $per-page + 1, 1) ))}">{$i}</a></li>
                     else
                         let $page := max((($i - 1) * $per-page + 1, 1))
                         return
-                        <li><a href="{ssrq-utils:linkPagination($kanton, $volume, $page)}">{$i}</a></li>,
+                        <li><a href="{ssrq-helper:linkPagination($kanton, $volume, $page)}">{$i}</a></li>,
                 if ($start + $per-page < $model($key)) then (
                     <li>
-                        <a href="{ssrq-utils:linkPagination($kanton, $volume,$start + $per-page)}"><i class="glyphicon glyphicon-forward"/></a>
+                        <a href="{ssrq-helper:linkPagination($kanton, $volume,$start + $per-page)}"><i class="glyphicon glyphicon-forward"/></a>
                     </li>,
                     <li>
-                        <a href="{ssrq-utils:linkPagination($kanton, $volume, max( (($count - 1) * $per-page + 1, 1)))}"><i class="glyphicon glyphicon-fast-forward"/></a>
+                        <a href="{ssrq-helper:linkPagination($kanton, $volume, max( (($count - 1) * $per-page + 1, 1)))}"><i class="glyphicon glyphicon-fast-forward"/></a>
                     </li>
                 ) else (
                     <li class="disabled">
@@ -423,7 +423,7 @@ function ssrq-utils:paginate($node as node(), $model as map(*), $key as xs:strin
 : @param $volume the current volume inside a canton
 : @return total count inside a html:a
 :)
-declare function ssrq-utils:hits($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string) {
+declare function ssrq-helper:hits($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string) {
        <a href="?kanton={$kanton}&amp;volume={$volume}&amp;per-page={$model?total}">{$model?total}</a>
 };
 
@@ -434,12 +434,12 @@ declare function ssrq-utils:hits($node as node(), $model as map(*), $kanton as x
 :
 :
 :)
-declare function ssrq-utils:renderHeadings($section as node()) as element(li)* {
+declare function ssrq-helper:renderHeadings($section as node()) as element(li)* {
     let $section-heading := $section/tei:head
     return
     if ($section-heading/@type = 'title' or $section-heading/@type = 'subtitle')
     then
-        let $subsections := $section => ssrq-utils:getSubsections()
+        let $subsections := $section => ssrq-helper:getSubsections()
         let $output := $section-heading/text()
         return
             <li>
@@ -451,7 +451,7 @@ declare function ssrq-utils:renderHeadings($section as node()) as element(li)* {
                             {
                             for $subsection in $subsections
                             return
-                                ssrq-utils:renderHeadings($subsection)
+                                ssrq-helper:renderHeadings($subsection)
                             }
                         </ul>
                     else ()
@@ -465,15 +465,15 @@ declare function ssrq-utils:renderHeadings($section as node()) as element(li)* {
 :
 : @return TOC as html:ul
 :)
-declare function ssrq-utils:printToc($node as node(), $model as map(*)) as node()* {
-    let $divs := $model?data => ssrq-utils:getSubsections()
+declare function ssrq-helper:printToc($node as node(), $model as map(*)) as node()* {
+    let $divs := $model?data => ssrq-helper:getSubsections()
     let $head := <h3><i18n:text key="toc"/></h3>
     return
         (templates:process($head, $model),
         <ul id="toc">
             {
             for $div in $divs
-            let $html := ssrq-utils:renderHeadings($div)
+            let $html := ssrq-helper:renderHeadings($div)
             return
                 $html
             }
@@ -486,6 +486,6 @@ declare function ssrq-utils:printToc($node as node(), $model as map(*)) as node(
 :
 : @return all tei:divs with tei:head as a direct child
 :)
-declare function ssrq-utils:getSubsections($root as node()) as node()* {
+declare function ssrq-helper:getSubsections($root as node()) as node()* {
     $root//tei:div[tei:head] except $root//tei:div[tei:head]//tei:div
 };

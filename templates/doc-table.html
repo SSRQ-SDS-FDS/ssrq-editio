@@ -1,6 +1,6 @@
 <section
   id="documents-panel"
-  data-template="ssrq-utils:load-works"
+  data-template="ssrq-helper:load-works"
   data-template-per-page="20"
 >
   <div
@@ -11,20 +11,20 @@
     <div class="flex-row-spaced">
     <ul
       class="pagination"
-      data-template="ssrq-utils:paginate"
+      data-template="ssrq-helper:paginate"
       data-template-per-page="20"
       data-template-max-pages="5"
       data-template-min-hits="21"
     />
     <h5>
       <span class="result-count">
-        <a data-template="ssrq-utils:hits"/>
+        <a data-template="ssrq-helper:hits"/>
         <i18n:text key="found"
       /></span>
     </h5>
     </div>
     <button class="back-button">
-      <a data-template="ssrq-utils:browseUp">
+      <a data-template="ssrq-helper:browseUp">
         <i class="material-icons">arrow_upward</i> <i18n:text key="back-up"
       /></a>
     </button>
@@ -33,9 +33,9 @@
     <div class="col-md-12">
       <div class="row">
         <div class="col-md-12" id="documents">
-          <div data-template="ssrq-utils:cache-store-retrieve" data-template-prefix="docs">
+          <div data-template="ssrq-helper:cache-store-retrieve" data-template-prefix="docs">
             <ul class="documents">
-              <li data-template="ssrq-utils:render-work"/>
+              <li data-template="ssrq-helper:render-work"/>
             </ul>
           </div>
         </div>
