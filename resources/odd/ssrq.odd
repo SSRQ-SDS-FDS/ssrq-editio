@@ -1329,6 +1329,11 @@
                     <model output="latex" behaviour="block">
                         <pb:template>[[content]]</pb:template>
                     </model>
+                    <model predicate="ancestor::back or ancestor::summary" behaviour="paragraph" useSourceRendition="true">
+                        <outputRendition>
+                            text-align: justify;
+                        </outputRendition>
+                    </model>
                     <model behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="head" mode="change">
