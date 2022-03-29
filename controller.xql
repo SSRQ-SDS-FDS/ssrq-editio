@@ -61,7 +61,7 @@ else if(contains($exist:path, "/api")) then
 else if (ends-with($exist:resource, ".xql")) then (
     login:set-user($config:login-domain, (), false()),
     <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-        <forward url="{$exist:controller}{utils:path-concat-safe(('/modules/pub', substring-after($exist:path, '/modules/'))}"/>
+        <forward url="{$exist:controller}{utils:path-concat-safe(('/modules/pub', substring-after($exist:path, '/modules/')))}"/>
         <cache-control cache="no"/>
     </dispatch>
 ) else if ($logout or $login) then
