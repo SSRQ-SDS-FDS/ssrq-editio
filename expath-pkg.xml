@@ -1,4 +1,4 @@
-<package xmlns="http://expath.org/ns/pkg" name="http://ssrq-sds-fds.ch/exist/apps/ssrq" abbrev="ssrq" version="6.7.7-rc1" spec="1.0">
+<package xmlns="http://expath.org/ns/pkg" name="http://ssrq-sds-fds.ch/exist/apps/ssrq" abbrev="ssrq" version="6.7.7-rc2" spec="1.0">
     <title>SSRQ online · SDS online · FDS online</title>
     <dependency package="http://www.functx.com"/>
     <dependency package="http://existsolutions.com/apps/tei-publisher-lib"/>

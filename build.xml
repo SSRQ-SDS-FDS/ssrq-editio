@@ -7,6 +7,7 @@
     <property name="build.dir" value="build"/>
     <property name="env" value="prod"/>
     <property name="cache" value="true"/>
+    <property name="excludes" value="${build.dir}/** _scripts/** README.md build.xml .existdb.json node_modules/** resources/scss/** transform/**"/>
 
     <!-- Guard clause to check the "env" variable -->
     <fail message="Wrong &quot;env&quot; variable. Set it to &quot;dev&quot; or &quot;prod&quot;." >
@@ -25,12 +26,12 @@
     </target>
 
     <target name="dev" depends="clean,set-env,style.css">
-        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${build.dir}/** _scripts/** README.md build.xml .existdb.json node_modules/** resources/scss/** transform/**"/>
+        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${excludes}"/>
         <delete file="env.xml"/>
     </target>
 
     <target name="prod" depends="clean,set-env,style.css">
-        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${build.dir}/** _scripts/** README.md build.xml .existdb.json node_modules/** resources/scss/** transform/** test/** modules/regenerate.xql"/>
+        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${excludes} test/** modules/lib/regenerate.xql"/>
         <delete file="env.xml"/>
     </target>
 

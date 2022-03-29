@@ -48,6 +48,6 @@ declare function local:generate-code($collection as xs:string) {
 xmldb:create-collection($target, "transform"),
 sm:chown(xs:anyURI($target || "/transform"), "ssrq"),
 sm:chgrp(xs:anyURI($target || "/transform"), "tei"),
-sm:chmod(xs:anyURI($target || "/modules/lib/upload.xql"), "rwsr-xr-x"),
+sm:chmod(xs:anyURI($target || "/modules/pub/upload.xql"), "rwsr-xr-x"),
 (if (cache:create($config-data:CACHE, map{})) then () else cache:clear($config-data:CACHE)),
 local:generate-code($target)

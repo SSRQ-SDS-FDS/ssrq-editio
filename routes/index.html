@@ -85,7 +85,7 @@
               }
               $('#fileupload')
                 .fileupload({
-                  url: 'modules/lib/upload.xql',
+                  url: 'modules/upload.xql',
                   dataType: 'json',
                   done: function (e, data) {
                     $.each(data.result.files, function (index, file) {
