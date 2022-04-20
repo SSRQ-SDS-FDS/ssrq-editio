@@ -168,6 +168,8 @@ declare variable $config:odd-root := utils:path-concat-safe(($config:app-root, "
 
 declare variable $config:schema-odd := doc(utils:path-concat-safe(($config:data-root, "misc/TEI_Schema_SSRQ.odd")))/*;
 
+declare variable $config:translations := doc(utils:path-concat-safe(($config:data-root, "misc/translations.xml")))/*;
+
 declare variable $config:abbr := doc(utils:path-concat-safe(($config:data-root, "misc/abbr.xml")))/*;
 
 declare variable $config:partners := doc(utils:path-concat-safe(($config:data-root, "misc/partners.xml")))/*;

@@ -77,12 +77,12 @@ declare function pmf:label($id as xs:string?, $upper as xs:boolean, $plural as x
     if ($id) then
         let $label :=
             if ($plural > 1) then
-                if ($config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang][@type="plural"]) then
-                    $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang][@type="plural"]/text()
+                if ($config:translations//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang][@type="plural"]) then
+                    $config:translations//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang][@type="plural"]/text()
                 else
-                    $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang][1]/text()
+                    $config:translations//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang][1]/text()
             else
-                $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang][1]   (: doesn't work for <hi rend="sup">e</hi>, just returns 'e' :)
+                $config:translations//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident = $id]/tei:desc[@xml:lang = $lang][1]   (: doesn't work for <hi rend="sup">e</hi>, just returns 'e' :)
         return
             if ($label) then
                 if (count($label) > 1) then
@@ -261,7 +261,7 @@ declare function pmf:format-duration($duration as xs:string) {
 
 declare function pmf:get-duration-label($name as xs:string, $quantity as xs:int) {
     let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
-    let $val := $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident=$name]
+    let $val := $config:translations//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident=$name]
     return
         if ($val) then
             let $label :=

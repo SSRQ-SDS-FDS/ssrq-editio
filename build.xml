@@ -26,12 +26,12 @@
     </target>
 
     <target name="dev" depends="clean,set-env,style.css">
-        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${excludes}"/>
+        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${excludes} .idea"/>
         <delete file="env.xml"/>
     </target>
 
     <target name="prod" depends="clean,set-env,style.css">
-        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${excludes} test/** modules/lib/regenerate.xql"/>
+        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${excludes} test/** modules/lib/regenerate.xql .idea"/>
         <delete file="env.xml"/>
     </target>
 
