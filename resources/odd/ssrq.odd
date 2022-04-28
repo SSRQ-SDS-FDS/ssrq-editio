@@ -227,6 +227,9 @@
                         </outputRendition>
                     </model>
                 </elementSpec>
+                <elementSpec ident="licence" mode="change">
+                    <model behaviour="omit"/>
+                </elementSpec>
                 <elementSpec ident="signed" mode="change">
                     <model behaviour="block">
                         <param name="content" value="('[', ec:label('signed'), ec:punct(':', false()), '] ', .)"/>
