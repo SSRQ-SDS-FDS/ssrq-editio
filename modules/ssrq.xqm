@@ -595,7 +595,7 @@ declare
 function app:display-data($node as node(), $model as map(*), $mode as xs:string?) {
     for $data in $model?data
       return
-    $pm-config:web-transform($data, map { "root": $data, "mode": $mode }, $config:odd)
+    $pm-config:web-transform($data, map { "root": $data, "mode": $mode, "lang": (session:get-attribute('ssrq.lang'), 'de')[1] }, $config:odd)
 
 };
 

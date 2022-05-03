@@ -1213,7 +1213,7 @@
                     <model behaviour="omit" predicate="not(idno/text())"/>
                     <modelSequence>
                         <model behaviour="listItem">
-                            <param name="content" value="idno"/>
+                            <param name="content" value="idno[@xml:lang = $parameters?lang]"/>
                         </model>
                         <model behaviour="listItem">
                             <param name="content" value="altIdentifier/idno"/>
