@@ -1082,7 +1082,7 @@
                     </model>
                     <model predicate="del/gap and add" behaviour="alternote">
                         <param name="content" value="add"/>
-                        <param name="alternate" value="(ec:label('corr'), ' ', ec:translate(add/@place, 0, 'lowercase'), ', ', ec:label('subst-del-gap', false()))"/>
+                        <param name="alternate" value="(ec:label('corr'), ' ', ec:translate(add/@place, 0, 'lowercase'), ', ', ec:translate(del/@rend, 0, 'lowercase'))"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="add[@hand='later hand'] and del[@hand='later hand']" behaviour="alternote" cssClass="text-critical">
@@ -1168,7 +1168,7 @@
                     </model>
                     <model predicate="@type" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('date'), ' ', ec:translate(@type, 0, ()))"/>
+                        <param name="alternate" value="(ec:label('date'), ec:colon(), ec:translate(@type, 0, ()))"/>
                     </model>
                     <model predicate="text()" behaviour="inline" cssClass="text-critical"/>
                 </elementSpec>
