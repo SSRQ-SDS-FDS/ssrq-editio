@@ -116,19 +116,27 @@ declare function tests:count-docs() as map(*)* {
 };
 
 declare function tests:cache-handling() as map(*)* {
-    for $fragment in ('/?kanton=SG', '/?kanton=SG&amp;volume=SG_III_4&amp;start=41', '/NE/SDS_NE_3_002.xml?odd=ssrq.odd&amp;view=body')
-    let $clear := cache:clear('ssrq-cache')
-    return
-        map {
-            "name": "tests:cache-handling()",
-            "description": "Test if caching implementation is working for " || $fragment,
-            "exp": "element()",
-            "result":
-                        let $request := test-utils:fetch-get($tests:host || $fragment)
-                        let $key := cache:keys('ssrq-cache')[1]
-                        return
-                            cache:get('ssrq-cache', $key) => util:get-sequence-type()
+    if (xs:boolean($ssrq-helper:ENV//cache/text())) then
+        for $fragment in ('/?kanton=SG', '/?kanton=SG&amp;volume=SG_III_4&amp;start=41', '/NE/SDS_NE_3_002.xml?odd=ssrq.odd&amp;view=body')
+        let $clear := cache:clear('ssrq-cache')
+        return
+            map {
+                "name": "tests:cache-handling()",
+                "description": "Test if caching implementation is working for " || $fragment,
+                "exp": "element()",
+                "result":
+                            let $request := test-utils:fetch-get($tests:host || $fragment)
+                            let $key := cache:keys('ssrq-cache')[1]
+                            return
+                                cache:get('ssrq-cache', $key) => util:get-sequence-type()
             }
+    else
+        map {
+           "name": "tests:cache-handling()",
+            "description": "Test-fallback if caching is disabled",
+            "exp": "false()",
+            "result": false()
+        }
 
 };
 
