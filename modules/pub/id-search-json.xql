@@ -7,7 +7,7 @@ declare option output:method "json";
 declare option output:media-type "application/json";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
-import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common-extension" at "../ext-common.xqm";
+import module namespace common="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "../ext-common.xqm";
 
 let $id := substring(request:get-parameter('id', ''), 1, 9)    (: ignore variants :)
 
