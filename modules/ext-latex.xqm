@@ -3,7 +3,7 @@ xquery version "3.1";
 (:~
  : Extension functions for SSRQ.
  :)
-module namespace pmf="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-latex";
+module namespace ec-latex="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/latex";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
@@ -11,12 +11,12 @@ import module namespace latex="http://www.tei-c.org/tei-simple/xquery/functions/
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "ext-common.xqm";
 import module namespace functx="http://www.functx.com";
 
-declare function pmf:alternate($config as map(*), $node as node(), $class as xs:string+, $content, $default,
+declare function ec-latex:alternate($config as map(*), $node as node(), $class as xs:string+, $content, $default,
     $alternate) {
     latex:get-content($config, $node, $class, $default)
 };
 
-declare function pmf:alternote($config as map(*), $node as element(), $class as xs:string+, $content,
+declare function ec-latex:alternote($config as map(*), $node as element(), $class as xs:string+, $content,
     $label, $type, $alternate, $optional as map(*)) {
     let $nr := ec:increment-counter($type)
     let $enclose := $type = "text-critical" and matches($content, "\s")
@@ -47,7 +47,7 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
         )
 };
 
-declare function pmf:note($config as map(*), $node as node(), $class as xs:string+, $content as item()*, $place as xs:string?, $label, $type, $optional as map(*)) {
+declare function ec-latex:note($config as map(*), $node as node(), $class as xs:string+, $content as item()*, $place as xs:string?, $label, $type, $optional as map(*)) {
     if (not($config?skip-footnotes)) then
         switch($place)
             case "margin" return (
