@@ -3,7 +3,7 @@ xquery version "3.1";
 (:~
  : Shared extension functions for SSRQ.
  :)
-module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common";
+module namespace ec="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common-extension-extension";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace counters="http://www.tei-c.org/tei-simple/xquery/counters";
