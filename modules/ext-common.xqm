@@ -158,6 +158,44 @@ declare function ec:translate($attribute, $plural, $upper) {
         ()
 };
 
+(:~
+ : Return translation of an attribute value from the SSRQ-ODD-Schema.
+ :
+ : @error  ODD-schema part not supported
+ :
+ : @param  $attribute Current attribute context
+ : @param  $part The part in the schema
+ : @param  $use-plural Use the plural valu
+ : @param  $upper-case transform the result to uppercase
+ : @return Translated attribute value
+ :)
+declare function ec:translate($attribute as attribute(), $part as xs:string, $use-plural as xs:boolean, $to-uppercase as xs:boolean) as xs:string?  {
+    (
+        let $session-lang := (session:get-attribute("ssrq.lang"), "de")[1]
+        let $infos := map { "el": local-name($attribute/..), "attr": local-name($attribute), "val": $attribute/string()}
+        return
+            switch ($part)
+                case 'ssrq.datatypes'
+                    return
+                        let $valItem := $config:schema-odd//tei:dataSpec//tei:valItem[@ident=$infos?val]
+                        return
+                            if ($use-plural) then
+                                ($valItem/tei:desc[@xml:lang=$session-lang][@type="plural"]/string(), $valItem/tei:desc[@xml:lang=$session-lang][1]/string())[1]
+                            else
+                                $valItem/tei:desc[@xml:lang=$session-lang][1]/string()
+                case 'ssrq.elements'
+                    return
+                        let $valItem := $config:schema-odd//tei:elementSpec[@ident=$infos?el]//tei:attDef[@ident=$infos?attr]//tei:valItem[@ident=$infos?val]
+                        return
+                            if ($use-plural) then
+                                ($valItem/tei:desc[@xml:lang=$session-lang][@type="plural"]/string(), $valItem/tei:desc[@xml:lang=$session-lang][1]/string())[1]
+                            else
+                                $valItem/tei:desc[@xml:lang=$session-lang][1]/string()
+                default return error(xs:QName("ec:UnsupportedSchemaPart"))
+    )[$attribute]
+    ! (if (. and $to-uppercase) then upper-case(substring(.,1,1)) || substring(.,2) else .)
+};
+
 declare function ec:display-sigle($id as xs:string?) {
     let $components := tokenize($id, "_")
     return
