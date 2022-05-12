@@ -3,12 +3,12 @@ xquery version "3.1";
 (:~
  : Extension functions for SSRQ.
  :)
-module namespace pmf="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-web";
+module namespace ec-html="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-web";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 import module namespace html="http://www.tei-c.org/tei-simple/xquery/functions";
-import module namespace ec="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common-extension" at "ext-common.xqm";
+import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common at "ext-common.xqm";
 
 
 declare function pmf:link($config as map(*), $node as node(), $class as xs:string+, $content, $link, $target) {
