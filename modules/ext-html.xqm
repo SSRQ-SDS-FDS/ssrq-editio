@@ -8,7 +8,7 @@ module namespace pmf="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-web"
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 import module namespace html="http://www.tei-c.org/tei-simple/xquery/functions";
-import module namespace pmc="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xqm";
+import module namespace ec="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common-extension" at "ext-common.xqm";
 
 
 declare function pmf:link($config as map(*), $node as node(), $class as xs:string+, $content, $link, $target) {
@@ -54,14 +54,14 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
         else
             util:node-id($node)
     let $id := translate($nodeId, "-", "_")
-    let $nr := pmc:increment-counter($type)
+    let $nr := ec:increment-counter($type)
     let $alternate := $config?apply-children($config, $node, $alternate)
     let $breaks := if ($node => name() = 'subst' and $node[tei:lb or tei:pb]) then $config?apply-children($config, $node, $node/tei:lb | $node/tei:pb) else()
     let $prefix := $config?apply-children($config, $node, $optional?prefix)
     let $label :=
         switch($type)
             case "text-critical" return
-                pmc:footnote-label($nr)
+                ec:footnote-label($nr)
             default return
                 $nr
     let $enclose := $type = "text-critical" and matches($content, "\s") or $node/@type = 'keyword'
@@ -105,13 +105,13 @@ declare function pmf:mark($config as map(*), $node as element(), $class as xs:st
         else
             util:node-id($node)
     let $id := translate($nodeId, "-", "_")
-    let $nr := pmc:increment-counter($type)
+    let $nr := ec:increment-counter($type)
     let $alternate := $config?apply-children($config, $node, $alternate)
     let $prefix := $config?apply-children($config, $node, $optional?prefix)
     let $label :=
         switch($type)
             case "text-critical" return
-                pmc:footnote-label($nr)
+                ec:footnote-label($nr)
             default return
                 $nr
     let $enclose := $type = "text-critical" and matches($content, "\s") or $node/@type = 'keyword'
@@ -134,7 +134,7 @@ declare function pmf:mark($config as map(*), $node as element(), $class as xs:st
         <li class="footnote" id="fn:{$id}" value="{$nr}"
             type="{if ($type = 'text-critical') then 'a' else '1'}">
             <span class="fn-content">
-                {$prefix}{$alternate}{pmc:colon()}{$config?apply-children($config, $node, $node)}
+                {$prefix}{$alternate}{ec:colon()}{$config?apply-children($config, $node, $node)}
             </span>
             <a class="fn-back" href="#fnref:{$id}">↩</a>
         </li>
@@ -160,13 +160,13 @@ declare function pmf:note($config as map(*), $node as element(), $class as xs:st
                 else
                     util:node-id($node)
             let $id := translate($nodeId, "-", "_")
-            let $nr := pmc:increment-counter($type)
+            let $nr := ec:increment-counter($type)
             let $content := $config?apply-children($config, $node, $content)
             let $prefix := $config?apply-children($config, $node, $optional?prefix)
             let $n :=
                 switch($type)
                     case "text-critical" case "text-critical-start" return
-                        pmc:footnote-label($nr)
+                        ec:footnote-label($nr)
                     default return
                         $nr
             return (
@@ -263,7 +263,7 @@ declare function pmf:biblList($config as map(*), $node as element(), $class as x
                 for $div in $node/tei:div
                 return
                     <li>{if ($div/tei:listBibl/tei:head) then
-                        $div/tei:listBibl/tei:head/text() || pmc:colon()
+                        $div/tei:listBibl/tei:head/text() || ec:colon()
                         else ()} {string-join($div/tei:listBibl/tei:bibl/tei:idno, '; ')}</li>
 
             }

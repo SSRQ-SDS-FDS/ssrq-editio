@@ -166,7 +166,7 @@ declare variable $config:odd-normalized := "ssrq-norm.odd";
 
 declare variable $config:odd-root := utils:path-concat-safe(($config:app-root, "resources/odd"));
 
-declare variable $config:schema-odd := doc(utils:path-concat-safe(($config:data-root, "misc/TEI_Schema_SSRQ.odd")))/*;
+declare variable $config:schema-odd := collection(utils:path-concat-safe(($config:data-root, "misc/schema")))/*;
 
 declare variable $config:translations := doc(utils:path-concat-safe(($config:data-root, "misc/translations.xml")))/*;
 

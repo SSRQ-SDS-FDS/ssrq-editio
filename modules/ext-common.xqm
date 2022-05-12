@@ -3,7 +3,7 @@ xquery version "3.1";
 (:~
  : Shared extension functions for SSRQ.
  :)
-module namespace pmf="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common";
+module namespace ec="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common-extension-extension";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace counters="http://www.tei-c.org/tei-simple/xquery/counters";
@@ -13,27 +13,27 @@ import module namespace console="http://exist-db.org/xquery/console" at "java:or
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace i18n="http://exist-db.org/xquery/i18n";
 
-declare variable $pmf:COUNTER_TEXTCRITICAL := "text-critical-" || util:uuid();
-declare variable $pmf:COUNTER_NOTE := "note-" || util:uuid();
+declare variable $ec:COUNTER_TEXTCRITICAL := "text-critical-" || util:uuid();
+declare variable $ec:COUNTER_NOTE := "note-" || util:uuid();
 
-declare function pmf:prepare($config as map(*), $node as node()*) {
+declare function ec:prepare($config as map(*), $node as node()*) {
     (
-        counters:destroy($pmf:COUNTER_TEXTCRITICAL),
-        counters:destroy($pmf:COUNTER_NOTE),
-        counters:create($pmf:COUNTER_TEXTCRITICAL),
-        counters:create($pmf:COUNTER_NOTE)
+        counters:destroy($ec:COUNTER_TEXTCRITICAL),
+        counters:destroy($ec:COUNTER_NOTE),
+        counters:create($ec:COUNTER_TEXTCRITICAL),
+        counters:create($ec:COUNTER_NOTE)
     )[5]
 };
 
-declare function pmf:increment-counter($type as xs:string) {
+declare function ec:increment-counter($type as xs:string) {
     switch ($type)
         case "text-critical" case "text-critical-start" return
-            counters:increment($pmf:COUNTER_TEXTCRITICAL)
+            counters:increment($ec:COUNTER_TEXTCRITICAL)
         default return
-            counters:increment($pmf:COUNTER_NOTE)
+            counters:increment($ec:COUNTER_NOTE)
 };
 
-declare function pmf:scribe($scribe as attribute()?) {
+declare function ec:scribe($scribe as attribute()?) {
     if ($scribe) then
         if (starts-with($scribe, 'per')) then
             <span class="scribe" data-ref="{$scribe}"/>
@@ -41,15 +41,15 @@ declare function pmf:scribe($scribe as attribute()?) {
             let $nr := number($scribe)
             return
                 if ($nr = 1) then
-                    pmf:label('mainScribe', false()) || ' (' || codepoints-to-string(string-to-codepoints("A") + $nr - 1) || ')'
+                    ec:label('mainScribe', false()) || ' (' || codepoints-to-string(string-to-codepoints("A") + $nr - 1) || ')'
                 else
-                    pmf:label('secondaryScribe', false()) || ' (' || codepoints-to-string(string-to-codepoints("A") + $nr - 1) || ')'
+                    ec:label('secondaryScribe', false()) || ' (' || codepoints-to-string(string-to-codepoints("A") + $nr - 1) || ')'
     else
         ()
 };
 
 
-declare function pmf:span($content) {
+declare function ec:span($content) {
     <span class="description">{
         for $node in $content
         return
@@ -61,19 +61,19 @@ declare function pmf:span($content) {
     }</span>
 };
 
-declare function pmf:label($id as xs:string?) {
-    pmf:label($id, true())
+declare function ec:label($id as xs:string?) {
+    ec:label($id, true())
 };
 
-declare function pmf:label($id as xs:string?, $upper as xs:boolean) {
-    pmf:label($id, $upper, 0)
+declare function ec:label($id as xs:string?, $upper as xs:boolean) {
+    ec:label($id, $upper, 0)
 };
 
-declare function pmf:label($id as xs:string?, $upper as xs:boolean, $plural as xs:integer) {
-    pmf:label($id, $upper, $plural, (session:get-attribute("ssrq.lang"), "de")[1])
+declare function ec:label($id as xs:string?, $upper as xs:boolean, $plural as xs:integer) {
+    ec:label($id, $upper, $plural, (session:get-attribute("ssrq.lang"), "de")[1])
 };
 
-declare function pmf:label($id as xs:string?, $upper as xs:boolean, $plural as xs:integer, $lang as xs:string) {
+declare function ec:label($id as xs:string?, $upper as xs:boolean, $plural as xs:integer, $lang as xs:string) {
     if ($id) then
         let $label :=
             if ($plural > 1) then
@@ -97,7 +97,7 @@ declare function pmf:label($id as xs:string?, $upper as xs:boolean, $plural as x
         "[Missing label]"
 };
 
-declare function pmf:abbr($abbr as xs:string) {
+declare function ec:abbr($abbr as xs:string) {
     let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
     let $val := $config:abbr//tei:valItem[@ident=$abbr]
     return (
@@ -107,17 +107,17 @@ declare function pmf:abbr($abbr as xs:string) {
 };
 
 (:~ Doppelpunkt einfügen unter Berücksichtigung frz. Typographie :)
-declare function pmf:colon() {
-    pmf:punct(':', true())
+declare function ec:colon() {
+    ec:punct(':', true())
 };
 
 (:~ Strichpunkt einfügen unter Berücksichtigung frz. Typographie :)
-declare function pmf:semicolon() {
-    pmf:punct(';', true())
+declare function ec:semicolon() {
+    ec:punct(';', true())
 };
 
 (:~ Französische Typographie erfordert Leerzeichen vor best. Interpunktionszeichen :)
-declare function pmf:punct($char as xs:string, $spaceAfter as xs:boolean?) {
+declare function ec:punct($char as xs:string, $spaceAfter as xs:boolean?) {
     let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
     let $punct :=
         switch ($lang)
@@ -130,11 +130,11 @@ declare function pmf:punct($char as xs:string, $spaceAfter as xs:boolean?) {
             $punct
 };
 
-declare function pmf:translate($attribute) {
-    pmf:translate($attribute, 0, "uppercase")
+declare function ec:translate($attribute) {
+    ec:translate($attribute, 0, "uppercase")
 };
 
-declare function pmf:translate($attribute, $plural, $upper) {
+declare function ec:translate($attribute, $plural, $upper) {
     if ($attribute) then
         let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
         let $element-name := local-name($attribute/..)
@@ -158,19 +158,19 @@ declare function pmf:translate($attribute, $plural, $upper) {
         ()
 };
 
-declare function pmf:display-sigle($id as xs:string?) {
+declare function ec:display-sigle($id as xs:string?) {
     let $components := tokenize($id, "_")
     return
         $components[1] || " " || $components[2] || "/" || $components[3]
 };
 
-declare function pmf:get-canton($id as xs:string?) {
+declare function ec:get-canton($id as xs:string?) {
     let $components := tokenize($id, "_")
     return
         $components[2]
 };
 
-declare function pmf:format-id($id as xs:string?) {
+declare function ec:format-id($id as xs:string?) {
     let $temp  := replace($id, "^(.+?)_(\d{3}.*?|[IV]+)(?:_\d{1,2})?$", "$1 $2")
     let $parts := tokenize($temp)
     let $ssrq  := substring-before($parts[1], '_')
@@ -189,7 +189,7 @@ declare function pmf:format-id($id as xs:string?) {
         $ssrq || ' ' || $vol || ' ' || $id
 };
 
-declare function pmf:get-article-nr($id as xs:string?) {
+declare function ec:get-article-nr($id as xs:string?) {
     let $temp  := replace($id, "^(.+?)_(\d{3}.*?)(?:_\d{1,2})?$", "$1 $2")
     let $parts := tokenize($temp)
     let $nr    :=
@@ -202,11 +202,11 @@ declare function pmf:get-article-nr($id as xs:string?) {
     return $nr
 };
 
-declare function pmf:format-date($when as xs:string?) {
-    pmf:format-date($when, (session:get-attribute("ssrq.lang"), "de")[1])
+declare function ec:format-date($when as xs:string?) {
+    ec:format-date($when, (session:get-attribute("ssrq.lang"), "de")[1])
 };
 
-declare function pmf:format-date($when as xs:string?, $language as xs:string?) {
+declare function ec:format-date($when as xs:string?, $language as xs:string?) {
     if ($when) then
         text {
             try {
@@ -231,15 +231,15 @@ declare function pmf:format-date($when as xs:string?, $language as xs:string?) {
         ()
 };
 
-declare function pmf:format-duration($duration as xs:string) {
+declare function ec:format-duration($duration as xs:string) {
     try {
         let $duration := xs:duration($duration)
         let $components := (
-            pmf:get-duration-label("year", years-from-duration($duration)),
-            pmf:get-duration-label("month", months-from-duration($duration)),
-            pmf:get-duration-label("day", days-from-duration($duration)),
-            pmf:get-duration-label("hour", hours-from-duration($duration)),
-            pmf:get-duration-label("minute", minutes-from-duration($duration))
+            ec:get-duration-label("year", years-from-duration($duration)),
+            ec:get-duration-label("month", months-from-duration($duration)),
+            ec:get-duration-label("day", days-from-duration($duration)),
+            ec:get-duration-label("hour", hours-from-duration($duration)),
+            ec:get-duration-label("minute", minutes-from-duration($duration))
         )
         return
             string-join(
@@ -259,7 +259,7 @@ declare function pmf:format-duration($duration as xs:string) {
     }
 };
 
-declare function pmf:get-duration-label($name as xs:string, $quantity as xs:int) {
+declare function ec:get-duration-label($name as xs:string, $quantity as xs:int) {
     let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
     let $val := $config:translations//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident=$name]
     return
@@ -277,18 +277,18 @@ declare function pmf:get-duration-label($name as xs:string, $quantity as xs:int)
             map { $name: $quantity }
 };
 
-declare function pmf:footnote-label($nr as xs:int) {
-    string-join(reverse(pmf:footnote-label-recursive($nr)))
+declare function ec:footnote-label($nr as xs:int) {
+    string-join(reverse(ec:footnote-label-recursive($nr)))
 };
 
-declare function pmf:existsAdditionalSource($idno as xs:string) {
+declare function ec:existsAdditionalSource($idno as xs:string) {
     if (matches($idno, "_1$")) then
         true()
     else
         false()
 };
 
-declare function pmf:additionalSource($idno as xs:string) {
+declare function ec:additionalSource($idno as xs:string) {
     let $base := replace($idno, "^(.*)_1$", '$1')
     for $header in
         collection($config:data-root)//tei:teiHeader[matches(.//tei:seriesStmt/tei:idno, "^" || $base || "_\d+$")]
@@ -298,58 +298,58 @@ declare function pmf:additionalSource($idno as xs:string) {
             $header//tei:msDesc
 };
 
-declare function pmf:url($url as xs:string) {
+declare function ec:url($url as xs:string) {
     (: fix URL for LaTeX :)
     let $url := tokenize(functx:replace-multi($url, ('#', '%'), ('\\#', '\\%')))[1]
 
     return '\url{' || $url || '}'
 };
 
-declare function pmf:format-ssrq-author($author as node()*) {
+declare function ec:format-ssrq-author($author as node()*) {
 
     if (count($author) > 2) then
-        $author[1]/text() || ', ' || $author[2]/text() || ' ' || pmf:label('and', false()) || ' ' || $author[3]/text()
+        $author[1]/text() || ', ' || $author[2]/text() || ' ' || ec:label('and', false()) || ' ' || $author[3]/text()
     else if (count($author) = 2) then
-        $author[1]/text() || ' ' || pmf:label('and', false()) || ' ' || $author[2]/text()
+        $author[1]/text() || ' ' || ec:label('and', false()) || ' ' || $author[2]/text()
     else
         $author[1]/text()
 };
 
-declare function pmf:format-author($author as node()*) {
+declare function ec:format-author($author as node()*) {
     (: save typing in ssrq.odd, used in biblStruct :)
 
     if ($author) then
         if (count($author) > 2) then
-            string-join(($author[1], $author[2]), pmf:semicolon()) || ' et al.'
+            string-join(($author[1], $author[2]), ec:semicolon()) || ' et al.'
         else
-            string-join($author, pmf:semicolon())
+            string-join($author, ec:semicolon())
     else
         ()
 };
 
-declare function pmf:switch-name($name as node()*) {
+declare function ec:switch-name($name as node()*) {
     if ($name => contains(', ')) then
     substring-after($name, ', ') || ' ' || substring-before($name, ', ')
     else $name
 };
 
-declare function pmf:format-editor($editors as node()*) {
+declare function ec:format-editor($editors as node()*) {
     let $count := $editors => count()
     return
         if ($editors) then
             if ($count > 2 or $editors[last()] => matches('et[\.]?\sal')) then
                 ($editors !
-                (if(not(. => matches('et[\.]?\sal')) and (position() <= 2)) then pmf:switch-name(.) else()))
+                (if(not(. => matches('et[\.]?\sal')) and (position() <= 2)) then ec:switch-name(.) else()))
                  => string-join(', ') || ' et al.'
             else if ($count = 2) then
-                ($editors ! pmf:switch-name(.)) => string-join(' ' || pmf:label('and', false()) || ' ')
+                ($editors ! ec:switch-name(.)) => string-join(' ' || ec:label('and', false()) || ' ')
             else
-                pmf:switch-name($editors)
+                ec:switch-name($editors)
         else
             ()
 };
 
-declare function pmf:print-date($date as node()*) {
+declare function ec:print-date($date as node()*) {
     (: save typing in ssrq.odd :)
     let $date-string :=
         if ($date/@when) then
@@ -361,7 +361,7 @@ declare function pmf:print-date($date as node()*) {
             if (substring($date/@from, 1, 4) = substring($date/@to, 1, 4)) then
                 substring($date/@from, 1, 4)
             else
-                pmf:print-date-period(xs:int(substring($date/@from, 1, 4)), xs:int(substring($date/@to, 1, 4)))
+                ec:print-date-period(xs:int(substring($date/@from, 1, 4)), xs:int(substring($date/@to, 1, 4)))
         else if (substring($date/@from, 1, 4) = substring($date/@to, 1, 4)) then (: within the same year :)
             if (substring($date/@from, 6, 2) = substring($date/@to, 6, 2)) then (: within the same month :)
                 format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()) || ' – ' || format-date(xs:date($date/@to), '[D1]')
@@ -373,49 +373,49 @@ declare function pmf:print-date($date as node()*) {
             format-date(xs:date($date/@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())))
     let $old-style :=
         if ($date/@calendar='Julian') then
-            ' ' || pmf:label('old-style-abbr', false())
+            ' ' || ec:label('old-style-abbr', false())
         else
             ()
 
     return $date-string || $old-style
 };
 
-declare function pmf:print-date-period($from as xs:int, $to as xs:int) {
+declare function ec:print-date-period($from as xs:int, $to as xs:int) {
     let $century := $from idiv 100 + 1
     let $default := string-join(('ca. ', $from, ' – ', $to))
     return
         if (($to - $from = 99) and ($to mod 100 = 0)) then
-            string-join(($century, pmf:label('century-ordinal', false()), ' ', pmf:label('century-abbr', false())))
+            string-join(($century, ec:label('century-ordinal', false()), ' ', ec:label('century-abbr', false())))
         else if (($to - $from = 49) and ($to mod 50 = 0)) then
             switch ($to - $from idiv 100 * 100)
-                case  50 return string-join((pmf:label('first-female', false()), ' ', pmf:label('half-cent-abbr', false()), ' ', $century, pmf:label('century-ordinal', false()), ' ', pmf:label('century-abbr', false())))
-                case 100 return string-join((pmf:label('second-female', false()), ' ', pmf:label('half-cent-abbr', false()), ' ', $century, pmf:label('century-ordinal', false()), ' ', pmf:label('century-abbr', false())))
+                case  50 return string-join((ec:label('first-female', false()), ' ', ec:label('half-cent-abbr', false()), ' ', $century, ec:label('century-ordinal', false()), ' ', ec:label('century-abbr', false())))
+                case 100 return string-join((ec:label('second-female', false()), ' ', ec:label('half-cent-abbr', false()), ' ', $century, ec:label('century-ordinal', false()), ' ', ec:label('century-abbr', false())))
                 default return $default
         else if (($to - $from = 24) and ($to mod 25 = 0)) then
             switch ($to - $from idiv 100 * 100)
-                case  25 return string-join((pmf:label('first-male', false()), ' ', pmf:label('quarter-cent-abbr', false()), ' ', $century, pmf:label('century-ordinal', false()), ' ', pmf:label('century-abbr', false())))
-                case  50 return string-join((pmf:label('second-male', false()), ' ', pmf:label('quarter-cent-abbr', false()), ' ', $century, pmf:label('century-ordinal', false()), ' ', pmf:label('century-abbr', false())))
-                case  75 return string-join((pmf:label('third-male', false()), ' ', pmf:label('quarter-cent-abbr', false()), ' ', $century, pmf:label('century-ordinal', false()), ' ', pmf:label('century-abbr', false())))
-                case 100 return string-join((pmf:label('fourth-male', false()), ' ', pmf:label('quarter-cent-abbr', false()), ' ', $century, pmf:label('century-ordinal', false()), ' ', pmf:label('century-abbr', false())))
+                case  25 return string-join((ec:label('first-male', false()), ' ', ec:label('quarter-cent-abbr', false()), ' ', $century, ec:label('century-ordinal', false()), ' ', ec:label('century-abbr', false())))
+                case  50 return string-join((ec:label('second-male', false()), ' ', ec:label('quarter-cent-abbr', false()), ' ', $century, ec:label('century-ordinal', false()), ' ', ec:label('century-abbr', false())))
+                case  75 return string-join((ec:label('third-male', false()), ' ', ec:label('quarter-cent-abbr', false()), ' ', $century, ec:label('century-ordinal', false()), ' ', ec:label('century-abbr', false())))
+                case 100 return string-join((ec:label('fourth-male', false()), ' ', ec:label('quarter-cent-abbr', false()), ' ', $century, ec:label('century-ordinal', false()), ' ', ec:label('century-abbr', false())))
                 default return $default
         else if (($to - $from = 20) and ($from mod 100 = 40)) then
-            string-join((pmf:label('mid-cent-abbr', false()), ' ', $century, '. ', pmf:label('century-abbr', false())))
+            string-join((ec:label('mid-cent-abbr', false()), ' ', $century, '. ', ec:label('century-abbr', false())))
         else
             $default
 };
 
-declare %private function pmf:footnote-label-recursive($nr as xs:int) {
+declare %private function ec:footnote-label-recursive($nr as xs:int) {
     if ($nr > 0) then
         let $nr := $nr - 1
         return (
             codepoints-to-string(string-to-codepoints("a") + $nr mod 26),
-            pmf:footnote-label-recursive($nr div 26)
+            ec:footnote-label-recursive($nr div 26)
         )
     else
         ()
 };
 
-declare function pmf:persName-list($namen as element(tei:persName)*) {
+declare function ec:persName-list($namen as element(tei:persName)*) {
     if (count($namen) > 1) then (
         string-join(subsequence($namen, 1, count($namen) -1), ', '),
         (:~
@@ -427,7 +427,7 @@ declare function pmf:persName-list($namen as element(tei:persName)*) {
         $namen
 };
 
-declare function pmf:heading-id($head as node()) {
+declare function ec:heading-id($head as node()) {
     let $group := $head/ancestor::tei:group/preceding-sibling::tei:group => count() + 1
     let $n := if ($head/@n) then $head/@n/data(.) => replace('\.', '-')
             else if (not($head/@title)) then $head/ancestor::tei:div/preceding-sibling::tei:div => count() + 1
@@ -436,11 +436,11 @@ declare function pmf:heading-id($head as node()) {
         ('section', $group, $n) => string-join('-')
 };
 
-declare function pmf:unique-id($node as node()) as xs:string {
+declare function ec:unique-id($node as node()) as xs:string {
     util:node-id($node)
 };
 
-declare function pmf:svg($config as map(*), $node as element(), $class as xs:string+, $content as node()*) {
+declare function ec:svg($config as map(*), $node as element(), $class as xs:string+, $content as node()*) {
     let $collection := util:collection-name($node)
     let $svg := doc($collection || '/' ||  $node/tei:graphic/@url/data(.))
     return
@@ -457,11 +457,11 @@ declare function pmf:svg($config as map(*), $node as element(), $class as xs:str
         else <p>Sorry, could not load SVG</p>
 };
 
-declare function pmf:short-doc-info($idno as item()) as xs:string {
+declare function ec:short-doc-info($idno as item()) as xs:string {
     let $doc := doc(util:collection-name($idno) || '/' || $idno || '.xml')
     let $head := $doc//tei:sourceDesc/tei:msDesc/tei:head/text()
-    let $date := $doc//tei:teiHeader//tei:origDate => pmf:print-date()
-    return $head || ', ' || $date || ' (' || pmf:format-id($idno) || ')'
+    let $date := $doc//tei:teiHeader//tei:origDate => ec:print-date()
+    return $head || ', ' || $date || ' (' || ec:format-id($idno) || ')'
 };
 
 (:~
@@ -471,7 +471,7 @@ declare function pmf:short-doc-info($idno as item()) as xs:string {
 : @return the formated url as a string
 :
 :)
-declare function pmf:format-link($id as xs:string*) as xs:string* {
+declare function ec:format-link($id as xs:string*) as xs:string* {
     let $link-base := map {
         "national-bib": "http://permalink.snl.ch/bib/",
         "ssrq-old": "https://www.ssrq-sds-fds.ch/online/",
@@ -498,14 +498,14 @@ declare function pmf:format-link($id as xs:string*) as xs:string* {
 
 
 
-declare function pmf:render-title-with-hi($title as node()*, $mode as xs:string) {
+declare function ec:render-title-with-hi($title as node()*, $mode as xs:string) {
     let $titleRendition :=
     for $node in $title
     return
         typeswitch($node)
             case element(tei:title)
                 return
-                    pmf:render-title-with-hi($node/node(), $mode)
+                    ec:render-title-with-hi($node/node(), $mode)
             case element(tei:hi)
                 return
                     if ($mode = 'web')
@@ -513,28 +513,28 @@ declare function pmf:render-title-with-hi($title as node()*, $mode as xs:string)
                         switch ($node/@rend/data(.))
                             case 'sup'
                                 return
-                                    <sup>{pmf:render-title-with-hi($node/node(), $mode)}</sup>
+                                    <sup>{ec:render-title-with-hi($node/node(), $mode)}</sup>
                             case 'sub'
                                 return
-                                    <sub>{pmf:render-title-with-hi($node/node(), $mode)}</sub>
+                                    <sub>{ec:render-title-with-hi($node/node(), $mode)}</sub>
                             case 'italic'
                                 return
-                                    <span class="is-italic">{pmf:render-title-with-hi($node/node(), $mode)}</span>
+                                    <span class="is-italic">{ec:render-title-with-hi($node/node(), $mode)}</span>
                             default return
-                                    <span>{pmf:render-title-with-hi($node/node(), $mode)}</span>
+                                    <span>{ec:render-title-with-hi($node/node(), $mode)}</span>
                     else
                         switch ($node/@rend/data(.))
                             case 'sup'
                                 return
-                                   '\lss{' || pmf:render-title-with-hi($node/node(), $mode) || '}'
+                                   '\lss{' || ec:render-title-with-hi($node/node(), $mode) || '}'
                             case 'sub'
                                 return
-                                   '\textsubscript{' || pmf:render-title-with-hi($node/node(), $mode) || '}'
+                                   '\textsubscript{' || ec:render-title-with-hi($node/node(), $mode) || '}'
                             case 'italic'
                                 return
-                                    '\textit{' || pmf:render-title-with-hi($node/node(), $mode) || '}'
+                                    '\textit{' || ec:render-title-with-hi($node/node(), $mode) || '}'
                             default return
-                                    pmf:render-title-with-hi($node/node(), $mode)
+                                    ec:render-title-with-hi($node/node(), $mode)
             case text()
                 return
                     $node => replace(' : ', ' – ')
@@ -544,42 +544,42 @@ declare function pmf:render-title-with-hi($title as node()*, $mode as xs:string)
 };
 
 
-declare function pmf:parse-biblScope($node as node(), $part as xs:string) as xs:string? {
+declare function ec:parse-biblScope($node as node(), $part as xs:string) as xs:string? {
     if ($node//tei:biblScope => count() < 2 and $node//tei:pubPlace) then
         switch($part)
             case 'series'
                 return
                     if($node/tei:monogr/tei:imprint and $node/tei:monogr/tei:imprint/tei:biblScope[1] => string-length() > 0 and $node/tei:monogr/tei:imprint/tei:biblScope[1] => contains(',')) then
-                        ' ' || pmf:join-series($node/tei:monogr/tei:imprint/tei:biblScope)
+                        ' ' || ec:join-series($node/tei:monogr/tei:imprint/tei:biblScope)
                     else if ($node/tei:monogr/tei:biblScope and $node/tei:monogr/tei:biblScope[1] => string-length() > 0 and $node/tei:monogr/tei:biblScope[1] => contains(',')) then
-                        ' ' || pmf:join-series($node/tei:monogr/tei:biblScope)
+                        ' ' || ec:join-series($node/tei:monogr/tei:biblScope)
                     else ()
             case 'scope'
                 return
                     if ($node/tei:monogr/tei:imprint and $node/tei:monogr/tei:imprint/tei:biblScope[1] => string-length() > 0) then
-                        ', ' || pmf:join-scopes($node/tei:monogr/tei:imprint/tei:biblScope)
+                        ', ' || ec:join-scopes($node/tei:monogr/tei:imprint/tei:biblScope)
                     else if ($node/tei:monogr/tei:biblScope and $node/tei:monogr/tei:biblScope[1] => string-length() > 0) then
-                        ', ' || pmf:join-scopes($node/tei:monogr/tei:biblScope)
+                        ', ' || ec:join-scopes($node/tei:monogr/tei:biblScope)
                     else ()
             default return ()
     else if ($part = 'series') then
-        ' ' || ($node//tei:biblScope !  (.=> replace('[S|p]\.', pmf:label('page-abbr', false())))) => string-join('; ')
+        ' ' || ($node//tei:biblScope !  (.=> replace('[S|p]\.', ec:label('page-abbr', false())))) => string-join('; ')
     else ()
 };
 
-declare function pmf:join-series($series as node()*) as xs:string {
+declare function ec:join-series($series as node()*) as xs:string {
     let $strings := $series ! (. => replace(',?\s?[S|p]\.\s?\d*.?\d*.*', ''))
     return
         $strings => string-join('; ')
 };
 
-declare function pmf:join-scopes($scopes as node()*) as xs:string {
-    let $strings := $scopes ! (pmf:label('page-abbr', false()) || ' ' || . => replace('^.*[S|p]\. ([0-9]*-?[0-9]*.*)', '$1'))
+declare function ec:join-scopes($scopes as node()*) as xs:string {
+    let $strings := $scopes ! (ec:label('page-abbr', false()) || ' ' || . => replace('^.*[S|p]\. ([0-9]*-?[0-9]*.*)', '$1'))
     return
         $strings => string-join('; ')
 };
 
-declare function pmf:join-series-with-scope($series as node()*) as xs:string  {
+declare function ec:join-series-with-scope($series as node()*) as xs:string  {
     ($series ! ((./tei:title, ./tei:biblScope) => string-join(' ')))
      => string-join('; ') || ', '
 };

@@ -6,7 +6,7 @@ import module namespace templates="http://exist-db.org/xquery/templates" at "tem
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xqm";
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xqm";
-import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "/db/apps/ssrq/modules/ext-common.xqm";
+import module namespace ec="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common-extension" at "/db/apps/ssrq/modules/ext-common.xqm";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 import module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/search" at "ssrq-search.xqm";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xqm";
@@ -447,7 +447,7 @@ declare function app:idno($node as node(), $model as map(*)) {
     let $idno := $header/tei:fileDesc/tei:seriesStmt/tei:idno
     return
         app:show-if-exists($node, $idno, function() {
-            common:format-id($idno)
+            ec:format-id($idno)
         })
 };
 
@@ -467,14 +467,14 @@ declare function app:idno-popup($node as node(), $model as map(*)) {
     let $idno := $header/tei:seriesStmt/tei:idno
     let $stmtTitle := $header/tei:seriesStmt/tei:title/text()
     let $fileDescTitle := $header/tei:titleStmt/tei:title
-    let $link := "https://www.ssrq-sds-fds.ch/online/tei/" || common:get-canton($idno) || "/" || util:document-name($model?data)
+    let $link := "https://www.ssrq-sds-fds.ch/online/tei/" || ec:get-canton($idno) || "/" || util:document-name($model?data)
     return
         app:show-if-exists($node, $idno, function() {
             <span class="alternate">
-                <span class="id">{common:format-id($idno)} <i class="glyphicon glyphicon-info-sign"/></span>
+                <span class="id">{ec:format-id($idno)} <i class="glyphicon glyphicon-info-sign"/></span>
                 <span class="altcontent" xmlns:i18n="http://exist-db.org/xquery/i18n" popover-class="increase-popover-width">
                     <p>{$stmtTitle}, {$pm-config:web-transform($fileDescTitle, map { "root": $fileDescTitle, "view": "infopopup"}, $config:odd)}, <i18n:text key="by">von</i18n:text> {app:pers-names($header)}</p>
-                    <p><i18n:text key="zitation">Zitation:</i18n:text> <a href="{$link}">{common:format-id($idno)}</a></p>
+                    <p><i18n:text key="zitation">Zitation:</i18n:text> <a href="{$link}">{ec:format-id($idno)}</a></p>
                     <p><i18n:text key="lizenz">Lizenz:</i18n:text> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de">CC BY-NC-SA</a></p>
                 </span>
             </span>
@@ -489,7 +489,7 @@ declare function app:origDate($node as node(), $model as map(*)) {
     let $origPlace := if (exists($filiation/tei:origPlace)) then $filiation/tei:origPlace else $origin/tei:origPlace
     return
         app:show-if-exists($node, ($origDate/@when, $origDate/@from), function() {
-            replace(common:print-date($origDate), '\.$', '') || '. ' || string-join($origPlace, common:semicolon() || ' ')
+            replace(ec:print-date($origDate), '\.$', '') || '. ' || string-join($origPlace, ec:semicolon() || ' ')
         })
 };
 

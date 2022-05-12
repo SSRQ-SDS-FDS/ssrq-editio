@@ -14,7 +14,7 @@ import module namespace kwic="http://exist-db.org/xquery/kwic";
 import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "navigation.xqm";
 import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "ssrq.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xqm";
-import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xqm";
+import module namespace ec="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common-extension" at "ext-common.xqm";
 import module namespace intl="http://exist-db.org/xquery/i18n/templates" at "lib/i18n-templates.xqm";
 import module namespace functx="http://www.functx.com";
 import module namespace data-filters="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/filters" at "/db/apps/ssrq-data/modules/filters.xqm";
@@ -468,7 +468,7 @@ declare function query:view-kanton($work as element()) {
 };
 
 declare function query:view-idno($work as element()) {
-    query:get-ssrq-idno($work, ("machine")) => common:format-id()
+    query:get-ssrq-idno($work, ("machine")) => ec:format-id()
 };
 
 declare function query:view-origDate($work as element()) {
