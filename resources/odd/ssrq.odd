@@ -595,7 +595,7 @@
                 <elementSpec ident="space" mode="change">
                     <model behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="text{'...'}"/>
-                        <param name="alternate" value="(ec:label('gap-in-orig'), ' (' , @quantity , ' ', ec:translate(@unit, @quantity, false()), ')')"/>
+                        <param name="alternate" value="(ec:label('gap-in-orig'), ' (' , @quantity , ' ', ec:translate(@unit, @quantity > 1, false()), ')')"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                 </elementSpec>
