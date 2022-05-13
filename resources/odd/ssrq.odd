@@ -218,7 +218,7 @@
                     <model predicate="$parameters?view='introduction' and ends-with(./graphic/@url, 'svg')" behaviour="svg">
                     </model>
                     <model predicate="not(parent::label)" behaviour="inline">
-                        <param name="content" value="ec:translate(@type, 0, 'uppercase')"/>
+                        <param name="content" value="ec:translate(@type, false(), true())"/>
                         <outputRendition scope="before">
                             content: '[';
                         </outputRendition>
@@ -238,7 +238,7 @@
                 <elementSpec ident="choice" mode="change">
                     <model output="latex" predicate="sic/del and corr" behaviour="alternote">
                         <param name="content" value="corr"/>
-                        <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), '\textup{', normalize-space(string-join(sic//text())), '}', ', ', ec:translate(sic/del/@rend, 0, 'uppercase'), ec:colon(), '\textup{', sic/del//text(), '}')"/>
+                        <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), '\textup{', normalize-space(string-join(sic//text())), '}', ', ', ec:translate(sic/del/@rend, false(), true()), ec:colon(), '\textup{', sic/del//text(), '}')"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model output="latex" predicate="sic and corr" behaviour="alternote">
@@ -288,7 +288,7 @@
                     <!-- overridden by model for damage
                          <model predicate="parent::damage" behaviour="alternote" cssClass="text-critical">
                          <param name="content" value="."/>
-                         <param name="alternate" value="(ec:translate(parent::damage/@agent), ', ', ec:label('unclear-rdg', false()))"/>
+                         <param name="alternate" value="(ec:translate(parent::damage/@agent, false(), true()), ', ', ec:label('unclear-rdg', false()))"/>
                          <param name="type" value="'text-critical'"/>
                          </model>
                     -->
@@ -360,7 +360,7 @@
                     </model>
                     <model predicate="@calendar" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('origDate'), ec:colon(), ec:format-date(@when), ' (', ec:translate(@calendar, 0, ()), ')')"/>
+                        <param name="alternate" value="(ec:label('origDate'), ec:colon(), ec:format-date(@when), ' (', ec:translate(@calendar, false(), false()), ')')"/>
                     </model>
                     <model behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
@@ -373,18 +373,18 @@
                     <model predicate="parent::del" behaviour="inline"/>
                     <model predicate="@hand!='other hand'" behaviour="note">
                         <desc>Show text of add with popup and footnote</desc>
-                        <param name="prefix" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ec:translate(@hand, 0, 'lowercase'), ec:translate(@rend, 0, 'lowercase'), ec:translate(@type, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else (), ec:colon())))"/>
+                        <param name="prefix" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, false(), false()), ec:translate(@hand, false(), false()), ec:translate(@rend, false(), false()), ec:translate(@type, false(), false())), ' '), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else (), ec:colon())))"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model behaviour="alternote">
                         <desc>Show footnote only</desc>
-                        <param name="alternate" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ec:translate(@hand, 0, 'lowercase'), ec:translate(@rend, 0, 'lowercase'), ec:translate(@type, 0, 'lowercase')), ' '))), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else ())"/>
+                        <param name="alternate" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, false(), false()), ec:translate(@hand, false(), false()), ec:translate(@rend, false(), false()), ec:translate(@type, false(), false())), ' '))), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else ())"/>
                         <param name="type" value="'text-critical'"/>
                         <param name="content" value="."/>
                     </model>
                     <model output="latex" predicate="@type='catchword'" behaviour="omit"/>
                     <model predicate="@type='catchword'" behaviour="alternote">
-                        <param name="alternate" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ', ', ec:translate(@type, 0, 'lowercase'))))))"/>
+                        <param name="alternate" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, false(), false()), ', ', ec:translate(@type, false(), false()))))))"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                 </elementSpec>
@@ -392,35 +392,35 @@
                     <model predicate="parent::subst" behaviour="inline"/>
                     <model behaviour="note">
                         <desc>Show footnote only</desc>
-                        <param name="content" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ec:translate(@hand, 0, 'lowercase'), ec:translate(@rend, 0, 'lowercase')), ' '))), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else ())"/>
+                        <param name="content" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, false(), false()), ec:translate(@hand, false(), false()), ec:translate(@rend, false(), false())), ' '))), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else ())"/>
                         <param name="type" value="'text-critical-start'"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="del" mode="change">
                     <model predicate="ancestor::back//orig" behaviour="omit"/>
                     <model predicate="add/@type='catchword'" behaviour="note">
-                        <param name="prefix" value="(ec:label('del-add'), ' ', string-join((ec:translate(add/@place, 0, 'lowercase'), ', ', ec:translate(add/@type, 0, 'lowercase')), ''), ec:colon())"/>
+                        <param name="prefix" value="(ec:label('del-add'), ' ', string-join((ec:translate(add/@place, false(), false()), ', ', ec:translate(add/@type, false(), false())), ''), ec:colon())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="@hand='later hand' and not(parent::subst)" behaviour="alternote" cssClass="text-critical">
                         <desc>Show footnote only</desc>
-                        <param name="alternate" value="(if (@rend) then (ec:translate(@rend, 0, 'uppercase')) else (ec:label('del')), ' ', ec:translate(@hand, 0, 'lowercase'))"/>
+                        <param name="alternate" value="(if (@rend) then (ec:translate(@rend, false(), true())) else (ec:label('del')), ' ', ec:translate(@hand, false(), false()))"/>
                         <param name="type" value="'text-critical'"/>
                         <param name="content" value="."/>
                     </model>
                     <model predicate="add" behaviour="note">
-                        <param name="prefix" value="(ec:label('del-add'), ' ', string-join((ec:translate(add/@place, 0, 'lowercase'), ec:translate(add/@hand, 0, 'lowercase'), ec:translate(add/@rend, 0, 'lowercase'), ec:translate(add/@type, 0, 'lowercase')), ' '), ec:colon())"/>
+                        <param name="prefix" value="(ec:label('del-add'), ' ', string-join((ec:translate(add/@place, false(), false()), ec:translate(add/@hand, false(), false()), ec:translate(add/@rend, false(), false()), ec:translate(add/@type, false(), false())), ' '), ec:colon())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="parent::subst" behaviour="inline"/>
                     <model predicate="gap" behaviour="alternote">
                         <param name="type" value="'text-critical'"/>
-                        <param name="alternate" value="(ec:label(if (@rend and @rend='rubbing') then 'rubbing' else 'del-gap'), ' (', gap/@quantity, ' ', ec:translate(gap/@unit, gap/@quantity, ()), ')')"/>
+                        <param name="alternate" value="(ec:label(if (@rend and @rend='rubbing') then 'rubbing' else 'del-gap'), ' (', gap/@quantity, ' ', ec:translate(gap/@unit, gap/@quantity > 1, false()), ')')"/>
                         <param name="content" value="''"/>
                     </model>
                     <model predicate="unclear and @rend" behaviour="note">
                         <param name="type" value="'text-critical'"/>
-                        <param name="prefix" value="(ec:translate(@rend),', ', ec:label('unclear-rdg', false()), ec:colon())"/>
+                        <param name="prefix" value="(ec:translate(@rend, false(), true()),', ', ec:label('unclear-rdg', false()), ec:colon())"/>
                     </model>
                     <model predicate="unclear" behaviour="note">
                         <param name="type" value="'text-critical'"/>
@@ -428,13 +428,13 @@
                     </model>
                     <model predicate="@rend" behaviour="note">
                         <desc>Show text of del with popup and footnote</desc>
-                        <param name="prefix" value="(ec:translate(@rend, 0, 'uppercase'), if (@hand) then (' ', ec:translate(@hand, 0, 'lowercase')) else (), ec:colon())"/>
+                        <param name="prefix" value="(ec:translate(@rend, false(), true()), if (@hand) then (' ', ec:translate(@hand, false(), false())) else (), ec:colon())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="@hand" behaviour="note">
                         <desc>Show text of del with popup and footnote</desc>
                         <param name="type" value="'text-critical'"/>
-                        <param name="prefix" value="(ec:label('del'), ' ', ec:translate(@hand, 0, 'uppercase'), ec:colon())"/>
+                        <param name="prefix" value="(ec:label('del'), ' ', ec:translate(@hand, false(), true()), ec:colon())"/>
                     </model>
                     <model behaviour="note">
                         <desc>Show text of del with popup and footnote</desc>
@@ -444,11 +444,11 @@
                 </elementSpec>
                 <elementSpec ident="delSpan" mode="change">
                     <model predicate="@rend" behaviour="note">
-                        <param name="content" value="(ec:translate(@rend, 0, 'uppercase'), if (@hand) then (' ', ec:translate(@hand, 0, 'lowercase')) else ())"/>
+                        <param name="content" value="(ec:translate(@rend, false(), true()), if (@hand) then (' ', ec:translate(@hand, false(), false())) else ())"/>
                         <param name="type" value="'text-critical-start'"/>
                     </model>
                     <model behaviour="note">
-                        <param name="content" value="(ec:label('del'), if (@hand) then (' ', ec:translate(@hand, 0, 'lowercase')) else ())"/>
+                        <param name="content" value="(ec:label('del'), if (@hand) then (' ', ec:translate(@hand, false(), false())) else ())"/>
                         <param name="type" value="'text-critical-start'"/>
                     </model>
                 </elementSpec>
@@ -456,37 +456,37 @@
                     <model predicate="gap" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="'[...]'"/>
                         <param name="type" value="'text-critical'"/>
-                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ' (', gap/@quantity, ' ', ec:translate(gap/@unit, gap/@quantity, ()), ')')"/>
+                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()), ' (', gap/@quantity, ' ', ec:translate(gap/@unit, gap/@quantity > 1, false()), ')')"/>
                     </model>
                     <model predicate="unclear" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="unclear/node()"/>
                         <param name="type" value="'text-critical'"/>
-                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ', ', ec:label('unclear-rdg', false()))"/>
+                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()), ', ', ec:label('unclear-rdg', false()))"/>
                     </model>
                     <model predicate="supplied/@source" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="('[', supplied/node(), ']')"/>
                         <param name="type" value="'text-critical'"/>
-                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ', ', ec:label('supplied-after', false()), ' ', supplied/@source)"/>
+                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()), ', ', ec:label('supplied-after', false()), ' ', supplied/@source)"/>
                     </model>
                     <model predicate="supplied" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="('[', supplied/node(), ']')"/>
                         <param name="type" value="'text-critical'"/>
-                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ', ', ec:label('supplied', false()))"/>
+                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()), ', ', ec:label('supplied', false()))"/>
                     </model>
                     <model predicate="add" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="add/node()"/>
                         <param name="type" value="'text-critical'"/>
-                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ', ', ec:span((ec:label('add'), ' ', string-join((ec:translate(add/@place, 0, 'lowercase'), ec:translate(add/@hand, 0, 'lowercase'), ec:translate(add/@rend, 0, 'lowercase'), ec:translate(add/@type, 0, 'lowercase')), ' '))))"/>
+                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()), ', ', ec:span((ec:label('add'), ' ', string-join((ec:translate(add/@place, false(), false()), ec:translate(add/@hand, false(), false()), ec:translate(add/@rend, false(), false()), ec:translate(add/@type, false(), false())), ' '))))"/>
                     </model>
                     <model predicate="@agent" behaviour="alternote" cssClass="text-critical">
                         <param name="type" value="'text-critical'"/>
-                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()))"/>
+                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()))"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="damageSpan" mode="change">
                     <model predicate="@agent" behaviour="note">
                         <param name="type" value="'text-critical-start'"/>
-                        <param name="content" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()))"/>
+                        <param name="content" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()))"/>
                     </model>
                     <model behaviour="omit"/>
                 </elementSpec>
@@ -578,12 +578,12 @@
                     </model>
                     <model predicate="@rend!='sup' and @hand" behaviour="alternote">
                         <param name="content" value="."/>
-                        <param name="alternate" value="(ec:translate(@rend), ' ', ec:translate(@hand, 0, 'lowercase'))"/>
+                        <param name="alternate" value="(ec:translate(@rend, false(), true()), ' ', ec:translate(@hand, false(), false()))"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="@rend!='sup'" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="ec:translate(@rend)"/>
+                        <param name="alternate" value="ec:translate(@rend, false(), true())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <!--<model behaviour="alternate" cssClass="text-critical">
@@ -745,7 +745,7 @@
                     <model predicate="@period" behaviour="alternate" cssClass="text-critical">
                         <desc>Display time with given parameter in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('duration'), ec:colon(), ec:translate(@period, 0, ()))"/>
+                        <param name="alternate" value="(ec:label('duration'), ec:colon(), ec:translate(@period, false(), false()))"/>
                     </model>
                     <model predicate="@when" behaviour="alternate" cssClass="text-critical">
                         <desc>Display time with given parameter in tooltip and highlight text with color</desc>
@@ -772,12 +772,12 @@
                     <model predicate="(session:get-attribute('ssrq.lang'), 'de')[1]='de'" behaviour="alternate" cssClass="text-critical">
                         <desc>Display measurement with given parameters in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:translate(@type, 0, 'uppercase'), ec:colon(), @quantity, ' ', ec:translate(@origin, 0, 'lowercase'), ' ', ec:translate(@unit, @quantity, 'lowercase'), ' ', ec:translate(@commodity, 0, 'lowercase'))"/>
+                        <param name="alternate" value="(ec:translate(@type, false(), true()), ec:colon(), @quantity, ' ', ec:translate(@origin, false(), false()), ' ', ec:translate(@unit, @quantity, 'lowercase'), ' ', ec:translate(@commodity, false(), false()))"/>
                     </model>
                     <model predicate="(session:get-attribute('ssrq.lang'), 'de')[1]!='de'" behaviour="alternate" cssClass="text-critical">
                         <desc>Display measurement with given parameters in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:translate(@type, 0, 'uppercase'), ec:colon(), @quantity, ' ', ec:translate(@unit, @quantity, 'lowercase'), ' ', ec:translate(@commodity, 0, 'lowercase'), ' ', ec:translate(@origin, 0, 'lowercase'))"/>
+                        <param name="alternate" value="(ec:translate(@type, false(), true()), ec:colon(), @quantity, ' ', ec:translate(@unit, @quantity, 'lowercase'), ' ', ec:translate(@commodity, false(), false()), ' ', ec:translate(@origin, false(), false()))"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="pb" mode="change">
@@ -855,7 +855,7 @@
                     <model predicate="parent::choice" behaviour="inline"/>
                     <model predicate="@source and @reason" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="('[', ., ']')"/>
-                        <param name="alternate" value="(ec:translate(@reason, 0, 'uppercase'), ', ', ec:label('supplied-after', false()), ' ', @source)"/>
+                        <param name="alternate" value="(ec:translate(@reason, false(), true()), ', ', ec:label('supplied-after', false()), ' ', @source)"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="@source" behaviour="alternote" cssClass="text-critical">
@@ -865,7 +865,7 @@
                     </model>
                     <model predicate="@reason" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="('[', ., ']')"/>
-                        <param name="alternate" value="(ec:translate(@reason, 0, 'uppercase'), ', ', ec:label('supplied', false()))"/>
+                        <param name="alternate" value="(ec:translate(@reason, false(), true()), ', ', ec:label('supplied', false()))"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="@resp" behaviour="alternote" cssClass="text-critical">
@@ -876,7 +876,7 @@
                     <!-- overridden by model for damage
                          <model predicate="parent::damage and @source" behaviour="alternote" cssClass="text-critical">
                          <param name="content" value="."/>
-                         <param name="alternate" value="(ec:translate(parent::damage/@agent, 0, 'uppercase'), text{', '}, if (@reason) then text{ec:translate(@reason, 0, 'lowercase') || ', '} else (), ec:label('supplied-after', false()), ' ', @source)"/>
+                         <param name="alternate" value="(ec:translate(parent::damage/@agent, false(), true()), text{', '}, if (@reason) then text{ec:translate(@reason, false(), false()) || ', '} else (), ec:label('supplied-after', false()), ' ', @source)"/>
                          <param name="type" value="'text-critical'"/>
                          <outputRendition scope="before">
                          content:"[";
@@ -1046,7 +1046,7 @@
                 </elementSpec>
                 <elementSpec ident="ab" mode="change">
                     <model output="latex" behaviour="block">
-                        <param name="place" value="('[', string-join((ec:translate(@type, 0, 'lowercase'),ec:translate(@place, 0, 'lowercase'),ec:translate(@hand, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else (), ec:punct(':', false()), ']')"/>
+                        <param name="place" value="('[', string-join((ec:translate(@type, false(), false()),ec:translate(@place, false(), false()),ec:translate(@hand, false(), false())), ' '), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else (), ec:punct(':', false()), ']')"/>
                         <pb:template>
                             % \medskip
                             \noindent
@@ -1054,7 +1054,7 @@
                         </pb:template>
                     </model>
                     <model predicate="@place" behaviour="block" cssClass="ab">
-                        <param name="content" value="('[', string-join((ec:translate(@type, 0, 'lowercase'),ec:translate(@place, 0, 'lowercase'),ec:translate(@hand, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else (), ec:punct(':', false()), '] ', .)"/>
+                        <param name="content" value="('[', string-join((ec:translate(@type, false(), false()),ec:translate(@place, false(), false()),ec:translate(@hand, false(), false())), ' '), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else (), ec:punct(':', false()), '] ', .)"/>
                         <outputRendition>
                             font-size: 1.5rem;
                         </outputRendition>
@@ -1067,7 +1067,7 @@
                         <pb:template>\marginpar{\scriptsize\raggedright\hspace{0pt}[[content]]}</pb:template>
                     </model>
                     <model predicate="@type='keyword'" behaviour="alternote">
-                        <param name="alternate" value="(ec:label('marginal-note'), ' ', ec:translate(@place, 0, 'lowercase'), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else ())"/>
+                        <param name="alternate" value="(ec:label('marginal-note'), ' ', ec:translate(@place, false(), false()), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else ())"/>
                         <!--<param name="content" value="('/ ', .,  ' /')"/>-->
                         <param name="type" value="'text-critical'"/>
                         <outputRendition>
@@ -1082,24 +1082,24 @@
                     </model>
                     <model predicate="del/gap and add" behaviour="alternote">
                         <param name="content" value="add"/>
-                        <param name="alternate" value="(ec:label('corr'), ' ', ec:translate(add/@place, 0, 'lowercase'), ', ', ec:translate(del/@rend, 0, 'lowercase'))"/>
+                        <param name="alternate" value="(ec:label('corr'), ' ', ec:translate(add/@place, false(), false()), ', ', ec:translate(del/@rend, false(), false()))"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="add[@hand='later hand'] and del[@hand='later hand']" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="del"/>
-                        <param name="prefix" value="(ec:label('corr', true()), ' ', ec:translate(add/@hand, 0, 'lowercase'), ' ', ec:translate(add/@place, 0, 'lowercase'), ec:colon())"/>
+                        <param name="prefix" value="(ec:label('corr', true()), ' ', ec:translate(add/@hand, false(), false()), ' ', ec:translate(add/@place, false(), false()), ec:colon())"/>
                         <param name="alternate" value="add"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="add/@hand" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="add"/>
-                        <param name="prefix" value="(ec:label('corr', true()), ' ', ec:translate(add/@hand, 0, 'lowercase'), ' ', ec:translate(add/@place, 0, 'lowercase'), ', ', ec:label('replace', false()), ec:colon())"/>
+                        <param name="prefix" value="(ec:label('corr', true()), ' ', ec:translate(add/@hand, false(), false()), ' ', ec:translate(add/@place, false(), false()), ', ', ec:label('replace', false()), ec:colon())"/>
                         <param name="alternate" value="del"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="add" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="add"/>
-                        <param name="prefix" value="(ec:label('corr', true()), ' ', ec:translate(add/@place, 0, 'lowercase'), ', ', ec:label('replace', false()), ec:colon())"/>
+                        <param name="prefix" value="(ec:label('corr', true()), ' ', ec:translate(add/@place, false(), false()), ', ', ec:label('replace', false()), ec:colon())"/>
                         <param name="alternate" value="del"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
@@ -1136,15 +1136,15 @@
                     </model>
                     <model output="web" predicate="@when and @type" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('date'), ec:colon(), ec:format-date(@when), ' (', ec:translate(@type, 0, ()), ')')"/>
+                        <param name="alternate" value="(ec:label('date'), ec:colon(), ec:format-date(@when), ' (', ec:translate(@type, false(), false()), ')')"/>
                     </model>
                     <model output="web" predicate="@when and @calendar" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('date'), ec:colon(), ec:format-date(@when), ' (', ec:translate(@calendar, 0, ()), ')')"/>
+                        <param name="alternate" value="(ec:label('date'), ec:colon(), ec:format-date(@when), ' (', ec:translate(@calendar, false(), false()), ')')"/>
                     </model>
                     <model output="web" predicate="@when and @period" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('date'), ec:colon(), ec:translate(@period, 0, ()) || ', ' || ec:format-date(@when))"/>
+                        <param name="alternate" value="(ec:label('date'), ec:colon(), ec:translate(@period, false(), false()) || ', ' || ec:format-date(@when))"/>
                     </model>
                     <model output="web" predicate="@when" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
@@ -1156,7 +1156,7 @@
                     </model>
                     <model output="web" predicate="@period" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('duration'), ec:colon(), ec:translate(@period, 0, ()))"/>
+                        <param name="alternate" value="(ec:label('duration'), ec:colon(), ec:translate(@period, false(), false()))"/>
                     </model>
                     <model output="web" predicate="@dur[starts-with(., 'R/P')]" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
@@ -1168,7 +1168,7 @@
                     </model>
                     <model predicate="@type" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('date'), ec:colon(), ec:translate(@type, 0, ()))"/>
+                        <param name="alternate" value="(ec:label('date'), ec:colon(), ec:translate(@type, false(), false()))"/>
                     </model>
                     <model predicate="text()" behaviour="inline" cssClass="text-critical"/>
                 </elementSpec>
@@ -1271,7 +1271,7 @@
                     <model predicate="node() or @*" behaviour="inline">
                         <param name="content" value="(ec:label('surface'), ec:colon(), .)"/>
                     </model>
-                </elementSpec>
+                </elementSpec><foreign xml:lang="lat"></foreign>
                 <elementSpec ident="dimensions">
                     <model output="latex" predicate="@type = 'leaves' and (width/@quantity &gt; 0 or height/@quantity &gt; 0)" behaviour="inline">
                         <param name="content" value="(string-join((width/@quantity,height/@quantity), '\,×\,'), '~cm')"/>
@@ -1289,12 +1289,12 @@
                 <elementSpec ident="sealDesc">
                     <model output="latex" predicate="seal and seal/node() and count(seal) &gt; 1" behaviour="inline">
                         <param name="summary" value="(count(seal), ' ', ec:label('sigle', false(), count(seal)), ec:colon())"/>
-                        <param name="details" value="string-join(for $seal at $pos in seal return ($pos || '. ' || string-join(($seal/(persName|orgName)/text(), if ($seal/(persName|orgName)/text()) then ', ' else (), string-join(($seal/@nontei:material,$seal/@nontei:shape,$seal/@nontei:extent,$seal/@nontei:attachment,$seal/@nontei:condition) ! ec:translate(., 0, ()), ', ')))), ec:semicolon())"/>
+                        <param name="details" value="string-join(for $seal at $pos in seal return ($pos || '. ' || string-join(($seal/(persName|orgName)/text(), if ($seal/(persName|orgName)/text()) then ', ' else (), string-join(($seal/@nontei:material,$seal/@nontei:shape,$seal/@nontei:extent,$seal/@nontei:attachment,$seal/@nontei:condition) ! ec:translate(., false(), false()), ', ')))), ec:semicolon())"/>
                         <pb:template>[[summary]][[details]]</pb:template>
                     </model>
                     <model output="latex" predicate="seal and seal/node()" behaviour="inline">
                         <param name="summary" value="('1 ', ec:label('sigle'), ec:colon())"/>
-                        <param name="details" value="string-join((seal/(persName|orgName)/text(), if (seal/(persName|orgName)/text()) then ', ' else (), string-join((seal/@nontei:material,seal/@nontei:shape,seal/@nontei:extent,seal/@nontei:attachment,seal/@nontei:condition) ! ec:translate(., 0, ()), ', ')))"/>
+                        <param name="details" value="string-join((seal/(persName|orgName)/text(), if (seal/(persName|orgName)/text()) then ', ' else (), string-join((seal/@nontei:material,seal/@nontei:shape,seal/@nontei:extent,seal/@nontei:attachment,seal/@nontei:condition) ! ec:translate(., false(), false()), ', ')))"/>
                         <pb:template>[[summary]][[details]]</pb:template>
                     </model>
                     <modelSequence predicate="seal">
@@ -1313,7 +1313,7 @@
                 </elementSpec>
                 <elementSpec ident="seal">
                     <model behaviour="listItem">
-                        <param name="content" value="(persName|orgName, if ((persName|orgName)/text()) then ', ' else (), string-join((@nontei:material,@nontei:shape,@nontei:extent,@nontei:attachment,@nontei:condition) ! ec:translate(., 0, ()), ', '))"/>
+                        <param name="content" value="(persName|orgName, if ((persName|orgName)/text()) then ', ' else (), string-join((@nontei:material,@nontei:shape,@nontei:extent,@nontei:attachment,@nontei:condition) ! ec:translate(., false(), false()), ', '))"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="p" mode="change">
