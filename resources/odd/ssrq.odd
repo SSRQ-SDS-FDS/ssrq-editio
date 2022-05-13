@@ -595,7 +595,7 @@
                 <elementSpec ident="space" mode="change">
                     <model behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="text{'...'}"/>
-                        <param name="alternate" value="(ec:label('gap-in-orig'), ' (' , @quantity , ' ', ec:translate(@unit, @quantity, 'lowercase'), ')')"/>
+                        <param name="alternate" value="(ec:label('gap-in-orig'), ' (' , @quantity , ' ', ec:translate(@unit, @quantity, false()), ')')"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                 </elementSpec>
@@ -607,12 +607,12 @@
                     </model>
                     <model predicate="@reason='illegible'" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="text{'[...]'}"/>
-                        <param name="alternate" value="(ec:label('unreadable'), ' (' , @quantity , ' ', ec:translate(@unit, @quantity, 'lowercase'), ')')"/>
+                        <param name="alternate" value="(ec:label('unreadable'), ' (' , @quantity , ' ', ec:translate(@unit, @quantity > 1, false()), ')')"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="@reason='missing'" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="text{'[...]'}"/>
-                        <param name="alternate" value="(ec:label('missing'), ' (' , @quantity , ' ', ec:translate(@unit, @quantity, 'lowercase'), ')')"/>
+                        <param name="alternate" value="(ec:label('missing'), ' (' , @quantity , ' ', ec:translate(@unit, @quantity > 1, false()), ')')"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="@source" behaviour="alternote" cssClass="text-critical">
@@ -752,10 +752,14 @@
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('time'), ec:colon(), format-time(@when, '[H]:[m]'))"/>
                     </model>
-                    <model predicate="@dur" behaviour="alternate" cssClass="text-critical">
+                    <model output="web" predicate="@dur-iso[starts-with(., 'R/P')]" behaviour="alternate" cssClass="text-critical">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="(ec:label('repeated-duration'), ec:colon(), ec:format-duration(substring-after(@dur-iso, 'R/')))"/>
+                    </model>
+                    <model predicate="@dur-iso" behaviour="alternate" cssClass="text-critical">
                         <desc>Display time in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('duration'), ec:colon(), ec:format-duration(@dur))"/>
+                        <param name="alternate" value="(ec:label('duration'), ec:colon(), ec:format-duration(@dur-iso))"/>
                     </model>
                     <model predicate="@from and @to" behaviour="alternate" cssClass="text-critical">
                         <desc>Display a period of time in tooltip</desc>
@@ -772,12 +776,12 @@
                     <model predicate="(session:get-attribute('ssrq.lang'), 'de')[1]='de'" behaviour="alternate" cssClass="text-critical">
                         <desc>Display measurement with given parameters in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:translate(@type, false(), true()), ec:colon(), @quantity, ' ', ec:translate(@origin, false(), false()), ' ', ec:translate(@unit, @quantity, 'lowercase'), ' ', ec:translate(@commodity, false(), false()))"/>
+                        <param name="alternate" value="(ec:translate(@type, false(), true()), ec:colon(), @quantity, ' ', ec:translate(@origin, false(), false()), ' ', ec:translate(@unit, @quantity > 1, false()), ' ', ec:translate(@commodity, false(), false()))"/>
                     </model>
                     <model predicate="(session:get-attribute('ssrq.lang'), 'de')[1]!='de'" behaviour="alternate" cssClass="text-critical">
                         <desc>Display measurement with given parameters in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:translate(@type, false(), true()), ec:colon(), @quantity, ' ', ec:translate(@unit, @quantity, 'lowercase'), ' ', ec:translate(@commodity, false(), false()), ' ', ec:translate(@origin, false(), false()))"/>
+                        <param name="alternate" value="(ec:translate(@type, false(), true()), ec:colon(), @quantity, ' ', ec:translate(@unit, @quantity > 1, false()), ' ', ec:translate(@commodity, false(), false()), ' ', ec:translate(@origin, false(), false()))"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="pb" mode="change">
@@ -1158,13 +1162,13 @@
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('duration'), ec:colon(), ec:translate(@period, false(), false()))"/>
                     </model>
-                    <model output="web" predicate="@dur[starts-with(., 'R/P')]" behaviour="alternate" cssClass="text-critical">
+                    <model output="web" predicate="@dur-iso[starts-with(., 'R/P')]" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('repeated-duration'), ec:colon(), ec:format-duration(substring-after(@dur, 'R/')))"/>
+                        <param name="alternate" value="(ec:label('repeated-duration'), ec:colon(), ec:format-duration(substring-after(@dur-iso, 'R/')))"/>
                     </model>
-                    <model output="web" predicate="@dur" behaviour="alternate" cssClass="text-critical">
+                    <model output="web" predicate="@dur-iso" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('duration'), ec:colon(), ec:format-duration(@dur))"/>
+                        <param name="alternate" value="(ec:label('duration'), ec:colon(), ec:format-duration(@dur-iso))"/>
                     </model>
                     <model predicate="@type" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>

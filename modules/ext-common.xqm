@@ -140,7 +140,7 @@ declare function ec:punct($char as xs:string, $spaceAfter as xs:boolean?) {
  : @param  $upper-case transform the result to uppercase
  : @return Translated attribute value
  :)
-declare function ec:translate($attribute as attribute(), $use-plural as xs:boolean, $to-uppercase as xs:boolean) as xs:string? {
+declare function ec:translate($attribute as attribute()?, $use-plural as xs:boolean, $to-uppercase as xs:boolean) as xs:string? {
     ec:translate($attribute, (), $use-plural, $to-uppercase)
 };
 
@@ -155,7 +155,7 @@ declare function ec:translate($attribute as attribute(), $use-plural as xs:boole
  : @param  $upper-case transform the result to uppercase
  : @return Translated attribute value
  :)
-declare function ec:translate($attribute as attribute(), $part as xs:string?, $use-plural as xs:boolean, $to-uppercase as xs:boolean) as xs:string?  {
+declare function ec:translate($attribute as attribute()?, $part as xs:string?, $use-plural as xs:boolean, $to-uppercase as xs:boolean) as xs:string?  {
     (
         let $session-lang := (session:get-attribute("ssrq.lang"), "de")[1]
         let $infos := map { "el": local-name($attribute/..), "attr": local-name($attribute), "val": $attribute/string()}
@@ -263,16 +263,22 @@ declare function ec:format-date($when as xs:string?, $language as xs:string?) {
         ()
 };
 
-declare function ec:format-duration($duration as xs:string) {
+declare function ec:format-duration($duration as xs:string) as xs:string {
     try {
-        let $duration := xs:duration($duration)
-        let $components := (
-            ec:get-duration-label("year", years-from-duration($duration)),
-            ec:get-duration-label("month", months-from-duration($duration)),
-            ec:get-duration-label("day", days-from-duration($duration)),
-            ec:get-duration-label("hour", hours-from-duration($duration)),
-            ec:get-duration-label("minute", minutes-from-duration($duration))
-        )
+        let $duration := map {
+            "xs-dur": ($duration => replace('\d+W', ''))[matches($duration, '[YDHM]')],
+            "weeks": ($duration => replace('.*(\d+)W.*', '$1'))[$duration => contains('W')] ! (if (.) then xs:int(.) else 0)
+        }
+        let $components := if ($duration?xs-dur) then
+            (
+                ec:get-duration-label("year", years-from-duration($duration?xs-dur)),
+                ec:get-duration-label("month", months-from-duration($duration?xs-dur)),
+                ec:get-duration-label("week", $duration?weeks),
+                ec:get-duration-label("day", days-from-duration($duration?xs-dur)),
+                ec:get-duration-label("hour", hours-from-duration($duration?xs-dur)),
+                ec:get-duration-label("minute", minutes-from-duration($duration?xs-dur))
+            )
+        else (ec:get-duration-label("week", $duration?weeks))
         return
             string-join(
                 (
@@ -280,10 +286,7 @@ declare function ec:format-duration($duration as xs:string) {
                 let $key := $component => map:keys()
                 let $value := $component($key)
                 return
-                    if ($value > 0) then
-                        $value || " " || $key
-                    else
-                        ()
+                    ($value || " " || $key)[$value > 0]
                 ), " "
             )
     } catch * {
@@ -291,7 +294,7 @@ declare function ec:format-duration($duration as xs:string) {
     }
 };
 
-declare function ec:get-duration-label($name as xs:string, $quantity as xs:int) {
+declare function ec:get-duration-label($name as xs:string, $quantity as xs:int) as map(*) {
     let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
     let $val := $config:translations//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident=$name]
     return
