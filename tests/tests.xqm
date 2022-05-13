@@ -145,7 +145,7 @@ declare function tests:attribute-translation() as map(*)* {
     let $examples := (<dummy role="corrector"/>, <head xmlns="http://www.tei-c.org/ns/1.0" type="title"/>)
     let $cases := (
         ec:translate($examples[1]/@role, 'ssrq.datatypes', false(), false()),
-        ec:translate($examples[2]/@type, 'ssrq.elements', false(), false())
+        ec:translate($examples[2]/@type, (), false(), false())
     )
     let $exp := ('Korrektor', 'Haupttitel')
     for $case at $i in $cases

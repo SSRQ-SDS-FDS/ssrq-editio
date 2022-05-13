@@ -130,32 +130,18 @@ declare function ec:punct($char as xs:string, $spaceAfter as xs:boolean?) {
             $punct
 };
 
-declare function ec:translate($attribute) {
-    ec:translate($attribute, 0, "uppercase")
-};
-
-declare function ec:translate($attribute, $plural, $upper) {
-    if ($attribute) then
-        let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
-        let $element-name := local-name($attribute/..)
-        let $attribute-name := local-name($attribute)
-        let $value := $attribute/string()
-        let $label:=
-            if ($plural > 1) then
-                if ($config:schema-odd//tei:elementSpec[@ident=$element-name]//tei:attDef[@ident=$attribute-name]//tei:valItem[@ident=$value]/tei:desc[@xml:lang=$lang][@type="plural"]) then
-                    $config:schema-odd//tei:elementSpec[@ident=$element-name]//tei:attDef[@ident=$attribute-name]//tei:valItem[@ident=$value]/tei:desc[@xml:lang=$lang][@type="plural"]/string()
-                else
-                    $config:schema-odd//tei:elementSpec[@ident=$element-name]//tei:attDef[@ident=$attribute-name]//tei:valItem[@ident=$value]/tei:desc[@xml:lang=$lang][1]/string()
-            else
-                $config:schema-odd//tei:elementSpec[@ident=$element-name]//tei:attDef[@ident=$attribute-name]//tei:valItem[@ident=$value]/tei:desc[@xml:lang=$lang][1]/string()
-        return
-        switch ($upper)
-            case "uppercase"
-                return text{upper-case(substring($label,1,1)) || substring($label,2)}
-            default
-                return text{$label}
-    else
-        ()
+(:~
+ : Return translation of an attribute value, when the schema is unknown, from the SSRQ-ODD-Schema.
+ :
+ : @error  ODD-schema part not supported
+ :
+ : @param  $attribute Current attribute context
+ : @param  $use-plural Use the plural value
+ : @param  $upper-case transform the result to uppercase
+ : @return Translated attribute value
+ :)
+declare function ec:translate($attribute as attribute(), $use-plural as xs:boolean, $to-uppercase as xs:boolean) as xs:string? {
+    ec:translate($attribute, (), $use-plural, $to-uppercase)
 };
 
 (:~
@@ -165,16 +151,24 @@ declare function ec:translate($attribute, $plural, $upper) {
  :
  : @param  $attribute Current attribute context
  : @param  $part The part in the schema
- : @param  $use-plural Use the plural valu
+ : @param  $use-plural Use the plural value
  : @param  $upper-case transform the result to uppercase
  : @return Translated attribute value
  :)
-declare function ec:translate($attribute as attribute(), $part as xs:string, $use-plural as xs:boolean, $to-uppercase as xs:boolean) as xs:string?  {
+declare function ec:translate($attribute as attribute(), $part as xs:string?, $use-plural as xs:boolean, $to-uppercase as xs:boolean) as xs:string?  {
     (
         let $session-lang := (session:get-attribute("ssrq.lang"), "de")[1]
         let $infos := map { "el": local-name($attribute/..), "attr": local-name($attribute), "val": $attribute/string()}
+        let $resolved-part := if ($part) then
+                                $part
+                                else
+                                    if ($config:schema-odd//tei:elementSpec[@ident=$infos?el]//tei:attDef[@ident=$infos?attr][tei:dataType]) then
+                                        'ssrq.datatypes'
+                                    else
+                                        'ssrq.elements'
+
         return
-            switch ($part)
+            switch ($resolved-part)
                 case 'ssrq.datatypes'
                     return
                         let $valItem := $config:schema-odd//tei:dataSpec//tei:valItem[@ident=$infos?val]
