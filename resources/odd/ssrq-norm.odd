@@ -60,7 +60,7 @@
                     </model>
                     <model predicate="sic/del and corr" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="corr"/>
-                        <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), normalize-space(string-join(sic//text())), ', ', ec:translate(sic/del/@rend, 0, 'uppercase'), ec:colon(), sic/del//text())"/>
+                        <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), normalize-space(string-join(sic//text())), ', ', ec:translate(sic/del/@rend, false(), true()), ec:colon(), sic/del//text())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <modelSequence>
@@ -94,7 +94,7 @@
                 </elementSpec>
                 <elementSpec ident="add" mode="add">
                     <model predicate="@type='catchword'" behaviour="mark">
-                        <param name="alternate" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ', ', ec:translate(@type, 0, 'lowercase'))))))"/>
+                        <param name="alternate" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place,false(), false()), ', ', ec:translate(@type, false(), false()))))))"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                 </elementSpec>
