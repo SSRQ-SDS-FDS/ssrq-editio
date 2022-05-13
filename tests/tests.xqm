@@ -22,6 +22,7 @@ import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at
 import module namespace cache="http://exist-db.org/xquery/cache";
 import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
 import module namespace templates="http://exist-db.org/xquery/templates" at "../modules/templates.xqm";
+import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "../modules/ext-common.xqm";
 
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 
@@ -136,6 +137,24 @@ declare function tests:cache-handling() as map(*)* {
             "description": "Test-fallback if caching is disabled",
             "exp": "false()",
             "result": false()
+        }
+
+};
+
+declare function tests:attribute-translation() as map(*)* {
+    let $examples := (<dummy role="corrector"/>, <head xmlns="http://www.tei-c.org/ns/1.0" type="title"/>)
+    let $cases := (
+        ec:translate($examples[1]/@role, 'ssrq.datatypes', false(), false()),
+        ec:translate($examples[2]/@type, 'ssrq.elements', false(), false())
+    )
+    let $exp := ('Korrektor', 'Haupttitel')
+    for $case at $i in $cases
+    return
+        map {
+            "name": "tests:attribute-translation()",
+            "description": "Test the result of ec:translation()",
+            "exp": $exp[$i],
+            "result": $case
         }
 
 };
