@@ -35,8 +35,6 @@
     <msg key="browsing">Zeige</msg>
     <msg key="login-message">Bitte einloggen, um Dokumente hochzuladen!</msg>
     <msg key="contents">Inhalt</msg>
-    <msg key="previous-page">Vorherige Seite [Pfeil links auf der Tastatur]</msg>
-    <msg key="next-page">Nächste Seite [Pfeil rechts auf der Tastatur]</msg>
     <msg key="close">Schließen</msg>
     <msg key="generating-file">Erzeuge Datei...</msg>
     <msg key="download-message">Das Erzeugen einer Datei zum Download kann bis zu mehrere Minuten dauern. Bitte warten Sie. Das Fenster sollte sich automatisch schließen, sobald der Download beendet wurde.</msg>
@@ -132,4 +130,8 @@
     <msg key="pdfdummy">Gesamt-PDF herunterladen</msg>
     <msg key="back-up">Übergeordnetes Verzeichnis</msg>
     <msg key="toc">Inhaltsverzeichnis</msg>
+    <msg key="known">bekannt</msg>
+    <msg key="unknown">unbekannt</msg>
+    <msg key="existent">vorhanden</msg>
+    <msg key="nonexistent">nicht vorhanden</msg>
 </catalogue>

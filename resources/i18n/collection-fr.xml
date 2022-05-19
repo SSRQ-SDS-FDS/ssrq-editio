@@ -35,8 +35,6 @@
     <msg key="browsing">Parcourir</msg>
     <msg key="login-message">Merci de vous connecter avant d’uploader des documents !</msg>
     <msg key="contents">Contenus</msg>
-    <msg key="previous-page">Page précédente [flèche gauche du clavier]</msg>
-    <msg key="next-page">Page suivante [flèche droite du clavier]</msg>
     <msg key="close">Fermer</msg>
     <msg key="generating-file">Génération du fichier...</msg>
     <msg key="download-message">La génération d’un fichier à télécharger peut prendre quelques minutes. Merci de patienter. Cette boîte de dialogue se fermera automatiquement à la fin du téléchargement.</msg>
@@ -132,4 +130,8 @@
     <msg key="pdfdummy">Télécharger le pdf</msg>
     <msg key="back-up">Aller au Parent</msg>
     <msg key="toc">Table des matières</msg>
+    <msg key="known">connu</msg>
+    <msg key="unknown">inconnu</msg>
+    <msg key="existent">existant</msg>
+    <msg key="nonexistent">pas existant</msg>
 </catalogue>

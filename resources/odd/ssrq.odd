@@ -1,4 +1,4 @@
-<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:pb="http://teipublisher.com/1.0" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" xml:lang="en">
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" xml:lang="en">
     <teiHeader>
         <fileDesc>
             <titleStmt>
@@ -30,7 +30,7 @@
                         <pb:template>
                             \subsection{Ungedruckte Quellen}
                             \setcounter{footnote}{0}
-                            
+
                             [[archiveType]]
                         </pb:template>
                     </model>
@@ -39,13 +39,13 @@
                         <param name="literature" value="text/body/div/listBibl/biblStruct"/>
                         <pb:template>
                             \subsection{Literaturverzeichnis}
-                            
+
                             [[introduction]]
-                            
+
                             \begin{hangparas}{4.5mm}{1}
-                            
+
                             [[literature]]
-                            
+
                             \end{hangparas}
                         </pb:template>
                     </model>
@@ -55,28 +55,28 @@
                         <param name="literature" value="teiHeader/fileDesc/sourceDesc/msDesc/additional/listBibl"/>
                         <pb:template>
                             \documentclass[10pt,twoside]{article}
-                            
+
                             \usepackage{ssrq_intro_[[lang]]}  % here's all the magic...
-                            
+
                             \begin{document}
-                            
+
                             \cleardoublepage			% Fortsetzung auf einer ungeraden Seite
                             \pagestyle{plain}			% Beginn der Seitennummerierung
                             \pagenumbering{arabic}		% arabische Seitenzahlen, mit 1 beginnend
                             \footnotesize				% sehr platzsparend... (normalsize ist 8pt)
                             \tableofcontents			% Inhaltsverzeichnis
-                            
+
                             % Einleitung
                             \cleardoublepage			% Fortsetzung auf einer ungeraden Seite
                             \small						% platzsparend... (normalsize ist 9pt)
                             \addcontentsline{toc}{section}{Einleitung}
                             \fancyhead[LE,RO]{\small Einleitung}			% Kopfzeile aussen
                             \thispagestyle{plain}							% aber nicht auf der ersten Seite
-                            
+
                             [[content]]
-                            
+
                             [[literature]]
-                            
+
                             \end{document}
                         </pb:template>
                     </model>
@@ -105,38 +105,38 @@
                         <param name="literature" value="teiHeader/fileDesc/sourceDesc/msDesc/additional/listBibl"/>
                         <pb:template>
                             \documentclass[10pt,twoside]{article}
-                            
+
                             \usepackage{ssrq_[[lang]]}  % here's all the magic...
-                            
+
                             \begin{document}
-                            
+
                             % Variablen für Kopfzeile
                             \def\volume{[[ssrq]], [[volume]] [[by]] [[author]], [[year]].}
                             \def\volid{\url{https://www.ssrq-sds-fds.ch/online/tei/[[canton]]/[[idno]].xml}}
-                            
+
                             \linenumbers				% Zeilennummern
                             \normalsize					% normale Grösse, d.h. Quellentext (source) ist 10pt
-                            
+
                             \thispagestyle{firstpage}
-                            
+
                             \setcounter{[[sectionType]]}{[[articleNr]]}  % Stücknummer - 1
                             \sloppy
                             \[[articleType]]{[[title]]}{}
                             \fussy
                             \[[datingType]]{[[dating]][[place]][[keywords]]}
-                            
+
                             [[summary]]
                             [[comments]]
                             [[content]]
-                            
+
                             [[msdesc]]
-                            
+
                             [[additionalSources]]
-                            
+
                             [[literature]]
-                            
+
                             \printnotes*
-                            
+
                             \end{document}
                         </pb:template>
                     </model>
@@ -218,7 +218,7 @@
                     <model predicate="$parameters?view='introduction' and ends-with(./graphic/@url, 'svg')" behaviour="svg">
                     </model>
                     <model predicate="not(parent::label)" behaviour="inline">
-                        <param name="content" value="ec:translate(@type, 0, 'uppercase')"/>
+                        <param name="content" value="ec:translate(@type, false(), true())"/>
                         <outputRendition scope="before">
                             content: '[';
                         </outputRendition>
@@ -226,6 +226,9 @@
                             content: ']';
                         </outputRendition>
                     </model>
+                </elementSpec>
+                <elementSpec ident="licence" mode="change">
+                    <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="signed" mode="change">
                     <model behaviour="block">
@@ -235,7 +238,7 @@
                 <elementSpec ident="choice" mode="change">
                     <model output="latex" predicate="sic/del and corr" behaviour="alternote">
                         <param name="content" value="corr"/>
-                        <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), '\textup{', normalize-space(string-join(sic//text())), '}', ', ', ec:translate(sic/del/@rend, 0, 'uppercase'), ec:colon(), '\textup{', sic/del//text(), '}')"/>
+                        <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), '\textup{', normalize-space(string-join(sic//text())), '}', ', ', ec:translate(sic/del/@rend, false(), true()), ec:colon(), '\textup{', sic/del//text(), '}')"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model output="latex" predicate="sic and corr" behaviour="alternote">
@@ -285,7 +288,7 @@
                     <!-- overridden by model for damage
                          <model predicate="parent::damage" behaviour="alternote" cssClass="text-critical">
                          <param name="content" value="."/>
-                         <param name="alternate" value="(ec:translate(parent::damage/@agent), ', ', ec:label('unclear-rdg', false()))"/>
+                         <param name="alternate" value="(ec:translate(parent::damage/@agent, false(), true()), ', ', ec:label('unclear-rdg', false()))"/>
                          <param name="type" value="'text-critical'"/>
                          </model>
                     -->
@@ -324,6 +327,9 @@
                         <param name="content" value="replace(replace(., '^ ', ''), ' $', '')"/>
                         <pb:template>\textup{[[content]]}</pb:template>
                     </model>
+                    <model predicate="parent::quote" behaviour="inline">
+                        <param name="content" value="."/>
+                    </model>
                     <model behaviour="inline">
                         <param name="content" value="('«', ., '»')"/>
                     </model>
@@ -354,7 +360,7 @@
                     </model>
                     <model predicate="@calendar" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('origDate'), ec:colon(), ec:format-date(@when), ' (', ec:translate(@calendar, 0, ()), ')')"/>
+                        <param name="alternate" value="(ec:label('origDate'), ec:colon(), ec:format-date(@when), ' (', ec:translate(@calendar, false(), false()), ')')"/>
                     </model>
                     <model behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
@@ -367,18 +373,18 @@
                     <model predicate="parent::del" behaviour="inline"/>
                     <model predicate="@hand!='other hand'" behaviour="note">
                         <desc>Show text of add with popup and footnote</desc>
-                        <param name="prefix" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ec:translate(@hand, 0, 'lowercase'), ec:translate(@rend, 0, 'lowercase'), ec:translate(@type, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else (), ec:colon())))"/>
+                        <param name="prefix" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, false(), false()), ec:translate(@hand, false(), false()), ec:translate(@rend, false(), false()), ec:translate(@type, false(), false())), ' '), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else (), ec:colon())))"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model behaviour="alternote">
                         <desc>Show footnote only</desc>
-                        <param name="alternate" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ec:translate(@hand, 0, 'lowercase'), ec:translate(@rend, 0, 'lowercase'), ec:translate(@type, 0, 'lowercase')), ' '))), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else ())"/>
+                        <param name="alternate" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, false(), false()), ec:translate(@hand, false(), false()), ec:translate(@rend, false(), false()), ec:translate(@type, false(), false())), ' '))), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else ())"/>
                         <param name="type" value="'text-critical'"/>
                         <param name="content" value="."/>
                     </model>
                     <model output="latex" predicate="@type='catchword'" behaviour="omit"/>
                     <model predicate="@type='catchword'" behaviour="alternote">
-                        <param name="alternate" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ', ', ec:translate(@type, 0, 'lowercase'))))))"/>
+                        <param name="alternate" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, false(), false()), ', ', ec:translate(@type, false(), false()))))))"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                 </elementSpec>
@@ -386,35 +392,35 @@
                     <model predicate="parent::subst" behaviour="inline"/>
                     <model behaviour="note">
                         <desc>Show footnote only</desc>
-                        <param name="content" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ec:translate(@hand, 0, 'lowercase'), ec:translate(@rend, 0, 'lowercase')), ' '))), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else ())"/>
+                        <param name="content" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, false(), false()), ec:translate(@hand, false(), false()), ec:translate(@rend, false(), false())), ' '))), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else ())"/>
                         <param name="type" value="'text-critical-start'"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="del" mode="change">
                     <model predicate="ancestor::back//orig" behaviour="omit"/>
                     <model predicate="add/@type='catchword'" behaviour="note">
-                        <param name="prefix" value="(ec:label('del-add'), ' ', string-join((ec:translate(add/@place, 0, 'lowercase'), ', ', ec:translate(add/@type, 0, 'lowercase')), ''), ec:colon())"/>
+                        <param name="prefix" value="(ec:label('del-add'), ' ', string-join((ec:translate(add/@place, false(), false()), ', ', ec:translate(add/@type, false(), false())), ''), ec:colon())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="@hand='later hand' and not(parent::subst)" behaviour="alternote" cssClass="text-critical">
                         <desc>Show footnote only</desc>
-                        <param name="alternate" value="(if (@rend) then (ec:translate(@rend, 0, 'uppercase')) else (ec:label('del')), ' ', ec:translate(@hand, 0, 'lowercase'))"/>
+                        <param name="alternate" value="(if (@rend) then (ec:translate(@rend, false(), true())) else (ec:label('del')), ' ', ec:translate(@hand, false(), false()))"/>
                         <param name="type" value="'text-critical'"/>
                         <param name="content" value="."/>
                     </model>
                     <model predicate="add" behaviour="note">
-                        <param name="prefix" value="(ec:label('del-add'), ' ', string-join((ec:translate(add/@place, 0, 'lowercase'), ec:translate(add/@hand, 0, 'lowercase'), ec:translate(add/@rend, 0, 'lowercase'), ec:translate(add/@type, 0, 'lowercase')), ' '), ec:colon())"/>
+                        <param name="prefix" value="(ec:label('del-add'), ' ', string-join((ec:translate(add/@place, false(), false()), ec:translate(add/@hand, false(), false()), ec:translate(add/@rend, false(), false()), ec:translate(add/@type, false(), false())), ' '), ec:colon())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="parent::subst" behaviour="inline"/>
                     <model predicate="gap" behaviour="alternote">
                         <param name="type" value="'text-critical'"/>
-                        <param name="alternate" value="(ec:label('del-gap'), ' (', gap/@quantity, ' ', ec:translate(gap/@unit, gap/@quantity, ()), ')')"/>
+                        <param name="alternate" value="(ec:label(if (@rend and @rend='rubbing') then 'rubbing' else 'del-gap'), ' (', gap/@quantity, ' ', ec:translate(gap/@unit, gap/@quantity > 1, false()), ')')"/>
                         <param name="content" value="''"/>
                     </model>
                     <model predicate="unclear and @rend" behaviour="note">
                         <param name="type" value="'text-critical'"/>
-                        <param name="prefix" value="(ec:translate(@rend),', ', ec:label('unclear-rdg', false()), ec:colon())"/>
+                        <param name="prefix" value="(ec:translate(@rend, false(), true()),', ', ec:label('unclear-rdg', false()), ec:colon())"/>
                     </model>
                     <model predicate="unclear" behaviour="note">
                         <param name="type" value="'text-critical'"/>
@@ -422,13 +428,13 @@
                     </model>
                     <model predicate="@rend" behaviour="note">
                         <desc>Show text of del with popup and footnote</desc>
-                        <param name="prefix" value="(ec:translate(@rend, 0, 'uppercase'), if (@hand) then (' ', ec:translate(@hand, 0, 'lowercase')) else (), ec:colon())"/>
+                        <param name="prefix" value="(ec:translate(@rend, false(), true()), if (@hand) then (' ', ec:translate(@hand, false(), false())) else (), ec:colon())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="@hand" behaviour="note">
                         <desc>Show text of del with popup and footnote</desc>
                         <param name="type" value="'text-critical'"/>
-                        <param name="prefix" value="(ec:label('del'), ' ', ec:translate(@hand, 0, 'uppercase'), ec:colon())"/>
+                        <param name="prefix" value="(ec:label('del'), ' ', ec:translate(@hand, false(), true()), ec:colon())"/>
                     </model>
                     <model behaviour="note">
                         <desc>Show text of del with popup and footnote</desc>
@@ -438,11 +444,11 @@
                 </elementSpec>
                 <elementSpec ident="delSpan" mode="change">
                     <model predicate="@rend" behaviour="note">
-                        <param name="content" value="(ec:translate(@rend, 0, 'uppercase'), if (@hand) then (' ', ec:translate(@hand, 0, 'lowercase')) else ())"/>
+                        <param name="content" value="(ec:translate(@rend, false(), true()), if (@hand) then (' ', ec:translate(@hand, false(), false())) else ())"/>
                         <param name="type" value="'text-critical-start'"/>
                     </model>
                     <model behaviour="note">
-                        <param name="content" value="(ec:label('del'), if (@hand) then (' ', ec:translate(@hand, 0, 'lowercase')) else ())"/>
+                        <param name="content" value="(ec:label('del'), if (@hand) then (' ', ec:translate(@hand, false(), false())) else ())"/>
                         <param name="type" value="'text-critical-start'"/>
                     </model>
                 </elementSpec>
@@ -450,42 +456,37 @@
                     <model predicate="gap" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="'[...]'"/>
                         <param name="type" value="'text-critical'"/>
-                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ' (', gap/@quantity, ' ', ec:translate(gap/@unit, gap/@quantity, ()), ')')"/>
+                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()), ' (', gap/@quantity, ' ', ec:translate(gap/@unit, gap/@quantity > 1, false()), ')')"/>
                     </model>
                     <model predicate="unclear" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="unclear/node()"/>
                         <param name="type" value="'text-critical'"/>
-                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ', ', ec:label('unclear-rdg', false()))"/>
+                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()), ', ', ec:label('unclear-rdg', false()))"/>
                     </model>
                     <model predicate="supplied/@source" behaviour="alternote" cssClass="text-critical">
-                        <param name="content" value="supplied/node()"/>
-                        <param name="type" value="'text-critical'"/>
-                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ', ', ec:label('supplied-after', false()), ' ', supplied/@source)"/>
-                    </model>
-                    <model predicate="supplied[unclear]" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="('[', supplied/node(), ']')"/>
                         <param name="type" value="'text-critical'"/>
-                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ', ', ec:label('supplied', false()))"/>
+                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()), ', ', ec:label('supplied-after', false()), ' ', supplied/@source)"/>
                     </model>
                     <model predicate="supplied" behaviour="alternote" cssClass="text-critical">
-                        <param name="content" value="supplied/node()"/>
+                        <param name="content" value="('[', supplied/node(), ']')"/>
                         <param name="type" value="'text-critical'"/>
-                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ', ', ec:label('supplied', false()))"/>
+                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()), ', ', ec:label('supplied', false()))"/>
                     </model>
                     <model predicate="add" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="add/node()"/>
                         <param name="type" value="'text-critical'"/>
-                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()), ', ', ec:span((ec:label('add'), ' ', string-join((ec:translate(add/@place, 0, 'lowercase'), ec:translate(add/@hand, 0, 'lowercase'), ec:translate(add/@rend, 0, 'lowercase'), ec:translate(add/@type, 0, 'lowercase')), ' '))))"/>
+                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()), ', ', ec:span((ec:label('add'), ' ', string-join((ec:translate(add/@place, false(), false()), ec:translate(add/@hand, false(), false()), ec:translate(add/@rend, false(), false()), ec:translate(add/@type, false(), false())), ' '))))"/>
                     </model>
                     <model predicate="@agent" behaviour="alternote" cssClass="text-critical">
                         <param name="type" value="'text-critical'"/>
-                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()))"/>
+                        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()))"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="damageSpan" mode="change">
                     <model predicate="@agent" behaviour="note">
                         <param name="type" value="'text-critical-start'"/>
-                        <param name="content" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, 0, ()))"/>
+                        <param name="content" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()))"/>
                     </model>
                     <model behaviour="omit"/>
                 </elementSpec>
@@ -577,12 +578,12 @@
                     </model>
                     <model predicate="@rend!='sup' and @hand" behaviour="alternote">
                         <param name="content" value="."/>
-                        <param name="alternate" value="(ec:translate(@rend), ' ', ec:translate(@hand, 0, 'lowercase'))"/>
+                        <param name="alternate" value="(ec:translate(@rend, false(), true()), ' ', ec:translate(@hand, false(), false()))"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="@rend!='sup'" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="ec:translate(@rend)"/>
+                        <param name="alternate" value="ec:translate(@rend, false(), true())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <!--<model behaviour="alternate" cssClass="text-critical">
@@ -594,7 +595,7 @@
                 <elementSpec ident="space" mode="change">
                     <model behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="text{'...'}"/>
-                        <param name="alternate" value="(ec:label('gap-in-orig'), ' (' , @quantity , ' ', ec:translate(@unit, @quantity, 'lowercase'), ')')"/>
+                        <param name="alternate" value="(ec:label('gap-in-orig'), ' (' , @quantity , ' ', ec:translate(@unit, @quantity > 1, false()), ')')"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                 </elementSpec>
@@ -606,12 +607,12 @@
                     </model>
                     <model predicate="@reason='illegible'" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="text{'[...]'}"/>
-                        <param name="alternate" value="(ec:label('unreadable'), ' (' , @quantity , ' ', ec:translate(@unit, @quantity, 'lowercase'), ')')"/>
+                        <param name="alternate" value="(ec:label('unreadable'), ' (' , @quantity , ' ', ec:translate(@unit, @quantity > 1, false()), ')')"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="@reason='missing'" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="text{'[...]'}"/>
-                        <param name="alternate" value="(ec:label('missing'), ' (' , @quantity , ' ', ec:translate(@unit, @quantity, 'lowercase'), ')')"/>
+                        <param name="alternate" value="(ec:label('missing'), ' (' , @quantity , ' ', ec:translate(@unit, @quantity > 1, false()), ')')"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="@source" behaviour="alternote" cssClass="text-critical">
@@ -744,17 +745,26 @@
                     <model predicate="@period" behaviour="alternate" cssClass="text-critical">
                         <desc>Display time with given parameter in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('duration'), ec:colon(), ec:translate(@period, 0, ()))"/>
+                        <param name="alternate" value="(ec:label('duration'), ec:colon(), ec:translate(@period, false(), false()))"/>
                     </model>
                     <model predicate="@when" behaviour="alternate" cssClass="text-critical">
                         <desc>Display time with given parameter in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('time'), ec:colon(), format-time(@when, '[H]:[m]'))"/>
                     </model>
-                    <model predicate="@dur" behaviour="alternate" cssClass="text-critical">
+                    <model output="web" predicate="@dur-iso[starts-with(., 'R/P')]" behaviour="alternate" cssClass="text-critical">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="(ec:label('repeated-duration'), ec:colon(), ec:format-duration(substring-after(@dur-iso, 'R/')))"/>
+                    </model>
+                    <model predicate="@dur-iso" behaviour="alternate" cssClass="text-critical">
                         <desc>Display time in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('duration'), ec:colon(), ec:format-duration(@dur))"/>
+                        <param name="alternate" value="(ec:label('duration'), ec:colon(), ec:format-duration(@dur-iso))"/>
+                    </model>
+                    <model predicate="@from and @to" behaviour="alternate" cssClass="text-critical">
+                        <desc>Display a period of time in tooltip</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="(ec:label('duration'), ec:colon(), string-join((ec:label('from', false()), format-time(@from, '[H]:[m]'), ec:label('to', false()), format-time(@to, '[H]:[m]')), ' '))"/>
                     </model>
                     <model behaviour="alternate" cssClass="text-critical">
                         <desc>Display time in tooltip and highlight text with color</desc>
@@ -766,12 +776,12 @@
                     <model predicate="(session:get-attribute('ssrq.lang'), 'de')[1]='de'" behaviour="alternate" cssClass="text-critical">
                         <desc>Display measurement with given parameters in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:translate(@type, 0, 'uppercase'), ec:colon(), @quantity, ' ', ec:translate(@origin, 0, 'lowercase'), ' ', ec:translate(@unit, @quantity, 'lowercase'), ' ', ec:translate(@commodity, 0, 'lowercase'))"/>
+                        <param name="alternate" value="(ec:translate(@type, false(), true()), ec:colon(), @quantity, ' ', ec:translate(@origin, false(), false()), ' ', ec:translate(@unit, @quantity > 1, false()), ' ', ec:translate(@commodity, false(), false()))"/>
                     </model>
                     <model predicate="(session:get-attribute('ssrq.lang'), 'de')[1]!='de'" behaviour="alternate" cssClass="text-critical">
                         <desc>Display measurement with given parameters in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:translate(@type, 0, 'uppercase'), ec:colon(), @quantity, ' ', ec:translate(@unit, @quantity, 'lowercase'), ' ', ec:translate(@commodity, 0, 'lowercase'), ' ', ec:translate(@origin, 0, 'lowercase'))"/>
+                        <param name="alternate" value="(ec:translate(@type, false(), true()), ec:colon(), @quantity, ' ', ec:translate(@unit, @quantity > 1, false()), ' ', ec:translate(@commodity, false(), false()), ' ', ec:translate(@origin, false(), false()))"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="pb" mode="change">
@@ -849,7 +859,7 @@
                     <model predicate="parent::choice" behaviour="inline"/>
                     <model predicate="@source and @reason" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="('[', ., ']')"/>
-                        <param name="alternate" value="(ec:translate(@reason, 0, 'uppercase'), ', ', ec:label('supplied-after', false()), ' ', @source)"/>
+                        <param name="alternate" value="(ec:translate(@reason, false(), true()), ', ', ec:label('supplied-after', false()), ' ', @source)"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="@source" behaviour="alternote" cssClass="text-critical">
@@ -859,7 +869,7 @@
                     </model>
                     <model predicate="@reason" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="('[', ., ']')"/>
-                        <param name="alternate" value="(ec:translate(@reason, 0, 'uppercase'), ', ', ec:label('supplied', false()))"/>
+                        <param name="alternate" value="(ec:translate(@reason, false(), true()), ', ', ec:label('supplied', false()))"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="@resp" behaviour="alternote" cssClass="text-critical">
@@ -870,7 +880,7 @@
                     <!-- overridden by model for damage
                          <model predicate="parent::damage and @source" behaviour="alternote" cssClass="text-critical">
                          <param name="content" value="."/>
-                         <param name="alternate" value="(ec:translate(parent::damage/@agent, 0, 'uppercase'), text{', '}, if (@reason) then text{ec:translate(@reason, 0, 'lowercase') || ', '} else (), ec:label('supplied-after', false()), ' ', @source)"/>
+                         <param name="alternate" value="(ec:translate(parent::damage/@agent, false(), true()), text{', '}, if (@reason) then text{ec:translate(@reason, false(), false()) || ', '} else (), ec:label('supplied-after', false()), ' ', @source)"/>
                          <param name="type" value="'text-critical'"/>
                          <outputRendition scope="before">
                          content:"[";
@@ -883,9 +893,6 @@
                     <model behaviour="inline" cssClass="text-critical">
                         <param name="content" value="('[', ., ']')"/>
                     </model>
-                </elementSpec>
-                <elementSpec mode="change" ident="table">
-                    <model predicate="$parameters?view='introduction'" behaviour="table" cssClass="table"/>
                 </elementSpec>
                 <elementSpec ident="titleStmt" mode="change">
                     <model output="latex" behaviour="meta">
@@ -977,7 +984,7 @@
                         <param name="archive" value="div"/>
                         <pb:template>
                             \subsubsection{[[title]]}
-                            
+
                             \begin{hangparas}{4.5mm}{1}
                             [[archive]]
                             \end{hangparas}
@@ -1002,7 +1009,7 @@
                             \item [[itemType]]: [[ident]][[note]]
                         </pb:template>
                     </model>
-                    <model predicate="$parameters?view='introduction' and div/listBibl/head" behaviour="biblList">
+                    <model predicate="$parameters?view='introduction' and (div/listBibl/head or div/listBibl[bibl])" behaviour="biblList">
                     </model>
                     <model predicate="parent::back and @n" behaviour="listItem">
                         <desc>output as list item if in commentary</desc>
@@ -1043,7 +1050,7 @@
                 </elementSpec>
                 <elementSpec ident="ab" mode="change">
                     <model output="latex" behaviour="block">
-                        <param name="place" value="('[', string-join((ec:translate(@type, 0, 'lowercase'),ec:translate(@place, 0, 'lowercase'),ec:translate(@hand, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else (), ec:punct(':', false()), ']')"/>
+                        <param name="place" value="('[', string-join((ec:translate(@type, false(), false()),ec:translate(@place, false(), false()),ec:translate(@hand, false(), false())), ' '), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else (), ec:punct(':', false()), ']')"/>
                         <pb:template>
                             % \medskip
                             \noindent
@@ -1051,7 +1058,7 @@
                         </pb:template>
                     </model>
                     <model predicate="@place" behaviour="block" cssClass="ab">
-                        <param name="content" value="('[', string-join((ec:translate(@type, 0, 'lowercase'),ec:translate(@place, 0, 'lowercase'),ec:translate(@hand, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else (), ec:punct(':', false()), '] ', .)"/>
+                        <param name="content" value="('[', string-join((ec:translate(@type, false(), false()),ec:translate(@place, false(), false()),ec:translate(@hand, false(), false())), ' '), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else (), ec:punct(':', false()), '] ', .)"/>
                         <outputRendition>
                             font-size: 1.5rem;
                         </outputRendition>
@@ -1064,7 +1071,7 @@
                         <pb:template>\marginpar{\scriptsize\raggedright\hspace{0pt}[[content]]}</pb:template>
                     </model>
                     <model predicate="@type='keyword'" behaviour="alternote">
-                        <param name="alternate" value="(ec:label('marginal-note'), ' ', ec:translate(@place, 0, 'lowercase'), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else ())"/>
+                        <param name="alternate" value="(ec:label('marginal-note'), ' ', ec:translate(@place, false(), false()), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else ())"/>
                         <!--<param name="content" value="('/ ', .,  ' /')"/>-->
                         <param name="type" value="'text-critical'"/>
                         <outputRendition>
@@ -1079,28 +1086,45 @@
                     </model>
                     <model predicate="del/gap and add" behaviour="alternote">
                         <param name="content" value="add"/>
-                        <param name="alternate" value="(ec:label('corr'), ' ', ec:translate(add/@place, 0, 'lowercase'), ', ', ec:label('subst-del-gap', false()))"/>
+                        <param name="alternate" value="(ec:label('corr'), ' ', ec:translate(add/@place, false(), false()), ', ', ec:translate(del/@rend, false(), false()))"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="add[@hand='later hand'] and del[@hand='later hand']" behaviour="alternote" cssClass="text-critical">
-                        <param name="content" value="add"/>
-                        <param name="prefix" value="(ec:label('corr', true()), ' ', ec:translate(add/@hand, 0, 'lowercase'), ' ', ec:translate(add/@place, 0, 'lowercase'), ', ', ec:label('replace', false()), ec:colon())"/>
-                        <param name="alternate" value="del"/>
+                        <param name="content" value="del"/>
+                        <param name="prefix" value="(ec:label('corr', true()), ' ', ec:translate(add/@hand, false(), false()), ' ', ec:translate(add/@place, false(), false()), ec:colon())"/>
+                        <param name="alternate" value="add"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="add/@hand" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="add"/>
-                        <param name="prefix" value="(ec:label('corr', true()), ' ', ec:translate(add/@hand, 0, 'lowercase'), ' ', ec:translate(add/@place, 0, 'lowercase'), ', ', ec:label('replace', false()), ec:colon())"/>
+                        <param name="prefix" value="(ec:label('corr', true()), ' ', ec:translate(add/@hand, false(), false()), ' ', ec:translate(add/@place, false(), false()), ', ', ec:label('replace', false()), ec:colon())"/>
                         <param name="alternate" value="del"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model predicate="add" behaviour="alternote" cssClass="text-critical">
                         <param name="content" value="add"/>
-                        <param name="prefix" value="(ec:label('corr', true()), ' ', ec:translate(add/@place, 0, 'lowercase'), ', ', ec:label('replace', false()), ec:colon())"/>
+                        <param name="prefix" value="(ec:label('corr', true()), ' ', ec:translate(add/@place, false(), false()), ', ', ec:label('replace', false()), ec:colon())"/>
                         <param name="alternate" value="del"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                     <model behaviour="inline"/>
+                </elementSpec>
+                <elementSpec ident="dataSpec" mode="change">
+                    <model behaviour="block" output="latex"/>
+                    <model behaviour="block"/>
+                </elementSpec>
+                <elementSpec ident="desc" mode="change">
+                    <model predicate="parent::dataSpec[ancestor::TEI/@type = 'abbr'] and @xml:lang = (session:get-attribute('ssrq.lang'), 'de')[1]" behaviour="heading">
+                        <desc>Spezifisches Rendering von Beschreibungen im Abkürzungsverzeichnis</desc>
+                        <param name="level" value="3"/>
+                    </model>
+                    <model predicate="parent::valItem[ancestor::TEI/@type = 'abbr'] and @xml:lang = (session:get-attribute('ssrq.lang'), 'de')[1]" behaviour="listItem">
+                        <desc>Spezifisches Rendering von Beschreibungen im Abkürzungsverzeichnis</desc>
+                    </model>
+                    <model predicate="ancestor::dataSpec[@ident = 'ssrq.labels']" behaviour="inline">
+                        <desc>Auslesen von Übersetzungen aus ssrq.labels</desc>
+                    </model>
+                    <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="date" mode="change">
                     <model output="latex" predicate="ancestor::ab" behaviour="inline">
@@ -1116,11 +1140,15 @@
                     </model>
                     <model output="web" predicate="@when and @type" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('date'), ec:colon(), ec:format-date(@when), ' (', ec:translate(@type, 0, ()), ')')"/>
+                        <param name="alternate" value="(ec:label('date'), ec:colon(), ec:format-date(@when), ' (', ec:translate(@type, false(), false()), ')')"/>
                     </model>
                     <model output="web" predicate="@when and @calendar" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('date'), ec:colon(), ec:format-date(@when), ' (', ec:translate(@calendar, 0, ()), ')')"/>
+                        <param name="alternate" value="(ec:label('date'), ec:colon(), ec:format-date(@when), ' (', ec:translate(@calendar, false(), false()), ')')"/>
+                    </model>
+                    <model output="web" predicate="@when and @period" behaviour="alternate" cssClass="text-critical">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="(ec:label('date'), ec:colon(), ec:translate(@period, false(), false()) || ', ' || ec:format-date(@when))"/>
                     </model>
                     <model output="web" predicate="@when" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
@@ -1132,19 +1160,19 @@
                     </model>
                     <model output="web" predicate="@period" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('duration'), ec:colon(), ec:translate(@period, 0, ()))"/>
+                        <param name="alternate" value="(ec:label('duration'), ec:colon(), ec:translate(@period, false(), false()))"/>
                     </model>
-                    <model output="web" predicate="@dur[starts-with(., 'R/P')]" behaviour="alternate" cssClass="text-critical">
+                    <model output="web" predicate="@dur-iso[starts-with(., 'R/P')]" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('repeated-duration'), ec:colon(), ec:format-duration(substring-after(@dur, 'R/')))"/>
+                        <param name="alternate" value="(ec:label('repeated-duration'), ec:colon(), ec:format-duration(substring-after(@dur-iso, 'R/')))"/>
                     </model>
-                    <model output="web" predicate="@dur" behaviour="alternate" cssClass="text-critical">
+                    <model output="web" predicate="@dur-iso" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('duration'), ec:colon(), ec:format-duration(@dur))"/>
+                        <param name="alternate" value="(ec:label('duration'), ec:colon(), ec:format-duration(@dur-iso))"/>
                     </model>
                     <model predicate="@type" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('date'), ' ', ec:translate(@type, 0, ()))"/>
+                        <param name="alternate" value="(ec:label('date'), ec:colon(), ec:translate(@type, false(), false()))"/>
                     </model>
                     <model predicate="text()" behaviour="inline" cssClass="text-critical"/>
                 </elementSpec>
@@ -1189,7 +1217,7 @@
                     <model behaviour="omit" predicate="not(idno/text())"/>
                     <modelSequence>
                         <model behaviour="listItem">
-                            <param name="content" value="idno"/>
+                            <param name="content" value="idno[@xml:lang = $parameters?lang]"/>
                         </model>
                         <model behaviour="listItem">
                             <param name="content" value="altIdentifier/idno"/>
@@ -1247,7 +1275,7 @@
                     <model predicate="node() or @*" behaviour="inline">
                         <param name="content" value="(ec:label('surface'), ec:colon(), .)"/>
                     </model>
-                </elementSpec>
+                </elementSpec><foreign xml:lang="lat"></foreign>
                 <elementSpec ident="dimensions">
                     <model output="latex" predicate="@type = 'leaves' and (width/@quantity &gt; 0 or height/@quantity &gt; 0)" behaviour="inline">
                         <param name="content" value="(string-join((width/@quantity,height/@quantity), '\,×\,'), '~cm')"/>
@@ -1265,12 +1293,12 @@
                 <elementSpec ident="sealDesc">
                     <model output="latex" predicate="seal and seal/node() and count(seal) &gt; 1" behaviour="inline">
                         <param name="summary" value="(count(seal), ' ', ec:label('sigle', false(), count(seal)), ec:colon())"/>
-                        <param name="details" value="string-join(for $seal at $pos in seal return ($pos || '. ' || string-join(($seal/(persName|orgName)/text(), if ($seal/(persName|orgName)/text()) then ', ' else (), string-join(($seal/@nontei:material,$seal/@nontei:shape,$seal/@nontei:extent,$seal/@nontei:attachment,$seal/@nontei:condition) ! ec:translate(., 0, ()), ', ')))), ec:semicolon())"/>
+                        <param name="details" value="string-join(for $seal at $pos in seal return ($pos || '. ' || string-join(($seal/(persName|orgName)/text(), if ($seal/(persName|orgName)/text()) then ', ' else (), string-join(($seal/@nontei:material,$seal/@nontei:shape,$seal/@nontei:extent,$seal/@nontei:attachment,$seal/@nontei:condition) ! ec:translate(., false(), false()), ', ')))), ec:semicolon())"/>
                         <pb:template>[[summary]][[details]]</pb:template>
                     </model>
                     <model output="latex" predicate="seal and seal/node()" behaviour="inline">
                         <param name="summary" value="('1 ', ec:label('sigle'), ec:colon())"/>
-                        <param name="details" value="string-join((seal/(persName|orgName)/text(), if (seal/(persName|orgName)/text()) then ', ' else (), string-join((seal/@nontei:material,seal/@nontei:shape,seal/@nontei:extent,seal/@nontei:attachment,seal/@nontei:condition) ! ec:translate(., 0, ()), ', ')))"/>
+                        <param name="details" value="string-join((seal/(persName|orgName)/text(), if (seal/(persName|orgName)/text()) then ', ' else (), string-join((seal/@nontei:material,seal/@nontei:shape,seal/@nontei:extent,seal/@nontei:attachment,seal/@nontei:condition) ! ec:translate(., false(), false()), ', ')))"/>
                         <pb:template>[[summary]][[details]]</pb:template>
                     </model>
                     <modelSequence predicate="seal">
@@ -1289,7 +1317,7 @@
                 </elementSpec>
                 <elementSpec ident="seal">
                     <model behaviour="listItem">
-                        <param name="content" value="(persName|orgName, if ((persName|orgName)/text()) then ', ' else (), string-join((@nontei:material,@nontei:shape,@nontei:extent,@nontei:attachment,@nontei:condition) ! ec:translate(., 0, ()), ', '))"/>
+                        <param name="content" value="(persName|orgName, if ((persName|orgName)/text()) then ', ' else (), string-join((@nontei:material,@nontei:shape,@nontei:extent,@nontei:attachment,@nontei:condition) ! ec:translate(., false(), false()), ', '))"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="p" mode="change">
@@ -1307,6 +1335,11 @@
                     </model>
                     <model output="latex" behaviour="block">
                         <pb:template>[[content]]</pb:template>
+                    </model>
+                    <model predicate="ancestor::back or ancestor::summary" behaviour="paragraph" useSourceRendition="true">
+                        <outputRendition>
+                            text-align: justify;
+                        </outputRendition>
                     </model>
                     <model behaviour="block"/>
                 </elementSpec>
@@ -1352,7 +1385,7 @@
                             \vspace{1.5mm}
                         </pb:template>
                     </model>
-                    <model output="latex" predicate="@type='title'" behaviour="block">
+                    <model output="latex" predicate="@type= ('title', 'subtitle', 'subsubtitle')" behaviour="block">
                         <pb:template>
                             \vspace{1.5mm}
                             \noindent
@@ -1360,26 +1393,19 @@
                             \vspace{1.5mm}
                         </pb:template>
                     </model>
-                    <model output="latex" predicate="@type='subtitle'" behaviour="block">
-                        <pb:template>
-                            \vspace{1.5mm}
-                            \noindent
-                            [[content]]
-                            \vspace{1.5mm}
-                        </pb:template>
-                    </model>
+                    <model predicate="parent::table" output="web" behaviour="thead"/>
                     <model predicate="@resp" behaviour="omit"/>
                     <model behaviour="block" predicate="$parameters?view='introduction' and ancestor::TEI/@type = 'bailiffs' and ancestor::group and @type = 'title'">
                         <param name="id" value="ec:unique-id(.)"/>
-                        <param name="content" value="./text()"></param>
-                        <param name="n" value="@n"></param>
+                        <param name="content" value="./text()"/>
+                        <param name="n" value="@n"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <h2 class="tei-head14" id="[[id]]"><span class="headingnumber">[[n]]</span> [[content]]</h2>
                         </pb:template>
                     </model>
                     <model behaviour="block" predicate="$parameters?view='introduction' and @type = 'title' and @n">
                         <param name="id" value="ec:unique-id(.)"/>
-                        <param name="content" value="./text()"></param>
+                        <param name="content" value="./text()"/>
                         <param name="n" value="@n"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <h1 class="tei-head11" id="[[id]]"><span class="headingnumber">[[n]]</span> [[content]]</h1>
@@ -1387,7 +1413,7 @@
                     </model>
                     <model behaviour="block" predicate="$parameters?view='introduction' and @type = 'title'">
                         <param name="id" value="ec:unique-id(.)"/>
-                        <param name="content" value="./text()"></param>
+                        <param name="content" value="./text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <h1 class="tei-head11" id="[[id]]">[[content]]</h1>
                         </pb:template>
@@ -1397,15 +1423,15 @@
                     </model>
                     <model behaviour="block" predicate="$parameters?view='introduction' and @type = 'subtitle' and @n">
                         <param name="id" value="ec:unique-id(.)"/>
-                        <param name="content" value="./text()"></param>
-                        <param name="n" value="@n"></param>
+                        <param name="content" value="./text()"/>
+                        <param name="n" value="@n"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <h2 class="tei-head14" id="[[id]]"><span class="headingnumber">[[n]]</span> [[content]]</h2>
                         </pb:template>
                     </model>
                     <model behaviour="block" predicate="$parameters?view='introduction' and @type = 'subtitle'">
                         <param name="id" value="ec:unique-id(.)"/>
-                        <param name="content" value="./text()"></param>
+                        <param name="content" value="./text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <h2 class="tei-head14" id="[[id]]">[[content]]</h2>
                         </pb:template>
@@ -1418,10 +1444,13 @@
                     </model>
                     <model behaviour="block" predicate="$parameters?view='introduction'">
                         <param name="id" value="ec:unique-id(.)"/>
-                        <param name="content" value="./text()"></param>
+                        <param name="content" value="./text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <h2 class="tei-head14" id="[[id]]">[[content]]</h2>
                         </pb:template>
+                    </model>
+                    <model predicate="@type = 'subsubtitle'" behaviour="heading">
+                        <param name="level" value="3"/>
                     </model>
                     <model behaviour="heading" useSourceRendition="true">
                         <param name="level" value="2"/>
@@ -1507,9 +1536,9 @@
                         <param name="literature" value="biblStruct"/>
                         <pb:template>
                             \begin{hangparas}{4.5mm}{1}
-                            
+
                             [[literature]]
-                            
+
                             \end{hangparas}
                         </pb:template>
                     </model>
@@ -1545,199 +1574,254 @@
                     <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="biblStruct" mode="change">
-                    <model output="latex" predicate="monogr[@type='edition']" behaviour="block">
-                        <param name="author" value="if (ec:format-editor(monogr/author)) then (', ' || ec:label('edited-by', false()) || ' ' || ec:format-editor(monogr/author)) else ()"/>
-                        <param name="series" value="if (series) then (series/title || ', ' || series/biblScope || ec:colon()) else ()"/>
-                        <param name="title" value="replace(monogr/title[not(@type='short')], ' : ', ' – ')"/>
+                    <!-- Rendering von Editionsangaben LaTeX -->
+                    <model predicate="monogr[@type='edition'] and (@xml:id =&gt; matches('SSRQ|SDS|FDS'))" behaviour="block" output="latex">
+                        <param name="author" value="if (ec:format-editor(monogr/author)) then (', bearb. von ' || ec:format-editor(monogr/author)) else ()"/>
+                        <param name="series-ssrq" value="series/title"/>
+                        <param name="series-ssrq-scope" value="', ' || series/biblScope => string-join(' ') || ec:colon()"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'latex')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
-                        <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/')"/>
-                        <param name="date" value="monogr/imprint/date"/>
-                        <pb:template>
-                            % Edition (Buch)
-                            [[series]][[title]][[author]], [[place]] [[date]] ([[short-title]]).
-                        </pb:template>
-                    </model>
-                    <model output="latex" predicate="analytic[@type='edition']" behaviour="block">
-                        <param name="author" value="if (ec:format-editor(analytic/author)) then (', ' || ec:label('edited-by', false()) || ' ' || ec:format-editor(analytic/author)) else ()"/>
-                        <param name="title" value="replace(analytic/title[not(@type='short')], ' : ', ' – ')"/>
-                        <param name="in" value="ec:label('in', false()) || ec:colon()"/>
-                        <param name="short-title" value="analytic/title[@type='short']"/>
-                        <param name="journal" value="monogr/title"/>
-                        <param name="scope" value="string-join(monogr/biblScope, ', ')"/>
-                        <pb:template>
-                            % Edition (in Zeitschrift)
-                            [[title]][[author]], [[in]] [[journal]], [[scope]] ([[short-title]]).
-                        </pb:template>
-                    </model>
-                    <model output="latex" predicate="monogr[not(@type='edition')] and not(analytic)" behaviour="block">
-                        <param name="author" value="if (ec:format-author(monogr/author)) then (ec:format-author(monogr/author) || ec:colon()) else ()"/>
-                        <param name="title" value="replace(monogr/title[not(@type='short')], ' : ', ' – ')"/>
-                        <param name="short-title" value="monogr/title[@type='short']"/>
-                        <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/')"/>
-                        <param name="date" value="monogr/imprint/date"/>
-                        <pb:template>
-                            % Buch
-                            [[author]][[title]], [[place]] [[date]] ([[short-title]]).
-                        </pb:template>
-                    </model>
-                    <model output="latex" predicate="analytic[not(@type='edition')]" behaviour="block">
-                        <param name="author" value="if (ec:format-author(analytic/author)) then (ec:format-author(analytic/author) || ec:colon()) else ()"/>
-                        <param name="title" value="replace(analytic/title[not(@type='short')], ' : ', ' – ')"/>
-                        <param name="in" value="ec:label('in', false()) || ec:colon()"/>
-                        <param name="short-title" value="analytic/title[@type='short']"/>
-                        <param name="journal" value="monogr/title"/>
-                        <param name="scope" value="string-join(monogr/biblScope, ', ')"/>
-                        <pb:template>
-                            % Zeitschrift
-                            [[author]][[title]], [[in]] [[journal]], [[scope]] ([[short-title]]).
-                        </pb:template>
-                    </model>
-                    <model output="latex" behaviour="omit"/>
-                    <model predicate="monogr[@type='enc']" behaviour="listItem" cssClass="biblio">
-                        <param name="editor" value="', hrsg. von ' || ec:format-enc-editor(monogr/author)"/>
-                        <param name="title" value="replace(monogr/title[not(@type='short')], ' : ', ' – ')"/>
-                        <param name="link" value="if (@xml:id) then ec:format-link(@xml:id) else monogr/ref/@target"/>
-                        <param name="short-title" value="monogr/title[@type='short']"/>
-                        <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
-                        <param name="date" value="monogr/imprint/date/text()"/>
-                        <param name="additional-infos" value="if (monogr/imprint/biblScope) then monogr/imprint/biblScope || ', ' else()"/>
+                        <param name="place" value="', ' || string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
+                        <param name="date" value="monogr/imprint/date[1]/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
-                            <!-- Lexika -->
-                            <div>[[title]][[editor]], [[additional]] [[place]][[date]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
+                            % Selbstständige Edition aus der SSRQ-Reihe
+                            <div>[[series-ssrq]][[series-ssrq-scope]][[title]][[author]][[place]][[date]] ([[short-title]]).
                             </div>
                         </pb:template>
                     </model>
-                    <model predicate="monogr[@type='edition'] and @xml:id" behaviour="listItem" cssClass="biblio">
+                    <model predicate="monogr[@type='edition']" behaviour="block" output="latex">
                         <param name="author" value="if (ec:format-editor(monogr/author)) then (', bearb. von ' || ec:format-editor(monogr/author)) else ()"/>
-                        <param name="series" value="if (series) then (series/title || ', ' || series/biblScope || ': ') else ()"/>
-                        <param name="title" value="replace(monogr/title[not(@type='short')], ' : ', ' – ')"/>
+                        <param name="series" value="if (series) then ec:join-series-with-scope(series) else ()"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'latex')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
-                        <param name="journal" value="if (monogr/imprint/biblScope) then 'in: ' || monogr/imprint/biblScope || ', ' else ()"/>
+                        <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
+                        <param name="date" value="monogr/imprint/date[1]/text()"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            % Selbstständige Edition
+                            <div>[[title]][[author]], [[series]][[place]][[date]] ([[short-title]]).
+                            </div>
+                        </pb:template>
+                    </model>
+                    <model predicate="analytic[@type='edition']" behaviour="block" output="latex">
+                        <param name="author" value="if (ec:format-editor(analytic/author)) then (', bearb. von ' || ec:format-editor(analytic/author)) else ()"/>
+                        <param name="title" value="ec:render-title-with-hi(analytic/title[not(@type='short')], 'latex')"/>
+                        <param name="short-title" value="analytic/title[@type='short']"/>
+                        <param name="journal" value="monogr/title"/>
+                        <param name="editor" value="if(monogr/author) then ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ', ' else ()"/>
+                        <param name="series-biblscope" value="ec:parse-biblScope(., 'series')"/>
+                        <param name="place" value="if (monogr/imprint) then ', ' || string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date[1] else ()"/>
+                        <param name="scope" value="ec:parse-biblScope(., 'scope')"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            % Unselbstständige Edition
+                            <div>[[title]][[author]], in: [[editor]][[journal]][[series-biblscope]][[place]][[scope]] ([[short-title]]).
+                            </div>
+                        </pb:template>
+                    </model>
+                    <model predicate="monogr[@type='enc']" behaviour="block" output="latex">
+                        <param name="editor" value="ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')'"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'latex')"/>
+                        <param name="short-title" value="monogr/title[@type='short']"/>
+                        <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
+                        <param name="date" value="monogr/imprint/date[1]/text()"/>
+                        <param name="additional-infos" value="if (monogr/imprint/biblScope) then ', ' || monogr/imprint/biblScope else()"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            % Lexika
+                            <div>[[title]], [[editor]], [[place]][[date]][[additional-infos]] ([[short-title]]).
+                            </div>
+                        </pb:template>
+                    </model>
+                    <model predicate="monogr[not(@type='edition')] and not(analytic)" behaviour="block" output="latex">
+                        <param name="author" value="if (ec:format-author(monogr/author)) then (ec:format-author(monogr/author) || ': ') else ()"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'latex')"/>
+                        <param name="short-title" value="monogr/title[@type='short']"/>
+                        <param name="series" value="if (series) then ec:join-series-with-scope(series) else ()"/>
+                        <param name="thesis-statement" value="if (monogr/note) then monogr/note => tokenize(' ') => head() || ', ' else ()"/>
+                        <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
+                        <param name="date" value="monogr/imprint/date[1]/text()"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            % Selbstständige Publikation
+                            <div>[[author]][[title]], [[series]][[thesis-statement]][[place]][[date]] ([[short-title]]).
+                            </div>
+                        </pb:template>
+                    </model>
+                    <model predicate="analytic[not(@type='edition')]" behaviour="block" output="latex">
+                        <param name="author" value="if (ec:format-author(analytic/author)) then (ec:format-author(analytic/author) || ': ') else ()"/>
+                        <param name="title" value="ec:render-title-with-hi(analytic/title[not(@type='short')], 'latex')"/>
+                        <param name="short-title" value="analytic/title[@type='short']"/>
+                        <param name="journal" value="monogr/title"/>
+                        <param name="series-biblscope" value="ec:parse-biblScope(., 'series')"/>
+                        <param name="editor" value="if(monogr/author) then ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ', ' else ()"/>
+                        <param name="place" value="if (monogr/imprint) then ', ' || string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date[1] else ()"/>
+                        <param name="scope" value="ec:parse-biblScope(., 'scope')"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            % Unselbstständige Publikation
+                            <div>[[author]][[title]], in: [[editor]][[journal]][[series-biblscope]][[place]][[scope]] ([[short-title]]).
+                            </div>
+                        </pb:template>
+                    </model>
+                    <model output="latex" behaviour="omit"/>
+                    <!-- Rendering von Editionsangaben WEB -->
+                    <model predicate="monogr[@type='edition'] and (@xml:id or monogr/ref) and (@xml:id =&gt; matches('SSRQ|SDS|FDS'))" behaviour="listItem" cssClass="biblio">
+                        <param name="author" value="if (ec:format-editor(monogr/author)) then (', ' || ec:label('edited-by', false()) || ' ' || ec:format-editor(monogr/author)) else ()"/>
+                        <param name="series-ssrq" value="series/title"/>
+                        <param name="series-ssrq-scope" value="', ' || series/biblScope => string-join(' ') || ec:colon()"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
+                        <param name="short-title" value="monogr/title[@type='short']"/>
+                        <param name="link" value="if (monogr/ref) then monogr/ref/@target else ec:format-link(@xml:id)"/>
+                        <param name="place" value="', ' || string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
+                        <param name="date" value="monogr/imprint/date[1]/text()"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <!--  SSRQ Edition mit externem Verweis -->
+                            <div>[[series-ssrq]][[series-ssrq-scope]][[title]][[author]][[place]][[date]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
+                            </div>
+                        </pb:template>
+                    </model>
+                    <model predicate="monogr[@type='edition'] and (@xml:id or monogr/ref)" behaviour="listItem" cssClass="biblio">
+                        <param name="author" value="if (ec:format-editor(monogr/author)) then (', ' || ec:label('edited-by', false()) || ' ' || ec:format-editor(monogr/author)) else ()"/>
+                        <param name="series-misc" value="if (series and not(@xml:id =&gt; matches('SSRQ|SDS|FDS'))) then ec:join-series-with-scope(series) else ()"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
+                        <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="link" value="if (monogr/ref) then monogr/ref/@target else ec:format-link(@xml:id)"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
-                        <param name="date" value="monogr/imprint/date/text()"/>
+                        <param name="date" value="monogr/imprint/date[1]/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
-                            <!--  Edition (Buch) -->
-                            <div>[[series]][[title]][[author]], [[journal]] [[place]][[date]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
+                            <!--  Selbstständige Edition mit externem Verweis -->
+                            <div>[[title]][[author]], [[series-misc]][[place]][[date]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
                             </div>
                         </pb:template>
                     </model>
                     <model predicate="monogr[@type='edition']" behaviour="listItem" cssClass="biblio">
-                        <param name="author" value="if (ec:format-editor(monogr/author)) then (', bearb. von ' || ec:format-editor(monogr/author)) else ()"/>
-                        <param name="series" value="if (series) then (series/title || ', ' || series/biblScope || ': ') else ()"/>
-                        <param name="title" value="replace(monogr/title[not(@type='short')], ' : ', ' – ')"/>
+                        <param name="author" value="if (ec:format-editor(monogr/author)) then (', ' || ec:label('edited-by', false()) || ' ' || ec:format-editor(monogr/author)) else ()"/>
+                        <param name="series" value="if (series) then ec:join-series-with-scope(series) else ()"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
-                        <param name="journal" value="if (monogr/imprint/biblScope) then 'in: ' || monogr/imprint/biblScope || ', ' else ()"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
-                        <param name="date" value="monogr/imprint/date/text()"/>
+                        <param name="date" value="monogr/imprint/date[1]/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
-                            <!--  Edition (Buch) -->
-                            <div>[[series]][[title]][[author]], [[journal]] [[place]][[date]] ([[short-title]]).
+                            <!--  Selbstständige Edition ohne externen Verweis -->
+                            <div>[[title]][[author]], [[series]][[place]][[date]] ([[short-title]]).
                             </div>
                         </pb:template>
                     </model>
-                    <model predicate="analytic[@type='edition'] and @xml:id and monogr/imprint" behaviour="listItem" cssClass="biblio">
-                        <param name="author" value="if (ec:format-editor(analytic/author)) then (', bearb. von ' || ec:format-editor(analytic/author)) else ()"/>
-                        <param name="title" value="replace(analytic/title[not(@type='short')], ' : ', ' – ')"/>
-                        <param name="short-title" value="analytic/title[@type='short']"/>
-                        <param name="link" value="ec:format-link(@xml:id)"/>
-                        <param name="journal" value="monogr/title"/>
-                        <param name="editor" value="if(monogr/author) then (' hrsg. von ' || ec:format-editor(monogr/author)) || ', ' else ()"/>
-                        <param name="place" value="string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date || ', '"/>
-                        <param name="scope" value="string-join(monogr/imprint/biblScope, ', ')"/>
-                        <pb:template xmlns="" xml:space="preserve">
-                            <!--  Edition (in Zeitschrift) -->
-                            <div>[[title]][[author]], in: [[journal]], [[editor]][[place]][[scope]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
-                            </div>
-                        </pb:template>
-                    </model>
-                    <model predicate="analytic[@type='edition'] and monogr/imprint" behaviour="listItem" cssClass="biblio">
-                        <param name="author" value="if (ec:format-editor(analytic/author)) then (', bearb. von ' || ec:format-editor(analytic/author)) else ()"/>
-                        <param name="title" value="replace(analytic/title[not(@type='short')], ' : ', ' – ')"/>
-                        <param name="short-title" value="analytic/title[@type='short']"/>
-                        <param name="journal" value="monogr/title"/>
-                        <param name="editor" value="if(monogr/author) then (' hrsg. von ' || ec:format-editor(monogr/author)) || ', ' else ()"/>
-                        <param name="place" value="string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date || ', '"/>
-                        <param name="scope" value="string-join(monogr/imprint/biblScope, ', ')"/>
-                        <pb:template xmlns="" xml:space="preserve">
-                            <!--  Edition (in Zeitschrift) -->
-                            <div>[[title]][[author]], in: [[journal]], [[editor]][[place]][[scope]] ([[short-title]]).
-                            </div>
-                        </pb:template>
-                    </model>
-                    <model predicate="analytic[@type='edition'] and @xml:id and monogr[not(imprint)]" behaviour="listItem" cssClass="biblio">
-                        <param name="author" value="if (ec:format-editor(analytic/author)) then (', bearb. von ' || ec:format-editor(analytic/author)) else ()"/>
-                        <param name="title" value="replace(analytic/title[not(@type='short')], ' : ', ' – ')"/>
+                    <model predicate="analytic[@type='edition'] and (@xml:id or analytic/ref)" behaviour="listItem" cssClass="biblio">
+                        <param name="author" value="if (ec:format-editor(analytic/author)) then (', ' || ec:label('edited-by', false()) || ' ' || ec:format-editor(analytic/author)) else ()"/>
+                        <param name="title" value="ec:render-title-with-hi(analytic/title[not(@type='short')], 'web')"/>
                         <param name="short-title" value="analytic/title[@type='short']"/>
                         <param name="link" value="if (analytic/ref) then analytic/ref/@target else ec:format-link(@xml:id)"/>
                         <param name="journal" value="monogr/title"/>
-                        <param name="scope" value="string-join(monogr/biblScope, ', ')"/>
+                        <param name="in" value="'in' || ec:colon()"/>
+                        <param name="editor" value="if(monogr/author) then ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ', ' else ()"/>
+                        <param name="series-biblscope" value="ec:parse-biblScope(., 'series')"/>
+                        <param name="place" value="if (monogr/imprint) then ', ' || string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date[1] else ()"/>
+                        <param name="scope" value="ec:parse-biblScope(., 'scope')"/>
                         <pb:template xmlns="" xml:space="preserve">
-                            <!--  Edition (in Zeitschrift) -->
-                            <div>[[title]][[author]], in: [[journal]], [[scope]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
+                            <!--  Unselbstständige Edition mit externem Verweis -->
+                            <div>[[title]][[author]], [[in]][[editor]][[journal]][[series-biblscope]][[place]][[scope]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
                             </div>
                         </pb:template>
                     </model>
-                    <model predicate="analytic[@type='edition'] and monogr[not(imprint)]" behaviour="listItem" cssClass="biblio">
-                        <param name="author" value="if (ec:format-editor(analytic/author)) then (', bearb. von ' || ec:format-editor(analytic/author)) else ()"/>
-                        <param name="title" value="replace(analytic/title[not(@type='short')], ' : ', ' – ')"/>
+                    <model predicate="analytic[@type='edition']" behaviour="listItem" cssClass="biblio">
+                        <param name="author" value="if (ec:format-editor(analytic/author)) then (', ' || ec:label('edited-by', false()) || ' ' || ec:format-editor(analytic/author)) else ()"/>
+                        <param name="title" value="ec:render-title-with-hi(analytic/title[not(@type='short')], 'web')"/>
                         <param name="short-title" value="analytic/title[@type='short']"/>
-                        <param name="link" value="if (analytic/ref) then analytic/ref/@target else ec:format-link(@xml:id)"/>
                         <param name="journal" value="monogr/title"/>
-                        <param name="scope" value="string-join(monogr/biblScope, ', ')"/>
+                        <param name="in" value="'in' || ec:colon()"/>
+                        <param name="series-biblscope" value="ec:parse-biblScope(., 'series')"/>
+                        <param name="editor" value="if(monogr/author) then ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ', ' else ()"/>
+                        <param name="place" value="if (monogr/imprint) then ', ' || string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date[1] else ()"/>
+                        <param name="scope" value="ec:parse-biblScope(., 'scope')"/>
                         <pb:template xmlns="" xml:space="preserve">
-                            <!--  Edition (in Zeitschrift) -->
-                            <div>[[title]][[author]], in: [[journal]], [[scope]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
+                            <!--  Unselbstständige Edition ohne externen Verweis -->
+                            <div>[[title]][[author]], [[in]][[editor]][[journal]][[series-biblscope]][[place]][[scope]] ([[short-title]]).
                             </div>
                         </pb:template>
                     </model>
-                    <model predicate="monogr[not(@type='edition')] and not(analytic) and @xml:id" behaviour="listItem" cssClass="biblio">
-                        <param name="author" value="if (ec:format-author(monogr/author)) then (ec:format-author(monogr/author) || ': ') else ()"/>
-                        <param name="title" value="replace(monogr/title[not(@type='short')], ' : ', ' – ')"/>
+                    <!-- Rendering von sonstiger Sekundärliteratur WEB -->
+                    <model predicate="monogr[@type='enc'] and @xml:id or monogr/ref" behaviour="listItem" cssClass="biblio">
+                        <param name="editor" value="ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')'"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
+                        <param name="link" value="if (@xml:id) then ec:format-link(@xml:id) else monogr/ref/@target"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
-                        <param name="link" value="ec:format-link(@xml:id)"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
-                        <param name="date" value="monogr/imprint/date/text()"/>
+                        <param name="date" value="monogr/imprint/date[1]/text()"/>
+                        <param name="additional-infos" value="if (monogr/imprint/biblScope) then ', ' || monogr/imprint/biblScope else()"/>
                         <pb:template xmlns="" xml:space="preserve">
-                            <!-- Buch -->
-                            <div>[[author]][[title]], [[place]][[date]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
+                            <!-- Lexika mit externem Verweis -->
+                            <div>[[title]], [[editor]], [[place]][[date]][[additional-infos]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
+                            </div>
+                        </pb:template>
+                    </model>
+                    <model predicate="monogr[@type='enc']" behaviour="listItem" cssClass="biblio">
+                        <param name="editor" value="ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')'"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
+                        <param name="short-title" value="monogr/title[@type='short']"/>
+                        <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
+                        <param name="date" value="monogr/imprint/date[1]/text()"/>
+                        <param name="additional-infos" value="if (monogr/imprint/biblScope) then ', ' || monogr/imprint/biblScope else()"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <!-- Lexika ohne externem Verweis -->
+                            <div>[[title]], [[editor]], [[place]][[date]][[additional-infos]] ([[short-title]]).
+                            </div>
+                        </pb:template>
+                    </model>
+                    <model predicate="monogr[not(@type='edition')] and not(analytic) and (@xml:id or monogr/ref)" behaviour="listItem" cssClass="biblio">
+                        <param name="author" value="if (ec:format-author(monogr/author)) then (ec:format-author(monogr/author) || ec:colon()) else ()"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
+                        <param name="series" value="if (series) then ec:join-series-with-scope(series) else ()"/>
+                        <param name="thesis-statement" value="if (monogr/note) then monogr/note => tokenize(' ') => head() || ', ' else ()"/>
+                        <param name="short-title" value="monogr/title[@type='short']"/>
+                        <param name="link" value="if (monogr/ref) then monogr/ref/@target else ec:format-link(@xml:id)"/>
+                        <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
+                        <param name="date" value="monogr/imprint/date[1]/text()"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <!-- Selbstständige Publikation mit externem Verweis -->
+                            <div>[[author]][[title]], [[series]][[thesis-statement]][[place]][[date]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
                             </div>
                         </pb:template>
                     </model>
                     <model predicate="monogr[not(@type='edition')] and not(analytic)" behaviour="listItem" cssClass="biblio">
-                        <param name="author" value="if (ec:format-author(monogr/author)) then (ec:format-author(monogr/author) || ': ') else ()"/>
-                        <param name="title" value="replace(monogr/title[not(@type='short')], ' : ', ' – ')"/>
+                        <param name="author" value="if (ec:format-author(monogr/author)) then (ec:format-author(monogr/author) || ec:colon()) else ()"/>
+                        <param name="title" value="ec:render-title-with-hi(monogr/title[not(@type='short')], 'web')"/>
+                        <param name="series" value="if (series) then ec:join-series-with-scope(series) else ()"/>
                         <param name="short-title" value="monogr/title[@type='short']"/>
                         <param name="place" value="string-join(distinct-values(monogr/imprint/pubPlace), '/') || ' '"/>
-                        <param name="date" value="monogr/imprint/date/text()"/>
+                        <param name="date" value="monogr/imprint/date[1][1]/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
-                            <!-- Buch -->
-                            <div>[[author]][[title]], [[place]][[date]] ([[short-title]]).
+                            <!-- Selbstständige Publikation ohne externen Verweis-->
+                            <div>[[author]][[title]], [[series]][[place]][[date]] ([[short-title]]).
                             </div>
                         </pb:template>
                     </model>
-                    <model predicate="analytic[not(@type='edition')] and @xml:id" behaviour="listItem" cssClass="biblio">
-                        <param name="author" value="if (ec:format-author(analytic/author)) then (ec:format-author(analytic/author) || ': ') else ()"/>
-                        <param name="title" value="replace(analytic/title[not(@type='short')], ' : ', ' – ')"/>
+                    <model predicate="analytic[not(@type='edition')] and (@xml:id or analytic/ref)" behaviour="listItem" cssClass="biblio">
+                        <param name="author" value="if (ec:format-author(analytic/author)) then (ec:format-author(analytic/author) || ec:colon()) else ()"/>
+                        <param name="title" value="ec:render-title-with-hi(analytic/title[not(@type='short')], 'web')"/>
                         <param name="short-title" value="analytic/title[@type='short']"/>
-                        <param name="link" value="ec:format-link(@xml:id)"/>
+                        <param name="in" value="'in' || ec:colon()"/>
+                        <param name="editor" value="if(monogr/author) then ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ', ' else ()"/>
+                        <param name="link" value="if (analytic/ref[1]) then analytic/ref/@target else ec:format-link(@xml:id)"/>
                         <param name="journal" value="monogr/title"/>
-                        <param name="scope" value="string-join(monogr/biblScope, ', ')"/>
+                        <param name="series-biblscope" value="ec:parse-biblScope(., 'series')"/>
+                        <param name="place" value="if (monogr/imprint) then ', ' || string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date[1] else ()"/>
+                        <param name="scope" value="ec:parse-biblScope(., 'scope')"/>
                         <pb:template xmlns="" xml:space="preserve">
-                            <!-- Zeitschrift -->
-                            <div>[[author]][[title]], in: [[journal]], [[scope]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
+                            <!-- Unselbstständige Publikation mit externem Verweis -->
+                            <div>[[author]][[title]], [[in]] [[editor]][[journal]][[series-biblscope]][[place]][[scope]] (<a href="[[link]]" target="_bibl">[[short-title]]</a>).
                             </div>
                         </pb:template>
                     </model>
                     <model predicate="analytic[not(@type='edition')]" behaviour="listItem" cssClass="biblio">
-                        <param name="author" value="if (ec:format-author(analytic/author)) then (ec:format-author(analytic/author) || ': ') else ()"/>
-                        <param name="title" value="replace(analytic/title[not(@type='short')], ' : ', ' – ')"/>
+                        <param name="author" value="if (ec:format-author(analytic/author)) then (ec:format-author(analytic/author) || ec:colon()) else ()"/>
+                        <param name="title" value="ec:render-title-with-hi(analytic/title[not(@type='short')], 'web')"/>
                         <param name="short-title" value="analytic/title[@type='short']"/>
+                        <param name="in" value="'in' || ec:colon()"/>
                         <param name="journal" value="monogr/title"/>
-                        <param name="scope" value="string-join(monogr/biblScope, ', ')"/>
+                        <param name="series-biblscope" value="ec:parse-biblScope(., 'series')"/>
+                        <param name="editor" value="if(monogr/author) then ec:format-editor(monogr/author) || ' (' || ec:label('editor', false()) || ')' || ', ' else ()"/>
+                        <param name="place" value="if (monogr/imprint) then ', ' || string-join(monogr/imprint/pubPlace, '/') || ' ' || monogr/imprint/date[1] else ()"/>
+                        <param name="scope" value="ec:parse-biblScope(., 'scope')"/>
                         <pb:template xmlns="" xml:space="preserve">
-                            <!-- Zeitschrift -->
-                            <div>[[author]][[title]], in: [[journal]], [[scope]] ([[short-title]]).
+                            <!-- Unselbstständige Publikation ohne externen Verweis -->
+                            <div>[[author]][[title]], [[in]][[editor]][[journal]][[series-biblscope]][[place]][[scope]] ([[short-title]]).
                             </div>
                         </pb:template>
                     </model>
@@ -1746,10 +1830,22 @@
                     <model behaviour="listItem"/>
                 </elementSpec>
                 <elementSpec ident="textLang" mode="add">
-                    <model behaviour="listItem">
+                    <model predicate="not(./following-sibling::textLang)" behaviour="listItem">
                         <desc>Ausgabe Sprache in "weitere Überlieferungen"</desc>
-                        <param name="content" value="(ec:label('language'), ec:colon(), string-join(for $lang in tokenize(., ', *') return ec:label($lang, false()), ', '))"/>
+                        <param name="content" value="(ec:label(if (preceding-sibling::textLang) then 'languages' else 'language'), ec:colon(), string-join(for $lang in ./@xml:lang | preceding-sibling::textLang/@xml:lang return ec:label($lang, false()), ', '))"/>
                     </model>
+                </elementSpec>
+                <elementSpec ident="valItem" mode="change">
+                    <model predicate="ancestor::dataSpec[ancestor::TEI/@type = 'abbr']" behaviour="block" output="latex">
+                        <param name="content" value="@ident/string() || ' &amp;amp; ' || (if(desc[@xml:lang = 'de']) then desc[@xml:lang = 'de']/text() else desc[1]/text()) || '\\'"/>
+                    </model>
+                    <model predicate="ancestor::dataSpec[ancestor::TEI/@type = 'abbr']" behaviour="listItem">
+                        <param name="content" value="@ident/string() || ' = ' || (if (desc[@xml:lang = (session:get-attribute('ssrq.lang'), 'de')[1]]) then desc[@xml:lang = (session:get-attribute('ssrq.lang'), 'de')[1]]/text() else desc[1]/text())"/>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="valList" mode="change">
+                    <model predicate="parent::dataSpec[ancestor::TEI/@type = 'abbr']" behaviour="block" output="latex"/>
+                    <model predicate="parent::dataSpec[ancestor::TEI/@type = 'abbr']" behaviour="list"/>
                 </elementSpec>
             </schemaSpec>
         </body>

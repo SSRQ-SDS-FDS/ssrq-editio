@@ -4,11 +4,10 @@ xquery version "3.1";
 :
 :)
 
-import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xql";
-import module namespace app="http://existsolutions.com/ssrq/app" at "ssrq.xql";
-import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
+import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xqm";
+import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "ssrq.xqm";
 
-declare namespace api = "http://existsolutions.com/ssrq/api";
+declare namespace api = "http://ssrq-sds-fds.ch/exist/apps/ssrq/api";
 
 declare namespace request = "http://exist-db.org/xquery/request";
 declare namespace tei="http://www.tei-c.org/ns/1.0";

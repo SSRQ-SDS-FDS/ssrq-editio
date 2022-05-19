@@ -14,12 +14,11 @@ $application-title-display: none;
 
 /********************* Colors ************************/
 
-$color-primary: #35424b;
-$color-primary-light: #607d8b;
-$color-primary-lightest: #d1dae0;
-
-$color-secondary: #f6a623;
-$color-secondary-darker: #d6911f;
+$color-primary: #911917;
+// Shaded from $color-primary
+$color-primary-light: #994443;
+$color-primary-lighter: #c17371;
+$color-primary-lightest: #d39d9c;
 
 $color-white: #ffffff;
 $color-gray-lightest: #f1f1f1;
@@ -42,14 +41,18 @@ $color-link-hover-bg: $color-gray-medium;
 $color-navigation-bg: $color-white;
 $color-navigation-text: $color-body-text-default;
 $color-navigation-hover: $color-primary-light;
+$color-navigation-hover-text: $color-white;
 
 // Toolbar-Color
-$color-toolbar-bg: $color-primary-lightest;
+$color-toolbar-bg: $color-primary-light;
 
 // Sidebars and Panels
-$panel-default-heading-bg-color: $color-primary-lightest;
+$panel-default-heading-bg-color: $color-primary-light;
 $panel-info-heading-bg-color: $color-primary-light;
-$panel-primary-heading-bg-color: #c5cae9;
+$panel-primary-heading-bg-color: $color-primary-light;
+.panel > .panel-heading {
+  color: $color-white;
+}
 
 // Off Canvas Navigation
 $color-side-navigation-bg: $color-white;
@@ -62,6 +65,10 @@ $btn-primary-color: $color-white;
 $btn-primary-bg: $color-primary-light;
 $btn-primary-border: $color-primary-light;
 
+.btn.btn-primary {
+  color: $color-primary !important;
+}
+
 // Borders
 $default-border-style: 1px solid $color-gray-lighter;
 
@@ -71,7 +78,7 @@ $color-disabled: $color-gray-lighter;
 /********************* Fonts ************************/
 
 $font-serif: 'Lexia Fontes', Georgia, 'Times New Roman', serif;
-$font-sans-serif: 'Oswald', Verdana, 'Helvetica', sans-serif;
+$font-sans-serif: 'Open Sans', Verdana, 'Helvetica', sans-serif;
 $font-sans-serif-default: 'Open Sans', Verdana, 'Helvetica', sans-serif;
 $font-monospace: 'Ubuntu Mono', Menlo, Consolas, Courier, monospace;
 
@@ -180,7 +187,6 @@ $color-footer-bg: $color-gray-lightest;
 
 // Core --------------------------- //
 
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400|Oswald');
 //@import "_default-variables.scss";
 @import '_base.scss';
 @import '_utilities.scss';
@@ -269,6 +275,7 @@ $color-terms: #b5221f;*/
 
     li > input[type='checkbox'] {
       margin-left: -1.35em;
+      margin-right: 0;
       float: left;
     }
   }
@@ -295,9 +302,25 @@ $color-terms: #b5221f;*/
 } */
 
 .advanced-search {
+  .panel-body {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: $font-sans-serif !important;
+    }
+  }
+
   .info-btn:link {
-    margin-left: 1em;
+    margin-left: 0.5em;
     color: $color-white;
+
+    i.material-icons {
+      font-size: 16px;
+      vertical-align: bottom;
+    }
   }
 
   div > ul {
@@ -330,7 +353,7 @@ $color-terms: #b5221f;*/
       }
       .form-control {
         margin: 0;
-        height: auto;
+        height: auto !important;
       }
     }
   }
@@ -759,6 +782,10 @@ label {
   color: #607d8b;
 }
 
+.id {
+  color: $color-primary-light;
+}
+
 #idno .id {
   cursor: pointer;
 }
@@ -780,3 +807,4 @@ label {
 // More Imports!
 @import 'ssrq-components/_introduction.scss';
 @import 'ssrq-components/_form.scss';
+@import 'ssrq-components/text';

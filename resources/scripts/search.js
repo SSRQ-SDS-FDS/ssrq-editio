@@ -1,4 +1,4 @@
-$(function () {
+$(document).ready(function () {
   $('#bearbeitungstext').on('change', function () {
     var checked = $(this).prop('checked');
     if (checked) {
@@ -8,7 +8,11 @@ $(function () {
     }
   });
   $('.bearbeitungstext').on('change', function () {
-    $('#bearbeitungstext').prop('checked', false);
+      var cb_checked = $(".bearbeitungstext:checked").length;
+      var cb_total = $(".bearbeitungstext").length;
+      var cb_top = document.getElementById("bearbeitungstext");
+      cb_top.checked = cb_checked === cb_total;
+      cb_top.indeterminate = cb_checked > 0 && cb_checked !== cb_total;
   });
 
   var val = $('#bearbeitungstext').prop('value');
@@ -39,38 +43,26 @@ $(function () {
   $('#sort-browse').on('change', function () {
     $(this).parents('form').submit();
   });
+
+  // Handle Reset action in the search form
+  $("#searchPanel button[type='reset']").click(function (e) {
+    e.preventDefault();
+    resetSelects();
+    resetInputs();  
+  });
 });
 
-// Handling Reset Action in the Seach-Form
-const resetButton = document.querySelector("button[type='reset']");
-if (resetButton) {
-  resetButton.addEventListener('click', (e) => {
-    handleReset(e);
-  });
-}
-
-function handleReset(e) {
-  e.preventDefault();
-  resetSelects();
-  resetInputs();
-}
-
 function resetSelects() {
-  const selects = document.querySelectorAll('#searchPanel select');
-  selects.forEach((select) => {
-    if (select.multiple) {
-      const options = select.querySelectorAll('option');
-      options.forEach((option) => (option.selected = false));
-    } else {
-      const defaultOption = select.querySelector('option');
-      defaultOption.selected = true;
-    }
+  $("#searchPanel select").each(function (i, select) {
+    $("option", select).prop("selected", false);
+    if (!select.multiple) {
+      $("option:first", select).prop("selected", true);
+    }  
   });
 }
 
 function resetInputs() {
-  const inputs = document.querySelectorAll('#searchPanel input');
-  inputs.forEach((input) => {
+  $("#searchPanel input").each(function (i, input) {
     switch (input.type) {
       case 'search':
         input.value = '';

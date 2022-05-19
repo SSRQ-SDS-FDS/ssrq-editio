@@ -8,7 +8,7 @@
                 <span class="icon-bar"/>
             </button>
             <a class="navbar-brand logo" href="i18n(website-link)">
-                <img src="resources/images/SSRQganz-2020.svg" data-template="ssrq-utils:insertAlt"/>
+                <img src="resources/images/SSRQganz-2020.svg" data-template="ssrq-helper:insertAlt"/>
             </a>
         </div>
         <div class="navbar-collapse collapse" id="navbar-collapse-1">
@@ -18,11 +18,10 @@
                         <div>
                             <i18n:text key="home"/>
                         </div>
-                        <!--<i class="material-icons">home</i>-->
                     </a>
                 </li>
                 <li id="abbr">
-                    <a href="$app/abbr.html" class="tp-menu-item" title="abbr">
+                    <a href="$app/abbr.html" class="tp-menu-item">
                         <div>
                             <i18n:text key="abbr"/>
                         </div>
@@ -41,9 +40,8 @@
                             <i18n:text key="download"/>
                             <span class="caret"/>
                         </div>
-                        <!--<i class="material-icons">file_download</i>-->
                     </a>
-                    <ul class="dropdown-menu" role="menu">
+                    <ul class="dropdown-menu" role="menu" data-template="app:download">
                         <li>
                             <a target="_blank" data-template="app:download-pdf" title="i18n(pdf-latex)">
                                 <i class="material-icons">print</i>
@@ -54,36 +52,6 @@
                             <a target="_blank" data-template="app:download-xml" title="i18n(view-tei)">
                                 <i class="material-icons">code</i>
                                 XML/TEI
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown" data-template="browse:show-if-logged-in-as-admin">
-                    <a href="#" class="dropdown-toggle tp-menu-item" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" title="i18n(admin)">
-                        <div>
-                            <i18n:text key="admin"/>
-                            <span class="caret"/>
-                        </div>
-                    </a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                        <li>
-                            <a class="recompile" data-template="browse:recompile-link">
-                                <i18n:text key="recompile"/>
-                            </a>
-                        </li>
-                        <li>
-                            <a id="reindex" href="#">
-                                <i18n:text key="metadata-update"/>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" data-template="pages:edit-odd-link" target="_new">
-                                <i18n:text key="edit-odd"/>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="$app/generate.html">
-                                <i18n:text key="app-generator"/>
                             </a>
                         </li>
                     </ul>
