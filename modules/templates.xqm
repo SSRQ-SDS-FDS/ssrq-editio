@@ -16,6 +16,9 @@ import module namespace repo="http://exist-db.org/xquery/repo";
 import module namespace session="http://exist-db.org/xquery/session";
 import module namespace util="http://exist-db.org/xquery/util";
 
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
+
+
 declare namespace expath="http://expath.org/ns/pkg";
 
 declare variable $templates:CONFIG_STOP_ON_ERROR := "stop-on-error";
@@ -423,30 +426,30 @@ declare function templates:get-root($model as map(*)) as xs:string? {
  :-----------------------------------------------------------------------------------:)
 
 declare function templates:include($node as node(), $model as map(*), $path as xs:string) {
-    let $appRoot := templates:get-app-root($model)
+    let $app-root := templates:get-app-root($model)
     let $root := templates:get-root($model)
     let $path :=
         if (starts-with($path, "/")) then
             (: Search template relative to app root :)
-            concat($appRoot, "/", $path)
+            utils:path-concat-safe(($app-root, $path))
         else
             (: Locate template relative to HTML file :)
-            concat($root, "/", $path)
+            utils:path-concat-safe(($root, $path))
     return
         templates:process(doc($path), $model)
 };
 
 declare function templates:surround($node as node(), $model as map(*), $with as xs:string, $at as xs:string?,
     $using as xs:string?, $options as xs:string?) {
-    let $appRoot := templates:get-app-root($model)
+    let $app-root := templates:get-app-root($model)
     let $root := templates:get-root($model)
     let $path :=
         if (starts-with($with, "/")) then
             (: Search template relative to app root :)
-            concat($appRoot, $with)
+            utils:path-concat-safe(($app-root, $with))
         else
             (: Locate template relative to HTML file :)
-            concat($root, "/", $with)
+            utils:path-concat-safe(($root, $with))
     let $content :=
         if ($using) then
             doc($path)//*[@id = $using]

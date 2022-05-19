@@ -33,6 +33,8 @@ import module namespace browse="http://www.tei-c.org/tei-simple/templates" at "b
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
+
 (:~
 : Execute the query. The search results are not output immediately. Instead they
 : are passed to nested templates through the $model parameter.
@@ -112,36 +114,37 @@ function search:query($node as node()*, $model as map(*), $query as xs:string?, 
 };
 
 declare function search:query-default($query as xs:string, $target-texts as xs:string*) {
-    if(string($query)) then
+    if (string($query)) then
         switch ($config:search-default)
             case "tei:div" return
                 if ($target-texts) then
                     for $text in $target-texts
                     return
-                        $config:data-root ! doc(. || "/" || $text)//tei:div[ft:query(., $query)][not(tei:div)]
+                        doc(utils:path-concat-safe(($config:data-root, $text)))//tei:div[ft:query(., $query)][not(tei:div)]
                 else
                     collection($config:data-root)//tei:div[ft:query(., $query)][not(tei:div)]
             case "tei:body" return
                 if ($target-texts) then
                     for $text in $target-texts
                     return
-                        $config:data-root !
-                            doc(. || "/" || $text)//tei:body[ft:query(., $query)]
+                        utils:path-concat-safe(($config:data-root, $text))//tei:body[ft:query(., $query)]
                 else
                     collection($config:data-root)//tei:body[ft:query(., $query)]
             default return
                 if ($target-texts) then
-                    util:eval("for $text in $target-texts return $config:data-root ! doc(. || '/' || $text)//tei:body[ft:query(., $query)]")
+                    for $text in $target-texts
+                    return doc(utils:path-concat-safe(($config:data-root, $text)))//tei:body[ft:query(., $query)]
                 else
                     util:eval("collection($config:data-root)//" || $config:search-default || "[ft:query(., $query)]")
-    else ()
+    else
+        ()
 };
 
 declare function search:query-headings($query as xs:string, $target-texts as xs:string*) {
     if ($target-texts) then
         for $text in $target-texts
         return
-            $config:data-root ! doc(. || "/" || $text)//tei:head[ft:query(., $query)]
+            utils:path-concat-safe(($config:data-root, $text))//tei:head[ft:query(., $query)]
     else
         collection($config:data-root)//tei:head[ft:query(., $query)]
 };
@@ -229,7 +232,7 @@ declare %private function search:get-current($config as map(*), $div as element(
         ()
     else
         if ($div instance of element(tei:teiHeader)) then
-        $div
+            $div
         else
             if (
                 empty($div/preceding-sibling::tei:div)  (: first div in section :)

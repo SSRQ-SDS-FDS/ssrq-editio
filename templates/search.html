@@ -280,63 +280,60 @@
               </div>
             </div>
           </li>
-<!--           <li> -->
-<!--             <div class="form-group"> -->
-<!--               <label class="col-sm-4 control-label" for="filter-pubplace"> -->
-<!--                 <i18n:text key="origPlace"/>: -->
-<!--               </label> -->
-<!--               <div class="col-sm-8"> -->
-<!--                 <select -->
-<!--                   id="filter-pubplace" -->
-<!--                   name="filter-pubplace" -->
-<!--                   class="form-control has-dropdown" -->
-<!--                   data-template="templates:form-control" -->
-<!--                 > -->
-<!--                   <option/> -->
-<!--                   <option value="yes">ja</option> -->
-<!--                   <option value="no">nein</option> -->
-<!--                 </select> -->
-<!--               </div> -->
-<!--             </div> -->
-<!--           </li> -->
-<!--           <li> -->
-<!--             <div class="form-group"> -->
-<!--               <label class="col-sm-4 control-label" for="filter-author"> -->
-<!--                 <i18n:text key="scribe"/>: -->
-<!--               </label> -->
-<!--               <div class="col-sm-8"> -->
-<!--                 <select -->
-<!--                   id="filter-author" -->
-<!--                   name="filter-author" -->
-<!--                   class="form-control has-dropdown" -->
-<!--                   data-template="templates:form-control" -->
-<!--                 > -->
-<!--                   <option/> -->
-<!--                   <option value="yes">ja</option> -->
-<!--                   <option value="no">nein</option> -->
-<!--                 </select> -->
-<!--               </div> -->
-<!--             </div> -->
-<!--           </li> -->
-<!--           <li> -->
-<!--             <div class="form-group"> -->
-<!--               <label class="col-sm-4 control-label" for="filter-seal"> -->
-<!--                 <i18n:text key="seal"/>: -->
-<!--               </label> -->
-<!--               <div class="col-sm-8"> -->
-<!--                 <select -->
-<!--                   id="filter-seal" -->
-<!--                   name="filter-seal" -->
-<!--                   class="form-control has-dropdown" -->
-<!--                   data-template="templates:form-control" -->
-<!--                 > -->
-<!--                   <option/> -->
-<!--                   <option value="yes">ja</option> -->
-<!--                   <option value="no">nein</option> -->
-<!--                 </select> -->
-<!--               </div> -->
-<!--             </div> -->
-<!--           </li> -->
+          <li>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">
+                <i18n:text key="origPlace"/>:
+              </label>
+              <div class="col-sm-8">
+                <select
+                  name="filter-pubplace"
+                  class="form-control has-dropdown"
+                  data-template="templates:form-control"
+                >
+                  <option/>
+                  <option value="yes"><i18n:text key="known">known</i18n:text></option>
+                  <option value="no"><i18n:text key="unknown">unknown</i18n:text></option>
+                </select>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">
+                <i18n:text key="scribe"/>:
+              </label>
+              <div class="col-sm-8">
+                <select
+                  name="filter-author"
+                  class="form-control has-dropdown"
+                  data-template="templates:form-control"
+                >
+                  <option/>
+                  <option value="yes"><i18n:text key="known">known</i18n:text></option>
+                  <option value="no"><i18n:text key="unknown">unknown</i18n:text></option>
+                </select>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">
+                <i18n:text key="seal"/>:
+              </label>
+              <div class="col-sm-8">
+                <select
+                  name="filter-seal"
+                  class="form-control has-dropdown"
+                  data-template="templates:form-control"
+                >
+                  <option/>
+                  <option value="yes"><i18n:text key="existent">existent</i18n:text></option>
+                  <option value="no"><i18n:text key="nonexistent">nonexistent</i18n:text></option>
+                </select>
+              </div>
+            </div>
+          </li>
           <li>
             <div class="form-group">
               <label class="col-sm-12 control-label" for="filter-kanton">

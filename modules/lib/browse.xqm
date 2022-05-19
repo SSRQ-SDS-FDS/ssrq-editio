@@ -21,12 +21,11 @@ module namespace app="http://www.tei-c.org/tei-simple/templates";
 
 import module namespace templates="http://exist-db.org/xquery/templates";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
-import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "pages.xql";
-import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
-import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../pm-config.xql";
-import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
+import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "util.xqm";
+import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../pm-config.xqm";
 
-declare namespace expath="http://expath.org/ns/pkg";
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
+
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 declare
@@ -102,9 +101,8 @@ function app:list-works($node as node(), $model as map(*), $filter as xs:string?
     let $filtered :=
         if ($filter) then
             let $ordered :=
-                for $rootCol in $config:data-root
                 for $item in
-                    ft:search($rootCol || "/" || $root, $browse || ":" || $filter, ("author", "title"))/search
+                    ft:search(utils:path-concat-safe(($config:data-root, $root)), $browse || ":" || $filter, ("author", "title"))/search
                 let $author := $item/field[@name = "author"]
                 order by $author[1], $author[2], $author[3]
                 return
@@ -115,7 +113,7 @@ function app:list-works($node as node(), $model as map(*), $filter as xs:string?
         else if ($cached and $filter != "") then
             $cached
         else
-            $config:data-root ! collection(. || "/" || $root)/tei:TEI
+            collection(utils:path-concat-safe(($config:data-root, $root)))/tei:TEI
     return (
         session:set-attribute("simple.works", $filtered),
         session:set-attribute("browse", $browse),

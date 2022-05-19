@@ -2,6 +2,8 @@ xquery version "3.0";
 
 import module namespace pmu="http://www.tei-c.org/tei-simple/xquery/util";
 import module namespace odd="http://www.tei-c.org/tei-simple/odd2odd";
+import module namespace cache="http://exist-db.org/xquery/cache";
+import module namespace config-data="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/config" at "/db/apps/ssrq-data/modules/config.xqm";
 
 declare namespace repo="http://exist-db.org/xquery/repo";
 
@@ -42,18 +44,10 @@ declare function local:generate-code($collection as xs:string) {
         )
     )
 };
+
 xmldb:create-collection($target, "transform"),
 sm:chown(xs:anyURI($target || "/transform"), "ssrq"),
 sm:chgrp(xs:anyURI($target || "/transform"), "tei"),
-
-(: sm:chmod(xs:anyURI($target || "/modules/view.xql"), "rwsr-xr-x"), :)
-(:sm:chmod(xs:anyURI($target || "/modules/transform.xql"), "rwsr-xr-x"),:)
-sm:chmod(xs:anyURI($target || "/modules/lib/pdf.xql"), "rwsr-xr-x"),
-sm:chmod(xs:anyURI($target || "/modules/lib/ajax.xql"), "rwsr-xr-x"),
-sm:chmod(xs:anyURI($target || "/modules/lib/upload.xql"), "rwsr-xr-x"),
-
-(: LaTeX requires dba permissions to execute shell process :)
-sm:chmod(xs:anyURI($target || "/modules/lib/latex.xql"), "rwxr-Sr-x"),
-sm:chgrp(xs:anyURI($target || "/modules/lib/latex.xql"), "dba"),
-
+sm:chmod(xs:anyURI($target || "/modules/pub/upload.xql"), "rwsr-xr-x"),
+(if (cache:create($config-data:CACHE, map{})) then () else cache:clear($config-data:CACHE)),
 local:generate-code($target)

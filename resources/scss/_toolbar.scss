@@ -25,11 +25,11 @@
   .btn,
   .tp-dropdown-wrapper {
     flex: 0 auto;
-    color: $color-primary !important;
+    color: $color-white !important;
     &:hover,
     &:focus,
     &:active {
-      color: lighten($color-primary, 10%) !important;
+      color: lighten($color-white, 10%) !important;
     }
   }
 

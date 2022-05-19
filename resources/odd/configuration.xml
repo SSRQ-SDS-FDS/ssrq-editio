@@ -13,11 +13,11 @@
 <modules>
     <output mode="latex">
         <property name="class">"article"</property>
-        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-latex" prefix="ext-latex" at="xmldb:exist:///db/apps/ssrq/modules/ext-latex.xql"/>
-        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ec" at="xmldb:exist:///db/apps/ssrq/modules/ext-common.xql"/>
+        <module uri="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/latex" prefix="ec-latex" at="xmldb:exist:///db/apps/ssrq/modules/ext-latex.xqm"/>
+        <module uri="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" prefix="ec" at="xmldb:exist:///db/apps/ssrq/modules/ext-common.xqm"/>
     </output><!-- Add custom module -->
     <output mode="web">
-        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-web" prefix="ext-html" at="xmldb:exist:///db/apps/ssrq/modules/ext-html.xql"/>
-        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ec" at="xmldb:exist:///db/apps/ssrq/modules/ext-common.xql"/>
+        <module uri="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/web" prefix="ec-html" at="xmldb:exist:///db/apps/ssrq/modules/ext-html.xqm"/>
+        <module uri="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" prefix="ec" at="xmldb:exist:///db/apps/ssrq/modules/ext-common.xqm"/>
     </output>
 </modules>

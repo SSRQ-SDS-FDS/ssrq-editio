@@ -21,7 +21,7 @@
                     <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="seg" mode="change">
-                    <model predicate="@n and not(p)" behaviour="block">
+                    <model predicate="@n and not(*[1] => local-name() = 'p')" cssClass="seg" behaviour="block">
                         <param name="content" value="(text{'['}, @n, text{'] '}, .)"/>
                         <outputRendition>
                             margin-top: 1ex;
@@ -36,10 +36,10 @@
                     <model predicate=". is (ancestor::quote[1]/seg[last()-1])" behaviour="block">
                         <desc>Add missing margin</desc>
                         <outputRendition>
-                            
+
                             margin-top: 1ex;
                             margin-bottom: 1ex;
-                            
+
                         </outputRendition>
                     </model>
                     <model behaviour="block">
@@ -60,14 +60,26 @@
                     </model>
                     <model predicate="sic/del and corr" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="corr"/>
-                        <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), normalize-space(string-join(sic//text())), ', ', ec:translate(sic/del/@rend, 0, 'uppercase'), ec:colon(), sic/del//text())"/>
+                        <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), normalize-space(string-join(sic//text())), ', ', ec:translate(sic/del/@rend, false(), true()), ec:colon(), sic/del//text())"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
-                    <model predicate="sic and corr" behaviour="alternate" cssClass="text-critical">
-                        <param name="default" value="corr"/>
-                        <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), sic)"/>
-                        <param name="type" value="'text-critical'"/>
-                    </model>
+                    <modelSequence>
+                        <model predicate="sic and sic/pb[@n] and corr" behaviour="inline" cssClass="pb-pagination">
+                            <desc>Show pagebreak before tei:corr</desc>
+                            <param name="content" value="('[', if (sic/pb[matches(@n, '[vr]$')]) then 'fol.' else ec:label('page-abbr', false()), ' ', sic/pb/@n, ']')"/>
+                        </model>
+                        <!--<model predicate="sic and corr" behaviour="alternate" cssClass="text-critical">
+                            <param name="default" value="corr"/>
+                            <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), sic)"/>
+                            <param name="type" value="'text-critical'"/>
+                        </model>-->
+                        <model predicate="sic and corr" behaviour="alternote" cssClass="text-critical">
+                            <param name="content" value="corr"/>
+                            <param name="prefix" value="(ec:label('corrected'), ec:colon())"/>
+                            <param name="alternate" value="sic"/>
+                            <param name="type" value="'text-critical'"/>
+                        </model>
+                    </modelSequence>
                     <model predicate="abbr and expan" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="expan[1]"/>
                         <param name="alternate" value="(ec:label('abbr-nonexpanded'), ec:colon(), abbr[1])"/>
@@ -82,7 +94,7 @@
                 </elementSpec>
                 <elementSpec ident="add" mode="add">
                     <model predicate="@type='catchword'" behaviour="mark">
-                        <param name="alternate" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, 0, 'lowercase'), ', ', ec:translate(@type, 0, 'lowercase'))))))"/>
+                        <param name="alternate" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place,false(), false()), ', ', ec:translate(@type, false(), false()))))))"/>
                         <param name="type" value="'text-critical'"/>
                     </model>
                 </elementSpec>
@@ -107,6 +119,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="head" mode="change">
+                    <model predicate="parent::table" output="web" behaviour="thead"/>
                     <model predicate="@resp and @n" behaviour="heading">
                         <desc>Supplied heading: output in brackets if @resp</desc>
                         <param name="level" value="if (@type='title') then 1 else 2"/>
@@ -161,15 +174,15 @@
                     <model predicate="ancestor::app" behaviour="inline" cssClass="head">
                         <desc>Heading in app</desc>
                         <outputRendition>
-                            
-                            
+
+
                             display: block;
                             font-weight: 700;
                             line-height: 1.2;
                             margin-top: 20px;
                             margin-bottom: 10px;
-                            
-                            
+
+
                         </outputRendition>
                     </model>
                     <model predicate="parent::div[@n][@type=('chapter', 'section')]/*[1] is ." behaviour="heading">

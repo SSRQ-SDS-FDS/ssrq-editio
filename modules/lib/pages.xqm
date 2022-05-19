@@ -26,14 +26,16 @@ module namespace pages="http://www.tei-c.org/tei-simple/pages";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace expath="http://expath.org/ns/pkg";
 
-import module namespace templates="http://exist-db.org/xquery/templates" at "../templates.xql";
+import module namespace templates="http://exist-db.org/xquery/templates" at "../templates.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
-import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../pm-config.xql";
-import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
-import module namespace search="http://www.tei-c.org/tei-simple/search" at "search.xql";
+import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../pm-config.xqm";
+import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "util.xqm";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
-import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "../navigation.xql";
-import module namespace query="http://existsolutions.com/ssrq/search" at "../ssrq-search.xql";
+import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "../navigation.xqm";
+import module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/search" at "../ssrq-search.xqm";
+
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
+
 
 declare variable $pages:app-root := request:get-context-path() || substring-after($config:app-root, "/db");
 
@@ -44,7 +46,7 @@ function pages:load($node as node(), $model as map(*), $doc as xs:string, $root 
     let $doc := xmldb:decode($doc)
     let $data :=
         if ($id) then
-            let $node := doc($config:data-root || "/" || $doc)/id($id)
+            let $node := doc(utils:path-concat-safe(($config:data-root, $doc)))/id($id)
             let $div := $node/ancestor-or-self::tei:div[1]
             let $config := tpu:parse-pi(root($node), $view)
             return
@@ -95,7 +97,7 @@ declare function pages:load-xml($view as xs:string?, $root as xs:string?, $doc a
             "config": $config,
             "data":
                 switch ($config?view)
-            	    case "div" return
+                    case "div" return
                         if ($root) then
                             let $node := util:node-by-id($data, $root)
                             return
@@ -134,7 +136,7 @@ declare function pages:get-document($idOrName as xs:string) {
     if ($config:address-by-id) then
         root(collection($config:data-root)/id($idOrName))
     else
-        doc(xmldb:encode($config:data-root || "/" || $idOrName))
+        doc(xmldb:encode(utils:path-concat-safe(($config:data-root, $idOrName))))
 };
 
 declare function pages:back-link($node as node(), $model as map(*)) {
@@ -158,7 +160,7 @@ declare function pages:single-page-link($node as node(), $model as map(*), $doc 
 declare
     %templates:default("action", "browse")
 function pages:view($node as node(), $model as map(*), $action as xs:string, $sr as xs:string*, $template as xs:string?) {
-    let $view := pages:determine-view($model?config?view, $model?data)
+    let $pages-view := pages:determine-view($model?config?view, $model?data)
     let $data :=
         if ($action = "search" and exists(session:get-attribute("ssrq.query"))) then
             let $div :=
@@ -180,7 +182,7 @@ function pages:view($node as node(), $model as map(*), $action as xs:string, $sr
         else
             $model?data
     let $xml :=
-        if ($view = ("div", "page", "body")) then
+        if ($pages-view = ("div", "page", "body")) then
             pages:get-content($model?config, $data[1])
         else
             $model?data//*:body/*
@@ -190,7 +192,7 @@ function pages:view($node as node(), $model as map(*), $action as xs:string, $sr
 
 declare function pages:process-content($xml as element()*, $root as element()*, $odd as xs:string, $view as xs:string?) {
     let $parameters := if ($view) then map {"root": $root, "view": $view} else map{"root": $root}
-	let $html := $pm-config:web-transform($xml, $parameters, $odd)
+    let $html := $pm-config:web-transform($xml, $parameters, $odd)
     let $class := if ($html//*[@class = ('margin-note')]) then "margin-right" else ()
     let $body := pages:clean-footnotes($html)
     return
@@ -228,90 +230,12 @@ declare function pages:clean-footnotes($nodes as node()*) {
 
 declare
     %templates:wrap
-function pages:table-of-contents($node as node(), $model as map(*)) {
-    console:log($model?data/preceding::tei:div[last()]/tei:head),
-    let $current :=
-        if ($model?config?view = "page") then
-            ($model?data/ancestor-or-self::tei:div[1], $model?data/following::tei:div[1])[1]
-        else
-            $model?data
-    return
-        pages:toc-div(root($model?data), $model?config?view, $current, $model?config?odd)
-};
-
-declare %private function pages:toc-div($node, $view as xs:string?, $current as element(), $odd as xs:string) {
-    let $view := pages:determine-view($view, $node)
-    let $divs := $node//tei:div[tei:head] except $node//tei:div[tei:head]//tei:div
-    return
-        <ul>
-        {
-            for $div in $divs
-            let $html :=
-                if ($div/tei:head/*) then
-                    $pm-config:web-transform($div/tei:head, map { "header": "short", "root": $div }, $odd)
-                else
-                    $div/tei:head/string()
-            let $root := (
-                if ($view = "page") then
-                    ($div/*[1][self::tei:pb], $div/preceding::tei:pb[1])[1]
-                else
-                    (),
-                $div
-            )[1]
-            let $id := "T" ||util:uuid()
-            let $hasDivs := exists($div//tei:div[tei:head] except $div//tei:div[tei:head]//tei:div)
-            let $isIn := if ($div/descendant::tei:div[. is $current]) then "in" else ()
-            let $isCurrent := if ($div is $current) then "active" else ()
-            let $icon := if ($isIn) then "expand_less" else "expand_more"
-            return
-                <li>
-                    {
-                        if ($hasDivs) then
-                            <a data-toggle="collapse" href="#{$id}"><span class="material-icons">{$icon}</span></a>
-                        else
-                            ()
-                    }
-                    <a data-doc="{config:get-identifier($div)}" data-div="{util:node-id($div)}" class="toc-link {$isCurrent}"
-                        href="{util:document-name($div)}?root={util:node-id($root)}&amp;odd={$odd}&amp;view={$view}">{$html}</a>
-                    {
-                        if ($hasDivs) then
-                            <div id="{$id}" class="collapse {$isIn}">{pages:toc-div($div, $view, $current, $odd)}</div>
-                        else
-                            pages:toc-div($div, $view, $current, $odd)
-                    }
-                </li>
-        }
-        </ul>
-};
-
-declare
-    %templates:wrap
 function pages:styles($node as node(), $model as map(*)) {
     attribute href {
         let $name := replace($config:odd, "^([^/\.]+).*$", "$1")
         return
-            $pages:app-root || "/" || $config:output || "/" || $name || ".css"
+            utils:path-concat-safe(($pages:app-root, $config:output, $name || ".css"))
     }
-};
-
-declare
-    %templates:wrap
-function pages:navigation($node as node(), $model as map(*), $view as xs:string?) {
-    let $view := pages:determine-view($view, $model?data)
-    let $div := $model?data
-    let $work := $div/ancestor-or-self::tei:TEI
-    let $map := map {
-        "div" : $div,
-        "work" : $work
-    }
-    return
-        if ($view = "single") then
-            $map
-        else
-            map:merge(($map, map {
-                "previous": $config:previous-page($model?config, $div, $view),
-                "next": $config:next-page($model?config, $div, $view)
-            }))
 };
 
 declare function pages:get-content($config as map(*), $div as element()) {
@@ -377,72 +301,13 @@ declare %private function pages:milestone-chunk($ms1 as element(), $ms2 as eleme
             else ()
 };
 
-declare function pages:breadcrumbs($node as node(), $model as map(*)) {
-    let $parent := ($model?data/self::tei:body, $model?data/ancestor-or-self::tei:div[1])[1]
-    let $parent-id := config:get-identifier($parent)
-
-    let $current-view:=
-        if($model?config?view != $config:default-view) then "&amp;view=" || $model?config?view else ()
-
-    let $current-odd:=
-        if($model?config?odd != $config:odd) then "&amp;odd=" || $model?config?odd else ()
-
-    return
-        <ol class="headings breadcrumb">
-            <li><a href="{$parent-id}">{pages:title($model('data')/ancestor-or-self::tei:TEI)}</a></li>
-                {
-                    for $parentDiv in       $model?data/ancestor-or-self::tei:div[tei:head]
-                        let $id := util:node-id(
-                            if ($model?config?view = "page") then $parentDiv/preceding::tei:pb[1] else $parentDiv
-                        )
-                        let $link := if ($parentDiv/@xml:id) then "id=" || $parentDiv/@xml:id else "root=" || $id
-
-                        return
-                            <li>
-                                <a href="{$parent-id}?{$link}{$current-view}{$current-odd}">{$parentDiv/tei:head/string()}</a>
-                            </li>
-                }
-        </ol>
-};
-
-declare
-    %templates:wrap
-function pages:navigation-title($node as node(), $model as map(*)) {
-    pages:title($model('data')/ancestor-or-self::tei:TEI)
-};
-
 declare function pages:title($work as element()) {
     let $main-title := $work/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[@type = 'main']/string()
     return
-        if ($main-title) then $main-title else $work/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[1]/string()
-};
-
-declare function pages:navigation-link($node as node(), $model as map(*), $direction as xs:string) {
-        if ($model?config?view = "single") then
-            ()
-        else if ($model($direction)) then
-            let $doc :=
-                config:get-identifier($model($direction))
-            return
-                <a data-doc="{$doc}"
-                    data-root="{util:node-id($model($direction))}"
-                    data-current="{util:node-id($model('div'))}"
-                    data-odd="{$config:odd}">
-                {
-                    $node/@* except $node/@href,
-                    let $id := $doc || "?root=" || util:node-id($model($direction))
-                        || "&amp;odd=" || $config:odd || "&amp;view=" || $model?config?view
-                    return
-                        attribute href { $id },
-                    $node/node()
-                }
-                </a>
+        if ($main-title) then
+            $main-title
         else
-            let $doc :=
-                config:get-identifier($model?data)
-            return
-                <a href="#" style="visibility: hidden;"
-                    data-doc="{$doc}">{$node/@class, $node/node()}</a>
+            $work/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[1]/string()
 };
 
 declare function pages:app-root($node as node(), $model as map(*)) {

@@ -9,7 +9,7 @@
                 <!-- Toolbar -->
                 <div data-template="templates:include" data-template-path="templates/toolbar.html"/>
 
-                <section id="tp-canvas" data-template="pages:navigation">
+                <section id="tp-canvas">
                     <!-- Table of contents -->
                     <nav id="sidebar" class="toc offcanvas">
                         <h3>
@@ -19,70 +19,71 @@
                             <span id="toc-loading"> <i18n:text key="loading"/> ...</span>
                         </div>
                     </nav>
-                    <main id="main-wrapper" class="${body-class}" data-template="app:parse-params">
-                        <div class="tp-document-title-wrapper tp-row">
-                            <div class="tp-column">
-                                <!-- Document title -->
-                                <h5 id="idno" data-template="app:idno-popup"/>
-                                <h4 data-template="app:header-short"/>
-                                <h5 data-template="app:origDate"/>
-                            </div>
-                        </div>
-                        <div class="comment tp-row" data-template="app:regest">
-                            <div class="tp-column">
-                                <h4 class="block-title">
-                                    <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#regest" aria-expanded="false" aria-controls="regest">
-                                        <i18n:text key="regest"/>
-                                    </a>
-                                </h4>
-                                <div id="regest" class="collapse" data-template="app:display-data"/>
-                            </div>
-                        </div>
-                        <div class="comment tp-row" data-template="app:source-description">
-                            <div class="tp-column">
-                                <h4 class="block-title">
-                                    <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#sourceDesc" aria-expanded="false" aria-controls="regest">
-                                        <i18n:text key="describe"/>
-
-                                    </a>
-                                </h4>
-                                <div id="sourceDesc" class="collapse" data-template="app:display-data"/>
-                            </div>
-                        </div>
-                        <div class="comment tp-row" data-template="app:additionalSource">
-                            <div class="tp-column">
-                                <h4 class="block-title">
-                                    <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#additional" aria-expanded="false" aria-controls="additonal">
-                                        <i18n:text key="addFill"/>
-                                    </a>
-                                </h4>
-                                <div id="additional" class="collapse" data-template="app:display-data" data-template-mode="filiation"/>
-                            </div>
-                        </div>
-                        <div class="comment tp-row" data-template="app:comment">
-                            <div class="tp-column">
-                                <h4 class="block-title">
-                                    <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#comment" aria-expanded="false" aria-controls="comment">
-                                        <i18n:text key="comment"/>
-                                    </a>
-                                </h4>
-                                <div id="comment" class="collapse" data-template="app:display-data"/>
-                            </div>
-                        </div>
-                        <section class="tp-row">
-                            <div class="tp-column">
-                                <h4 class="block-title">
-                                    <i18n:text key="editionText"/>
-                                </h4>
-                                <div id="document-wrapper">
-                                    <!-- Document pane -->
-                                    <div id="document-pane">
-                                        <div data-template="pages:view" class="content"/>
-                                    </div>
+                    <div data-template="ssrq-helper:cache-store-retrieve" data-template-prefix="doc">
+                        <main id="main-wrapper" class="${body-class}" data-template="app:parse-params">
+                            <div class="tp-document-title-wrapper tp-row">
+                                <div class="tp-column">
+                                    <!-- Document title -->
+                                    <h5 id="idno" data-template="app:idno-popup"/>
+                                    <h4 data-template="app:header-short"/>
+                                    <h5 data-template="app:origDate"/>
                                 </div>
                             </div>
-                        </section>
-                    </main>
+                            <div class="comment tp-row" data-template="app:regest">
+                                <div class="tp-column">
+                                    <h4 class="block-title">
+                                        <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#regest" aria-expanded="false" aria-controls="regest">
+                                            <i18n:text key="regest"/>
+                                        </a>
+                                    </h4>
+                                    <div id="regest" class="collapse" data-template="app:display-data"/>
+                                </div>
+                            </div>
+                            <div class="comment tp-row" data-template="app:source-description">
+                                <div class="tp-column">
+                                    <h4 class="block-title">
+                                        <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#sourceDesc" aria-expanded="false" aria-controls="regest">
+                                            <i18n:text key="describe"/>
+                                        </a>
+                                    </h4>
+                                    <div id="sourceDesc" class="collapse" data-template="app:display-data"/>
+                                </div>
+                            </div>
+                            <div class="comment tp-row" data-template="app:additionalSource">
+                                <div class="tp-column">
+                                    <h4 class="block-title">
+                                        <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#additional" aria-expanded="false" aria-controls="additonal">
+                                            <i18n:text key="addFill"/>
+                                        </a>
+                                    </h4>
+                                    <div id="additional" class="collapse" data-template="app:display-data" data-template-mode="filiation"/>
+                                </div>
+                            </div>
+                            <div class="comment tp-row" data-template="app:comment">
+                                <div class="tp-column">
+                                    <h4 class="block-title">
+                                        <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" href="#comment" aria-expanded="false" aria-controls="comment">
+                                            <i18n:text key="comment"/>
+                                        </a>
+                                    </h4>
+                                    <div id="comment" class="collapse" data-template="app:display-data"/>
+                                </div>
+                            </div>
+                            <section class="tp-row">
+                                <div class="tp-column">
+                                    <h4 class="block-title">
+                                        <i18n:text key="editionText"/>
+                                    </h4>
+                                    <div id="document-wrapper">
+                                        <!-- Document pane -->
+                                        <div id="document-pane">
+                                            <div data-template="pages:view" class="content"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </main>
+                    </div>
                     <aside id="aside" class="${sidebar-class}" data-template="app:parse-params">
                         <p class="loading">
                             <i18n:text key="loading-facets"/>
@@ -93,7 +94,6 @@
                         <div id="image-container" class="openseadragon"/>
                     </aside>
                 </section>
-                <div data-template="templates:include" data-template-path="templates/footer-navigation.html"/>
             </div>
         </div>
         <div class="modal fade" id="pdf-info">

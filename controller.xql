@@ -3,6 +3,8 @@ xquery version "3.1";
 import module namespace login="http://exist-db.org/xquery/login" at "resource:org/exist/xquery/modules/persistentlogin/login.xql";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "modules/config.xqm";
 
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "modules/utils.xqm";
+
 declare variable $exist:path external;
 declare variable $exist:resource external;
 declare variable $exist:controller external;
@@ -35,11 +37,6 @@ if ($exist:path eq '') then
         <redirect url="{request:get-uri()}/"/>
     </dispatch>
 
-else if (contains($exist:path, "/$shared/")) then
-    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-        <forward url="/shared-resources/{substring-after($exist:path, '/$shared/')}"/>
-    </dispatch>
-
 else if (contains($exist:path, "/resources")) then
     <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
         <forward url="{$exist:controller}/resources/{substring-after($exist:path, '/resources/')}"/>
@@ -64,7 +61,7 @@ else if(contains($exist:path, "/api")) then
 else if (ends-with($exist:resource, ".xql")) then (
     login:set-user($config:login-domain, (), false()),
     <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-        <forward url="{$exist:controller}/modules/{substring-after($exist:path, '/modules/')}"/>
+        <forward url="{$exist:controller}{utils:path-concat-safe(('/modules/pub', substring-after($exist:path, '/modules/')))}"/>
         <cache-control cache="no"/>
     </dispatch>
 ) else if ($logout or $login) then
@@ -96,10 +93,10 @@ else if (ends-with($exist:resource, ".html")) then (
             <view>
                 <forward url="{$exist:controller}/modules/view.xql"/>
             </view>
-    		<error-handler>
-    			<forward url="{$exist:controller}/routes/error-page.html" method="get"/>
-    			<forward url="{$exist:controller}/modules/view.xql"/>
-    		</error-handler>
+            <error-handler>
+                <forward url="{$exist:controller}/routes/error-page.html" method="get"/>
+                <forward url="{$exist:controller}/modules/view.xql"/>
+            </error-handler>
         </dispatch>
 
 ) else (
@@ -136,16 +133,11 @@ else if (ends-with($exist:resource, ".html")) then (
         else if (ends-with($exist:resource, ".tex")) then
             <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
                 <forward url="{$exist:controller}/modules/lib/latex.xql">
-                    <add-parameter name="id" value="{$path}{$id}"/>
-                </forward>
-                <error-handler>
-                    <forward url="{$exist:controller}/routes/error-page.html" method="get"/>
-                    <forward url="{$exist:controller}/modules/view.xql"/>
-                </error-handler>
-            </dispatch>
-        else if (ends-with($exist:resource, ".pdf")) then
-            <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-                <forward url="{$exist:controller}/modules/lib/pdf.xql">
+                    {
+                        if ($exist:path => matches('[A-Z]{2}' || '/' || $idnoSchema)) then
+                        <add-parameter name="id" value="{tokenize($exist:path, '/')[last()] => substring-before('.')}"/>
+                        else ()
+                    }
                     <add-parameter name="doc" value="{$path}{$id}"/>
                 </forward>
                 <error-handler>
@@ -175,7 +167,8 @@ else if (ends-with($exist:resource, ".html")) then (
                             (),
                         if ($exist:path => matches('[A-Z]{2}' || '/' || $idnoSchema)) then
                             <add-parameter name="id" value="{tokenize($exist:path, '/')[last()] => substring-before('.')}"/>
-                        else ()
+                        else
+                            ()
                     }
                         <set-header name="Cache-Control" value="no-cache"/>
                     </forward>
@@ -185,5 +178,4 @@ else if (ends-with($exist:resource, ".html")) then (
                     <forward url="{$exist:controller}/modules/view.xql"/>
                 </error-handler>
             </dispatch>
-
 )

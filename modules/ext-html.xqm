@@ -3,15 +3,15 @@ xquery version "3.1";
 (:~
  : Extension functions for SSRQ.
  :)
-module namespace pmf="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-web";
+module namespace ec-html="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/web";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 import module namespace html="http://www.tei-c.org/tei-simple/xquery/functions";
-import module namespace pmc="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xql";
+import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "ext-common.xqm";
 
 
-declare function pmf:link($config as map(*), $node as node(), $class as xs:string+, $content, $link, $target) {
+declare function ec-html:link($config as map(*), $node as node(), $class as xs:string+, $content, $link, $target) {
     <a href="{$link}" class="{$class}">
     {
         if ($target) then
@@ -22,7 +22,7 @@ declare function pmf:link($config as map(*), $node as node(), $class as xs:strin
     }</a>
 };
 
-declare function pmf:reference($config as map(*), $node as element(), $class as xs:string+, $content,
+declare function ec-html:reference($config as map(*), $node as element(), $class as xs:string+, $content,
     $ref, $label) {
     (: no language parameter at the moment :)
     let $url :=
@@ -46,7 +46,7 @@ declare function pmf:reference($config as map(*), $node as element(), $class as 
         </span>
 };
 
-declare function pmf:alternote($config as map(*), $node as element(), $class as xs:string+, $content,
+declare function ec-html:alternote($config as map(*), $node as element(), $class as xs:string+, $content,
     $label, $type, $alternate, $optional as map(*)) {
     let $nodeId :=
         if ($node/@exist:id) then
@@ -54,14 +54,14 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
         else
             util:node-id($node)
     let $id := translate($nodeId, "-", "_")
-    let $nr := pmc:increment-counter($type)
+    let $nr := ec:increment-counter($type)
     let $alternate := $config?apply-children($config, $node, $alternate)
     let $breaks := if ($node => name() = 'subst' and $node[tei:lb or tei:pb]) then $config?apply-children($config, $node, $node/tei:lb | $node/tei:pb) else()
     let $prefix := $config?apply-children($config, $node, $optional?prefix)
     let $label :=
         switch($type)
             case "text-critical" return
-                pmc:footnote-label($nr)
+                ec:footnote-label($nr)
             default return
                 $nr
     let $enclose := $type = "text-critical" and matches($content, "\s") or $node/@type = 'keyword'
@@ -97,7 +97,7 @@ declare function pmf:alternote($config as map(*), $node as element(), $class as 
 };
 
 (: Custom behaviour, which will just render a footnote-mark without preceding content :)
-declare function pmf:mark($config as map(*), $node as element(), $class as xs:string+, $content,
+declare function ec-html:mark($config as map(*), $node as element(), $class as xs:string+, $content,
     $label, $type, $alternate, $optional as map(*)) {
     let $nodeId :=
         if ($node/@exist:id) then
@@ -105,13 +105,13 @@ declare function pmf:mark($config as map(*), $node as element(), $class as xs:st
         else
             util:node-id($node)
     let $id := translate($nodeId, "-", "_")
-    let $nr := pmc:increment-counter($type)
+    let $nr := ec:increment-counter($type)
     let $alternate := $config?apply-children($config, $node, $alternate)
     let $prefix := $config?apply-children($config, $node, $optional?prefix)
     let $label :=
         switch($type)
             case "text-critical" return
-                pmc:footnote-label($nr)
+                ec:footnote-label($nr)
             default return
                 $nr
     let $enclose := $type = "text-critical" and matches($content, "\s") or $node/@type = 'keyword'
@@ -134,14 +134,14 @@ declare function pmf:mark($config as map(*), $node as element(), $class as xs:st
         <li class="footnote" id="fn:{$id}" value="{$nr}"
             type="{if ($type = 'text-critical') then 'a' else '1'}">
             <span class="fn-content">
-                {$prefix}{$alternate}{pmc:colon()}{$config?apply-children($config, $node, $node)}
+                {$prefix}{$alternate}{ec:colon()}{$config?apply-children($config, $node, $node)}
             </span>
             <a class="fn-back" href="#fnref:{$id}">↩</a>
         </li>
     )
 };
 
-declare function pmf:note($config as map(*), $node as element(), $class as xs:string+, $content, $place, $label, $type, $optional as map(*)) {
+declare function ec-html:note($config as map(*), $node as element(), $class as xs:string+, $content, $place, $label, $type, $optional as map(*)) {
     switch ($place)
         case "margin" return
             if ($label) then (
@@ -160,13 +160,13 @@ declare function pmf:note($config as map(*), $node as element(), $class as xs:st
                 else
                     util:node-id($node)
             let $id := translate($nodeId, "-", "_")
-            let $nr := pmc:increment-counter($type)
+            let $nr := ec:increment-counter($type)
             let $content := $config?apply-children($config, $node, $content)
             let $prefix := $config?apply-children($config, $node, $optional?prefix)
             let $n :=
                 switch($type)
                     case "text-critical" case "text-critical-start" return
-                        pmc:footnote-label($nr)
+                        ec:footnote-label($nr)
                     default return
                         $nr
             return (
@@ -185,7 +185,7 @@ declare function pmf:note($config as map(*), $node as element(), $class as xs:st
             )
 };
 
-declare function pmf:notespan-end($config as map(*), $node as element(), $class as xs:string+, $content) {
+declare function ec-html:notespan-end($config as map(*), $node as element(), $class as xs:string+, $content) {
     let $nodeId :=
         if ($content/@exist:id) then
             $content/@exist:id
@@ -196,7 +196,7 @@ declare function pmf:notespan-end($config as map(*), $node as element(), $class 
         <tei-endnote class="note" rel="footnote" href="#fn:{$id}"/>
 };
 
-declare function pmf:finish($config as map(*), $input as node()*) {
+declare function ec-html:finish($config as map(*), $input as node()*) {
     for $node in $input
     return
         typeswitch ($node)
@@ -214,34 +214,34 @@ declare function pmf:finish($config as map(*), $input as node()*) {
             case element() return
                 element { node-name($node) } {
                     $node/@*,
-                    pmf:finish($config, $node/node())
+                    ec-html:finish($config, $node/node())
                 }
             default return
                 $node
 };
 
-declare function pmf:copy($config as map(*), $node as element(), $class as xs:string+, $content) {
-    $content ! $config?apply($config, pmf:copy(.))
+declare function ec-html:copy($config as map(*), $node as element(), $class as xs:string+, $content) {
+    $content ! $config?apply($config, ec-html:copy(.))
 };
 
-declare %private function pmf:copy($nodes as node()*) {
+declare %private function ec-html:copy($nodes as node()*) {
     for $node in $nodes
     return
         typeswitch($node)
             case element() return
                 element { node-name($node) } {
                     $node/@*,
-                    pmf:copy($node/node())
+                    ec-html:copy($node/node())
                 }
             default return $node
 };
 
-declare function pmf:caption($config as map(*), $node as element(), $class as xs:string+, $content) {
+declare function ec-html:caption($config as map(*), $node as element(), $class as xs:string+, $content) {
     <caption class="{$class}">{html:apply-children($config, $node, $content)}</caption>
 };
 
 
-declare function pmf:content($config as map(*), $node as node(), $class as xs:string+, $content as item()*) {
+declare function ec-html:content($config as map(*), $node as node(), $class as xs:string+, $content as item()*) {
     typeswitch($content)
         case attribute() return
             text { $content }
@@ -249,4 +249,37 @@ declare function pmf:content($config as map(*), $node as node(), $class as xs:st
             $content
         default return
             text { $content }
+};
+
+
+(:~ Custom behaviour for rendering biblLists...
+:
+:)
+declare function ec-html:biblList($config as map(*), $node as element(), $class as xs:string+, $content as node()*) {
+    <div class="tei-div7 biblList">
+        <h4 class="archivelocation">{$node/tei:head/text()}</h4>
+        <ul>
+            {
+                for $div in $node/tei:div
+                return
+                    <li>{if ($div/tei:listBibl/tei:head) then
+                        $div/tei:listBibl/tei:head/text() || ec:colon()
+                        else ()} {string-join($div/tei:listBibl/tei:bibl/tei:idno, '; ')}</li>
+
+            }
+        </ul>
+    </div>
+};
+
+(:~
+: Custom behaviour to render tei:head inside tei:table as thead
+: @author: B. Politycki
+: @date: 14.03.2022
+:)
+declare function ec-html:thead($config as map(*), $node as element(), $class as xs:string+, $content as item()) as element(thead) {
+    <thead>
+        <tr>
+            <th class="px-0" colspan="100">{html:apply-children($config, $node, $content)}</th>
+        </tr>
+    </thead>
 };

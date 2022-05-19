@@ -5,7 +5,6 @@
 /* Do not modify                                        */
 /********************************************************/
 
-
 // Make space for fixed top-navigation
 nav + * {
   margin-top: $navbar-height-small;
@@ -45,7 +44,6 @@ nav + * {
 .tp-main-content {
   padding-bottom: 0 !important;
 }
-
 
 // Dropdown menus
 
@@ -91,7 +89,9 @@ nav + * {
 .browse {
   font-size: 1em !important;
 
-  td:nth-child(2), td:nth-child(3), td:nth-child(4) {
+  td:nth-child(2),
+  td:nth-child(3),
+  td:nth-child(4) {
     font-family: $font-serif;
   }
   td:nth-child(5) {
@@ -133,22 +133,22 @@ nav + * {
       }
     }
   }
-  >li.active {
-      background-color: $color-gray-lightest;
+  > li.active {
+    background-color: $color-gray-lightest;
   }
-  >li {
-      display: table;
-      width: 100%;
+  > li {
+    display: table;
+    width: 100%;
     list-style: none;
     input {
-        margin: 10px 0 0 10px;
+      margin: 10px 0 0 10px;
     }
     .document-select {
-        display: table-cell;
-        width: 50px;
+      display: table-cell;
+      width: 50px;
     }
     .document-info {
-        display: table-cell;
+      display: table-cell;
     }
     &:not(:last-of-type) {
       border-bottom: 1px solid $color-gray-medium;
@@ -161,7 +161,7 @@ nav + * {
   width: 100%;
   @media screen and (min-width: $screen-md-min) and (max-width: 1100px) {
     span.hidden-xs {
-        font-size: 12px;
+      font-size: 12px;
     }
   }
 }
@@ -170,10 +170,10 @@ nav + * {
   margin-top: 20px;
 
   td:nth-child(1) {
-      width: 30px;
+    width: 30px;
   }
   td:nth-child(2) {
-      white-space: pre-line;
+    white-space: pre-line;
   }
 }
 
@@ -181,11 +181,15 @@ nav + * {
   display: none;
   font-weight: bold;
   margin-left: 2em;
-  animation: blinker 1.2s cubic-bezier(.5, 0, 1, 1) infinite alternate;
+  animation: blinker 1.2s cubic-bezier(0.5, 0, 1, 1) infinite alternate;
 
   @keyframes blinker {
-    from { opacity: 1; }
-    to { opacity: 0; }
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
   }
 }
 
@@ -217,6 +221,10 @@ mark {
   color: $btn-primary-bg;
 }
 
+.pagination li a:hover {
+  color: $color-gray-dark;
+}
+
 // File upload button
 .fileinput-button {
   color: $color-gray-dark;
@@ -229,7 +237,8 @@ mark {
   color: $color-primary-light;
 }
 
-.form-group.is-focused label, .form-group.is-focused label.control-label {
+.form-group.is-focused label,
+.form-group.is-focused label.control-label {
   color: $color-primary-light;
 }
 
@@ -265,22 +274,22 @@ mark {
   }
 }
 
-// Colors for input's underline when focused
-#searchPageForm {
-  .is-focused .form-control {
-    background-image: -webkit-gradient(linear,left top,left bottom,from($color-toolbar-bg),to($color-toolbar-bg)),-webkit-gradient(linear,left top,left bottom,from($color-gray-lightest),to($color-gray-lightest));
-    background-image: -webkit-linear-gradient($color-toolbar-bg,$color-toolbar-bg),-webkit-linear-gradient($color-gray-lightest,$color-gray-lightest);
-    background-image: -o-linear-gradient($color-toolbar-bg,$color-toolbar-bg),-o-linear-gradient($color-gray-lightest,$color-gray-lightest);
-    background-image: linear-gradient($color-toolbar-bg,$color-toolbar-bg),linear-gradient($color-gray-lightest,$color-gray-lightest);
-  }
-}
-
 .form-group.is-focused {
   .form-control {
-    background-image: -webkit-gradient(linear,left top,left bottom,from($color-primary),to($color-primary)),-webkit-gradient(linear,left top,left bottom,from($color-body-bg),to($color-body-bg));
-    background-image: -webkit-linear-gradient($color-primary,$color-primary),-webkit-linear-gradient($color-body-bg,$color-body-bg);
-    background-image: -o-linear-gradient($color-primary,$color-primary),-o-linear-gradient($color-body-bg,$color-body-bg);
-    background-image: linear-gradient($color-primary,$color-primary),linear-gradient($color-body-bg,$color-body-bg);
+    background-image: -webkit-gradient(
+        linear,
+        left top,
+        left bottom,
+        from($color-primary),
+        to($color-primary)
+      ),
+      -webkit-gradient(linear, left top, left bottom, from($color-body-bg), to($color-body-bg));
+    background-image: -webkit-linear-gradient($color-primary, $color-primary),
+      -webkit-linear-gradient($color-body-bg, $color-body-bg);
+    background-image: -o-linear-gradient($color-primary, $color-primary),
+      -o-linear-gradient($color-body-bg, $color-body-bg);
+    background-image: linear-gradient($color-primary, $color-primary),
+      linear-gradient($color-body-bg, $color-body-bg);
   }
 }
 

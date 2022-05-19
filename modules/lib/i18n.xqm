@@ -7,8 +7,6 @@ module namespace i18n = 'http://exist-db.org/xquery/i18n';
     : @author Tobias Krebs <tobi.krebs@betterform.de>
 :)
 
-import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
-
 (:~
  : Start processing the provided content using the modules defined by $modules. $modules should
  : be an XML fragment following the scheme:
