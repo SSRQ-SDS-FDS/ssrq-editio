@@ -49,9 +49,6 @@
     $(function () {
       'use strict';
 
-      function reloadDocTable() {
-        $('#documents-panel').load('templates/doc-table.html');
-      }
       $('#fileupload')
         .fileupload({
           url: 'modules/upload.xql',
@@ -74,7 +71,6 @@
               tr.appendChild(td);
               $('#files').append(tr);
             });
-            reloadDocTable();
           },
           progressall: function (e, data) {
             var progress = parseInt((data.loaded / data.total) * 100, 10);
