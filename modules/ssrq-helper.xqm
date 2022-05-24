@@ -60,6 +60,12 @@ declare function ssrq-helper:make-cache-key($prefix as xs:string) as xs:string {
 
 };
 
+declare function ssrq-helper:include-upload-template($node as node(), $model as map(*)) as element(div)? {
+    if (xs:boolean($ssrq-helper:ENV//upload/text())) then
+    doc(utils:path-concat-safe($config:app-root, 'templates', 'upload.html'))
+    else ()
+};
+
 declare
     %templates:wrap
 function ssrq-helper:fixLinks($node as node(), $model as map(*)) {
