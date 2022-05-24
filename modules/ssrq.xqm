@@ -725,18 +725,6 @@ function app:download-pdf($node as node(), $model as map(*), $doc as xs:string?)
         else ()
 };
 
-declare function app:show-if-logged-in($node as node(), $model as map(*)) {
-    let $user := request:get-attribute($config:login-domain || ".user")
-    return
-        element { node-name($node) } {
-            $node/@*,
-            if ($user) then
-                templates:process($node/*[1], $model)
-            else
-                templates:process($node/*[2], $model)
-        }
-};
-
 declare function app:parse-params($node as node(), $model as map(*)) {
     element { node-name($node) } {
         for $attr in $node/@*

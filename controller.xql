@@ -1,6 +1,5 @@
 xquery version "3.1";
 
-import module namespace login="http://exist-db.org/xquery/login" at "resource:org/exist/xquery/modules/persistentlogin/login.xql";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "modules/config.xqm";
 import module namespace functx="http://www.functx.com";
 
@@ -14,8 +13,6 @@ declare variable $exist:controller external;
 declare variable $exist:prefix external;
 declare variable $exist:root external;
 
-declare variable $logout := request:get-parameter("logout", ());
-declare variable $login := request:get-parameter("user", ());
 declare variable $site-prefix := request:get-header('X-Site-Prefix');
 declare variable $default-prefix := '/exist/apps/ssrq';
 declare variable $routeBase := '/routes/';
@@ -207,33 +204,14 @@ else if (contains($exist:path, "/transform")) then
     </dispatch>
 
 
-(: Handle User Login-State :)
-else if (request:get-method() = 'POST' and $login or $logout) then
-    let $lang := session:get-attribute("ssrq.lang")
-    return
-    (
-        login:set-user($config:login-domain, (), false()),
-        session:create(),
-        try {
-            local:setSessionPrefix($site-prefix),
-            session:set-attribute("ssrq.lang", $lang)
-        } catch * {()},
-        <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-                <redirect url="{session:get-attribute('ssrq.prefix')}/{request:get-uri() => substring-after($default-prefix)}"/>
-        </dispatch>
-    )
-
 (: Handle all Routes with a ., except /templates/xyz.html :)
 else if ($exist:resource => contains('.') and not(contains($exist:path, "/templates/"))) then
-    (
-        login:set-user($config:login-domain, (), false()),
-        local:resolveView($error-handler)
-    )
+    local:resolveView($error-handler)
+
 
 (: Handle all the rest :)
 else
     (
-        login:set-user($config:login-domain, (), false()),
         let $resource := $exist:path
         (: This variable holds a list of main-routes – with a static or dynamic path :)
         let $main-routes := map {

@@ -16,10 +16,6 @@
     <msg key="edit-odd">ODD Editieren</msg>
     <msg key="edit-styles">Styles editieren</msg>
     <msg key="edit-config">Konfiguration editieren</msg>
-    <msg key="login">Login</msg>
-    <msg key="logout">Logout</msg>
-    <msg key="user">Benutzer</msg>
-    <msg key="password">Passwort</msg>
     <msg key="search-sections">Abschnitte durchsuchen</msg>
     <msg key="search-headings">Titel durchsuchen</msg>
     <msg key="upload-files">TEI XML oder ODD files hinzufügen. Klicke auf den Button unten oder ziehe Dateien darauf.</msg>
@@ -33,7 +29,6 @@
     <msg key="browse-title">Titel</msg>
     <msg key="browse-filename">Dateiname</msg>
     <msg key="browsing">Zeige</msg>
-    <msg key="login-message">Bitte einloggen, um Dokumente hochzuladen!</msg>
     <msg key="contents">Inhalt</msg>
     <msg key="close">Schließen</msg>
     <msg key="generating-file">Erzeuge Datei...</msg>
@@ -109,8 +104,6 @@
     <msg key="error-description">Leider ist ein Fehler in der Anwendung aufgetreten. Bitte gehen Sie zurück zur vorherigen Seite und beschreiben Sie uns den Fehler ggf. über die Feedback-Funktion.</msg>
     <msg key="website-link">https://www.ssrq-sds-fds.ch/home/</msg>
     <msg key="feedback">Feedback</msg>
-    <msg key="registrierung">Für ein neues Login oder bei Problemen bitte E-Mail an info@ssrq-sds-fds.ch oder Feedback-Button drücken.</msg>
-    <msg key="require-login">Bitte einloggen</msg>
     <msg key="partners-and-funding">Projektpartner und Finanzierung</msg>
     <msg key="partners">Projektpartner</msg>
     <msg key="funding">Finanzielle Unterstützung</msg>

@@ -37,59 +37,6 @@ function app:show-for-document($node as node(), $model as map(*), $doc as xs:str
         ()
 };
 
-
-declare
-    %templates:wrap
-function app:check-login($node as node(), $model as map(*)) {
-    let $user := request:get-attribute($config:login-domain || ".user")
-    return
-        if ($user) then
-            templates:process($node/*[2], $model)
-        else
-            templates:process($node/*[1], $model)
-};
-
-declare
-    %templates:wrap
-function app:current-user($node as node(), $model as map(*)) {
-    request:get-attribute($config:login-domain || ".user")
-};
-
-declare function app:show-if-logged-in($node as node(), $model as map(*)) {
-    let $user := request:get-attribute($config:login-domain || ".user")
-    return
-        if ($user) then
-            element { node-name($node) } {
-                $node/@*,
-                templates:process($node/node(), $model)
-            }
-        else
-            ()
-};
-
-declare function app:is-admin () {
-    let $groups := sm:get-user-groups(sm:id()//sm:real/sm:username)
-
-    for $group in $groups
-        return
-            if ($group = 'portal-admin') then
-                true()
-            else
-                ()
-};
-
-declare function app:show-if-logged-in-as-admin($node as node(), $model as map(*)) {
-    let $user := request:get-attribute($config:login-domain || ".user")
-    return
-        if ($user and app:is-admin()) then
-            element { node-name($node) } {
-                $node/@*,
-                templates:process($node/node(), $model)
-            }
-        else
-            ()
-};
-
 (:~
  : List documents in data collection
  :)

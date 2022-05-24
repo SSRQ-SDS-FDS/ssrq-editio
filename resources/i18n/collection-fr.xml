@@ -16,10 +16,6 @@
     <msg key="edit-odd">Editer l’ODD</msg>
     <msg key="edit-styles">Editer la feuille de styles CSS</msg>
     <msg key="edit-config">Modifier les paramètres configuration</msg>
-    <msg key="login">Se connecter</msg>
-    <msg key="logout">Se déconnecter</msg>
-    <msg key="user">Utilisateur</msg>
-    <msg key="password">Mot de passe</msg>
     <msg key="search-sections">dans le texte</msg>
     <msg key="search-headings">dans les titres de sections</msg>
     <msg key="upload-files">Envoyer les fichiers TEI XML ou ODD dans le jeu de documents de test. Cliquer sur le bouton ci-dessous ou glisser-déposer les fichiers dessus.</msg>
@@ -33,7 +29,6 @@
     <msg key="browse-title">Titre</msg>
     <msg key="browse-filename">Nom de fichier</msg>
     <msg key="browsing">Parcourir</msg>
-    <msg key="login-message">Merci de vous connecter avant d’uploader des documents !</msg>
     <msg key="contents">Contenus</msg>
     <msg key="close">Fermer</msg>
     <msg key="generating-file">Génération du fichier...</msg>
@@ -109,8 +104,6 @@
     <msg key="error-description">Malheureusement une erreur est survenue. Veuillez retournez sur la page précédente et, si possible, décrivez-nous l’erreur à travers la fonction de feedback.</msg>
     <msg key="website-link">https://www.ssrq-sds-fds.ch/fr/home/</msg>
     <msg key="feedback">Feedback</msg>
-    <msg key="registrierung">Pour obtenir un nouveau login, ainsi qu’en cas de problème, merci d’écrire à info@ssrq-sds-fds.ch ou d’utiliser le bouton Feedback.</msg>
-    <msg key="require-login">Veuillez vous identifier</msg>
     <msg key="partners-and-funding">Partenaires et financement</msg>
     <msg key="partners">Partenaires</msg>
     <msg key="funding">Support financier</msg>
