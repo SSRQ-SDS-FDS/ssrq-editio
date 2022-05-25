@@ -63,6 +63,18 @@ declare function tests:find-document() as map(*)*{
         }
 };
 
+
+declare function tests:routes() as map(*)* {
+ for $route in ('/', '/about/abbr', '/about/partners', '/search?query=test&amp;type=text', '/FR', '/SG', '/FR/I_2_8', 'FR/I_2_8/96.3-1.html')
+ return
+   map {
+       'name': 'tests:routes()',
+       'description': $route || ' should be reachable via http and not contain a error message in the html:body.',
+       'exp': true(),
+       'result': let $req := test-utils:fetch-get($tests:host || $route) return exists($req) and not($req//*:pre[contains(@class, 'error')])
+   }
+};
+
 declare function tests:non-existent-search-terms() as map(*)* {
     for $term in ('Borussia Dortmund', 'Coronapandemie', 'Softwareentwicklung')
     return
@@ -116,7 +128,7 @@ declare function tests:count-docs() as map(*)* {
         }
 };
 
-declare function tests:cache-handling() as map(*)* {
+(: declare function tests:cache-handling() as map(*)* {
     if (xs:boolean($ssrq-helper:ENV//cache/text())) then
         for $fragment in ('/?kanton=SG', '/?kanton=SG&amp;volume=SG_III_4&amp;start=41', '/NE/SDS_NE_3_002.xml?odd=ssrq.odd&amp;view=body')
         let $clear := cache:clear('ssrq-cache')
@@ -139,7 +151,7 @@ declare function tests:cache-handling() as map(*)* {
             "result": false()
         }
 
-};
+}; :)
 
 declare function tests:attribute-translation() as map(*)* {
     let $examples := (<dummy role="corrector"/>, <head xmlns="http://www.tei-c.org/ns/1.0" type="title"/>)
@@ -166,7 +178,7 @@ declare function tests:attribute-translation() as map(*)* {
 : ***********************
 :)
 
-declare function tests:edition-text() as map(*)* {
+(: declare function tests:edition-text() as map(*)* {
     for $id in ('/FR/SSRQ_FR_I_2_8_0001.xml', '/FR/SSRQ_FR_I_2_8_0002_000.xml', '/SG/SSRQ_SG_III_4_015_1.xml')
     return
         map {
@@ -179,7 +191,7 @@ declare function tests:edition-text() as map(*)* {
                             then true()
                             else false()
         }
-};
+}; :)
 
 declare function tests:pagebreak() as map(*) {
     let $pb := <pb n="481" xmlns="http://www.tei-c.org/ns/1.0"/>
