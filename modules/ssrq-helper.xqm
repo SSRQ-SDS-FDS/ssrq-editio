@@ -204,7 +204,7 @@ declare function ssrq-helper:renderDepartment($data as map(*), $dep as xs:string
                     return $html/*/*[last()]/node()
                     }
                 </a>
-                <span class="badge">{doc-list:get($dep) => count()}</span>
+                <span class="badge">{sum(doc-list:get($dep)/volume ! ssrq-helper:count-docs(.))}</span>
             </div>
         </td>
     else
@@ -216,7 +216,13 @@ declare function ssrq-helper:renderDepartment($data as map(*), $dep as xs:string
         </td>
 };
 
+declare function ssrq-helper:count-docs($volume as element(volume)) as xs:integer {
+    let $distinct-docs := for $doc in $volume/doc[not(special)]
+                            group by $grouping-key := if ($doc/case) then $doc/case else $doc/doc
+                            return $grouping-key
+    return count($distinct-docs)
 
+};
 (:~
 : List volumes per canton
 :
