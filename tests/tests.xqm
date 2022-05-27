@@ -65,7 +65,7 @@ declare function tests:find-document() as map(*)*{
  :)
 
 declare function tests:routes() as map(*)* {
- for $route in ('/', '/about/abbr', '/about/partners', '/search?query=test&amp;type=text', '/FR', '/SG', '/FR/I_2_8')
+ for $route in ('/', '/about/abbr', '/about/partners', '/search?query=test&amp;type=text', '/FR', '/SG', '/FR/I_2_8', '/FR/I_2_8/?start=41')
  (: To-Do: Tests for views of a single document e.g '/FR/I_2_8/96.3-1.html' :)
  return
    map {
@@ -85,7 +85,7 @@ declare function tests:create-link() as map(*)* {
        'exp': true(),
        'result': let $session := session:set-attribute('ssrq.prefix', '/exist/apps/ssrq')
                  return
-                    ssrq-helper:create-link($link) => contains('/exist/apps/ssrq')
+                    ssrq-helper:create-link($link, ()) => contains('/exist/apps/ssrq')
    }
 };
 
@@ -132,13 +132,13 @@ declare function tests:search-hit-rendering() as map(*)*{
 
 declare function tests:count-docs() as map(*)* {
     let $exp := (259, 208)
-    for $volume at $i in ('SG_III_4', 'FR_I_2_8')
+    for $volume at $i in ('SG-III_4', 'FR-I_2_8')
     return
         map {
             "name": "tests:count-docs()",
             "description": "Test if the number of docs in docs.xml is correct",
             "exp": $exp[$i],
-            "result": doc-list:get($volume) => count()
+            "result": doc-list:get($volume) => ssrq-helper:count-docs()
         }
 };
 
