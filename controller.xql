@@ -4,10 +4,12 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "modu
 import module namespace functx="http://www.functx.com";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
+declare namespace xpath="http://www.w3.org/2005/xpath-functions";
+declare namespace controller="http://ssrq-sds-fds.ch/exist/apps/controller";
 
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "modules/utils.xqm";
 import module namespace session="http://exist-db.org/xquery/session";
-
+import module namespace console="http://exist-db.org/xquery/console";
 declare variable $exist:path external;
 declare variable $exist:resource external;
 declare variable $exist:controller external;
@@ -26,7 +28,7 @@ declare variable $language := map {
 declare variable $idnoSchema := '[A-Z]{3,4}_[A-Z]{2}_.*';
 
 
-declare function local:setLanguage($key as xs:string*) {
+declare function controller:setLanguage($key as xs:string*) {
     let $langParam := request:get-parameter("lang", ())
     let $lang := if ($key => exists() and $language($key)) then $language($key) else $langParam
     let $lang-selected := session:get-attribute("ssrq.lang")
@@ -40,7 +42,7 @@ declare function local:setLanguage($key as xs:string*) {
         else session:set-attribute("ssrq.lang", "de")
 };
 
-declare function local:setSessionPrefix ($prefix as xs:string*) {
+declare function controller:setSessionPrefix ($prefix as xs:string*) {
     if (not(session:get-attribute('ssrq.prefix')))
     then
         if (not($prefix => exists()))
@@ -49,7 +51,7 @@ declare function local:setSessionPrefix ($prefix as xs:string*) {
     else ()
 };
 
-declare function local:resolveId($id as xs:string) as xs:string {
+declare function controller:resolveId($id as xs:string) as xs:string {
     if ($id => matches($idnoSchema))
     then
         if (collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id])
@@ -59,21 +61,30 @@ declare function local:resolveId($id as xs:string) as xs:string {
 
 };
 
-declare function local:resolveView($error as node()) {
+declare function controller:resolveView($error as node()) {
     let $type := $exist:resource => substring-after('.') => functx:substring-before-if-contains('?')
     let $id := xmldb:decode($exist:resource)
     let $path := substring-before($exist:path, $exist:resource)
     return
-        local:handleResolveCases($type, $path, $id, $error)
+        controller:handleResolveCases($type, $path, $id, $error)
 };
 
 (: Helper function to match the name of a route to a route specified in $main-routes :)
-declare function local:findRouteFromList($routes as map(*), $resource as xs:string, $error as node()) {
-    let $route := for $key in $routes => map:keys()
-                    return
-                        if ($resource => matches($routes($key)?schema))
-                        then $routes($key)
-                        else ()
+declare function controller:findRouteFromList($routes as map(*)+, $resource as xs:string, $error as node()) {
+    let $route :=
+                for $route in $routes
+                let $analyzed-with-schema := $resource => analyze-string($route?schema)
+                where $analyzed-with-schema/xpath:match
+                return
+                    if ($route => map:contains('params')) then
+                        $route => map:put('params', map:merge(
+                                for $param in $route?params => map:keys()
+                                return
+                                    map{$param: $analyzed-with-schema//xpath:group[@nr = $route?params($param)]/text()}
+                            )
+                        )
+                    else $route
+    let $log := console:log($route)
     return
         if (not($route => empty()))
         then
@@ -112,7 +123,7 @@ declare function local:findRouteFromList($routes as map(*), $resource as xs:stri
 };
 
 (: Helper function to handle .views :)
-declare function local:handleResolveCases($type as xs:string, $path as xs:string, $id as xs:string, $error as node()) {
+declare function controller:handleResolveCases($type as xs:string, $path as xs:string, $id as xs:string, $error as node()) {
     switch ($type)
             case 'html'
             return
@@ -156,7 +167,7 @@ declare function local:handleResolveCases($type as xs:string, $path as xs:string
             return
                 <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
                     <forward url="{$exist:controller}/modules/lib/latex.xql">
-                        <add-parameter name="id" value="{$path}{($id => substring-before('.tex') => local:resolveId()) || '.xml'}"/>
+                        <add-parameter name="id" value="{$path}{($id => substring-before('.tex') => controller:resolveId()) || '.xml'}"/>
                     </forward>
                     {$error}
                 </dispatch>
@@ -172,13 +183,13 @@ declare function local:handleResolveCases($type as xs:string, $path as xs:string
             default return
                 (: Error Handling for old .xml.tex :)
                 if ($type => contains('.'))
-                then local:handleResolveCases($type => substring-after('.'), $path, $id => functx:substring-before-last('.'), $error)
+                then controller:handleResolveCases($type => substring-after('.'), $path, $id => functx:substring-before-last('.'), $error)
                 else $error
 };
 
-let $set-prefix := local:setSessionPrefix($site-prefix)
+let $set-prefix := controller:setSessionPrefix($site-prefix)
 (: To-Do: Test if language Switching Works correct with urls... :)
-(:~ let $lang := local:setLanguage($site-prefix) ~:)
+(:~ let $lang := controller:setLanguage($site-prefix) ~:)
 let $error-handler := <error-handler>
                         <forward url="{$exist:controller}/routes/error-page.html" method="get"/>
                         <forward url="{$exist:controller}/modules/view.xql"/>
@@ -206,49 +217,56 @@ else if (contains($exist:path, "/transform")) then
 
 
 (: Handle all Routes with a ., except /templates/xyz.html :)
+(: To-Do: Remove this else-if condition and use the regex routing for this! :)
 else if ($exist:resource => contains('.') and not(contains($exist:path, "/templates/"))) then
-    local:resolveView($error-handler)
+    controller:resolveView($error-handler)
 
 
 (: Handle all the rest :)
 else
     (
         let $resource := $exist:path
-        (: This variable holds a list of main-routes – with a static or dynamic path :)
-        let $main-routes := map {
-            'about': map {
-                'schema': '/about/[a-z]*',
-                'file' : $routeBase || $resource => substring-after('about/') || '.html',
-                'redirect': false()
-            },
-            'templates': map {
-                'schema': '/templates/[a-z]*',
-                'file': '/templates/' || $resource => substring-after('templates/'),
-                'redirect': false()
-            },
-            'start': map {
-                'schema': '^/$',
-                'file': $routeBase || 'index.html',
-                'redirect': false()
-            },
-            'canton': map {
-                'schema': '^/[A-Z]{2}/?$',
-                'file': $routeBase || 'index.html',
-                'params': map {
-                    'kanton': $resource => substring(2,2)
-                    },
-                'redirect': false()
-            },
-            'volume': map {
-                'schema': '^/[A-Z]{2}/.*[\S]/?$',
-                'file': $routeBase || 'index.html',
-                'params': map {
-                    'collection': $resource => substring(2,2),
-                    'volume': $resource => substring(4) => replace('/', '')
-                    },
-                'redirect': true()
-            }}
+        (:~
+        : This variable holds a list of main routes, with a static or a dynamic path
+        : each route is expressed as a map(*) and needs to have a 'schema', 'file' and 'redirect'-key
+        : the 'params' key is optional – if used, then each param is a key equal to the name of the param
+        : and the value is the number of the catch-group used in the route-schema
+        :)
+        let $main-routes := (
+                map {
+                    'schema': '^/?$',
+                    'file': $routeBase || 'index.html',
+                    'redirect': false()
+                },
+                map {
+                    'schema': '^/about/([a-z]*)$',
+                    'file' : $routeBase || $resource => substring-after('about/') || '.html',
+                    'redirect': false()
+                },
+                map {
+                    'schema': '^/templates/([a-z]*)$',
+                    'file': '/templates/' || $resource => substring-after('templates/'),
+                    'redirect': false()
+                },
+                map {
+                    'schema': '^/([A-Z]{2})/?$',
+                    'file': $routeBase || 'index.html',
+                    'params': map {
+                        'kanton': '1'
+                        },
+                    'redirect': false()
+                },
+                map {
+                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/?$',
+                    'file': $routeBase || 'index.html',
+                    'params': map {
+                        'kanton': '1',
+                        'volume': '2'
+                        },
+                    'redirect': true()
+                }
+            )
         return
-            local:findRouteFromList($main-routes, $resource, $error-handler)
+            controller:findRouteFromList($main-routes, $resource, $error-handler)
 
     )
