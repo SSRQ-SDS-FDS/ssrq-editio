@@ -279,7 +279,7 @@ declare function ssrq-helper:list-volumes($node as node(), $model as map(*), $ka
                         for $content-type in $content-types[exists(.?*)]
                         let $key := $content-type => map:keys()
                         return
-                            <a class="part" href="{ssrq-helper:create-link(($kanton, $key), ())}">
+                            <a class="part" href="{ssrq-helper:create-link(($kanton, $volume/doc[1]/volume, $key), ())}">
                                 <i18n:text key="{$key}">{$key}</i18n:text>
                             </a>
 
