@@ -6,6 +6,7 @@ import module namespace functx="http://www.functx.com";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "modules/utils.xqm";
+import module namespace session="http://exist-db.org/xquery/session";
 
 declare variable $exist:path external;
 declare variable $exist:resource external;
@@ -234,9 +235,9 @@ else
                 'schema': '^/[A-Z]{2}/?$',
                 'file': $routeBase || 'index.html',
                 'params': map {
-                    'collection': $resource => substring(2,2)
+                    'kanton': $resource => substring(2,2)
                     },
-                'redirect': true()
+                'redirect': false()
             },
             'volume': map {
                 'schema': '^/[A-Z]{2}/.*[\S]/?$',

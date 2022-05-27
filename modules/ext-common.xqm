@@ -450,16 +450,13 @@ declare %private function ec:footnote-label-recursive($nr as xs:int) {
         ()
 };
 
-declare function ec:persName-list($namen as element(tei:persName)*) {
-    if (count($namen) > 1) then (
-        string-join(subsequence($namen, 1, count($namen) -1), ', '),
-        (:~
-        @ TODO: Internationalisierung...
-        :)
+declare function ec:persName-list($names as element(tei:persName)*) {
+    if (count($names) > 1) then (
+        string-join(subsequence($names, 1, count($names) -1), ', '),
         <i18n:text key="and"> und </i18n:text>,
-        $namen[last()]
+        $names[last()]
     ) else
-        $namen
+        $names
 };
 
 declare function ec:heading-id($head as node()) {

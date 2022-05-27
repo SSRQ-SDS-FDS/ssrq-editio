@@ -114,13 +114,13 @@
     <msg key="highlight-facet">Auswählen, um Vorkommen hervorzuheben</msg>
     <msg key="articles">Stücke</msg>
     <msg key="archives">Ungedruckte Quellen</msg>
-    <msg key="introduction">Einleitung</msg>
-    <msg key="literature">Literatur</msg>
+    <msg key="intro">Einleitung</msg>
+    <msg key="lit">Literatur</msg>
     <msg key="editions">Gedruckte Quellen</msg>
     <msg key="foreword">Geleitwort</msg>
     <msg key="preface">Vorwort</msg>
     <msg key="bailiffs">Amtleute</msg>
-    <msg key="pdfdummy">Gesamt-PDF herunterladen</msg>
+    <msg key="pdf">Gesamt-PDF herunterladen</msg>
     <msg key="back-up">Übergeordnetes Verzeichnis</msg>
     <msg key="toc">Inhaltsverzeichnis</msg>
     <msg key="known">bekannt</msg>

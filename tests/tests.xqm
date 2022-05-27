@@ -37,7 +37,7 @@ declare variable $tests:host := substring-before(request:get-url(), '/exist') ||
 : ***********************
 :)
 
-declare function tests:get-relpath() as map(*)* {
+(: declare function tests:get-relpath() as map(*)* {
     for $doc in ('FR/FR_I_2_8/SSRQ_FR_I_2_8_0001.xml', 'SG/SG_III_4/SSRQ_SG_III_4_001_1.xml')
     return
         map {
@@ -62,16 +62,30 @@ declare function tests:find-document() as map(*)*{
                         else false()
         }
 };
-
+ :)
 
 declare function tests:routes() as map(*)* {
- for $route in ('/', '/about/abbr', '/about/partners', '/search?query=test&amp;type=text', '/FR', '/SG', '/FR/I_2_8', 'FR/I_2_8/96.3-1.html')
+ for $route in ('/', '/about/abbr', '/about/partners', '/search?query=test&amp;type=text', '/FR', '/SG', '/FR/I_2_8')
+ (: To-Do: Tests for views of a single document e.g '/FR/I_2_8/96.3-1.html' :)
  return
    map {
        'name': 'tests:routes()',
        'description': $route || ' should be reachable via http and not contain a error message in the html:body.',
        'exp': true(),
        'result': let $req := test-utils:fetch-get($tests:host || $route) return exists($req) and not($req//*:pre[contains(@class, 'error')])
+   }
+};
+
+declare function tests:create-link() as map(*)* {
+ for $link in ('FR/I_2_8', 'FR')
+ return
+   map {
+       'name': 'tests:create-link()',
+       'description': 'Resvoled link should contain the prefix set in the http-session.',
+       'exp': true(),
+       'result': let $session := session:set-attribute('ssrq.prefix', '/exist/apps/ssrq')
+                 return
+                    ssrq-helper:create-link($link) => contains('/exist/apps/ssrq')
    }
 };
 

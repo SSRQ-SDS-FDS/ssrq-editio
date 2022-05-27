@@ -114,13 +114,13 @@
     <msg key="highlight-facet">Select to highlight occurrences</msg>
     <msg key="articles">Pieces</msg>
     <msg key="archives">Archive</msg>
-    <msg key="introduction">Introduction</msg>
-    <msg key="literature">Literature</msg>
+    <msg key="intro">Introduction</msg>
+    <msg key="lit">Literature</msg>
     <msg key="editions">Editions</msg>
     <msg key="foreword">Foreword</msg>
     <msg key="preface">Preface</msg>
     <msg key="bailiffs">Bailiffs</msg>
-    <msg key="pdfdummy">Download PDF</msg>
+    <msg key="pdf">Download PDF</msg>
     <msg key="back-up">Go To Parent</msg>
     <msg key="toc">Table of Contents</msg>
     <msg key="known">known</msg>
