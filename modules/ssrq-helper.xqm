@@ -76,17 +76,23 @@ declare function ssrq-helper:include-upload-template($node as node(), $model as 
 : @author Bastian Politycki
 : @return xs:string
 :)
-declare function ssrq-helper:create-link($components as xs:string*) as xs:string {
-    utils:path-concat((session:get-attribute('ssrq.prefix'), $components))
+declare function ssrq-helper:create-link($components as xs:string*, $params as map(*)*) as xs:string {
+    let $query-params := (
+                            for $param at $i in $params
+                            return
+                                string-join((if ($i eq 1) then '?' else '&amp;', $param?name, '=', $param?value), '')
+    )[exists($params)]
+    return
+        utils:path-concat((session:get-attribute('ssrq.prefix'), $components, $query-params))
 };
 
 declare
 %templates:wrap
-function ssrq-helper:create-link($node as node(), $model as map(*)) {
-    ssrq-helper:fix-link(templates:process($node/node(), $model))
+function ssrq-helper:resolve-links($node as node(), $model as map(*)) {
+    ssrq-helper:resolve-links(templates:process($node/node(), $model))
 };
 
-declare function ssrq-helper:fix-link($nodes as node()*) {
+declare function ssrq-helper:resolve-links($nodes as node()*) {
     for $node in $nodes
     return
         typeswitch($node)
@@ -95,14 +101,17 @@ declare function ssrq-helper:fix-link($nodes as node()*) {
                 if ($node/@data-template) then
                     $node
                 else
-                    let $href := ssrq-helper:create-link($node/@href[not(. eq '$app')])
+                    let $href := ssrq-helper:create-link(
+                                                            utils:path-tokenize($node/@href) ! (if (not(. eq '{app}')) then replace(., '\{([a-z]*)\}', '$1') => request:get-parameter(()) else ()),
+                                                            ()
+                                                        )
                     return
                         element { node-name($node) } {
-                            attribute href {$href}, $node/@* except $node/@href, ssrq-helper:fix-link($node/node())
+                            attribute href {$href}, $node/@* except $node/@href, ssrq-helper:resolve-links($node/node())
                         }
             case element() return
                 element { node-name($node) } {
-                    $node/@*, ssrq-helper:fix-link($node/node())
+                    $node/@*, ssrq-helper:resolve-links($node/node())
                 }
             default return
                 $node
@@ -125,13 +134,15 @@ declare function ssrq-helper:insertAlt($node as node(), $model as map(*)) as nod
 : @param $volume a volume element from docs.xml
 : @return result as xs:integer
 :)
-declare function ssrq-helper:count-docs($volume as element(volume)) as xs:integer {
+declare
+function ssrq-helper:count-docs($volume as element(volume)) as xs:integer {
     let $distinct-docs := for $doc in $volume/doc[not(special)]
                             group by $grouping-key := if ($doc/case) then $doc/case else $doc/doc
                             return $grouping-key
     return count($distinct-docs)
 
 };
+
 
 (:~
 :
@@ -219,7 +230,7 @@ declare function ssrq-helper:renderDepartment($data as map(*), $dep as xs:string
     then
         <td>
             <div>
-                <a href="{$dep => ssrq-helper:create-link()}">
+                <a href="{ssrq-helper:create-link($dep, ())}">
                     {
                     let $html := $data?department => util:parse-html()
                     return $html/*/*[last()]/node()
@@ -262,13 +273,13 @@ declare function ssrq-helper:list-volumes($node as node(), $model as map(*), $ka
                     </div>
                     {
                         $pm-config:web-transform($matching-doc//tei:fileDesc, map { "root": $matching-doc, "view": "volumes" }, $config:odd),
-                        <a class="part" href="{ssrq-helper:create-link(($kanton, $volume/@xml:id => substring(4)))}">
+                        <a class="part" href="{ssrq-helper:create-link(($kanton, $volume/@xml:id => substring(4)), ())}">
                             <i18n:text key="articles">Stücke</i18n:text>
                         </a>,
                         for $content-type in $content-types[exists(.?*)]
                         let $key := $content-type => map:keys()
                         return
-                            <a class="part" href="{ssrq-helper:create-link(($kanton, $key))}">
+                            <a class="part" href="{ssrq-helper:create-link(($kanton, $key), ())}">
                                 <i18n:text key="{$key}">{$key}</i18n:text>
                             </a>
 
@@ -280,18 +291,16 @@ declare function ssrq-helper:list-volumes($node as node(), $model as map(*), $ka
 
 
 declare
-function ssrq-helper:render-work($node as node(), $model as map(*), $volume as xs:string?) as element(li)* {
+function ssrq-helper:render-work($node as node(), $model as map(*), $kanton as xs:string?, $volume as xs:string?) as element(li)* {
     for $doc in $model?page
-    let $config := tpu:parse-pi($doc, ())
-    let $relPath := config:get-identifier($doc) => replace($volume || '/', '')
-    order by $doc//tei:seriesStmt[@xml:id = 'ssrq-sds-fds']//tei:idno
+    let $xml := collection($config:data-root)/tei:TEI[.//tei:idno eq $doc/@xml:id/data(.)]
     return
         <li class="document ml-1">
         {
-            $pm-config:web-transform($doc//tei:teiHeader, map {
+            $pm-config:web-transform($xml//tei:teiHeader, map {
                     "header": "short",
-                    "doc": $relPath || "?odd=" || $config:odd || "&amp;view=" || $config?view,
-                    "root": $doc
+                    "doc": ssrq-helper:create-link(($kanton, $volume, ($doc/case, $doc/doc, $doc/num) => string-join('-') || '.html'), ()),
+                    "root": $xml
                 }, $config:odd)
         }
         </li>
@@ -309,12 +318,13 @@ declare
 %templates:default("per-page", 10)
 %templates:default("sort", "date")
     function ssrq-helper:load-works($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $start as xs:int, $per-page as xs:int, $sort as xs:string?) as map(*) {
-        let $doc-list := doc-list:get($volume)
-        let $documents := collection($config:data-root)//tei:idno[text() = ($doc-list => subsequence($start, $per-page))] ! root(.)
+        let $volume-docs := doc-list:get(($kanton,$volume) => string-join('-'))
+        let $grouped-docs := $volume-docs/doc[not(special)][not(opening)][not(case)][num eq '1']
+                            union $volume-docs/doc[not(special)][not(opening)][case][doc eq '1'][num eq '1']
         return
             map {
-                "total": count($doc-list),
-                "page": $documents
+                "total": count($grouped-docs),
+                "page": $grouped-docs => subsequence($start, $per-page)
             }
 };
 
@@ -339,13 +349,6 @@ declare function ssrq-helper:browseUp($node as node(), $model as map(*), $kanton
         attribute href {'?kanton=' || $kanton},
         $node/node()
     }
-};
-
-
-
-declare function ssrq-helper:linkPagination($collection as xs:string, $volume as xs:string, $start) {
-   let $link := '?kanton=' || $collection || '&amp;volume=' || $volume || '&amp;start=' || $start
-   return $link
 };
 
 (:~
@@ -377,9 +380,9 @@ function ssrq-helper:paginate($node as node(), $model as map(*), $key as xs:stri
                     </li>
                 ) else (
                     <li>
-                        <a href="{ssrq-helper:linkPagination($kanton, $volume, 1)}"><i class="glyphicon glyphicon-fast-backward"/></a>
+                        <a href="{ssrq-helper:create-link(($kanton, $volume), map{'name': 'start', 'value': 1})}"><i class="glyphicon glyphicon-fast-backward"/></a>
                     </li>,
-                    <li><a href="{ssrq-helper:linkPagination($kanton, $volume, max( ($start - $per-page, 1 ) ))}"><i class="glyphicon glyphicon-backward"/>
+                    <li><a href="{ssrq-helper:create-link(($kanton, $volume), map{'name': 'start', 'value': max(($start - $per-page, 1 ))})}"><i class="glyphicon glyphicon-backward"/>
                        </a></li>
                 ),
                 let $startPage := xs:integer(ceiling($start div $per-page))
@@ -389,17 +392,17 @@ function ssrq-helper:paginate($node as node(), $model as map(*), $key as xs:stri
                 for $i in $lowerBound to $upperBound
                 return
                     if ($i = ceiling($start div $per-page)) then
-                        <li class="active"><a href="{ssrq-helper:linkPagination($kanton, $volume, max( (($i - 1) * $per-page + 1, 1) ))}">{$i}</a></li>
+                        <li class="active"><a href="{ssrq-helper:create-link(($kanton, $volume), map{'name': 'start', 'value':  max( (($i - 1) * $per-page + 1, 1) )})}">{$i}</a></li>
                     else
                         let $page := max((($i - 1) * $per-page + 1, 1))
                         return
-                        <li><a href="{ssrq-helper:linkPagination($kanton, $volume, $page)}">{$i}</a></li>,
+                        <li><a href="{ssrq-helper:create-link(($kanton, $volume), map{'name': 'start', 'value': $page})}">{$i}</a></li>,
                 if ($start + $per-page < $model($key)) then (
                     <li>
-                        <a href="{ssrq-helper:linkPagination($kanton, $volume,$start + $per-page)}"><i class="glyphicon glyphicon-forward"/></a>
+                        <a href="{ssrq-helper:create-link(($kanton, $volume),map{'name': 'start', 'value': $start + $per-page})}"><i class="glyphicon glyphicon-forward"/></a>
                     </li>,
                     <li>
-                        <a href="{ssrq-helper:linkPagination($kanton, $volume, max( (($count - 1) * $per-page + 1, 1)))}"><i class="glyphicon glyphicon-fast-forward"/></a>
+                        <a href="{ssrq-helper:create-link(($kanton, $volume), map{'name': 'start', 'value': max( (($count - 1) * $per-page + 1, 1))})}"><i class="glyphicon glyphicon-fast-forward"/></a>
                     </li>
                 ) else (
                     <li class="disabled">
