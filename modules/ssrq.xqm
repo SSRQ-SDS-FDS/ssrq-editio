@@ -11,6 +11,8 @@ import module namespace console="http://exist-db.org/xquery/console" at "java:or
 import module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/search" at "ssrq-search.xqm";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xqm";
 import module namespace http="http://expath.org/ns/http-client" at "java:org.expath.exist.HttpClientModule";
+import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
+import module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/helper" at "ssrq-helper.xqm";
 
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 
@@ -26,24 +28,27 @@ declare variable $app:LEMMA := $app:HOST || "/lemma-db-edit/views/get-lem-infos.
 declare variable $app:KEYWORDS := $app:HOST || "/lemma-db-edit/views/get-key-infos.xq";
 
 
-declare function app:failed-to-load($doc) {
-    <TEI xmlns="http://www.tei-c.org/ns/1.0">
-        <teiHeader>
-            <fileDesc>
-                <titleStmt>
-                    <title>Not found</title>
-                </titleStmt>
-            </fileDesc>
-        </teiHeader>
-        <text>
-            <body>
-                <div>
-                    <head>Failed to load!</head>
-                    <p>Could not load document {$doc}. Maybe it is not valid TEI or not in the TEI namespace?</p>
-                </div>
-            </body>
-        </text>
-    </TEI>
+declare function app:failed-to-load($id as xs:string) as element(TEI) {
+    (
+        trace('Loading of ' || $id || ' failed'),
+        <TEI xmlns="http://www.tei-c.org/ns/1.0">
+            <teiHeader>
+                <fileDesc>
+                    <titleStmt>
+                        <title>Not found</title>
+                    </titleStmt>
+                </fileDesc>
+            </teiHeader>
+            <text>
+                <body>
+                    <div>
+                        <head>Failed to load!</head>
+                        <p>Could not load document with the id '{$id}'. Maybe it is not valid TEI or not in the TEI namespace?</p>
+                    </div>
+                </body>
+            </text>
+        </TEI>
+    )[2]
 };
 
 declare

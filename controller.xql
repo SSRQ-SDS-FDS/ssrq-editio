@@ -17,7 +17,7 @@ declare variable $exist:prefix external;
 declare variable $exist:root external;
 
 declare variable $site-prefix := request:get-header('X-Site-Prefix');
-declare variable $default-prefix := '/exist/apps/ssrq';
+declare variable $default-prefix := request:get-url() => substring-before('/exist') || '/exist/apps/ssrq';
 declare variable $routeBase := '/routes/';
 declare variable $language := map {
     'ssrq-online.ch': 'de',
@@ -84,7 +84,7 @@ declare function controller:findRouteFromList($routes as map(*)+, $resource as x
                             )
                         )
                     else $route
-    let $log := console:log($route)
+    let $log := console:log($resource)
     return
         if (not($route => empty()))
         then
@@ -218,8 +218,8 @@ else if (contains($exist:path, "/transform")) then
 
 (: Handle all Routes with a ., except /templates/xyz.html :)
 (: To-Do: Remove this else-if condition and use the regex routing for this! :)
-else if ($exist:resource => contains('.') and not(contains($exist:path, "/templates/"))) then
-    controller:resolveView($error-handler)
+(: else if ($exist:resource => contains('.') and not(contains($exist:path, "/templates/"))) then
+    controller:resolveView($error-handler) :)
 
 
 (: Handle all the rest :)
@@ -262,6 +262,16 @@ else
                     'params': map {
                         'kanton': '1',
                         'volume': '2'
+                        },
+                    'redirect': true()
+                },
+                map {
+                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/(intro|bailiffs|lit)\.html/?$',
+                    'file': $routeBase || 'introduction.html',
+                    'params': map {
+                        'kanton': '1',
+                        'volume': '2',
+                        'doc': '3'
                         },
                     'redirect': true()
                 }

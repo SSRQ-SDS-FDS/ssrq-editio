@@ -8,7 +8,7 @@
     data-template="templates:include"
     data-template-path="templates/menu.html"
   />
-  <section class="container-fluid" data-template="app:load">
+  <section class="container-fluid" data-template="ssrq-helper:load-by-idno">
     <div
       data-template="templates:include"
       data-template-path="templates/toolbar.html"
@@ -16,18 +16,18 @@
     <main class="row mb-2" id="main-wrapper">
       <div class="tp-document-title-wrapper tp-row introduction">
         <div class="tp-column">
-          <!-- Document title -->
-          <h5 id="idno" data-template="app:idno-popup" />
+          <h5 id="idno" data-template="ssrq-helper:render-idno-as-popup" />
+          <!-- To-Do: Print ToC
           <div data-template="ssrq-helper:printToc" />
+          -->
         </div>
       </div>
       <section class="tp-row introduction">
         <div class="tp-column">
           <h4 class="block-title"></h4>
           <div id="document-wrapper">
-            <!-- Document pane -->
             <div id="document-panel">
-              <div data-template="pages:view" class="content" />
+              <div data-template="ssrq-helper:render" class="content" />
             </div>
           </div>
         </div>

@@ -221,6 +221,13 @@ declare function ec:format-id($id as xs:string?) {
         $ssrq || ' ' || $vol || ' ' || $id
 };
 
+declare function ec:print-id($doc as element(doc)) as xs:string? {
+    (
+         $doc/prefix, $doc/kanton, $doc/volume => replace('_', '/'), (string-join(($doc/case, $doc/doc, $doc/n), '-'), $doc/special)[1]
+    )
+     => string-join(' ')
+};
+
 declare function ec:get-article-nr($id as xs:string?) {
     let $temp  := replace($id, "^(.+?)_(\d{3}.*?)(?:_\d{1,2})?$", "$1 $2")
     let $parts := tokenize($temp)

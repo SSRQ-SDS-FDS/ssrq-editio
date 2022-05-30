@@ -13,6 +13,10 @@ import module namespace session="http://exist-db.org/xquery/session";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 import module namespace config-data="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/config" at "/db/apps/ssrq-data/modules/config.xqm";
 import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
+import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "ssrq.xqm";
+import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "ext-common.xqm";
+import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xqm";
+
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace util="http://exist-db.org/xquery/util";
 declare namespace i18n="http://exist-db.org/xquery/i18n";
@@ -71,7 +75,7 @@ declare function ssrq-helper:include-upload-template($node as node(), $model as 
 (:~
 : Helper function to create links based on the session attribute ssrq.prefix
 : which is set by the controller – the function can be used as by other xquery-functions
-: or directly from within the templates.
+: or directly from within the templates via ssrq-helper:resolve-links().
 :
 : @author Bastian Politycki
 : @return xs:string
@@ -154,6 +158,69 @@ function ssrq-helper:count-docs($volume as element(volume)) as xs:integer {
 :
 :
 :)
+
+
+(: ~
+: Templating function to load documents from ssrq-data by their tei:idno
+: given as parameters of the url
+:
+: @author: Bastian Politycki
+: @date: 2022.05.30
+: @return a map, which holds the actual tei xml-file and some additional config-infos
+:
+:)
+declare
+%templates:wrap
+function ssrq-helper:load-by-idno($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $doc as xs:string, $view as xs:string?, $odd as xs:string?) as map(*) {
+    let $id := doc-list:get($kanton)//doc[contains(@xml:id, string-join(($kanton, $volume, $doc), '-'))]
+    let $xml := collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id/@xml:id]
+    return
+        map {
+            "idno": $id,
+            "xml": utils:coalesce($xml, app:failed-to-load($doc)),
+            "config": map {
+                "odd": utils:coalesce($odd, $config:odd),
+                "view": app:query-view($xml/tei:text, utils:coalesce($view, $config:default-view))
+            },
+            "css-classes":
+                let $has-facs := exists($xml//tei:pb[@facs]) and not($odd eq $config:odd-normalized)
+                return
+                    map {
+                        "body-class": if ($has-facs) then 'col-md-6' else 'col-md-10',
+                        "facs-class": if ($has-facs) then 'col-md-6' else 'hidden',
+                        "sidebar-class": if ($has-facs) then 'hidden' else 'col-md-2'
+                    }
+        }
+
+};
+
+(:
+: A simplified and ssrq-specific version of pages:view(), which
+: depends in a strange way on ssrq.xqm and duplicates various parts of the processing logic
+:
+:)
+
+declare function ssrq-helper:render($node as node(), $model as map(*)) {
+    pages:process-content($model?xml, $model?xml, $model?config?odd, ())
+};
+
+declare
+%templates:wrap
+function ssrq-helper:render-idno-as-popup($node as node(), $model as map(*)) as element(span)? {
+    let $header := $model?xml//tei:teiHeader/tei:fileDesc
+    let $stmtTitle := $header/tei:seriesStmt/tei:title/text()
+    let $fileDescTitle :=$header/tei:titleStmt/tei:title
+    let $idno := ec:print-id($model?idno)
+    return
+        <span class="alternate">
+            <span class="id">{$idno} <i class="glyphicon glyphicon-info-sign"/></span>
+            <span class="altcontent" xmlns:i18n="http://exist-db.org/xquery/i18n" popover-class="increase-popover-width">
+                    <p>{$stmtTitle}, {$pm-config:web-transform($fileDescTitle, map { "root": $fileDescTitle, "view": "infopopup"}, $config:odd)}, <i18n:text key="by">von</i18n:text> {app:pers-names($header)}</p>
+                    <p><i18n:text key="zitation">Zitation:</i18n:text> <a href="{($model?idno/canton, $model?idno/volume) => ssrq-helper:create-link(())}">{$idno}</a></p>
+                    <p><i18n:text key="lizenz">Lizenz:</i18n:text> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de">CC BY-NC-SA</a></p>
+            </span>
+        </span>
+};
 
 declare
 function ssrq-helper:cantonslist-container($node as node(), $model as map(*)) {
@@ -279,7 +346,7 @@ declare function ssrq-helper:list-volumes($node as node(), $model as map(*), $ka
                         for $content-type in $content-types[exists(.?*)]
                         let $key := $content-type => map:keys()
                         return
-                            <a class="part" href="{ssrq-helper:create-link(($kanton, $volume/doc[1]/volume, $key), ())}">
+                            <a class="part" href="{ssrq-helper:create-link(($kanton, $volume/doc[1]/volume, $key || '.html'[not($key eq 'pdf')]), ())}">
                                 <i18n:text key="{$key}">{$key}</i18n:text>
                             </a>
 

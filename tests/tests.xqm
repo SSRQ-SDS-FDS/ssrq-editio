@@ -65,7 +65,8 @@ declare function tests:find-document() as map(*)*{
  :)
 
 declare function tests:routes() as map(*)* {
- for $route in ('/', '/about/abbr', '/about/partners', '/search?query=test&amp;type=text', '/FR', '/SG', '/FR/I_2_8', '/FR/I_2_8/?start=41')
+ for $route in ('/', '/about/abbr', '/about/partners', '/search?query=test&amp;type=text', '/SG', '/SG/SG_III_4', '/SG/III_4/intro.html', '/SG/III_4/bailiffs.html',
+                 '/SG/III_4/lit.html', '/FR', '/FR/I_2_8', '/FR/I_2_8/?start=41')
  (: To-Do: Tests for views of a single document e.g '/FR/I_2_8/96.3-1.html' :)
  return
    map {
@@ -74,6 +75,15 @@ declare function tests:routes() as map(*)* {
        'exp': true(),
        'result': let $req := test-utils:fetch-get($tests:host || $route) return exists($req) and not($req//*:pre[contains(@class, 'error')])
    }
+};
+
+declare function tests:introduction() as map(*) {
+    map {
+        'name': 'tests:introduction()',
+        'description': 'A rendered introduction should contain a ToC and a div, which contains the tei:body',
+        'exp': true(),
+        'result': let $req := test-utils:fetch-get($tests:host || '/SG/III_4/intro.html') return exists($req//*[@id = 'toc'] and exists($req//*[contains(@class, 'tei-body')]))
+    }
 };
 
 declare function tests:create-link() as map(*)* {
