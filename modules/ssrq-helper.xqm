@@ -366,7 +366,7 @@ function ssrq-helper:render-work($node as node(), $model as map(*), $kanton as x
         {
             $pm-config:web-transform($xml//tei:teiHeader, map {
                     "header": "short",
-                    "doc": ssrq-helper:create-link(($kanton, $volume, ($doc/case, $doc/doc, $doc/num) => string-join('-') || '.html'), ()),
+                    "doc": ssrq-helper:create-link(($kanton, $volume, (string-join(($doc/case, $doc/doc), '.'), $doc/num) => string-join('-') || '.html'), ()),
                     "root": $xml
                 }, $config:odd)
         }
