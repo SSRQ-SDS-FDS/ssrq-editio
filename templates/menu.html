@@ -1,37 +1,26 @@
 <nav xmlns:i18n="http://exist-db.org/xquery/i18n" class="navbar navbar-default navbar-fixed-top" role="navigation" data-template="i18n:translate" data-catalogues="resources/i18n">
     <div class="container-fluid" data-template="browse:fix-links">
-        <div class="navbar-header">
+        <div class="navbar-header" data-template="ssrq-helper:resolve-links">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"/>
                 <span class="icon-bar"/>
                 <span class="icon-bar"/>
             </button>
-            <a class="navbar-brand logo" href="i18n(website-link)">
+            <a class="navbar-brand logo" href="{app}">
                 <img src="resources/images/SSRQganz-2020.svg" data-template="ssrq-helper:insertAlt"/>
             </a>
         </div>
         <div class="navbar-collapse collapse" id="navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li id="about">
-                    <a class="tp-menu-item" title="i18n(home)" data-template="app:home">
-                        <div>
-                            <i18n:text key="home"/>
-                        </div>
-                    </a>
-                </li>
+            <ul class="nav navbar-nav"  data-template="ssrq-helper:resolve-links">
                 <li id="abbr">
-                    <a href="$app/abbr.html" class="tp-menu-item">
-                        <div>
-                            <i18n:text key="abbr"/>
-                        </div>
+                    <a href="{app}/about/abbr" class="tp-menu-item">
+                        <i18n:text key="abbr"/>
                     </a>
                 </li>
                 <li>
                     <a href="mailto:info@ssrq-sds-fds.ch" class="tp-menu-item">
-                        <div>
-                            <i18n:text key="feedback"/>
-                        </div>
+                        <i18n:text key="feedback"/>
                     </a>
                 </li>
                 <li class="dropdown" data-template="browse:show-for-document">
@@ -63,7 +52,6 @@
                         <select id="lang-select" name="lang" class="form-control" data-template="templates:form-control">
                             <option value="de">de</option>
                             <option value="fr">fr</option>
-                            <!--<option value="it">it</option>-->
                             <option value="en">en</option>
                         </select>
                     </form>

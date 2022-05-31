@@ -102,11 +102,19 @@ declare function ssrq-helper:resolve-links($nodes as node()*) {
         typeswitch($node)
             case element(a) | element(link) return
                 (: skip links with @data-template attributes; otherwise we can run into duplicate @href errors :)
-                if ($node/@data-template) then
+                if ($node/@data-template or $node/@href => contains('mailto:')) then
                     $node
                 else
                     let $href := ssrq-helper:create-link(
-                                                            utils:path-tokenize($node/@href) ! (if (not(. eq '{app}')) then replace(., '\{([a-z]*)\}', '$1') => request:get-parameter(()) else ()),
+
+                                                            utils:path-tokenize($node/@href) !
+                                                            (
+                                                                if (not(. eq '{app}')) then
+                                                                    if (matches(., '[\{\}]')) then
+                                                                    replace(., '\{([a-z]*)\}', '$1') => request:get-parameter(())
+                                                                    else .
+                                                                else ()
+                                                            ),
                                                             ()
                                                         )
                     return
