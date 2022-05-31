@@ -99,6 +99,33 @@ declare function tests:create-link() as map(*)* {
    }
 };
 
+declare function tests:print-id() as map(*)* {
+    let $exp := ('SSRQ FR I/2/8 7.0-1', 'SDS NE 3 337-1')
+    for $id at $i in (
+                    <doc xml:id="SSRQ-FR-I_2_8-7.0-1">
+                        <prefix>SSRQ</prefix>
+                        <kanton>FR</kanton>
+                        <volume>I_2_8</volume>
+                        <case>7</case>
+                        <doc>0</doc>
+                        <num>1</num>
+                    </doc>, <doc xml:id="SDS-NE-3-337-1">
+                        <prefix>SDS</prefix>
+                        <kanton>NE</kanton>
+                        <volume>3</volume>
+                        <doc>337</doc>
+                        <num>1</num>
+                    </doc>
+                )
+    return
+        map {
+            'name': 'test:print-id()',
+            'description': 'Test the rendition of ' || $id/@xml:id/data(.) || ' using ec:print-id()',
+            'exp': $exp[$i],
+            'result': ec:print-id($id)
+        }
+};
+
 declare function tests:non-existent-search-terms() as map(*)* {
     for $term in ('Borussia Dortmund', 'Coronapandemie', 'Softwareentwicklung')
     return

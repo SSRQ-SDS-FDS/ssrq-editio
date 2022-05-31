@@ -223,7 +223,7 @@ declare function ec:format-id($id as xs:string?) {
 
 declare function ec:print-id($doc as element(doc)) as xs:string? {
     (
-         $doc/prefix, $doc/kanton, $doc/volume => replace('_', '/'), (string-join(($doc/case, $doc/doc, $doc/n), '-'), $doc/special)[1]
+         $doc/prefix, $doc/kanton, $doc/volume => replace('_', '/'), (string-join((string-join(($doc/case, $doc/doc), '.'), $doc/num), '-'), $doc/special)[1]
     )
      => string-join(' ')
 };
