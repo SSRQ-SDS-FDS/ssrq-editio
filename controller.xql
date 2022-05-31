@@ -25,7 +25,6 @@ declare variable $language := map {
     'sds-online.ch': 'fr',
     'sls-online.ch': 'en'
 };
-declare variable $idnoSchema := '[A-Z]{3,4}_[A-Z]{2}_.*';
 
 
 declare function controller:setLanguage($key as xs:string*) {
@@ -49,24 +48,6 @@ declare function controller:setSessionPrefix ($prefix as xs:string*) {
         then session:set-attribute('ssrq.prefix', $default-prefix)
         else session:set-attribute('ssrq.prefix', $prefix)
     else ()
-};
-
-declare function controller:resolveId($id as xs:string) as xs:string {
-    if ($id => matches($idnoSchema))
-    then
-        if (collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id])
-        then $id
-        else $id || "_1"
-    else $id
-
-};
-
-declare function controller:resolveView($error as node()) {
-    let $type := $exist:resource => substring-after('.') => functx:substring-before-if-contains('?')
-    let $id := xmldb:decode($exist:resource)
-    let $path := substring-before($exist:path, $exist:resource)
-    return
-        controller:handleResolveCases($type, $path, $id, $error)
 };
 
 (: Helper function to match the name of a route to a route specified in $main-routes :)
@@ -123,71 +104,6 @@ declare function controller:findRouteFromList($routes as map(*)+, $resource as x
 
 };
 
-(: Helper function to handle .views :)
-declare function controller:handleResolveCases($type as xs:string, $path as xs:string, $id as xs:string, $error as node()) {
-    switch ($type)
-            case 'html'
-            return
-                let $template := request:get-parameter('template', ())
-                let $route := if ($template and $template = 'introduction') then $routeBase || 'introduction.html' else $routeBase || 'view.html'
-                return
-                    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-                        <forward url="{$exist:controller}{$route}"></forward>
-                        <view>
-                            <forward url="{$exist:controller}/modules/view.xql">
-                                {
-                                if ($id => matches($idnoSchema))
-                                then
-                                (: This will load texts by their tei:idno instead of using the filename :)
-                                <add-parameter name="id" value="{$id => replace('.html', '')}"/>
-                                else ()
-                                }
-                                <add-parameter name="doc" value="{$path}{$id => replace('.html', '.xml')}"/>
-                                <set-header name="Cache-Control" value="no-cache"/>
-                            </forward>
-                        </view>
-                        {$error}
-                    </dispatch>
-            case 'xml'
-            return
-                <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-                    <forward url="{$exist:controller}/modules/ssrq-rest.xql">
-                        {
-                        if ($id => matches($idnoSchema))
-                        then
-
-                        <add-parameter name="id" value="{$id => replace('.xml', '')}"/>
-                        else ()
-                        }
-                        <add-parameter name="route" value="xml"/>
-                        <add-parameter name="doc" value="{$path}{$id}"/>
-                    </forward>
-                    {$error}
-                </dispatch>
-            case 'tex'
-            return
-                <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-                    <forward url="{$exist:controller}/modules/lib/latex.xql">
-                        <add-parameter name="id" value="{$path}{($id => substring-before('.tex') => controller:resolveId()) || '.xml'}"/>
-                    </forward>
-                    {$error}
-                </dispatch>
-            case 'pdf'
-            return
-                <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-                    <forward url="{$exist:controller}/modules/ssrq-rest.xql">
-                        <add-parameter name="doc" value="{$path}pdf/{$id => replace('_[0-9].pdf', '.pdf')}"/>
-                        <add-parameter name="route" value="pdf"/>
-                    </forward>
-                    {$error}
-                </dispatch>
-            default return
-                (: Error Handling for old .xml.tex :)
-                if ($type => contains('.'))
-                then controller:handleResolveCases($type => substring-after('.'), $path, $id => functx:substring-before-last('.'), $error)
-                else $error
-};
-
 let $set-prefix := controller:setSessionPrefix($site-prefix)
 (: To-Do: Test if language Switching Works correct with urls... :)
 (:~ let $lang := controller:setLanguage($site-prefix) ~:)
@@ -216,14 +132,7 @@ else if (contains($exist:path, "/transform")) then
         <forward url="{$exist:controller}/transform/{substring-after($exist:path, '/transform/')}"/>
     </dispatch>
 
-
-(: Handle all Routes with a ., except /templates/xyz.html :)
-(: To-Do: Remove this else-if condition and use the regex routing for this! :)
-(: else if ($exist:resource => contains('.') and not(contains($exist:path, "/templates/"))) then
-    controller:resolveView($error-handler) :)
-
-
-(: Handle all the rest :)
+(: Handle content routes :)
 else
     (
         let $resource := $exist:path
@@ -242,11 +151,6 @@ else
                 map {
                     'schema': '^/about/([a-z]*)$',
                     'file' : $routeBase || $resource => substring-after('about/') || '.html',
-                    'redirect': false()
-                },
-                map {
-                    'schema': '^/templates/([a-z]*)$',
-                    'file': '/templates/' || $resource => substring-after('templates/'),
                     'redirect': false()
                 },
                 map {
@@ -290,5 +194,4 @@ else
             )
         return
             controller:findRouteFromList($main-routes, $resource, $error-handler)
-
     )
