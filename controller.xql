@@ -84,7 +84,7 @@ declare function controller:findRouteFromList($routes as map(*)+, $resource as x
                             )
                         )
                     else $route
-    let $log := console:log($resource)
+    let $log := console:log($route)
     return
         if (not($route => empty()))
         then
@@ -104,7 +104,8 @@ declare function controller:findRouteFromList($routes as map(*)+, $resource as x
                             for $param in $route?params => map:keys()
                             return
                                 <add-parameter name="{$param}" value="{$route?params($param)}"/>
-                        else ()
+                        else (),
+                        <add-parameter name="toggle-odd" value="true"/>[map:contains($route, 'toggle-odd') and $route?toggle-odd]
                     }
                         <set-header name="Cache-Control" value="no-cache"/>
                     </forward>
@@ -274,6 +275,17 @@ else
                         'doc': '3'
                         },
                     'redirect': true()
+                },
+                map {
+                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/((?:(?:(?:[A-Za-z0-9]+\.)*)(?:[0-9]+)-(?:[0-9]+)))\.html/?$',
+                    'file': $routeBase || 'view.html',
+                    'params': map {
+                        'kanton': '1',
+                        'volume': '2',
+                        'doc': '3'
+                        },
+                    'redirect': true(),
+                    'toggle-odd': true()
                 }
             )
         return

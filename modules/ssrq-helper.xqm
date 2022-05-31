@@ -174,6 +174,7 @@ declare
 function ssrq-helper:load-by-idno($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $doc as xs:string, $view as xs:string?, $odd as xs:string?) as map(*) {
     let $id := doc-list:get($kanton)//doc[contains(@xml:id, string-join(($kanton, $volume, $doc), '-'))]
     let $xml := collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id/@xml:id]
+    let $has-facs := exists($xml//tei:pb[@facs]) and not($odd eq $config:odd-normalized)
     return
         map {
             "idno": $id,
@@ -182,14 +183,9 @@ function ssrq-helper:load-by-idno($node as node(), $model as map(*), $kanton as 
                 "odd": utils:coalesce($odd, $config:odd),
                 "view": app:query-view($xml/tei:text, utils:coalesce($view, $config:default-view))
             },
-            "css-classes":
-                let $has-facs := exists($xml//tei:pb[@facs]) and not($odd eq $config:odd-normalized)
-                return
-                    map {
-                        "body-class": if ($has-facs) then 'col-md-6' else 'col-md-10',
-                        "facs-class": if ($has-facs) then 'col-md-6' else 'hidden',
-                        "sidebar-class": if ($has-facs) then 'hidden' else 'col-md-2'
-                    }
+            "body-class": if ($has-facs) then 'col-md-6' else 'col-md-10',
+            "facs-class": if ($has-facs) then 'col-md-6' else 'hidden',
+            "sidebar-class": if ($has-facs) then 'hidden' else 'col-md-2'
         }
 
 };

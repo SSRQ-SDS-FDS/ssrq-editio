@@ -438,11 +438,11 @@ declare %private function app:show-if-exists($node as node(), $test as node()*, 
         ()
 };
 
-declare function app:header-short($node as node(), $model as map(*), $action as xs:string?, $sr as xs:string*) {
-    let $head := root($model?data)//tei:teiHeader//tei:msDesc/tei:head
+declare function app:header-short($node as node(), $model as map(*)) {
+    let $head := $model?xml//tei:teiHeader//tei:msDesc/tei:head
     return
         app:show-if-exists($node, $head, function() {
-            $pm-config:web-transform(query:highlight($action, $head, "title", $sr), map { "root": $head }, $config:odd)
+            $pm-config:web-transform($head, map { "root": $head }, $config:odd)
         })
 };
 
@@ -487,7 +487,7 @@ declare function app:idno-popup($node as node(), $model as map(*)) {
 };
 
 declare function app:origDate($node as node(), $model as map(*)) {
-    let $header := root($model?data)//tei:teiHeader
+    let $header := $model?xml//tei:teiHeader
     let $filiation := $header/tei:fileDesc//tei:msDesc/tei:msContents/tei:msItem/tei:filiation[@type='original'][tei:origDate]
     let $origin := $header/tei:fileDesc//tei:msDesc/tei:history/tei:origin
     let $origDate := if (exists($filiation/tei:origDate)) then $filiation/tei:origDate else $origin/tei:origDate
@@ -499,25 +499,25 @@ declare function app:origDate($node as node(), $model as map(*)) {
 };
 
 declare function app:comment($node as node(), $model as map(*), $action as xs:string?, $sr as xs:string*) {
-    let $back := root($model?data)//tei:back
+    let $back := $model?xml//tei:back
     return
         app:show-if-exists($node, $back, function() {
-            templates:process($node/node(), map:merge(($model, map { "data": query:highlight($action, $back, "comment", $sr) })))
+            templates:process($node/node(), map:merge(($model, map { "data": $back })))
         })
 };
 
-declare function app:regest($node as node(), $model as map(*), $action as xs:string?, $sr as xs:string*) {
-    let $regest := root($model?data)//tei:teiHeader//tei:msContents/tei:summary
+declare function app:regest($node as node(), $model as map(*)) {
+    let $regest := $model?xml//tei:teiHeader//tei:msContents/tei:summary
     return
         app:show-if-exists($node, $regest, function() {
-            templates:process($node/node(), map:merge(($model, map { "data": query:highlight($action, $regest, "regest", $sr) })))
+            templates:process($node/node(), map:merge(($model, map { "data": $regest})))
         })
 };
 
 declare
      %templates:wrap
 function app:additionalSource($node as node(), $model as map(*)) {
-    let $idno := root($model?data)//tei:teiHeader//tei:seriesStmt/tei:idno
+    let $idno := $model?xml//tei:teiHeader//tei:seriesStmt/tei:idno
     return
         if (matches($idno, "_1$")) then
             let $base := replace($idno, "^(.*)_1$", '$1')
@@ -590,7 +590,7 @@ function app:show-credits($node as node(), $model as map(*)) {
 declare
     %templates:wrap
 function app:source-description($node as node(), $model as map(*)) {
-    let $msDesc := root($model?data)//tei:teiHeader//tei:fileDesc/tei:sourceDesc/tei:msDesc
+    let $msDesc := $model?xml//tei:teiHeader//tei:fileDesc/tei:sourceDesc/tei:msDesc
     return
         templates:process($node/node(), map:merge(($model, map { "data": $msDesc })))
 };

@@ -249,6 +249,11 @@ declare function query:filter($hits as element()*) {
         })
 };
 
+
+(:~ Note: Never really worked – see #2568
+: To-Do: Reimplement query-highlight, which is used by app.xqm
+:)
+
 (:~
  : Highlight matches when viewing document after search.
  :)
