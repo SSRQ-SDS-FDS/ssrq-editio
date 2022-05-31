@@ -99,7 +99,7 @@ declare function tests:create-link() as map(*)* {
 };
 
 declare function tests:print-id() as map(*)* {
-    let $exp := ('SSRQ FR I/2/8 7.0-1', 'SDS NE 3 337-1')
+    let $exp := ('SSRQ FR I/2/8 7.0-1', 'SDS NE 3 337-1', 'SDS VD D 1 10-1', 'SSRQ ZH NF I/1/3 1-1')
     for $id at $i in (
                     <doc xml:id="SSRQ-FR-I_2_8-7.0-1">
                         <prefix>SSRQ</prefix>
@@ -113,6 +113,20 @@ declare function tests:print-id() as map(*)* {
                         <kanton>NE</kanton>
                         <volume>3</volume>
                         <doc>337</doc>
+                        <num>1</num>
+                    </doc>,
+                    <doc xml:id="SDS-VD-D_1-10-1">
+                        <prefix>SDS</prefix>
+                        <kanton>VD</kanton>
+                        <volume>D_1</volume>
+                        <doc>10</doc>
+                        <num>1</num>
+                    </doc>,
+                    <doc xml:id="SSRQ-ZH-NF_I_1_3-1-1">
+                        <prefix>SSRQ</prefix>
+                        <kanton>ZH</kanton>
+                        <volume>NF_I_1_3</volume>
+                        <doc>1</doc>
                         <num>1</num>
                     </doc>
                 )

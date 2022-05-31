@@ -221,9 +221,26 @@ declare function ec:format-id($id as xs:string?) {
         $ssrq || ' ' || $vol || ' ' || $id
 };
 
+declare function ec:parse-volume($volume as xs:string) as xs:string {
+    (
+        let $parts := $volume => tokenize('_')
+        for $part at $i in $parts
+        return
+            if ($i eq $parts => count()) then
+                $part
+            else
+                if ($part => matches('[IVX|0-9]')) then
+                    $part || '/'
+                else
+                    $part ||' '
+    ) => string-join('')
+};
+
 declare function ec:print-id($doc as element(doc)) as xs:string? {
     (
-         $doc/prefix, $doc/kanton, $doc/volume => replace('_', '/'), (string-join((string-join(($doc/case, $doc/doc), '.'), $doc/num), '-'), $doc/special)[1]
+         $doc/prefix, $doc/kanton,
+         $doc/volume => ec:parse-volume(),
+         (string-join((string-join(($doc/case, $doc/doc), '.'), $doc/num), '-'), $doc/special)[1]
     )
      => string-join(' ')
 };
