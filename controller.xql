@@ -132,6 +132,16 @@ else if (contains($exist:path, "/transform")) then
         <forward url="{$exist:controller}/transform/{substring-after($exist:path, '/transform/')}"/>
     </dispatch>
 
+
+
+else if (ends-with($exist:resource, '.xql')) then
+    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+        <forward url="{$exist:controller}/modules/pub/api.xql">
+             <add-parameter name="route" value="{replace($exist:resource, '-json', '') => substring-before('.xql')}"/>
+             <add-parameter name="json" value="{if(matches($exist:resource, 'json')) then 'true' else 'false'}"/>
+        </forward>
+    </dispatch>
+
 (: Handle content routes :)
 else
     (
