@@ -9,35 +9,29 @@ declare namespace controller="http://ssrq-sds-fds.ch/exist/apps/controller";
 
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "modules/utils.xqm";
 import module namespace session="http://exist-db.org/xquery/session";
+import module namespace request="http://exist-db.org/xquery/request";
 import module namespace console="http://exist-db.org/xquery/console";
+
 declare variable $exist:path external;
 declare variable $exist:resource external;
 declare variable $exist:controller external;
 declare variable $exist:prefix external;
 declare variable $exist:root external;
-
 declare variable $site-prefix := request:get-header('X-Site-Prefix');
 declare variable $default-prefix := request:get-url() => substring-before('/exist') || '/exist/apps/ssrq';
 declare variable $routeBase := '/routes/';
-declare variable $language := map {
-    'ssrq-online.ch': 'de',
-    'fds-online.ch': 'it',
-    'sds-online.ch': 'fr',
-    'sls-online.ch': 'en'
-};
 
 
-declare function controller:setLanguage($key as xs:string*) {
-    let $langParam := request:get-parameter("lang", ())
-    let $lang := if ($key => exists() and $language($key)) then $language($key) else $langParam
+declare function controller:setLanguage() {
+    let $lang-param := request:get-parameter("lang", ())
     let $lang-selected := session:get-attribute("ssrq.lang")
     return
-        if ($lang and $lang-selected and $lang-selected != $lang)
-        then session:set-attribute("ssrq.lang", $lang)
-        else if ($lang => empty() and $lang-selected)
+        if ($lang-selected and $lang-selected != $lang-param)
+        then session:set-attribute("ssrq.lang", $lang-param)
+        else if ($lang-param => empty() and $lang-selected)
         then session:set-attribute("ssrq.lang", $lang-selected)
-        else if ($lang and $lang-selected => empty())
-        then session:set-attribute("ssrq.lang", $lang)
+        else if ($lang-param and $lang-selected => empty())
+        then session:set-attribute("ssrq.lang", $lang-param)
         else session:set-attribute("ssrq.lang", "de")
 };
 
@@ -106,7 +100,7 @@ declare function controller:findRouteFromList($routes as map(*)+, $resource as x
 
 let $set-prefix := controller:setSessionPrefix($site-prefix)
 (: To-Do: Test if language Switching Works correct with urls... :)
-(:~ let $lang := controller:setLanguage($site-prefix) ~:)
+let $lang := controller:setLanguage()
 let $error-handler := <error-handler>
                         <forward url="{$exist:controller}/routes/error-page.html" method="get"/>
                         <forward url="{$exist:controller}/modules/view.xql"/>
