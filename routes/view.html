@@ -130,31 +130,33 @@
         </section>
       </main>
     </div>
-    <!-- To-Do: This will never succeed, because the endpoint does not work yet! -->
-    <aside id="aside" class="${sidebar-class}" data-template="app:parse-params">
-      <p class="loading">
-        <i18n:text key="loading-facets" />
-      </p>
-    </aside>
-    <aside
-      id="image-aside"
-      class="${facs-class}"
-      data-template="app:parse-params"
+    <div
+      data-template="templates:if-model-key-equals"
+      data-template-key="has-facs"
+      data-template-value="false"
     >
-      <div
-        id="credits-container"
-        class="credits"
-        data-template="app:show-credits"
-      />
-      <div id="image-container" class="openseadragon" />
-    </aside>
+      <aside id="aside" class="col-md-2">
+        <p class="loading">
+          <i18n:text key="loading-facets" />
+        </p>
+      </aside>
+      <script src="resources/scripts/services.js" />
+    </div>
+
+    <div
+      data-template="templates:if-model-key-equals"
+      data-template-key="has-facs"
+      data-template-value="true"
+    >
+      <aside id="image-aside" class="col-md-6">
+        <div
+          id="credits-container"
+          class="credits"
+          data-template="app:show-credits"
+        />
+        <div id="image-container" class="openseadragon" />
+      </aside>
+      <script src="resources/scripts/vendor/openseadragon.min.js" />
+    </div>
   </section>
-  <script
-    type="text/javascript"
-    src="resources/scripts/services.js"
-  />
-  <script
-    type="text/javascript"
-    src="resources/scripts/vendor/openseadragon.min.js"
-  />
 </div>

@@ -192,8 +192,7 @@ function ssrq-helper:load-by-idno($node as node(), $model as map(*), $kanton as 
                 "view": app:query-view($xml/tei:text, utils:coalesce($view, $config:default-view))
             },
             "body-class": if ($has-facs) then 'col-md-6' else 'col-md-10',
-            "facs-class": if ($has-facs) then 'col-md-6' else 'hidden',
-            "sidebar-class": if ($has-facs) then 'hidden' else 'col-md-2'
+            "has-facs": xs:string($has-facs)
         }
 
 };
