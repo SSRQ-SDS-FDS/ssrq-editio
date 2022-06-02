@@ -12,6 +12,7 @@ xquery version "3.1";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "../lib/pages.xqm";
 import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "../ssrq.xqm";
 import module namespace id-search="http://ssrq-sds-fds.ch/exist/apps/ssrq/id-search" at "../id-search.xqm";
+import module namespace index="http://ssrq-sds-fds.ch/exist/apps/ssrq/index" at "../index.xqm";
 import module namespace request="http://exist-db.org/xquery/request";
 import module namespace response="http://exist-db.org/xquery/response";
 
@@ -28,6 +29,12 @@ let $route := request:get-parameter("route", ())
 return
     switch($route)
     (: To-Do: Implement more endpoints! :)
+    (: Load all index-entries for a single document and return the result as html :)
+    case 'facets'
+        return
+            let $resp := request:get-parameter("doc", "") => index:get-index-entries()
+            return
+                $resp
     case 'id-search'
         return
             let $resp := request:get-parameter("id", "") => id-search:search()

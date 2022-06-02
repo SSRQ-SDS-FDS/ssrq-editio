@@ -9,16 +9,16 @@
     data-template="templates:include"
     data-template-path="templates/menu.html"
   />
-  <section id="tp-canvas" data-template="ssrq-helper:load-by-idno">
-    <div
-      data-template="templates:include"
-      data-template-path="templates/toolbar.html"
-    />
+  <div
+    data-template="templates:include"
+    data-template-path="templates/toolbar.html"
+  />
+  <main id="tp-canvas" data-template="ssrq-helper:load-by-idno">
     <div
       data-template="ssrq-helper:cache-store-retrieve"
       data-template-prefix="doc"
     >
-      <main
+      <section
         id="main-wrapper"
         class="${body-class}"
         data-template="app:parse-params"
@@ -128,7 +128,7 @@
             </div>
           </div>
         </section>
-      </main>
+      </section>
     </div>
     <div
       data-template="templates:if-model-key-equals"
@@ -158,5 +158,5 @@
       </aside>
       <script src="resources/scripts/vendor/openseadragon.min.js" />
     </div>
-  </section>
+  </main>
 </div>

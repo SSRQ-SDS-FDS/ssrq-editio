@@ -136,6 +136,13 @@ else if (ends-with($exist:resource, '.xql')) then
         </forward>
     </dispatch>
 
+else if (contains($exist:path, 'api')) then
+    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+        <forward url="{$exist:controller}/modules/pub/api.xql">
+             <add-parameter name="route" value="{$exist:resource}"/>
+        </forward>
+    </dispatch>
+
 (: Handle content routes :)
 else
     (

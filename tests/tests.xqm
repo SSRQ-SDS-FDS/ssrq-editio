@@ -23,6 +23,7 @@ import module namespace cache="http://exist-db.org/xquery/cache";
 import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
 import module namespace templates="http://exist-db.org/xquery/templates" at "../modules/templates.xqm";
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "../modules/ext-common.xqm";
+import module namespace index="http://ssrq-sds-fds.ch/exist/apps/ssrq/index" at "../modules/index.xqm";
 
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 
@@ -66,7 +67,7 @@ declare function tests:find-document() as map(*)*{
 
 declare function tests:routes() as map(*)* {
  for $route in ('/', '/about/abbr', '/about/partners', '/search?query=test&amp;type=text', '/SG', '/SG/SG_III_4', '/SG/III_4/intro.html', '/SG/III_4/bailiffs.html',
-                 '/SG/III_4/lit.html', '/FR', '/FR/I_2_8', '/FR/I_2_8/?start=41', '/FR/I_2_8/1-1.html')
+                 '/SG/III_4/lit.html', '/FR', '/FR/I_2_8', '/FR/I_2_8/?start=41', '/FR/I_2_8/1-1.html', '/api/facets?doc=FR-I_2_8-1-1')
  return
    map {
        'name': 'tests:routes()',
@@ -233,6 +234,17 @@ declare function tests:attribute-translation() as map(*)* {
             "result": $case
         }
 
+};
+
+declare function tests:index-retrieval() as map(*)* {
+ for $doc in ('FR-I_2_8-1-1', 'SG-III_4-3-1')
+ return
+   map {
+       'name': 'tests:index-retrieval()',
+       'description': 'Index function should return index entries for ' || $doc,
+       'exp': true(),
+       'result': count(index:get-index-entries($doc)//*:ul) > 1
+   }
 };
 
 (:~ *********************
