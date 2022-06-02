@@ -40,7 +40,7 @@ declare function controller:setSessionPrefix ($prefix as xs:string*) {
     then
         if (not($prefix => exists()))
         then session:set-attribute('ssrq.prefix', $default-prefix)
-        else session:set-attribute('ssrq.prefix', $prefix)
+        else session:set-attribute('ssrq.prefix', $prefix => replace('^(.*)/$', '$1'))
     else ()
 };
 

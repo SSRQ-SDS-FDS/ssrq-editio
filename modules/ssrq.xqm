@@ -519,12 +519,14 @@ declare
 function app:additionalSource($node as node(), $model as map(*)) {
     let $idno := $model?xml//tei:teiHeader//tei:seriesStmt/tei:idno
     return
+        (: To-Do If-Statement anpassen :)
         if (matches($idno, "_1$")) then
             let $base := replace($idno, "^(.*)_1$", '$1')
             let $additional :=
                 for $header in
                     collection($config:data-root)//tei:teiHeader[matches(.//tei:seriesStmt/tei:idno, "^" || $base || "_\d+$")]
                         [not(.//tei:seriesStmt/tei:idno = $idno)]
+                (: To-Do Sortierung an neue IDNOs anpassen!!! :)
                 order by number(replace($header//tei:seriesStmt/tei:idno, "^.*_(\d+)$", "$1"))
                 return
                     $header//tei:msDesc
