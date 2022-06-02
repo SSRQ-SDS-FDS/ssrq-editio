@@ -8,12 +8,12 @@
     data-template="templates:include"
     data-template-path="templates/menu.html"
   />
-  <section class="container-fluid" data-template="ssrq-helper:load-by-idno">
-    <div
-      data-template="templates:include"
-      data-template-path="templates/toolbar.html"
-    />
-    <main class="row mb-2" id="main-wrapper">
+  <div
+    data-template="templates:include"
+    data-template-path="templates/toolbar.html"
+  />
+  <main class="container-fluid" data-template="ssrq-helper:load-by-idno">
+    <section class="row mb-2" id="main-wrapper">
       <div class="tp-document-title-wrapper tp-row introduction">
         <div class="tp-column">
           <h5 id="idno" data-template="ssrq-helper:render-idno-as-popup" />
@@ -32,7 +32,7 @@
           </div>
         </div>
       </section>
-    </main>
+    </section>
     <div
       data-template="templates:include"
       data-template-path="templates/footer.html"
@@ -50,7 +50,7 @@
         />
       </svg>
     </a>
-  </section>
+  </main>
   <script
     type="text/javascript"
     src="resources/scripts/vendor/svg-pan-zoom.min.js"
