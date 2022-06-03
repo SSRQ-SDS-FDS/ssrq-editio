@@ -689,21 +689,20 @@ function app:download($node as node(), $model as map(*), $doc as xs:string?) {
 };
 
 declare
-function app:download-xml($node as node(), $model as map(*), $doc as xs:string?) {
-    let $resource :=
-        if ($model?work) then
-            config:get-identifier($model?work)
-        else if ($model?data) then
-            $model?file
+function app:download-xml($node as node(), $model as map(*)) as element(a) {
+    <a href="{
+        ($model?idno/kanton, $model?idno/volume,
+        (if ($model?idno/special) then
+            $model?idno/special
         else
-            $doc
-    return
-        <a href="{request:get-context-path()}{$model?collection => replace('/db', '')}/{$resource}">
+            string-join((string-join(($model?idno/case, $model?idno/doc), '.'), $model?idno/num), '-'))
+         || '.xml') => ssrq-helper:create-link(())
+    }">
         {
             $node/@*,
             templates:process($node/node(), $model)
         }
-        </a>
+    </a>
 };
 
 declare

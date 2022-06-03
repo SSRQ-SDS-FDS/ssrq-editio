@@ -83,6 +83,11 @@ declare function controller:findRouteFromList($routes as map(*)+, $resource as x
                         <add-parameter name="toggle-odd" value="true"/>[map:contains($route, 'toggle-odd') and $route?toggle-odd]
                     }
                         <set-header name="Cache-Control" value="no-cache"/>
+                    {
+                        if($route => map:contains('type')) then
+                            <set-header name="Content-Type" value="{$route?type}"/>
+                        else ()
+                    }
                     </forward>
                 </view>
                 {$error}
@@ -201,6 +206,17 @@ else
                         },
                     'redirect': true(),
                     'toggle-odd': true()
+                },
+                map {
+                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/((?:(?:(?:[A-Za-z0-9]+\.)*)(?:[0-9]+)-(?:[0-9]+)|(?:[a-z]{3,})))\.xml/?$',
+                    'file': $routeBase || 'xml.html',
+                    'params': map {
+                        'kanton': '1',
+                        'volume': '2',
+                        'doc': '3'
+                        },
+                    'redirect': true(),
+                    'type': 'text/xml'
                 }
             )
         return

@@ -240,7 +240,10 @@ declare function ec:print-id($doc as element(doc)) as xs:string? {
     (
          $doc/prefix, $doc/kanton,
          $doc/volume => ec:parse-volume(),
-         (string-join((string-join(($doc/case, $doc/doc), '.'), $doc/num), '-'), $doc/special)[1]
+         (if ($doc/special) then
+            $doc/special
+        else
+            string-join((string-join(($doc/case, $doc/doc), '.'), $doc/num), '-'))
     )
      => string-join(' ')
 };

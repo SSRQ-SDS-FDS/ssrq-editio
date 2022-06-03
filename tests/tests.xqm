@@ -67,7 +67,9 @@ declare function tests:find-document() as map(*)*{
 
 declare function tests:routes() as map(*)* {
  for $route in ('/', '/about/abbr', '/about/partners', '/search?query=test&amp;type=text', '/SG', '/SG/SG_III_4', '/SG/III_4/intro.html', '/SG/III_4/bailiffs.html',
-                 '/SG/III_4/lit.html', '/FR', '/FR/I_2_8', '/FR/I_2_8/?start=41', '/FR/I_2_8/1-1.html', '/api/facets?doc=FR-I_2_8-1-1')
+                 '/SG/III_4/lit.html', '/SG/III_4/lit.xml', '/FR', '/FR/I_2_8', '/FR/I_2_8/?start=41', '/FR/I_2_8/1-1.html', '/FR/I_2_8/1-1.xml',
+                 '/api/facets?doc=FR-I_2_8-1-1'
+                 )
  return
    map {
        'name': 'tests:routes()',

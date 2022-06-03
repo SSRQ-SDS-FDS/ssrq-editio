@@ -561,3 +561,8 @@ declare function ssrq-helper:printToc($node as node(), $model as map(*)) as node
 declare function ssrq-helper:getSubsections($root as node()) as node()* {
     $root//tei:div[tei:head] except $root//tei:div[tei:head]//tei:div
 };
+
+
+declare function ssrq-helper:lookup-by-key($node as node(), $model as map(*), $key as xs:string) as item()* {
+    $model($key)
+};
