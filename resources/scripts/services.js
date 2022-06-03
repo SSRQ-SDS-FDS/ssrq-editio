@@ -1,6 +1,6 @@
 $(document).ready(function () {
   const root = document.documentElement.dataset.app;
-  const docId = location.href
+  const docId = (location.origin + location.pathname)
     .substring(root.length + 1)
     .replace(/\.html\/?/, '')
     .split('/')
