@@ -348,9 +348,14 @@ declare function ssrq-helper:list-volumes($node as node(), $model as map(*), $ka
                         for $content-type in $content-types[exists(.?*)]
                         let $key := $content-type => map:keys()
                         return
-                            <a class="part" href="{ssrq-helper:create-link(($kanton, $volume/doc[1]/volume, $key || '.html'[not($key eq 'pdf')]), ())}">
-                                <i18n:text key="{$key}">{$key}</i18n:text>
-                            </a>
+                            if (not($key eq 'pdf')) then
+                                <a class="part" href="{ssrq-helper:create-link(($kanton, $volume/doc[1]/volume, $key || '.html'), ())}">
+                                    <i18n:text key="{$key}">{$key}</i18n:text>
+                                </a>
+                            else
+                                <a class="part" href="{ssrq-helper:create-link(($kanton, $volume/doc[1]/volume|| '.pdf'), ())}">
+                                    <i18n:text key="{$key}">{$key}</i18n:text>
+                                </a>
 
                     }
                 </div>
