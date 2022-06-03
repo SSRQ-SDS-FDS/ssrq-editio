@@ -602,6 +602,6 @@ declare function ssrq-helper:getSubsections($root as node()) as node()* {
 };
 
 
-declare function ssrq-helper:lookup-by-key($node as node(), $model as map(*), $key as xs:string) as item()* {
-    $model($key)
+declare function ssrq-helper:stream-xml-from-model($node as node(), $model as map(*)) as item()* {
+    response:stream($model?xml, 'media-type=application/xml')
 };
