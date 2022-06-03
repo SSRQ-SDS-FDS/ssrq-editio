@@ -77,6 +77,7 @@ declare function controller:findRouteFromList($routes as map(*)+, $resource as x
                         if ($route => map:contains('params'))
                         then
                             for $param in $route?params => map:keys()
+                            where exists($param)
                             return
                                 <add-parameter name="{$param}" value="{$route?params($param)}"/>
                         else (),
@@ -217,6 +218,17 @@ else
                         },
                     'redirect': true(),
                     'type': 'text/xml'
+                },
+                map {
+                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/?((?:(?:(?:[A-Za-z0-9]+\.)*)(?:[0-9]+)-(?:[0-9]+)|(?:[a-z]{3,})))?\.pdf/?$',
+                    'file': $routeBase || 'pdf.html',
+                    'params': map {
+                        'kanton': '1',
+                        'volume': '2',
+                        'doc': '3'
+                        },
+                    'redirect': true(),
+                    'type': 'application/pdf'
                 }
             )
         return

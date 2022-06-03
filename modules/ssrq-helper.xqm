@@ -16,6 +16,7 @@ import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/do
 import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "ssrq.xqm";
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "ext-common.xqm";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xqm";
+import module namespace response="http://exist-db.org/xquery/response";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace util="http://exist-db.org/xquery/util";
@@ -102,7 +103,7 @@ declare function ssrq-helper:resolve-links($nodes as node()*) {
         typeswitch($node)
             case element(a) | element(link) return
                 (: skip links with @data-template attributes; otherwise we can run into duplicate @href errors :)
-                if ($node/@data-template or $node/@href => contains('mailto:')) then
+                if ($node/@data-template or $node/@href => contains('mailto:') or $node/@href eq '#') then
                     $node
                 else
                     let $href := ssrq-helper:create-link(
@@ -127,6 +128,16 @@ declare function ssrq-helper:resolve-links($nodes as node()*) {
                 }
             default return
                 $node
+};
+
+declare function ssrq-helper:link-to-resource($model as map(*), $file-ending as xs:string) as xs:string {
+    ssrq-helper:create-link(($model?idno/kanton, $model?idno/volume,
+    (
+        if ($model?idno/special) then
+            $model?idno/special
+        else
+            string-join((string-join(($model?idno/case, $model?idno/doc), '.'), $model?idno/num), '-')
+    )|| $file-ending), if ($file-ending eq '.pdf') then map{"name": "prefix", "value": $model?idno/prefix} else ())
 };
 
 
@@ -194,6 +205,29 @@ function ssrq-helper:load-by-idno($node as node(), $model as map(*), $kanton as 
             "has-facs": xs:string($has-facs)
         }
 
+};
+
+
+(: ~
+: Templating function to load pdf documents from ssrq-data by their tei:idno
+: given as parameters of the url
+:
+: @author: Bastian Politycki
+: @date: 2022.05.30
+: @return a map, which holds the actual tei xml-file and some additional config-infos
+:
+:)
+declare
+function ssrq-helper:load-pdf-by-idno($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $doc as xs:string?, $prefix as xs:string)  {
+    let $path := utils:path-concat(($config:data-root, $kanton, string-join(($kanton, $volume), '_'), 'pdf', string-join(($prefix, $kanton, $volume, $doc[$doc]), '-') || '.pdf'))
+    let $l := console:log($path)
+    return
+        if (util:binary-doc-available($path)) then
+            response:stream-binary(util:binary-doc($path), "media-type=application/pdf")
+        else error(
+            xs:QName('ssrq:helper'),
+            'Unable to load ' || $path
+        )
 };
 
 (:
@@ -353,7 +387,7 @@ declare function ssrq-helper:list-volumes($node as node(), $model as map(*), $ka
                                     <i18n:text key="{$key}">{$key}</i18n:text>
                                 </a>
                             else
-                                <a class="part" href="{ssrq-helper:create-link(($kanton, $volume/doc[1]/volume|| '.pdf'), ())}">
+                                <a class="part" href="{ssrq-helper:create-link(($kanton, $volume/doc[1]/volume|| '.pdf'), map{"name": "prefix", "value": $volume/doc[1]/prefix})}">
                                     <i18n:text key="{$key}">{$key}</i18n:text>
                                 </a>
 

@@ -79,6 +79,17 @@ declare function tests:routes() as map(*)* {
    }
 };
 
+declare function tests:pdfs() as map(*)* {
+    for $pdf in ('/FR/I_2_8/1-1.pdf/?prefix=SSRQ', '/SG/III_4.pdf/?prefix=SSRQ', '/NE/3/1-1.pdf/?prefix=SDS')
+    return
+        map {
+            'name': 'tests:pdfs()',
+            'description': 'Request to ' || $pdf || ' should return a response code of "200"',
+            'exp': true(),
+            'result': let $req := test-utils:fetch-get($tests:host || $pdf) return exists($req)
+        }
+};
+
 declare function tests:introduction() as map(*) {
     map {
         'name': 'tests:introduction()',

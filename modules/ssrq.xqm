@@ -690,14 +690,7 @@ function app:download($node as node(), $model as map(*), $doc as xs:string?) {
 
 declare
 function app:download-xml($node as node(), $model as map(*)) as element(a) {
-    <a href="{
-        ($model?idno/kanton, $model?idno/volume,
-        (if ($model?idno/special) then
-            $model?idno/special
-        else
-            string-join((string-join(($model?idno/case, $model?idno/doc), '.'), $model?idno/num), '-'))
-         || '.xml') => ssrq-helper:create-link(())
-    }">
+    <a href="{ssrq-helper:link-to-resource($model, '.xml')}">
         {
             $node/@*,
             templates:process($node/node(), $model)
@@ -706,29 +699,18 @@ function app:download-xml($node as node(), $model as map(*)) as element(a) {
 };
 
 declare
-function app:download-pdf($node as node(), $model as map(*), $doc as xs:string?) {
-    let $pdf-name := if ($model?data//tei:div[@type = 'collection']) then
-                        if($model?file => contains('FR')) then
-                        $model?file => replace('_[0-9]{3}.xml', '.pdf')
-                        else $model?file => replace('.xml', '.pdf')
-                    else if (collection($config:data-root)//tei:div[@type = 'collection']//*[contains(., $model?file => substring-before('.xml'))] ) then
-                        if($model?file => contains('FR')) then
-                        $model?file => replace('_[0-9]{3}.xml', '.pdf')
-                        else $model?file => replace('.xml', '.pdf')
-                    else if ($model?file => matches('(?:_\d{1,2})?\.xml')) then
-                    $model?file => replace('(?:_\d{1,2})?\.xml', '.pdf')
-                    else $model?file => replace('.xml', '.pdf')
-    let $resource := $model?collection || '/pdf/' || $pdf-name
+function app:download-pdf($node as node(), $model as map(*)) as element(a)? {
+    let $uri := root($model?xml) => document-uri() => tokenize('/')
+    let $path := utils:path-concat(
+        ($uri[not(. eq $uri[last()])], 'pdf', $uri[last()] => replace('.xml', '.pdf'))
+    )
     return
-        if ($resource => util:binary-doc-available())
-        then
-            <a href="{request:get-context-path()}{$resource => replace('/db', '')}">
+        <a href="{ssrq-helper:link-to-resource($model, '.pdf')}">
             {
                 $node/@*,
                 templates:process($node/node(), $model)
             }
-            </a>
-        else ()
+        </a>[util:binary-doc-available($path)]
 };
 
 declare function app:parse-params($node as node(), $model as map(*)) {
