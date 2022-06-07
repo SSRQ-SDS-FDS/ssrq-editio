@@ -188,6 +188,11 @@ else
                     'redirect': true()
                 },
                 map {
+                    'schema': '^/search/?$',
+                    'file': $routeBase || 'search.html',
+                    'redirect': false()
+                },
+                map {
                     'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/(intro|bailiffs|lit)\.html/?$',
                     'file': $routeBase || 'introduction.html',
                     'params': map {
@@ -244,4 +249,4 @@ else
             )
         return
             controller:findRouteFromList($main-routes, $resource, $error-handler)
-    ) 
+    )
