@@ -1,59 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<div xmlns:i18n="http://exist-db.org/xquery/i18n" data-template="templates:surround" data-template-with="templates/page.html" data-template-at="content">
-    <div data-template="templates:include" data-template-path="templates/menu.html"/>
-    <section class="container-fluid">
-      <header class="row">
-          <div class="col-md-12">
-              <div class="page-header">
-                  <h1><i18n:text key="doctitel"/></h1>
-              </div>
-          </div>
-      </header>
+<div
+  xmlns:i18n="http://exist-db.org/xquery/i18n"
+  data-template="templates:surround"
+  data-template-with="templates/page.html"
+  data-template-at="content"
+>
+  <div
+    data-template="templates:include"
+    data-template-path="templates/menu.html"
+  />
+  <div class="container-fluid">
+    <header class="row">
+      <div class="col-md-12">
+        <div class="page-header">
+          <h1><i18n:text key="doctitel" /></h1>
+        </div>
+      </div>
+    </header>
 
-        <main xmlns:i18n="http://exist-db.org/xquery/i18n" class="row search">
-            <div class="col-md-4 col-md-push-8">
-                <div data-template="templates:include" data-template-path="templates/search.html"/>
+    <main xmlns:i18n="http://exist-db.org/xquery/i18n" class="row search">
+      <section class="col-md-4 col-md-push-8">
+        <div
+          data-template="templates:include"
+          data-template-path="templates/search.html"
+        />
+      </section>
+      <section class="col-md-8 col-md-pull-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              <i18n:text key="search-results">Search Results</i18n:text>
+            </h3>
+          </div>
+          <div class="panel-body">
+            <div data-template="query:query">
+              <form class="form-inline sort-form">
+                <label for="sort-select"
+                  ><i18n:text key="sorting">Sortierung</i18n:text>:
+                </label>
+                <select
+                  id="sort-select"
+                  name="sort"
+                  data-template="templates:form-control"
+                >
+                  <option value="">
+                    <i18n:text key="orig-date">Datum</i18n:text>
+                  </option>
+                  <!--option value="relevance"><i18n:text key="relevance">Relevanz</i18n:text></option-->
+                  <option value="kanton">
+                    <i18n:text key="canton">Kanton</i18n:text>
+                  </option>
+                  <!--option value="id"><i18n:text key="work-id">Stücknummer</i18n:text></option-->
+                  <option value="title">
+                    <i18n:text key="title">Titel</i18n:text>
+                  </option>
+                </select>
+              </form>
+              <p>
+                <i18n:text key="found">Found</i18n:text>:
+                <span id="hit-count" data-template="browse:hit-count" />
+              </p>
+              <!-- pagination for small device -->
+              <div class="hidden-md hidden-lg hidden-sm">
+                <ul
+                  class="pagination"
+                  data-template="browse:paginate"
+                  data-template-per-page="20"
+                  data-template-max-pages="5"
+                  data-template-min-hits="21"
+                />
+              </div>
+              <!-- pagination for larger device -->
+              <div class="hidden-xs">
+                <ul
+                  class="pagination"
+                  data-template="browse:paginate"
+                  data-template-per-page="20"
+                  data-template-max-pages="9"
+                  data-template-min-hits="21"
+                />
+              </div>
+              <!-- query results -->
+              <div
+                id="results"
+                class="col-md-12"
+                data-template="query:show-hits"
+                data-template-per-page="20"
+              ></div>
+              <!-- bottom pagination for small device -->
+              <div class="hidden-md hidden-lg hidden-sm">
+                <ul
+                  class="pagination"
+                  data-template="browse:paginate"
+                  data-template-per-page="20"
+                  data-template-max-pages="5"
+                  data-template-min-hits="21"
+                />
+              </div>
+              <!-- bottom pagination for larger device -->
+              <div class="hidden-xs">
+                <ul
+                  class="pagination"
+                  data-template="browse:paginate"
+                  data-template-per-page="20"
+                  data-template-max-pages="9"
+                  data-template-min-hits="21"
+                />
+              </div>
             </div>
-            <div class="col-md-8 col-md-pull-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            <i18n:text key="search-results">Search Results</i18n:text>
-                        </h3>
-                    </div>
-                    <div class="panel-body">
-                        <div data-template="query:query">
-                            <form class="form-inline sort-form">
-                                <label for="sort-select"><i18n:text key="sorting">Sortierung</i18n:text>: </label>
-                                <select id="sort-select" name="sort" data-template="templates:form-control">
-                                    <option value=""><i18n:text key="orig-date">Datum</i18n:text></option>
-                                    <!--option value="relevance"><i18n:text key="relevance">Relevanz</i18n:text></option-->
-                                    <option value="kanton"><i18n:text key="canton">Kanton</i18n:text></option>
-                                    <!--option value="id"><i18n:text key="work-id">Stücknummer</i18n:text></option-->
-                                    <option value="title"><i18n:text key="title">Titel</i18n:text></option>
-                                </select>
-                            </form>
-                            <p>
-                                <i18n:text key="found">Found</i18n:text>: <span id="hit-count" data-template="browse:hit-count"/>
-                            </p><!-- pagination for small device -->
-                            <div class="hidden-md hidden-lg hidden-sm">
-                                <ul class="pagination" data-template="browse:paginate" data-template-per-page="20" data-template-max-pages="5" data-template-min-hits="21"/>
-                            </div><!-- pagination for larger device -->
-                            <div class="hidden-xs">
-                                <ul class="pagination" data-template="browse:paginate" data-template-per-page="20" data-template-max-pages="9" data-template-min-hits="21"/>
-                            </div><!-- query results -->
-                            <div id="results" class="col-md-12" data-template="query:show-hits" data-template-per-page="20">
-                            </div><!-- bottom pagination for small device -->
-                            <div class="hidden-md hidden-lg hidden-sm">
-                                <ul class="pagination" data-template="browse:paginate" data-template-per-page="20" data-template-max-pages="5" data-template-min-hits="21"/>
-                            </div><!-- bottom pagination for larger device -->
-                            <div class="hidden-xs">
-                                <ul class="pagination" data-template="browse:paginate" data-template-per-page="20" data-template-max-pages="9" data-template-min-hits="21"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </section>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
 </div>
