@@ -230,6 +230,17 @@ function ssrq-helper:load-pdf-by-idno($node as node(), $model as map(*), $kanton
         )
 };
 
+declare
+function ssrq-helper:xml-to-tex($node as node(), $model as map(*))  {
+    try {
+        string-join(
+            $pm-config:latex-transform($model?xml, (), $config:odd)
+        )
+    } catch * {
+        error(xs:QName('ssrq-helper:xml-to-tex'), 'Error while converting xml to TeX: ' || $err:description)
+    }
+};
+
 (:
 : A simplified and ssrq-specific version of pages:view(), which
 : depends in a strange way on ssrq.xqm and duplicates various parts of the processing logic

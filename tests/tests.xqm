@@ -38,33 +38,6 @@ declare variable $tests:host := substring-before(request:get-url(), '/exist') ||
 : ***********************
 :)
 
-(: declare function tests:get-relpath() as map(*)* {
-    for $doc in ('FR/FR_I_2_8/SSRQ_FR_I_2_8_0001.xml', 'SG/SG_III_4/SSRQ_SG_III_4_001_1.xml')
-    return
-        map {
-           "name": "tests:get-relpath()",
-           "description": "Tests if correct relational path in SSRQ-data is found for " || ($doc => tokenize('/'))[last()],
-           "exp": $doc,
-           "result": doc(($config:data-root, $doc) => string-join('/'))/tei:TEI => config:get-relpath()
-        }
-};
-
-declare function tests:find-document() as map(*)*{
-    for $id in ('SSRQ_FR_I_2_8_0001', 'SSRQ_FR_I_2_8_0002_000', 'SSRQ_SG_III_4_015_1')
-    return
-        map {
-            "name": "tests:find-document()",
-            "description": "Check if " || $id || " is loaded and tei:body found.",
-            "exp": true(),
-            "result": let $data := app:load(<div/>, map{}, $id, (), $id, ())
-                        return
-                        if (exists($data?data) and $data?data => name() = 'body' )
-                        then true()
-                        else false()
-        }
-};
- :)
-
 declare function tests:routes() as map(*)* {
  for $route in ('/', '/about/abbr', '/about/partners', '/search?query=test&amp;type=text', '/SG', '/SG/SG_III_4', '/SG/III_4/intro.html', '/SG/III_4/bailiffs.html',
                  '/SG/III_4/lit.html', '/SG/III_4/lit.xml', '/FR', '/FR/I_2_8', '/FR/I_2_8/?start=41', '/FR/I_2_8/1-1.html', '/FR/I_2_8/1-1.xml',
@@ -76,6 +49,17 @@ declare function tests:routes() as map(*)* {
        'description': $route || ' should be reachable via http and not contain a error message in the html:body.',
        'exp': true(),
        'result': let $req := test-utils:fetch-get($tests:host || $route) return exists($req) and not($req//*:pre[contains(@class, 'error')])
+   }
+};
+
+declare function tests:tex() as map(*)* {
+ for $tex in ('/SG/III_4/intro.tex', '/FR/I_2_8/1-1.tex')
+ return
+   map {
+       'name': 'tests:tex()',
+       'description': 'Request to ' || $tex || ' should return a responde code of "200" and xml-to-tex as text',
+       'exp': true(),
+       'result': let $req := test-utils:fetch-get($tests:host || $tex) return exists($req) and util:get-sequence-type($req) eq 'xs:string'
    }
 };
 

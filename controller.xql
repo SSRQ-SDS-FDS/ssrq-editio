@@ -229,8 +229,19 @@ else
                         },
                     'redirect': true(),
                     'type': 'application/pdf'
+                },
+                map {
+                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/?((?:(?:(?:[A-Za-z0-9]+\.)*)(?:[0-9]+)-(?:[0-9]+)|(?:[a-z]{3,})))?\.tex/?$',
+                    'file': $routeBase || 'tex.html',
+                    'params': map {
+                        'kanton': '1',
+                        'volume': '2',
+                        'doc': '3'
+                        },
+                    'redirect': true(),
+                    'type': 'text/text'
                 }
             )
         return
             controller:findRouteFromList($main-routes, $resource, $error-handler)
-    )
+    ) 
