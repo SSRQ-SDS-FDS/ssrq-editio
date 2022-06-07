@@ -52,6 +52,18 @@ declare function tests:routes() as map(*)* {
    }
 };
 
+declare function tests:language-switching() as map(*)* {
+ let $exp := ('Sammlung Schweizerischer Rechtsquellen online', 'Les sources du droit suisse online', 'Collection of Swiss Law Sources online')
+ for $lang at $i in ('de', 'fr', 'en')
+ return
+   map {
+       'name': 'tests:language-switching()',
+       'description': 'Page title should be translated to: ' || $lang,
+       'exp': $exp[$i],
+       'result': let $req := test-utils:fetch-get($tests:host || '/?lang=' || $lang) return $req//*[@class eq 'page-header']/*:h1/text() => normalize-space()
+   }
+};
+
 declare function tests:tex() as map(*)* {
  for $tex in ('/SG/III_4/intro.tex', '/FR/I_2_8/1-1.tex')
  return
