@@ -679,13 +679,14 @@ function app:show-help($node as node(), $model as map(*), $field as xs:string) {
 
 declare
 %templates:wrap
-function app:download($node as node(), $model as map(*), $doc as xs:string?) {
-    let $pathInfos := map {
-        "collection": if ($model?data) then $model?data => util:collection-name() else(),
-        "file": if ($model?data) then $model?data => util:document-name() else()
-    }
-    return
-        map:merge(($model, $pathInfos))
+function app:download($node as node(), $model as map(*)) as element(li)? {
+    if ($model => map:contains('xml')) then
+        <li class="dropdown">
+            {
+                 templates:process($node/node(), $model)
+            }
+        </li>
+    else ()
 };
 
 declare
