@@ -244,7 +244,7 @@ else
                         'doc': '3'
                         },
                     'redirect': true(),
-                    'type': 'text/text'
+                    'type': 'text/text;charset=UTF-8'
                 }
             )
         return
