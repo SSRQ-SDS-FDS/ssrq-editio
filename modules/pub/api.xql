@@ -15,6 +15,7 @@ import module namespace id-search="http://ssrq-sds-fds.ch/exist/apps/ssrq/id-sea
 import module namespace index="http://ssrq-sds-fds.ch/exist/apps/ssrq/index" at "../index.xqm";
 import module namespace request="http://exist-db.org/xquery/request";
 import module namespace response="http://exist-db.org/xquery/response";
+import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 
 declare namespace api = "http://ssrq-sds-fds.ch/exist/apps/ssrq/api";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
@@ -28,13 +29,29 @@ declare variable $api:jsonSerializationParams := <output:serialization-parameter
 let $route := request:get-parameter("route", ())
 return
     switch($route)
-    (: To-Do: Implement more endpoints! :)
     (: Load all index-entries for a single document and return the result as html :)
     case 'facets'
         return
             let $resp := request:get-parameter("doc", "") => index:get-index-entries()
             return
                 $resp
+    (:~ Simplified endpoint to list just persons, inside a single document and return the result as json
+    : e.g. used for /bailiffs
+    :)
+    case 'persons'
+        return
+            let $id := request:get-parameter("doc", "")
+            let $xml := collection($config:data-root)//tei:TEI[.//tei:seriesStmt/tei:idno[contains(., $id)]]
+            let $persons := $xml//tei:persName/@ref | $xml//@scribe[starts-with(., 'per')]
+            where exists($persons)
+            return
+                serialize(
+                    array {
+                        for $person in app:api-lookup($app:PERSONS, app:api-keys($persons), "ids_search")?*
+                        order by $person?name
+                        return
+                            $person
+                    }, $api:jsonSerializationParams)
     case 'id-search'
         return
             let $resp := request:get-parameter("id", "") => id-search:search()
