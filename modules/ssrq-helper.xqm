@@ -9,9 +9,15 @@ import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/ut
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 import module namespace functx="http://www.functx.com";
 import module namespace cache="http://exist-db.org/xquery/cache";
+import module namespace session="http://exist-db.org/xquery/session";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 import module namespace config-data="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/config" at "/db/apps/ssrq-data/modules/config.xqm";
 import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
+import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "ssrq.xqm";
+import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "ext-common.xqm";
+import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xqm";
+import module namespace response="http://exist-db.org/xquery/response";
+
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace util="http://exist-db.org/xquery/util";
 declare namespace i18n="http://exist-db.org/xquery/i18n";
@@ -60,39 +66,80 @@ declare function ssrq-helper:make-cache-key($prefix as xs:string) as xs:string {
 
 };
 
-declare
-    %templates:wrap
-function ssrq-helper:fixLinks($node as node(), $model as map(*)) {
-    ssrq-helper:fixLinks(templates:process($node/node(), $model))
+declare function ssrq-helper:include-upload-template($node as node(), $model as map(*)) as element(div)? {
+    if (xs:boolean($ssrq-helper:ENV//upload/text())) then
+    doc(utils:path-concat-safe(($config:app-root, 'templates', 'upload.html')))
+    else ()
 };
 
-declare function ssrq-helper:fixLinks($nodes as node()*) {
+
+(:~
+: Helper function to create links based on the session attribute ssrq.prefix
+: which is set by the controller – the function can be used as by other xquery-functions
+: or directly from within the templates via ssrq-helper:resolve-links().
+:
+: @author Bastian Politycki
+: @return xs:string
+:)
+declare function ssrq-helper:create-link($components as xs:string*, $params as map(*)*) as xs:string {
+    let $query-params := (
+                            for $param at $i in $params
+                            return
+                                string-join((if ($i eq 1) then '?' else '&amp;', $param?name, '=', $param?value), '')
+    )[exists($params)]
+    return
+        utils:path-concat((session:get-attribute('ssrq.prefix'), $components, $query-params))
+};
+
+declare
+%templates:wrap
+function ssrq-helper:resolve-links($node as node(), $model as map(*)) {
+    ssrq-helper:resolve-links(templates:process($node/node(), $model))
+};
+
+declare function ssrq-helper:resolve-links($nodes as node()*) {
     for $node in $nodes
     return
         typeswitch($node)
             case element(a) | element(link) return
                 (: skip links with @data-template attributes; otherwise we can run into duplicate @href errors :)
-                if ($node/@data-template) then
+                if ($node/@data-template or $node/@href => contains('mailto:') or $node/@href eq '#') then
                     $node
                 else
-                    let $href :=
-                        replace(
-                            $node/@href,
-                            "\$app",
-                            (request:get-context-path() || substring-after($config:app-root, "/db"))
-                        )
+                    let $href := ssrq-helper:create-link(
+
+                                                            utils:path-tokenize($node/@href) !
+                                                            (
+                                                                if (not(. eq '{app}')) then
+                                                                    if (matches(., '[\{\}]')) then
+                                                                    replace(., '\{([a-z]*)\}', '$1') => request:get-parameter(())
+                                                                    else .
+                                                                else ()
+                                                            ),
+                                                            ()
+                                                        )
                     return
                         element { node-name($node) } {
-                            attribute href {$href}, $node/@* except $node/@href, ssrq-helper:fixLinks($node/node())
+                            attribute href {$href}, $node/@* except $node/@href, ssrq-helper:resolve-links($node/node())
                         }
             case element() return
                 element { node-name($node) } {
-                    $node/@*, ssrq-helper:fixLinks($node/node())
-
+                    $node/@*, ssrq-helper:resolve-links($node/node())
                 }
             default return
                 $node
 };
+
+declare function ssrq-helper:link-to-resource($model as map(*), $file-ending as xs:string) as xs:string {
+    ssrq-helper:create-link(($model?idno/kanton, $model?idno/volume,
+    (
+        if ($model?idno/special) then
+            $model?idno/special
+        else
+            string-join((string-join(($model?idno/case, $model?idno/doc), '.'), $model?idno/num), '-')
+    )|| $file-ending), if ($file-ending eq '.pdf') then map{"name": "prefix", "value": $model?idno/prefix} else ())
+};
+
 
 (:~~
 : Utility Function to insert an alt-Attribute into html:img
@@ -102,6 +149,23 @@ declare function ssrq-helper:fixLinks($nodes as node()*) {
 declare function ssrq-helper:insertAlt($node as node(), $model as map(*)) as node() {
     <img class="{$node/@class/data(.)}" src="{$node/@src/data(.)}" alt="{config:app-title($node, $model)}"/>
 };
+
+
+(:~
+: Counter function used to display values inside the counter-‚bubbles‘
+:
+: @param $volume a volume element from docs.xml
+: @return result as xs:integer
+:)
+declare
+function ssrq-helper:count-docs($volume as element(volume)) as xs:integer {
+    let $distinct-docs := for $doc in $volume/doc[not(special)]
+                            group by $grouping-key := if ($doc/case) then $doc/case else $doc/doc
+                            return $grouping-key
+    return count($distinct-docs)
+
+};
+
 
 (:~
 :
@@ -113,6 +177,97 @@ declare function ssrq-helper:insertAlt($node as node(), $model as map(*)) as nod
 :
 :
 :)
+
+
+(: ~
+: Templating function to load documents from ssrq-data by their tei:idno
+: given as parameters of the url
+:
+: @author: Bastian Politycki
+: @date: 2022.05.30
+: @return a map, which holds the actual tei xml-file and some additional config-infos
+:
+:)
+declare
+function ssrq-helper:load-by-idno($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $doc as xs:string, $view as xs:string?, $odd as xs:string?) as map(*) {
+    let $id := doc-list:get($kanton)//doc[contains(@xml:id, string-join(($kanton, $volume, $doc), '-'))]
+    let $xml := collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id/@xml:id]
+    let $has-facs := exists($xml//tei:pb[@facs]) and not($odd eq $config:odd-normalized)
+    return
+        map {
+            "idno": $id,
+            "xml": utils:coalesce($xml, app:failed-to-load($doc)),
+            "config": map {
+                "odd": utils:coalesce($odd, $config:odd),
+                "view": app:query-view($xml/tei:text, utils:coalesce($view, $config:default-view))
+            },
+            "body-class": if ($has-facs) then 'col-md-6' else 'col-md-10',
+            "has-facs": xs:string($has-facs)
+        }
+
+};
+
+
+(: ~
+: Templating function to load pdf documents from ssrq-data by their tei:idno
+: given as parameters of the url
+:
+: @author: Bastian Politycki
+: @date: 2022.05.30
+: @return a map, which holds the actual tei xml-file and some additional config-infos
+:
+:)
+declare
+function ssrq-helper:load-pdf-by-idno($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $doc as xs:string?, $prefix as xs:string)  {
+    let $path := utils:path-concat(($config:data-root, $kanton, string-join(($kanton, $volume), '_'), 'pdf', string-join(($prefix, $kanton, $volume, $doc[$doc]), '-') || '.pdf'))
+    let $l := console:log($path)
+    return
+        if (util:binary-doc-available($path)) then
+            response:stream-binary(util:binary-doc($path), "media-type=application/pdf")
+        else error(
+            xs:QName('ssrq:helper'),
+            'Unable to load ' || $path
+        )
+};
+
+declare
+function ssrq-helper:xml-to-tex($node as node(), $model as map(*))  {
+    try {
+        string-join(
+            $pm-config:latex-transform($model?xml, (), $config:odd)
+        )
+    } catch * {
+        error(xs:QName('ssrq-helper:xml-to-tex'), 'Error while converting xml to TeX: ' || $err:description)
+    }
+};
+
+(:
+: A simplified and ssrq-specific version of pages:view(), which
+: depends in a strange way on ssrq.xqm and duplicates various parts of the processing logic
+:
+:)
+
+declare function ssrq-helper:render($node as node(), $model as map(*)) {
+    pages:process-content($model?xml, $model?xml, $model?config?odd, ())
+};
+
+declare
+%templates:wrap
+function ssrq-helper:render-idno-as-popup($node as node(), $model as map(*)) as element(span)? {
+    let $header := $model?xml//tei:teiHeader/tei:fileDesc
+    let $stmtTitle := $header/tei:seriesStmt/tei:title/text()
+    let $fileDescTitle :=$header/tei:titleStmt/tei:title
+    let $idno := ec:print-id($model?idno)
+    return
+        <span class="alternate">
+            <span class="id">{$idno} <i class="glyphicon glyphicon-info-sign"/></span>
+            <span class="altcontent" xmlns:i18n="http://exist-db.org/xquery/i18n" popover-class="increase-popover-width">
+                    <p>{$stmtTitle}, {$pm-config:web-transform($fileDescTitle, map { "root": $fileDescTitle, "view": "infopopup"}, $config:odd)}, <i18n:text key="by">von</i18n:text> {app:pers-names($header)}</p>
+                    <p><i18n:text key="zitation">Zitation:</i18n:text> <a href="{($model?idno/canton, $model?idno/volume) => ssrq-helper:create-link(())}">{$idno}</a></p>
+                    <p><i18n:text key="lizenz">Lizenz:</i18n:text> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de">CC BY-NC-SA</a></p>
+            </span>
+        </span>
+};
 
 declare
 function ssrq-helper:cantonslist-container($node as node(), $model as map(*)) {
@@ -156,9 +311,6 @@ declare function ssrq-helper:listCantons($node as node(), $model as map(*)) as n
     </tbody>
 };
 
-
-
-
 declare function ssrq-helper:renderCanton($key as xs:string, $data as map(*)) as node() {
     <tr>
             <td><div class="canton-img {concat('canton-', $data?img)}"></div></td>
@@ -192,13 +344,13 @@ declare function ssrq-helper:renderDepartment($data as map(*), $dep as xs:string
     then
         <td>
             <div>
-                <a href="?kanton={$dep}" data-collection="{$dep}">
+                <a href="{ssrq-helper:create-link($dep, ())}">
                     {
                     let $html := $data?department => util:parse-html()
                     return $html/*/*[last()]/node()
                     }
                 </a>
-                <span class="badge">{doc-list:get($dep) => count()}</span>
+                <span class="badge">{sum(doc-list:get($dep)/volume ! ssrq-helper:count-docs(.))}</span>
             </div>
         </td>
     else
@@ -214,84 +366,60 @@ declare function ssrq-helper:renderDepartment($data as map(*), $dep as xs:string
 (:~
 : List volumes per canton
 :
-: @param $collection canton as xs:string
-: @return one html:div container per volume
+: @param $kanton canton as xs:string
+: @return html:div which contains a html:div per volume
 :)
-declare function ssrq-helper:listVolumes($node as node(), $model as map(*), $kanton as xs:string) as node()* {
+declare function ssrq-helper:list-volumes($node as node(), $model as map(*), $kanton as xs:string) as element(div) {
     <div class="volumes">
-    {
-    for $volume in collection($config:data-root)/tei:TEI[@type = 'volinfo'][matches(.//tei:seriesStmt/tei:idno[@type="machine"], '^\w+_' || $kanton)]
-        order by $volume//tei:seriesStmt/tei:idno[@type = 'sort']
-        let $idno := $volume//tei:seriesStmt/tei:idno[@type="machine"]
-        let $collection-name := util:collection-name($volume)
-        let $volume-collection := collection($collection-name)
-        let $context := request:get-context-path() || substring-after($config:app-root, "/db")
-        let $content-types := map {
-            "introduction": $volume-collection/tei:TEI[@type='introduction'][.//tei:seriesStmt/tei:idno = $idno],
-            "archives": $volume-collection/tei:TEI[@type='archives'][.//tei:seriesStmt/tei:idno = $idno],
-            "editions": $volume-collection/tei:TEI[@type='editions'][.//tei:seriesStmt/tei:idno = $idno],
-            "literature":$volume-collection/tei:TEI[@type='biblio'][.//tei:seriesStmt/tei:idno = $idno],
-            "bailiffs": $volume-collection/tei:TEI[@type='bailiffs'][.//tei:seriesStmt/tei:idno = $idno],
-            "foreword": $volume-collection/tei:TEI[@type='foreword'][.//tei:seriesStmt/tei:idno = $idno],
-            "preface": $volume-collection/tei:TEI[@type='preface'][.//tei:seriesStmt/tei:idno = $idno],
-            "pdfdummy": $volume-collection/tei:TEI[@type='pdfdummy'][.//tei:seriesStmt/tei:idno = $idno]
-        }
-        return
-            <div class="volume">
-                <div class="volume-counter">
-                    <span class="badge">
-                        {doc-list:get($idno => substring-after('_')) => count()}
-                    </span>
+        {
+            for $volume in doc-list:get($kanton)/volume
+            let $matching-doc := collection($config:data-root)/tei:TEI[.//tei:seriesStmt/tei:idno = $volume/doc[1]/@xml:id/data(.)]
+            let $content-types := (
+                                    map {"intro": $volume/doc[./special = 'intro' ]}, map{"bailiffs": $volume/doc[./special = 'bailiffs' ]},
+                                    map{"lit": $volume/doc[./special = 'lit' ]}, map{"pdf": true()[xs:boolean($volume/@pdf)]}
+                                  )
+            return
+                <div class="volume">
+                    <div class="volume-counter">
+                        <span class="badge">
+                            {ssrq-helper:count-docs($volume)}
+                        </span>
+                    </div>
+                    {
+                        $pm-config:web-transform($matching-doc//tei:fileDesc, map { "root": $matching-doc, "view": "volumes" }, $config:odd),
+                        <a class="part" href="{ssrq-helper:create-link(($kanton, $volume/@xml:id => substring(4)), ())}">
+                            <i18n:text key="articles">Stücke</i18n:text>
+                        </a>,
+                        for $content-type in $content-types[exists(.?*)]
+                        let $key := $content-type => map:keys()
+                        return
+                            if (not($key eq 'pdf')) then
+                                <a class="part" href="{ssrq-helper:create-link(($kanton, $volume/doc[1]/volume, $key || '.html'), ())}">
+                                    <i18n:text key="{$key}">{$key}</i18n:text>
+                                </a>
+                            else
+                                <a class="part" href="{ssrq-helper:create-link(($kanton, $volume/doc[1]/volume|| '.pdf'), map{"name": "prefix", "value": $volume/doc[1]/prefix})}">
+                                    <i18n:text key="{$key}">{$key}</i18n:text>
+                                </a>
+
+                    }
                 </div>
-                {$pm-config:web-transform($volume/tei:teiHeader/tei:fileDesc, map { "root": $volume, "view": "volumes" }, $config:odd) }
-                <span class="part">
-                {
-                    let $works-id := substring-after($collection-name, $kanton || "/")
-                    return
-                    <a href="?kanton={$kanton}&amp;volume={$works-id}&amp;start=1" data-works="{$works-id}" >
-                        <i18n:text key="articles">Stücke</i18n:text>
-                    </a>
-                }
-                </span>
-                {
-                   for $key in $content-types => map:keys()
-                   return
-                        if ($content-types($key))
-                        then
-                            <span class="part">
-                                {
-                                    let $path := substring-after(document-uri(root($content-types($key))), $config:data-root || "/")
-                                    let $href :=
-                                        if ($key = 'pdfdummy') then
-                                            utils:path-concat-safe((request:get-context-path(), 'apps/ssrq-data/data', replace($path, '^([A-Z]{2})/(.+?)/(.+?)(?:_\d{1,2})?\.xml$', '$1/$2/pdf'), $idno || '.pdf'))
-                                        else
-                                            $path || '?template=introduction.html'
-                                    return
-                                        <a href="{$href}">
-                                           <i18n:text key="{$key}">{$key}</i18n:text>
-                                        </a>
-                                }
-                            </span>
-                        else ()
-                }
-            </div>
-    }</div>
+        }
+    </div>
 };
 
 
 declare
-function ssrq-helper:render-work($node as node(), $model as map(*), $volume as xs:string?) as element(li)* {
+function ssrq-helper:render-work($node as node(), $model as map(*), $kanton as xs:string?, $volume as xs:string?) as element(li)* {
     for $doc in $model?page
-    let $config := tpu:parse-pi($doc, ())
-    let $relPath := config:get-identifier($doc) => replace($volume || '/', '')
-    order by $doc//tei:seriesStmt[@xml:id = 'ssrq-sds-fds']//tei:idno
+    let $xml := collection($config:data-root)/tei:TEI[.//tei:idno eq $doc/@xml:id/data(.)]
     return
         <li class="document ml-1">
         {
-            $pm-config:web-transform($doc//tei:teiHeader, map {
+            $pm-config:web-transform($xml//tei:teiHeader, map {
                     "header": "short",
-                    "doc": $relPath || "?odd=" || $config:odd || "&amp;view=" || $config?view,
-                    "root": $doc
+                    "doc": ssrq-helper:create-link(($kanton, $volume, (string-join(($doc/case, $doc/doc), '.'), $doc/num) => string-join('-') || '.html'), ()),
+                    "root": $xml
                 }, $config:odd)
         }
         </li>
@@ -309,12 +437,13 @@ declare
 %templates:default("per-page", 10)
 %templates:default("sort", "date")
     function ssrq-helper:load-works($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $start as xs:int, $per-page as xs:int, $sort as xs:string?) as map(*) {
-        let $doc-list := doc-list:get($volume)
-        let $documents := collection($config:data-root)//tei:idno[text() = ($doc-list => subsequence($start, $per-page))] ! root(.)
+        let $volume-docs := doc-list:get(($kanton,$volume) => string-join('-'))
+        let $grouped-docs := $volume-docs/doc[not(special)][not(opening)][not(case)][num eq '1']
+                            union $volume-docs/doc[not(special)][not(opening)][case][doc eq '1'][num eq '1']
         return
             map {
-                "total": count($doc-list),
-                "page": $documents
+                "total": count($grouped-docs),
+                "page": $grouped-docs => subsequence($start, $per-page)
             }
 };
 
@@ -339,13 +468,6 @@ declare function ssrq-helper:browseUp($node as node(), $model as map(*), $kanton
         attribute href {'?kanton=' || $kanton},
         $node/node()
     }
-};
-
-
-
-declare function ssrq-helper:linkPagination($collection as xs:string, $volume as xs:string, $start) {
-   let $link := '?kanton=' || $collection || '&amp;volume=' || $volume || '&amp;start=' || $start
-   return $link
 };
 
 (:~
@@ -377,9 +499,9 @@ function ssrq-helper:paginate($node as node(), $model as map(*), $key as xs:stri
                     </li>
                 ) else (
                     <li>
-                        <a href="{ssrq-helper:linkPagination($kanton, $volume, 1)}"><i class="glyphicon glyphicon-fast-backward"/></a>
+                        <a href="{ssrq-helper:create-link(($kanton, $volume), map{'name': 'start', 'value': 1})}"><i class="glyphicon glyphicon-fast-backward"/></a>
                     </li>,
-                    <li><a href="{ssrq-helper:linkPagination($kanton, $volume, max( ($start - $per-page, 1 ) ))}"><i class="glyphicon glyphicon-backward"/>
+                    <li><a href="{ssrq-helper:create-link(($kanton, $volume), map{'name': 'start', 'value': max(($start - $per-page, 1 ))})}"><i class="glyphicon glyphicon-backward"/>
                        </a></li>
                 ),
                 let $startPage := xs:integer(ceiling($start div $per-page))
@@ -389,17 +511,17 @@ function ssrq-helper:paginate($node as node(), $model as map(*), $key as xs:stri
                 for $i in $lowerBound to $upperBound
                 return
                     if ($i = ceiling($start div $per-page)) then
-                        <li class="active"><a href="{ssrq-helper:linkPagination($kanton, $volume, max( (($i - 1) * $per-page + 1, 1) ))}">{$i}</a></li>
+                        <li class="active"><a href="{ssrq-helper:create-link(($kanton, $volume), map{'name': 'start', 'value':  max( (($i - 1) * $per-page + 1, 1) )})}">{$i}</a></li>
                     else
                         let $page := max((($i - 1) * $per-page + 1, 1))
                         return
-                        <li><a href="{ssrq-helper:linkPagination($kanton, $volume, $page)}">{$i}</a></li>,
+                        <li><a href="{ssrq-helper:create-link(($kanton, $volume), map{'name': 'start', 'value': $page})}">{$i}</a></li>,
                 if ($start + $per-page < $model($key)) then (
                     <li>
-                        <a href="{ssrq-helper:linkPagination($kanton, $volume,$start + $per-page)}"><i class="glyphicon glyphicon-forward"/></a>
+                        <a href="{ssrq-helper:create-link(($kanton, $volume),map{'name': 'start', 'value': $start + $per-page})}"><i class="glyphicon glyphicon-forward"/></a>
                     </li>,
                     <li>
-                        <a href="{ssrq-helper:linkPagination($kanton, $volume, max( (($count - 1) * $per-page + 1, 1)))}"><i class="glyphicon glyphicon-fast-forward"/></a>
+                        <a href="{ssrq-helper:create-link(($kanton, $volume), map{'name': 'start', 'value': max( (($count - 1) * $per-page + 1, 1))})}"><i class="glyphicon glyphicon-fast-forward"/></a>
                     </li>
                 ) else (
                     <li class="disabled">
@@ -488,4 +610,9 @@ declare function ssrq-helper:printToc($node as node(), $model as map(*)) as node
 :)
 declare function ssrq-helper:getSubsections($root as node()) as node()* {
     $root//tei:div[tei:head] except $root//tei:div[tei:head]//tei:div
+};
+
+
+declare function ssrq-helper:stream-xml-from-model($node as node(), $model as map(*)) as item()* {
+    response:stream($model?xml, 'media-type=application/xml')
 };

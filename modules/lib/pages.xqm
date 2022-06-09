@@ -312,8 +312,8 @@ declare function pages:title($work as element()) {
 
 declare function pages:app-root($node as node(), $model as map(*)) {
     element { node-name($node) } {
-        $node/@*,
-        attribute data-app { request:get-context-path() || substring-after($config:app-root, "/db") },
+        $node/@* except $node/@data-template,
+        attribute data-app { session:get-attribute('ssrq.prefix') },
         templates:process($node/*, $model)
     }
 };

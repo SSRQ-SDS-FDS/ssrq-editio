@@ -4,9 +4,7 @@ const tocAnchors = document.querySelectorAll('.toc-anchor');
 const toTopButton = document.querySelector('.to-top-button');
 const toc = document.querySelector('#toc');
 const svgs = document.querySelectorAll('.svg-container svg');
-const persons = document.querySelectorAll(
-  '.introduction span.person span[data-url]'
-);
+const persons = document.querySelectorAll('span.person span[data-url]');
 
 // Callback-functions
 const clickHandler = (e) => {
@@ -45,7 +43,7 @@ const insertPersonTooltip = (data) => {
   persons.forEach((person) => {
     const id = person.dataset.url.split('=')[1];
     if (id.length > 0) {
-      const entry = data.persons.filter(
+      const entry = data.filter(
         (item) => item.id === id || item.name === person.innerText
       )[0];
       if (entry) {
@@ -92,8 +90,12 @@ if (svgs) {
   });
 }
 
-if (persons) {
+if (persons.length > 0) {
   const root = document.documentElement.dataset.app;
-  const docPath = location.pathname.substring(root.length + 1);
-  fetchInsertPersons(root, docPath);
+  const docId = (location.origin + location.pathname)
+    .substring(root.length + 1)
+    .replace(/\.html\/?/, '')
+    .split('/')
+    .join('-');
+  fetchInsertPersons(root, docId);
 }

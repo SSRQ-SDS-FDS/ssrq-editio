@@ -11,6 +11,8 @@ import module namespace console="http://exist-db.org/xquery/console" at "java:or
 import module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/search" at "ssrq-search.xqm";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xqm";
 import module namespace http="http://expath.org/ns/http-client" at "java:org.expath.exist.HttpClientModule";
+import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
+import module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/helper" at "ssrq-helper.xqm";
 
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 
@@ -26,24 +28,27 @@ declare variable $app:LEMMA := $app:HOST || "/lemma-db-edit/views/get-lem-infos.
 declare variable $app:KEYWORDS := $app:HOST || "/lemma-db-edit/views/get-key-infos.xq";
 
 
-declare function app:failed-to-load($doc) {
-    <TEI xmlns="http://www.tei-c.org/ns/1.0">
-        <teiHeader>
-            <fileDesc>
-                <titleStmt>
-                    <title>Not found</title>
-                </titleStmt>
-            </fileDesc>
-        </teiHeader>
-        <text>
-            <body>
-                <div>
-                    <head>Failed to load!</head>
-                    <p>Could not load document {$doc}. Maybe it is not valid TEI or not in the TEI namespace?</p>
-                </div>
-            </body>
-        </text>
-    </TEI>
+declare function app:failed-to-load($id as xs:string) as element(TEI) {
+    (
+        trace('Loading of ' || $id || ' failed'),
+        <TEI xmlns="http://www.tei-c.org/ns/1.0">
+            <teiHeader>
+                <fileDesc>
+                    <titleStmt>
+                        <title>Not found</title>
+                    </titleStmt>
+                </fileDesc>
+            </teiHeader>
+            <text>
+                <body>
+                    <div>
+                        <head>Failed to load!</head>
+                        <p>Could not load document with the id '{$id}'. Maybe it is not valid TEI or not in the TEI namespace?</p>
+                    </div>
+                </body>
+            </text>
+        </TEI>
+    )[2]
 };
 
 declare
@@ -433,11 +438,11 @@ declare %private function app:show-if-exists($node as node(), $test as node()*, 
         ()
 };
 
-declare function app:header-short($node as node(), $model as map(*), $action as xs:string?, $sr as xs:string*) {
-    let $head := root($model?data)//tei:teiHeader//tei:msDesc/tei:head
+declare function app:header-short($node as node(), $model as map(*)) {
+    let $head := $model?xml//tei:teiHeader//tei:msDesc/tei:head
     return
         app:show-if-exists($node, $head, function() {
-            $pm-config:web-transform(query:highlight($action, $head, "title", $sr), map { "root": $head }, $config:odd)
+            $pm-config:web-transform($head, map { "root": $head }, $config:odd)
         })
 };
 
@@ -482,7 +487,7 @@ declare function app:idno-popup($node as node(), $model as map(*)) {
 };
 
 declare function app:origDate($node as node(), $model as map(*)) {
-    let $header := root($model?data)//tei:teiHeader
+    let $header := $model?xml//tei:teiHeader
     let $filiation := $header/tei:fileDesc//tei:msDesc/tei:msContents/tei:msItem/tei:filiation[@type='original'][tei:origDate]
     let $origin := $header/tei:fileDesc//tei:msDesc/tei:history/tei:origin
     let $origDate := if (exists($filiation/tei:origDate)) then $filiation/tei:origDate else $origin/tei:origDate
@@ -494,32 +499,34 @@ declare function app:origDate($node as node(), $model as map(*)) {
 };
 
 declare function app:comment($node as node(), $model as map(*), $action as xs:string?, $sr as xs:string*) {
-    let $back := root($model?data)//tei:back
+    let $back := $model?xml//tei:back
     return
         app:show-if-exists($node, $back, function() {
-            templates:process($node/node(), map:merge(($model, map { "data": query:highlight($action, $back, "comment", $sr) })))
+            templates:process($node/node(), map:merge(($model, map { "data": $back })))
         })
 };
 
-declare function app:regest($node as node(), $model as map(*), $action as xs:string?, $sr as xs:string*) {
-    let $regest := root($model?data)//tei:teiHeader//tei:msContents/tei:summary
+declare function app:regest($node as node(), $model as map(*)) {
+    let $regest := $model?xml//tei:teiHeader//tei:msContents/tei:summary
     return
         app:show-if-exists($node, $regest, function() {
-            templates:process($node/node(), map:merge(($model, map { "data": query:highlight($action, $regest, "regest", $sr) })))
+            templates:process($node/node(), map:merge(($model, map { "data": $regest})))
         })
 };
 
 declare
      %templates:wrap
 function app:additionalSource($node as node(), $model as map(*)) {
-    let $idno := root($model?data)//tei:teiHeader//tei:seriesStmt/tei:idno
+    let $idno := $model?xml//tei:teiHeader//tei:seriesStmt/tei:idno
     return
+        (: To-Do If-Statement anpassen :)
         if (matches($idno, "_1$")) then
             let $base := replace($idno, "^(.*)_1$", '$1')
             let $additional :=
                 for $header in
                     collection($config:data-root)//tei:teiHeader[matches(.//tei:seriesStmt/tei:idno, "^" || $base || "_\d+$")]
                         [not(.//tei:seriesStmt/tei:idno = $idno)]
+                (: To-Do Sortierung an neue IDNOs anpassen!!! :)
                 order by number(replace($header//tei:seriesStmt/tei:idno, "^.*_(\d+)$", "$1"))
                 return
                     $header//tei:msDesc
@@ -585,7 +592,7 @@ function app:show-credits($node as node(), $model as map(*)) {
 declare
     %templates:wrap
 function app:source-description($node as node(), $model as map(*)) {
-    let $msDesc := root($model?data)//tei:teiHeader//tei:fileDesc/tei:sourceDesc/tei:msDesc
+    let $msDesc := $model?xml//tei:teiHeader//tei:fileDesc/tei:sourceDesc/tei:msDesc
     return
         templates:process($node/node(), map:merge(($model, map { "data": $msDesc })))
 };
@@ -672,69 +679,39 @@ function app:show-help($node as node(), $model as map(*), $field as xs:string) {
 
 declare
 %templates:wrap
-function app:download($node as node(), $model as map(*), $doc as xs:string?) {
-    let $pathInfos := map {
-        "collection": if ($model?data) then $model?data => util:collection-name() else(),
-        "file": if ($model?data) then $model?data => util:document-name() else()
-    }
-    return
-        map:merge(($model, $pathInfos))
+function app:download($node as node(), $model as map(*)) as element(li)? {
+    if ($model => map:contains('xml')) then
+        <li class="dropdown">
+            {
+                 templates:process($node/node(), $model)
+            }
+        </li>
+    else ()
 };
 
 declare
-function app:download-xml($node as node(), $model as map(*), $doc as xs:string?) {
-    let $resource :=
-        if ($model?work) then
-            config:get-identifier($model?work)
-        else if ($model?data) then
-            $model?file
-        else
-            $doc
-    return
-        <a href="{request:get-context-path()}{$model?collection => replace('/db', '')}/{$resource}">
+function app:download-xml($node as node(), $model as map(*)) as element(a) {
+    <a href="{ssrq-helper:link-to-resource($model, '.xml')}">
         {
             $node/@*,
             templates:process($node/node(), $model)
         }
-        </a>
+    </a>
 };
 
 declare
-function app:download-pdf($node as node(), $model as map(*), $doc as xs:string?) {
-    let $pdf-name := if ($model?data//tei:div[@type = 'collection']) then
-                        if($model?file => contains('FR')) then
-                        $model?file => replace('_[0-9]{3}.xml', '.pdf')
-                        else $model?file => replace('.xml', '.pdf')
-                    else if (collection($config:data-root)//tei:div[@type = 'collection']//*[contains(., $model?file => substring-before('.xml'))] ) then
-                        if($model?file => contains('FR')) then
-                        $model?file => replace('_[0-9]{3}.xml', '.pdf')
-                        else $model?file => replace('.xml', '.pdf')
-                    else if ($model?file => matches('(?:_\d{1,2})?\.xml')) then
-                    $model?file => replace('(?:_\d{1,2})?\.xml', '.pdf')
-                    else $model?file => replace('.xml', '.pdf')
-    let $resource := $model?collection || '/pdf/' || $pdf-name
+function app:download-pdf($node as node(), $model as map(*)) as element(a)? {
+    let $uri := root($model?xml) => document-uri() => tokenize('/')
+    let $path := utils:path-concat(
+        ($uri[not(. eq $uri[last()])], 'pdf', $uri[last()] => replace('.xml', '.pdf'))
+    )
     return
-        if ($resource => util:binary-doc-available())
-        then
-            <a href="{request:get-context-path()}{$resource => replace('/db', '')}">
+        <a href="{ssrq-helper:link-to-resource($model, '.pdf')}">
             {
                 $node/@*,
                 templates:process($node/node(), $model)
             }
-            </a>
-        else ()
-};
-
-declare function app:show-if-logged-in($node as node(), $model as map(*)) {
-    let $user := request:get-attribute($config:login-domain || ".user")
-    return
-        element { node-name($node) } {
-            $node/@*,
-            if ($user) then
-                templates:process($node/*[1], $model)
-            else
-                templates:process($node/*[2], $model)
-        }
+        </a>[util:binary-doc-available($path)]
 };
 
 declare function app:parse-params($node as node(), $model as map(*)) {

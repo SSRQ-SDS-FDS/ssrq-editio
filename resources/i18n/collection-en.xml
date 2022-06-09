@@ -16,10 +16,6 @@
     <msg key="edit-odd">Edit ODD</msg>
     <msg key="edit-styles">Edit Styles</msg>
     <msg key="edit-config">Edit Configuration</msg>
-    <msg key="login">Login</msg>
-    <msg key="logout">Logout</msg>
-    <msg key="user">User</msg>
-    <msg key="password">Password</msg>
     <msg key="search-sections">Search Sections</msg>
     <msg key="search-headings">Search Headings</msg>
     <msg key="upload-files">Upload TEI XML or ODD files into the test document set. Click on the button below or drag&amp;drop files on it.</msg>
@@ -33,7 +29,6 @@
     <msg key="browse-title">Title</msg>
     <msg key="browse-filename">Filename</msg>
     <msg key="browsing">Browsing</msg>
-    <msg key="login-message">Please login to upload some documents!</msg>
     <msg key="contents">Contents</msg>
     <msg key="close">Close</msg>
     <msg key="generating-file">Generating File...</msg>
@@ -109,8 +104,6 @@
     <msg key="error-description">Unfortunately you have encountered an error. Please return to the previous page and possibly describe us the error through the feedback function.</msg>
     <msg key="website-link">https://www.ssrq-sds-fds.ch/en/home/</msg>
     <msg key="feedback">Feedback</msg>
-    <msg key="registrierung">For an account or in case of problems please contact info@ssrq-sds-fds.ch or use the feedback button.</msg>
-    <msg key="require-login">Please log in</msg>
     <msg key="partners-and-funding">Project Partners and Funding</msg>
     <msg key="partners">Project Partners</msg>
     <msg key="funding">Funding</msg>
@@ -121,13 +114,13 @@
     <msg key="highlight-facet">Select to highlight occurrences</msg>
     <msg key="articles">Pieces</msg>
     <msg key="archives">Archive</msg>
-    <msg key="introduction">Introduction</msg>
-    <msg key="literature">Literature</msg>
+    <msg key="intro">Introduction</msg>
+    <msg key="lit">Literature</msg>
     <msg key="editions">Editions</msg>
     <msg key="foreword">Foreword</msg>
     <msg key="preface">Preface</msg>
     <msg key="bailiffs">Bailiffs</msg>
-    <msg key="pdfdummy">Download PDF</msg>
+    <msg key="pdf">Download PDF</msg>
     <msg key="back-up">Go To Parent</msg>
     <msg key="toc">Table of Contents</msg>
     <msg key="known">known</msg>

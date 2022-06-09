@@ -58,13 +58,6 @@ declare variable $config:pagination-fill := 5;
  :)
 declare variable $config:css-content-class := "content";
 
-(:
- : The domain to use for logged in users. Applications within the same
- : domain will share their users, so a user logged into application A
- : will be able to access application B.
- :)
-declare variable $config:login-domain := "org.exist.tei-simple";
-
 (:~
  : Configuration XML for Apache FOP used to render PDF. Important here
  : are the font directories.

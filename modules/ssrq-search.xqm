@@ -18,6 +18,8 @@ import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension
 import module namespace intl="http://exist-db.org/xquery/i18n/templates" at "lib/i18n-templates.xqm";
 import module namespace functx="http://www.functx.com";
 import module namespace data-filters="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/filters" at "/db/apps/ssrq-data/modules/filters.xqm";
+import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
+import module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/helper" at "ssrq-helper.xqm";
 
 declare variable $query:QUERY_OPTIONS :=
     <options>
@@ -249,6 +251,11 @@ declare function query:filter($hits as element()*) {
         })
 };
 
+
+(:~ Note: Never really worked – see #2568
+: To-Do: Reimplement query-highlight, which is used by app.xqm
+:)
+
 (:~
  : Highlight matches when viewing document after search.
  :)
@@ -348,7 +355,11 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
     for $hit at $index in $model?hits => subsequence($start, $per-page)
     let $work := $hit/ancestor::tei:TEI
     let $config := tpu:parse-pi(root($work), $view)
-    let $relpath := config:get-identifier($work) => replace('/.*/', '/')
+    let $relpath := let $doc := doc-list:get($work//tei:seriesStmt/tei:idno[1])
+                    return
+                        ssrq-helper:create-link(($doc/kanton, $doc/volume,
+                                                if ($doc/special) then $doc/special else (string-join(($doc/case, $doc/doc), '.'), $doc/num) => string-join('-')
+                                                || '.html'), ())
     return
         <div class="reference">
             {query:view-header($work, $relpath, $hit, $start, $index)}

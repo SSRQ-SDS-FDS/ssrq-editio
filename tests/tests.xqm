@@ -23,6 +23,7 @@ import module namespace cache="http://exist-db.org/xquery/cache";
 import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
 import module namespace templates="http://exist-db.org/xquery/templates" at "../modules/templates.xqm";
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "../modules/ext-common.xqm";
+import module namespace index="http://ssrq-sds-fds.ch/exist/apps/ssrq/index" at "../modules/index.xqm";
 
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 
@@ -37,29 +38,114 @@ declare variable $tests:host := substring-before(request:get-url(), '/exist') ||
 : ***********************
 :)
 
-declare function tests:get-relpath() as map(*)* {
-    for $doc in ('FR/FR_I_2_8/SSRQ_FR_I_2_8_0001.xml', 'SG/SG_III_4/SSRQ_SG_III_4_001_1.xml')
+declare function tests:routes() as map(*)* {
+ for $route in ('/', '/about/abbr', '/about/partners', '/search?query=test&amp;type=text', '/SG', '/SG/SG_III_4', '/SG/III_4/intro.html', '/SG/III_4/bailiffs.html',
+                 '/SG/III_4/lit.html', '/SG/III_4/lit.xml', '/FR', '/FR/I_2_8', '/FR/I_2_8/?start=41', '/FR/I_2_8/1-1.html', '/FR/I_2_8/1-1.xml',
+                 '/api/facets?doc=FR-I_2_8-1-1'
+                 )
+ return
+   map {
+       'name': 'tests:routes()',
+       'description': $route || ' should be reachable via http and not contain a error message in the html:body.',
+       'exp': true(),
+       'result': let $req := test-utils:fetch-get($tests:host || $route) return exists($req) and not($req//*:pre[contains(@class, 'error')])
+   }
+};
+
+declare function tests:language-switching() as map(*)* {
+ let $exp := ('Sammlung Schweizerischer Rechtsquellen online', 'Les sources du droit suisse online', 'Collection of Swiss Law Sources online')
+ for $lang at $i in ('de', 'fr', 'en')
+ return
+   map {
+       'name': 'tests:language-switching()',
+       'description': 'Page title should be translated to: ' || $lang,
+       'exp': $exp[$i],
+       'result': let $req := test-utils:fetch-get($tests:host || '/?lang=' || $lang) return $req//*[@class eq 'page-header']/*:h1/text() => normalize-space()
+   }
+};
+
+declare function tests:tex() as map(*)* {
+ for $tex in ('/SG/III_4/intro.tex', '/FR/I_2_8/1-1.tex')
+ return
+   map {
+       'name': 'tests:tex()',
+       'description': 'Request to ' || $tex || ' should return a responde code of "200" and xml-to-tex as text',
+       'exp': true(),
+       'result': let $req := test-utils:fetch-get($tests:host || $tex) return exists($req) and util:get-sequence-type($req) eq 'xs:string'
+   }
+};
+
+declare function tests:pdfs() as map(*)* {
+    for $pdf in ('/FR/I_2_8/1-1.pdf/?prefix=SSRQ', '/SG/III_4.pdf/?prefix=SSRQ', '/NE/3/1-1.pdf/?prefix=SDS')
     return
         map {
-           "name": "tests:get-relpath()",
-           "description": "Tests if correct relational path in SSRQ-data is found for " || ($doc => tokenize('/'))[last()],
-           "exp": $doc,
-           "result": doc(($config:data-root, $doc) => string-join('/'))/tei:TEI => config:get-relpath()
+            'name': 'tests:pdfs()',
+            'description': 'Request to ' || $pdf || ' should return a response code of "200"',
+            'exp': true(),
+            'result': let $req := test-utils:fetch-get($tests:host || $pdf) return exists($req)
         }
 };
 
-declare function tests:find-document() as map(*)*{
-    for $id in ('SSRQ_FR_I_2_8_0001', 'SSRQ_FR_I_2_8_0002_000', 'SSRQ_SG_III_4_015_1')
+declare function tests:introduction() as map(*) {
+    map {
+        'name': 'tests:introduction()',
+        'description': 'A rendered introduction should contain a ToC and a div, which contains the tei:body',
+        'exp': true(),
+        'result': let $req := test-utils:fetch-get($tests:host || '/SG/III_4/intro.html') return exists($req//*[@id = 'toc'] and exists($req//*[contains(@class, 'tei-body')]))
+    }
+};
+
+declare function tests:create-link() as map(*)* {
+ for $link in ('FR/I_2_8', 'FR')
+ return
+   map {
+       'name': 'tests:create-link()',
+       'description': 'Resvoled link should contain the prefix set in the http-session.',
+       'exp': true(),
+       'result': let $session := session:set-attribute('ssrq.prefix', '/exist/apps/ssrq')
+                 return
+                    ssrq-helper:create-link($link, ()) => contains('/exist/apps/ssrq')
+   }
+};
+
+declare function tests:print-id() as map(*)* {
+    let $exp := ('SSRQ FR I/2/8 7.0-1', 'SDS NE 3 337-1', 'SDS VD D 1 10-1', 'SSRQ ZH NF I/1/3 1-1')
+    for $id at $i in (
+                    <doc xml:id="SSRQ-FR-I_2_8-7.0-1">
+                        <prefix>SSRQ</prefix>
+                        <kanton>FR</kanton>
+                        <volume>I_2_8</volume>
+                        <case>7</case>
+                        <doc>0</doc>
+                        <num>1</num>
+                    </doc>, <doc xml:id="SDS-NE-3-337-1">
+                        <prefix>SDS</prefix>
+                        <kanton>NE</kanton>
+                        <volume>3</volume>
+                        <doc>337</doc>
+                        <num>1</num>
+                    </doc>,
+                    <doc xml:id="SDS-VD-D_1-10-1">
+                        <prefix>SDS</prefix>
+                        <kanton>VD</kanton>
+                        <volume>D_1</volume>
+                        <doc>10</doc>
+                        <num>1</num>
+                    </doc>,
+                    <doc xml:id="SSRQ-ZH-NF_I_1_3-1-1">
+                        <prefix>SSRQ</prefix>
+                        <kanton>ZH</kanton>
+                        <volume>NF_I_1_3</volume>
+                        <doc>1</doc>
+                        <num>1</num>
+                    </doc>
+                )
     return
         map {
-            "name": "tests:find-document()",
-            "description": "Check if " || $id || " is loaded and tei:body found.",
-            "exp": true(),
-            "result": let $data := app:load(<div/>, map{}, $id, (), $id, ())
-                        return
-                        if (exists($data?data) and $data?data => name() = 'body' )
-                        then true()
-                        else false()
+            'name': 'test:print-id()',
+            'description': 'Test the rendition of ' || $id/@xml:id/data(.) || ' using ec:print-id()',
+            'exp': $exp[$i],
+            'result': ec:print-id($id)
         }
 };
 
@@ -106,17 +192,17 @@ declare function tests:search-hit-rendering() as map(*)*{
 
 declare function tests:count-docs() as map(*)* {
     let $exp := (259, 208)
-    for $volume at $i in ('SG_III_4', 'FR_I_2_8')
+    for $volume at $i in ('SG-III_4', 'FR-I_2_8')
     return
         map {
             "name": "tests:count-docs()",
             "description": "Test if the number of docs in docs.xml is correct",
             "exp": $exp[$i],
-            "result": doc-list:get($volume) => count()
+            "result": doc-list:get($volume) => ssrq-helper:count-docs()
         }
 };
 
-declare function tests:cache-handling() as map(*)* {
+(: declare function tests:cache-handling() as map(*)* {
     if (xs:boolean($ssrq-helper:ENV//cache/text())) then
         for $fragment in ('/?kanton=SG', '/?kanton=SG&amp;volume=SG_III_4&amp;start=41', '/NE/SDS_NE_3_002.xml?odd=ssrq.odd&amp;view=body')
         let $clear := cache:clear('ssrq-cache')
@@ -139,7 +225,7 @@ declare function tests:cache-handling() as map(*)* {
             "result": false()
         }
 
-};
+}; :)
 
 declare function tests:attribute-translation() as map(*)* {
     let $examples := (<dummy role="corrector"/>, <head xmlns="http://www.tei-c.org/ns/1.0" type="title"/>)
@@ -159,6 +245,17 @@ declare function tests:attribute-translation() as map(*)* {
 
 };
 
+declare function tests:index-retrieval() as map(*)* {
+ for $doc in ('FR-I_2_8-1-1', 'SG-III_4-3-1')
+ return
+   map {
+       'name': 'tests:index-retrieval()',
+       'description': 'Index function should return index entries for ' || $doc,
+       'exp': true(),
+       'result': count(index:get-index-entries($doc)//*:ul) > 1
+   }
+};
+
 (:~ *********************
 : Tests to check TEI rendering
 :
@@ -166,7 +263,7 @@ declare function tests:attribute-translation() as map(*)* {
 : ***********************
 :)
 
-declare function tests:edition-text() as map(*)* {
+(: declare function tests:edition-text() as map(*)* {
     for $id in ('/FR/SSRQ_FR_I_2_8_0001.xml', '/FR/SSRQ_FR_I_2_8_0002_000.xml', '/SG/SSRQ_SG_III_4_015_1.xml')
     return
         map {
@@ -179,7 +276,7 @@ declare function tests:edition-text() as map(*)* {
                             then true()
                             else false()
         }
-};
+}; :)
 
 declare function tests:pagebreak() as map(*) {
     let $pb := <pb n="481" xmlns="http://www.tei-c.org/ns/1.0"/>
