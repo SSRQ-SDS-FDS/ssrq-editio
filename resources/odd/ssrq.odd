@@ -917,7 +917,7 @@
                 <elementSpec ident="fileDesc" mode="change">
                     <modelSequence predicate="$parameters?header='short'">
                         <desc>Output a short header to be used in document listings</desc>
-                        <model behaviour="block" cssClass="header-short">
+                        <model behaviour="block" cssClass="header-short printed-idno">
                             <param name="content" value="ec:format-id(seriesStmt/idno)"/>
                         </model>
                         <model behaviour="link" cssClass="header-short">

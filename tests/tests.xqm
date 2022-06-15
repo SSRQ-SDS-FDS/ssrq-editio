@@ -38,9 +38,12 @@ declare variable $tests:host := substring-before(request:get-url(), '/exist') ||
 : ***********************
 :)
 
+(: E2E-Tests :)
+
 declare function tests:routes() as map(*)* {
- for $route in ('/', '/about/abbr', '/about/partners', '/search?query=test&amp;type=text', '/SG', '/SG/SG_III_4', '/SG/III_4/intro.html', '/SG/III_4/bailiffs.html',
-                 '/SG/III_4/lit.html', '/SG/III_4/lit.xml', '/FR', '/FR/I_2_8', '/FR/I_2_8/?start=41', '/FR/I_2_8/1-1.html', '/FR/I_2_8/1-1.xml',
+ for $route in ('/', '/about/abbr', '/about/partners', '/search?query=test&amp;type=text',
+                '/SG', '/SG/SG_III_4', '/SG/III_4/intro.html', '/SG/III_4/bailiffs.html', '/SG/III_4/lit.html', '/SG/III_4/lit.xml',
+                '/FR', '/FR/I_2_8', '/FR/I_2_8/?start=41', '/FR/I_2_8/1-1.html', '/FR/I_2_8/1-1.xml',
                  '/api/facets?doc=FR-I_2_8-1-1'
                  )
  return
@@ -94,6 +97,22 @@ declare function tests:introduction() as map(*) {
         'result': let $req := test-utils:fetch-get($tests:host || '/SG/III_4/intro.html') return exists($req//*[@id = 'toc'] and exists($req//*[contains(@class, 'tei-body')]))
     }
 };
+
+declare function tests:printed-idno-in-doc-list() as map(*) {
+   map {
+       'name': 'tests:printed-idno-in-doc-list()',
+       'description': 'All printed idnos in a list of documents should match (SSRQ|SDS|FDS) [A-Z]{2} ([A-Za-z0-9/]+) \d+-\d+',
+       'exp': true(),
+       'result': let $req := test-utils:fetch-get($tests:host || '/SG/III_4/') return
+                 if (exists($req//*[contains(@class, 'printed-idno')]))
+                then
+                    every $idno in $req//*[contains(@class, 'printed-idno')] satisfies $idno => matches('(SSRQ|SDS|FDS) [A-Z]{2} ([A-Za-z0-9/]+) \d+-\d+')
+                else
+                    false()
+   }
+};
+
+(: Unit-tests :)
 
 declare function tests:create-link() as map(*)* {
  for $link in ('FR/I_2_8', 'FR')
@@ -173,7 +192,7 @@ declare function tests:existing-search-terms() as map(*)* {
         }
 };
 
-declare function tests:search-hit-rendering() as map(*)*{
+(: declare function tests:search-hit-rendering() as map(*)*{
     let $config-map := map {
         $templates:CONFIG_APP_ROOT : $config:app-root,
         $templates:CONFIG_STOP_ON_ERROR : true()
@@ -188,7 +207,7 @@ declare function tests:search-hit-rendering() as map(*)*{
             "result": let $rendered-results := query:show-hits(<div/>, $result => map:put("configuration", $config-map), 1, $result?hits => count(), (), ()) ! .[1]
                         return $rendered-results => count()
         }
-};
+}; :)
 
 declare function tests:count-docs() as map(*)* {
     let $exp := (259, 208)
@@ -227,23 +246,6 @@ declare function tests:count-docs() as map(*)* {
 
 }; :)
 
-declare function tests:attribute-translation() as map(*)* {
-    let $examples := (<dummy role="corrector"/>, <head xmlns="http://www.tei-c.org/ns/1.0" type="title"/>)
-    let $cases := (
-        ec:translate($examples[1]/@role, 'ssrq.datatypes', false(), false()),
-        ec:translate($examples[2]/@type, (), false(), false())
-    )
-    let $exp := ('Korrektor', 'Haupttitel')
-    for $case at $i in $cases
-    return
-        map {
-            "name": "tests:attribute-translation()",
-            "description": "Test the result of ec:translation()",
-            "exp": $exp[$i],
-            "result": $case
-        }
-
-};
 
 declare function tests:index-retrieval() as map(*)* {
  for $doc in ('FR-I_2_8-1-1', 'SG-III_4-3-1')
@@ -277,6 +279,25 @@ declare function tests:index-retrieval() as map(*)* {
                             else false()
         }
 }; :)
+
+
+declare function tests:attribute-translation() as map(*)* {
+    let $examples := (<dummy role="corrector"/>, <head xmlns="http://www.tei-c.org/ns/1.0" type="title"/>)
+    let $cases := (
+        ec:translate($examples[1]/@role, 'ssrq.datatypes', false(), false()),
+        ec:translate($examples[2]/@type, (), false(), false())
+    )
+    let $exp := ('Korrektor', 'Haupttitel')
+    for $case at $i in $cases
+    return
+        map {
+            "name": "tests:attribute-translation()",
+            "description": "Test the result of ec:translation()",
+            "exp": $exp[$i],
+            "result": $case
+        }
+
+};
 
 declare function tests:pagebreak() as map(*) {
     let $pb := <pb n="481" xmlns="http://www.tei-c.org/ns/1.0"/>

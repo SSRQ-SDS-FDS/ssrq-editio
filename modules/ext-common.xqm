@@ -9,6 +9,7 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 import module namespace counters="http://www.tei-c.org/tei-simple/xquery/counters";
 import module namespace functx="http://www.functx.com";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
+import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace i18n="http://exist-db.org/xquery/i18n";
@@ -190,6 +191,7 @@ declare function ec:translate($attribute as attribute()?, $part as xs:string?, $
     ! (if (. and $to-uppercase) then upper-case(substring(.,1,1)) || substring(.,2) else .)
 };
 
+
 declare function ec:display-sigle($id as xs:string?) {
     let $components := tokenize($id, "_")
     return
@@ -202,23 +204,18 @@ declare function ec:get-canton($id as xs:string?) {
         $components[2]
 };
 
-declare function ec:format-id($id as xs:string?) {
-    let $temp  := replace($id, "^(.+?)_(\d{3}.*?|[IV]+)(?:_\d{1,2})?$", "$1 $2")
-    let $parts := tokenize($temp)
-    let $ssrq  := substring-before($parts[1], '_')
-    let $vol   := replace(substring-after($parts[1], '_'), '_', '/')
-    let $vol   := replace($vol, "^([A-Z]{2})/", "$1 ")      (: space after canton abbreviation :)
-    let $id    :=
-        if (matches($parts[2], '^\d{8}')) then
-            replace($parts[2], '_', '-')
-        else if (matches($parts[2], '^\d{4}_\d{3}')) then
-            number(substring-before($parts[2], '_')) || '-' || number(substring-after($parts[2], '_'))
-        else if (number($parts[2]) = number($parts[2])) then
-            number($parts[2])
-        else
-            $parts[2]
+declare function ec:format-id($id as xs:string?) as xs:string {
+    let $doc := doc-list:get($id)
     return
-        $ssrq || ' ' || $vol || ' ' || $id
+        if ($doc) then
+            ec:print-id($doc)
+        else
+            let $parsed-idno := doc-list:parse-idno($id)
+            return
+                if ($parsed-idno/child::*) then
+                    ec:print-id($parsed-idno)
+                else
+                    $id
 };
 
 declare function ec:parse-volume($volume as xs:string) as xs:string {
