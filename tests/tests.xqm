@@ -112,6 +112,15 @@ declare function tests:printed-idno-in-doc-list() as map(*) {
    }
 };
 
+declare function tests:additional-sources() as map() {
+    map {
+        'name': 'tests:additional-sources()',
+        'description': 'The rendered html view for SSRQ-SG-III_4-107-1 should contain metadata of three additional sources',
+        'exp': true(),
+        'result': test-utils:fetch-get($tests:host || '/SG/III_4/107-1.html/')//*:div[@id = 'additional'][count(child::*) = 3] => exists()
+    }
+};
+
 (: Unit-tests :)
 
 declare function tests:create-link() as map(*)* {

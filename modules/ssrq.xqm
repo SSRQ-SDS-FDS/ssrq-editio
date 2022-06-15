@@ -515,6 +515,7 @@ declare function app:regest($node as node(), $model as map(*)) {
 };
 
 declare
+    (: Entfernen! :)
      %templates:wrap
 function app:additionalSource($node as node(), $model as map(*)) {
     let $idno := $model?xml//tei:teiHeader//tei:seriesStmt/tei:idno
