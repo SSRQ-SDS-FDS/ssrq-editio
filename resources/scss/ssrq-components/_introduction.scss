@@ -2,6 +2,9 @@
   @media screen and (min-width: $screen-xs-min) {
     max-width: 1200px;
   }
+  .content div[class^='tei-p'] {
+    margin: $margin-vertical-base * 1.5 0;
+  }
 }
 
 .to-top-button {
@@ -26,10 +29,6 @@
 
 .introduction .headingnumber::after {
   content: '\00a0';
-}
-
-.introduction .tei-p4 {
-  margin: $margin-vertical-base * 1.5 0;
 }
 
 .introduction span.is-italic {

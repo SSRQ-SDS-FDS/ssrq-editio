@@ -248,7 +248,7 @@ function ssrq-helper:xml-to-tex($node as node(), $model as map(*))  {
 :)
 
 declare function ssrq-helper:render($node as node(), $model as map(*)) {
-    pages:process-content($model?xml, $model?xml, $model?config?odd, ())
+    pages:process-content($model?xml//tei:text, $model?xml, $model?config?odd, ())
 };
 
 declare
