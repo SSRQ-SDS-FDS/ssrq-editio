@@ -946,7 +946,7 @@
                             <p><i18n:text key="by">von</i18n:text> [[fileDescPerson]]</p>
                         </pb:template>
                     </model>
-                </elementSpec>#
+                </elementSpec>
                 <elementSpec ident="back" mode="change">
                     <desc>back contains the commentary, which normally should appear as a numbered list</desc>
                     <model output="latex" predicate="div/@n" behaviour="block">
@@ -1410,7 +1410,7 @@
                             <h1 class="tei-head11" id="[[id]]"><span class="headingnumber">[[n]]</span> [[content]]</h1>
                         </pb:template>
                     </model>
-                    <model behaviour="block" predicate="an and @type = 'title'">
+                    <model behaviour="block" predicate="ancestor::TEI[@type] and @type = 'title'">
                         <param name="id" value="ec:unique-id(.)"/>
                         <param name="content" value="./text()"/>
                         <pb:template xmlns="" xml:space="preserve">
