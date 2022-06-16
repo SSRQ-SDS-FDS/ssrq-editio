@@ -515,28 +515,21 @@ declare function app:regest($node as node(), $model as map(*)) {
 };
 
 declare
-    (: Entfernen! :)
-     %templates:wrap
-function app:additionalSource($node as node(), $model as map(*)) {
-    let $idno := $model?xml//tei:teiHeader//tei:seriesStmt/tei:idno
+function app:additional-sources($node as node(), $model as map(*)) as element(div)? {
+    let $additional-sources :=
+        for $header in collection($config:data-root)//tei:teiHeader
+            [matches(.//tei:seriesStmt/tei:idno[1], ($model?idno/*[not(name(.) = 'num')]/text(), '\d+') => string-join('-'))]
+            [not(.//tei:seriesStmt/tei:idno = $model?idno/@xml:id/data(.))]
+        order by $header//tei:seriesStmt/tei:idno[1]
+        return
+            $header//tei:msDesc
+    where exists($additional-sources)
     return
-        (: To-Do If-Statement anpassen :)
-        if (matches($idno, "_1$")) then
-            let $base := replace($idno, "^(.*)_1$", '$1')
-            let $additional :=
-                for $header in
-                    collection($config:data-root)//tei:teiHeader[matches(.//tei:seriesStmt/tei:idno, "^" || $base || "_\d+$")]
-                        [not(.//tei:seriesStmt/tei:idno = $idno)]
-                (: To-Do Sortierung an neue IDNOs anpassen!!! :)
-                order by number(replace($header//tei:seriesStmt/tei:idno, "^.*_(\d+)$", "$1"))
-                return
-                    $header//tei:msDesc
-            return
-                app:show-if-exists($node, $additional, function() {
-                    templates:process($node/node(), map:merge(($model, map { "data": $additional })))
-                })
-        else
-            ()
+        element { node-name($node)} {
+            $node/@* except $node/@data-template,
+            templates:process($node/node(), map:merge(($model, map{ "data": $additional-sources})))
+        }
+
 };
 
 declare

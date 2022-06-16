@@ -117,7 +117,16 @@ declare function tests:additional-sources() as map() {
         'name': 'tests:additional-sources()',
         'description': 'The rendered html view for SSRQ-SG-III_4-107-1 should contain metadata of three additional sources',
         'exp': true(),
-        'result': test-utils:fetch-get($tests:host || '/SG/III_4/107-1.html/')//*:div[@id = 'additional'][count(child::*) = 3] => exists()
+        'result': test-utils:fetch-get($tests:host || '/SG/III_4/107-1.html/')//*:div[@id = 'additional'] => exists()
+    }
+};
+
+declare function tests:if-additional-sources-missing() as map() {
+    map {
+        'name': 'tests:if-additional-sources-missing()',
+        'description': 'The rendered html view for SSRQ-SG-III_4-7-1 should not contain metadata of additional sources',
+        'exp': true(),
+        'result': test-utils:fetch-get($tests:host || '/SG/III_4/7-1.html/')//*:div[@id = 'additional'] => empty()
     }
 };
 
