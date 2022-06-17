@@ -453,6 +453,17 @@ declare function tests:table-web() as map(*)* {
         }
 };
 
+declare function tests:ref-internal() as map(*) {
+    let $xml := <ref xmlns="http://www.tei-c.org/ns/1.0">SSRQ-SG-III_4-55-1</ref>
+    return
+        map {
+            "name": "tests:ref-internal()",
+            "description": "A tei:ref which contains an internal reference should be rendered as a valid internal link.",
+            "exp": '/SG/III_4/55-1.html',
+            "result": $pm-config:web-transform($xml, map { "root": $xml }, $config:odd)/@href/data(.) => substring-after(session:get-attribute('ssrq.prefix'))
+        }
+};
+
 declare function tests:seg() as map(*)* {
     let $test-case := <seg xmlns="http://www.tei-c.org/ns/1.0" n="1"><p>Hier steht Text</p></seg>
     let $results := (

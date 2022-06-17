@@ -1492,9 +1492,9 @@
                         <param name="link" value="string() || '.xml'"/>
                         <param name="content" value="ec:short-doc-info(.)"/>
                     </model>
-                    <model predicate="not(@target) and matches(., '^(?:SSRQ|SDS|FDS)_')" behaviour="link">
-                        <desc>Link auf ein anderes Dokument innerhalb Portal</desc>
-                        <param name="link" value="string() || &#34;.xml&#34;"/>
+                    <model predicate="not(@target) and matches(., '^(?:SSRQ|SDS|FDS)-')" behaviour="link">
+                        <desc>Link auf ein anderes Dokument innerhalb des Portals</desc>
+                        <param name="link" value="ec:create-link-from-id(.)"/>
                     </model>
                     <model predicate="not(@target)" behaviour="inline">
                         <desc>Link ohne Verweisadresse</desc>

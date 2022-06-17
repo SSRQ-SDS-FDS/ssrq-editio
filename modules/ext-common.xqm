@@ -9,7 +9,6 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 import module namespace counters="http://www.tei-c.org/tei-simple/xquery/counters";
 import module namespace functx="http://www.functx.com";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
-import module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/helper" at "ssrq-helper.xqm";
 
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
@@ -290,6 +289,13 @@ declare function ec:create-link($components as xs:string*, $params as map(*)*) a
     )[exists($params)]
     return
         ((session:get-attribute('ssrq.prefix'), $components, $query-params)) => string-join('/')
+};
+
+declare function ec:create-link-from-id($id as xs:string) as xs:string {
+    let $tokenized-id := replace($id, '(SSRQ|SDS|FDS)-', '') => tokenize('-')
+    return
+        ($tokenized-id[1], $tokenized-id[2], $tokenized-id[position() = 3 to last()] => string-join('-') || '.html')
+        => ec:create-link(())
 };
 
 declare function ec:get-article-nr($id as xs:string?) {
