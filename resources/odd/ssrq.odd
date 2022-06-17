@@ -751,6 +751,10 @@
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('time'), ec:colon(), format-time(@when, '[H]:[m]'))"/>
                     </model>
+                    <model predicate="@notAfter" behaviour="alternate" cssClass="text-critical">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="(ec:label('notAfter'), ec:colon(), format-time(@notAfter, '[H]:[m]'))"/>
+                    </model>
                     <model output="web" predicate="@dur-iso[starts-with(., 'R/P')]" behaviour="alternate" cssClass="text-critical">
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('repeated-duration'), ec:colon(), ec:format-duration(substring-after(@dur-iso, 'R/')))"/>
