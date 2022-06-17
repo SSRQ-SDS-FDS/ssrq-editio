@@ -317,6 +317,18 @@ declare function tests:attribute-translation() as map(*)* {
 
 };
 
+declare function tests:format-dur-iso() as map(*)* {
+ let $exp := ('1 Jahr', '3 Stunden', '6 Wochen', '1 Monat 1 Stunde 2 Minuten')
+ for $dur-iso at $i in ('P1Y', 'PT3H', 'P6W', 'P1MT1H2M')
+ return
+   map {
+       'name': 'tests:format-dur-iso()',
+       'description': $dur-iso || ' should be formatted as ' || $exp[$i],
+       'exp': $exp[$i],
+       'result': ec:format-duration($dur-iso)
+   }
+};
+
 declare function tests:pagebreak() as map(*) {
     let $pb := <pb n="481" xmlns="http://www.tei-c.org/ns/1.0"/>
     return

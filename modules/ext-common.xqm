@@ -342,20 +342,17 @@ declare function ec:format-date($when as xs:string?, $language as xs:string?) {
 
 declare function ec:format-duration($duration as xs:string) as xs:string {
     try {
-        let $duration := map {
-            "xs-dur": ($duration => replace('\d+W', ''))[matches($duration, '[YDHM]')],
-            "weeks": ($duration => replace('.*(\d+)W.*', '$1'))[$duration => contains('W')] ! (if (.) then xs:int(.) else 0)
-        }
-        let $components := if ($duration?xs-dur) then
+        let $parsed-duration := $duration => analyze-string('^P(?:(\d+)?Y)?(?:(\d+)?M)?(?:(\d+)?W)?(?:(\d+)?D)?T?(?:(\d+)?H)?(?:(\d+)?M)?(?:(\d+)?S)?$')
+        let $components :=
             (
-                ec:get-duration-label("year", years-from-duration($duration?xs-dur)),
-                ec:get-duration-label("month", months-from-duration($duration?xs-dur)),
-                ec:get-duration-label("week", $duration?weeks),
-                ec:get-duration-label("day", days-from-duration($duration?xs-dur)),
-                ec:get-duration-label("hour", hours-from-duration($duration?xs-dur)),
-                ec:get-duration-label("minute", minutes-from-duration($duration?xs-dur))
+                ec:get-duration-label("year", $parsed-duration//xpath:group[@nr = '1']),
+                ec:get-duration-label("month", $parsed-duration//xpath:group[@nr = '2']),
+                ec:get-duration-label("week", $parsed-duration//xpath:group[@nr = '3']),
+                ec:get-duration-label("day", $parsed-duration//xpath:group[@nr = '4']),
+                ec:get-duration-label("hour", $parsed-duration//xpath:group[@nr = '5']),
+                ec:get-duration-label("minute", $parsed-duration//xpath:group[@nr = '6'])
             )
-        else (ec:get-duration-label("week", $duration?weeks))
+        let $l := console:log($parsed-duration)
         return
             string-join(
                 (
@@ -371,7 +368,7 @@ declare function ec:format-duration($duration as xs:string) as xs:string {
     }
 };
 
-declare function ec:get-duration-label($name as xs:string, $quantity as xs:int) as map(*) {
+declare function ec:get-duration-label($name as xs:string, $quantity as xs:int?) as map(*) {
     let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
     let $val := $config:translations//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident=$name]
     return
