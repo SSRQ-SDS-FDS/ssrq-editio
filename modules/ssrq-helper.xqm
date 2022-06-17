@@ -72,25 +72,6 @@ declare function ssrq-helper:include-upload-template($node as node(), $model as 
     else ()
 };
 
-
-(:~
-: Helper function to create links based on the session attribute ssrq.prefix
-: which is set by the controller – the function can be used as by other xquery-functions
-: or directly from within the templates via ssrq-helper:resolve-links().
-:
-: @author Bastian Politycki
-: @return xs:string
-:)
-declare function ssrq-helper:create-link($components as xs:string*, $params as map(*)*) as xs:string {
-    let $query-params := (
-                            for $param at $i in $params
-                            return
-                                string-join((if ($i eq 1) then '?' else '&amp;', $param?name, '=', $param?value), '')
-    )[exists($params)]
-    return
-        utils:path-concat((session:get-attribute('ssrq.prefix'), $components, $query-params))
-};
-
 declare
 %templates:wrap
 function ssrq-helper:resolve-links($node as node(), $model as map(*)) {
@@ -106,7 +87,7 @@ declare function ssrq-helper:resolve-links($nodes as node()*) {
                 if ($node/@data-template or $node/@href => contains('mailto:') or $node/@href eq '#') then
                     $node
                 else
-                    let $href := ssrq-helper:create-link(
+                    let $href := ec:create-link(
 
                                                             utils:path-tokenize($node/@href) !
                                                             (
@@ -131,7 +112,7 @@ declare function ssrq-helper:resolve-links($nodes as node()*) {
 };
 
 declare function ssrq-helper:link-to-resource($model as map(*), $file-ending as xs:string) as xs:string {
-    ssrq-helper:create-link(($model?idno/kanton, $model?idno/volume,
+    ec:create-link(($model?idno/kanton, $model?idno/volume,
     (
         if ($model?idno/special) then
             $model?idno/special
@@ -263,7 +244,7 @@ function ssrq-helper:render-idno-as-popup($node as node(), $model as map(*)) as 
             <span class="id">{$idno} <i class="glyphicon glyphicon-info-sign"/></span>
             <span class="altcontent" xmlns:i18n="http://exist-db.org/xquery/i18n" popover-class="increase-popover-width">
                     <p>{$stmtTitle}, {$pm-config:web-transform($fileDescTitle, map { "root": $fileDescTitle, "view": "infopopup"}, $config:odd)}, <i18n:text key="by">von</i18n:text> {app:pers-names($header)}</p>
-                    <p><i18n:text key="zitation">Zitation:</i18n:text> <a href="{($model?idno/canton, $model?idno/volume) => ssrq-helper:create-link(())}">{$idno}</a></p>
+                    <p><i18n:text key="zitation">Zitation:</i18n:text> <a href="{($model?idno/canton, $model?idno/volume) => ec:create-link(())}">{$idno}</a></p>
                     <p><i18n:text key="lizenz">Lizenz:</i18n:text> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de">CC BY-NC-SA</a></p>
             </span>
         </span>
@@ -344,7 +325,7 @@ declare function ssrq-helper:renderDepartment($data as map(*), $dep as xs:string
     then
         <td>
             <div>
-                <a href="{ssrq-helper:create-link($dep, ())}">
+                <a href="{ec:create-link($dep, ())}">
                     {
                     let $html := $data?department => util:parse-html()
                     return $html/*/*[last()]/node()
@@ -387,18 +368,18 @@ declare function ssrq-helper:list-volumes($node as node(), $model as map(*), $ka
                     </div>
                     {
                         $pm-config:web-transform($matching-doc//tei:fileDesc, map { "root": $matching-doc, "view": "volumes" }, $config:odd),
-                        <a class="part" href="{ssrq-helper:create-link(($kanton, $volume/@xml:id => substring(4)), ())}">
+                        <a class="part" href="{ec:create-link(($kanton, $volume/@xml:id => substring(4)), ())}">
                             <i18n:text key="articles">Stücke</i18n:text>
                         </a>,
                         for $content-type in $content-types[exists(.?*)]
                         let $key := $content-type => map:keys()
                         return
                             if (not($key eq 'pdf')) then
-                                <a class="part" href="{ssrq-helper:create-link(($kanton, $volume/doc[1]/volume, $key || '.html'), ())}">
+                                <a class="part" href="{ec:create-link(($kanton, $volume/doc[1]/volume, $key || '.html'), ())}">
                                     <i18n:text key="{$key}">{$key}</i18n:text>
                                 </a>
                             else
-                                <a class="part" href="{ssrq-helper:create-link(($kanton, $volume/doc[1]/volume|| '.pdf'), map{"name": "prefix", "value": $volume/doc[1]/prefix})}">
+                                <a class="part" href="{ec:create-link(($kanton, $volume/doc[1]/volume|| '.pdf'), map{"name": "prefix", "value": $volume/doc[1]/prefix})}">
                                     <i18n:text key="{$key}">{$key}</i18n:text>
                                 </a>
 
@@ -418,7 +399,7 @@ function ssrq-helper:render-work($node as node(), $model as map(*), $kanton as x
         {
             $pm-config:web-transform($xml//tei:teiHeader, map {
                     "header": "short",
-                    "doc": ssrq-helper:create-link(($kanton, $volume, (string-join(($doc/case, $doc/doc), '.'), $doc/num) => string-join('-') || '.html'), ()),
+                    "doc": ec:create-link(($kanton, $volume, (string-join(($doc/case, $doc/doc), '.'), $doc/num) => string-join('-') || '.html'), ()),
                     "root": $xml
                 }, $config:odd)
         }
@@ -499,9 +480,9 @@ function ssrq-helper:paginate($node as node(), $model as map(*), $key as xs:stri
                     </li>
                 ) else (
                     <li>
-                        <a href="{ssrq-helper:create-link(($kanton, $volume), map{'name': 'start', 'value': 1})}"><i class="glyphicon glyphicon-fast-backward"/></a>
+                        <a href="{ec:create-link(($kanton, $volume), map{'name': 'start', 'value': 1})}"><i class="glyphicon glyphicon-fast-backward"/></a>
                     </li>,
-                    <li><a href="{ssrq-helper:create-link(($kanton, $volume), map{'name': 'start', 'value': max(($start - $per-page, 1 ))})}"><i class="glyphicon glyphicon-backward"/>
+                    <li><a href="{ec:create-link(($kanton, $volume), map{'name': 'start', 'value': max(($start - $per-page, 1 ))})}"><i class="glyphicon glyphicon-backward"/>
                        </a></li>
                 ),
                 let $startPage := xs:integer(ceiling($start div $per-page))
@@ -511,17 +492,17 @@ function ssrq-helper:paginate($node as node(), $model as map(*), $key as xs:stri
                 for $i in $lowerBound to $upperBound
                 return
                     if ($i = ceiling($start div $per-page)) then
-                        <li class="active"><a href="{ssrq-helper:create-link(($kanton, $volume), map{'name': 'start', 'value':  max( (($i - 1) * $per-page + 1, 1) )})}">{$i}</a></li>
+                        <li class="active"><a href="{ec:create-link(($kanton, $volume), map{'name': 'start', 'value':  max( (($i - 1) * $per-page + 1, 1) )})}">{$i}</a></li>
                     else
                         let $page := max((($i - 1) * $per-page + 1, 1))
                         return
-                        <li><a href="{ssrq-helper:create-link(($kanton, $volume), map{'name': 'start', 'value': $page})}">{$i}</a></li>,
+                        <li><a href="{ec:create-link(($kanton, $volume), map{'name': 'start', 'value': $page})}">{$i}</a></li>,
                 if ($start + $per-page < $model($key)) then (
                     <li>
-                        <a href="{ssrq-helper:create-link(($kanton, $volume),map{'name': 'start', 'value': $start + $per-page})}"><i class="glyphicon glyphicon-forward"/></a>
+                        <a href="{ec:create-link(($kanton, $volume),map{'name': 'start', 'value': $start + $per-page})}"><i class="glyphicon glyphicon-forward"/></a>
                     </li>,
                     <li>
-                        <a href="{ssrq-helper:create-link(($kanton, $volume), map{'name': 'start', 'value': max( (($count - 1) * $per-page + 1, 1))})}"><i class="glyphicon glyphicon-fast-forward"/></a>
+                        <a href="{ec:create-link(($kanton, $volume), map{'name': 'start', 'value': max( (($count - 1) * $per-page + 1, 1))})}"><i class="glyphicon glyphicon-fast-forward"/></a>
                     </li>
                 ) else (
                     <li class="disabled">

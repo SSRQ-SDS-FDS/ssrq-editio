@@ -141,7 +141,7 @@ declare function tests:create-link() as map(*)* {
        'exp': true(),
        'result': let $session := session:set-attribute('ssrq.prefix', '/exist/apps/ssrq')
                  return
-                    ssrq-helper:create-link($link, ()) => contains('/exist/apps/ssrq')
+                    ec:create-link($link, ()) => contains('/exist/apps/ssrq')
    }
 };
 

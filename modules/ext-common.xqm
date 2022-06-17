@@ -9,6 +9,7 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 import module namespace counters="http://www.tei-c.org/tei-simple/xquery/counters";
 import module namespace functx="http://www.functx.com";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
+import module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/helper" at "ssrq-helper.xqm";
 
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
@@ -271,6 +272,24 @@ declare function ec:print-id($doc as element(doc)) as xs:string? {
             string-join((string-join(($doc/case, $doc/doc), '.'), $doc/num), '-'))
     )
      => string-join(' ')
+};
+
+(:~
+: Helper function to create links based on the session attribute ssrq.prefix
+: which is set by the controller – the function can be used as by other xquery-functions
+: or directly from within the templates via ssrq-helper:resolve-links().
+:
+: @author Bastian Politycki
+: @return xs:string
+:)
+declare function ec:create-link($components as xs:string*, $params as map(*)*) as xs:string {
+    let $query-params := (
+                            for $param at $i in $params
+                            return
+                                string-join((if ($i eq 1) then '?' else '&amp;', $param?name, '=', $param?value), '')
+    )[exists($params)]
+    return
+        ((session:get-attribute('ssrq.prefix'), $components, $query-params)) => string-join('/')
 };
 
 declare function ec:get-article-nr($id as xs:string?) {
