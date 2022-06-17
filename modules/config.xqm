@@ -165,6 +165,8 @@ declare variable $config:translations := doc(utils:path-concat-safe(($config:dat
 
 declare variable $config:abbr := doc(utils:path-concat-safe(($config:data-root, "misc/abbr.xml")))/*;
 
+declare variable $config:docs-list := doc(utils:path-concat-safe(("/db/apps/ssrq-data/", "cache/docs.xml")));
+
 declare variable $config:partners := doc(utils:path-concat-safe(($config:data-root, "misc/partners.xml")))/*;
 
 declare variable $config:output := "transform";

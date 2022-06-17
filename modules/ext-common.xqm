@@ -9,10 +9,11 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 import module namespace counters="http://www.tei-c.org/tei-simple/xquery/counters";
 import module namespace functx="http://www.functx.com";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
-import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
+
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace i18n="http://exist-db.org/xquery/i18n";
+declare namespace xpath = 'http://www.w3.org/2005/xpath-functions';
 
 declare variable $ec:COUNTER_TEXTCRITICAL := "text-critical-" || util:uuid();
 declare variable $ec:COUNTER_NOTE := "note-" || util:uuid();
@@ -205,12 +206,39 @@ declare function ec:get-canton($id as xs:string?) {
 };
 
 declare function ec:format-id($id as xs:string?) as xs:string {
-    let $doc := doc-list:get($id)
+    let $doc := id($id, $config:docs-list)
     return
         if ($doc) then
             ec:print-id($doc)
         else
-            let $parsed-idno := doc-list:parse-idno($id)
+            let $parsed-idno :=
+                <doc xml:id="{$id}">
+                    {
+                    for $group in ($id => analyze-string('^(SSRQ|SDS|FDS)
+                                            -([A-Z]{2})
+                                            -([A-Za-z0-9_]+)
+                                            -(?:((?:[A-Za-z0-9]+\.)*)([0-9]+)
+                                            -([0-9]+)|([a-z]{3,}))$', 'x'))//xpath:group
+                    return
+                        switch ($group/@nr)
+                        case '1' return <prefix>{$group/text()}</prefix>
+                        case '2' return <kanton>{$group/text()}</kanton>
+                        case '3' return <volume>{$group/text()}</volume>
+                        case '4' return (tokenize($group/text(), '\.') !
+                                        (
+                                            if (. => matches('^\d+$')) then
+                                            <case>{.}</case>
+                                            else if (. => matches('^[A-Za-z]+$')) then
+                                            <opening>{.}</opening> else
+                                            ()
+                                        )
+                                        )
+                        case '5' return <doc>{$group/text()}</doc>
+                        case '6' return <num>{$group/text()}</num>
+                        case '7' return <special>{$group/text()}</special>
+                        default return ()
+                    }
+                </doc>
             return
                 if ($parsed-idno/child::*) then
                     ec:print-id($parsed-idno)
