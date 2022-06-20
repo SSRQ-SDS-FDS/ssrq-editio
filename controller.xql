@@ -171,7 +171,7 @@ else
                     'redirect': false()
                 },
                 map {
-                    'schema': '^/([A-Z]{2})/?$',
+                    'schema': '^/([A-Z]{2})/$',
                     'file': $routeBase || 'index.html',
                     'params': map {
                         'kanton': '1'
@@ -179,7 +179,7 @@ else
                     'redirect': false()
                 },
                 map {
-                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/?$',
+                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/$',
                     'file': $routeBase || 'index.html',
                     'params': map {
                         'kanton': '1',
@@ -203,7 +203,7 @@ else
                     'redirect': true()
                 },
                 map {
-                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/((?:(?:(?:[A-Za-z0-9]+\.)*)(?:[0-9]+)-(?:[0-9]+)))\.html/?$',
+                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/((?:[A-Za-z0-9]+\.)*[0-9]+-[0-9]+)\.html$',
                     'file': $routeBase || 'view.html',
                     'params': map {
                         'kanton': '1',
@@ -214,7 +214,7 @@ else
                     'toggle-odd': true()
                 },
                 map {
-                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/((?:(?:(?:[A-Za-z0-9]+\.)*)(?:[0-9]+)-(?:[0-9]+)|(?:[a-z]{3,})))\.xml/?$',
+                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/((?:[A-Za-z0-9]+\.)*[0-9]+-[0-9]+|[a-z]{3,})\.xml$',
                     'file': $routeBase || 'xml.html',
                     'params': map {
                         'kanton': '1',
@@ -225,7 +225,7 @@ else
                     'type': 'text/xml'
                 },
                 map {
-                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/?((?:(?:(?:[A-Za-z0-9]+\.)*)(?:[0-9]+)-(?:[0-9]+)|(?:[a-z]{3,})))?\.pdf/?$',
+                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/((?:[A-Za-z0-9]+\.)*[0-9]+-[0-9]+|[a-z]{3,})\.pdf$',
                     'file': $routeBase || 'pdf.html',
                     'params': map {
                         'kanton': '1',
@@ -236,7 +236,7 @@ else
                     'type': 'application/pdf'
                 },
                 map {
-                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/?((?:(?:(?:[A-Za-z0-9]+\.)*)(?:[0-9]+)-(?:[0-9]+)|(?:[a-z]{3,})))?\.tex/?$',
+                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/((?:[A-Za-z0-9]+\.)*[0-9]+-[0-9]+|[a-z]{3,})\.tex$',
                     'file': $routeBase || 'tex.html',
                     'params': map {
                         'kanton': '1',
