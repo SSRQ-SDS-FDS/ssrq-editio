@@ -164,7 +164,7 @@ declare function ec:translate($attribute as attribute()?, $part as xs:string?, $
         let $resolved-part := if ($part) then
                                 $part
                                 else
-                                    if ($config:schema-odd//tei:elementSpec[@ident=$infos?el]//tei:attDef[@ident=$infos?attr][tei:dataType]) then
+                                    if ($config:schema-odd//tei:elementSpec[@ident=$infos?el]//tei:attDef[@ident=$infos?attr][tei:datatype]) then
                                         'ssrq.datatypes'
                                     else
                                         'ssrq.elements'

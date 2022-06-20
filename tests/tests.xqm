@@ -300,12 +300,16 @@ declare function tests:index-retrieval() as map(*)* {
 
 
 declare function tests:attribute-translation() as map(*)* {
-    let $examples := (<dummy role="corrector"/>, <head xmlns="http://www.tei-c.org/ns/1.0" type="title"/>)
+    let $examples := (<dummy role="corrector"/>, <head xmlns="http://www.tei-c.org/ns/1.0" type="title"/>,
+                        <del xmlns="http://www.tei-c.org/ns/1.0" rend="strikethrough">zu</del>, <add xmlns="http://www.tei-c.org/ns/1.0" place="left margin">niemand</add>)
     let $cases := (
         ec:translate($examples[1]/@role, 'ssrq.datatypes', false(), false()),
-        ec:translate($examples[2]/@type, (), false(), false())
+        ec:translate($examples[2]/@type, (), false(), false()),
+        ec:translate($examples[3]/@rend, (), false(), false()) => normalize-space(),
+        ec:translate($examples[4]/@place, (), false(), false()) => normalize-space(),
+
     )
-    let $exp := ('Korrektor', 'Haupttitel')
+    let $exp := ('Korrektor', 'Haupttitel', 'Streichung durch einfache Durchstreichung', 'Hinzufügung am linken Rand')
     for $case at $i in $cases
     return
         map {
