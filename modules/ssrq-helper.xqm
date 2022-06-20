@@ -199,16 +199,21 @@ function ssrq-helper:load-by-idno($node as node(), $model as map(*), $kanton as 
 :
 :)
 declare
-function ssrq-helper:load-pdf-by-idno($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $doc as xs:string?, $prefix as xs:string)  {
-    let $path := utils:path-concat(($config:data-root, $kanton, string-join(($kanton, $volume), '_'), 'pdf', string-join(($prefix, $kanton, $volume, $doc[$doc]), '-') || '.pdf'))
-    let $l := console:log($path)
+function ssrq-helper:load-pdf-by-idno($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $doc as xs:string?)  {
+    let $filename-suffix := string-join(('', $kanton, $volume, $doc), '-') || '.pdf'
+    let $collection := utils:path-concat-safe(('/db/apps/ssrq-data/data', $kanton, ($kanton || '_' || $volume), 'pdf'))
+    let $result := xmldb:get-child-resources($collection)[ends-with(., $filename-suffix)]
     return
-        if (util:binary-doc-available($path)) then
-            response:stream-binary(util:binary-doc($path), "media-type=application/pdf")
-        else error(
-            xs:QName('ssrq:helper'),
-            'Unable to load ' || $path
-        )
+        if (count($result) = 1) then
+            let $path := utils:path-concat-safe(($collection, $result))
+            let $l := console:log($path)
+            return
+                if (util:binary-doc-available($path)) then
+                    response:stream-binary(util:binary-doc($path), "media-type=application/pdf")
+                else 
+                    error(xs:QName('ssrq:helper'), 'Unable to load ' || $path)
+        else
+            error(xs:QName('ssrq:helper'), 'No unique result found for ' || $filename-suffix)
 };
 
 declare
