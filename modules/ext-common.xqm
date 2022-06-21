@@ -278,24 +278,30 @@ declare function ec:print-id($doc as element(doc)) as xs:string? {
 : which is set by the controller – the function can be used as by other xquery-functions
 : or directly from within the templates via ssrq-helper:resolve-links().
 :
-: @author Bastian Politycki
+: @author Bastian Politycki, Dennis Camera
 : @return xs:string
 :)
-declare function ec:create-link($components as xs:string*, $params as map(*)*) as xs:string {
+declare function ec:create-link($components as xs:string*, $params as map(*)) as xs:string {
     let $query-params := (
-                            for $param at $i in $params
-                            return
-                                string-join((if ($i eq 1) then '?' else '&amp;', $param?name, '=', $param?value), '')
-    )[exists($params)]
+        $params
+        => map:for-each(function ($k, $v) { 
+               ($k, $v) => string-join('=') 
+           })
+        => string-join('&amp;'))
     return
-        ((session:get-attribute('ssrq.prefix'), $components, $query-params)) => string-join('/')
+        ((session:get-attribute('ssrq.prefix'), $components) => string-join('/'))
+        || ('?' || $query-params)[$query-params]
+};
+
+declare function ec:create-link($components as xs:string*) as xs:string {
+    ec:create-link($components, map{})
 };
 
 declare function ec:create-link-from-id($id as xs:string) as xs:string {
-    let $tokenized-id := replace($id, '(SSRQ|SDS|FDS)-', '') => tokenize('-')
+    let $tokenized-id := replace($id, '^(SSRQ|SDS|FDS)-', '') => tokenize('-')
     return
         ($tokenized-id[1], $tokenized-id[2], $tokenized-id[position() = 3 to last()] => string-join('-') || '.html')
-        => ec:create-link(())
+        => ec:create-link()
 };
 
 declare function ec:get-article-nr($id as xs:string?) {
