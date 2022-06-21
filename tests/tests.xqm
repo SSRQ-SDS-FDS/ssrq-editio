@@ -148,7 +148,7 @@ declare function tests:create-link() as map(*)* {
    }
 };
 declare function tests:create-link-index() as map(*)* {
- for $link in ('', 'FR/', 'FR/I_2_8/')
+ for $link in ('FR/', 'FR/I_2_8/')
  return
    map {
        'name': 'tests:create-link()',
