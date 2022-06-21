@@ -56,7 +56,7 @@ return
         return
             let $resp := request:get-parameter("id", "") => id-search:search()
             return
-                switch (xs:boolean(request:get-parameter("format", "xml")))
+                switch (request:get-parameter("format", "xml"))
                 case "json" return
                     (response:set-header('Content-Type', 'application/json'),
                      serialize($resp, $api:jsonSerializationParams))
