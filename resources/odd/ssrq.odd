@@ -1073,6 +1073,14 @@
                         <param name="content" value="."/>
                         <pb:template>\marginpar{\scriptsize\raggedright\hspace{0pt}[[content]]}</pb:template>
                     </model>
+                    <model predicate="@type='keyword' and @hand" behaviour="alternote">
+                        <param name="alternate" value="((ec:label('marginal-note'), ec:translate(@hand, false(), false())) => string-join(' '))"/>
+                        <param name="content" value="."/>
+                        <param name="type" value="'text-critical'"/>
+                        <outputRendition>
+                            font-size: 80%;
+                        </outputRendition>
+                    </model>
                     <model predicate="@type='keyword'" behaviour="alternote">
                         <param name="alternate" value="(ec:label('marginal-note'), ' ', ec:translate(@place, false(), false()), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else ())"/>
                         <!--<param name="content" value="('/ ', .,  ' /')"/>-->
