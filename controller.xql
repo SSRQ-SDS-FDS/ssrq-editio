@@ -47,23 +47,24 @@ declare function controller:setSessionPrefix ($prefix as xs:string*) {
 (: Helper function to match the name of a route to a route specified in $main-routes :)
 declare function controller:findRouteFromList($routes as map(*)+, $resource as xs:string, $error as node()) {
     let $route :=
-                for $route in $routes
-                let $analyzed-with-schema := $resource => analyze-string($route?schema)
-                where $analyzed-with-schema/xpath:match
-                return
-                    if ($route => map:contains('params')) then
-                        $route => map:put('params', map:merge(
-                                for $param in $route?params => map:keys()
-                                return
-                                    map{$param: $analyzed-with-schema//xpath:group[@nr = $route?params($param)]/text()}
-                            )
-                        )
-                    else $route
+        for $route in $routes
+        let $analyzed-with-schema := $resource => analyze-string($route?schema)
+        where $analyzed-with-schema/xpath:match
+        return
+            if ($route => map:contains('params')) then
+                $route => map:put('params', map:merge(
+                    for $param in $route?params => map:keys()
+                    return
+                        map{$param: $analyzed-with-schema//xpath:group[@nr = $route?params($param)]/text()}
+                    )
+                )
+            else
+                $route
     let $log := console:log($route)
     return
         if (not($route => empty()))
         then
-            if (not($resource => ends-with('/')) and $route?redirect)
+            if (not($resource => ends-with('/')) and ($route?redirect-slash, false())[1])
             then
                 <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
                     <redirect url="{session:get-attribute('ssrq.prefix')}{$resource}/"/>
@@ -162,45 +163,41 @@ else
         let $main-routes := (
                 map {
                     'schema': '^/?$',
-                    'file': $routeBase || 'index.html',
-                    'redirect': false()
+                    'file': $routeBase || 'index.html'
                 },
                 map {
                     'schema': '^/about/([a-z]*)$',
-                    'file' : $routeBase || $resource => substring-after('about/') || '.html',
-                    'redirect': false()
+                    'file' : $routeBase || $resource => substring-after('about/') || '.html'
                 },
                 map {
-                    'schema': '^/([A-Z]{2})/$',
+                    'schema': '^/([A-Z]{2})/?$',
                     'file': $routeBase || 'index.html',
                     'params': map {
                         'kanton': '1'
                         },
-                    'redirect': false()
+                    'redirect-slash': true()
                 },
                 map {
-                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/$',
+                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/?$',
                     'file': $routeBase || 'index.html',
                     'params': map {
                         'kanton': '1',
                         'volume': '2'
                         },
-                    'redirect': true()
+                    'redirect-slash': true()
                 },
                 map {
-                    'schema': '^/search/?$',
-                    'file': $routeBase || 'search.html',
-                    'redirect': false()
+                    'schema': '^/search$',
+                    'file': $routeBase || 'search.html'
                 },
                 map {
-                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/(intro|bailiffs|lit)\.html/?$',
+                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/(intro|bailiffs|lit)\.html$',
                     'file': $routeBase || 'introduction.html',
                     'params': map {
                         'kanton': '1',
                         'volume': '2',
                         'doc': '3'
-                        },
-                    'redirect': true()
+                    }
                 },
                 map {
                     'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/((?:[A-Za-z0-9]+\.)*[0-9]+-[0-9]+)\.html$',
@@ -210,7 +207,6 @@ else
                         'volume': '2',
                         'doc': '3'
                         },
-                    'redirect': true(),
                     'toggle-odd': true()
                 },
                 map {
@@ -221,7 +217,6 @@ else
                         'volume': '2',
                         'doc': '3'
                         },
-                    'redirect': true(),
                     'type': 'text/xml'
                 },
                 map {
@@ -232,7 +227,6 @@ else
                         'volume': '2',
                         'doc': '3'
                         },
-                    'redirect': true(),
                     'type': 'application/pdf'
                 },
                 map {
@@ -243,7 +237,6 @@ else
                         'volume': '2',
                         'doc': '3'
                         },
-                    'redirect': true(),
                     'type': 'text/text;charset=UTF-8'
                 }
             )
