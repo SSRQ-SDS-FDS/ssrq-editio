@@ -133,15 +133,48 @@ declare function tests:if-additional-sources-missing() as map() {
 (: Unit-tests :)
 
 declare function tests:create-link() as map(*)* {
- for $link in ('FR/I_2_8', 'FR')
+ for $link in ('', 'SG/', 'search', 'about/abbr')
  return
    map {
        'name': 'tests:create-link()',
-       'description': 'Resvoled link should contain the prefix set in the http-session.',
+       'description': 'Resvoled link should start with the prefix set in the HTTP session.',
        'exp': true(),
-       'result': let $session := session:set-attribute('ssrq.prefix', '/exist/apps/ssrq')
-                 return
-                    ec:create-link($link, ()) => contains('/exist/apps/ssrq')
+       'result':
+           let $prefix := '/exist/apps/ssrq'
+           let $session := session:set-attribute('ssrq.prefix', $prefix)
+           let $components := tokenize($link, '/')
+           return
+                ec:create-link($components) => starts-with('/exist/apps/ssrq')
+   }
+};
+declare function tests:create-link-index() as map(*)* {
+ for $link in ('FR/', 'FR/I_2_8/')
+ return
+   map {
+       'name': 'tests:create-link()',
+       'description': 'Resvoled link should end in a slash if the last component is the emtpy string.',
+       'exp': true(),
+       'result':
+           let $prefix := '/exist/apps/ssrq'
+           let $session := session:set-attribute('ssrq.prefix', $prefix)
+           let $components := tokenize($link, '/')
+           return
+                ec:create-link($components) = ($prefix || '/' || $link)
+   }
+};
+declare function tests:create-link-document() as map(*)* {
+ for $link in ('NE/3/2-1.html')
+ return
+   map {
+       'name': 'tests:create-link()',
+       'description': 'Resvoled link should not end in a slash if the last component is not the empty string.',
+       'exp': true(),
+       'result':
+           let $prefix := '/exist/apps/ssrq'
+           let $session := session:set-attribute('ssrq.prefix', $prefix)
+           let $components := tokenize($link, '/')
+           return
+                ec:create-link($components) = ($prefix || '/' || $link)
    }
 };
 
