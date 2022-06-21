@@ -56,9 +56,13 @@ return
         return
             let $resp := request:get-parameter("id", "") => id-search:search()
             return
-                if (xs:boolean(request:get-parameter("json", ('false')))) then
-                (response:set-header('Content-Type', 'application/json'), serialize($resp, $api:jsonSerializationParams))
-                else $resp
+                switch (xs:boolean(request:get-parameter("format", "xml")))
+                case "json" return
+                    (response:set-header('Content-Type', 'application/json'),
+                     serialize($resp, $api:jsonSerializationParams))
+                (: case "xml" :)
+                default return
+                    $resp
     default return
         serialize(map {
             "error": "No route found for '" || $route || "'"
