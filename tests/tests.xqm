@@ -117,7 +117,7 @@ declare function tests:additional-sources() as map() {
         'name': 'tests:additional-sources()',
         'description': 'The rendered html view for SSRQ-SG-III_4-107-1 should contain metadata of three additional sources',
         'exp': true(),
-        'result': test-utils:fetch-get($tests:host || '/SG/III_4/107-1.html/')//*:div[@id = 'additional'] => exists()
+        'result': test-utils:fetch-get($tests:host || '/SG/III_4/107-1.html')//*:div[@id = 'additional'] => exists()
     }
 };
 
@@ -339,7 +339,7 @@ declare function tests:attribute-translation() as map(*)* {
         ec:translate($examples[1]/@role, 'ssrq.datatypes', false(), false()),
         ec:translate($examples[2]/@type, (), false(), false()),
         ec:translate($examples[3]/@rend, (), false(), false()) => normalize-space(),
-        ec:translate($examples[4]/@place, (), false(), false()) => normalize-space(),
+        ec:translate($examples[4]/@place, (), false(), false()) => normalize-space()
 
     )
     let $exp := ('Korrektor', 'Haupttitel', 'Streichung durch einfache Durchstreichung', 'Hinzufügung am linken Rand')
