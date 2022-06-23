@@ -18,7 +18,7 @@ let $test-names :=
         else
             inspect:inspect-module(xs:anyURI('tests.xqm'))//function[not(ancestor::function)]/@name/data()
 let $test-functions :=
-    $test-names ! function-lookup(xs:QName(.), 0)
+    $test-names ! function-lookup(xs:QName(xs:string(.)), 0)
 let $test-results :=
     $test-functions ! .()
 return
