@@ -111,7 +111,7 @@ declare function ssrq-helper:resolve-links($nodes as node()*) {
 
 declare function ssrq-helper:link-to-resource($model as map(*), $file-ext as xs:string) as xs:string {
     ec:create-link((
-        $model?idno/kanton, 
+        $model?idno/kanton,
         $model?idno/volume,
         (
             if ($model?idno/special) then
@@ -210,7 +210,7 @@ function ssrq-helper:load-pdf-by-idno($node as node(), $model as map(*), $kanton
             return
                 if (util:binary-doc-available($path)) then
                     response:stream-binary(util:binary-doc($path), "media-type=application/pdf")
-                else 
+                else
                     error(xs:QName('ssrq:helper'), 'Unable to load ' || $path)
         else
             error(xs:QName('ssrq:helper'), 'No unique result found for ' || $filename-suffix)
@@ -234,7 +234,7 @@ function ssrq-helper:xml-to-tex($node as node(), $model as map(*))  {
 :)
 
 declare function ssrq-helper:render($node as node(), $model as map(*)) {
-    pages:process-content($model?xml//tei:text, $model?xml, $model?config?odd, ())
+    pages:process-content($model?xml//tei:body, $model?xml, $model?config?odd, ())
 };
 
 declare
@@ -427,7 +427,7 @@ declare
     function ssrq-helper:load-works($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $start as xs:int, $per-page as xs:int, $sort as xs:string?) as map(*) {
         let $volume-docs := doc-list:get(($kanton,$volume) => string-join('-'))
         let $grouped-docs := $volume-docs/doc[not(special)][not(opening)][not(case)][num eq '1']
-                            union $volume-docs/doc[not(special)][not(opening)][case][doc eq '1'][num eq '1']
+                            union $volume-docs/doc[not(special)][not(opening)][case][doc eq '0'][num eq '1']
         return
             map {
                 "total": count($grouped-docs),
