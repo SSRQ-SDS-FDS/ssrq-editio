@@ -9,8 +9,15 @@ declare function test-utils:fetch-get($url as xs:string) {
     let $request := <http:request method="GET" href="{$url}"/>
     let $response := http:send-request($request)
     return
-        if ($response[1]/@status = "200") then
+        if (xs:int($response[1]/@status) = 200) then
             $response[2]
         else
             error(xs:QName('http:error'), 'Failed to fetch ' || $url)
+};
+
+declare function test-utils:fetch-get-headers($url as xs:string) {
+    let $request := <http:request method="GET" href="{$url}"/>
+    let $response := http:send-request($request)
+    return
+        $response[1]
 };
