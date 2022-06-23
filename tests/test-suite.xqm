@@ -36,8 +36,8 @@ declare function test-suite:print-result($results as map(*)*) as node() {
                                 <testDetail>
                                     <message>„{$test?name}" failed</message>
                                     <testDescription>{$test?description}</testDescription>
-                                    <expResult>{$test?exp}</expResult>
-                                    <indeedResult>{$test?result}</indeedResult>
+                                    <expResult>{serialize($test?exp, map{"method":"json"})}</expResult>
+                                    <indeedResult>{serialize($test?result, map{"method":"json"})}</indeedResult>
                                 </testDetail>
                         }
                         </failures>
