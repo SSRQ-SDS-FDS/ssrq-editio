@@ -96,7 +96,7 @@ declare function tests:pdf-volume-download() as map(*)* {
             },
             'result':
                 let $req := test-utils:fetch-get-headers($tests:host || $url)
-                return 
+                return
                     map {
                         'status': xs:int($req/@status),
                         'content-type': $req/http:header[lower-case(@name)='content-type']/@value/data(),
@@ -112,7 +112,7 @@ declare function tests:pdf-document-download() as map(*)* {
     return
         map {
             'name': 'tests:pdf-document-download()',
-            'description': 'Request to ' || $pdf || ' should succeed',
+            'description': 'Request to ' || $url || ' should succeed',
             'exp': map{
                 'status': 200,
                 'content-type': 'application/pdf',
@@ -120,7 +120,7 @@ declare function tests:pdf-document-download() as map(*)* {
             },
             'result':
                 let $req := test-utils:fetch-get-headers($tests:host || $url)
-                return 
+                return
                     map {
                         'status': xs:int($req/@status),
                         'content-type': $req/http:header[lower-case(@name)='content-type']/@value/data(),
