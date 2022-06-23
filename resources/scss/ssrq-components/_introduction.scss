@@ -52,6 +52,10 @@
   border: none !important;
 }
 
+.introduction h1[class^='tei-head'] {
+  margin-top: $margin-vertical-base * 4;
+}
+
 // SVG-Rendering
 .svg-container {
   //max-height: 70vh;
