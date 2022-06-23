@@ -284,8 +284,8 @@ declare function ec:print-id($doc as element(doc)) as xs:string? {
 declare function ec:create-link($components as xs:string*, $params as map(*)) as xs:string {
     let $query-params := (
         $params
-        => map:for-each(function ($k, $v) { 
-               ($k, $v) => string-join('=') 
+        => map:for-each(function ($k, $v) {
+               ($k, $v) => string-join('=')
            })
         => string-join('&amp;'))
     return
@@ -686,7 +686,10 @@ declare function ec:join-series($series as node()*) as xs:string {
 };
 
 declare function ec:join-scopes($scopes as node()*) as xs:string {
-    let $strings := $scopes ! (ec:label('page-abbr', false()) || ' ' || . => replace('^.*[S|p]\. ([0-9]*-?[0-9]*.*)', '$1'))
+    let $strings := $scopes ! (if (. => matches('[S|p|P]\.')) then
+                                ec:label('page-abbr', false()) || ' ' || . => replace('^.*[S|p]\. ([0-9]*-?[0-9]*.*)', '$1')
+                                else .
+                              )
     return
         $strings => string-join('; ')
 };

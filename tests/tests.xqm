@@ -309,6 +309,18 @@ declare function tests:index-retrieval() as map(*)* {
    }
 };
 
+declare function tests:parse-biblScope() as map(*)* {
+ let $exp := ', Beihefte 72'
+ let $scope := <biblStruct xmlns="http://www.tei-c.org/ns/1.0"><monogr><imprint><pubPlace>Mannheim</pubPlace></imprint><biblScope>Beihefte 72</biblScope></monogr></biblStruct>
+ return
+   map {
+       'name': 'tests:parse-biblScope()',
+       'description': $scope/text() || ' should be rendered as ' || $exp,
+       'exp': $exp,
+       'result': $scope => ec:parse-biblScope('scope')
+   }
+};
+
 (:~ *********************
 : Tests to check TEI rendering
 :
