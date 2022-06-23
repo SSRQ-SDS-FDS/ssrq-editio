@@ -177,6 +177,7 @@ function ssrq-helper:load-by-idno($node as node(), $model as map(*), $kanton as 
     return
         map {
             "idno": $id,
+            "filename": (root($xml) => document-uri() => tokenize('/'))[last()],
             "xml": utils:coalesce($xml, app:failed-to-load($doc)),
             "config": map {
                 "odd": utils:coalesce($odd, $config:odd),
@@ -209,7 +210,8 @@ function ssrq-helper:load-pdf-by-idno($node as node(), $model as map(*), $kanton
             let $l := console:log($path)
             return
                 if (util:binary-doc-available($path)) then
-                    response:stream-binary(util:binary-doc($path), "media-type=application/pdf")
+                    (response:set-header('Content-Disposition', 'inline; filename="' || $result || '"'),
+                     response:stream-binary(util:binary-doc($path), "media-type=application/pdf"))
                 else
                     error(xs:QName('ssrq:helper'), 'Unable to load ' || $path)
         else
@@ -601,5 +603,11 @@ declare function ssrq-helper:getSubsections($root as node()) as node()* {
 
 
 declare function ssrq-helper:stream-xml-from-model($node as node(), $model as map(*)) as item()* {
-    response:stream($model?xml, 'media-type=application/xml')
+    (
+        if ($model?filename) then
+            response:set-header('Content-Disposition', 'inline; filename="' || $model?filename || '"')
+        else
+            (),
+     response:stream($model?xml, 'media-type=application/xml')
+    )
 };
