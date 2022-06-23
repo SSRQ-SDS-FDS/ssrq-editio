@@ -361,10 +361,10 @@ declare function ssrq-helper:list-volumes($node as node(), $model as map(*), $ka
             for $volume in doc-list:get($kanton)/volume
             let $matching-doc := collection($config:data-root)/tei:TEI[.//tei:seriesStmt/tei:idno = $volume/doc[1]/@xml:id/data(.)]
             let $content-types := (
-                map{"intro": $volume/doc[./special = 'intro']},
-                map{"bailiffs": $volume/doc[./special = 'bailiffs']},
-                map{"lit": $volume/doc[./special = 'lit']},
-                map{"pdf": true()[xs:boolean($volume/@pdf)]}
+                "intro"[$volume/doc[./special = 'intro']],
+                "bailiffs"[$volume/doc[./special = 'bailiffs']],
+                "lit"[$volume/doc[./special = 'lit']],
+                "pdf"[xs:boolean($volume/@pdf)]
             )
             return
                 <div class="volume">
@@ -378,18 +378,17 @@ declare function ssrq-helper:list-volumes($node as node(), $model as map(*), $ka
                         <a class="part" href="{ec:create-link(($kanton, $volume/@xml:id => substring(4), ''))}">
                             <i18n:text key="articles">Stücke</i18n:text>
                         </a>,
-                        for $content-type in $content-types[exists(.?*)]
-                        let $key := $content-type => map:keys()
+                        for $content-type in $content-types
                         return
-                            if (not($key eq 'pdf')) then
-                                <a class="part" href="{ec:create-link(($kanton, $volume/doc[1]/volume, $key || '.html'))}">
-                                    <i18n:text key="{$key}">{$key}</i18n:text>
+                            switch ($content-type)
+                            case 'pdf' return
+                                <a class="part" href="{ec:create-link(($kanton, $volume/doc[1]/volume || '.pdf'))}">
+                                    <i18n:text key="{$content-type}">{$content-type}</i18n:text>
                                 </a>
-                            else
-                                <a class="part" href="{ec:create-link(($kanton, $volume/doc[1]/volume|| '.pdf'), map{'prefix': $volume/doc[1]/prefix})}">
-                                    <i18n:text key="{$key}">{$key}</i18n:text>
+                            default return
+                                <a class="part" href="{ec:create-link(($kanton, $volume/doc[1]/volume, $content-type || '.html'))}">
+                                    <i18n:text key="{$content-type}">{$content-type}</i18n:text>
                                 </a>
-
                     }
                 </div>
         }
