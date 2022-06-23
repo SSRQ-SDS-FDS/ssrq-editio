@@ -15,7 +15,7 @@ module namespace test-suite="http://ssrq-sds-fds.ch/exist/apps/ssrq/test-suite";
 declare function test-suite:print-result($results as map(*)*) as node() {
     let $tests := test-suite:test($results)
     let $summary := map {
-        "success": ($tests ! (if (.?passed) then . else ())) => count(),
+        "success": $tests[.?passed] => count(),
         "total": $tests => count()
     }
     return
@@ -26,12 +26,12 @@ declare function test-suite:print-result($results as map(*)*) as node() {
             </summary>
             {
                 (
-                    if ($summary?total - $summary?success > 0)
+                    if ($summary?success < $summary?total)
                     then
                         <failures>
                         {
                             for $test in $tests
-                            where $test?passed = false()
+                            where not($test?passed)
                             return
                                 <testDetail>
                                     <message>„{$test?name}" failed</message>

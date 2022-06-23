@@ -5,11 +5,21 @@ import module namespace tests="http://ssrq-sds-fds.ch/exist/apps/ssrq/tests" at 
 import module namespace inspect = "http://exist-db.org/xquery/inspection";
 
 
-let $tests := inspect:inspect-module(xs:anyURI('tests.xqm'))
-
+let $test-names :=
+    let $query-tests := request:get-parameter('tests', ()) => tokenize(',')
+    return
+        if (count($query-tests) > 0) then
+            for $t in $query-tests
+            return
+                if ($t => starts-with('tests:')) then
+                    $t
+                else
+                    'tests:' || $t
+        else
+            inspect:inspect-module(xs:anyURI('tests.xqm'))//function[not(ancestor::function)]/@name/data()
+let $test-functions :=
+    $test-names ! function-lookup(xs:QName(.), 0)
 let $test-results :=
-                        for $function in $tests//function[not(ancestor::function)]
-                        let $result := function-lookup(xs:QName(xs:string($function/@name)), 0)
-                        return $result()
-
-return $test-results => test-suite:print-result()
+    $test-functions ! .()
+return
+    test-suite:print-result($test-results)
