@@ -12,14 +12,16 @@ xquery version "3.1";
 
 module namespace tests="http://ssrq-sds-fds.ch/exist/apps/ssrq/tests";
 
+import module namespace cache="http://exist-db.org/xquery/cache";
+import module namespace http="http://expath.org/ns/http-client";
+import module namespace request ="http://exist-db.org/xquery/request";
+
 import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "../modules/ssrq.xqm";
 import module namespace test-utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/test-utils" at "test-utils.xqm";
 import module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/search" at "../modules/ssrq-search.xqm";
-import module namespace request ="http://exist-db.org/xquery/request";
 import module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/helper" at "../modules/ssrq-helper.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../modules/config.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../modules/pm-config.xql";
-import module namespace cache="http://exist-db.org/xquery/cache";
 import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
 import module namespace templates="http://exist-db.org/xquery/templates" at "../modules/templates.xqm";
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "../modules/ext-common.xqm";
@@ -78,14 +80,52 @@ declare function tests:tex() as map(*)* {
    }
 };
 
-declare function tests:pdfs() as map(*)* {
-    for $pdf in ('/FR/I_2_8/1-1.pdf/?prefix=SSRQ', '/SG/III_4.pdf/?prefix=SSRQ', '/NE/3/1-1.pdf/?prefix=SDS')
+declare function tests:pdf-volume-download() as map(*)* {
+    for $idno in ('SSRQ-SG-III_4', 'SDS-NE-3')
+    let $parts := tokenize($idno, '-')
+    let $url := string-join(('', $parts[2], $parts[3]), '/') || '.pdf'
+    let $filename := $idno || '.pdf'
     return
         map {
-            'name': 'tests:pdfs()',
-            'description': 'Request to ' || $pdf || ' should return a response code of "200"',
-            'exp': true(),
-            'result': let $req := test-utils:fetch-get($tests:host || $pdf) return exists($req)
+            'name': 'tests:pdf-volume-download()',
+            'description': 'Request to ' || $url || ' should succeed',
+            'exp': map{
+                'status': 200,
+                'content-type': 'application/pdf',
+                'content-disposition': 'inline; filename="' || $filename || '"'
+            },
+            'result':
+                let $req := test-utils:fetch-get-headers($tests:host || $url)
+                return
+                    map {
+                        'status': xs:int($req/@status),
+                        'content-type': $req/http:header[lower-case(@name)='content-type']/@value/data(),
+                        'content-disposition': $req/http:header[lower-case(@name)='content-disposition']/@value/data()
+                    }
+        }
+};
+declare function tests:pdf-document-download() as map(*)* {
+    for $idno in ('SSRQ-FR-I_2_8-1-1', 'SDS-NE-3-1-1')
+    let $parts := tokenize($idno, '-')
+    let $url := string-join(('', $parts[2], $parts[3], $parts[4] || '-' || $parts[5]), '/') || '.pdf'
+    let $filename := $idno || '.pdf'
+    return
+        map {
+            'name': 'tests:pdf-document-download()',
+            'description': 'Request to ' || $url || ' should succeed',
+            'exp': map{
+                'status': 200,
+                'content-type': 'application/pdf',
+                'content-disposition': 'inline; filename="' || $filename || '"'
+            },
+            'result':
+                let $req := test-utils:fetch-get-headers($tests:host || $url)
+                return
+                    map {
+                        'status': xs:int($req/@status),
+                        'content-type': $req/http:header[lower-case(@name)='content-type']/@value/data(),
+                        'content-disposition': $req/http:header[lower-case(@name)='content-disposition']/@value/data()
+                    }
         }
 };
 

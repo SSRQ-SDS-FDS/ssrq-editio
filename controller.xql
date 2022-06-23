@@ -54,8 +54,10 @@ declare function controller:findRouteFromList($routes as map(*)+, $resource as x
             if ($route => map:contains('params')) then
                 $route => map:put('params', map:merge(
                     for $param in $route?params => map:keys()
+                    let $group := $analyzed-with-schema//xpath:group[@nr = $route?params($param)]/text()
+                    where not(empty($group))
                     return
-                        map{$param: $analyzed-with-schema//xpath:group[@nr = $route?params($param)]/text()}
+                        map{$param: $group}
                     )
                 )
             else
@@ -220,7 +222,8 @@ else
                     'type': 'text/xml'
                 },
                 map {
-                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)/((?:[A-Za-z0-9]+\.)*[0-9]+-[0-9]+|[a-z]{3,})\.pdf$',
+                    (: NOTE: schema must match whole volume links (e.g. /SG/III_4.pdf) and document links (e.g. /SG/III_4/1-1.pdf) :)
+                    'schema': '^/([A-Z]{2})/([A-Za-z0-9_]+)(?:/((?:[A-Za-z0-9]+\.)*[0-9]+-[0-9]+|[a-z]{3,}))?\.pdf$',
                     'file': $routeBase || 'pdf.html',
                     'params': map {
                         'kanton': '1',
