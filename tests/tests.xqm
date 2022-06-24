@@ -26,6 +26,7 @@ import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/do
 import module namespace templates="http://exist-db.org/xquery/templates" at "../modules/templates.xqm";
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "../modules/ext-common.xqm";
 import module namespace index="http://ssrq-sds-fds.ch/exist/apps/ssrq/index" at "../modules/index.xqm";
+import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 
@@ -136,6 +137,26 @@ declare function tests:introduction() as map(*) {
         'exp': true(),
         'result': let $req := test-utils:fetch-get($tests:host || '/SG/III_4/intro.html') return exists($req//*[@id = 'toc'] and exists($req//*[contains(@class, 'tei-body')]))
     }
+};
+
+declare function tests:introduction-imgs() as map(*)* {
+    for $intro in ('/FR/I_2_8/intro.html', '/ZH/NF_I_1_11/intro.html')
+    return
+        map {
+            'name': 'tests:introduction-imgs()',
+            'description': 'All images for ' || $intro || ' should be found',
+            'exp': true(),
+            'result':
+                let $intro-req := test-utils:fetch-get($tests:host || $intro)
+                let $img-req :=
+                    for $src in $intro-req//*:img/@src/data(.)
+                    where $src => ends-with('.jpg')
+                    return
+                         xs:int(test-utils:fetch-get-headers($src)/@status) = 200
+                return
+                    (: Check if every request was successfull :)
+                    every $req in $img-req satisfies $req
+        }
 };
 
 declare function tests:printed-idno-in-doc-list() as map(*) {

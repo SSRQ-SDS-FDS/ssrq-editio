@@ -552,9 +552,39 @@ declare function ec:unique-id($node as node()) as xs:string {
     util:node-id($node)
 };
 
-declare function ec:svg($config as map(*), $node as element(), $class as xs:string+, $content as node()*) {
-    let $collection := util:collection-name($node)
-    let $svg := doc($collection || '/' ||  $node/tei:graphic/@url/data(.))
+declare function ec:image($config as map(*), $node as element(), $class as xs:string+, $content as node()*) as element()+ {
+    let $collection-name := util:collection-name($node) || '/assets'
+    return
+        switch ($node/tei:graphic/@mimeType)
+        case 'image/svg'
+            return
+                let $svg := doc($collection-name || '/' ||  $node/tei:graphic/@url/data(.))
+                return
+                    if ($svg)
+                    then
+                        <div class="svg-container">
+                                {$svg}
+                                {   let $head := $node/tei:head
+                                    where $head
+                                    return
+                                        <p class="svg-container__title">{$head/text()}</p>
+                                }
+                        </div>
+                    else <p>Sorry, could not load SVG</p>
+        case 'image/jpg'
+            return
+                (
+                    <img src="{
+                        ($collection-name => replace($config:data-root, session:get-attribute('ssrq.prefix')), $node/tei:graphic/@url)
+                        => string-join('/')
+                    }" alt="{$node/tei:graphic/@url}" class="image-in-text"/>,
+                    let $head := $node/tei:head
+                    where $head
+                    return
+                        <p class="img__title">{$head/text()}</p>
+                )
+        default return <p>MimeType {$node/@mimeType} is not supported</p>
+    (: let $svg := doc($collection || '/' ||  $node/tei:graphic/@url/data(.))
     return
         if ($svg)
         then
@@ -566,7 +596,7 @@ declare function ec:svg($config as map(*), $node as element(), $class as xs:stri
                     else ()
                     }
                </div>
-        else <p>Sorry, could not load SVG</p>
+        else <p>Sorry, could not load SVG</p> :)
 };
 
 declare function ec:short-doc-info($idno as item()) as xs:string {

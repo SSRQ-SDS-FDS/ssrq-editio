@@ -215,7 +215,8 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="figure" mode="change">
-                    <model predicate="ancestor::TEI[@type] and ends-with(./graphic/@url, 'svg')" behaviour="svg">
+                    <model predicate="ancestor::TEI[@type]" behaviour="image">
+                        <desc>Display images in editorial paratexts as svg or jpg</desc>
                     </model>
                     <model predicate="not(parent::label)" behaviour="inline">
                         <param name="content" value="ec:translate(@type, false(), true())"/>
