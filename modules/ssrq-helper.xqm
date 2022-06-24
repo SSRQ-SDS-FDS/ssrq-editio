@@ -487,7 +487,7 @@ function ssrq-helper:paginate($node as node(), $model as map(*), $key as xs:stri
     if (($min-hits < 0 or $model($key) >= $min-hits) and $model($key) != $per-page) then
         element { node-name($node) } {
             $node/@*,
-            let $count := xs:integer(ceiling($model($key)) div $per-page) + 1
+            let $count := xs:integer(ceiling($model($key)) div $per-page) + (if (xs:integer(ceiling($model($key)) mod $per-page) > 0) then 1 else 0)
             let $middle := ($max-pages + 1) idiv 2
             return (
                 if ($start = 1) then (
