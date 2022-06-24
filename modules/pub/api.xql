@@ -35,23 +35,6 @@ return
             let $resp := request:get-parameter("doc", "") => index:get-index-entries()
             return
                 $resp
-    (:~ Simplified endpoint to list just persons, inside a single document and return the result as json
-    : e.g. used for /bailiffs
-    :)
-    case 'persons'
-        return
-            let $id := request:get-parameter("doc", "")
-            let $xml := collection($config:data-root)//tei:TEI[.//tei:seriesStmt/tei:idno[contains(., $id)]]
-            let $persons := $xml//tei:persName/@ref | $xml//@scribe[starts-with(., 'per')]
-            where exists($persons)
-            return
-                serialize(
-                    array {
-                        for $person in app:api-lookup($app:PERSONS, app:api-keys($persons), "ids_search")?*
-                        order by $person?name
-                        return
-                            $person
-                    }, $api:jsonSerializationParams)
     case 'id-search'
         return
             let $resp := request:get-parameter("id", "") => id-search:search()
