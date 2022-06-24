@@ -239,6 +239,17 @@ declare function ssrq-helper:render($node as node(), $model as map(*)) {
     pages:process-content($model?xml//tei:body, $model?xml, $model?config?odd, ())
 };
 
+declare function ssrq-helper:pers-names($header as node()*) {
+let $namen :=  $header//tei:persName/text()
+return
+    if (count($namen) > 1) then (
+        string-join(subsequence($namen, 1, count($namen) -1), ', '),
+        <i18n:text xmlns:i18n="http://exist-db.org/xquery/i18n" key="and"> und </i18n:text>,
+        $namen[last()]
+    ) else
+        $namen
+};
+
 declare
 %templates:wrap
 function ssrq-helper:render-idno-as-popup($node as node(), $model as map(*)) as element(span)? {
@@ -250,7 +261,7 @@ function ssrq-helper:render-idno-as-popup($node as node(), $model as map(*)) as 
         <span class="alternate">
             <span class="id">{$idno} <i class="glyphicon glyphicon-info-sign"/></span>
             <span class="altcontent" xmlns:i18n="http://exist-db.org/xquery/i18n" popover-class="increase-popover-width">
-                    <p>{$stmtTitle}, {$pm-config:web-transform($fileDescTitle, map { "root": $fileDescTitle, "view": "infopopup"}, $config:odd)}, <i18n:text key="by">von</i18n:text> {app:pers-names($header)}</p>
+                    <p>{$stmtTitle}, {$pm-config:web-transform($fileDescTitle, map { "root": $fileDescTitle, "view": "infopopup"}, $config:odd)}, <i18n:text key="by">von</i18n:text> {ssrq-helper:pers-names($header//tei:editor)}</p>
                     <p><i18n:text key="zitation">Zitation:</i18n:text> <a href="{ec:create-link(($model?idno/canton, $model?idno/volume, ''))}">{$idno}</a></p>
                     <p><i18n:text key="lizenz">Lizenz:</i18n:text> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de">CC BY-NC-SA</a></p>
             </span>
