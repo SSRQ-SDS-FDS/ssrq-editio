@@ -195,7 +195,7 @@ else
                         'kanton': '1',
                         'volume': '2'
                         },
-                    'redirect-slash': true()
+                    'redirect-slash': false()
                 },
                 map {
                     'schema': '^/search$',
