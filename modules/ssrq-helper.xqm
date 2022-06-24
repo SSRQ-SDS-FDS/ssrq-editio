@@ -171,7 +171,7 @@ function ssrq-helper:count-docs($volume as element(volume)) as xs:integer {
 :)
 declare
 function ssrq-helper:load-by-idno($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $doc as xs:string, $view as xs:string?, $odd as xs:string?) as map(*) {
-    let $id := doc-list:get($kanton)//doc[contains(@xml:id, string-join(($kanton, $volume, $doc), '-'))]
+    let $id := doc-list:get($kanton)//doc[ends-with(@xml:id, string-join(($kanton, $volume, $doc), '-'))]
     let $xml := collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id/@xml:id]
     let $has-facs := exists($xml//tei:pb[@facs]) and not($odd eq $config:odd-normalized)
     return
