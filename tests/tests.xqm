@@ -34,6 +34,7 @@ declare variable $tests:host := substring-before(request:get-url(), '/exist') ||
 
 
 
+
 (:~ *********************
 : Tests to check general functionality
 :
@@ -192,6 +193,17 @@ declare function tests:if-additional-sources-missing() as map() {
 };
 
 (: Unit-tests :)
+
+declare function tests:pdf-download-link() as map(*)* {
+ for $idno in ('SSRQ-FR-I_2_8-1-1', 'SSRQ-FR-I_2_8-2.0-1', 'SSRQ-FR-I_2_8-78.1-1','SSRQ-SG-III_4-95-1', 'SDS-NE-4-1.48-1')
+ return
+   map {
+       'name': 'tests:pdf-download-link()',
+       'description': 'For ' || $idno || ' the pdf should be found and a hyperlink should be returned',
+       'exp': true(),
+       'result': let $model := test-utils:mock-doc-load($idno) return app:download-pdf(<div/>, $model) => exists()
+   }
+};
 
 declare function tests:create-link() as map(*)* {
  for $link in ('', 'SG/', 'search', 'about/abbr')
