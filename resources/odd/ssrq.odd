@@ -1451,7 +1451,7 @@
                         <param name="level" value="2"/>
                     </model>
                     <model predicate="$parameters?header='short'" behaviour="heading">
-                        <param name="content" value="replace(string-join(.//text() except .//ref//text()), '^(.*?)[^\w]*$', '$1')"/>
+                        <param name="content" value="string-join(.//text() except .//ref//text())"/>
                     </model>
                     <model predicate="parent::figure" behaviour="block">
                         <outputRendition>
