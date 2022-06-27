@@ -195,7 +195,7 @@ declare function tests:if-additional-sources-missing() as map() {
 (: Unit-tests :)
 
 declare function tests:pdf-download-link() as map(*)* {
- for $idno in ('SSRQ-FR-I_2_8-1-1', 'SSRQ-FR-I_2_8-2.0-1', 'SSRQ-FR-I_2_8-78.1-1','SSRQ-SG-III_4-95-1', 'SDS-NE-4-1.48-1')
+ for $idno in ('SSRQ-FR-I_2_8-1-1', 'SSRQ-FR-I_2_8-2.0-1', 'SSRQ-FR-I_2_8-78.3-1','SSRQ-SG-III_4-95-1', 'SDS-NE-4-1.48-1')
  return
    map {
        'name': 'tests:pdf-download-link()',
