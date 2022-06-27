@@ -110,6 +110,10 @@ declare function ssrq-helper:resolve-links($nodes as node()*) {
 };
 
 declare function ssrq-helper:link-to-resource($model as map(*), $file-ext as xs:string) as xs:string {
+    ssrq-helper:link-to-resource($model, $file-ext, true())
+};
+
+declare function ssrq-helper:link-to-resource($model as map(*), $file-ext as xs:string, $use-doc as xs:boolean) as xs:string {
     ec:create-link((
         $model?idno/kanton,
         $model?idno/volume,
@@ -117,7 +121,7 @@ declare function ssrq-helper:link-to-resource($model as map(*), $file-ext as xs:
             if ($model?idno/special) then
                 $model?idno/special
             else
-                string-join((string-join(($model?idno/case, $model?idno/doc), '.'), $model?idno/num), '-')
+                string-join((string-join(($model?idno/case, $model?idno/doc[$use-doc]), '.'), $model?idno/num), '-')
         ) || $file-ext))
 };
 

@@ -696,20 +696,21 @@ function app:download-xml($node as node(), $model as map(*)) as element(a) {
 declare
 function app:download-pdf($node as node(), $model as map(*)) as element(a)? {
     let $uri := root($model?xml) => document-uri() => tokenize('/')
+    let $is-FR := $uri[last()] => contains('FR')
     let $path := utils:path-concat(
         (
             $uri[not(. eq $uri[last()])], 'pdf',
             let $filename := $uri[last()] => replace('.xml', '.pdf')
             return
                 (: FR pdfs are bundled into cases and we need to extract and cut the doc-number from the filename :)
-                if ($filename => contains('FR')) then
+                if ($is-FR) then
                     $filename => replace('\.\d+', '')
                 else
                     $filename
         )
     )
     return
-        <a href="{ssrq-helper:link-to-resource($model, '.pdf')}">
+        <a href="{ssrq-helper:link-to-resource($model, '.pdf', not($is-FR))}">
             {
                 $node/@*,
                 templates:process($node/node(), $model)

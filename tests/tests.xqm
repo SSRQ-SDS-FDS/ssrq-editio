@@ -201,7 +201,11 @@ declare function tests:pdf-download-link() as map(*)* {
        'name': 'tests:pdf-download-link()',
        'description': 'For ' || $idno || ' the pdf should be found and a hyperlink should be returned',
        'exp': true(),
-       'result': let $model := test-utils:mock-doc-load($idno) return app:download-pdf(<div/>, $model) => exists()
+       'result':
+                let $model := test-utils:mock-doc-load($idno)
+                let $link := app:download-pdf(<div/>, $model)
+                return
+                    $link => exists() and xs:int(test-utils:fetch-get-headers($tests:host || '/' || $link/@href)/@status) = 200
    }
 };
 
