@@ -1013,8 +1013,7 @@
                             \item [[itemType]]: [[ident]][[note]]
                         </pb:template>
                     </model>
-                    <model predicate="ancestor::TEI[@type] and (div/listBibl/head or div/listBibl[bibl])" behaviour="biblList">
-                    </model>
+                    <model predicate="ancestor::TEI[@type = 'lit'] and head[@type = 'archivelocation'] and listBibl" behaviour="biblList"/>
                     <model predicate="parent::back and @n" behaviour="listItem">
                         <desc>output as list item if in commentary</desc>
                     </model>

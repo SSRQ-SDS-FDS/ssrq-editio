@@ -256,15 +256,18 @@ declare function ec-html:content($config as map(*), $node as node(), $class as x
 :
 :)
 declare function ec-html:biblList($config as map(*), $node as element(), $class as xs:string+, $content as node()*) {
-    <div class="tei-div7 biblList">
-        <h4 class="archivelocation">{$node/tei:head/text()}</h4>
+    <div class="biblList">
+        <h4 class="archivelocation">{$node/tei:head[@type = 'archivelocation']/text()}</h4>
         <ul>
             {
-                for $div in $node/tei:div
+                for $div in $node/tei:listBibl
                 return
-                    <li>{if ($div/tei:listBibl/tei:head) then
-                        $div/tei:listBibl/tei:head/text() || ec:colon()
-                        else ()} {string-join($div/tei:listBibl/tei:bibl/tei:idno, '; ')}</li>
+                    <li>
+                        {
+                            ($div/tei:listBibl/tei:head/text() || ec:colon())[$div/tei:listBibl/tei:head] ||
+                            string-join($div/tei:bibl/tei:idno, '; ')
+                        }
+                    </li>
 
             }
         </ul>

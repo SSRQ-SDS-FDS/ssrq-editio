@@ -566,7 +566,7 @@ declare function ssrq-helper:renderHeadings($section as node()) as element(li)* 
     if ($section-heading/@type = 'title' or $section-heading/@type = 'subtitle')
     then
         let $subsections := $section => ssrq-helper:getSubsections()
-        let $output := $section-heading/text()
+        let $output := ($section-heading/@n, $section-heading/text()) => string-join(' ')
         return
             <li>
                 <a href="#{util:node-id($section-heading)}" class="toc-anchor">{$output}</a>
@@ -592,7 +592,7 @@ declare function ssrq-helper:renderHeadings($section as node()) as element(li)* 
 : @return TOC as html:ul
 :)
 declare function ssrq-helper:printToc($node as node(), $model as map(*)) as node()* {
-    let $divs := $model?data => ssrq-helper:getSubsections()
+    let $divs := $model?xml => ssrq-helper:getSubsections()
     let $head := <h3><i18n:text key="toc"/></h3>
     return
         (templates:process($head, $model),
