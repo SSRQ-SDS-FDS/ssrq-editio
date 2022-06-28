@@ -562,8 +562,12 @@ declare function ssrq-helper:hits($node as node(), $model as map(*), $kanton as 
 :)
 declare function ssrq-helper:renderHeadings($section as node()) as element(li)* {
     let $section-heading := $section/tei:head
+    let $session-lang := (session:get-attribute('ssrq.lang'), 'de')[1]
+    let $lang := if (not($section/ancestor::tei:div[@type = 'section'][tei:div[@xml:lang = $session-lang]])) then 'de' else $session-lang
     return
-    if ($section-heading/@type = 'title' or $section-heading/@type = 'subtitle')
+    if (
+        $section-heading/@type = 'title' or $section-heading/@type = 'subtitle'
+    )
     then
         let $subsections := $section => ssrq-helper:getSubsections()
         let $output := ($section-heading/@n, $section-heading/text()) => string-join(' ')
@@ -582,7 +586,7 @@ declare function ssrq-helper:renderHeadings($section as node()) as element(li)* 
                         </ul>
                     else ()
                     }
-            </li>
+            </li>[not($section/@xml:lang) or $section/@xml:lang = $lang and $section/ancestor::tei:div[@type = 'section'][tei:div[@xml:lang = $lang]]]
     else ()
 };
 

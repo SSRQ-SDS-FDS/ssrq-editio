@@ -439,7 +439,7 @@ declare %private function app:show-if-exists($node as node(), $test as node()*, 
 };
 
 declare function app:header-short($node as node(), $model as map(*)) {
-    let $head := $model?xml//tei:teiHeader//tei:msDesc/tei:head
+    let $head := ec:get-head($model?xml//tei:teiHeader//tei:msDesc)
     return
         app:show-if-exists($node, $head, function() {
             $pm-config:web-transform($head, map { "root": $head }, $config:odd)

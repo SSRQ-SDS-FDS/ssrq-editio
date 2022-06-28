@@ -728,3 +728,22 @@ declare function ec:join-series-with-scope($series as node()*) as xs:string  {
     ($series ! ((./tei:title, ./tei:biblScope) => string-join(' ')))
      => string-join('; ') || ', '
 };
+
+(:
+: A simple helper function to get the correct tei:head-element
+: depending on the selected session language
+:
+: @param $msDesc the surrounding tei:msDesc-Element
+: @return the tei:head to render
+:)
+declare function ec:get-head($msDesc as element(tei:msDesc)) as element(tei:head) {
+    if ($msDesc/tei:head[@xml:lang]) then
+        let $lang := (session:get-attribute('ssrq.lang'), 'de')[1]
+        return
+            if ($msDesc/tei:head[@xml:lang = $lang]) then
+                $msDesc/tei:head[@xml:lang = $lang]
+            else
+                $msDesc/tei:head[@xml:lang][1]
+    else
+        $msDesc/tei:head
+};
