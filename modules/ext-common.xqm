@@ -601,7 +601,7 @@ declare function ec:image($config as map(*), $node as element(), $class as xs:st
 
 declare function ec:short-doc-info($idno as item()) as xs:string {
     let $doc := doc(util:collection-name($idno) || '/' || $idno || '.xml')
-    let $head := $doc//tei:sourceDesc/tei:msDesc/tei:head/text()
+    let $head := ec:get-head($doc//tei:sourceDesc/tei:msDesc)/text()
     let $date := $doc//tei:teiHeader//tei:origDate => ec:print-date()
     return $head || ', ' || $date || ' (' || ec:format-id($idno) || ')'
 };
