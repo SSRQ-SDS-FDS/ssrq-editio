@@ -260,12 +260,12 @@ declare function ec-html:biblList($config as map(*), $node as element(), $class 
         <h4 class="archivelocation">{$node/tei:head[@type = 'archivelocation']/text()}</h4>
         <ul>
             {
-                for $div in $node/tei:listBibl
+                for $biblList in $node/tei:listBibl
                 return
                     <li>
                         {
-                            ($div/tei:listBibl/tei:head/text() || ec:colon())[$div/tei:listBibl/tei:head] ||
-                            string-join($div/tei:bibl/tei:idno, '; ')
+                            ($biblList/tei:head/text() || ec:colon())[$biblList/tei:head] ||
+                            string-join($biblList/tei:bibl/tei:idno, '; ')
                         }
                     </li>
 
