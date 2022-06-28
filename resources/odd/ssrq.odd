@@ -215,7 +215,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="figure" mode="change">
-                    <model predicate="ancestor::TEI[@type]" behaviour="image">
+                    <model predicate="graphic[@mimeType = ('image/svg', 'image/jpg')][@url]" behaviour="image">
                         <desc>Display images in editorial paratexts as svg or jpg</desc>
                     </model>
                     <model predicate="not(parent::label)" behaviour="inline">
