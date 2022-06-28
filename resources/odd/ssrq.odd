@@ -1357,6 +1357,23 @@
                     <model output="latex" behaviour="block">
                         <pb:template>[[content]]</pb:template>
                     </model>
+                    <model predicate="ancestor::TEI[@type] and @xml:lang" behaviour="paragraph" useSourceRendition="true">
+                        <param name="content"
+                               value="
+                                let $session-lang := (session:get-attribute('ssrq.lang'), 'de')[1]
+                                let $lang := if (not(./parent::div[p[@xml:lang = $session-lang]])) then 'de' else $session-lang
+                                return
+                                if (@xml:lang = $lang) then
+                                .
+                                else if (./parent::div[p[@xml:lang = $lang]]) then
+                                ()
+                                else .
+                                "
+                            />
+                        <outputRendition>
+                            text-align: justify;
+                        </outputRendition>
+                    </model>
                     <model predicate="ancestor::summary and @xml:lang" behaviour="paragraph" useSourceRendition="true">
                         <param name="content"
                         value="

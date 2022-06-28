@@ -736,7 +736,7 @@ declare function ec:join-series-with-scope($series as node()*) as xs:string  {
 : @param $msDesc the surrounding tei:msDesc-Element
 : @return the tei:head to render
 :)
-declare function ec:get-head($msDesc as element(tei:msDesc)) as element(tei:head) {
+declare function ec:get-head($msDesc as element()) as element(tei:head) {
     if ($msDesc/tei:head[@xml:lang]) then
         let $lang := (session:get-attribute('ssrq.lang'), 'de')[1]
         return

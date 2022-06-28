@@ -561,7 +561,7 @@ declare function ssrq-helper:hits($node as node(), $model as map(*), $kanton as 
 :
 :)
 declare function ssrq-helper:renderHeadings($section as node()) as element(li)* {
-    let $section-heading := $section/tei:head
+    let $section-heading := $section => ec:get-head()
     let $session-lang := (session:get-attribute('ssrq.lang'), 'de')[1]
     let $lang := if (not($section/ancestor::tei:div[@type = 'section'][tei:div[@xml:lang = $session-lang]])) then 'de' else $session-lang
     return
