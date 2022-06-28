@@ -204,8 +204,10 @@ declare function tests:pdf-download-link() as map(*)* {
        'result':
                 let $model := test-utils:mock-doc-load($idno)
                 let $link := app:download-pdf(<div/>, $model)
+                let $l := console:log($link)
                 return
                     $link => exists() and xs:int(test-utils:fetch-get-headers($tests:host || '/' || $link/@href)/@status) = 200
+                    and $link/@href => matches('.*\d+-\d+')
    }
 };
 
