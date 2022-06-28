@@ -34,7 +34,7 @@
     <msg key="generating-file">Génération du fichier...</msg>
     <msg key="download-message">La génération d’un fichier à télécharger peut prendre quelques minutes. Merci de patienter. Cette boîte de dialogue se fermera automatiquement à la fin du téléchargement.</msg>
     <msg key="search-results">Résultats de la recherche</msg>
-    <msg key="found">Trouvé</msg>
+    <msg key="found">trouvé</msg>
     <msg key="view-switch">Changer de la présentation normalisée à la diplomatique.</msg>
     <msg key="view-normalized">Normalisé</msg>
     <msg key="documentation">Documentation</msg>

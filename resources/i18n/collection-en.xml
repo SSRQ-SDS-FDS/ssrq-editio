@@ -34,7 +34,7 @@
     <msg key="generating-file">Generating File...</msg>
     <msg key="download-message">Generating a file for download may take up to a few minutes. Please wait. This dialog should close automatically when the download has completed.</msg>
     <msg key="search-results">Search Results</msg>
-    <msg key="found">Found</msg>
+    <msg key="found">found</msg>
     <msg key="view-switch">Switch between normalized and diplomatic view</msg>
     <msg key="view-normalized">Normalized</msg>
     <msg key="documentation">Documentation</msg>

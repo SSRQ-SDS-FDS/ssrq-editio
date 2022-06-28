@@ -34,7 +34,7 @@
     <msg key="generating-file">Erzeuge Datei...</msg>
     <msg key="download-message">Das Erzeugen einer Datei zum Download kann bis zu mehrere Minuten dauern. Bitte warten Sie. Das Fenster sollte sich automatisch schliessen, sobald der Download beendet wurde.</msg>
     <msg key="search-results">Suchergebnis</msg>
-    <msg key="found">Gefundene Treffer</msg>
+    <msg key="found">gefundene Treffer</msg>
     <msg key="view-switch">Zwischen quellennaher und normalisierter Ansicht wechseln</msg>
     <msg key="view-normalized">Normalisiert</msg>
     <msg key="documentation">Dokumentation</msg>

@@ -101,6 +101,26 @@ declare function ssrq-helper:resolve-links($nodes as node()*) {
                         element { node-name($node) } {
                             attribute href {$href}, $node/@* except $node/@href, ssrq-helper:resolve-links($node/node())
                         }
+            case element(form) return
+                if ($node/@action) then
+                    let $action := ec:create-link(
+                        utils:path-tokenize($node/@action) ! (
+                            if (not(. eq '{app}')) then
+                                if (matches(., '[\{\}]')) then
+                                    replace(., '\{([a-z]*)\}', '$1') => request:get-parameter(())
+                                else
+                                    .
+                            else
+                                ()
+                        ))
+                    return
+                        element { node-name($node) } {
+                            attribute action {$action},
+                            $node/@* except $node/@action,
+                            ssrq-helper:resolve-links($node/node())
+                        }
+                else
+                    $node
             case element() return
                 element { node-name($node) } {
                     $node/@*, ssrq-helper:resolve-links($node/node())
@@ -503,9 +523,9 @@ function ssrq-helper:paginate($node as node(), $model as map(*), $key as xs:stri
                     </li>
                 ) else (
                     <li>
-                        <a href="{ec:create-link(($kanton, $volume), map{'start': 1})}"><i class="glyphicon glyphicon-fast-backward"/></a>
+                        <a href="{ec:create-link(($kanton, $volume, ''), map{'start': 1})}"><i class="glyphicon glyphicon-fast-backward"/></a>
                     </li>,
-                    <li><a href="{ec:create-link(($kanton, $volume), map{'start': max(($start - $per-page, 1))})}"><i class="glyphicon glyphicon-backward"/>
+                    <li><a href="{ec:create-link(($kanton, $volume, ''), map{'start': max(($start - $per-page, 1))})}"><i class="glyphicon glyphicon-backward"/>
                        </a></li>
                 ),
                 let $startPage := xs:integer(ceiling($start div $per-page))
@@ -515,17 +535,17 @@ function ssrq-helper:paginate($node as node(), $model as map(*), $key as xs:stri
                 for $i in $lowerBound to $upperBound
                 return
                     if ($i = ceiling($start div $per-page)) then
-                        <li class="active"><a href="{ec:create-link(($kanton, $volume), map{'start': max((($i - 1) * $per-page + 1, 1))})}">{$i}</a></li>
+                        <li class="active"><a href="{ec:create-link(($kanton, $volume, ''), map{'start': max((($i - 1) * $per-page + 1, 1))})}">{$i}</a></li>
                     else
                         let $page := max((($i - 1) * $per-page + 1, 1))
                         return
-                        <li><a href="{ec:create-link(($kanton, $volume), map{'start': $page})}">{$i}</a></li>,
+                        <li><a href="{ec:create-link(($kanton, $volume, ''), map{'start': $page})}">{$i}</a></li>,
                 if ($start + $per-page < $model($key)) then (
                     <li>
-                        <a href="{ec:create-link(($kanton, $volume),map{'start': ($start + $per-page)})}"><i class="glyphicon glyphicon-forward"/></a>
+                        <a href="{ec:create-link(($kanton, $volume, ''), map{'start': ($start + $per-page)})}"><i class="glyphicon glyphicon-forward"/></a>
                     </li>,
                     <li>
-                        <a href="{ec:create-link(($kanton, $volume), map{'start': max((($count - 1) * $per-page + 1, 1))})}"><i class="glyphicon glyphicon-fast-forward"/></a>
+                        <a href="{ec:create-link(($kanton, $volume, ''), map{'start': max((($count - 1) * $per-page + 1, 1))})}"><i class="glyphicon glyphicon-fast-forward"/></a>
                     </li>
                 ) else (
                     <li class="disabled">
@@ -550,7 +570,7 @@ function ssrq-helper:paginate($node as node(), $model as map(*), $key as xs:stri
 : @return total count inside a html:a
 :)
 declare function ssrq-helper:hits($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string) {
-       <a href="?kanton={$kanton}&amp;volume={$volume}&amp;per-page={$model?total}">{$model?total}</a>
+   <a href="{ec:create-link(($kanton, $volume, ''), map{'per-page': $model?total})}">{$model?total}</a>
 };
 
 
