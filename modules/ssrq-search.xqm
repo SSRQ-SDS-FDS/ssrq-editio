@@ -355,16 +355,22 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
     for $hit at $index in $model?hits => subsequence($start, $per-page)
     let $work := $hit/ancestor::tei:TEI
     let $config := tpu:parse-pi(root($work), $view)
-    let $relpath := let $doc := doc-list:get($work//tei:seriesStmt/tei:idno[1])
-                    return
-                        ec:create-link((
-                            $doc/kanton,
-                            $doc/volume,
-                            if ($doc/special) then
-                                $doc/special
-                            else
-                                (string-join(($doc/case, $doc/doc), '.'), $doc/num) => string-join('-')
-                            || '.html'))
+    let $relpath := 
+        try {
+            let $doc := doc-list:get($work//tei:seriesStmt/tei:idno[1])
+            return
+                ec:create-link((
+                    $doc/kanton,
+                    $doc/volume,
+                    if ($doc/special) then
+                        $doc/special
+                    else
+                        (string-join(($doc/case, $doc/doc), '.'), $doc/num) => string-join('-')
+                    || '.html'))
+        } catch * {
+            ()
+        }
+    where $relpath
     return
         <div class="reference">
             {query:view-header($work, $relpath, $hit, $start, $index)}
