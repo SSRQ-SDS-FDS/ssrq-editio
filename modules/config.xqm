@@ -116,17 +116,17 @@ declare variable $config:user-agent :=
             let $response := http:send-request($request)
             return
                 if ($response[1]/@status = "200") then
-                    " " || $response[2]/exist:result/exist:value/string()
+                    $response[2]/exist:result/exist:value/string()
                 else
-                    ""
+                    ()
         } catch * {
-            ""
+            ()
         }
     let $expath-descriptor := config:expath-descriptor()
     let $app-ua :=
         $expath-descriptor/@abbrev || "/" || $expath-descriptor/@version
     return
-        $app-ua || $default-ua
+        string-join(($app-ua, $default-ua), " ")
 ;
 
 (:

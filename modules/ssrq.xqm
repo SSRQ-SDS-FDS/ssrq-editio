@@ -158,7 +158,10 @@ declare function app:api-lookup-xml($api as xs:string, $list as map(*)*, $param 
         'en'     : 'eng'
     }
     let $refs := string-join(for $item in $list return $item?ref, ",")
-    let $request := <http:request method="GET" href="{$api}?{$param}={$refs}&amp;lang={$iso-639-3($lang)}"/>
+    let $request :=
+        <http:request method="GET" href="{$api}?{$param}={$refs}&amp;lang={$iso-639-3($lang)}">
+            <http:header name="User-Agent" value="{$config:user-agent}"/>
+        </http:request>
     let $response := http:send-request($request)
     return
         if ($response[1]/@status = "200") then
