@@ -358,7 +358,7 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
     let $relpath := let $doc := doc-list:get($work//tei:seriesStmt/tei:idno[1])
                     return
                         ec:create-link((
-                            $doc/kanton, 
+                            $doc/kanton,
                             $doc/volume,
                             if ($doc/special) then
                                 $doc/special
@@ -480,7 +480,7 @@ function query:view-snippets($hit as item(), $model as map(*), $config as map(*)
 
 declare function query:view-kanton($work as element()) {
     let $idno := query:get-ssrq-idno($work, ("machine", "human"))
-    return replace($idno, "^(?:SSRQ|SDS|FDS)[_ ]([^_ ]+).*$", "$1")
+    return replace($idno, "^(?:SSRQ|SDS|FDS)[-_ ]([A-Z]{2})[-_ ].*$", "$1")
 };
 
 declare function query:view-idno($work as element()) {
