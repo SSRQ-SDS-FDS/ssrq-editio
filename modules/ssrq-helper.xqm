@@ -121,6 +121,11 @@ declare function ssrq-helper:resolve-links($nodes as node()*) {
                         }
                 else
                     $node
+            case element (link) | element(script) return
+                        element { node-name($node) } {
+                                    attribute {name($node/@href | $node/@src)} {(session:get-attribute('ssrq.prefix'), ($node/@href | $node/@src)) => utils:path-concat()},
+                                    $node/@* except $node/@src | $node/@href
+                        }
             case element() return
                 element { node-name($node) } {
                     $node/@*, ssrq-helper:resolve-links($node/node())

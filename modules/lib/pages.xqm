@@ -234,7 +234,7 @@ function pages:styles($node as node(), $model as map(*)) {
     attribute href {
         let $name := replace($config:odd, "^([^/\.]+).*$", "$1")
         return
-            utils:path-concat-safe(($pages:app-root, $config:output, $name || ".css"))
+            utils:path-concat(($config:output, $name || ".css"))
     }
 };
 
