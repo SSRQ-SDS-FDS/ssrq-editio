@@ -355,7 +355,7 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
     for $hit at $index in $model?hits => subsequence($start, $per-page)
     let $work := $hit/ancestor::tei:TEI
     let $config := tpu:parse-pi(root($work), $view)
-    let $relpath := 
+    let $relpath :=
         try {
             let $doc := doc-list:get($work//tei:seriesStmt/tei:idno[1])
             return

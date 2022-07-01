@@ -4,10 +4,7 @@ function insertTooltipFromApi(context, eventListener) {
 
   function filterSpan(i, span) {
     var ref = $(span).attr('data-ref');
-    if (ref === key) {
-      return true;
-    }
-    return /^[\.a-zA-Z]/.test(ref.substring(key.length));
+    return ref === key || /^[\.a-zA-Z]/.test(ref.substring(key.length));
   }
 
   var scribes = $(".scribe[data-ref^='" + key + "']").filter(filterSpan);

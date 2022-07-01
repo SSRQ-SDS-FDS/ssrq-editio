@@ -48,7 +48,7 @@ $(document).ready(function () {
   $("#searchPanel button[type='reset']").click(function (e) {
     e.preventDefault();
     resetSelects();
-    resetInputs();  
+    resetInputs();
   });
 });
 
@@ -57,7 +57,7 @@ function resetSelects() {
     $("option", select).prop("selected", false);
     if (!select.multiple) {
       $("option:first", select).prop("selected", true);
-    }  
+    }
   });
 }
 
