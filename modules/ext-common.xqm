@@ -282,6 +282,11 @@ declare function ec:print-id($doc as element(doc)) as xs:string? {
 : @return xs:string
 :)
 declare function ec:create-link($components as xs:string*, $params as map(*)) as xs:string {
+    let $path :=
+        (
+            $config:base-url,
+            if (not(empty($components))) then $components else ''
+        ) => string-join('/')
     let $query-params := (
         $params
         => map:for-each(function ($k, $v) {
@@ -289,8 +294,7 @@ declare function ec:create-link($components as xs:string*, $params as map(*)) as
            })
         => string-join('&amp;'))
     return
-        ((session:get-attribute('ssrq.prefix'), $components) => string-join('/'))
-        || ('?' || $query-params)[$query-params]
+        $path || ('?' || $query-params)[$query-params]
 };
 
 declare function ec:create-link($components as xs:string*) as xs:string {

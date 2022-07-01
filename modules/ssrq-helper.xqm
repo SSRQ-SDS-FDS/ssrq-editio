@@ -73,62 +73,85 @@ declare function ssrq-helper:include-upload-template($node as node(), $model as 
 };
 
 declare
-%templates:wrap
 function ssrq-helper:resolve-links($node as node(), $model as map(*)) {
-    ssrq-helper:resolve-links(templates:process($node/node(), $model))
+    element { node-name($node) } {
+        $node/@* except $node/@data-template,
+        templates:process($node/node(), $model)
+    } => ssrq-helper:resolve-links()
 };
 
 declare function ssrq-helper:resolve-links($nodes as node()*) {
+    let $proc-attribute := function ($input-value) {
+        let $app-url := (: URL relative to app root :)
+            if ($input-value => matches("^(?:\{app\})?/")) then
+                (: remove leading {app}/ prefix, as it will be added by
+                   ec:create-link unconditionally :)
+                substring-after($input-value, "/")
+            else
+                request:get-uri() => substring-after($config:base-url) => replace('^/?(.*)$', '$1')
+        let $tokens := utils:path-tokenize($app-url)
+        return
+            ec:create-link(
+                $tokens ! (
+                    if (. eq '{app}') then
+                        $config:base-url
+                    else if (. eq '{uri}') then
+                        request:get-uri()
+                    else if (matches(., '^\{[a-z]*\}$')) then
+                        replace(., '\{([a-z]*)\}', '$1') => request:get-parameter(.)
+                    else
+                        .
+                )
+            )
+    }
     for $node in $nodes
     return
         typeswitch($node)
             case element(a) | element(link) return
-                (: skip links with @data-template attributes; otherwise we can run into duplicate @href errors :)
-                if ($node/@data-template or $node/@href => contains('mailto:') or $node/@href eq '#') then
-                    $node
+                if ($node/@href) then
+                    element { node-name($node) } {
+                        attribute href {
+                            if ($node/@href => matches("^(?:[a-z-]+:)|#")) then
+                                (: not a URL :)
+                                $node/@href
+                            else
+                                $proc-attribute($node/@href)
+                        },
+                        $node/@* except $node/@href,
+                        ssrq-helper:resolve-links($node/node())
+                    }
                 else
-                    let $href := ec:create-link(
-                        utils:path-tokenize($node/@href) ! (
-                                if (not(. eq '{app}')) then
-                                    if (matches(., '[\{\}]')) then
-                                        replace(., '\{([a-z]*)\}', '$1') => request:get-parameter(())
-                                    else
-                                        .
-                                else
-                                    ()
-                            ))
-                    return
-                        element { node-name($node) } {
-                            attribute href {$href}, $node/@* except $node/@href, ssrq-helper:resolve-links($node/node())
-                        }
+                    element { node-name($node) } {
+                        $node/@*,
+                        ssrq-helper:resolve-links($node/node())
+                    }
             case element(form) return
                 if ($node/@action) then
-                    let $action := ec:create-link(
-                        utils:path-tokenize($node/@action) ! (
-                            if (not(. eq '{app}')) then
-                                if (matches(., '[\{\}]')) then
-                                    replace(., '\{([a-z]*)\}', '$1') => request:get-parameter(())
-                                else
-                                    .
-                            else
-                                ()
-                        ))
-                    return
-                        element { node-name($node) } {
-                            attribute action {$action},
-                            $node/@* except $node/@action,
-                            ssrq-helper:resolve-links($node/node())
-                        }
+                    element { node-name($node) } {
+                        attribute action { $proc-attribute($node/@action) },
+                        $node/@* except $node/@action,
+                        ssrq-helper:resolve-links($node/node())
+                    }
                 else
-                    $node
-            case element (link) | element(script) return
-                        element { node-name($node) } {
-                                    attribute {name($node/@href | $node/@src)} {(session:get-attribute('ssrq.prefix'), ($node/@href | $node/@src)) => utils:path-concat()},
-                                    $node/@* except $node/@src | $node/@href
-                        }
+                    element { node-name($node) } {
+                        $node/@*,
+                        ssrq-helper:resolve-links($node/node())
+                    }
+            case element(script) | element(img) return
+                if ($node/@src) then
+                    element { node-name($node) } {
+                        attribute src { $proc-attribute($node/@src) },
+                        $node/@* except $node/@src
+                    }
+                else
+                    element { node-name($node) } {
+                        $node/@*,
+                        ssrq-helper:resolve-links($node/node())
+                    }
             case element() return
                 element { node-name($node) } {
-                    $node/@*, ssrq-helper:resolve-links($node/node())
+                    $node/@*,
+                    ssrq-helper:resolve-links($node/node())
                 }
             default return
                 $node

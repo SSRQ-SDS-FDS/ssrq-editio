@@ -34,19 +34,17 @@
   </div>
 
   <script
-    type="text/javascript"
-    src="resources/scripts/vendor/jquery.ui.widget.js"
     data-template="ssrq-helper:resolve-links"
+    type="application/javascript"
+    src="{app}/resources/scripts/vendor/jquery.ui.widget.js"
   />
   <script
-    type="text/javascript"
-    src="resources/scripts/vendor/jquery.fileupload.js"
     data-template="ssrq-helper:resolve-links"
+    type="application/javascript"
+    src="{app}/resources/scripts/vendor/jquery.fileupload.js"
   />
-  <script type="text/javascript">
-    $(
-      '<link rel="stylesheet" type="text/css" href="resources/css/vendor/jquery.fileupload.css"/>'
-    ).appendTo(document.head);
+  <script type="application/javascript">
+    $(document.head).append('<link rel="stylesheet" type="text/css" href="'+document.documentElement.getAttribute("data-app")+'/resources/css/vendor/jquery.fileupload.css"/>');
 
     $(function () {
       'use strict';

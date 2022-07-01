@@ -221,36 +221,3 @@ declare function app:recompile-link($node as node(), $model as map(*)) {
             $node/node()
         }
 };
-
-declare
-    %templates:wrap
-function app:fix-links($node as node(), $model as map(*)) {
-    app:fix-links(templates:process($node/node(), $model))
-};
-
-declare function app:fix-links($nodes as node()*) {
-    for $node in $nodes
-    return
-        typeswitch($node)
-            case element(a) | element(link) return
-                (: skip links with @data-template attributes; otherwise we can run into duplicate @href errors :)
-                if ($node/@data-template) then
-                    $node
-                else
-                    let $href :=
-                        replace(
-                            $node/@href,
-                            "\$app",
-                            (request:get-context-path() || substring-after($config:app-root, "/db"))
-                        )
-                    return
-                        element { node-name($node) } {
-                            attribute href {$href}, $node/@* except $node/@href, app:fix-links($node/node())
-                        }
-            case element() return
-                element { node-name($node) } {
-                    $node/@*, app:fix-links($node/node())
-                }
-            default return
-                $node
-};

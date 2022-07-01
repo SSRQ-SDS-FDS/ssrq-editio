@@ -130,6 +130,18 @@ declare variable $config:user-agent :=
 ;
 
 (:
+    Determine the base URL for links.
+:)
+declare variable $config:base-url :=
+    let $site-prefix := request:get-header('X-Site-Prefix')
+    return
+        if (exists($site-prefix)) then
+            $site-prefix => replace('^(.*)/$', '$1')
+        else
+            request:get-url() => substring-before('/exist') || '/exist/apps/ssrq'
+;
+
+(:
     Determine the application root collection from the current module load path.
 :)
 declare variable $config:app-root :=

@@ -37,8 +37,6 @@ import module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/search" at
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
 
 
-declare variable $pages:app-root := request:get-context-path() || substring-after($config:app-root, "/db");
-
 declare
     %templates:wrap
 function pages:load($node as node(), $model as map(*), $doc as xs:string, $root as xs:string?,
@@ -139,24 +137,6 @@ declare function pages:get-document($idOrName as xs:string) {
         doc(xmldb:encode(utils:path-concat-safe(($config:data-root, $idOrName))))
 };
 
-declare function pages:back-link($node as node(), $model as map(*)) {
-    element { node-name($node) } {
-        attribute href {
-            $pages:app-root || "/"
-        },
-        $node/@*,
-        $node/node()
-    }
-};
-
-declare function pages:single-page-link($node as node(), $model as map(*), $doc as xs:string) {
-    element { node-name($node) } {
-        $node/@* except $node/@href,
-        attribute href { "?view=plain&amp;odd=" || $config:odd },
-        $node/node()
-    }
-};
-
 declare
     %templates:default("action", "browse")
 function pages:view($node as node(), $model as map(*), $action as xs:string, $sr as xs:string*, $template as xs:string?) {
@@ -232,9 +212,9 @@ declare
     %templates:wrap
 function pages:styles($node as node(), $model as map(*)) {
     attribute href {
-        let $name := replace($config:odd, "^([^/\.]+).*$", "$1")
+        let $name := replace($config:odd, "^([^/.]+).*$", "$1")
         return
-            utils:path-concat(($config:output, $name || ".css"))
+            utils:path-concat(("{app}", $config:output, $name || ".css"))
     }
 };
 
@@ -313,7 +293,7 @@ declare function pages:title($work as element()) {
 declare function pages:app-root($node as node(), $model as map(*)) {
     element { node-name($node) } {
         $node/@* except $node/@data-template,
-        attribute data-app { session:get-attribute('ssrq.prefix') },
+        attribute data-app { $config:base-url },
         templates:process($node/*, $model)
     }
 };

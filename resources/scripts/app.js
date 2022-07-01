@@ -11,10 +11,9 @@ $(document).ready(function () {
 
   // initialize seadragon for viewing facsimiles
   if (document.getElementById('image-container')) {
-    console.log('Initializing seadragon...');
     seadragon = OpenSeadragon({
       id: 'image-container',
-      prefixUrl: 'resources/scripts/vendor/images/',
+      prefixUrl: appRoot+'/resources/scripts/vendor/images/',
       preserveViewport: true,
       sequenceMode: true,
       showZoomControl: true,
