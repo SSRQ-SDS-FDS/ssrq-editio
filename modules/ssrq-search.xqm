@@ -359,7 +359,7 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
         try {
             let $doc := doc-list:get($work//tei:seriesStmt/tei:idno[1])
             return
-                ec:create-link((
+                ec:create-app-link((
                     $doc/kanton,
                     $doc/volume,
                     if ($doc/special) then

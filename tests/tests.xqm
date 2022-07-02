@@ -211,7 +211,7 @@ declare function tests:pdf-download-link() as map(*)* {
    }
 };
 
-declare function tests:create-link() as map(*)* {
+declare function tests:create-app-link() as map(*)* {
  for $link in ('', 'SG/', 'search', 'about/abbr')
  return
    map {
@@ -223,10 +223,10 @@ declare function tests:create-link() as map(*)* {
            let $session := session:set-attribute('ssrq.prefix', $prefix)
            let $components := tokenize($link, '/')
            return
-                ec:create-link($components) => starts-with('/exist/apps/ssrq')
+                ec:create-app-link($components) => starts-with('/exist/apps/ssrq')
    }
 };
-declare function tests:create-link-index() as map(*)* {
+declare function tests:create-app-link-index() as map(*)* {
  for $link in ('FR/', 'FR/I_2_8/')
  return
    map {
@@ -238,7 +238,7 @@ declare function tests:create-link-index() as map(*)* {
            let $session := session:set-attribute('ssrq.prefix', $prefix)
            let $components := tokenize($link, '/')
            return
-                ec:create-link($components) = ($prefix || '/' || $link)
+                ec:create-app-link($components) = ($prefix || '/' || $link)
    }
 };
 declare function tests:create-link-document() as map(*)* {
@@ -253,7 +253,7 @@ declare function tests:create-link-document() as map(*)* {
            let $session := session:set-attribute('ssrq.prefix', $prefix)
            let $components := tokenize($link, '/')
            return
-                ec:create-link($components) = ($prefix || '/' || $link)
+                ec:create-app-link($components) = ($prefix || '/' || $link)
    }
 };
 

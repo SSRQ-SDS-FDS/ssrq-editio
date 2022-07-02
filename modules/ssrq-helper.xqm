@@ -82,27 +82,35 @@ function ssrq-helper:resolve-links($node as node(), $model as map(*)) {
 
 declare function ssrq-helper:resolve-links($nodes as node()*) {
     let $proc-attribute := function ($input-value) {
-        let $app-url := (: URL relative to app root :)
-            if ($input-value => matches("^(?:\{app\})?/")) then
-                (: remove leading {app}/ prefix, as it will be added by
-                   ec:create-link unconditionally :)
-                substring-after($input-value, "/")
+        let $url :=
+            (analyze-string($input-value, "\{[a-z-]+\}")/fn:match => distinct-values()) ! replace(., "^\{(.*)\}$", "$1")
+            => fold-left($input-value, function ($s, $var) {
+                    let $repl :=
+                        switch ($var)
+                        case 'app' return $config:base-url
+                        case 'uri' return request:get-uri()
+                        case 'qs' return "" || request:get-query-string()
+                        default return
+                            request:get-parameter($var, concat("{", $var, "}"))
+                    return
+                        replace($s, concat("\{", $var, "\}"), xs:string($repl))
+            })
+        let $path := 
+            if ($url => contains("?")) then
+                $url => substring-before("?")
             else
-                request:get-uri() => substring-after($config:base-url) => replace('^/?(.*)$', '$1')
-        let $tokens := utils:path-tokenize($app-url)
+                $url
+        let $query-map :=
+            (($url => substring-after("?") => tokenize("[&amp;;]")) ! (
+                if (. = "") then
+                    ()
+                else if (. => contains("=")) then
+                    map{substring-before(., "="): substring-after(., "=")}
+                else
+                    map{.:()}
+            )) => map:merge()
         return
-            ec:create-link(
-                $tokens ! (
-                    if (. eq '{app}') then
-                        $config:base-url
-                    else if (. eq '{uri}') then
-                        request:get-uri()
-                    else if (matches(., '^\{[a-z]*\}$')) then
-                        replace(., '\{([a-z]*)\}', '$1') => request:get-parameter(.)
-                    else
-                        .
-                )
-            )
+            ec:create-link($path, $query-map)
     }
     for $node in $nodes
     return
@@ -162,14 +170,14 @@ declare function ssrq-helper:link-to-resource($model as map(*), $file-ext as xs:
 };
 
 declare function ssrq-helper:link-to-resource($model as map(*), $file-ext as xs:string, $use-doc as xs:boolean) as xs:string {
-    ec:create-link((
+    ec:create-app-link((
         $model?idno/kanton,
         $model?idno/volume,
         (
             if ($model?idno/special) then
                 $model?idno/special
             else
-                string-join((string-join(($model?idno/case, $model?idno/doc[$use-doc]), '.'), $model?idno/num), '-')
+                concat(string-join(($model?idno/case, $model?idno/doc[$use-doc]), '.'), '-', $model?idno/num)
         ) || $file-ext))
 };
 
@@ -314,7 +322,7 @@ function ssrq-helper:render-idno-as-popup($node as node(), $model as map(*)) as 
             <span class="id">{$idno} <i class="glyphicon glyphicon-info-sign"/></span>
             <span class="altcontent" xmlns:i18n="http://exist-db.org/xquery/i18n" popover-class="increase-popover-width">
                     <p>{$stmtTitle}, {$pm-config:web-transform($fileDescTitle, map { "root": $fileDescTitle, "view": "infopopup"}, $config:odd)}, <i18n:text key="by">von</i18n:text> {ssrq-helper:pers-names($header//tei:editor)}</p>
-                    <p><i18n:text key="zitation">Zitation:</i18n:text> <a href="{ec:create-link(($model?idno/canton, $model?idno/volume, ''))}">{$idno}</a></p>
+                    <p><i18n:text key="zitation">Zitation:</i18n:text> <a href="{ec:create-app-link(($model?idno/canton, $model?idno/volume, ''))}">{$idno}</a></p>
                     <p><i18n:text key="lizenz">Lizenz:</i18n:text> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de">CC BY-NC-SA</a></p>
             </span>
         </span>
@@ -395,7 +403,7 @@ declare function ssrq-helper:renderDepartment($data as map(*), $dep as xs:string
     then
         <td>
             <div>
-                <a href="{ec:create-link(($dep, ''))}">
+                <a href="{ec:create-app-link(($dep, ''))}">
                     {
                     let $html := $data?department => util:parse-html()
                     return $html/*/*[last()]/node()
@@ -440,16 +448,16 @@ declare function ssrq-helper:list-volumes($node as node(), $model as map(*), $ka
                     </div>
                     {
                         $pm-config:web-transform($matching-doc//tei:fileDesc, map { "root": $matching-doc, "view": "volumes" }, $config:odd),
-                        <a class="part" href="{ec:create-link(($kanton, $volume/@xml:id => substring(4), ''))}">
+                        <a class="part" href="{ec:create-app-link(($kanton, $volume/@xml:id => substring(4), ''))}">
                             <i18n:text key="articles">Stücke</i18n:text>
                         </a>,
                         for $content-type in $content-types
                         let $link :=
                             switch ($content-type)
                             case 'pdf' return
-                                ec:create-link(($kanton, $volume/doc[1]/volume || '.pdf'))
+                                ec:create-app-link(($kanton, $volume/doc[1]/volume || '.pdf'))
                             default return
-                                ec:create-link(($kanton, $volume/doc[1]/volume, $content-type || '.html'))
+                                ec:create-app-link(($kanton, $volume/doc[1]/volume, $content-type || '.html'))
                         return
                             <a class="part" href="{$link}">
                                 <i18n:text key="{$content-type}">{$content-type}</i18n:text>
@@ -470,7 +478,7 @@ function ssrq-helper:render-work($node as node(), $model as map(*), $kanton as x
         {
             $pm-config:web-transform($xml//tei:teiHeader, map {
                     "header": "short",
-                    "doc": ec:create-link(($kanton, $volume, (string-join(($doc/case, $doc/doc), '.'), $doc/num) => string-join('-') || '.html')),
+                    "doc": ec:create-app-link(($kanton, $volume, (string-join(($doc/case, $doc/doc), '.'), $doc/num) => string-join('-') || '.html')),
                     "root": $xml
                 }, $config:odd)
         }
@@ -551,9 +559,9 @@ function ssrq-helper:paginate($node as node(), $model as map(*), $key as xs:stri
                     </li>
                 ) else (
                     <li>
-                        <a href="{ec:create-link(($kanton, $volume, ''), map{'start': 1})}"><i class="glyphicon glyphicon-fast-backward"/></a>
+                        <a href="{ec:create-app-link(($kanton, $volume, ''), map{'start': 1})}"><i class="glyphicon glyphicon-fast-backward"/></a>
                     </li>,
-                    <li><a href="{ec:create-link(($kanton, $volume, ''), map{'start': max(($start - $per-page, 1))})}"><i class="glyphicon glyphicon-backward"/>
+                    <li><a href="{ec:create-app-link(($kanton, $volume, ''), map{'start': max(($start - $per-page, 1))})}"><i class="glyphicon glyphicon-backward"/>
                        </a></li>
                 ),
                 let $startPage := xs:integer(ceiling($start div $per-page))
@@ -563,17 +571,17 @@ function ssrq-helper:paginate($node as node(), $model as map(*), $key as xs:stri
                 for $i in $lowerBound to $upperBound
                 return
                     if ($i = ceiling($start div $per-page)) then
-                        <li class="active"><a href="{ec:create-link(($kanton, $volume, ''), map{'start': max((($i - 1) * $per-page + 1, 1))})}">{$i}</a></li>
+                        <li class="active"><a href="{ec:create-app-link(($kanton, $volume, ''), map{'start': max((($i - 1) * $per-page + 1, 1))})}">{$i}</a></li>
                     else
                         let $page := max((($i - 1) * $per-page + 1, 1))
                         return
-                        <li><a href="{ec:create-link(($kanton, $volume, ''), map{'start': $page})}">{$i}</a></li>,
+                        <li><a href="{ec:create-app-link(($kanton, $volume, ''), map{'start': $page})}">{$i}</a></li>,
                 if ($start + $per-page < $model($key)) then (
                     <li>
-                        <a href="{ec:create-link(($kanton, $volume, ''), map{'start': ($start + $per-page)})}"><i class="glyphicon glyphicon-forward"/></a>
+                        <a href="{ec:create-app-link(($kanton, $volume, ''), map{'start': ($start + $per-page)})}"><i class="glyphicon glyphicon-forward"/></a>
                     </li>,
                     <li>
-                        <a href="{ec:create-link(($kanton, $volume, ''), map{'start': max((($count - 1) * $per-page + 1, 1))})}"><i class="glyphicon glyphicon-fast-forward"/></a>
+                        <a href="{ec:create-app-link(($kanton, $volume, ''), map{'start': max((($count - 1) * $per-page + 1, 1))})}"><i class="glyphicon glyphicon-fast-forward"/></a>
                     </li>
                 ) else (
                     <li class="disabled">
@@ -598,7 +606,7 @@ function ssrq-helper:paginate($node as node(), $model as map(*), $key as xs:stri
 : @return total count inside a html:a
 :)
 declare function ssrq-helper:hits($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string) {
-   <a href="{ec:create-link(($kanton, $volume, ''), map{'per-page': $model?total})}">{$model?total}</a>
+   <a href="{ec:create-app-link(($kanton, $volume, ''), map{'per-page': $model?total})}">{$model?total}</a>
 };
 
 

@@ -273,6 +273,19 @@ declare function ec:print-id($doc as element(doc)) as xs:string? {
      => string-join(' ')
 };
 
+declare function ec:create-link($components as xs:string*, $params as map(*)) as xs:string {
+    let $path :=
+        string-join($components, "/")
+    let $query-params :=
+        $params
+        => map:for-each(function ($k, $v) {
+               ($k, $v) => string-join('=')
+           })
+        => string-join('&amp;')
+    return
+        $path || ("?" || $query-params)[$query-params]
+};
+
 (:~
 : Helper function to create links based on the session attribute ssrq.prefix
 : which is set by the controller – the function can be used as by other xquery-functions
@@ -281,31 +294,22 @@ declare function ec:print-id($doc as element(doc)) as xs:string? {
 : @author Bastian Politycki, Dennis Camera
 : @return xs:string
 :)
-declare function ec:create-link($components as xs:string*, $params as map(*)) as xs:string {
-    let $path :=
-        (
+declare function ec:create-app-link($components as xs:string*, $params as map(*)) as xs:string {
+    ec:create-link((
             $config:base-url,
             if (not(empty($components))) then $components else ''
-        ) => string-join('/')
-    let $query-params := (
-        $params
-        => map:for-each(function ($k, $v) {
-               ($k, $v) => string-join('=')
-           })
-        => string-join('&amp;'))
-    return
-        $path || ('?' || $query-params)[$query-params]
+        ), $params)
 };
 
-declare function ec:create-link($components as xs:string*) as xs:string {
-    ec:create-link($components, map{})
+declare function ec:create-app-link($components as xs:string*) as xs:string {
+    ec:create-app-link($components, map{})
 };
 
 declare function ec:create-link-from-id($id as xs:string) as xs:string {
     let $tokenized-id := replace($id, '^(SSRQ|SDS|FDS)-', '') => tokenize('-')
     return
         ($tokenized-id[1], $tokenized-id[2], $tokenized-id[position() = 3 to last()] => string-join('-') || '.html')
-        => ec:create-link()
+        => ec:create-app-link()
 };
 
 declare function ec:get-article-nr($id as xs:string?) {
