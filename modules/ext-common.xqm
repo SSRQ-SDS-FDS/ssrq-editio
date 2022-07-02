@@ -287,9 +287,10 @@ declare function ec:create-link($components as xs:string*, $params as map(*)) as
 };
 
 (:~
-: Helper function to create links based on the session attribute ssrq.prefix
-: which is set by the controller – the function can be used as by other xquery-functions
-: or directly from within the templates via ssrq-helper:resolve-links().
+: Helper function to create links based on the site prefix
+:  – the function can be used by other XQuery functions.
+:
+: in templates use "{app}/..." URLs via ssrq-helper:resolve-links().
 :
 : @author Bastian Politycki, Dennis Camera
 : @return xs:string
@@ -583,7 +584,7 @@ declare function ec:image($config as map(*), $node as element(), $class as xs:st
             return
                 (
                     <img src="{
-                        ($collection-name => replace($config:data-root, session:get-attribute('ssrq.prefix')), $node/tei:graphic/@url)
+                        ($collection-name => replace($config:data-root, $config:base-url), $node/tei:graphic/@url)
                         => string-join('/')
                     }" alt="{$node/tei:graphic/@url}" class="image-in-text"/>,
                     let $head := $node/tei:head

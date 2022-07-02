@@ -219,11 +219,9 @@ declare function tests:create-app-link() as map(*)* {
        'description': 'Resvoled link should start with the prefix set in the HTTP session.',
        'exp': true(),
        'result':
-           let $prefix := '/exist/apps/ssrq'
-           let $session := session:set-attribute('ssrq.prefix', $prefix)
            let $components := tokenize($link, '/')
            return
-                ec:create-app-link($components) => starts-with('/exist/apps/ssrq')
+                ec:create-app-link($components) => starts-with($config:base-url || "/")
    }
 };
 declare function tests:create-app-link-index() as map(*)* {
@@ -234,11 +232,9 @@ declare function tests:create-app-link-index() as map(*)* {
        'description': 'Resvoled link should end in a slash if the last component is the emtpy string.',
        'exp': true(),
        'result':
-           let $prefix := '/exist/apps/ssrq'
-           let $session := session:set-attribute('ssrq.prefix', $prefix)
            let $components := tokenize($link, '/')
            return
-                ec:create-app-link($components) = ($prefix || '/' || $link)
+                ec:create-app-link($components) = ($config:base-url || '/' || $link)
    }
 };
 declare function tests:create-link-document() as map(*)* {
@@ -249,11 +245,9 @@ declare function tests:create-link-document() as map(*)* {
        'description': 'Resvoled link should not end in a slash if the last component is not the empty string.',
        'exp': true(),
        'result':
-           let $prefix := '/exist/apps/ssrq'
-           let $session := session:set-attribute('ssrq.prefix', $prefix)
            let $components := tokenize($link, '/')
            return
-                ec:create-app-link($components) = ($prefix || '/' || $link)
+                ec:create-app-link($components) = ($config:base-url || '/' || $link)
    }
 };
 
@@ -600,7 +594,9 @@ declare function tests:ref-internal() as map(*) {
             "name": "tests:ref-internal()",
             "description": "A tei:ref which contains an internal reference should be rendered as a valid internal link.",
             "exp": '/SG/III_4/55-1.html',
-            "result": $pm-config:web-transform($xml, map { "root": $xml }, $config:odd)/@href/data(.) => substring-after(session:get-attribute('ssrq.prefix'))
+            "result":
+                $pm-config:web-transform($xml, map{"root": $xml}, $config:odd)/@href/data(.)
+                => substring-after($config:base-url)
         }
 };
 

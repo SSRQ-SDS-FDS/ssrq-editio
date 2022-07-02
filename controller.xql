@@ -17,8 +17,6 @@ declare variable $exist:resource external;
 declare variable $exist:controller external;
 declare variable $exist:prefix external;
 declare variable $exist:root external;
-declare variable $site-prefix := request:get-header('X-Site-Prefix');
-declare variable $default-prefix := request:get-url() => substring-before('/exist') || '/exist/apps/ssrq';
 declare variable $routeBase := '/routes/';
 
 
@@ -33,15 +31,6 @@ declare function controller:setLanguage() {
         else if ($lang-param and $lang-selected => empty())
         then session:set-attribute("ssrq.lang", $lang-param)
         else session:set-attribute("ssrq.lang", "de")
-};
-
-declare function controller:setSessionPrefix ($prefix as xs:string*) {
-    if (not(session:get-attribute('ssrq.prefix')))
-    then
-        if (not($prefix => exists()))
-        then session:set-attribute('ssrq.prefix', $default-prefix)
-        else session:set-attribute('ssrq.prefix', $prefix => replace('^(.*)/$', '$1'))
-    else ()
 };
 
 (: Helper function to match the name of a route to a route specified in $main-routes :)
@@ -69,7 +58,7 @@ declare function controller:findRouteFromList($routes as map(*)+, $resource as x
             if (not($resource => ends-with('/')) and ($route?redirect-slash, false())[1])
             then
                 <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-                    <redirect url="{session:get-attribute('ssrq.prefix')}{$resource}/"/>
+                    <redirect url="{$config:base-url}{$resource}/"/>
                 </dispatch>
             else
             <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
@@ -107,7 +96,6 @@ declare function controller:findRouteFromList($routes as map(*)+, $resource as x
 
 };
 
-let $set-prefix := controller:setSessionPrefix($site-prefix)
 (: To-Do: Test if language Switching Works correct with urls... :)
 let $lang := controller:setLanguage()
 let $error-handler := <error-handler>
@@ -120,7 +108,7 @@ return
 (: Redirect if path is empty :)
 if ($exist:path eq '') then
     <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-        <redirect url="{session:get-attribute('ssrq.prefix')}/"/>
+        <redirect url="{$config:base-url}/"/>
     </dispatch>
 
 (: Serve Resources :)
