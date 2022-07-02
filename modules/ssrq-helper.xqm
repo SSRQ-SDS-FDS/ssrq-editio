@@ -444,16 +444,16 @@ declare function ssrq-helper:list-volumes($node as node(), $model as map(*), $ka
                             <i18n:text key="articles">Stücke</i18n:text>
                         </a>,
                         for $content-type in $content-types
-                        return
+                        let $link :=
                             switch ($content-type)
                             case 'pdf' return
-                                <a class="part" href="{ec:create-link(($kanton, $volume/doc[1]/volume || '.pdf'))}">
-                                    <i18n:text key="{$content-type}">{$content-type}</i18n:text>
-                                </a>
+                                ec:create-link(($kanton, $volume/doc[1]/volume || '.pdf'))
                             default return
-                                <a class="part" href="{ec:create-link(($kanton, $volume/doc[1]/volume, $content-type || '.html'))}">
-                                    <i18n:text key="{$content-type}">{$content-type}</i18n:text>
-                                </a>
+                                ec:create-link(($kanton, $volume/doc[1]/volume, $content-type || '.html'))
+                        return
+                            <a class="part" href="{$link}">
+                                <i18n:text key="{$content-type}">{$content-type}</i18n:text>
+                            </a>
                     }
                 </div>
         }
