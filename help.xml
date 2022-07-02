@@ -3,7 +3,9 @@
       <fileDesc>
          <titleStmt>
             <title xml:lang="de">Erläuterungen zur Suche</title>
+            <title xml:lang="en">Explanation of the search</title>
             <title xml:lang="fr">Informations sur la recherche</title>
+            <title xml:lang="it">Informazioni sulla ricerca</title>
          </titleStmt>
          <publicationStmt>
             <p>Publication Information</p>
@@ -52,6 +54,37 @@
                <p><ref target="https://www.youtube.com/watch?v=mqZJKv6SkXw&amp;t=">Tutorial</ref></p>
             </div>
          </div>
+         <div xml:lang="en">
+            <div>
+               <head rendition="#heading">Full Text Search</head>
+               <list>
+                  <item>Exact search of a word or a sequence of words</item>
+                  <item>Search using the operators AND, OR, AND NOT</item>
+                  <item>Wildcards for imprecise searches (e.g. wein* or *haus)</item>
+                  <item>Place holders inside of a word (e.g. r*t; * for a sequence of characters; ? for one character)</item>
+               </list>
+            </div>
+            <div>
+               <head rendition="#heading">Advanced search by Textgattung, Facetten, fields</head>
+               <p>Persons:</p>
+               <list>
+                  <item>Surnames without name link</item>
+                  <item>Surnames and given names. Separate names with spaces (e.g.: Schmid Thomas)</item>
+                  <item>Persons without surnames. NN space Given Name (e.g.: NN Ulrich)</item>
+               </list>
+               <p>Families/Organisations; Places; Lemmas; Keywords:</p>
+               <list>
+                  <item>Fill in the standard spelling</item>
+               </list>
+            </div>
+            <div>
+               <p>
+                  <ref target="https://www.ssrq-sds-fds.ch/en/projects/swiss-law-sources-online/search-index/"
+                  >Detailed description</ref> of the search functionality for persons,
+                  organisations, places and keywords.</p>
+               <p><ref target="https://www.youtube.com/watch?v=mqZJKv6SkXw&amp;t=">Tutorial</ref></p>
+            </div>
+         </div>
          <div xml:lang="fr">
             <div>
                <head rendition="#heading">Recherche plein texte</head>
@@ -81,6 +114,37 @@
                   <ref target="https://www.ssrq-sds-fds.ch/fr/projets/sds-online/recherche-details/"
                   >Description détaillée</ref> pour la recherche de personnes, organisations,
                lieux et termes</p>
+            </div>
+         </div>
+         <div xml:lang="it">
+            <div>
+               <head rendition="#heading">Ricerca a testo completo</head>
+               <list>
+                  <item>Cercare una parola o un gruppo di parole</item>
+                  <item>Cercare con AND, OR o AND NOT</item>
+                  <item>Wildcards sono possibili (a.e. wein* o *haus)</item>
+                  <item>Cercare un'espressione incompleta con un metacarattere (a.e. c*l ; * per diversi caratteri ; ? per un
+                     carattero)</item>
+               </list>
+            </div>
+            <div>
+               <head rendition="#heading">Limitare la ricerca a un solo campo o sfaccettatura</head>
+               <p>Persone:</p>
+               <list>
+                  <item>Cognome senza namelink</item>
+                  <item>Cognome e nome. I nomi devono essere separati da uno spazio (a.e. : Schmid Thomas)</item>
+                  <item>Persone senza cognome. NN spazio nome (a.e. : NN Ulrich)</item>
+               </list>
+               <p>Famiglie/organizzazioni; luoghi; lemmi; termini:</p>
+               <list>
+                  <item>Ricerca per ortografia standard</item>
+               </list>
+            </div>
+            <div>
+               <p>
+                  <ref target="https://www.ssrq-sds-fds.ch/it/progetti/fds-online/ricerca-indici/"
+                  >Descrizione dettagliata</ref> per la ricerca di persone e organizzazioni,
+                  luoghi e termini.</p>
             </div>
          </div>
       </body>
