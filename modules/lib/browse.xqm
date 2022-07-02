@@ -207,17 +207,3 @@ declare function app:work-title($work as element(tei:TEI)?) {
     return
         $main-title
 };
-
-declare function app:recompile-link($node as node(), $model as map(*)) {
-    let $odd :=
-        if ($model?work) then
-            ($model?config?odd, $config:odd)[1]
-        else
-            $config:odd
-    return
-        element { node-name($node) } {
-            $node/@*,
-            attribute href { "?source=" || $odd },
-            $node/node()
-        }
-};
