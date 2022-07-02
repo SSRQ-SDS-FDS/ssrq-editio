@@ -213,32 +213,6 @@ $(document).ready(function () {
 
   // initialize popups for sigle section
   $('#idno .alternate').each(popupFixed);
-
-  $('#lang-select').on('change', function (ev) {
-    var loc = window.location;
-    var lang = $(this).val();
-    var search;
-    if (loc.search) {
-      search = loc.search.replace(/\&?lang=[\w]+/, '');
-      if (search == '?') {
-        search = search + 'lang=' + lang;
-      } else {
-        search = search + '&lang=' + lang;
-      }
-    } else {
-      search = '?lang=' + lang;
-    }
-    loc.replace(
-      loc.protocol +
-        '//' +
-        loc.hostname +
-        ':' +
-        loc.port +
-        loc.pathname +
-        search +
-        loc.hash
-    );
-  });
 });
 
 $(window).load(function () {
