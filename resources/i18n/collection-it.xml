@@ -37,13 +37,13 @@
     <msg key="lemma">Lemmi</msg>
     <msg key="keywords">Parole chiave</msg>
     <msg key="genre">Genere di testo</msg>
-    <msg key="searchText">ricerca nei commenti e annotazioni</msg>
+    <msg key="searchText">Ricerca nei commenti e annotazioni</msg>
     <msg key="title">Titolo</msg>
     <msg key="idno">Sigla</msg>
     <msg key="regest">Regesto</msg>
     <msg key="comment">Commento</msg>
     <msg key="notes">Annotatione</msg>
-    <msg key="searchEdition">ricerca nel testo editionale</msg>
+    <msg key="searchEdition">Ricerca nel testo editionale</msg>
     <msg key="filters">Ricerca in un campo</msg>
     <msg key="canton">Cantone</msg>
     <msg key="section">Sezione</msg>
