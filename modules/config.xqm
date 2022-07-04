@@ -133,13 +133,13 @@ declare variable $config:user-agent :=
     Determine the base URL for links.
 :)
 declare variable $config:default-base-url :=
-    (request:get-context-path() || substring-after($config:app-root, "/db")) => replace('^(.*)/?$', '$1')
+    (request:get-context-path() || substring-after($config:app-root, "/db")) => replace('^(.*?)/?$', '$1')
 ;
 declare variable $config:base-url :=
     let $site-prefix := request:get-header('X-Site-Prefix')
     return
         if (exists($site-prefix)) then
-            $site-prefix => replace('^(.*)/?$', '$1')
+            $site-prefix => replace('^(.*?)/?$', '$1')
         else
             $config:default-base-url
 ;
