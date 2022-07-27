@@ -3,7 +3,7 @@
     <msg key="abbr">Abkürzungen</msg>
     <msg key="pdf-latex">PDF (LaTeX Version)</msg>
     <msg key="view-tei">XML/TEI ansehen</msg>
-    <msg key="upload-files">XML/TML oder ODD files hinzufügen. Klicke auf den Button unten oder ziehe Dateien darauf.</msg>
+    <msg key="upload-files">TEI-XML Dateien hinzufügen. Klicke auf den Button unten oder ziehe Dateien darauf.</msg>
     <msg key="select-files">Dateien auswählen...</msg>
     <msg key="upload">Hochladen</msg>
     <msg key="uploaded-files">Hochgeladene Dateien</msg>

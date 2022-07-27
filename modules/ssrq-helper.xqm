@@ -68,7 +68,7 @@ declare function ssrq-helper:make-cache-key($prefix as xs:string) as xs:string {
 
 declare function ssrq-helper:include-upload-template($node as node(), $model as map(*)) as element(div)? {
     if (xs:boolean($ssrq-helper:ENV//upload/text())) then
-    doc(utils:path-concat-safe(($config:app-root, 'templates', 'upload.html')))
+        doc(utils:path-concat-safe(($config:app-root, 'templates', 'upload.html')))/div => templates:process($model)
     else ()
 };
 
@@ -95,7 +95,7 @@ declare function ssrq-helper:resolve-links($nodes as node()*) {
                     return
                         replace($s, concat("\{", $var, "\}"), xs:string($repl))
             })
-        let $path := 
+        let $path :=
             if ($url => contains("?")) then
                 $url => substring-before("?")
             else

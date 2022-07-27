@@ -132,7 +132,10 @@ else if (contains($exist:path, "/transform")) then
         <forward url="{$exist:controller}/transform/{substring-after($exist:path, '/transform/')}"/>
     </dispatch>
 
-
+else if (contains($exist:path, 'upload') and xs:boolean(doc(utils:path-concat-safe(($config:app-root, 'env.xml')))//upload)) then
+    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+        <forward url="{$exist:controller}/modules/pub/upload.xql"/>
+    </dispatch>
 
 else if (ends-with($exist:resource, '.xql')) then
     <dispatch xmlns="http://exist.sourceforge.net/NS/exist">

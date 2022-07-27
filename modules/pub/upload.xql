@@ -37,8 +37,14 @@ return
         try {
             local:upload($name, $data)
         } catch * {
-            map {
-                "name": $name,
-                "error": $err:description
-            }
+            (
+                response:set-status-code(
+                    if ($err:description => contains('Write permission is not granted')) then 403 else 500
+                ),
+                map {
+                    "name": $name,
+                    "error": $err:description,
+                    "code": $err:code
+                }
+            )[1]
         }
