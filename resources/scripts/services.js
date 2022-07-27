@@ -28,9 +28,10 @@ function insertTooltipFromApi(context, eventListener) {
 $(document).ready(function () {
   const root = document.documentElement.dataset.app;
   const docId = (location.origin + location.pathname)
-    .substring(root.length + 1)
+    .split(root)[1]
     .replace(/\.html\/?/, '')
     .split('/')
+    .filter((item) => item.length > 0)
     .join('-');
   const apiUrl = `${root}/api/facets?doc=${docId}`;
   const aside = $('#aside');
