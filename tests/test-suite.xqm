@@ -52,3 +52,10 @@ declare function test-suite:test($results as map(*)*) as map(*)* {
     return
         $test => map:put("passed", deep-equal($test?exp, $test?result))
 };
+
+declare function test-suite:check-env($name as xs:string?) {
+    if ($name => empty()) then
+        true()
+    else
+        doc('../env.xml')//*[name(.) = $name] => xs:boolean()
+};

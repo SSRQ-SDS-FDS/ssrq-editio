@@ -16,7 +16,7 @@ let $test-names :=
                 else
                     'tests:' || $t
         else
-            inspect:inspect-module(xs:anyURI('tests.xqm'))//function[not(ancestor::function)]/@name/data()
+            inspect:inspect-module(xs:anyURI('tests.xqm'))//function[not(ancestor::function)][test-suite:check-env(annotation[@name = 'tests:skip-env-false']/value)]/@name/data()
 let $test-functions :=
     $test-names ! function-lookup(xs:QName(xs:string(.)), 0)
 let $test-results :=
