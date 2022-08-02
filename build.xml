@@ -32,7 +32,7 @@
     </target>
 
     <target name="prod" depends="clean,set-env,style.css">
-        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${excludes} test/** modules/lib/regenerate.xql modules/pub/upload.xql templates/upload.html"/>
+        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar" excludes="${excludes} test/** modules/lib/regenerate.xql modules/pub/upload.xql templates/upload.html routes/temp.html"/>
         <delete file="env.xml"/>
     </target>
 

@@ -11,14 +11,14 @@ declare function local:upload($name, $data) {
     let $path :=
         (
             xmldb:store($config:temp-root, $name, $data),
-            sm:chmod(xs:anyURI(utils:path-concat-safe(($config:temp-root, $name))), "rw-r-----")
+            sm:chmod(xs:anyURI(utils:path-concat-safe(($config:temp-root, $name))), "rw-r--r--")
         )
     return
         map {
             "files": array {
                 map {
                     "name": $name,
-                    "path": substring-after($path, $config:data-root || "/"),
+                    "path": utils:path-concat(('temp', $name => replace('.xml', '.html'))),
                     "type": xmldb:get-mime-type($path),
                     "size": xmldb:size($config:temp-root, $name)
                 }

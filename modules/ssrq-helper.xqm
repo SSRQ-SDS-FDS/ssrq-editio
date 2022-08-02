@@ -249,6 +249,39 @@ function ssrq-helper:load-by-idno($node as node(), $model as map(*), $kanton as 
 
 };
 
+(: ~
+: Templating function to load documents from the /temp collection
+:
+: @author: Bastian Politycki
+: @date: 2022.08.02
+: @return a map, which holds the actual tei xml-file and some additional config-infos
+:
+:)
+declare
+function ssrq-helper:get-temp($node as node(), $model as map(*), $file as xs:string, $view as xs:string?, $odd as xs:string?) as map(*) {
+    let $path := utils:path-concat(($config:temp-root, $file))
+    return
+        if (doc-available($path)) then
+            let $xml := doc($path)/tei:TEI
+
+            let $has-facs := exists($xml//tei:pb[@facs]) and not($odd eq $config:odd-normalized)
+            return
+                map {
+                    "idno": $xml//tei:seriesStmt[@xml:id = 'ssrq-sds-fds']//tei:idno,
+                    "filename": $file,
+                    "show-download": false(),
+                    "xml": $xml,
+                    "config": map {
+                        "odd": utils:coalesce($odd, $config:odd),
+                        "view": app:query-view($xml/tei:text, utils:coalesce($view, $config:default-view))
+                    },
+                    "body-class": if ($has-facs) then 'col-md-6' else 'col-md-10',
+                    "has-facs": xs:string($has-facs)
+                }
+        else
+            error(xs:QName('ssrq:helper'), 'No unique result found for ' || $file)
+
+};
 
 (: ~
 : Templating function to load pdf documents from ssrq-data by their tei:idno
@@ -316,7 +349,7 @@ function ssrq-helper:render-idno-as-popup($node as node(), $model as map(*)) as 
     let $header := $model?xml//tei:teiHeader/tei:fileDesc
     let $stmtTitle := $header/tei:seriesStmt/tei:title/text()
     let $fileDescTitle :=$header/tei:titleStmt/tei:title
-    let $idno := ec:print-id($model?idno)
+    let $idno := try { ec:print-id($model?idno) } catch * { $model?idno }
     return
         <span class="alternate">
             <span class="id">{$idno} <i class="glyphicon glyphicon-info-sign"/></span>
