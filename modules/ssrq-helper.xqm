@@ -200,11 +200,9 @@ declare function ssrq-helper:insertAlt($node as node(), $model as map(*)) as nod
 :)
 declare
 function ssrq-helper:count-docs($volume as element(volume)) as xs:integer {
-    let $distinct-docs := for $doc in $volume/doc[not(special)]
-                            group by $grouping-key := if ($doc/case) then $doc/case else $doc/doc
-                            return $grouping-key
-    return count($distinct-docs)
-
+    $volume/doc[not(special)] ! (./*[name()!='num'] => string-join("-"))
+    => distinct-values()
+    => count()
 };
 
 
