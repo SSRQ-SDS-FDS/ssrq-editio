@@ -145,6 +145,7 @@ else if (contains($exist:path, 'upload') or (contains($exist:path, 'temp')) and 
                     <view>
                         <forward url="{$exist:controller}/modules/view.xql">
                             <add-parameter name="file" value="{$exist:resource => replace('.html', '.xml')}"/>
+                            <add-parameter name="toggle-odd" value="true"/>
                         </forward>
                     </view>
                 </dispatch>
