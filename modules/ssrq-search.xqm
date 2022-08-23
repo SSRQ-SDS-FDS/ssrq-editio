@@ -232,7 +232,7 @@ declare function query:filter($hits as element()*) {
                         case "filter-kanton" return
                             for $v in $value
                             return
-                                $context[ancestor-or-self::tei:TEI[matches(tei:teiHeader//tei:seriesStmt/tei:idno, ``[^(?:SSRQ|SDS|FDS)_`{$v}`.*$]``)]]
+                                $context[ancestor-or-self::tei:TEI[matches(tei:teiHeader//tei:seriesStmt/tei:idno, ``[^(?:SSRQ|SDS|FDS)-`{$v}`.*$]``)]]
                         case "filter-pubdate-min" return
                                 $context[substring(ancestor-or-self::tei:TEI//tei:publicationStmt/tei:date[@type='electronic']/@when, 1, 4) >= $value]
                         case "filter-pubdate-max" return
