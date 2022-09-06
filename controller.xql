@@ -131,25 +131,33 @@ else if (contains($exist:path, "/transform")) then
         <forward url="{$exist:controller}/transform/{substring-after($exist:path, '/transform/')}"/>
     </dispatch>
 
-else if (contains($exist:path, 'upload') or (contains($exist:path, 'temp')) and xs:boolean(doc(utils:path-concat-safe(($config:app-root, 'env.xml')))//upload)) then
-    switch (request:get-method())
-        case 'POST'
-            return
-                <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-                    <forward url="{$exist:controller}/modules/pub/upload.xql"/>
-                </dispatch>
-        default
-            return
-                <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-                    <forward url="{$exist:controller}{$routeBase}temp.html"/>
-                    <view>
-                        <forward url="{$exist:controller}/modules/view.xql">
-                            <add-parameter name="file" value="{$exist:resource => replace('.html', '.xml')}"/>
-                            <add-parameter name="toggle-odd" value="true"/>
-                        </forward>
-                    </view>
-                </dispatch>
-
+else if (contains($exist:path, 'upload') or contains($exist:path, 'temp')) then
+    if (xs:boolean(doc(utils:path-concat-safe(($config:app-root, 'env.xml')))//upload)) then
+        switch (request:get-method())
+            case 'POST'
+                return
+                    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+                        <forward url="{$exist:controller}/modules/pub/upload.xql"/>
+                    </dispatch>
+            default
+                return
+                    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+                        <forward url="{$exist:controller}{$routeBase}temp.html"/>
+                        <view>
+                            <forward url="{$exist:controller}/modules/view.xql">
+                                <add-parameter name="file" value="{$exist:resource => replace('.html', '.xml')}"/>
+                                <add-parameter name="toggle-odd" value="true"/>
+                            </forward>
+                        </view>
+                    </dispatch>
+    else
+        <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+            <forward url="{$exist:controller}{$routeBase}error-page.html"/>
+            <view>
+                <forward url="{$exist:controller}{$routeBase}error-page.html" method="get"/>
+                <forward url="{$exist:controller}/modules/view.xql"/>
+            </view>
+        </dispatch>
 
 else if (ends-with($exist:resource, '.xql')) then
     <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
