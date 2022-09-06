@@ -76,7 +76,7 @@
       const root = document.documentElement.dataset.app;
       $('#fileupload')
         .fileupload({
-          url: `${root}/upload`,
+          url: `${root}/temp/`,
           dataType: 'json',
           done: function (e, data) {
             $.each(data.result.files, function (index, file) {

@@ -131,7 +131,7 @@ else if (contains($exist:path, "/transform")) then
         <forward url="{$exist:controller}/transform/{substring-after($exist:path, '/transform/')}"/>
     </dispatch>
 
-else if (contains($exist:path, 'upload') or contains($exist:path, 'temp')) then
+else if (contains($exist:path, '/temp/')) then
     if (xs:boolean(doc(utils:path-concat-safe(($config:app-root, 'env.xml')))//upload)) then
         switch (request:get-method())
             case 'POST'
