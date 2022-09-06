@@ -16,7 +16,7 @@ You can use different parameters to trigger different builds and change the cach
 
 Short example:
 ```
-ant -Denv=dev -Dcache=false upload=true
+ant -Denv=dev -Dcache=false -Dupload=true
 ```
 will start a build for the dev environment with caching disabled.
 

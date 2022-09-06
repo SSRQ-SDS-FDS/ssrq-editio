@@ -67,7 +67,7 @@ declare function templates:apply($content as node()+, $resolver as function(xs:s
  : information between templating instructions.
  : @param $configuration a map of configuration parameters. For example you may provide a
  :  'parameter value resolver' by mapping $templates:CONFIG_PARAM_RESOLVER to a function
- :  whoose job it is to provide values for templated parameters. The function signature for
+ :  whose job it is to provide values for templated parameters. The function signature for
  :  the 'parameter value resolver' is f($param-name as xs:string) as item()*
 :)
 declare function templates:apply($content as node()+, $resolver as function(xs:string, xs:int) as item()?, $model as map(*)?,
