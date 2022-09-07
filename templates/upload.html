@@ -29,82 +29,66 @@
   </style>
   <div class="panel-heading">
     <h3 class="panel-title">
-      <i18n:text key="upload" />
+      <i18n:text key="upload"/>
     </h3>
   </div>
 
   <div class="panel-body">
     <p>
-      <i18n:text key="upload-files" />
+      <i18n:text key="upload-files"/>
     </p>
 
     <span class="btn btn-success btn-block fileinput-button">
       <i class="material-icons">file_upload</i>
       <span>
-        <i18n:text key="select-files" />
+        <i18n:text key="select-files"/>
       </span>
-      <input id="fileupload" type="file" name="files[]" multiple="multiple" />
+      <input id="fileupload" type="file" name="files[]" multiple="multiple"/>
     </span>
     <!-- The global progress bar -->
     <div id="progress" class="progress">
-      <div class="progress-bar progress-bar-success" />
+      <div class="progress-bar progress-bar-success"/>
     </div>
     <!-- The container for the uploaded files -->
     <table id="files-table" class="files table table-striped">
       <thead>
         <th colspan="2">
-          <i18n:text key="uploaded-files" />
+          <i18n:text key="uploaded-files"/>
         </th>
       </thead>
-      <tbody id="files" />
+      <tbody id="files"/>
     </table>
   </div>
 
-  <script
-    data-template="ssrq-helper:resolve-links"
-    type="application/javascript"
-    src="{app}/resources/scripts/vendor/jquery.ui.widget.js"
-  />
-  <script
-    data-template="ssrq-helper:resolve-links"
-    type="application/javascript"
-    src="{app}/resources/scripts/vendor/jquery.fileupload.js"
-  />
+  <script data-template="ssrq-helper:resolve-links" type="application/javascript" src="{app}/resources/scripts/vendor/jquery.ui.widget.js"/>
+  <script data-template="ssrq-helper:resolve-links" type="application/javascript" src="{app}/resources/scripts/vendor/jquery.fileupload.js"/>
   <script type="application/javascript">
     $(function () {
       'use strict';
-      const root = document.documentElement.dataset.app;
+      var root = $("html").data("app");
       $('#fileupload')
         .fileupload({
-          url: `${root}/temp/`,
+          url: root + "/temp/",
           dataType: 'json',
           done: function (e, data) {
             $.each(data.result.files, function (index, file) {
-              var tr = document.createElement('tr');
-              var td = document.createElement('td');
-              var link = document.createElement('a');
-              link.href = file.path;
-              link.target = '_blank';
-              var icon = document.createElement('span');
-              icon.className = 'material-icons';
-              icon.appendChild(document.createTextNode('open_in_new'));
-              link.appendChild(icon);
-              td.appendChild(link);
-              tr.appendChild(td);
-              td = document.createElement('td');
-              td.appendChild(document.createTextNode(file.path));
-              tr.appendChild(td);
-              $('#files').append(tr);
+              $('<tr/>')
+                .append(
+                  $('<td/>')
+                    .append(
+                      $('<a target="_blank"/>')
+                        .attr("href", root + "/" + file.path)
+                        .html('<span class="material-icons">open_in_new</span>')))
+                .append(
+                    $('<td/>')
+                      .text(file.name))
+                .appendTo('#files');
             });
           },
           error: function (e, data) {
-            const errorMessage = document.createElement('p');
-            errorMessage.setAttribute(
-                'style',
-                'color: red;'
-            )
-            errorMessage.appendChild(document.createTextNode(e.responseJSON.error));
-            $('#files').append(errorMessage);
+            $('<p style="color: red"/>')
+              .text(e.responseJSON.error)
+              .appendTo('#files');
           },
           progressall: function (e, data) {
             var progress = parseInt((data.loaded / data.total) * 100, 10);
