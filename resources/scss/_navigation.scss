@@ -139,3 +139,13 @@
     margin-left: -15px;
   }
 }
+
+// language selector
+#lang-select {
+	margin-right: 0;
+}
+#lang-select > a {
+	color: $color-navigation-text;
+	font-size: small;
+	margin: .25em;
+}
