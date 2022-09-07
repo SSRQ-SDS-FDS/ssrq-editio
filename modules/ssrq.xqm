@@ -665,7 +665,8 @@ function app:show-help($node as node(), $model as map(*), $field as xs:string) {
 declare
 %templates:wrap
 function app:download($node as node(), $model as map(*)) as element(li)? {
-    if ($model => map:contains('xml')) then
+    if ($model => map:contains('xml') and (
+            empty($model?show-download) or $model?show-download)) then
         <li class="dropdown">
             {
                  templates:process($node/node(), $model)
