@@ -742,3 +742,17 @@ declare function app:parse-params($node as node(), $model as map(*)) {
         templates:process($node/node(), $model)
     }
 };
+
+declare function app:highlight-active-lang($node as node(), $model as map(*)) {
+     element {node-name($node) } {
+            $node/@* except $node/@data-template,
+            for $child in $node/*
+            return
+                element {node-name($child)} {
+                    $child/@*,
+                    (attribute { 'class' } { 'selected-lang' })[ends-with($child/@href,(session:get-attribute("ssrq.lang"), "de")[1])],
+                    $child/text()
+
+                }
+     }
+};
