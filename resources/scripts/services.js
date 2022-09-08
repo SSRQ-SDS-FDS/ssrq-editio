@@ -16,7 +16,7 @@ function insertTooltipFromApi(context, eventListener) {
     $(context)
       .find('.select-facet')
       .on('change', function () {
-        if (context.checked) {
+        if (this.checked) {
           refs.parents('.reference').addClass('highlight');
         } else {
           refs.parents('.reference').removeClass('highlight');
