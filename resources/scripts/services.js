@@ -15,8 +15,8 @@ function insertTooltipFromApi(context, eventListener) {
   if (eventListener) {
     $(context)
       .find('.select-facet')
-      .on('change', function () {
-        if (context.checked) {
+      .on('change', function (e) {
+        if (e.target.checked) {
           refs.parents('.reference').addClass('highlight');
         } else {
           refs.parents('.reference').removeClass('highlight');
@@ -48,7 +48,7 @@ $(document).ready(function () {
         $(response)
           .find('li')
           .each(function () {
-            insertTooltipFromApi(this, false);
+            insertTooltipFromApi(this, aside.length > 0);
           });
       },
     });
