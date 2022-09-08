@@ -142,10 +142,15 @@
 
 // language selector
 #lang-select {
-	margin-right: 0;
+  margin-right: 0;
 }
 #lang-select > a {
-	color: $color-navigation-text;
-	font-size: small;
-	margin: .25em;
+  color: $color-navigation-text;
+  font-size: small;
+  margin: 0.25em;
+  text-decoration: none;
+
+  &.selected-lang {
+    border-bottom: solid 1px $color-primary;
+  }
 }
