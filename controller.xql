@@ -75,7 +75,6 @@ declare function controller:find-route-from-list($routes as map(*)+, $resource a
                         else (),
                         <add-parameter name="toggle-odd" value="true"/>[map:contains($route, 'toggle-odd') and $route?toggle-odd]
                     }
-                        <set-header name="Cache-Control" value="no-cache"/>
                     {
                         if($route => map:contains('type')) then
                             <set-header name="Content-Type" value="{$route?type}"/>
@@ -139,6 +138,7 @@ else if ($top-dir = "temp") then
                             <forward url="{$exist:controller}/modules/view.xql">
                                 <add-parameter name="file" value="{$exist:resource => replace('.html', '.xml')}"/>
                                 <add-parameter name="toggle-odd" value="true"/>
+                                <set-header name="Cache-Control" value="no-cache"/>
                             </forward>
                         </view>
                     </dispatch>
