@@ -48,7 +48,7 @@ $(document).ready(function () {
         $(response)
           .find('li')
           .each(function () {
-            insertTooltipFromApi(this, false);
+            insertTooltipFromApi(this, aside.length > 0);
           });
       },
     });
