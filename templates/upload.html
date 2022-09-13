@@ -71,6 +71,7 @@
           url: root + "/temp/",
           dataType: 'json',
           done: function (e, data) {
+            $(".error-message").remove();
             $.each(data.result.files, function (index, file) {
               $('<tr/>')
                 .append(
@@ -86,7 +87,7 @@
             });
           },
           error: function (e, data) {
-            $('<p style="color: red"/>')
+            $('<p class="error-message" style="color: red"/>')
               .text(e.responseJSON.error)
               .appendTo('#files');
           },
