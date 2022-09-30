@@ -11,6 +11,7 @@ import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at 
 import module namespace session="http://exist-db.org/xquery/session";
 import module namespace request="http://exist-db.org/xquery/request";
 import module namespace console="http://exist-db.org/xquery/console";
+import module namespace ssrq-lang="http://ssrq-sds-fds.ch/exist/apps/ssrq/lang" at "modules/ssrq-lang.xqm";
 
 declare variable $exist:path external;
 declare variable $exist:resource external;
@@ -20,7 +21,7 @@ declare variable $exist:root external;
 declare variable $routeBase := '/routes/';
 
 
-declare function controller:setLanguage() {
+declare function controller:set-language() {
     let $lang-param := request:get-parameter("lang", ())
     let $lang-selected := session:get-attribute("ssrq.lang")
     return
@@ -30,7 +31,7 @@ declare function controller:setLanguage() {
         then session:set-attribute("ssrq.lang", $lang-selected)
         else if ($lang-param and $lang-selected => empty())
         then session:set-attribute("ssrq.lang", $lang-param)
-        else session:set-attribute("ssrq.lang", "de")
+        else session:set-attribute("ssrq.lang", ssrq-lang:get-browser-lang())
 };
 
 (: Helper function to match the name of a route to a route specified in $main-routes :)
@@ -96,7 +97,7 @@ declare function controller:find-route-from-list($routes as map(*)+, $resource a
 };
 
 (: To-Do: Test if language Switching Works correct with urls... :)
-let $lang := controller:setLanguage()
+let $lang := controller:set-language()
 let $error-handler := <error-handler>
                         <forward url="{$exist:controller}/routes/error-page.html" method="get"/>
                         <forward url="{$exist:controller}/modules/view.xql"/>
