@@ -51,3 +51,12 @@ declare %private function ssrq-lang:parse-header($header as xs:string) as xs:str
   let $format := "$2q=$5"
   return replace(lower-case($header), $regex, $format)
 };
+
+declare function ssrq-lang:check-x-site-lang() as map(*) {
+    let $header := request:get-header("X-Site-Lang")
+    return
+        map {
+            "add-lang-param": $header => empty() ,
+            "lang": $header
+        }
+};

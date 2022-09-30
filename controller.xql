@@ -22,7 +22,7 @@ declare variable $routeBase := '/routes/';
 
 
 declare function controller:set-language() {
-    let $lang-param := request:get-parameter("lang", ())
+    let $lang-param := ($config:lang-settings?lang, request:get-parameter("lang", ()))[1]
     let $lang-selected := session:get-attribute("ssrq.lang")
     return
         if ($lang-selected and $lang-selected != $lang-param)
