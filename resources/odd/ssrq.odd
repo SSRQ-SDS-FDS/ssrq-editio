@@ -363,9 +363,13 @@
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('origDate'), ec:colon(), ec:format-date(@when), ' (', ec:translate(@calendar, false(), false()), ')')"/>
                     </model>
-                    <model behaviour="alternate" cssClass="text-critical">
+                    <model behaviour="alternate" cssClass="text-critical" predicate="@when">
                         <param name="default" value="."/>
-                        <param name="alternate" value="(ec:label('origDate'), ec:colon(), if(@when) then ec:format-date(@when) else 'date')"/>
+                        <param name="alternate" value="(ec:label('origDate'), ec:colon(), ec:format-date(@when))"/>
+                    </model>
+                    <model behaviour="alternate" cssClass="text-critical" predicate=".[@from][@to]">
+                        <param name="default" value="."/>
+                        <param name="alternate" value="(ec:label('origDate'), ec:colon(), (ec:format-date(@from), ' – ', ec:format-date(@to)))"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="add" mode="change">
