@@ -277,7 +277,11 @@ declare function ec:create-link($components as xs:string*, $params as map(*)) as
     let $path :=
         string-join($components, "/")
     let $query-params :=
-        $params
+        (
+            if ($config:lang-settings?add-lang-param and not($params?lang)) then
+                $params => map:put("lang", session:get-attribute("ssrq.lang"))
+            else $params
+        )
         => map:for-each(function ($k, $v) {
                ($k, $v) => string-join('=')
            })
@@ -375,7 +379,6 @@ declare function ec:format-duration($duration as xs:string) as xs:string {
                 ec:get-duration-label("hour", $parsed-duration//xpath:group[@nr = '5']),
                 ec:get-duration-label("minute", $parsed-duration//xpath:group[@nr = '6'])
             )
-        let $l := console:log($parsed-duration)
         return
             string-join(
                 (
