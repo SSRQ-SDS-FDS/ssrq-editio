@@ -355,26 +355,17 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
     for $hit at $index in $model?hits => subsequence($start, $per-page)
     let $work := $hit/ancestor::tei:TEI
     let $config := tpu:parse-pi(root($work), $view)
-    let $relpath :=
+    let $doc-url :=
         try {
-            let $doc := doc-list:get($work//tei:seriesStmt/tei:idno[1])
-            return
-                ec:create-app-link((
-                    $doc/kanton,
-                    $doc/volume,
-                    if ($doc/special) then
-                        $doc/special
-                    else
-                        (string-join(($doc/case, $doc/doc), '.'), $doc/num) => string-join('-')
-                    || '.html'))
+            ec:create-link-from-id($work//tei:seriesStmt/tei:idno[1])
         } catch * {
             ()
         }
-    where $relpath
+    where $doc-url
     return
         <div class="reference">
-            {query:view-header($work, $relpath, $hit, $start, $index)}
-            {query:view-snippets($hit, $model, $config, $relpath)}
+            {query:view-header($work, $doc-url, $hit, $start, $index)}
+            {query:view-snippets($hit, $model, $config, $doc-url)}
         </div>
 };
 
@@ -435,7 +426,7 @@ function query:get-ssrq-idno($work) {
 
 declare
     %private
-function query:view-header($work as node(), $relpath as xs:string, $hit as item(), $start as xs:integer, $index as xs:integer) as element(header) {
+function query:view-header($work as node(), $doc-url as xs:string, $hit as item(), $start as xs:integer, $index as xs:integer) as element(header) {
     let $header := $work//tei:teiHeader
     let $head := ($header//tei:msDesc/tei:head/node(), $header//tei:titleStmt/tei:title/node())[1]
     return
@@ -448,14 +439,14 @@ function query:view-header($work as node(), $relpath as xs:string, $hit as item(
                 <i18n:text key="orig-date">Datum</i18n:text>: <span>{query:view-origDate($work)}</span>
             </h5>
             <h4>
-                <a href="{$relpath}">{$pm-config:web-transform($head, map { "root": $head}, $config:odd)}</a>
+                <a href="{$doc-url}">{$pm-config:web-transform($head, map { "root": $head }, $config:odd)}</a>
             </h4>
         </header>
 };
 
 declare
     %private
-function query:view-snippets($hit as item(), $model as map(*), $config as map(*), $relpath as xs:string) as element(article) {
+function query:view-snippets($hit as item(), $model as map(*), $config as map(*), $doc-url as xs:string) as element(article) {
     let $mark-matches :=
         if (exists($model?ids)) then
             let $parent := ($hit/self::tei:body, $hit/ancestor-or-self::tei:div[1],  $hit/ancestor-or-self::tei:teiHeader, $hit)[1]
@@ -467,17 +458,22 @@ function query:view-snippets($hit as item(), $model as map(*), $config as map(*)
         <article>
             {
             for $match in subsequence($mark-matches//exist:match, 1, 5)
-            let $matchId := $match/../@exist:id
-            let $action := if (exists($model?ids)) then "" else "search"
+            let $match-id := $match/../@exist:id
+            let $params := (
+                    ($doc-url => substring-after("?") => tokenize("[&amp;;]")),
+                    "view=" || encode-for-uri($config?view),
+                    "action=search",
+                    "odd=" || encode-for-uri($config?odd)
+                ) => string-join("&amp;")
             let $kwic-config :=
                 if (exists($model?ids)) then
-                    let $idList := string-join(for $id in $model?ids return "sr=" || $id, "&amp;")
+                    let $id-list := string-join(for $id in $model?ids return "sr=" || $id, "&amp;")
                     return
                         <config width="60" table="no"
-                            link="{$relpath}?view={$config?view}&amp;action=search&amp;odd={$config?odd}&amp;{$idList}#{$matchId}"/>
+                            link="{$doc-url => substring-before("?")}?{$params}&amp;{$id-list}#{$match-id}"/>
                 else
                     <config width="60" table="no"
-                        link="{$relpath}?root=body&amp;action=search&amp;view={$config?view}&amp;odd={$config?odd}#{$matchId}"/>
+                        link="{$doc-url => substring-before("?")}?{$params}&amp;root=body#{$match-id}"/>
             return
                 kwic:get-summary($mark-matches, $match, $kwic-config)
             }
