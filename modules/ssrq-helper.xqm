@@ -342,10 +342,10 @@ return
 
 declare
 %templates:wrap
-function ssrq-helper:render-idno-as-popup($node as node(), $model as map(*)) as element(span)? {
+function ssrq-helper:render-idno-as-popup($node as node(), $model as map(*), $idno-link) as element(span)? {
     let $header := $model?xml//tei:teiHeader/tei:fileDesc
     let $stmtTitle := $header/tei:seriesStmt/tei:title/text()
-    let $fileDescTitle :=$header/tei:titleStmt/tei:title
+    let $fileDescTitle := $header/tei:titleStmt/tei:title
     let $idno := try { ec:print-id($model?idno) } catch * { $model?idno }
     return
         <span class="alternate">
@@ -353,7 +353,11 @@ function ssrq-helper:render-idno-as-popup($node as node(), $model as map(*)) as 
             <span class="altcontent" xmlns:i18n="http://exist-db.org/xquery/i18n" popover-class="increase-popover-width">
                     <p>{$stmtTitle}, {$pm-config:web-transform($fileDescTitle, map { "root": $fileDescTitle, "view": "infopopup"}, $config:odd)}, <i18n:text key="by">von</i18n:text> {ssrq-helper:pers-names($header//tei:editor)}</p>
                     <p><i18n:text key="zitation">Zitation:</i18n:text>
-                      <a href="{ec:create-p-link-from-id($model?idno/@xml:id)}">{$idno}</a>
+                    { if ($idno-link => empty() or xs:boolean($idno-link)) then
+                        <a href="{ec:create-p-link-from-id($model?idno/@xml:id)}">{$idno}</a>
+                      else
+                        $idno
+                    }
                     </p>
                     <p><i18n:text key="lizenz">Lizenz:</i18n:text> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de">CC BY-NC-SA</a></p>
             </span>

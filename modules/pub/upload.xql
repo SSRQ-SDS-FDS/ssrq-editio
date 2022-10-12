@@ -37,10 +37,10 @@ return
         map { "error": "only a filename, please, no paths" }
     else
         try {
-            let $id := parse-xml(util:base64-decode($data))//tei:seriesStmt[@xml:id="ssrq-sds-fds"]/tei:idno/text()
+            let $id := parse-xml(util:base64-decode($data))//tei:seriesStmt[@xml:id="ssrq-sds-fds"]/tei:idno/text() => replace("\.xml$", "")
             return
                 if ($id => empty()) then
-                    error(xs:QName("ssrq-upload:id-missing"), 'ID missing. You need to assign an tei:idno before uploading.')
+                    error(xs:QName("ssrq-upload:id-missing"), 'ID missing. You need to assign a tei:idno before uploading.')
                 else if (collection($config:data-root)//tei:TEI[.//tei:idno/text() = $id][not(root(.) => document-uri() => contains($config:temp-root))] => empty()) then
                     local:upload($id ||'.xml', $data)
                 else
