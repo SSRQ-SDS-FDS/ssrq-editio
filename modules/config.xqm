@@ -168,6 +168,8 @@ declare variable $config:data-root := "/db/apps/ssrq-data/data";
 
 declare variable $config:temp-root := "/db/apps/ssrq-data/data/temp";
 
+declare variable $config:env := doc($config:app-root || '/env.xml')/settings;
+
 declare variable $config:odd := request:get-parameter("odd", $config:odd-diplomatic);
 
 declare variable $config:odd-diplomatic := "ssrq.odd";

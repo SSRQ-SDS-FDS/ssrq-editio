@@ -314,8 +314,11 @@ declare function ec:create-link-from-id($id as xs:string) as xs:string {
 };
 
 declare function ec:create-p-link-from-id($id as xs:string) as xs:string {
-    ($config:permalink-base => replace('^(.*?)/?$', '$1'), encode-for-uri($id))
-    => string-join("/")
+    if ($config:lang-settings?add-lang-param or $config:env/env = 'dev') then
+        ec:create-link-from-id($id)
+    else
+        ($config:permalink-base => replace('^(.*?)/?$', '$1'), encode-for-uri($id))
+        => string-join("/")
 };
 
 declare function ec:get-article-nr($id as xs:string?) {

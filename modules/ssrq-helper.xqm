@@ -28,8 +28,6 @@ declare variable $ssrq-helper:ALL_DOCS := collection($config:data-root);
 declare variable $ssrq-helper:SPECIAL_DOCS := collection($config:data-root)/tei:TEI[@type];
 declare variable $ssrq-helper:CANTONS := util:binary-doc($config:app-root || '/resources/json/cantons.json')  => util:binary-to-string() => parse-json();
 declare variable $ssrq-helper:STATIC := $config:app-root || '/static';
-declare variable $ssrq-helper:ENV := doc($config:app-root || '/env.xml');
-
 
 (:~
 : This function is called by the eXist templating engine and
@@ -38,7 +36,7 @@ declare variable $ssrq-helper:ENV := doc($config:app-root || '/env.xml');
 : @return the rendered (cached or compiled) result as node()
 :)
 declare function ssrq-helper:cache-store-retrieve($node as node(), $model as map(*), $prefix as xs:string?) as node() {
-    let $use-cache := xs:boolean($ssrq-helper:ENV//cache/text())
+    let $use-cache := xs:boolean($config:env/cache/text())
     let $cache-key := ssrq-helper:make-cache-key($prefix)
     let $cached-content :=
         if ($use-cache) then
@@ -67,9 +65,10 @@ declare function ssrq-helper:make-cache-key($prefix as xs:string) as xs:string {
 };
 
 declare function ssrq-helper:include-upload-template($node as node(), $model as map(*)) as element(div)? {
-    if (xs:boolean($ssrq-helper:ENV//upload/text())) then
+    if (xs:boolean($config:env/upload/text())) then
         doc(utils:path-concat-safe(($config:app-root, 'templates', 'upload.html')))/div => templates:process($model)
-    else ()
+    else
+        ()
 };
 
 declare
@@ -353,13 +352,8 @@ function ssrq-helper:render-idno-as-popup($node as node(), $model as map(*)) as 
             <span class="id">{$idno} <i class="glyphicon glyphicon-info-sign"/></span>
             <span class="altcontent" xmlns:i18n="http://exist-db.org/xquery/i18n" popover-class="increase-popover-width">
                     <p>{$stmtTitle}, {$pm-config:web-transform($fileDescTitle, map { "root": $fileDescTitle, "view": "infopopup"}, $config:odd)}, <i18n:text key="by">von</i18n:text> {ssrq-helper:pers-names($header//tei:editor)}</p>
-                    <p><i18n:text key="zitation">Zitation:</i18n:text> <a href="{
-                        if ($config:lang-settings?add-lang-param or $ssrq-helper:ENV//env = 'dev') then
-                            ec:create-app-link(($model?idno/canton, $model?idno/volume, ''))
-                        else 
-                            ec:create-p-link-from-id($model?idno/@xml:id)
-                        }">
-                        {$idno}</a>
+                    <p><i18n:text key="zitation">Zitation:</i18n:text>
+                      <a href="{ec:create-p-link-from-id($model?idno/@xml:id)}">{$idno}</a>
                     </p>
                     <p><i18n:text key="lizenz">Lizenz:</i18n:text> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de">CC BY-NC-SA</a></p>
             </span>
