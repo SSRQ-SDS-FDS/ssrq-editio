@@ -313,6 +313,11 @@ declare function ec:create-link-from-id($id as xs:string) as xs:string {
         => ec:create-app-link()
 };
 
+declare function ec:create-p-link-from-id($id as xs:string) as xs:string {
+    ($config:permalink-base => replace('^(.*?)/?$', '$1'), encode-for-uri($id))
+    => string-join("/")
+};
+
 declare function ec:get-article-nr($id as xs:string?) {
     let $temp  := replace($id, "^(.+?)_(\d{3}.*?)(?:_\d{1,2})?$", "$1 $2")
     let $parts := tokenize($temp)

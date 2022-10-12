@@ -8,6 +8,7 @@ import module namespace i18n = 'http://exist-db.org/xquery/i18n' at "../lib/i18n
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace session="http://exist-db.org/xquery/session";
+import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "ext-common.xqm";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
@@ -43,7 +44,7 @@ declare function index:list-places($xml as node()) as element()* {
                         return
                             <li data-ref="{$place/@id}">
                                 <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"></input>
-                                <a target="_new" href="https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$place/@id}">{$place/stdName}</a>
+                                <a target="_new" href="{ec:create-p-link-from-id($place/@id)}">{$place/stdName}</a>
                                 ({$place/location})
                                 {$place/type}
                             </li>
@@ -71,7 +72,7 @@ declare function index:list-keys($xml as node()) as element()* {
                         return
                             <li data-ref="{$lemma/@id}">
                                 <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"/>
-                                <a href="https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id={$lemma/@id}" target="_new">{$lemma/name}</a>
+                                <a href="{ec:create-p-link-from-id($lemma/@id)}" target="_new">{$lemma/name}</a>
                             </li>
                     )
                 }
@@ -97,7 +98,7 @@ declare function index:list-lemmata($xml as node()) as element()* {
                         return
                             <li data-ref="{$lemma/@id}">
                                 <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"/>
-                                <a target="_new" href="https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-lemma.xq?id={$lemma/@id}">{$lemma/stdName}</a>
+                                <a target="_new" href="{ec:create-p-link-from-id($lemma/@id)}">{$lemma/stdName}</a>
                                 ({$lemma/morphology})
                                 {$lemma/definition}
                             </li>
@@ -125,7 +126,7 @@ declare function index:list-persons($xml as node()) as element()* {
                         return
                             <li data-ref="{$person?id}">
                                 <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"/>
-                                <a target="_new" href="https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$person?id}">{$person?name}</a>
+                                <a target="_new" href="{ec:create-p-link-from-id($person?id)}">{$person?name}</a>
                                     {
                                         if ($person?dates) then
                                             <span class="info"> ({$person?dates})</span>
@@ -157,7 +158,7 @@ declare function index:list-organizations($xml as node()) as element()* {
                         return
                             <li data-ref="{$organization?id}">
                                 <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"/>
-                                <a target="_new" href="https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$organization?id}">{$organization?name}</a>
+                                <a target="_new" href="{ec:create-p-link-from-id($organization?id)}">{$organization?name}</a>
                                     {
                                         if ($organization?type) then
                                             <span class="info"> ({$organization?type})</span>

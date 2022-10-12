@@ -129,6 +129,8 @@ declare variable $config:user-agent :=
         string-join(($app-ua, $default-ua), " ")
 ;
 
+declare variable $config:permalink-base := "//p.ssrq-sds-fds.ch/";
+
 (:
     Determine the base URL for links.
 :)

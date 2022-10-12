@@ -353,7 +353,14 @@ function ssrq-helper:render-idno-as-popup($node as node(), $model as map(*)) as 
             <span class="id">{$idno} <i class="glyphicon glyphicon-info-sign"/></span>
             <span class="altcontent" xmlns:i18n="http://exist-db.org/xquery/i18n" popover-class="increase-popover-width">
                     <p>{$stmtTitle}, {$pm-config:web-transform($fileDescTitle, map { "root": $fileDescTitle, "view": "infopopup"}, $config:odd)}, <i18n:text key="by">von</i18n:text> {ssrq-helper:pers-names($header//tei:editor)}</p>
-                    <p><i18n:text key="zitation">Zitation:</i18n:text> <a href="{ec:create-app-link(($model?idno/canton, $model?idno/volume, ''))}">{$idno}</a></p>
+                    <p><i18n:text key="zitation">Zitation:</i18n:text> <a href="{
+                        if ($config:lang-settings?add-lang-param or $ssrq-helper:ENV//env = 'dev') then
+                            ec:create-app-link(($model?idno/canton, $model?idno/volume, ''))
+                        else 
+                            ec:create-p-link-from-id($model?idno/@xml:id)
+                        }">
+                        {$idno}</a>
+                    </p>
                     <p><i18n:text key="lizenz">Lizenz:</i18n:text> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de">CC BY-NC-SA</a></p>
             </span>
         </span>
@@ -642,10 +649,7 @@ declare function ssrq-helper:hits($node as node(), $model as map(*), $kanton as 
 
 
 (:~
-: Renndering functions used for ?template=introduction.html
-:
-:
-:
+: Rendering functions used for ?template=introduction.html
 :)
 declare function ssrq-helper:renderHeadings($section as node()) as element(li)* {
     let $section-heading := $section => ec:get-head()

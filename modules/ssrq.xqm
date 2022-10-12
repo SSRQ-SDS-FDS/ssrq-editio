@@ -191,7 +191,7 @@ declare function app:list-places($node as node(), $model as map(*)) {
             return
                 <li data-ref="{$place/@id}">
                     <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"></input>
-                    <a target="_new" href="https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$place/@id}">{$place/stdName}</a>
+                    <a target="_new" href="{ec:create-p-link-from-id($place/@id)}">{$place/stdName}</a>
                     ({$place/location})
                     {$place/type}
                 </li>
@@ -208,7 +208,7 @@ declare function app:list-keys($node as node(), $model as map(*)) {
             return
                 <li data-ref="{$lemma/@id}">
                     <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"/>
-                    <a href="https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id={$lemma/@id}" target="_new">{$lemma/name}</a>
+                    <a href="{ec:create-p-link-from-id($lemma/@id)}" target="_new">{$lemma/name}</a>
                 </li>
     }
 };
@@ -223,7 +223,7 @@ declare function app:list-lemmata($node as node(), $model as map(*)) {
             return
                 <li data-ref="{$lemma/@id}">
                     <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"/>
-                    <a target="_new" href="https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-lemma.xq?id={$lemma/@id}">{$lemma/stdName}</a>
+                    <a target="_new" href="{ec:create-p-link-from-id($lemma/@id)}">{$lemma/stdName}</a>
                     ({$lemma/morphology})
                     {$lemma/definition}
                 </li>
@@ -242,7 +242,7 @@ declare function app:list-persons($node as node(), $model as map(*)) {
             return
                 <li data-ref="{$person?id}">
                     <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"/>
-                    <a target="_new" href="https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$person?id}">{$person?name}</a>
+                    <a target="_new" href="{ec:create-p-link-from-id($person?id)}">{$person?name}</a>
                         {
                             if ($person?dates) then
                                 <span class="info"> ({$person?dates})</span>
@@ -263,7 +263,7 @@ declare function app:list-organizations($node as node(), $model as map(*)) {
             return
                 <li data-ref="{$organization?id}">
                     <input type="checkbox" class="select-facet" title="i18n(highlight-facet)"/>
-                    <a target="_new" href="https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$organization?id}">{$organization?name}</a>
+                    <a target="_new" href="{ec:create-p-link-from-id($organization?id)}">{$organization?name}</a>
                         {
                             if ($organization?type) then
                                 <span class="info"> ({$organization?type})</span>

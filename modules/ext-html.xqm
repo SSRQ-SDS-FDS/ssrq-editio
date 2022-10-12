@@ -28,20 +28,26 @@ declare function ec-html:reference($config as map(*), $node as element(), $class
     let $url :=
         typeswitch($node)
             case element(tei:persName) | element(tei:orgName) return
-                "https://www.ssrq-sds-fds.ch/persons-db-edit/?query=" || $ref[1]
-            case element(tei:placeName)  | element(tei:origPlace)  return
-                "https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id=" || $ref
+                ec:create-p-link-from-id($ref[1])
+            case element(tei:placeName) | element(tei:origPlace) return
+                ec:create-p-link-from-id($ref)
             case element(tei:term) return
-                if (starts-with($ref, 'key')) then
-                    "https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id=" || $ref
-                else
-                    "https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-lemma.xq?id=" || $ref
+                ec:create-p-link-from-id($ref)
             default return $ref
     return
         <span class="reference {$class}">
             <span><span data-url="{$url}">{$config?apply-children($config, $node, $content)}</span></span>
             <span class="altcontent">
-                {if ($label => ends-with(':')) then concat($label, ' ' ) else $label, if (empty($ref)) then () else <span class="ref" data-ref="{$ref}"/>}
+                {
+                    if ($label => ends-with(':')) then
+                        concat($label, ' ')
+                    else
+                        $label,
+                    if (empty($ref)) then 
+                        ()
+                    else
+                        <span class="ref" data-ref="{$ref}"/>
+                    }
             </span>
         </span>
 };
