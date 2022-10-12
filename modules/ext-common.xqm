@@ -18,6 +18,8 @@ declare namespace xpath = 'http://www.w3.org/2005/xpath-functions';
 declare variable $ec:COUNTER_TEXTCRITICAL := "text-critical-" || util:uuid();
 declare variable $ec:COUNTER_NOTE := "note-" || util:uuid();
 
+declare variable $ec:language := $config:lang-settings?lang;
+
 declare function ec:prepare($config as map(*), $node as node()*) {
     (
         counters:destroy($ec:COUNTER_TEXTCRITICAL),
