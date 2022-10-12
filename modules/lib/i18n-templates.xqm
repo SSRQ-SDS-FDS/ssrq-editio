@@ -16,33 +16,7 @@ import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at 
  :      catalogues=relative path    Path to the i18n catalogue XML files inside database
  :)
 declare function intl:translate($node as node(), $model as map(*), $lang as xs:string?, $catalogues as xs:string?) {
-    let $lang :=
-        if ($lang) then (
-            session:set-attribute("ssrq.lang", $lang),
-            $lang
-        ) else
-            let $sessionLang := session:get-attribute("ssrq.lang")
-            return
-                if ($sessionLang) then
-                    $sessionLang
-                else
-                    let $header := request:get-header("Accept-Language")
-                    let $headerLang :=
-                        if ($header != "") then
-                            let $lang := tokenize($header, "\s*,\s*")
-                            return
-                                replace($lang[1], "^([^-;]+).*$", "$1")
-                        else
-                            "de"
-                    let $lang :=
-                        if ($headerLang = ('de', 'fr', 'it')) then
-                            $headerLang
-                        else
-                            "de"
-                    return (
-                        session:set-attribute("ssrq.lang", $lang),
-                        $lang
-                    )
+    let $lang := $config:lang-settings?lang
     let $cpath :=
         (: if path to catalogues is relative, resolve it relative to the app root :)
         if (starts-with($catalogues, "/")) then

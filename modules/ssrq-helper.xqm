@@ -58,7 +58,7 @@ declare function ssrq-helper:cache-store-retrieve($node as node(), $model as map
 declare function ssrq-helper:make-cache-key($prefix as xs:string) as xs:string {
     let $context := request:get-url() => substring-after('apps') => replace('/', '')
     let $params := request:get-parameter-names()[not(. = 'lang') and not(. = 'doc')] ! request:get-parameter(., ())
-    let $lang := utils:coalesce(request:get-parameter('lang', ()), (session:get-attribute("ssrq.lang"), "de")[1])
+    let $lang := $config:lang-settings?lang
     return
         ($prefix, $context, $params, $lang) => string-join('_')
 
@@ -647,7 +647,7 @@ declare function ssrq-helper:hits($node as node(), $model as map(*), $kanton as 
 :)
 declare function ssrq-helper:renderHeadings($section as node()) as element(li)* {
     let $section-heading := $section => ec:get-head()
-    let $session-lang := (session:get-attribute('ssrq.lang'), 'de')[1]
+    let $session-lang := $config:lang-settings?lang
     let $lang := if (not($section/ancestor::tei:div[@type = 'section'][tei:div[@xml:lang = $session-lang]])) then 'de' else $session-lang
     return
     if (

@@ -495,13 +495,15 @@ declare function query:view-idno($work as element()) {
 
 declare function query:view-origDate($work as element()) {
     let $origDate := $work//tei:teiHeader/tei:fileDesc//tei:msDesc/tei:history//tei:origDate
+    let $lang := $config:lang-settings?lang
     return
-        if ($origDate/@when) then
-            format-date(xs:date($origDate/@when), '[Y] [MNn] [D01]', (session:get-attribute("ssrq.lang"), "de")[1], (), ())
-        else
-            format-date(xs:date($origDate/@from), '[Y] [MNn] [D01]', (session:get-attribute("ssrq.lang"), "de")[1], (), ()) ||
-            ' - ' ||
-            format-date(xs:date($origDate/@to), '[Y] [MNn] [D01]', (session:get-attribute("ssrq.lang"), "de")[1], (), ())
+        (
+          (if ($origDate/@when) then
+             $origDate/@when
+           else
+             ($origDate/@from, $origDate/@to)
+          ) ! format-date(xs:date(.), '[Y] [MNn] [D01]', $lang, (), ())
+        ) => string-join("-")
 };
 
 (:~

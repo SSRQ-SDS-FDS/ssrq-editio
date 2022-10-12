@@ -50,7 +50,7 @@
                         </pb:template>
                     </model>
                     <model output="latex" predicate="request:get-parameter('introduction', ())" behaviour="section">
-                        <param name="lang" value="(session:get-attribute('ssrq.lang'), 'de')[1]"/>
+                        <param name="lang" value="$config:lang-settings?lang"/>
                         <param name="content" value="text//body"/>
                         <param name="literature" value="teiHeader/fileDesc/sourceDesc/msDesc/additional/listBibl"/>
                         <pb:template>
@@ -81,7 +81,7 @@
                         </pb:template>
                     </model>
                     <model output="latex" behaviour="section">
-                        <param name="lang" value="(session:get-attribute('ssrq.lang'), 'de')[1]"/>
+                        <param name="lang" value="$config:lang-settings?lang"/>
                         <param name="ssrq" value="substring-before(teiHeader/fileDesc/seriesStmt/idno/text(), '_')"/>
                         <param name="volume" value="teiHeader/fileDesc/titleStmt/title"/>
                         <param name="by" value="ec:label('by', false())"/>
@@ -306,7 +306,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="sic" mode="change">
-                    <model output="latex" predicate="(session:get-attribute('ssrq.lang'), 'de')[1]='fr' and not(parent::choice and count(parent::*/*) gt 1)" behaviour="inline">
+                    <model output="latex" predicate="$config:lang-settings?lang='fr' and not(parent::choice and count(parent::*/*) gt 1)" behaviour="inline">
                         <pb:template>&lt;[[content]]&gt;</pb:template>
                     </model>
                     <model output="latex" predicate="not(parent::choice and count(parent::*/*) gt 1)" behaviour="inline">
@@ -648,11 +648,11 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="foreign" mode="change">
-                    <model output="latex" predicate="(session:get-attribute('ssrq.lang'), 'de')[1]='fr'" behaviour="inline">
+                    <model output="latex" predicate="$config:lang-settings?lang='fr'" behaviour="inline">
                         <pb:template>\textit{[[content]]}</pb:template>
                     </model>
                     <model output="latex" behaviour="inline"/>
-                    <model predicate="(session:get-attribute('ssrq.lang'), 'de')[1]='fr'" behaviour="alternate">
+                    <model predicate="$config:lang-settings?lang='fr'" behaviour="alternate">
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('lang-switch'), ec:colon(), ' ', ec:label(@xml:lang, false()))"/>
                         <outputRendition>
@@ -780,12 +780,12 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="measure" mode="change">
-                    <model predicate="(session:get-attribute('ssrq.lang'), 'de')[1]='de'" behaviour="alternate" cssClass="text-critical">
+                    <model predicate="$config:lang-settings?lang='de'" behaviour="alternate" cssClass="text-critical">
                         <desc>Display measurement with given parameters in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:translate(@type, false(), true()), ec:colon(), @quantity, ' ', ec:translate(@origin, false(), false()), ' ', ec:translate(@unit, @quantity > 1, false()), ' ', ec:translate(@commodity, false(), false()))"/>
                     </model>
-                    <model predicate="(session:get-attribute('ssrq.lang'), 'de')[1]!='de'" behaviour="alternate" cssClass="text-critical">
+                    <model predicate="$config:lang-settings?lang!='de'" behaviour="alternate" cssClass="text-critical">
                         <desc>Display measurement with given parameters in tooltip and highlight text with color</desc>
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:translate(@type, false(), true()), ec:colon(), @quantity, ' ', ec:translate(@unit, @quantity > 1, false()), ' ', ec:translate(@commodity, false(), false()), ' ', ec:translate(@origin, false(), false()))"/>
@@ -1024,7 +1024,7 @@
                         <desc>Rendering for multilingual introductions</desc>
                         <param name="content"
                                value="
-                                let $session-lang := (session:get-attribute('ssrq.lang'), 'de')[1]
+                                let $session-lang := $config:lang-settings?lang
                                 let $lang := if (not(./ancestor::div[@type = 'section'][div[@xml:lang = $session-lang]])) then 'de' else $session-lang
                                 return
                                 if (@xml:lang = $lang) then
@@ -1138,11 +1138,11 @@
                     <model behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="desc" mode="change">
-                    <model predicate="parent::dataSpec[ancestor::TEI/@type = 'abbr'] and @xml:lang = (session:get-attribute('ssrq.lang'), 'de')[1]" behaviour="heading">
+                    <model predicate="parent::dataSpec[ancestor::TEI/@type = 'abbr'] and @xml:lang = $config:lang-settings?lang" behaviour="heading">
                         <desc>Spezifisches Rendering von Beschreibungen im Abkürzungsverzeichnis</desc>
                         <param name="level" value="3"/>
                     </model>
-                    <model predicate="parent::valItem[ancestor::TEI/@type = 'abbr'] and @xml:lang = (session:get-attribute('ssrq.lang'), 'de')[1]" behaviour="listItem">
+                    <model predicate="parent::valItem[ancestor::TEI/@type = 'abbr'] and @xml:lang = $config:lang-settings?lang" behaviour="listItem">
                         <desc>Spezifisches Rendering von Beschreibungen im Abkürzungsverzeichnis</desc>
                     </model>
                     <model predicate="ancestor::dataSpec[@ident = 'ssrq.labels']" behaviour="inline">
@@ -1363,7 +1363,7 @@
                     <model predicate="ancestor::TEI[@type] and @xml:lang" behaviour="paragraph" useSourceRendition="true">
                         <param name="content"
                                value="
-                                let $session-lang := (session:get-attribute('ssrq.lang'), 'de')[1]
+                                let $session-lang := $config:lang-settings?lang
                                 let $lang := if (not(./parent::div[p[@xml:lang = $session-lang]])) then 'de' else $session-lang
                                 return
                                 if (@xml:lang = $lang) then
@@ -1380,7 +1380,7 @@
                     <model predicate="ancestor::summary and @xml:lang" behaviour="paragraph" useSourceRendition="true">
                         <param name="content"
                         value="
-                                let $session-lang := (session:get-attribute('ssrq.lang'), 'de')[1]
+                                let $session-lang := $config:lang-settings?lang
                                 let $lang := if (not(./ancestor::summary[p[@xml:lang = $session-lang]])) then 'de' else $session-lang
                                 return
                                     if (@xml:lang = $lang) then
@@ -1904,7 +1904,7 @@
                         <param name="content" value="@ident/string() || ' &amp;amp; ' || (if(desc[@xml:lang = 'de']) then desc[@xml:lang = 'de']/text() else desc[1]/text()) || '\\'"/>
                     </model>
                     <model predicate="ancestor::dataSpec[ancestor::TEI/@type = 'abbr']" behaviour="listItem">
-                        <param name="content" value="@ident/string() || ' = ' || (if (desc[@xml:lang = (session:get-attribute('ssrq.lang'), 'de')[1]]) then desc[@xml:lang = (session:get-attribute('ssrq.lang'), 'de')[1]]/text() else desc[1]/text())"/>
+                        <param name="content" value="@ident/string() || ' = ' || (if (desc[@xml:lang = $config:lang-settings?lang]) then desc[@xml:lang = $config:lang-settings?lang]/text() else desc[1]/text())"/>
                     </model>
                 </elementSpec>
                 <elementSpec ident="valList" mode="change">

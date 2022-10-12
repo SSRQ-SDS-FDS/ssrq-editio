@@ -21,19 +21,6 @@ declare variable $exist:root external;
 declare variable $routeBase := '/routes/';
 
 
-declare function controller:set-language() {
-    let $lang-param := ($config:lang-settings?lang, request:get-parameter("lang", ()))[1]
-    let $lang-selected := session:get-attribute("ssrq.lang")
-    return
-        if ($lang-selected and $lang-selected != $lang-param)
-        then session:set-attribute("ssrq.lang", $lang-param)
-        else if ($lang-param => empty() and $lang-selected)
-        then session:set-attribute("ssrq.lang", $lang-selected)
-        else if ($lang-param and $lang-selected => empty())
-        then session:set-attribute("ssrq.lang", $lang-param)
-        else session:set-attribute("ssrq.lang", ssrq-lang:get-browser-lang())
-};
-
 (: Helper function to match the name of a route to a route specified in $main-routes :)
 declare function controller:find-route-from-list($routes as map(*)+, $resource as xs:string, $error as node()) {
     let $route :=
@@ -97,7 +84,6 @@ declare function controller:find-route-from-list($routes as map(*)+, $resource a
 };
 
 (: To-Do: Test if language Switching Works correct with urls... :)
-let $lang := controller:set-language()
 let $error-handler := <error-handler>
                         <forward url="{$exist:controller}/routes/error-page.html" method="get"/>
                         <forward url="{$exist:controller}/modules/view.xql"/>
