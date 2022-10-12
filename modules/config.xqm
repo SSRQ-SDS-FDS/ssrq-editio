@@ -147,7 +147,7 @@ declare variable $config:base-url :=
             $config:default-base-url
 ;
 
-declare variable $config:lang-settings := ssrq-lang:check-x-site-lang();
+declare variable $config:lang-settings := ssrq-lang:get-lang-settings();
 
 (:
     Determine the application root collection from the current module load path.
