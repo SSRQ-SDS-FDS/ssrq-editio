@@ -321,7 +321,8 @@ declare function ec:create-link-from-id($id as xs:string) as xs:string {
 };
 
 declare function ec:create-p-link-from-id($id as xs:string) as xs:string {
-    if ($config:lang-settings?add-lang-param or $config:env/env = 'dev') then
+    if ($id => matches("^(SSRQ|SDS|FDS)") and ($config:lang-settings?add-lang-param or $config:env/env = 'dev')) then
+        (: internal links in dev or when the language must be carried :)
         ec:create-link-from-id($id)
     else
         ($config:permalink-base => replace('^(.*?)/?$', '$1'), encode-for-uri($id))
