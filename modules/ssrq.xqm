@@ -365,25 +365,6 @@ return
         $namen
 };
 
-declare function app:idno-popup($node as node(), $model as map(*)) {
-    let $header := root($model?data)//tei:teiHeader/tei:fileDesc
-    let $idno := $header/tei:seriesStmt/tei:idno
-    let $stmtTitle := $header/tei:seriesStmt/tei:title/text()
-    let $fileDescTitle := $header/tei:titleStmt/tei:title
-    let $link := "https://www.ssrq-sds-fds.ch/online/tei/" || ec:get-canton($idno) || "/" || util:document-name($model?data)
-    return
-        app:show-if-exists($node, $idno, function() {
-            <span class="alternate">
-                <span class="id">{ec:format-id($idno)} <i class="glyphicon glyphicon-info-sign"/></span>
-                <span class="altcontent" xmlns:i18n="http://exist-db.org/xquery/i18n" popover-class="increase-popover-width">
-                    <p>{$stmtTitle}, {$pm-config:web-transform($fileDescTitle, map { "root": $fileDescTitle, "view": "infopopup"}, $config:odd)}, <i18n:text key="by">von</i18n:text> {app:pers-names($header)}</p>
-                    <p><i18n:text key="zitation">Zitation:</i18n:text> <a href="{$link}">{ec:format-id($idno)}</a></p>
-                    <p><i18n:text key="lizenz">Lizenz:</i18n:text> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de">CC BY-NC-SA</a></p>
-                </span>
-            </span>
-        })
-};
-
 declare function app:origDate($node as node(), $model as map(*)) {
     let $header := $model?xml//tei:teiHeader
     let $filiation := $header/tei:fileDesc//tei:msDesc/tei:msContents/tei:msItem/tei:filiation[@type='original'][tei:origDate]
