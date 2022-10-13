@@ -415,7 +415,6 @@ $color-terms: #b5221f;*/
 
   .alternate,
   .reference {
-    cursor: pointer;
     .altcontent {
       display: none;
       .ref::before {
@@ -511,7 +510,9 @@ label {
 }
 
 .reference {
-  cursor: pointer;
+  span[data-url] {
+    cursor: pointer;
+  }
 }
 
 .text-critical {

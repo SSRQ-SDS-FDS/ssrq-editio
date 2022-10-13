@@ -26,27 +26,40 @@ declare function ec-html:reference($config as map(*), $node as element(), $class
     $ref, $label) {
     (: no language parameter at the moment :)
     let $url :=
-        typeswitch($node)
-            case element(tei:persName) | element(tei:orgName) return
-                ec:create-p-link-from-id($ref[1])
-            case element(tei:placeName) | element(tei:origPlace) return
-                ec:create-p-link-from-id($ref)
-            case element(tei:term) return
-                ec:create-p-link-from-id($ref)
-            default return $ref
+        if (not(empty($ref))) then
+            typeswitch($node)
+                case element(tei:persName) | element(tei:orgName) return
+                    ec:create-p-link-from-id($ref[1])
+                case element(tei:placeName) | element(tei:origPlace) return
+                    ec:create-p-link-from-id($ref)
+                case element(tei:term) return
+                    ec:create-p-link-from-id($ref)
+                default return $ref
+        else
+            ()
     return
         <span class="reference {$class}">
-            <span><span data-url="{$url}">{$config?apply-children($config, $node, $content)}</span></span>
+            <span>
+            {
+                element span {
+                    if (not(empty($url))) then
+                        attribute { "data-url" } { $url }
+                    else
+                        (),
+                    $config?apply-children($config, $node, $content)
+                }
+            }
+            </span>
             <span class="altcontent">
                 {
                     if ($label => ends-with(':')) then
                         concat($label, ' ')
                     else
                         $label,
-                    if (empty($ref)) then 
-                        ()
-                    else
+                    if (not(empty($url))) then
                         <span class="ref" data-ref="{$ref}"/>
+                    else
+                        ()
                     }
             </span>
         </span>
