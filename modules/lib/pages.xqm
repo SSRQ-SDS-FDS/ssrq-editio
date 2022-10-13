@@ -293,6 +293,14 @@ declare function pages:title($work as element()) {
 declare function pages:app-root($node as node(), $model as map(*)) {
     element { node-name($node) } {
         $node/@* except $node/@data-template,
+        attribute lang {
+            switch ($config:lang-settings?lang)
+            case "de" return "de-CH"
+            case "fr" return "fr-CH"
+            case "it" return "it-CH"
+            case "rm" return "rm-CH"
+            default return $config:lang-settings?lang
+        },
         attribute data-app { $config:base-url },
         templates:process($node/*, $model)
     }
