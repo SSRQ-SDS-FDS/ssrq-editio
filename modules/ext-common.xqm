@@ -9,6 +9,7 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 import module namespace counters="http://www.tei-c.org/tei-simple/xquery/counters";
 import module namespace functx="http://www.functx.com";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
@@ -570,12 +571,12 @@ declare function ec:unique-id($node as node()) as xs:string {
 };
 
 declare function ec:image($config as map(*), $node as element(), $class as xs:string+, $content as node()*) as element()+ {
-    let $collection-name := util:collection-name($node) || '/assets'
+    let $collection-name := utils:path-concat-safe((util:collection-name($node), 'assets'))
     return
         switch ($node/tei:graphic/@mimeType)
         case 'image/svg'
             return
-                let $svg := doc($collection-name || '/' ||  $node/tei:graphic/@url/data(.))
+                let $svg := doc(utils:path-concat-safe(($collection-name, $node/tei:graphic/@url/data(.))))
                 return
                     if ($svg)
                     then
@@ -601,23 +602,10 @@ declare function ec:image($config as map(*), $node as element(), $class as xs:st
                         <p class="img__title">{$head/text()}</p>
                 )
         default return <p>MimeType {$node/@mimeType} is not supported</p>
-    (: let $svg := doc($collection || '/' ||  $node/tei:graphic/@url/data(.))
-    return
-        if ($svg)
-        then
-               <div class="svg-container">
-                    {$svg}
-                    {
-                    if ($node/tei:head)
-                    then <p class="svg-container__title">{$node/tei:head/text()}</p>
-                    else ()
-                    }
-               </div>
-        else <p>Sorry, could not load SVG</p> :)
 };
 
 declare function ec:short-doc-info($idno as item()) as xs:string {
-    let $doc := doc(util:collection-name($idno) || '/' || $idno || '.xml')
+    let $doc := doc(utils:path-concat-safe((util:collection-name($idno), $idno || '.xml')))
     let $head := ec:get-head($doc//tei:sourceDesc/tei:msDesc)/text()
     let $date := $doc//tei:teiHeader//tei:origDate => ec:print-date()
     return $head || ', ' || $date || ' (' || ec:format-id($idno) || ')'
@@ -633,8 +621,7 @@ declare function ec:short-doc-info($idno as item()) as xs:string {
 declare function ec:format-link($id as xs:string*) as xs:string* {
     let $link-base := map {
         "national-bib": "http://permalink.snl.ch/bib/",
-        "ssrq-old": "https://www.ssrq-sds-fds.ch/online/",
-        "ssrq-new": request:get-context-path() || '/apps/ssrq/'
+        "ssrq-old": "https://www.ssrq-sds-fds.ch/online/"
     }
     let $ssrq-names := ('SDS', 'SSRQ', 'FDS')
     return
@@ -647,9 +634,9 @@ declare function ec:format-link($id as xs:string*) as xs:string* {
                 let $volume := $id => substring-after('_')
                 let $collection := $volume => substring-before ('_')
                 return
-                    if (($config:data-root || '/' || $collection || '/' || $volume) => xmldb:collection-available())
+                    if (utils:path-concat-safe(($config:data-root, $collection, $volume)) => xmldb:collection-available())
                     then
-                        $link-base?ssrq-new || '?kanton=' || $collection || '&amp;volume=' || $volume
+                        ec:create-app-link(($collection, $volume, ''))
                     else
                         $link-base?ssrq-old || $volume
             else ()

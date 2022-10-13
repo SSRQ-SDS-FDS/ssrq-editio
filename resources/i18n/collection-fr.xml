@@ -70,7 +70,7 @@
     <msg key="loading-facets">Ça charge ...</msg>
     <msg key="error-title">Une erreur s’est produite !</msg>
     <msg key="error-description">Malheureusement une erreur est survenue. Veuillez retournez sur la page précédente et, si possible, décrivez-nous l’erreur à travers la fonction de feedback.</msg>
-    <msg key="website-link">https://www.ssrq-sds-fds.ch/fr/home/</msg>
+    <msg key="website-link">//www.ssrq-sds-fds.ch/fr/home/</msg>
     <msg key="feedback">Feedback</msg>
     <msg key="partners-and-funding">Partenaires et financement</msg>
     <msg key="partners">Partenaires</msg>

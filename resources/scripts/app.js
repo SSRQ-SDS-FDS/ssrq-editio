@@ -2,7 +2,7 @@ $(document).ready(function () {
   var historySupport = !!(window.history && window.history.pushState);
   var appRoot = $('html').data('app');
 
-  var iiifApi = 'https://facsimiles.ssrq-sds-fds.ch/iiif/2/';
+  var iiifApi = '//facsimiles.ssrq-sds-fds.ch/iiif/2/';
 
   var seadragon;
 

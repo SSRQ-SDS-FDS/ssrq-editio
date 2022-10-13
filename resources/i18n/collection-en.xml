@@ -70,7 +70,7 @@
     <msg key="loading-facets">Loading ...</msg>
     <msg key="error-title">An error occurred!</msg>
     <msg key="error-description">Unfortunately you have encountered an error. Please return to the previous page and possibly describe us the error through the feedback function.</msg>
-    <msg key="website-link">https://www.ssrq-sds-fds.ch/en/home/</msg>
+    <msg key="website-link">//www.ssrq-sds-fds.ch/en/home/</msg>
     <msg key="feedback">Feedback</msg>
     <msg key="partners-and-funding">Project Partners and Funding</msg>
     <msg key="partners">Project Partners</msg>

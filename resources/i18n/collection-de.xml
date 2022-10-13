@@ -70,7 +70,7 @@
     <msg key="loading-facets">Lade Registereinträge ...</msg>
     <msg key="error-title">Ein Fehler ist aufgetreten!</msg>
     <msg key="error-description">Leider ist ein Fehler in der Anwendung aufgetreten. Bitte gehen Sie zurück zur vorherigen Seite und beschreiben Sie uns den Fehler ggf. über die Feedback-Funktion.</msg>
-    <msg key="website-link">https://www.ssrq-sds-fds.ch/home/</msg>
+    <msg key="website-link">//www.ssrq-sds-fds.ch/home/</msg>
     <msg key="feedback">Feedback</msg>
     <msg key="partners-and-funding">Projektpartner und Finanzierung</msg>
     <msg key="partners">Projektpartner</msg>

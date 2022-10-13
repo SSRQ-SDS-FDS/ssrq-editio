@@ -70,7 +70,7 @@
     <msg key="loading-facets">caricare le voci del registro ...</msg>
     <msg key="error-title">Si è generato un errore!</msg>
     <msg key="error-description">Purtroppo si è registrato un errore. Tornate alla pagina precedente e, se possibile, descriveteci l'errore utilizzando la funzione di feedback.</msg>
-    <msg key="website-link">https://www.ssrq-sds-fds.ch/it/home/</msg>
+    <msg key="website-link">//www.ssrq-sds-fds.ch/it/home/</msg>
     <msg key="feedback">Feedback</msg>
     <msg key="partners-and-funding">Partner del progetto e finanziamenti</msg>
     <msg key="partners">Partner del progetto</msg>
