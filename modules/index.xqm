@@ -9,6 +9,7 @@ import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace session="http://exist-db.org/xquery/session";
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "ext-common.xqm";
+import module namespace ssrq-lang="http://ssrq-sds-fds.ch/exist/apps/ssrq/lang" at "ssrq-lang.xqm";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
@@ -17,7 +18,9 @@ declare function index:get-index-entries($id as xs:string) as element()* {
     return
         i18n:process(
                         <aside>{index:list-places($xml), index:list-persons($xml), index:list-organizations($xml), index:list-keys($xml), index:list-lemmata($xml)}</aside>,
-                        session:get-attribute('ssrq.lang'), utils:path-concat(($config:app-root, 'resources/i18n')), 'de'
+                        $config:lang-settings?lang,
+                        utils:path-concat(($config:app-root, 'resources/i18n')), 
+                        $ssrq-lang:fallback
                     )
 };
 

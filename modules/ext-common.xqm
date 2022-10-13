@@ -19,6 +19,8 @@ declare namespace xpath = 'http://www.w3.org/2005/xpath-functions';
 declare variable $ec:COUNTER_TEXTCRITICAL := "text-critical-" || util:uuid();
 declare variable $ec:COUNTER_NOTE := "note-" || util:uuid();
 
+declare variable $ec:language := $config:lang-settings?lang;
+
 declare function ec:prepare($config as map(*), $node as node()*) {
     (
         counters:destroy($ec:COUNTER_TEXTCRITICAL),
@@ -73,7 +75,7 @@ declare function ec:label($id as xs:string?, $upper as xs:boolean) {
 };
 
 declare function ec:label($id as xs:string?, $upper as xs:boolean, $plural as xs:integer) {
-    ec:label($id, $upper, $plural, (session:get-attribute("ssrq.lang"), "de")[1])
+    ec:label($id, $upper, $plural, $config:lang-settings?lang)
 };
 
 declare function ec:label($id as xs:string?, $upper as xs:boolean, $plural as xs:integer, $lang as xs:string) {
@@ -101,7 +103,7 @@ declare function ec:label($id as xs:string?, $upper as xs:boolean, $plural as xs
 };
 
 declare function ec:abbr($abbr as xs:string) {
-    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
+    let $lang := $config:lang-settings?lang
     let $val := $config:abbr//tei:valItem[@ident=$abbr]
     return (
         $val/tei:desc[@xml:lang = $lang]/string(),
@@ -120,14 +122,14 @@ declare function ec:semicolon() {
 };
 
 (:~ Französische Typographie erfordert Leerzeichen vor best. Interpunktionszeichen :)
-declare function ec:punct($char as xs:string, $spaceAfter as xs:boolean?) {
-    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
+declare function ec:punct($char as xs:string, $space-after as xs:boolean?) {
+    let $lang := $config:lang-settings?lang
     let $punct :=
         switch ($lang)
             case 'fr' return ' ' || $char
             default return $char
     return
-        if ($spaceAfter) then
+        if ($space-after) then
             $punct || ' '
         else
             $punct
@@ -160,7 +162,7 @@ declare function ec:translate($attribute as attribute()?, $use-plural as xs:bool
  :)
 declare function ec:translate($attribute as attribute()?, $part as xs:string?, $use-plural as xs:boolean, $to-uppercase as xs:boolean) as xs:string?  {
     (
-        let $session-lang := (session:get-attribute("ssrq.lang"), "de")[1]
+        let $session-lang := $config:lang-settings?lang
         let $infos := map { "el": local-name($attribute/..), "attr": local-name($attribute), "val": $attribute/string()}
         let $resolved-part := if ($part) then
                                 $part
@@ -274,17 +276,29 @@ declare function ec:print-id($doc as element(doc)) as xs:string? {
      => string-join(' ')
 };
 
-declare function ec:create-link($components as xs:string*, $params as map(*)) as xs:string {
+declare function ec:create-link($components as xs:string*, $params as map(*),
+                                $add-lang-param as xs:boolean) as xs:string {
     let $path :=
         string-join($components, "/")
     let $query-params :=
-        $params
+        (
+            if ($add-lang-param
+                and $config:lang-settings?add-lang-param
+                and not($params?lang)) then
+                $params => map:put("lang", $config:lang-settings?lang)
+            else
+                $params
+        )
         => map:for-each(function ($k, $v) {
                ($k, $v) => string-join('=')
            })
         => string-join('&amp;')
     return
         $path || ("?" || $query-params)[$query-params]
+};
+
+declare function ec:create-link($components as xs:string*, $params as map(*)) as xs:string {
+    ec:create-link($components, $params, false())
 };
 
 (:~
@@ -300,7 +314,7 @@ declare function ec:create-app-link($components as xs:string*, $params as map(*)
     ec:create-link((
             $config:base-url,
             if (not(empty($components))) then $components else ''
-        ), $params)
+        ), $params, true())
 };
 
 declare function ec:create-app-link($components as xs:string*) as xs:string {
@@ -315,7 +329,8 @@ declare function ec:create-link-from-id($id as xs:string) as xs:string {
 };
 
 declare function ec:create-p-link-from-id($id as xs:string) as xs:string {
-    if ($config:lang-settings?add-lang-param or $config:env/env = 'dev') then
+    if ($id => matches("^(SSRQ|SDS|FDS)") and ($config:lang-settings?add-lang-param or $config:env/env = 'dev')) then
+        (: internal links in dev or when the language must be carried :)
         ec:create-link-from-id($id)
     else
         ($config:permalink-base => replace('^(.*?)/?$', '$1'), encode-for-uri($id))
@@ -336,7 +351,7 @@ declare function ec:get-article-nr($id as xs:string?) {
 };
 
 declare function ec:format-date($when as xs:string?) {
-    ec:format-date($when, (session:get-attribute("ssrq.lang"), "de")[1])
+    ec:format-date($when, $config:lang-settings?lang)
 };
 
 declare function ec:format-date($when as xs:string?, $language as xs:string?) {
@@ -376,7 +391,6 @@ declare function ec:format-duration($duration as xs:string) as xs:string {
                 ec:get-duration-label("hour", $parsed-duration//xpath:group[@nr = '5']),
                 ec:get-duration-label("minute", $parsed-duration//xpath:group[@nr = '6'])
             )
-        let $l := console:log($parsed-duration)
         return
             string-join(
                 (
@@ -393,7 +407,7 @@ declare function ec:format-duration($duration as xs:string) as xs:string {
 };
 
 declare function ec:get-duration-label($name as xs:string, $quantity as xs:int?) as map(*) {
-    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
+    let $lang := $config:lang-settings?lang
     let $val := $config:translations//tei:dataSpec[@ident='ssrq.labels']//tei:valItem[@ident=$name]
     return
         if ($val) then
@@ -484,12 +498,13 @@ declare function ec:format-editor($editors as node()*) {
 
 declare function ec:print-date($date as node()*) {
     (: save typing in ssrq.odd :)
+    let $lang := $config:lang-settings?lang
     let $date-string :=
         if ($date/@when) then
           if (matches($date/@when, "^\d{4}-\d{2}$")) then
-            format-date(xs:date($date/@when || '-01'), "[MNn] [Y0001]", (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
+            format-date(xs:date($date/@when || '-01'), "[MNn] [Y0001]", $lang, (), ())
           else
-            format-date(xs:date($date/@when), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
+            format-date(xs:date($date/@when), '[Y] [MNn] [D1]', $lang, (), ())
         else if (matches($date/@from, '-01-01$') and matches($date/@to, '-12-31$')) then (: precision is one year :)
             if (substring($date/@from, 1, 4) = substring($date/@to, 1, 4)) then
                 substring($date/@from, 1, 4)
@@ -497,13 +512,13 @@ declare function ec:print-date($date as node()*) {
                 ec:print-date-period(xs:int(substring($date/@from, 1, 4)), xs:int(substring($date/@to, 1, 4)))
         else if (substring($date/@from, 1, 4) = substring($date/@to, 1, 4)) then (: within the same year :)
             if (substring($date/@from, 6, 2) = substring($date/@to, 6, 2)) then (: within the same month :)
-                format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()) || ' – ' || format-date(xs:date($date/@to), '[D1]')
+                format-date(xs:date($date/@from), '[Y] [MNn] [D1]', $lang, (), ()) || ' – ' || format-date(xs:date($date/@to), '[D1]')
             else
-                format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()) || ' – ' || format-date(xs:date($date/@to), '[MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
+                format-date(xs:date($date/@from), '[Y] [MNn] [D1]', $lang, (), ()) || ' – ' || format-date(xs:date($date/@to), '[MNn] [D1]', $lang, (), ())
         else
-            string-join((format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()),
+            string-join((format-date(xs:date($date/@from), '[Y] [MNn] [D1]', $lang, (), ()),
             ' – ',
-            format-date(xs:date($date/@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())))
+            format-date(xs:date($date/@to), '[Y] [MNn] [D1]', $lang, (), ())))
     let $old-style :=
         if ($date/@calendar='Julian') then
             ' ' || ec:label('old-style-abbr', false())
@@ -742,7 +757,7 @@ declare function ec:join-series-with-scope($series as node()*) as xs:string  {
 :)
 declare function ec:get-head($msDesc as element()) as element(tei:head) {
     if ($msDesc/tei:head[@xml:lang]) then
-        let $lang := (session:get-attribute('ssrq.lang'), 'de')[1]
+        let $lang := $config:lang-settings?lang
         return
             if ($msDesc/tei:head[@xml:lang = $lang]) then
                 $msDesc/tei:head[@xml:lang = $lang]

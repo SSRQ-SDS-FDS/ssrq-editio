@@ -71,6 +71,7 @@
           url: root + "/temp/",
           dataType: 'json',
           done: function (e, data) {
+            var lang = $("html").attr("lang").replace(/-.*$/, "");
             $(".error-message").remove();
             $.each(data.result.files, function (index, file) {
               $('<tr/>')
@@ -78,7 +79,9 @@
                   $('<td/>')
                     .append(
                       $('<a target="_blank"/>')
-                        .attr("href", root + "/" + file.path)
+                        .attr("href", 
+                          root + "/" + file.path
+                          + "?lang=" + encodeURIComponent(lang))
                         .html('<span class="material-icons">open_in_new</span>')))
                 .append(
                     $('<td/>')

@@ -23,6 +23,7 @@ import module namespace templates="http://exist-db.org/xquery/templates";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "util.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../pm-config.xqm";
+import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "../ext-common.xqm";
 
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
 
@@ -138,10 +139,10 @@ function app:paginate($node as node(), $model as map(*), $key as xs:string, $sta
                     </li>
                 ) else (
                     <li>
-                        <a href="?start=1"><i class="glyphicon glyphicon-fast-backward"/></a>
+                        <a href="{ec:create-link('', map{ 'start': 1 }, true())}"><i class="glyphicon glyphicon-fast-backward"/></a>
                     </li>,
                     <li>
-                        <a href="?start={max( ($start - $per-page, 1 ) ) }"><i class="glyphicon glyphicon-backward"/></a>
+                        <a href="{ec:create-link('', map{ 'start': max(($start - $per-page, 1)) }, true())}"><i class="glyphicon glyphicon-backward"/></a>
                     </li>
                 ),
                 let $startPage := xs:integer(ceiling($start div $per-page))
@@ -151,15 +152,15 @@ function app:paginate($node as node(), $model as map(*), $key as xs:string, $sta
                 for $i in $lowerBound to $upperBound
                 return
                     if ($i = ceiling($start div $per-page)) then
-                        <li class="active"><a href="?start={max( (($i - 1) * $per-page + 1, 1) )}">{$i}</a></li>
+                        <li class="active"><a href="{ec:create-link('', map{ 'start': max((($i - 1) * $per-page + 1, 1)) }, true())}">{$i}</a></li>
                     else
-                        <li><a href="?start={max( (($i - 1) * $per-page + 1, 1)) }">{$i}</a></li>,
+                        <li><a href="{ec:create-link('', map{ 'start': max((($i - 1) * $per-page + 1, 1)) }, true())}">{$i}</a></li>,
                 if ($start + $per-page < count($model($key))) then (
                     <li>
-                        <a href="?start={$start + $per-page}"><i class="glyphicon glyphicon-forward"/></a>
+                        <a href="{ec:create-link('', map{ 'start': $start + $per-page }, true())}"><i class="glyphicon glyphicon-forward"/></a>
                     </li>,
                     <li>
-                        <a href="?start={max( (($count - 1) * $per-page + 1, 1))}"><i class="glyphicon glyphicon-fast-forward"/></a>
+                        <a href="{ec:create-link('', map{ 'start': max((($count - 1) * $per-page + 1, 1)) }, true())}"><i class="glyphicon glyphicon-fast-forward"/></a>
                     </li>
                 ) else (
                     <li class="disabled">

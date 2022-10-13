@@ -107,10 +107,12 @@ declare function app:switch-view($node as node(), $model as map(*), $odd as xs:s
     element { node-name($node) } {
         $node/@*,
         attribute href {
-            if (empty($odd) or $odd = $config:odd-diplomatic) then
-                "?odd=" || $config:odd-normalized
-            else
-                "?odd=" || $config:odd-diplomatic
+            ec:create-link("", map { "odd": 
+                if (empty($odd) or $odd = $config:odd-diplomatic) then
+                    $config:odd-normalized
+                else
+                     $config:odd-diplomatic
+                }, true())
         },
         <i class="material-icons">
         {
@@ -125,7 +127,7 @@ declare function app:switch-view($node as node(), $model as map(*), $odd as xs:s
 };
 
 declare function app:api-lookup($api as xs:string, $list as map(*)*, $param as xs:string) {
-    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
+    let $lang := $config:lang-settings?lang
     let $iso-639-3 :=
     map {
         'de'     : 'deu',
@@ -149,7 +151,7 @@ declare function app:api-lookup($api as xs:string, $list as map(*)*, $param as x
 };
 
 declare function app:api-lookup-xml($api as xs:string, $list as map(*)*, $param as xs:string) {
-    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
+    let $lang := $config:lang-settings?lang
     let $iso-639-3 :=
     map {
         'de'     : 'deu',
@@ -251,11 +253,7 @@ function app:list-works($node as node(), $model as map(*), $filter as xs:string?
     let $kanton := ($kanton, app:select-kanton())[1]
     let $sessionData :=
         if ($refresh) then
-            let $lang := session:get-attribute("ssrq.lang")
-            return (
-                session:clear(),
-                session:set-attribute("ssrq.lang", $lang)
-            )
+            session:clear()
         else
             session:get-attribute("ssrq.works")
     let $log := console:log("Refresh: " || $refresh || "; kanton=" || $kanton || "; count: " || count($sessionData))
@@ -420,7 +418,7 @@ function app:abbr-blocks($node as node(), $model as map(*)) {
 declare
      %templates:wrap
 function app:partners($node as node(), $model as map(*)) {
-    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
+    let $lang := $config:lang-settings?lang
     return
         (<h3 xmlns:i18n="http://exist-db.org/xquery/i18n"><i18n:text key="partners">Projektpartner</i18n:text></h3>,
         for $partner in $config:partners//tei:dataSpec[@ident="partners"]/tei:valList/tei:valItem
@@ -474,8 +472,12 @@ declare
     %templates:wrap
 function app:display-data($node as node(), $model as map(*), $mode as xs:string?) {
     for $data in $model?data
-      return
-    $pm-config:web-transform($data, map { "root": $data, "mode": $mode, "lang": (session:get-attribute('ssrq.lang'), 'de')[1] }, $config:odd)
+    return
+        $pm-config:web-transform($data, map {
+              "root": $data,
+              "mode": $mode,
+              "lang": $config:lang-settings?lang
+            }, $config:odd)
 
 };
 
@@ -530,7 +532,7 @@ function app:keyword($node as node(), $model as map(*)) {
 declare
     %templates:wrap
 function app:help($node as node(), $model as map(*)) {
-    let $lang := (session:get-attribute("ssrq.lang"), "de")[1]
+    let $lang := $config:lang-settings?lang
     let $helpDoc := doc($config:app-root || "/help.xml")
     let $helpText := (
         $helpDoc//tei:div[@xml:lang = $lang],
@@ -632,15 +634,16 @@ declare function app:parse-params($node as node(), $model as map(*)) {
 };
 
 declare function app:highlight-active-lang($node as node(), $model as map(*)) {
-     element {node-name($node) } {
+     element { node-name($node) } {
             $node/@* except $node/@data-template,
             for $child in $node/*
+            let $is-active :=
+                ends-with($child/@href, $config:lang-settings?lang)
             return
                 element {node-name($child)} {
                     $child/@*,
-                    (attribute { 'class' } { 'selected-lang' })[ends-with($child/@href,(session:get-attribute("ssrq.lang"), "de")[1])],
+                    (attribute { 'class' } { 'selected-lang' })[$is-active],
                     $child/text()
-
                 }
      }
 };

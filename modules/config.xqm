@@ -8,6 +8,7 @@ module namespace config="http://www.tei-c.org/tei-simple/config";
 
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 import module namespace http="http://expath.org/ns/http-client" at "java:org.exist.xquery.modules.httpclient.HTTPClientModule";
+import module namespace ssrq-lang="http://ssrq-sds-fds.ch/exist/apps/ssrq/lang" at "ssrq-lang.xqm";
 
 declare namespace templates="http://exist-db.org/xquery/templates";
 
@@ -145,6 +146,8 @@ declare variable $config:base-url :=
         else
             $config:default-base-url
 ;
+
+declare variable $config:lang-settings := ssrq-lang:get-lang-settings();
 
 (:
     Determine the application root collection from the current module load path.

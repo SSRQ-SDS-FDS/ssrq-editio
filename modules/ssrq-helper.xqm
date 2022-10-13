@@ -58,7 +58,7 @@ declare function ssrq-helper:cache-store-retrieve($node as node(), $model as map
 declare function ssrq-helper:make-cache-key($prefix as xs:string) as xs:string {
     let $context := request:get-url() => substring-after('apps') => replace('/', '')
     let $params := request:get-parameter-names()[not(. = 'lang') and not(. = 'doc')] ! request:get-parameter(., ())
-    let $lang := utils:coalesce(request:get-parameter('lang', ()), (session:get-attribute("ssrq.lang"), "de")[1])
+    let $lang := $config:lang-settings?lang
     return
         ($prefix, $context, $params, $lang) => string-join('_')
 
@@ -80,7 +80,7 @@ function ssrq-helper:resolve-links($node as node(), $model as map(*)) {
 };
 
 declare function ssrq-helper:resolve-links($nodes as node()*) {
-    let $proc-attribute := function ($input-value) {
+    let $proc-attribute := function ($input-value, $add-lang-param) {
         let $url :=
             (analyze-string($input-value, "\{[a-z-]+\}")/fn:match => distinct-values()) ! replace(., "^\{(.*)\}$", "$1")
             => fold-left($input-value, function ($s, $var) {
@@ -109,7 +109,9 @@ declare function ssrq-helper:resolve-links($nodes as node()*) {
                     map{.:()}
             )) => map:merge()
         return
-            ec:create-link($path, $query-map)
+            ec:create-link(
+                $path, $query-map,
+                $add-lang-param and $input-value => starts-with("{app}"))
     }
     for $node in $nodes
     return
@@ -122,7 +124,9 @@ declare function ssrq-helper:resolve-links($nodes as node()*) {
                                 (: not a URL :)
                                 $node/@href
                             else
-                                $proc-attribute($node/@href)
+                                $proc-attribute(
+                                    $node/@href,
+                                    node-name($node) = xs:QName("a"))
                         },
                         $node/@* except $node/@href,
                         ssrq-helper:resolve-links($node/node())
@@ -135,7 +139,7 @@ declare function ssrq-helper:resolve-links($nodes as node()*) {
             case element(form) return
                 if ($node/@action) then
                     element { node-name($node) } {
-                        attribute action { $proc-attribute($node/@action) },
+                        attribute action { $proc-attribute($node/@action, true()) },
                         $node/@* except $node/@action,
                         ssrq-helper:resolve-links($node/node())
                     }
@@ -147,7 +151,7 @@ declare function ssrq-helper:resolve-links($nodes as node()*) {
             case element(script) | element(img) return
                 if ($node/@src) then
                     element { node-name($node) } {
-                        attribute src { $proc-attribute($node/@src) },
+                        attribute src { $proc-attribute($node/@src, false()) },
                         $node/@* except $node/@src
                     }
                 else
@@ -342,10 +346,10 @@ return
 
 declare
 %templates:wrap
-function ssrq-helper:render-idno-as-popup($node as node(), $model as map(*)) as element(span)? {
+function ssrq-helper:render-idno-as-popup($node as node(), $model as map(*), $idno-link) as element(span)? {
     let $header := $model?xml//tei:teiHeader/tei:fileDesc
     let $stmtTitle := $header/tei:seriesStmt/tei:title/text()
-    let $fileDescTitle :=$header/tei:titleStmt/tei:title
+    let $fileDescTitle := $header/tei:titleStmt/tei:title
     let $idno := try { ec:print-id($model?idno) } catch * { $model?idno }
     return
         <span class="alternate">
@@ -353,7 +357,11 @@ function ssrq-helper:render-idno-as-popup($node as node(), $model as map(*)) as 
             <span class="altcontent" xmlns:i18n="http://exist-db.org/xquery/i18n" popover-class="increase-popover-width">
                     <p>{$stmtTitle}, {$pm-config:web-transform($fileDescTitle, map { "root": $fileDescTitle, "view": "infopopup"}, $config:odd)}, <i18n:text key="by">von</i18n:text> {ssrq-helper:pers-names($header//tei:editor)}</p>
                     <p><i18n:text key="zitation">Zitation:</i18n:text>
-                      <a href="{ec:create-p-link-from-id($model?idno/@xml:id)}">{$idno}</a>
+                    { if ($idno-link => empty() or xs:boolean($idno-link)) then
+                        <a href="{ec:create-p-link-from-id($model?idno/@xml:id)}">{$idno}</a>
+                      else
+                        $idno
+                    }
                     </p>
                     <p><i18n:text key="lizenz">Lizenz:</i18n:text> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de">CC BY-NC-SA</a></p>
             </span>
@@ -563,6 +571,25 @@ declare function ssrq-helper:browseUp($node as node(), $model as map(*), $kanton
 };
 
 (:~
+ : Inserts the current language into a node's attribute
+ :
+ : @param $attr the name of the attribute in which to put the language code
+ : @param $always always set the language, not only if it needs to be carried in
+ :        the URL
+ :)
+declare function ssrq-helper:insert-lang($node as node(), $model as map(*),
+                                         $attr, $always) as node()? {
+    if (xs:boolean($always) or $config:lang-settings?add-lang-param) then
+        element { node-name($node) } {
+            $node/@* except ($node/@data-template, $node/@data-template-attr, $node/@data-template-always),
+            attribute { $attr } { $config:lang-settings?lang },
+            templates:process($node/node(), $model)
+        }
+    else
+        ()
+};
+
+(:~
 : Builds an bootstrap-based-pagination bar
 :
 : @param $key the default key to look up the total value in the $model
@@ -647,7 +674,7 @@ declare function ssrq-helper:hits($node as node(), $model as map(*), $kanton as 
 :)
 declare function ssrq-helper:renderHeadings($section as node()) as element(li)* {
     let $section-heading := $section => ec:get-head()
-    let $session-lang := (session:get-attribute('ssrq.lang'), 'de')[1]
+    let $session-lang := $config:lang-settings?lang
     let $lang := if (not($section/ancestor::tei:div[@type = 'section'][tei:div[@xml:lang = $session-lang]])) then 'de' else $session-lang
     return
     if (
