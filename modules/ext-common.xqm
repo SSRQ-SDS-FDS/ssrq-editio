@@ -275,12 +275,15 @@ declare function ec:print-id($doc as element(doc)) as xs:string? {
      => string-join(' ')
 };
 
-declare function ec:create-link($components as xs:string*, $params as map(*)) as xs:string {
+declare function ec:create-link($components as xs:string*, $params as map(*),
+                                $add-lang-param as xs:boolean) as xs:string {
     let $path :=
         string-join($components, "/")
     let $query-params :=
         (
-            if ($config:lang-settings?add-lang-param and not($params?lang)) then
+            if ($add-lang-param
+                and $config:lang-settings?add-lang-param
+                and not($params?lang)) then
                 $params => map:put("lang", $config:lang-settings?lang)
             else
                 $params
@@ -291,6 +294,10 @@ declare function ec:create-link($components as xs:string*, $params as map(*)) as
         => string-join('&amp;')
     return
         $path || ("?" || $query-params)[$query-params]
+};
+
+declare function ec:create-link($components as xs:string*, $params as map(*)) as xs:string {
+    ec:create-link($components, $params, false())
 };
 
 (:~
@@ -306,7 +313,7 @@ declare function ec:create-app-link($components as xs:string*, $params as map(*)
     ec:create-link((
             $config:base-url,
             if (not(empty($components))) then $components else ''
-        ), $params)
+        ), $params, true())
 };
 
 declare function ec:create-app-link($components as xs:string*) as xs:string {

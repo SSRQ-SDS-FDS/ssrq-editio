@@ -80,7 +80,7 @@ function ssrq-helper:resolve-links($node as node(), $model as map(*)) {
 };
 
 declare function ssrq-helper:resolve-links($nodes as node()*) {
-    let $proc-attribute := function ($input-value) {
+    let $proc-attribute := function ($input-value, $add-lang-param) {
         let $url :=
             (analyze-string($input-value, "\{[a-z-]+\}")/fn:match => distinct-values()) ! replace(., "^\{(.*)\}$", "$1")
             => fold-left($input-value, function ($s, $var) {
@@ -109,7 +109,9 @@ declare function ssrq-helper:resolve-links($nodes as node()*) {
                     map{.:()}
             )) => map:merge()
         return
-            ec:create-link($path, $query-map)
+            ec:create-link(
+                $path, $query-map,
+                $add-lang-param and $input-value => starts-with("{app}"))
     }
     for $node in $nodes
     return
@@ -122,7 +124,9 @@ declare function ssrq-helper:resolve-links($nodes as node()*) {
                                 (: not a URL :)
                                 $node/@href
                             else
-                                $proc-attribute($node/@href)
+                                $proc-attribute(
+                                    $node/@href,
+                                    node-name($node) = xs:QName("a"))
                         },
                         $node/@* except $node/@href,
                         ssrq-helper:resolve-links($node/node())
@@ -135,7 +139,7 @@ declare function ssrq-helper:resolve-links($nodes as node()*) {
             case element(form) return
                 if ($node/@action) then
                     element { node-name($node) } {
-                        attribute action { $proc-attribute($node/@action) },
+                        attribute action { $proc-attribute($node/@action, true()) },
                         $node/@* except $node/@action,
                         ssrq-helper:resolve-links($node/node())
                     }
@@ -147,7 +151,7 @@ declare function ssrq-helper:resolve-links($nodes as node()*) {
             case element(script) | element(img) return
                 if ($node/@src) then
                     element { node-name($node) } {
-                        attribute src { $proc-attribute($node/@src) },
+                        attribute src { $proc-attribute($node/@src, false()) },
                         $node/@* except $node/@src
                     }
                 else
