@@ -107,10 +107,12 @@ declare function app:switch-view($node as node(), $model as map(*), $odd as xs:s
     element { node-name($node) } {
         $node/@*,
         attribute href {
-            if (empty($odd) or $odd = $config:odd-diplomatic) then
-                "?odd=" || $config:odd-normalized
-            else
-                "?odd=" || $config:odd-diplomatic
+            ec:create-link("", map { "odd": 
+                if (empty($odd) or $odd = $config:odd-diplomatic) then
+                    $config:odd-normalized
+                else
+                     $config:odd-diplomatic
+                }, true())
         },
         <i class="material-icons">
         {
