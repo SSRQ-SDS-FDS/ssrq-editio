@@ -571,6 +571,25 @@ declare function ssrq-helper:browseUp($node as node(), $model as map(*), $kanton
 };
 
 (:~
+ : Inserts the current language into a node's attribute
+ :
+ : @param $attr the name of the attribute in which to put the language code
+ : @param $always always set the language, not only if it needs to be carried in
+ :        the URL
+ :)
+declare function ssrq-helper:insert-lang($node as node(), $model as map(*),
+                                         $attr, $always) as node()? {
+    if (xs:boolean($always) or $config:lang-settings?add-lang-param) then
+        element { node-name($node) } {
+            $node/@* except ($node/@data-template, $node/@data-template-attr, $node/@data-template-always),
+            attribute { $attr } { $config:lang-settings?lang },
+            templates:process($node/node(), $model)
+        }
+    else
+        ()
+};
+
+(:~
 : Builds an bootstrap-based-pagination bar
 :
 : @param $key the default key to look up the total value in the $model
