@@ -1,0 +1,26 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="hi" mode="change">
+    <model output="latex" predicate="@rend='sup'" behaviour="inline">
+        <pb:template>\textsuperscript{[[content]]}</pb:template>
+    </model>
+    <model predicate="ancestor::TEI[@type] and @rend='italic'" cssClass="is-italic" behaviour="inline"/>
+    <model predicate="@rend='sup'" behaviour="inline">
+        <outputRendition>
+            font-size: 80%; vertical-align: top;
+        </outputRendition>
+    </model>
+    <model predicate="@rend!='sup' and @hand" behaviour="alternote">
+        <param name="content" value="."/>
+        <param name="alternate" value="(ec:translate(@rend, false(), true()), ' ', ec:translate(@hand, false(), false()))"/>
+        <param name="type" value="'text-critical'"/>
+    </model>
+    <model predicate="@rend!='sup'" behaviour="alternate" cssClass="text-critical">
+        <param name="default" value="."/>
+        <param name="alternate" value="ec:translate(@rend, false(), true())"/>
+        <param name="type" value="'text-critical'"/>
+    </model>
+    <!--<model behaviour="alternate" cssClass="text-critical">
+         <param name="default" value="."/>
+         <param name="alternate" value="ec:label('sic')"/>
+         <param name="type" value="'text-critical'"/>
+         </model>-->
+ </elementSpec>

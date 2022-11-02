@@ -27,12 +27,23 @@ import module namespace templates="http://exist-db.org/xquery/templates" at "../
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "../modules/ext-common.xqm";
 import module namespace index="http://ssrq-sds-fds.ch/exist/apps/ssrq/index" at "../modules/index.xqm";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
+import module namespace ssrq-pm="http://ssrq-sds-fds.ch/exist/apps/ssrq/pm" at "../modules/ssrq-pm.xqm";
 
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 
 declare variable $tests:host := substring-before(request:get-url(), '/exist') || '/exist/apps/ssrq';
 
 
+declare function tests:transform-odd-to-odd() as map(*)* {
+    let $odd-source := ($config:odd-root, $config:odd-source) => string-join('/') => doc()
+    return
+        map {
+            'name': 'tests:transform-odd-to-odd()',
+            'description': 'Checks, if all tei:specGrpRef are resolved',
+            'exp': $odd-source//tei:specGrpRef => count(),
+            'result': ssrq-pm:transform-odd-to-odd($odd-source/tei:TEI)//tei:elementSpec => count()
+        }
+};
 
 
 (:~ *********************

@@ -1,0 +1,20 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="summary" mode="add">
+    <model output="latex" predicate="ancestor::TEI/text/group/text[@type='summary']" behaviour="omit"/>
+    <model output="latex" predicate="normalize-space(string()) and matches(../../../../seriesStmt/idno/text(), '^(SSRQ_ZH|SDS_VD)')" behaviour="block">
+        <param name="summaryTitle" value="ec:label('summary')"/>
+        <pb:template>
+            \begin{summary}
+            \textbf{[[summaryTitle]]:}
+            \noindent [[content]]
+            \end{summary}
+        </pb:template>
+    </model>
+    <model output="latex" predicate="normalize-space(string())" behaviour="block">
+        <pb:template>
+            \begin{summary}
+            [[content]]
+            \end{summary}
+        </pb:template>
+    </model>
+    <model behaviour="block"/>
+</elementSpec>

@@ -6,6 +6,7 @@ import module namespace pmu="http://www.tei-c.org/tei-simple/xquery/util";
 import module namespace odd="http://www.tei-c.org/tei-simple/odd2odd";
 import module namespace config-data="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/config" at "/db/apps/ssrq-data/modules/config.xqm";
 import module namespace cache="http://exist-db.org/xquery/cache";
+import module namespace ssrq-pm="http://ssrq-sds-fds.ch/exist/apps/ssrq/pm" at "../ssrq-pm.xqm";
 
 declare namespace expath="http://expath.org/ns/pkg";
 declare namespace output="http://www.w3.org/2010/xslt-xquery-serialization";
@@ -41,12 +42,11 @@ declare function local:get-line($src, $line as xs:int) {
         replace($lines[$line], "^\s*(.*?)", "$1")
 };
 
-
+(ssrq-pm:compile-odd-to-odd($config:odd-root,  $config:odd-source,  $config:odd-diplomatic),
 (: clear cache :)
 let $clear := cache:clear($config-data:CACHE)
-let $odd := ("ssrq.odd", "ssrq-norm.odd")
 let $result :=
-    for $source in $odd
+    for $source in ($config:odd-diplomatic, $config:odd-normalized)
         for $module in ("web", "latex")
         return
             try {
@@ -82,3 +82,4 @@ return
         }
         </div>
     </div>
+)[2]

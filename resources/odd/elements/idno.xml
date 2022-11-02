@@ -1,0 +1,13 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="idno">
+    <model predicate="parent::altIdentifier" behaviour="inline">
+        <param name="content" value="(ec:label('signatureAlt'), ec:colon(), .)"/>
+    </model>
+    <model predicate="@source" behaviour="link">
+        <param name="link" value="@source"/>
+        <param name="target" value="'_new'"/>
+        <param name="content" value="(ec:label('signature'), ec:colon(), .)"/>
+    </model>
+    <model behaviour="inline">
+        <param name="content" value="(ec:label('signature'), ec:colon(), .)"/>
+    </model>
+</elementSpec>

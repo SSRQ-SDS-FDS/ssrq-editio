@@ -1,0 +1,36 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="listBibl" mode="change">
+    <model output="latex" predicate="bibl/node()" behaviour="block">
+        <param name="type" value="(head/text(), ec:punct(':', false()))"/>
+        <param name="content" value="if (starts-with(head, 'URL')) then string-join(for $bibl in bibl return ec:url($bibl), ec:semicolon()) else (string-join(bibl, ec:semicolon()), '.')"/>
+        <pb:template>
+            \manudesc{\textbf{[[type]]} [[content]]}
+        </pb:template>
+    </model>
+    <model output="latex" predicate="not(bibl/node())" behaviour="block">
+        <param name="literature" value="biblStruct"/>
+        <pb:template>
+            \begin{hangparas}{4.5mm}{1}
+
+            [[literature]]
+
+            \end{hangparas}
+        </pb:template>
+    </model>
+    <model predicate="ancestor::TEI[@type] and biblStruct" behaviour="list" cssClass="biblioList"/>
+    <modelSequence predicate="not($parameters?mode = 'filiation')">
+        <desc>Ausgabe Bibliographie, aber nicht in "weitere Überlieferungen"</desc>
+        <model behaviour="heading">
+            <desc>Titel des Bibliographieabschnitts</desc>
+            <param name="content" value="head/node()"/>
+            <param name="level" value="5"/>
+            <outputRendition>
+                margin-top: 1em;
+            </outputRendition>
+        </model>
+        <model behaviour="list">
+            <desc>Liste der Bibliographieeinträge</desc>
+            <param name="content" value="bibl"/>
+        </model>
+    </modelSequence>
+    <model behaviour="omit"/>
+</elementSpec>

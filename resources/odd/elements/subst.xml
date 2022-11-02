@@ -1,0 +1,29 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="subst" mode="change">
+    <model predicate="ancestor::teiHeader" behaviour="inline">
+        <param name="content" value="add"/>
+    </model>
+    <model predicate="del/gap and add" behaviour="alternote">
+        <param name="content" value="add"/>
+        <param name="alternate" value="(ec:label('corr'), ' ', ec:translate(add/@place, false(), false()), ', ', ec:translate(del/@rend, false(), false()))"/>
+        <param name="type" value="'text-critical'"/>
+    </model>
+    <model predicate="add[@hand='later hand'] and del[@hand='later hand']" behaviour="alternote" cssClass="text-critical">
+        <param name="content" value="del"/>
+        <param name="prefix" value="(ec:label('corr', true()), ' ', ec:translate(add/@hand, false(), false()), ' ', ec:translate(add/@place, false(), false()), ec:colon())"/>
+        <param name="alternate" value="add"/>
+        <param name="type" value="'text-critical'"/>
+    </model>
+    <model predicate="add/@hand" behaviour="alternote" cssClass="text-critical">
+        <param name="content" value="add"/>
+        <param name="prefix" value="(ec:label('corr', true()), ' ', ec:translate(add/@hand, false(), false()), ' ', ec:translate(add/@place, false(), false()), ', ', ec:label('replace', false()), ec:colon())"/>
+        <param name="alternate" value="del"/>
+        <param name="type" value="'text-critical'"/>
+    </model>
+    <model predicate="add" behaviour="alternote" cssClass="text-critical">
+        <param name="content" value="add"/>
+        <param name="prefix" value="(ec:label('corr', true()), ' ', ec:translate(add/@place, false(), false()), ', ', ec:label('replace', false()), ec:colon())"/>
+        <param name="alternate" value="del"/>
+        <param name="type" value="'text-critical'"/>
+    </model>
+    <model behaviour="inline"/>
+</elementSpec>

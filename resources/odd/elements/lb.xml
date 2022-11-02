@@ -1,0 +1,25 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="lb" mode="change">
+    <model output="latex" behaviour="omit"/>
+    <model predicate="ancestor::back//orig" behaviour="omit"/>
+    <model predicate="preceding-sibling::node()[1][self::pb]" behaviour="omit"/>
+    <model predicate=". is ancestor::div/node()[1]" behaviour="omit"/>
+    <model predicate=". is ancestor::p/node()[1]" behaviour="omit"/>
+    <modelSequence predicate="@break='no'">
+        <model behaviour="inline">
+            <outputRendition scope="before">
+                content: '-';
+            </outputRendition>
+        </model>
+        <model behaviour="break">
+            <param name="type" value="'page'"/>
+            <param name="label" value="@n"/>
+            <outputRendition>
+                display: block;
+            </outputRendition>
+        </model>
+    </modelSequence>
+    <model behaviour="break">
+        <param name="type" value="'line'"/>
+        <param name="label" value="@n"/>
+    </model>
+</elementSpec>

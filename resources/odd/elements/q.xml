@@ -1,0 +1,5 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="q" mode="change">
+    <model behaviour="inline">
+        <param name="content" value="('«', ., '»')"/>
+    </model>
+</elementSpec>

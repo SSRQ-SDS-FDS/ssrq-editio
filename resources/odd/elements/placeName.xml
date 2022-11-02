@@ -1,0 +1,12 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="placeName" mode="add">
+    <model output="latex" behaviour="inline">
+        <param name="ref" value="@ref"/>
+        <pb:template>\placename{[[ref]]}{[[content]]}</pb:template>
+    </model>
+    <model behaviour="reference" cssClass="semantic place">
+        <desc>Semantic highlighting of place names with tooltip and green text color</desc>
+        <param name="content" value="."/>
+        <param name="label" value="ec:label('place')"/>
+        <param name="ref" value="@ref"/>
+    </model>
+</elementSpec>

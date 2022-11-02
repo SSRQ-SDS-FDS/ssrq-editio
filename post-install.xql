@@ -4,6 +4,8 @@ import module namespace pmu="http://www.tei-c.org/tei-simple/xquery/util";
 import module namespace odd="http://www.tei-c.org/tei-simple/odd2odd";
 import module namespace cache="http://exist-db.org/xquery/cache";
 import module namespace config-data="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/config" at "/db/apps/ssrq-data/modules/config.xqm";
+import module namespace config="http://www.tei-c.org/tei-simple/config" at "modules/config.xqm";
+import module namespace ssrq-pm="http://ssrq-sds-fds.ch/exist/apps/ssrq/pm" at "modules/ssrq-pm.xqm";
 
 declare namespace repo="http://exist-db.org/xquery/repo";
 
@@ -24,25 +26,28 @@ declare variable $repoxml :=
 ;
 
 declare function local:generate-code($collection as xs:string) {
-    for $source in ("ssrq.odd", "ssrq-norm.odd")
-    for $module in ("web", "latex")
-    for $file in pmu:process-odd(
-        odd:get-compiled($collection || "/resources/odd", $source),
-        $collection || "/transform",
-        $module,
-        "../transform",
-        doc($collection || "/resources/odd/configuration.xml")/*)?("module")
-    return
-        (),
-    let $permissions := $repoxml//repo:permissions[1]
-    return (
-        for $file in xmldb:get-child-resources($collection || "/transform")
-        let $path := xs:anyURI($collection || "/transform/" || $file)
+    (
+        ssrq-pm:compile-odd-to-odd($config:odd-root,  $config:odd-source,  $config:odd-diplomatic),
+        for $source in ($config:odd-diplomatic, $config:odd-normalized)
+        for $module in ("web", "latex")
+        for $file in pmu:process-odd(
+            odd:get-compiled($collection || "/resources/odd", $source),
+            $collection || "/transform",
+            $module,
+            "../transform",
+            doc($collection || "/resources/odd/configuration.xml")/*)?("module")
+        return
+            (),
+        let $permissions := $repoxml//repo:permissions[1]
         return (
-            sm:chown($path, $permissions/@user),
-            sm:chgrp($path, $permissions/@group)
+            for $file in xmldb:get-child-resources($collection || "/transform")
+            let $path := xs:anyURI($collection || "/transform/" || $file)
+            return (
+                sm:chown($path, $permissions/@user),
+                sm:chgrp($path, $permissions/@group)
+            )
         )
-    )
+    )[2]
 };
 
 xmldb:create-collection($target, "transform"),

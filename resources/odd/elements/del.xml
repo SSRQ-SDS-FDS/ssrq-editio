@@ -1,0 +1,46 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="del" mode="change">
+    <model predicate="ancestor::back//orig" behaviour="omit"/>
+    <model predicate="add/@type='catchword'" behaviour="note">
+        <param name="prefix" value="(ec:label('del-add'), ' ', string-join((ec:translate(add/@place, false(), false()), ', ', ec:translate(add/@type, false(), false())), ''), ec:colon())"/>
+        <param name="type" value="'text-critical'"/>
+    </model>
+    <model predicate="@hand='later hand' and not(parent::subst)" behaviour="alternote" cssClass="text-critical">
+        <desc>Show footnote only</desc>
+        <param name="alternate" value="(if (@rend) then (ec:translate(@rend, false(), true())) else (ec:label('del')), ' ', ec:translate(@hand, false(), false()))"/>
+        <param name="type" value="'text-critical'"/>
+        <param name="content" value="."/>
+    </model>
+    <model predicate="add" behaviour="note">
+        <param name="prefix" value="(ec:label('del-add'), ' ', string-join((ec:translate(add/@place, false(), false()), ec:translate(add/@hand, false(), false()), ec:translate(add/@rend, false(), false()), ec:translate(add/@type, false(), false())), ' '), ec:colon())"/>
+        <param name="type" value="'text-critical'"/>
+    </model>
+    <model predicate="parent::subst" behaviour="inline"/>
+    <model predicate="gap" behaviour="alternote">
+        <param name="type" value="'text-critical'"/>
+        <param name="alternate" value="(ec:label(if (@rend and @rend='rubbing') then 'rubbing' else 'del-gap'), ' (', gap/@quantity, ' ', ec:translate(gap/@unit, gap/@quantity &gt; 1, false()), ')')"/>
+        <param name="content" value="''"/>
+    </model>
+    <model predicate="unclear and @rend" behaviour="note">
+        <param name="type" value="'text-critical'"/>
+        <param name="prefix" value="(ec:translate(@rend, false(), true()),', ', ec:label('unclear-rdg', false()), ec:colon())"/>
+    </model>
+    <model predicate="unclear" behaviour="note">
+        <param name="type" value="'text-critical'"/>
+        <param name="prefix" value="(ec:label('del'), ', ', ec:label('unclear-rdg', false()), ec:colon())"/>
+    </model>
+    <model predicate="@rend" behaviour="note">
+        <desc>Show text of del with popup and footnote</desc>
+        <param name="prefix" value="(ec:translate(@rend, false(), true()), if (@hand) then (' ', ec:translate(@hand, false(), false())) else (), ec:colon())"/>
+        <param name="type" value="'text-critical'"/>
+    </model>
+    <model predicate="@hand" behaviour="note">
+        <desc>Show text of del with popup and footnote</desc>
+        <param name="type" value="'text-critical'"/>
+        <param name="prefix" value="(ec:label('del'), ' ', ec:translate(@hand, false(), true()), ec:colon())"/>
+    </model>
+    <model behaviour="note">
+        <desc>Show text of del with popup and footnote</desc>
+        <param name="type" value="'text-critical'"/>
+        <param name="prefix" value="(ec:label('del'), ec:colon())"/>
+    </model>
+</elementSpec>
