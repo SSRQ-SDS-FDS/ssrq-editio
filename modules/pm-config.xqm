@@ -1,4 +1,4 @@
-xquery version "3.0";
+xquery version "3.1";
 
 module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config";
 
@@ -15,6 +15,5 @@ declare variable $pm-config:web-transform := function($xml as node()*, $paramete
 };
 
 declare variable $pm-config:latex-transform := function($xml as node()*, $parameters as map(*)?, $odd as xs:string?) {
-    pm-latex:transform($xml, $parameters)
-    (: print-latex:transform($xml, $parameters) :)
+    pm-latex:transform($xml, $parameters) => replace('(\s*\n){2,}', '&#xa;&#xa;') => replace('^[ \t]+', '', 'm')
 };
