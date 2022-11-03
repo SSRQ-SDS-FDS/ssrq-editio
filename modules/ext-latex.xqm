@@ -80,3 +80,17 @@ declare function ec-latex:note($config as map(*), $node as node(), $class as xs:
     else
         ()
 };
+
+(:~
+: Utility function which tries to render tei:msDesc-elements
+: with multiple childs
+:
+: @param $msDesc as element(tei:msDesc)
+: @return xs:string
+:)
+declare function ec-latex:render-multilingual-head($msDesc as element(tei:msDesc)) as xs:string {
+   if (every $head in $msDesc/tei:head satisfies $head => matches(' – ')) then
+        $msDesc/tei:head[1]/text() => replace('(.* – ).*', '$1') || ($msDesc/tei:head/text() ! (. => substring-after(' – '))) => string-join(' / ')
+   else
+        $msDesc/tei:head[1]/text()
+};

@@ -10,6 +10,7 @@ import module namespace counters="http://www.tei-c.org/tei-simple/xquery/counter
 import module namespace functx="http://www.functx.com";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
+import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "../../ssrq-data/modules/doc-list.xqm";
 
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
@@ -65,7 +66,7 @@ declare function ec:span($content) {
                 $node
     }</span>
 };
-    
+
 declare function ec:label($id as xs:string?) {
     ec:label($id, true())
 };
@@ -346,19 +347,6 @@ declare function ec:prefix-url-with-protocol($url as xs:string) as xs:string {
         $url
     else
         'https:' || $url
-};
-
-declare function ec:get-article-nr($id as xs:string?) {
-    let $temp  := replace($id, "^(.+?)_(\d{3}.*?)(?:_\d{1,2})?$", "$1 $2")
-    let $parts := tokenize($temp)
-    let $nr    :=
-        if (matches($parts[2], '^\d{8}')) then
-            ()
-        else if (matches($parts[2], '^\d{4}_\d{3}')) then
-            number(substring-after($parts[2], '_'))
-        else
-            number($parts[2])
-    return $nr
 };
 
 declare function ec:format-date($when as xs:string?) {
@@ -776,4 +764,34 @@ declare function ec:get-head($msDesc as element()) as element(tei:head) {
                 $msDesc/tei:head[@xml:lang][1]
     else
         $msDesc/tei:head
+};
+
+(:~
+: A wrapper to retrive information about a document using the parsed idno
+: this function can be used in odd models
+:
+: @author: Bastian Politycki
+: @date: 2022-11-03
+:
+: @param $idno as xs:string
+: @return the parsed idno as element(doc)
+:)
+
+declare function ec:doc-infos($idno as xs:string) as map(*)? {
+    let $idno-doc := doc-list:get($idno)
+    let $main := if ($idno-doc/case => exists() and number($idno-doc/doc) eq 0) then
+                    true()
+                else if ($idno-doc/case => empty()) then
+                    true()
+                else false()
+    return
+    if ($idno-doc => exists()) then
+        map {
+            "result": $idno-doc,
+            "is-main-case": $main,
+            "article-nr": number(if ($main and $idno-doc/case => exists()) then $idno-doc/case else $idno-doc/doc/text())
+        }
+    else
+        error(xs:QName('ec:common'), 'Failed to parse idno: ' || $idno)
+
 };

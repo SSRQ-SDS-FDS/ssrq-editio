@@ -18,6 +18,13 @@
                 <pb:behaviour output="latex" ident="textup">
                     <pb:template>\textup{[[content]]}</pb:template>
                 </pb:behaviour>
+                <pb:behaviour output="latex" ident="variable">
+                    <pb:param name="name"/>
+                    <pb:template>
+                        % Variable [[name]]
+                        \def\[[name]]{[[content]]}
+                    </pb:template>
+                </pb:behaviour>
             </tagsDecl>
         </encodingDesc>
     </teiHeader>
@@ -90,12 +97,14 @@
                 <specGrpRef target="elements/seg.xml"/>
                 <specGrpRef target="elements/sic.xml"/>
                 <specGrpRef target="elements/signed.xml"/>
+                <specGrpRef target="elements/sourceDesc.xml"/>
                 <specGrpRef target="elements/space.xml"/>
                 <specGrpRef target="elements/subst.xml"/>
                 <specGrpRef target="elements/summary.xml"/>
                 <specGrpRef target="elements/supplied.xml"/>
                 <specGrpRef target="elements/supportDesc.xml"/>
                 <specGrpRef target="elements/term.xml"/>
+                <specGrpRef target="elements/teiHeader.xml"/>
                 <specGrpRef target="elements/textLang.xml"/>
                 <specGrpRef target="elements/time.xml"/>
                 <specGrpRef target="elements/title.xml"/>

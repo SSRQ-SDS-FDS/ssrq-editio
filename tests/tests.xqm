@@ -405,6 +405,20 @@ declare function tests:parse-biblScope() as map(*)* {
    }
 };
 
+declare function tests:doc-info() as map(*)* {
+    let $input := (map{'idno': 'SSRQ-FR-I_2_8-7.0-1', 'is-main-case': true(), 'article-nr': 7}, map{'idno': 'SSRQ-FR-I_2_8-7.1-1', 'is-main-case': false(), 'article-nr': 1}, map{'idno': 'SSRQ-SG-III_4-1-1', 'is-main-case': true(), 'article-nr': 1})
+    for $x in $input
+    let $output := ec:doc-infos($x?idno)
+    return
+        map {
+            'name': 'tests:doc-info()',
+            'description': 'Checks the doc-info for ' || $x?idno,
+            'exp': true(),
+            'result': $output?is-main-case = $x?is-main-case and $output?article-nr = $x?article-nr
+
+        }
+};
+
 (:~ *********************
 : Tests to check TEI rendering
 :

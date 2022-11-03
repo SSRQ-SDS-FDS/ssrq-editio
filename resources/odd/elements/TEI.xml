@@ -56,20 +56,7 @@
     </model>
     <model output="latex" behaviour="section">
         <param name="lang" value="$ec:language"/>
-        <param name="ssrq" value="substring-before(teiHeader/fileDesc/seriesStmt/idno/text(), '_')"/>
-        <param name="volume" value="teiHeader/fileDesc/titleStmt/title"/>
-        <param name="by" value="ec:label('by', false())"/>
-        <param name="author" value="ec:format-ssrq-author(teiHeader/fileDesc/titleStmt/respStmt[resp[@key='transcript' or @key='headerinfo']]/persName)"/>
-        <param name="year" value="substring(teiHeader/fileDesc/publicationStmt/date[@type='electronic']/@when, 1, 4)"/>
-        <param name="permalink" value="ec:create-p-link-from-id(//seriesStmt[@xml:id='ssrq-sds-fds']/idno/text())"/>
-        <param name="sectionType" value="if (matches(teiHeader/fileDesc/seriesStmt/idno/text(), '\d{4}_\d{3}$') and not(matches(teiHeader/fileDesc/seriesStmt/idno/text(), '_000$'))) then 'subsubsection' else 'subsection'"/>
-        <param name="articleType" value="if (matches(teiHeader/fileDesc/seriesStmt/idno/text(), '\d{4}_\d{3}$') and not(matches(teiHeader/fileDesc/seriesStmt/idno/text(), '_000$'))) then 'subarticle' else 'article'"/>
-        <param name="datingType" value="if (matches(teiHeader/fileDesc/seriesStmt/idno/text(), '\d{4}_\d{3}$') and not(matches(teiHeader/fileDesc/seriesStmt/idno/text(), '_000$'))) then 'subdating' else 'dating'"/>
-        <param name="articleNr" value="ec:get-article-nr(teiHeader/fileDesc/seriesStmt/idno/text()) - 1"/>
-        <param name="title" value="teiHeader/fileDesc/sourceDesc/msDesc/head/text()"/>
-        <param name="dating" value="replace(if (exists(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original'][origDate])) then ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/filiation[@type='original']/origDate) else ec:print-date(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origDate), '\.$', '')"/>
-        <param name="place" value="if (teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace/text()) then ('. ' || string-join(teiHeader/fileDesc/sourceDesc/msDesc/history/origin/origPlace/text(), ec:semicolon())) else ()"/>
-        <param name="keywords" value="string-join(for $keyword in teiHeader/profileDesc/textClass/keywords/term return '\term{' || $keyword/@ref || '}{}')"/>
+        <param name="metadata" value="teiHeader"/>
         <param name="summary" value="teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary"/>
         <param name="comments" value="text//back"/>
         <param name="content" value="text//body"/>
@@ -83,20 +70,7 @@
 
             \begin{document}
 
-            % Variablen für Kopfzeile
-            \def\volume{[[ssrq]], [[volume]] [[by]] [[author]], [[year]].}
-            \def\volid{\url{[[permalink]]}}
-
-            \linenumbers				% Zeilennummern
-            \normalsize					% normale Grösse, d.h. Quellentext (source) ist 10pt
-
-            \thispagestyle{firstpage}
-
-            \setcounter{[[sectionType]]}{[[articleNr]]}  % Stücknummer - 1
-            \sloppy
-            \[[articleType]]{[[title]]}{}
-            \fussy
-            \[[datingType]]{[[dating]][[place]][[keywords]]}
+            [[metadata]]
 
             [[summary]]
             [[comments]]
