@@ -65,7 +65,7 @@ declare function ec:span($content) {
                 $node
     }</span>
 };
-
+    
 declare function ec:label($id as xs:string?) {
     ec:label($id, true())
 };
@@ -329,12 +329,23 @@ declare function ec:create-link-from-id($id as xs:string) as xs:string {
 };
 
 declare function ec:create-p-link-from-id($id as xs:string) as xs:string {
-    if ($id => matches("^(SSRQ|SDS|FDS)") and ($config:lang-settings?add-lang-param or $config:env/env = 'dev')) then
+    ec:create-p-link-from-id($id, false())
+};
+
+declare function ec:create-p-link-from-id($id as xs:string, $force as xs:boolean) as xs:string {
+    if ($id => matches("^(SSRQ|SDS|FDS)") and ($config:lang-settings?add-lang-param or $config:env/env = 'dev') and not($force)) then
         (: internal links in dev or when the language must be carried :)
         ec:create-link-from-id($id)
     else
         ($config:permalink-base => replace('^(.*?)/?$', '$1'), encode-for-uri($id))
         => string-join("/")
+};
+
+declare function ec:prefix-url-with-protocol($url as xs:string) as xs:string {
+    if ($url => starts-with('http')) then
+        $url
+    else
+        'https:' || $url
 };
 
 declare function ec:get-article-nr($id as xs:string?) {
