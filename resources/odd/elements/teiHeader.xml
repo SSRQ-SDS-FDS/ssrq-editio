@@ -1,17 +1,35 @@
 <elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" mode="change" ident="teiHeader">
-    <model output="latex" behaviour="section">
-        <desc xml:lang="de" versionDate="2022-11-03">TEI2LaTeX Template für Metadaten</desc>
-        <param name="idno" value="//seriesStmt[@xml:id='ssrq-sds-fds']/idno"/>
-        <param name="sourceDesc" value="//sourceDesc"/>
-        <pb:template>
-            \linenumbers				% Zeilennummern
-            \normalsize					% normale Grösse, d.h. Quellentext (source) ist 10pt
-
-            \thispagestyle{firstpage}
-
-            [[idno]]
-            \fussy
-            [[sourceDesc]]
-        </pb:template>
+  <modelSequence output="latex">
+    <model behaviour="section">
+      <desc xml:lang="de" versionDate="2022-11-03">TEI2LaTeX Template für PDF-Metadaten</desc>
+      <param name="volume-title" value="fileDesc/titleStmt/title"/>
+      <param name="editor" value="ec:format-ssrq-author(fileDesc/titleStmt/editor/persName)"/>
+      <param name="by" value="ec:label('by', false())"/>
+      <param name="article-title" value="//sourceDesc/msDesc/head[1]/string()"/>
+      <param name="publisher" value="//seriesStmt[@xml:id = 'ssrq-sds-fds']//orgName/text()"/>
+      <pb:template>
+        \hypersetup{
+        pdftitle    = {[[volume-title]] [[by]] [[editor]]},
+        pdfsubject  = {[[article-title]]},
+        pdfauthor   = {[[publisher]]},
+        pdfproducer = {TeX created from TEI with the TEI Processing Model}
+        }
+      </pb:template>
     </model>
+    <model behaviour="section">
+      <desc xml:lang="de" versionDate="2022-11-03">TEI2LaTeX Template für Metadaten</desc>
+      <param name="idno" value="//seriesStmt[@xml:id='ssrq-sds-fds']/idno"/>
+      <param name="sourceDesc" value="//sourceDesc"/>
+      <pb:template>
+        \linenumbers				% Zeilennummern
+        \normalsize					% normale Grösse, d.h. Quellentext (source) ist 10pt
+
+        \thispagestyle{firstpage}
+
+        [[idno]]
+        \fussy
+        [[sourceDesc]]
+      </pb:template>
+    </model>
+  </modelSequence>
 </elementSpec>
