@@ -12,7 +12,8 @@
         </model>
         <model behaviour="variable">
             <param name="name" value="'volid'"/>
-            <param name="content" value="ec:create-p-link-from-id(./text(), true()) => ec:prefix-url-with-protocol()"/>
+            <param name="url" value="ec:create-p-link-from-id(./text(), true()) => ec:prefix-url-with-protocol()"/>
+            <pb:template>\url{[[url]]}</pb:template>
         </model>
         <model behaviour="inline">
             <desc xml:lang="de" versionDate="2022-11-03">Ausgabe des Titels und der Stücknummer</desc>

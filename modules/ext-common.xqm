@@ -21,6 +21,7 @@ declare variable $ec:COUNTER_TEXTCRITICAL := "text-critical-" || util:uuid();
 declare variable $ec:COUNTER_NOTE := "note-" || util:uuid();
 
 declare variable $ec:language := $config:lang-settings?lang;
+declare variable $ec:prefix := '^(?:SSRQ|SDS|FDS)-';
 
 declare function ec:prepare($config as map(*), $node as node()*) {
     (

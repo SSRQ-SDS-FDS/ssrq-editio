@@ -1,5 +1,5 @@
 <elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="ref" mode="change">
-    <model output="latex" predicate="matches(., '^(?:SSRQ|SDS|FDS)_')" behaviour="inline">
+    <model output="latex" predicate="matches(., $ec:prefix)" behaviour="inline">
         <param name="content" value="ec:format-id(.)"/>
     </model>
     <model output="latex" behaviour="inline">
@@ -11,11 +11,11 @@
         <param name="link" value="ec:create-link-from-id(.)"/>
         <param name="content" value="ec:short-doc-info(.)"/>
     </model>
-    <model predicate="not(@target) and matches(., '^(?:SSRQ|SDS|FDS)-')" behaviour="link" output="latex">
+    <model predicate="not(@target) and matches(., $ec:prefix)" behaviour="link" output="latex">
         <desc>Create Permalink for SSRQ documents</desc>
         <param name="link" value="ec:create-p-link-from-id(.)"/>
     </model>
-    <model predicate="not(@target) and matches(., '^(?:SSRQ|SDS|FDS)-')" behaviour="link">
+    <model predicate="not(@target) and matches(., $ec:prefix)" behaviour="link">
         <desc>Link auf ein anderes Dokument innerhalb des Portals</desc>
         <param name="link" value="ec:create-link-from-id(.)"/>
     </model>
