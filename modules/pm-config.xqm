@@ -15,5 +15,11 @@ declare variable $pm-config:web-transform := function($xml as node()*, $paramete
 };
 
 declare variable $pm-config:latex-transform := function($xml as node()*, $parameters as map(*)?, $odd as xs:string?) {
-    pm-latex:transform($xml, $parameters) => replace('(\s*\n){2,}', '&#xa;&#xa;') => replace('^[ \t]+', '', 'm')
+    let $result := pm-latex:transform($xml, $parameters)
+    let $clear-tex := function($output as xs:string) {$output => replace('(\s*\n){2,}', '&#xa;&#xa;') => replace('^[ \t]+', '', 'm')}
+    return
+        if ($result => count() = 1) then
+            $result => $clear-tex()
+        else
+            $result => string-join('&#xa;') => $clear-tex()
 };
