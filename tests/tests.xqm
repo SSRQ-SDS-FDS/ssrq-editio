@@ -30,6 +30,7 @@ import module namespace console="http://exist-db.org/xquery/console" at "java:or
 import module namespace ssrq-pm="http://ssrq-sds-fds.ch/exist/apps/ssrq/pm" at "../modules/ssrq-pm.xqm";
 
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
+declare default element namespace "http://www.tei-c.org/ns/1.0";
 
 declare variable $tests:host := substring-before(request:get-url(), '/exist') || '/exist/apps/ssrq';
 
@@ -663,4 +664,17 @@ declare function tests:seg() as map(*)* {
                         $pm-config:web-transform($result?test, map { "root": $result?test}, $result?odd)
                         else $pm-config:latex-transform($result?test, map { "root": $result?test}, $result?odd)[1] => normalize-space()
         }
+};
+
+declare function tests:tex-summary-back() as map(*)* {
+ for $el in ('summary', 'back')
+ let $xml := element { $el } { 'Das ist der Inhalt von ' || $el }
+ let $result := $pm-config:latex-transform($xml, map { "root": $xml}, $config:odd)
+ return
+   map {
+       'name': 'tests:tex-summary-back()',
+       'description': 'Tests the TEI2LaTeX rendering for ' || $el,
+       'exp': true(),
+       'result':  if ($el = 'summary') then $result => contains('Regest:') else $result => contains('Kommentar:')
+   }
 };

@@ -7,19 +7,12 @@
             \end{introlist}
         </pb:template>
     </model>
-    <model output="latex" predicate="normalize-space(string()) and matches(ancestor::TEI//seriesStmt/idno/text(), '^(SSRQ_ZH|SDS_VD)')" behaviour="block">
+    <model output="latex" predicate="normalize-space(string())" behaviour="block">
         <param name="commentsTitle" value="ec:label('comments')"/>
         <pb:template>
             \begin{intro}
             \textbf{[[commentsTitle]]:}
             \noindent [[content]]
-            \end{intro}
-        </pb:template>
-    </model>
-    <model output="latex" predicate="normalize-space(string())" behaviour="block">
-        <pb:template>
-            \begin{intro}
-            [[content]]
             \end{intro}
         </pb:template>
     </model>
