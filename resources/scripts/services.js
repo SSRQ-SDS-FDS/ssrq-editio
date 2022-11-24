@@ -27,13 +27,21 @@ function insertTooltipFromApi(context, eventListener) {
 
 $(document).ready(function () {
   const root = document.documentElement.dataset.app;
-  let docId = (location.origin + location.pathname)
+  const context = new URL(location.href);
+  let docId = (context.origin + context.pathname)
     .split(root)[1]
     .replace(/^\//, '')
     .replace(/\.html$/, '')
     .replace(/\/+/g, '-');
   docId = docId.startsWith('temp-') ? docId.replace('temp-', '') : docId;
-  const apiUrl = `${root}/api/facets?doc=${docId}`;
+  const apiUrl = `${root}/api/facets?doc=${docId}${
+    context.searchParams.has('lang') &&
+    ['de', 'en', 'fr', 'it'].some(
+      (lang) => lang === context.searchParams.get('lang')
+    )
+      ? `&lang=${context.searchParams.get('lang')}`
+      : ''
+  }`;
   const aside = $('#aside');
   if (aside.length) {
     aside.load(apiUrl, function () {
