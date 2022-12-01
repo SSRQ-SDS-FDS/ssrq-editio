@@ -742,3 +742,11 @@ declare function ssrq-helper:stream-xml-from-model($node as node(), $model as ma
      response:stream($model?xml, 'media-type=application/xml')
     )
 };
+
+declare function ssrq-helper:link-to-index($node as node(), $model as map(*)) as element(a) {
+    element { node-name($node) } {
+        attribute href { $config:index-url },
+        $node/@* except $node/@data-template,
+        templates:process($node/node(), $model)
+    }
+};

@@ -149,6 +149,15 @@ declare variable $config:base-url :=
 
 declare variable $config:lang-settings := ssrq-lang:get-lang-settings();
 
+declare variable $config:index-url :=
+    let $index-subdomain := 'index'
+    return
+        if ($config:base-url eq $config:default-base-url) then
+           ('//', $config:env/urls/prefix[@type = 'index'] ,'.', $config:env/urls/url[@lang = $config:lang-settings?lang]) => string-join()
+        else
+            $config:base-url => replace('^//\w+(\..*)$', '//' || $config:env/urls/prefix[@type = 'index'] || '$1')
+;
+
 (:
     Determine the application root collection from the current module load path.
 :)

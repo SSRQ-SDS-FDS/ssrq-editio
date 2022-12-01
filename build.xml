@@ -8,6 +8,11 @@
     <property name="env" value="prod"/>
     <property name="cache" value="true"/>
     <property name="upload" value="false"/>
+    <property name="url.index" value="index"/>
+    <property name="url.de" value="ssrq-online.ch"/>
+    <property name="url.fr" value="sds-online.ch"/>
+    <property name="url.it" value="fds-online.ch"/>
+    <property name="url.en" value="sls-online.ch"/>
     <property name="excludes" value="${build.dir}/** _scripts/** README.md build.xml .existdb.json node_modules/** resources/scss/** transform/**"/>
 
     <!-- Guard clause to check the "env" variable -->
@@ -39,10 +44,17 @@
     <target name="set-env">
         <echo message="Writing env settings to &quot;env.xml&quot;"/>
         <echoxml file="env.xml">
-            <settings>
+            <settings xmlns:xml="http://www.w3.org/XML/1998/namespace">
                 <env>${env}</env>
                 <cache>${cache}</cache>
                 <upload>${upload}</upload>
+                <urls>
+                    <prefix type="index">${url.index}</prefix>
+                    <url lang="de">${url.de}</url>
+                    <url lang="fr">${url.fr}</url>
+                    <url lang="en">${url.en}</url>
+                    <url lang="it">${url.it}</url>
+                </urls>
             </settings>
         </echoxml>
     </target>

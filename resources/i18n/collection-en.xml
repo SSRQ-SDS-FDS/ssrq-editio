@@ -95,4 +95,5 @@
     <msg key="unknown">unknown</msg>
     <msg key="existent">existent</msg>
     <msg key="nonexistent">non-existent</msg>
+    <msg key="index">Index</msg>
 </catalogue>
