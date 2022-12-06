@@ -48,7 +48,13 @@ declare function local:generate-code($collection as xs:string) {
 xmldb:create-collection($target, "transform"),
 sm:chown(xs:anyURI($target || "/transform"), "ssrq"),
 sm:chgrp(xs:anyURI($target || "/transform"), "tei"),
-if (xs:boolean(doc($target || '/env.xml')//upload)) then
-sm:chmod(xs:anyURI($target || "/modules/pub/upload.xql"), "rwsr-xr-x") else (),
-(if (cache:create($config-data:CACHE, map{})) then () else cache:clear($config-data:CACHE)),
+if (xs:boolean(doc($target || "/env.xml")//upload)) then
+    sm:chmod(xs:anyURI($target || "/modules/pub/upload.xql"), "rwsr-xr-x")
+else
+    (),
+cache:destroy($config-data:CACHE),
+cache:create($config-data:CACHE, map {
+    "maximumSize": 32768,
+    "expireAfterAccess": 86400000 (: 1 day :)
+}),
 local:generate-code($target)
