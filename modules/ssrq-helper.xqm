@@ -180,7 +180,7 @@ declare function ssrq-helper:link-to-resource($model as map(*), $file-ext as xs:
             if ($model?idno/special) then
                 $model?idno/special
             else
-                concat(string-join(($model?idno/case, $model?idno/doc[$use-doc]), '.'), '-', $model?idno/num)
+                concat(string-join(($model?idno/case, $model?idno/opening, $model?idno/doc[$use-doc]), '.'), '-', $model?idno/num)
         ) || $file-ext))
 };
 
