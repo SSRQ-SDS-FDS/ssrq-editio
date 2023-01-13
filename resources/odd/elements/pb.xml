@@ -2,9 +2,10 @@
     <model output="latex" predicate="ancestor::body and not(preceding::pb[ancestor::body])" behaviour="omit">
         <desc>Hide the first pagebreak in a document (beware: independent of position!)</desc>
     </model>
-    <!--<model output="latex" predicate="ancestor::body and not(following::pb[ancestor::body]) and not(following::p[ancestor::body]) and not(following::seg[ancestor::body])" behaviour="omit">
-         <desc>Hide the last pagebreak in a document if it's the last element besides div/ab (i.e. not followed by p or seg)</desc>
-         </model>-->
+    <model output="latex" predicate="ancestor::body and not(following::pb[ancestor::body]) and not(following::p[ancestor::body]) and not(following::seg[ancestor::body])
+                                     and following::text()[ancestor::body] => string-join('') => normalize-space() => string-length() = 0" behaviour="omit">
+         <desc>Hide the last pagebreak in a document if it's not followed by text</desc>
+         </model>
     <model output="latex" predicate="preceding-sibling::*[1][self::seg]" behaviour="omit">
         <desc>seg directly followed by pb is handled by seg</desc>
     </model>

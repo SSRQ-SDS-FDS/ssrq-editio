@@ -678,3 +678,17 @@ declare function tests:tex-summary-back() as map(*)* {
        'result':  if ($el = 'summary') then $result => contains('Regest:') else $result => contains('Kommentar:')
    }
 };
+
+
+declare function tests:tex-pb() as map(*)* {
+ let $examples := (<body xmlns="http://www.tei-c.org/ns/1.0"><pb n="1"/><p>Text <pb n="2"/> Text</p></body>, <body xmlns="http://www.tei-c.org/ns/1.0"><pb n="1"/><p>Text Text <pb n="2"/></p></body>)
+ let $results := (true(), false())
+ for $example at $i in $examples
+ return
+   map {
+       'name': 'tests:tex-pb()',
+       'description': 'Tests the TEI2LaTeX rendering for tei:pb, which should be rendered if it is followed by text()',
+       'exp': $results[$i],
+       'result': $pm-config:latex-transform($example, map { "root": $example}, $config:odd) => contains('\pb')
+   }
+};
