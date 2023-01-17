@@ -1,0 +1,33 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="choice" mode="change">
+    <model output="latex" predicate="sic/del and corr" behaviour="alternote">
+        <param name="content" value="corr"/>
+        <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), '\textup{', normalize-space(string-join(sic//text())), '}', ', ', ec:translate(sic/del/@rend, false(), true()), ec:colon(), '\textup{', sic/del//text(), '}')"/>
+        <param name="type" value="'text-critical'"/>
+    </model>
+    <model output="latex" predicate="sic and corr" behaviour="alternote">
+        <param name="content" value="corr"/>
+        <param name="alternate" value="(ec:label('corrected-from'), ec:colon(), '\textup{', sic, '}')"/>
+        <param name="type" value="'text-critical'"/>
+    </model>
+    <model output="latex" predicate="abbr and expan" behaviour="inline">
+        <param name="content" value="expan"/>
+    </model>
+    <model output="latex" predicate="orig and reg" behaviour="inline">f
+        <param name="content" value="reg"/>
+    </model>
+    <model predicate="sic and corr" behaviour="alternote" cssClass="text-critical">
+        <param name="content" value="sic"/>
+        <param name="prefix" value="(ec:label('corrected'), ec:colon())"/>
+        <param name="alternate" value="corr"/>
+        <param name="type" value="'text-critical'"/>
+    </model>
+    <model predicate="abbr and expan" behaviour="alternate" cssClass="text-critical">
+        <param name="default" value="abbr[1]"/>
+        <param name="prefix" value="(ec:label('abbr-expanded'), ec:colon())"/>
+        <param name="alternate" value="expan[1]"/>
+    </model>
+    <model predicate="orig and reg" behaviour="alternate" cssClass="text-critical">
+        <param name="default" value="orig[1]"/>
+        <param name="alternate" value="reg[1]"/>
+    </model>
+</elementSpec>

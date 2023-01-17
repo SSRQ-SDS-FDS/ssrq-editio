@@ -1,0 +1,15 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" mode="change" ident="sourceDesc">
+    <model output="latex" behaviour="inline">
+        <param name="datingType" value="
+                let $doc-infos := ec:doc-infos(ancestor::teiHeader//seriesStmt[@xml:id = 'ssrq-sds-fds']/idno/text())
+                return
+                    if ($doc-infos?is-main-case) then 'dating' else 'subdating'
+        "/>
+        <param name="dating" value="replace(if (exists(msDesc/msContents/msItem/filiation[@type='original'][origDate])) then ec:print-date(msDesc/msContents/msItem/filiation[@type='original']/origDate) else ec:print-date(msDesc/history/origin/origDate), '\.$', '')"/>
+        <param name="place" value="if (msDesc/history/origin/origPlace/text()) then ('. ' || string-join(msDesc/history/origin/origPlace/text(), ec:semicolon())) else ()"/>
+        <param name="keywords" value="string-join(for $keyword in ancestor::teiHeader/profileDesc/textClass/keywords/term return '\term{' || $keyword/@ref || '}{}')"/>
+        <pb:template>
+            \[[datingType]]{[[dating]][[place]][[keywords]]}
+        </pb:template>
+    </model>
+</elementSpec>

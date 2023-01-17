@@ -27,12 +27,24 @@ import module namespace templates="http://exist-db.org/xquery/templates" at "../
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "../modules/ext-common.xqm";
 import module namespace index="http://ssrq-sds-fds.ch/exist/apps/ssrq/index" at "../modules/index.xqm";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
+import module namespace ssrq-pm="http://ssrq-sds-fds.ch/exist/apps/ssrq/pm" at "../modules/ssrq-pm.xqm";
 
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
+declare default element namespace "http://www.tei-c.org/ns/1.0";
 
 declare variable $tests:host := substring-before(request:get-url(), '/exist') || '/exist/apps/ssrq';
 
 
+declare function tests:transform-odd-to-odd() as map(*)* {
+    let $odd-source := ($config:odd-root, $config:odd-source) => string-join('/') => doc()
+    return
+        map {
+            'name': 'tests:transform-odd-to-odd()',
+            'description': 'Checks, if all tei:specGrpRef are resolved',
+            'exp': $odd-source//tei:specGrpRef => count(),
+            'result': ssrq-pm:transform-odd-to-odd($odd-source/tei:TEI)//tei:elementSpec => count()
+        }
+};
 
 
 (:~ *********************
@@ -394,6 +406,20 @@ declare function tests:parse-biblScope() as map(*)* {
    }
 };
 
+declare function tests:doc-info() as map(*)* {
+    let $input := (map{'idno': 'SSRQ-FR-I_2_8-7.0-1', 'is-main-case': true(), 'article-nr': 7}, map{'idno': 'SSRQ-FR-I_2_8-7.1-1', 'is-main-case': false(), 'article-nr': 1}, map{'idno': 'SSRQ-SG-III_4-1-1', 'is-main-case': true(), 'article-nr': 1})
+    for $x in $input
+    let $output := ec:doc-infos($x?idno)
+    return
+        map {
+            'name': 'tests:doc-info()',
+            'description': 'Checks the doc-info for ' || $x?idno,
+            'exp': true(),
+            'result': $output?is-main-case = $x?is-main-case and $output?article-nr = $x?article-nr
+
+        }
+};
+
 (:~ *********************
 : Tests to check TEI rendering
 :
@@ -638,4 +664,31 @@ declare function tests:seg() as map(*)* {
                         $pm-config:web-transform($result?test, map { "root": $result?test}, $result?odd)
                         else $pm-config:latex-transform($result?test, map { "root": $result?test}, $result?odd)[1] => normalize-space()
         }
+};
+
+declare function tests:tex-summary-back() as map(*)* {
+ for $el in ('summary', 'back')
+ let $xml := element { $el } { 'Das ist der Inhalt von ' || $el }
+ let $result := $pm-config:latex-transform($xml, map { "root": $xml}, $config:odd)
+ return
+   map {
+       'name': 'tests:tex-summary-back()',
+       'description': 'Tests the TEI2LaTeX rendering for ' || $el,
+       'exp': true(),
+       'result':  if ($el = 'summary') then $result => contains('Regest:') else $result => contains('Kommentar:')
+   }
+};
+
+
+declare function tests:tex-pb() as map(*)* {
+ let $examples := (<body xmlns="http://www.tei-c.org/ns/1.0"><pb n="1"/><p>Text <pb n="2"/> Text</p></body>, <body xmlns="http://www.tei-c.org/ns/1.0"><pb n="1"/><p>Text Text <pb n="2"/></p></body>)
+ let $results := (true(), false())
+ for $example at $i in $examples
+ return
+   map {
+       'name': 'tests:tex-pb()',
+       'description': 'Tests the TEI2LaTeX rendering for tei:pb, which should be rendered if it is followed by text()',
+       'exp': $results[$i],
+       'result': $pm-config:latex-transform($example, map { "root": $example}, $config:odd) => contains('\pb')
+   }
 };

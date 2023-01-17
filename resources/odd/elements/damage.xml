@@ -1,0 +1,31 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="damage" mode="add">
+    <model predicate="gap" behaviour="alternote" cssClass="text-critical">
+        <param name="content" value="'[...]'"/>
+        <param name="type" value="'text-critical'"/>
+        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()), ' (', gap/@quantity, ' ', ec:translate(gap/@unit, gap/@quantity &gt; 1, false()), ')')"/>
+    </model>
+    <model predicate="unclear" behaviour="alternote" cssClass="text-critical">
+        <param name="content" value="unclear/node()"/>
+        <param name="type" value="'text-critical'"/>
+        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()), ', ', ec:label('unclear-rdg', false()))"/>
+    </model>
+    <model predicate="supplied/@source" behaviour="alternote" cssClass="text-critical">
+        <param name="content" value="('[', supplied/node(), ']')"/>
+        <param name="type" value="'text-critical'"/>
+        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()), ', ', ec:label('supplied-after', false()), ' ', supplied/@source)"/>
+    </model>
+    <model predicate="supplied" behaviour="alternote" cssClass="text-critical">
+        <param name="content" value="('[', supplied/node(), ']')"/>
+        <param name="type" value="'text-critical'"/>
+        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()), ', ', ec:label('supplied', false()))"/>
+    </model>
+    <model predicate="add" behaviour="alternote" cssClass="text-critical">
+        <param name="content" value="add/node()"/>
+        <param name="type" value="'text-critical'"/>
+        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()), ', ', ec:span((ec:label('add'), ' ', string-join((ec:translate(add/@place, false(), false()), ec:translate(add/@hand, false(), false()), ec:translate(add/@rend, false(), false()), ec:translate(add/@type, false(), false())), ' '))))"/>
+    </model>
+    <model predicate="@agent" behaviour="alternote" cssClass="text-critical">
+        <param name="type" value="'text-critical'"/>
+        <param name="alternate" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()))"/>
+    </model>
+</elementSpec>

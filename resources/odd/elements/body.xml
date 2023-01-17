@@ -1,0 +1,27 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="body" mode="change">
+    <model output="latex" predicate="request:get-parameter('introduction', ())" behaviour="block">
+        <pb:template>[[content]]</pb:template>
+    </model>
+    <model output="latex" predicate="parent::text/@type='summary'" behaviour="block">
+        <pb:template>
+            \begin{source}
+            \begin{itshape}
+            [[content]]
+            \end{itshape}
+            \end{source}
+        </pb:template>
+    </model>
+    <model output="latex" behaviour="block">
+        <pb:template>
+            \begin{source}
+            [[content]]
+            \end{source}
+        </pb:template>
+    </model>
+    <modelSequence>
+        <model behaviour="index">
+            <param name="type" value="'toc'"/>
+        </model>
+        <model behaviour="block"/>
+    </modelSequence>
+</elementSpec>

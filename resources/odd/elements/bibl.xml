@@ -1,0 +1,13 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="bibl" mode="change">
+    <model predicate="@type='url'" behaviour="inline">
+        <param name="url" value="ref/@target"/>
+        <param name="text" value="."/>
+        <pb:template>
+            <li xmlns="">
+                <a href="[[url]]" target="_blank">[[text]]</a>
+            </li>
+        </pb:template>
+    </model>
+    <model predicate="ancestor::teiHeader" behaviour="listItem"/>
+    <model behaviour="inline"/>
+</elementSpec>

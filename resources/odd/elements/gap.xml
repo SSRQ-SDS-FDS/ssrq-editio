@@ -1,0 +1,44 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="gap" mode="change">
+    <model predicate="@reason='irrelevant'" behaviour="alternate" cssClass="text-critical">
+        <param name="default" value="text{'[...]'}"/>
+        <param name="alternate" value="ec:label('irrelevant')"/>
+        <param name="type" value="'text-critical'"/>
+    </model>
+    <model predicate="@reason='illegible'" behaviour="alternote" cssClass="text-critical">
+        <param name="content" value="text{'[...]'}"/>
+        <param name="alternate" value="(ec:label('unreadable'), ' (' , @quantity , ' ', ec:translate(@unit, @quantity &gt; 1, false()), ')')"/>
+        <param name="type" value="'text-critical'"/>
+    </model>
+    <model predicate="@reason='missing'" behaviour="alternote" cssClass="text-critical">
+        <param name="content" value="text{'[...]'}"/>
+        <param name="alternate" value="(ec:label('missing'), ' (' , @quantity , ' ', ec:translate(@unit, @quantity &gt; 1, false()), ')')"/>
+        <param name="type" value="'text-critical'"/>
+    </model>
+    <model predicate="@source" behaviour="alternote" cssClass="text-critical">
+        <param name="content" value="text{'[...]'}"/>
+        <param name="alternate" value="(ec:label('compare'), ' ', @source)"/>
+        <param name="type" value="'text-critical'"/>
+    </model>
+    <model predicate="desc" behaviour="inline">
+        <outputRendition>
+            color: grey;
+        </outputRendition>
+    </model>
+    <model predicate="@extent" behaviour="inline" cssClass="text-critical">
+        <param name="content" value="@extent"/>
+        <outputRendition scope="before">
+            content: '[..';
+        </outputRendition>
+        <outputRendition scope="after">
+            content: '..]';
+        </outputRendition>
+        <outputRendition>
+            color: grey;
+        </outputRendition>
+    </model>
+    <model behaviour="inline" cssClass="text-critical">
+        <outputRendition scope="before">
+            content: '[...]';
+        </outputRendition>
+    </model>
+</elementSpec>

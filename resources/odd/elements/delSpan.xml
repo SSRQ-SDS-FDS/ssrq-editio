@@ -1,0 +1,10 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="delSpan" mode="change">
+    <model predicate="@rend" behaviour="note">
+        <param name="content" value="(ec:translate(@rend, false(), true()), if (@hand) then (' ', ec:translate(@hand, false(), false())) else ())"/>
+        <param name="type" value="'text-critical-start'"/>
+    </model>
+    <model behaviour="note">
+        <param name="content" value="(ec:label('del'), if (@hand) then (' ', ec:translate(@hand, false(), false())) else ())"/>
+        <param name="type" value="'text-critical-start'"/>
+    </model>
+</elementSpec>

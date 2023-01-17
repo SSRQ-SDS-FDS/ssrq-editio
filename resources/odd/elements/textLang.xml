@@ -1,0 +1,6 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="textLang" mode="add">
+    <model predicate="not(./following-sibling::textLang)" behaviour="listItem">
+        <desc>Ausgabe Sprache in "weitere Überlieferungen"</desc>
+        <param name="content" value="(ec:label(if (preceding-sibling::textLang) then 'languages' else 'language'), ec:colon(), string-join(for $lang in ./@xml:lang | preceding-sibling::textLang/@xml:lang return ec:label($lang, false()), ', '))"/>
+    </model>
+</elementSpec>

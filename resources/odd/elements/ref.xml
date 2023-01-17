@@ -1,0 +1,33 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="ref" mode="change">
+    <model output="latex" predicate="matches(., $ec:prefix)" behaviour="inline">
+        <param name="content" value="ec:format-id(.)"/>
+    </model>
+    <model output="latex" behaviour="inline">
+        <param name="url" value="replace(replace(@target, '#', '\\#'), '%', '\\%')"/>
+        <pb:template>\href{[[url]]}{[[content]]}</pb:template>
+    </model>
+    <model predicate="ancestor::div/@type='collection'" behaviour="link">
+        <desc>Link in Klammerdokument</desc>
+        <param name="link" value="ec:create-link-from-id(.)"/>
+        <param name="content" value="ec:short-doc-info(.)"/>
+    </model>
+    <model predicate="not(@target) and matches(., $ec:prefix)" behaviour="link" output="latex">
+        <desc>Create Permalink for SSRQ documents</desc>
+        <param name="link" value="ec:create-p-link-from-id(.)"/>
+    </model>
+    <model predicate="not(@target) and matches(., $ec:prefix)" behaviour="link">
+        <desc>Link auf ein anderes Dokument innerhalb des Portals</desc>
+        <param name="link" value="ec:create-link-from-id(.)"/>
+    </model>
+    <model predicate="not(@target)" behaviour="inline">
+        <desc>Link ohne Verweisadresse</desc>
+    </model>
+    <model predicate="not(text())" behaviour="link">
+        <param name="content" value="@target"/>
+        <param name="link" value="@target"/>
+    </model>
+    <model behaviour="link">
+        <param name="link" value="@target"/>
+        <param name="target" value="'_new'"/>
+    </model>
+</elementSpec>

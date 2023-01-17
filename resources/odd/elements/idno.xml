@@ -1,0 +1,48 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="idno">
+    <modelSequence output="latex" predicate="parent::seriesStmt/@xml:id = 'ssrq-sds-fds'">
+        <model behaviour="variable">
+            <desc xml:lang="de" versionDate="2022-11-03">Kopfzeile mit Informationen zum Band</desc>
+            <param name="name" value="'volume'"/>
+            <param name="prefix" value=". => substring-before('-')"/>
+            <param name="vol-title" value="ancestor::teiHeader/fileDesc/titleStmt/title"/>
+            <param name="by" value="ec:label('by', false())"/>
+            <param name="editor" value="ec:format-ssrq-author(ancestor::teiHeader/fileDesc/titleStmt/respStmt[resp[@key='transcript' or @key='headerinfo']]/persName)"/>
+            <param name="year" value="substring(ancestor::teiHeader/fileDesc/publicationStmt/date[@type='electronic']/@when, 1, 4)"/>
+            <pb:template>[[prefix]], [[vol-title]] [[by]] [[editor]], [[year]]</pb:template>
+        </model>
+        <model behaviour="variable">
+            <param name="name" value="'volid'"/>
+            <param name="url" value="ec:create-p-link-from-id(./text(), true()) => ec:prefix-url-with-protocol()"/>
+            <pb:template>\url{[[url]]}</pb:template>
+        </model>
+        <model behaviour="inline">
+            <desc xml:lang="de" versionDate="2022-11-03">Ausgabe des Titels und der Stücknummer</desc>
+            <param name="infos" value="
+                let $doc-infos := ec:doc-infos(./text())
+                return
+                    map {
+                        'sectionType': if ($doc-infos?is-main-case) then 'subsection' else 'subsubsection',
+                        'nr': $doc-infos?article-nr - 1,
+                        'articleType': if ($doc-infos?is-main-case) then 'article' else 'subarticle'
+                    }
+            "/>
+            <param name="title" value="ancestor::teiHeader/fileDesc/sourceDesc/msDesc/head[1]"/>
+            <pb:template>
+                \setcounter{[[infos?sectionType]]}{[[infos?nr]]}  % Stücknummer - 1
+                \sloppy
+                \[[infos?articleType]]{[[title]]}{}
+            </pb:template>
+        </model>
+    </modelSequence>
+    <model predicate="parent::altIdentifier" behaviour="inline">
+        <param name="content" value="(ec:label('signatureAlt'), ec:colon(), .)"/>
+    </model>
+    <model predicate="@source" behaviour="link">
+        <param name="link" value="@source"/>
+        <param name="target" value="'_new'"/>
+        <param name="content" value="(ec:label('signature'), ec:colon(), .)"/>
+    </model>
+    <model behaviour="inline">
+        <param name="content" value="(ec:label('signature'), ec:colon(), .)"/>
+    </model>
+</elementSpec>

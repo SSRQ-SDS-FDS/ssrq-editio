@@ -184,6 +184,8 @@ declare variable $config:env := doc($config:app-root || '/env.xml')/settings;
 
 declare variable $config:odd := request:get-parameter("odd", $config:odd-diplomatic);
 
+declare variable $config:odd-source := "ssrq-source.odd";
+
 declare variable $config:odd-diplomatic := "ssrq.odd";
 
 declare variable $config:odd-normalized := "ssrq-norm.odd";

@@ -1,0 +1,23 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="back" mode="change">
+    <desc>back contains the commentary, which normally should appear as a numbered list</desc>
+    <model output="latex" predicate="div/@n" behaviour="block">
+        <pb:template>
+            \begin{introlist}
+            [[content]]
+            \end{introlist}
+        </pb:template>
+    </model>
+    <model output="latex" predicate="normalize-space(string())" behaviour="block">
+        <param name="commentsTitle" value="ec:label('comments')"/>
+        <pb:template>
+            \begin{intro}
+            \textbf{[[commentsTitle]]:}
+            \noindent [[content]]
+            \end{intro}
+        </pb:template>
+    </model>
+    <model predicate="div/@n" behaviour="list">
+        <param name="type" value="'ordered'"/>
+    </model>
+    <model behaviour="block"/>
+</elementSpec>

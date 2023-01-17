@@ -1,0 +1,10 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="quote" mode="change">
+    <model behaviour="inline" predicate="ancestor::TEI[@type] and contains(ancestor::TEI/teiHeader//seriesStmt/idno, 'FR')">
+        <desc>Quotes in commentary with extra whitespace</desc>
+        <param name="content" value="('« ', ., ' »')"/>
+    </model>
+    <model behaviour="inline">
+        <desc>Quotes in commentary</desc>
+        <param name="content" value="('«', ., '»')"/>
+    </model>
+</elementSpec>
