@@ -323,6 +323,15 @@ declare function ec:create-app-link($components as xs:string*) as xs:string {
     ec:create-app-link($components, map{})
 };
 
+declare function ec:process-urn-ssrq($value as xs:string) as xs:string {
+    let $id := $value => substring-after('urn:ssrq:')
+    return
+        if ($id and $id => matches($ec:prefix)) then
+            $id
+        else
+            error(xs:QName("ec:invalid-urn"), "Invalid SSRQ URN: " || $value)
+};
+
 declare function ec:create-link-from-id($id as xs:string) as xs:string {
     let $tokenized-id := replace($id, '^(SSRQ|SDS|FDS)-', '') => tokenize('-')
     return
@@ -619,11 +628,27 @@ declare function ec:image($config as map(*), $node as element(), $class as xs:st
         default return <p>MimeType {$node/@mimeType} is not supported</p>
 };
 
-declare function ec:short-doc-info($idno as item()) as xs:string {
-    let $doc := doc(utils:path-concat-safe((util:collection-name($idno), $idno || '.xml')))
-    let $head := ec:get-head($doc//tei:sourceDesc/tei:msDesc)/text()
-    let $date := $doc//tei:teiHeader//tei:origDate => ec:print-date()
-    return $head || ', ' || $date || ' (' || ec:format-id($idno) || ')'
+(:~
+: Extract informations from a reference to a manuscript
+: in a first place this functions is used in the context of
+: so called "cases" (e.g. FR I_2_8)
+:
+: @param $ref the reference to a manuscript
+: @return a string with the informations
+:)
+declare function ec:short-doc-info($ref as element(tei:ref)) as xs:string {
+    try {
+        let $idno := ec:process-urn-ssrq($ref/@target)
+        let $doc := doc(utils:path-concat-safe((util:collection-name($ref), $idno || '.xml')))
+        let $head := ec:get-head($doc//tei:sourceDesc/tei:msDesc)/text()
+        let $date := $doc//tei:teiHeader//tei:origDate => ec:print-date()
+        return $head || ', ' || $date || ' (' || ($ref/text(), ec:format-id($idno))[1] || ')'
+    } catch * {
+        (
+            console:log(($err:code, $err:description, $err:value)),
+            $ref/text()
+        )[1]
+    }
 };
 
 (:~

@@ -28,6 +28,7 @@ import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension
 import module namespace index="http://ssrq-sds-fds.ch/exist/apps/ssrq/index" at "../modules/index.xqm";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 import module namespace ssrq-pm="http://ssrq-sds-fds.ch/exist/apps/ssrq/pm" at "../modules/ssrq-pm.xqm";
+import module namespace functx="http://www.functx.com";
 
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 declare default element namespace "http://www.tei-c.org/ns/1.0";
@@ -261,6 +262,23 @@ declare function tests:create-link-document() as map(*)* {
            return
                 ec:create-app-link($components) = ($config:base-url || '/' || $link)
    }
+};
+
+declare function tests:process-urn-ssrq() as map(*)* {
+    let $expected := ('SSRQ-FR-I_2_8-7.0-1', 'ec:invalid-urn')
+    for $urn at $i in ('urn:ssrq:SSRQ-FR-I_2_8-7.0-1', 'foo')
+    return
+        map {
+            'name': 'tests:process-urn-ssrq()',
+            'description': 'The input should be resolved to ' || $expected[$i],
+            'exp': $expected[$i],
+            'result': try {
+                        ec:process-urn-ssrq($urn)
+                    } catch * {
+                        $err:code => string()
+                    }
+
+        }
 };
 
 declare function tests:print-id() as map(*)* {
@@ -614,7 +632,7 @@ declare function tests:table-web() as map(*)* {
 };
 
 declare function tests:ref-internal() as map(*) {
-    let $xml := <ref xmlns="http://www.tei-c.org/ns/1.0">SSRQ-SG-III_4-55-1</ref>
+    let $xml := <ref target="urn:ssrq:SSRQ-SG-III_4-55-1" xmlns="http://www.tei-c.org/ns/1.0">SSRQ SG III/4 55-1</ref>
     return
         map {
             "name": "tests:ref-internal()",
@@ -622,7 +640,7 @@ declare function tests:ref-internal() as map(*) {
             "exp": '/SG/III_4/55-1.html',
             "result":
                 $pm-config:web-transform($xml, map{"root": $xml}, $config:odd)/@href/data(.)
-                => substring-after($config:base-url)
+                => substring-after($config:base-url) => functx:substring-before-if-contains('?')
         }
 };
 
