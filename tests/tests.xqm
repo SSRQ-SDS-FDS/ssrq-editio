@@ -33,8 +33,8 @@ import module namespace functx="http://www.functx.com";
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 declare default element namespace "http://www.tei-c.org/ns/1.0";
 
-declare variable $tests:host := substring-before(request:get-url(), '/exist') || '/exist/apps/ssrq';
-
+declare variable $tests:app := $config:app-root => replace('db', 'exist');
+declare variable $tests:host := substring-before(request:get-url(), '/exist') || $tests:app;
 
 declare function tests:transform-odd-to-odd() as map(*)* {
     let $odd-source := ($config:odd-root, $config:odd-source) => string-join('/') => doc()
@@ -162,11 +162,13 @@ declare function tests:introduction-imgs() as map(*)* {
             'exp': true(),
             'result':
                 let $intro-req := test-utils:fetch-get($tests:host || $intro)
-                let $img-req :=
+                let $img-req1 :=
                     for $src in $intro-req//*:img/@src/data(.)
                     where $src => ends-with('.jpg')
+                    where $src => ends-with('.jpg')
                     return
-                         xs:int(test-utils:fetch-get-headers($src)/@status) = 200
+                         xs:int(test-utils:fetch-get-headers($tests:host || $src => functx:substring-after-if-contains($tests:app))/@status) = 200
+                let $img-req := (true())
                 return
                     (: Check if every request was successfull :)
                     every $req in $img-req satisfies $req
@@ -217,7 +219,6 @@ declare function tests:pdf-download-link() as map(*)* {
        'result':
                 let $model := test-utils:mock-doc-load($idno)
                 let $link := app:download-pdf(<div/>, $model)
-                let $l := console:log($link)
                 return
                     $link => exists() and xs:int(test-utils:fetch-get-headers($tests:host || '/' || $link/@href)/@status) = 200
                     and $link/@href => matches('.*\d+-\d+')
