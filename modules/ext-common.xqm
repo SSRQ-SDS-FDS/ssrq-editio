@@ -332,10 +332,18 @@ declare function ec:process-urn-ssrq($value as xs:string) as xs:string {
             error(xs:QName("ec:invalid-urn"), "Invalid SSRQ URN: " || $value)
 };
 
+(:~
+: A simple wrapper function around ec:craete-app-link() to create links based in IDNOs
+: – pages for single documents are always created with '.html' at the end. This is:
+: not necessary for links to complete volumes.
+:
+: @param $id the IDNO of the document
+: @return the link as xs:string
+:)
 declare function ec:create-link-from-id($id as xs:string) as xs:string {
     let $tokenized-id := replace($id, '^(SSRQ|SDS|FDS)-', '') => tokenize('-')
     return
-        ($tokenized-id[1], $tokenized-id[2], $tokenized-id[position() = 3 to last()] => string-join('-') || '.html')
+        ($tokenized-id[1], $tokenized-id[2], $tokenized-id[position() = 3 to last()] => string-join('-') || '.html'[$tokenized-id => count() > 2])
         => ec:create-app-link()
 };
 
