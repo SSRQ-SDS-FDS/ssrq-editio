@@ -472,7 +472,7 @@ declare function tests:attribute-translation() as map(*)* {
         ec:translate($examples[4]/@place, (), false(), false()) => normalize-space()
 
     )
-    let $exp := ('Korrektor', 'Haupttitel', 'Streichung durch einfache Durchstreichung', 'Hinzufügung am linken Rand')
+    let $exp := ('Korrektor', 'Haupttitel', 'Streichung durch einfache Durchstreichung', 'am linken Rand')
     for $case at $i in $cases
     return
         map {
