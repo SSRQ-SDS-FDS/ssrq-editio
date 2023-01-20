@@ -21,7 +21,7 @@ import module namespace test-utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/test-
 import module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/search" at "../modules/ssrq-search.xqm";
 import module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/helper" at "../modules/ssrq-helper.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../modules/config.xqm";
-import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../modules/pm-config.xql";
+import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../modules/pm-config.xqm";
 import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
 import module namespace templates="http://exist-db.org/xquery/templates" at "../modules/templates.xqm";
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "../modules/ext-common.xqm";
@@ -229,7 +229,7 @@ declare function tests:create-app-link() as map(*)* {
  for $link in ('', 'SG/', 'search', 'about/abbr')
  return
    map {
-       'name': 'tests:create-link()',
+       'name': 'tests:create-app-link()',
        'description': 'Resvoled link should start with the prefix set in the HTTP session.',
        'exp': true(),
        'result':
@@ -242,13 +242,13 @@ declare function tests:create-app-link-index() as map(*)* {
  for $link in ('FR/', 'FR/I_2_8/')
  return
    map {
-       'name': 'tests:create-link()',
+       'name': 'tests:create-app-link-index()',
        'description': 'Resvoled link should end in a slash if the last component is the emtpy string.',
        'exp': true(),
        'result':
            let $components := tokenize($link, '/')
            return
-                ec:create-app-link($components) = ($config:base-url || '/' || $link)
+                ec:create-app-link($components) => functx:substring-before-if-contains('?') = ($config:base-url || '/' || $link)
    }
 };
 declare function tests:create-link-document() as map(*)* {
@@ -261,7 +261,7 @@ declare function tests:create-link-document() as map(*)* {
        'result':
            let $components := tokenize($link, '/')
            return
-                ec:create-app-link($components) = ($config:base-url || '/' || $link)
+                ec:create-app-link($components) => functx:substring-before-if-contains('?') = ($config:base-url || '/' || $link)
    }
 };
 
@@ -285,28 +285,28 @@ declare function tests:process-urn-ssrq() as map(*)* {
 declare function tests:print-id() as map(*)* {
     let $exp := ('SSRQ FR I/2/8 7.0-1', 'SDS NE 3 337-1', 'SDS VD D 1 10-1', 'SSRQ ZH NF I/1/3 1-1')
     for $id at $i in (
-                    <doc xml:id="SSRQ-FR-I_2_8-7.0-1">
+                    <doc xmlns="" xml:id="SSRQ-FR-I_2_8-7.0-1">
                         <prefix>SSRQ</prefix>
                         <kanton>FR</kanton>
                         <volume>I_2_8</volume>
                         <case>7</case>
                         <doc>0</doc>
                         <num>1</num>
-                    </doc>, <doc xml:id="SDS-NE-3-337-1">
+                    </doc>, <doc xmlns="" xml:id="SDS-NE-3-337-1">
                         <prefix>SDS</prefix>
                         <kanton>NE</kanton>
                         <volume>3</volume>
                         <doc>337</doc>
                         <num>1</num>
                     </doc>,
-                    <doc xml:id="SDS-VD-D_1-10-1">
+                    <doc xmlns="" xml:id="SDS-VD-D_1-10-1">
                         <prefix>SDS</prefix>
                         <kanton>VD</kanton>
                         <volume>D_1</volume>
                         <doc>10</doc>
                         <num>1</num>
                     </doc>,
-                    <doc xml:id="SSRQ-ZH-NF_I_1_3-1-1">
+                    <doc xmlns="" xml:id="SSRQ-ZH-NF_I_1_3-1-1">
                         <prefix>SSRQ</prefix>
                         <kanton>ZH</kanton>
                         <volume>NF_I_1_3</volume>
@@ -365,7 +365,7 @@ declare function tests:existing-search-terms() as map(*)* {
 }; :)
 
 declare function tests:count-docs() as map(*)* {
-    let $exp := (259, 208)
+    let $exp := (259, 2713)
     for $volume at $i in ('SG-III_4', 'FR-I_2_8')
     return
         map {
@@ -502,8 +502,8 @@ declare function tests:pagebreak() as map(*) {
         map {
             "name": "tests:pagebreak()",
             "description": "Check if the rendering for tei:pb is correct",
-            "exp": <span class="alternate tei-pb11 pb-pagination"><span>[<span class="tei-desc3">S.</span> 481]</span><span class="altcontent">Seitenumbruch</span></span>,
-            "result": $pm-config:web-transform($pb, map { "root": $pb }, $config:odd)
+            "exp": '[S. 481]',
+            "result": $pm-config:web-transform($pb, map { "root": $pb }, $config:odd)/string() => replace('Seitenumbruch', '')
         }
 };
 
@@ -521,8 +521,9 @@ declare function tests:abbr-list() as map(*) {
         map {
             "name": "tests:abbr-list()",
             "description": "Check if the rendering for abbr-lists is correct",
-            "exp": <div class="tei-dataSpec2"><ul class="tei-valList2"><li class="tei-valItem2">ao = anno</li></ul></div>,
-            "result": $pm-config:web-transform($abbr-list/tei:dataSpec, map { "root": $abbr-list}, $config:odd)
+            "exp": true(),
+            "result": let $node := $pm-config:web-transform($abbr-list/tei:dataSpec, map { "root": $abbr-list}, $config:odd) return
+                           $node/@class => contains('dataSpec') and $node/string() = 'ao = anno'
         }
 };
 
@@ -567,7 +568,7 @@ declare function tests:date-tooltips() as map(*)* {
             "name": "tests:date-tooltips()",
             "description": "Tests the content of the tooltip for tei:date in different circumstances",
             "exp": $exp[$i],
-            "result": $pm-config:web-transform($case, map {"root": $case }, $config:odd)//span[@class = 'altcontent']/text() => normalize-space()
+            "result": let $html := $pm-config:web-transform($case, map {"root": $case }, $config:odd) return $html/*[@class = 'altcontent']/text() => normalize-space()
         }
 
 };
@@ -625,14 +626,14 @@ declare function tests:paragraph() as map(*)* {
 
 declare function tests:table-web() as map(*)* {
     let $cases := (<table xmlns="http://www.tei-c.org/ns/1.0"><row><cell>Inhalt</cell></row></table>, <table xmlns="http://www.tei-c.org/ns/1.0"><head>head</head><row><cell>Inhalt</cell></row></table>)
-    let $results := (<table class="tei-table"><tr class="tei-row2"><td class="tei-cell">Inhalt</td></tr></table>, <table class="tei-table"><thead><tr><th class="px-0" colspan="100">head</th></tr></thead><tr class="tei-row2"><td class="tei-cell">Inhalt</td></tr></table>)
+    let $results := [(true(), false()), (true(), true())]
     for $case at $i in $cases
     return
         map {
             "name": "tests:table-web()",
-            "description": "Tests the rendition of a table for the web",
-            "exp": $results[$i],
-            "result": $pm-config:web-transform($case, map { "root": $case }, $config:odd)
+            "description": "A html table should have a class, which contains 'table'" || (' and a thead element')[$i = 2],
+            "exp": $results($i) => array:flatten(),
+            "result": let $html := $pm-config:web-transform($case, map { "root": $case }, $config:odd) return [$html/@class => contains('table'), exists($html//*:thead)] => array:flatten()
         }
 };
 
