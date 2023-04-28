@@ -74,9 +74,9 @@
                             <param name="type" value="'text-critical'"/>
                         </model>-->
                         <model predicate="sic and corr" behaviour="alternote" cssClass="text-critical">
-                            <param name="content" value="corr"/>
-                            <param name="prefix" value="(ec:label('corrected'), ec:colon())"/>
-                            <param name="alternate" value="sic"/>
+                            <param name="content" value="sic"/>
+                            <param name="prefix" value="(ec:label('corrected-from'), ec:colon())"/>
+                            <param name="alternate" value="corr"/>
                             <param name="type" value="'text-critical'"/>
                         </model>
                     </modelSequence>
