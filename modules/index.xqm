@@ -14,12 +14,12 @@ import module namespace ssrq-lang="http://ssrq-sds-fds.ch/exist/apps/ssrq/lang" 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 declare function index:get-index-entries($id as xs:string) as element()* {
-    let $xml := collection($config:data-root)//tei:TEI[.//tei:seriesStmt/tei:idno[contains(., $id)]]
+    let $xml := collection($config:data-root)//tei:TEI[.//tei:seriesStmt/tei:idno[normalize-space(text()) = $id]]
     return
         i18n:process(
                         <aside>{index:list-places($xml), index:list-persons($xml), index:list-organizations($xml), index:list-keys($xml), index:list-lemmata($xml)}</aside>,
                         $config:lang-settings?lang,
-                        utils:path-concat(($config:app-root, 'resources/i18n')), 
+                        utils:path-concat(($config:app-root, 'resources/i18n')),
                         $ssrq-lang:fallback
                     )
 };
