@@ -1,0 +1,21 @@
+[tool.poetry]
+authors = ["Bpolitycki <bastian.politycki@unisg.ch>"]
+description = "Python based tooling for running and building editio."
+name = "cli"
+readme = "README.md"
+version = "0.1.0"
+
+[tool.poetry.dependencies]
+pydantic = "^2.4.1"
+python = "^3.11"
+typer = "^0.9.0"
+loguru = "^0.7.2"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.9.1"
+pytest = "^7.4.2"
+ruff = "^0.0.291"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
