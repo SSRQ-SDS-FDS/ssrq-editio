@@ -307,3 +307,6 @@ $RECYCLE.BIN/
 
 # ignore .idea-folder used by IntelliJ-Editors
 .idea
+
+# ignore editio-data-folder which is just tmp-data
+editio-data/
