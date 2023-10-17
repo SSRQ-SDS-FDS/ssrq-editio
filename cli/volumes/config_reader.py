@@ -2,7 +2,7 @@ from pathlib import Path
 import tomllib
 from typing import Literal
 
-from cli.config import VOLUMES_CONFIG, VOLUMES_SOURCE
+from cli.config import EDITIO_CONFIG, VOLUMES_SOURCE
 from pydantic import BaseModel, computed_field
 
 
@@ -29,6 +29,6 @@ class VolumesConfig(BaseModel):
 
 
 def read_config() -> VolumesConfig:
-    with open(VOLUMES_CONFIG) as cfg:
+    with open(EDITIO_CONFIG) as cfg:
         config = tomllib.loads(cfg.read())
     return VolumesConfig(volumes=config["editio"]["volumes"])

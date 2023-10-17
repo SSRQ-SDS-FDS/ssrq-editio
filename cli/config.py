@@ -1,7 +1,7 @@
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).parent.parent
-VOLUMES_CONFIG = PROJECT_ROOT / "volumes.toml"
+EDITIO_CONFIG = PROJECT_ROOT / "editio_config.toml"
 VOLUMES_SOURCE = PROJECT_ROOT / "data/tei-volumes"
 VOLUMES_TARGET = PROJECT_ROOT / "editio-data"
 MISC_DATA_SOURCE = VOLUMES_SOURCE / "misc"
