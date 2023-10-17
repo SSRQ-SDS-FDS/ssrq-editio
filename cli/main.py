@@ -7,6 +7,7 @@ from cli.volumes import handle as vol_handle
 from cli.misc_data import handle as misc_handle
 from cli.sass import handle as sass_handle
 from cli.bundle import settings as bundle_settings
+from cli.bundle.bundle import bundle_application
 from loguru import logger
 import subprocess
 
@@ -72,6 +73,10 @@ def build(
     vol_handle.handle_volumes(vol_config.read_config(), config.VOLUMES_TARGET)
     misc_handle.copy_misc_data(config.MISC_DATA_SOURCE, config.MISC_DATA_TARGET)
     sass_handle.compile_sass_to_css(config.SASS_SOURCE, config.CSS_TARGET)
+    bundle_application(
+        config.PROJECT_ROOT / "build",
+        config.COMMON_IGNORES if settings.env == "dev" else config.PROD_IGNORES,
+    )
 
 
 if __name__ == "__main__":
