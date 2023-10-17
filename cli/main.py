@@ -27,7 +27,7 @@ def build(
         help="Enable upload functionality inside the application.",
     ),
     use_cache: bool = typer.Option(
-        True, "--use-cache", "-c", help="Control if the application uses the cache."
+        False, "--use-cache", help="Control if the application uses the cache."
     ),
     update_data: bool = typer.Option(
         False,
