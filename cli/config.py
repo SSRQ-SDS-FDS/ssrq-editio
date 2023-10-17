@@ -33,3 +33,9 @@ PROD_IGNORES = COMMON_IGNORES + [
     "templates/upload.html",
     "routes/temp.html",
 ]
+
+
+# Configs for docker
+DEV_COMPOSE_FILE = PROJECT_ROOT / "docker-compose.dev.yml"
+DEV_DUMMY_PASSWORD = "ssrq"
+EDITIO_PORT = "8080"

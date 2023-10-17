@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Optional
 import typer
 
 from cli import config
@@ -10,6 +10,7 @@ from cli.bundle import settings as bundle_settings
 from cli.bundle.bundle import bundle_application
 from loguru import logger
 import subprocess
+from os import environ
 
 app = typer.Typer(name="editio")
 
@@ -77,6 +78,101 @@ def build(
         config.PROJECT_ROOT / "build",
         config.COMMON_IGNORES if settings.env == "dev" else config.PROD_IGNORES,
     )
+
+
+@app.command(
+    help="""Show logs from the eXist-DB docker container.""",
+)
+def logs(
+    mode: str = typer.Argument(
+        "dev",
+        help="The mode to run the application in – must be ['dev', 'prod'].",
+    ),
+):
+    execute_docker_compose_command("logs", ["-f"], mode)
+
+
+@app.command(
+    help="""Run the app inside an eXist-DB docker container.""",
+)
+def run(
+    clean: bool = typer.Option(
+        True,
+        "--clean",
+        "-c",
+        help="If true a fresh container will be created from scratch.",
+    ),
+    mode: str = typer.Argument(
+        "dev",
+        help="The mode to run the application in – must be ['dev', 'prod'].",
+    ),
+):
+    check_build_dir()
+
+    create_dev_setup(mode)
+
+    docker_params = (
+        ["--build", "--detach", "--remove-orphans", "--renew-anon-volumes"]
+        if clean
+        else ["--detach"]
+    )
+
+    execute_docker_compose_command("up", docker_params, mode)
+
+
+@app.command(
+    help="""Stop the eXist-DB docker container.""",
+)
+def stop(
+    remove_volumes: bool = typer.Option(
+        False,
+        "--remove-volumes",
+        "-r",
+        help="If true the volumes will be removed as well.",
+    ),
+    mode: str = typer.Argument(
+        "dev",
+        help="The mode to run the application in – must be ['dev', 'prod'].",
+    ),
+):
+    execute_docker_compose_command("down", ["-v"] if remove_volumes else [], mode)
+
+
+def check_build_dir():
+    if (build_dir := config.PROJECT_ROOT / "build").exists() is False:
+        logger.error(
+            f"Build directory {build_dir} does not exist – run 'editio build' first"
+        )
+        raise typer.Exit(1)
+
+
+def create_dev_setup(mode: str):
+    """Creates a dev-setup, if the mode is 'dev' and sets the necessary
+    environment variables."""
+    if mode != "dev":
+        return
+    set_sys_env_variable("EXIST_PASSWORD", config.DEV_DUMMY_PASSWORD)
+    set_sys_env_variable("EDITIO_PORT", config.EDITIO_PORT)
+
+
+def set_sys_env_variable(name: str, value: str):
+    environ[name] = value
+
+
+def execute_docker_compose_command(command: str, params: list[str], mode: str):
+    match (mode):
+        case "dev":
+            logger.info(f"Executing command '{command}' in dev mode")
+            subprocess.run(
+                ["docker-compose", "-f", str(config.DEV_COMPOSE_FILE), command]
+                + params,
+                check=True,
+            )
+        case "prod":
+            logger.warning("Not implemented yet")
+            typer.Exit(0)
+        case _:
+            raise typer.BadParameter("Mode must be either 'dev' or 'prod'")
 
 
 if __name__ == "__main__":
