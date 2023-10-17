@@ -5,11 +5,14 @@ name = "cli"
 readme = "README.md"
 version = "0.1.0"
 
+[tool.poetry.scripts]
+editio = "cli.main:app"
+
 [tool.poetry.dependencies]
+loguru = "^0.7.2"
 pydantic = "^2.4.1"
 python = "^3.11"
 typer = "^0.9.0"
-loguru = "^0.7.2"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.9.1"
