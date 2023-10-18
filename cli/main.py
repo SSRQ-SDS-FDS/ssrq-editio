@@ -11,6 +11,7 @@ from cli.bundle.bundle import bundle_application
 from loguru import logger
 import subprocess
 from os import environ
+import pytest
 
 app = typer.Typer(name="editio")
 
@@ -136,6 +137,11 @@ def stop(
     ),
 ):
     execute_docker_compose_command("down", ["-v"] if remove_volumes else [], mode)
+
+
+@app.command(help=""""Execute the tests with pytest.""")
+def test():
+    pytest.main([str(config.PROJECT_ROOT)])
 
 
 def check_build_dir():
