@@ -16,6 +16,7 @@ declare namespace repo="http://exist-db.org/xquery/repo";
 declare namespace expath="http://expath.org/ns/pkg";
 declare namespace jmx="http://exist-db.org/jmx";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
+declare namespace xpath = 'http://www.w3.org/2005/xpath-functions';
 
 (:~
  : Should documents be located by xml:id or filename?
@@ -161,24 +162,11 @@ declare variable $config:index-url :=
 (:
     Determine the application root collection from the current module load path.
 :)
-declare variable $config:app-root :=
-    let $rawPath := system:get-module-load-path()
-    let $modulePath :=
-        (: strip the xmldb: part :)
-        if (starts-with($rawPath, "xmldb:exist://")) then
-            if (starts-with($rawPath, "xmldb:exist://embedded-eXist-server")) then
-                substring($rawPath, 36)
-            else
-                substring($rawPath, 15)
-        else
-            $rawPath
-    return
-        substring-before($modulePath, "/modules")
-;
+declare variable $config:app-root as xs:string := analyze-string(system:get-module-load-path(), '(/db.*)/modules')//xpath:group[@nr = "1"]/string();
 
-declare variable $config:data-root := "/db/apps/ssrq-data/data";
+declare variable $config:data-root := utils:path-concat-safe(($config:app-root, "editio-data"));
 
-declare variable $config:temp-root := "/db/apps/ssrq-data/data/temp";
+declare variable $config:temp-root := utils:path-concat-safe(($config:app-root, "tmp-data"));
 
 declare variable $config:env := doc($config:app-root || '/env.xml')/settings;
 

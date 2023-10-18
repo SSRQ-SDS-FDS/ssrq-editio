@@ -3,14 +3,25 @@ import pytest
 from cli import config
 import httpx
 from collections.abc import Callable
-from uuid import uuid4
+
+TEI_NS = "http://www.tei-c.org/ns/1.0"
 
 xquery_modules: dict[str, tuple[str, str, str]] = {
+    "config": (
+        "config",
+        "http://www.tei-c.org/tei-simple/config",
+        "/db/apps/ssrq/modules/config.xqm",
+    ),
+    "finder": (
+        "find",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder",
+        "/db/apps/ssrq/modules/repository/finder.xqm",
+    ),
     "idno-parser": (
         "idno-parser",
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/idno/parser",
         "/db/apps/ssrq/modules/idno/parser.xqm",
-    )
+    ),
 }
 
 
@@ -21,7 +32,14 @@ def build_query(modules: list[tuple[str, str, str]], query_body: str) -> str:
             for name, ns, loc in modules
         ]
     )
-    return " ".join(['xquery version "3.1";', module_imports, query_body])
+    return " ".join(
+        [
+            'xquery version "3.1";',
+            f'declare namespace tei="{TEI_NS}";',
+            module_imports,
+            query_body,
+        ]
+    )
 
 
 xquery_tester = Callable[[str], Awaitable[httpx.Response]]
@@ -53,7 +71,7 @@ def execute_query(exist_execute_url: str) -> xquery_tester:
         headers = {"Content-Type": "application/xml"}
         params = {
             "base": "xmldb:exist://__new__2",
-            "qu": query,
+            "qu": query.replace("\n", " "),  # Inlining the query
             "output": "adaptive",
         }
         return httpx.post(exist_execute_url, headers=headers, params=params)
