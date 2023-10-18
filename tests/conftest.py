@@ -1,0 +1,61 @@
+from typing import Awaitable
+import pytest
+from cli import config
+import httpx
+from collections.abc import Callable
+from uuid import uuid4
+
+xquery_modules: dict[str, tuple[str, str, str]] = {
+    "idno-parser": (
+        "idno-parser",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/idno/parser",
+        "/db/apps/ssrq/modules/idno/parser.xqm",
+    )
+}
+
+
+def build_query(modules: list[tuple[str, str, str]], query_body: str) -> str:
+    module_imports = " ".join(
+        [
+            f'import module namespace {name}="{ns}" at "{loc}";'
+            for name, ns, loc in modules
+        ]
+    )
+    return " ".join(['xquery version "3.1";', module_imports, query_body])
+
+
+xquery_tester = Callable[[str], Awaitable[httpx.Response]]
+
+
+@pytest.hookimpl
+def pytest_sessionstart(session):
+    """Runs before the first test is executed – checks if the editio is running."""
+    try:
+        assert (
+            httpx.get(f"http://localhost:{config.EDITIO_PORT}/exist/").status_code
+            <= 400
+        )
+    except Exception:
+        pytest.exit(
+            reason="eXist-DB is not running – run 'editio start' first",
+            returncode=1,
+        )
+
+
+@pytest.fixture(scope="session")
+def exist_execute_url() -> str:
+    return f"http://localhost:{config.EDITIO_PORT}/exist/apps/atom-editor/execute"
+
+
+@pytest.fixture(scope="session")
+def execute_query(exist_execute_url: str) -> xquery_tester:
+    async def _execute(query: str) -> httpx.Response:
+        headers = {"Content-Type": "application/xml"}
+        params = {
+            "base": "xmldb:exist://__new__2",
+            "qu": query,
+            "output": "adaptive",
+        }
+        return httpx.post(exist_execute_url, headers=headers, params=params)
+
+    return _execute
