@@ -27,13 +27,46 @@ async def test_cache_can_create_static_dir(execute_query: xquery_tester):
 
 
 @pytest.mark.asyncio
+async def test_cache_can_store_and_load_from_static_cache(execute_query: xquery_tester):
+    xquery = build_query(
+        modules=[xquery_modules["ssrq-cache"]],
+        query_body=f"""(xmldb:login("/db/apps", "admin", "{config.DEV_DUMMY_PASSWORD}"),
+        ssrq-cache:create-static-cache-dir("/db/apps", "dummy", "admin", "admin"),
+        ssrq-cache:put-into-static-cache("/db/apps/dummy", "foo.xml", <hello xml:id="bar">baz</hello>))[last()]""",  # noqa
+    )
+    response = await execute_query(xquery)
+
+    assert response.status_code == 200
+    assert response.text == "true()"
+
+    xquery = build_query(
+        modules=[xquery_modules["ssrq-cache"]],
+        query_body=f"""(xmldb:login("/db/apps", "admin", "{config.DEV_DUMMY_PASSWORD}"),
+        ssrq-cache:load-from-static-cache-by-id("/db/apps/dummy", "foo.xml", "bar"))[last()]""",  # noqa
+    )
+    response = await execute_query(xquery)
+
+    assert response.status_code == 200
+    assert 'xml:id="bar"' in response.text
+
+    # remove dummy collection after test
+    await execute_query(
+        build_query(
+            modules=[xquery_modules["ssrq-cache"]],
+            query_body=f"""(xmldb:login("/db/apps", "admin", "{config.DEV_DUMMY_PASSWORD}"),
+        xmldb:remove("/db/apps/dummy"))[last()]""",  # noqa
+        )
+    )
+
+
+@pytest.mark.asyncio
 async def test_dynamic_cache_creation_and_deletion(execute_query: xquery_tester):
     """The cache should be created and deletion method will return true
     if it is and delete it afterwards. We're testing two methods here."""
     xquery = build_query(
         modules=[xquery_modules["ssrq-cache"]],
         query_body=f"""(xmldb:login("/db/apps", "admin", "{config.DEV_DUMMY_PASSWORD}"),
-        ssrq-cache:create-dynamic-cache("foo", 3, 3), ssrq-cache:destroy-cache-if-exists("foo"))[last()]""",  # noqa
+        ssrq-cache:create-dynamic-cache("foo", 3, 3), ssrq-cache:destroy-dynamic-cache-if-exists("foo"))[last()]""",  # noqa
     )
     response = await execute_query(xquery)
 
@@ -86,6 +119,6 @@ async def test_store_and_get_from_dynamic_cache(execute_query: xquery_tester):
         build_query(
             modules=[xquery_modules["ssrq-cache"]],
             query_body=f"""(xmldb:login("/db/apps", "admin", "{config.DEV_DUMMY_PASSWORD}"),
-        ssrq-cache:destroy-cache-if-exists("foo"))""",  # noqa
+        ssrq-cache:destroy-dynamic-cache-if-exists("foo"))""",  # noqa
         )
     )

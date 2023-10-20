@@ -8,6 +8,7 @@ import module namespace sm="http://exist-db.org/xquery/securitymanager" at "java
 import module namespace xmldb="http://exist-db.org/xquery/xmldb" at "java:org.exist.xquery.functions.xmldb.XMLDBModule";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
@@ -44,6 +45,36 @@ declare function ssrq-cache:create-static-cache-dir($dir as xs:string, $name as 
         }
 };
 
+(:~
+: Store content in the static cache.
+:
+: @param $dir The directory (collection) where the cache is located as xs:string
+: @param $name The name of the cache as xs:string
+: @param $value The content to be stored as item()*
+: @return true() if the content was stored successfully, false() otherwise
+:)
+declare function ssrq-cache:put-into-static-cache($dir as xs:string, $name as xs:string, $value as item()) as xs:boolean {
+    xmldb:store($dir, $name, $value) => exists()
+};
+
+(:~
+: Load content from the static cache.
+: Assumes the stored content is a document.
+:
+: @param $dir The directory (collection) where the cache is located as xs:string
+: @param $name The name of the cache / the document as xs:string?
+: @param $id The id of the element as xs:string
+: @return The content as item()*
+:)
+declare function ssrq-cache:load-from-static-cache-by-id($dir as xs:string, $name as xs:string?, $id as xs:string) as item()* {
+    if ($name) then
+        id($id, doc(utils:path-concat-safe(($dir, $name))))
+    else
+        for $doc in collection($dir)
+        return
+            id($id, $doc)
+};
+
 
 (: Creates a cache with a given max-size and max-age.
 :
@@ -63,7 +94,7 @@ declare function ssrq-cache:create-dynamic-cache($name as xs:string, $max-size a
 : @param $name The name of the cache as xs:string
 : @return true() if the cache was destroyed successfully, false() otherwise as xs:boolean
 :)
-declare function ssrq-cache:destroy-cache-if-exists($cache-name as xs:string) as xs:boolean {
+declare function ssrq-cache:destroy-dynamic-cache-if-exists($cache-name as xs:string) as xs:boolean {
     ssrq-cache:apply-if-cache-exists($cache-name, 'cache:destroy', 1, $cache-name) => empty()
 };
 
