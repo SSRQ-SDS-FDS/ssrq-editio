@@ -188,6 +188,12 @@ declare variable $config:abbr := doc(utils:path-concat-safe(($config:data-root, 
 
 declare variable $config:docs-list := doc(utils:path-concat-safe(("/db/apps/ssrq-data/", "cache/docs.xml")));
 
+declare variable $config:dynamic-cache-name := "ssrq-cache";
+
+declare variable $config:static-cache-name := "cache";
+
+declare variable $config:static-cache-path := utils:path-concat-safe(($config:app-root, $config:static-cache-name));
+
 declare variable $config:partners := doc(utils:path-concat-safe(($config:data-root, "misc/partners.xml")))/*;
 
 declare variable $config:output := "transform";

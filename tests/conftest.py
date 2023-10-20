@@ -22,6 +22,11 @@ xquery_modules: dict[str, tuple[str, str, str]] = {
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/idno/parser",
         "/db/apps/ssrq/modules/idno/parser.xqm",
     ),
+    "ssrq-cache": (
+        "ssrq-cache",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache",
+        "/db/apps/ssrq/modules/repository/cache.xqm",
+    ),
 }
 
 
