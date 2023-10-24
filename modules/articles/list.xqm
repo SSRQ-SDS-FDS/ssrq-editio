@@ -10,20 +10,44 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 declare variable $articles-list:ZH-order-helper as xs:string+ := ('NF_I_1_3', 'NF_I_1_11', 'NF_I_2_1', 'NF_II_3', 'NF_II_11');
 
+(:~
+: Returns a list of all articles grouped by kanton and volume.
+:
+: @return element(docs) - A list of all articles grouped by kanton and volume.
+:)
 declare function articles-list:by-kanton-and-volume() as element(docs) {
     articles-list:by-kanton-and-volume(find:regular-articles#0)
 };
 
+(:~
+: Returns a list of all articles grouped by kanton and volume.
+:
+: @param $loader-functions as (function() as element(tei:TEI)+)+ - A list of functions that return a list of articles.
+: @return element(docs) - A list of all articles grouped by kanton and volume.
+:)
 declare function articles-list:by-kanton-and-volume($loader-functions as (function() as element(tei:TEI)+)+) as element(docs) {
     <docs>
         {articles-list:kantons($loader-functions ! .())}
     </docs>
 };
 
+(:~
+: Returns a list of all articles grouped by kanton.
+:
+: @param $docs as element(tei:TEI)+ - A list of articles.
+: @return element(kanton)+ - A list of all articles grouped by kanton.
+:)
 declare function articles-list:kantons($docs as element(tei:TEI)+) as element(kanton)+ {
     articles-list:kantons($docs, idno-parser:parse-regular#1)
 };
 
+(:~
+: Returns a list of all articles grouped by kanton.
+:
+: @param $docs as element(tei:TEI)+ - A list of articles.
+: @param $idno-parser as function(xs:string) as element(doc) - A function that parses the idno of an article.
+: @return element(kanton)+ - A list of all articles grouped by kanton.
+:)
 declare function articles-list:kantons($docs as element(tei:TEI)+, $idno-parser as function(xs:string) as element(doc)) as element(kanton)+ {
     for $doc in $docs
     let $parsed-idno as element(doc) := $idno-parser($doc//tei:seriesStmt/tei:idno[not(@type)])
@@ -35,6 +59,13 @@ declare function articles-list:kantons($docs as element(tei:TEI)+, $idno-parser 
         </kanton>
 };
 
+(:~
+: Returns a list of all articles grouped by volume.
+:
+: @param $kanton as xs:string - The kanton of the articles.
+: @param $docs as element(doc)+ - A list of articles.
+: @return element(volume)+ - A list of all articles grouped by volume.
+:)
 declare function articles-list:volumes($kanton as xs:string, $docs as element(doc)+) as element(volume)+ {
     for $doc in $docs
     group by $volume := $doc//volume
@@ -47,6 +78,13 @@ declare function articles-list:volumes($kanton as xs:string, $docs as element(do
         </volume>
 };
 
+(:~
+: Creates a key for sorting the volumes.
+:
+: @param $kanton as xs:string - The kanton of the articles.
+: @param $volume as xs:string - The volume of the articles.
+: @return xs:string - A key for sorting the volumes.
+:)
 declare function articles-list:get-volume-order-key($kanton as xs:string, $volume as xs:string) as xs:string {
     if ($kanton = 'ZH') then
         xs:string(index-of($articles-list:ZH-order-helper, $volume))
@@ -54,6 +92,12 @@ declare function articles-list:get-volume-order-key($kanton as xs:string, $volum
         $volume
 };
 
+(:~
+: Sorts a list of articles.
+:
+: @param $docs as element(doc)+ - A list of articles.
+: @return element(doc)+ - A sorted list of articles.
+:)
 declare function articles-list:sort-docs($docs as element(doc)+) as element(doc)+ {
     let $cases := articles-list:count-volume-cases($docs)
     for $doc in $docs
@@ -62,10 +106,23 @@ declare function articles-list:sort-docs($docs as element(doc)+) as element(doc)
         $doc
 };
 
+(:~
+: Counts the number of cases in a volume.
+:
+: @param $docs as element(doc)+ - A list of articles.
+: @return xs:integer - The number of cases in a volume.
+:)
 declare function articles-list:count-volume-cases($docs as element(doc)+) as xs:integer {
     distinct-values($docs/case) => count()
 };
 
+(:~
+: Creates a key for sorting the articles.
+:
+: @param $doc as element(doc) - An article.
+: @param $volume-cases as xs:integer - The number of cases in a volume.
+: @return xs:double - A key for sorting the articles.
+:)
 declare function articles-list:get-doc-order-key($doc as element(doc), $volume-cases as xs:integer) as xs:double {
     if ($doc/case) then
         (
