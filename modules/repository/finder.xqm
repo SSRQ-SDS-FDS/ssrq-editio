@@ -33,3 +33,14 @@ declare function find:regular-articles-with-uuid() as element(tei:TEI)+ {
 declare function find:paratextual-documents() as element(tei:TEI)+ {
     collection($config:data-root)//tei:TEI[@type][.//tei:seriesStmt/tei:idno[not(@type = 'uuid')]]
 };
+
+
+(:~
+: A function to find a specific TEI document by its tei:idno.
+:
+: @param $idno the tei:idno of the document to find as xs:string
+: @return the TEI document as element(tei:TEI)
+:)
+declare function find:article-by-idno($idno as xs:string) as element(tei:TEI)? {
+    collection($config:data-root)/tei:TEI[not(@type)][.//tei:seriesStmt/tei:idno[text() = $idno]]
+};
