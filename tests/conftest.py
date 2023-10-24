@@ -7,6 +7,11 @@ from collections.abc import Callable
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 
 xquery_modules: dict[str, tuple[str, str, str]] = {
+    "articles-list": (
+        "articles-list",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/articles/list",
+        "/db/apps/ssrq/modules/articles/list.xqm",
+    ),
     "config": (
         "config",
         "http://www.tei-c.org/tei-simple/config",
