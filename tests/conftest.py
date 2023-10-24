@@ -17,6 +17,11 @@ xquery_modules: dict[str, tuple[str, str, str]] = {
         "http://www.tei-c.org/tei-simple/config",
         "/db/apps/ssrq/modules/config.xqm",
     ),
+    "date-parser": (
+        "date-parser",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/parser/date",
+        "/db/apps/ssrq/modules/parser/date.xqm",
+    ),
     "finder": (
         "find",
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder",
@@ -24,8 +29,8 @@ xquery_modules: dict[str, tuple[str, str, str]] = {
     ),
     "idno-parser": (
         "idno-parser",
-        "http://ssrq-sds-fds.ch/exist/apps/ssrq/idno/parser",
-        "/db/apps/ssrq/modules/idno/parser.xqm",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/parser/idno",
+        "/db/apps/ssrq/modules/parser/idno.xqm",
     ),
     "ssrq-cache": (
         "ssrq-cache",
