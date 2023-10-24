@@ -1,10 +1,13 @@
 xquery version "3.0";
 
+import module namespace articles-list="http://ssrq-sds-fds.ch/exist/apps/ssrq/articles/list" at "modules/articles/list.xqm";
+import module namespace articles-filters="http://ssrq-sds-fds.ch/exist/apps/ssrq/articles/filters" at "modules/articles/filters.xqm";
 import module namespace pmu="http://www.tei-c.org/tei-simple/xquery/util";
 import module namespace odd="http://www.tei-c.org/tei-simple/odd2odd";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "modules/config.xqm";
 import module namespace ssrq-pm="http://ssrq-sds-fds.ch/exist/apps/ssrq/pm" at "modules/ssrq-pm.xqm";
 import module namespace ssrq-cache="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache" at "modules/repository/cache.xqm";
+
 
 declare namespace repo="http://exist-db.org/xquery/repo";
 
@@ -50,6 +53,8 @@ declare function local:generate-code($collection as xs:string) {
 };
 
 ssrq-cache:create-static-cache-dir($config:app-root, $config:static-cache-name, "ssrq", "tei"),
+ssrq-cache:put-into-static-cache($config:static-cache-path, $config:static-docs-list, articles-list:by-kanton-and-volume()),
+ssrq-cache:put-into-static-cache($config:static-cache-path, $config:static-filters-cache, articles-filters:create()),
 xmldb:create-collection($target, "transform"),
 sm:chown(xs:anyURI($target || "/transform"), "ssrq"),
 sm:chgrp(xs:anyURI($target || "/transform"), "tei"),
@@ -57,6 +62,6 @@ if (xs:boolean(doc($target || "/env.xml")//upload)) then
     sm:chmod(xs:anyURI($target || "/modules/pub/upload.xql"), "rwsr-xr-x")
 else
     (),
-ssrq-cache:destroy-cache-if-exists($config:dynamic-cache-name),
+ssrq-cache:destroy-dynamic-cache-if-exists($config:dynamic-cache-name),
 ssrq-cache:create-dynamic-cache($config:dynamic-cache-name, 32768, 86400000), (: Creates a cache with a max age of 24h :)
 local:generate-code($target)

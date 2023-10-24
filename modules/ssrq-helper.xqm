@@ -11,12 +11,11 @@ import module namespace functx="http://www.functx.com";
 import module namespace cache="http://exist-db.org/xquery/cache";
 import module namespace session="http://exist-db.org/xquery/session";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
-import module namespace config-data="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/config" at "/db/apps/ssrq-data/modules/config.xqm";
-import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
 import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "ssrq.xqm";
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "ext-common.xqm";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xqm";
 import module namespace response="http://exist-db.org/xquery/response";
+import module namespace ssrq-cache="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache" at "repository/cache.xqm";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace util="http://exist-db.org/xquery/util";
@@ -40,7 +39,7 @@ declare function ssrq-helper:cache-store-retrieve($node as node(), $model as map
     let $cache-key := ssrq-helper:make-cache-key($prefix)
     let $cached-content :=
         if ($use-cache) then
-            cache:get($config-data:CACHE, $cache-key)
+            cache:get($config:dynamic-cache-name, $cache-key)
         else
             ()
     return
@@ -49,7 +48,7 @@ declare function ssrq-helper:cache-store-retrieve($node as node(), $model as map
         else
             let $output := templates:process($node/*, $model)
             (: Put things in cache, but return $output, becacuse cache:put returns an empty sequence altough $output is not empty... :)
-            let $put := if ($use-cache) then cache:put($config-data:CACHE, $cache-key, $output) else ()
+            let $put := if ($use-cache) then cache:put($config:dynamic-cache-name, $cache-key, $output) else ()
             return
                 $output
 };
@@ -232,7 +231,7 @@ function ssrq-helper:count-docs($volume as element(volume)) as xs:integer {
 :)
 declare
 function ssrq-helper:load-by-idno($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $doc as xs:string, $view as xs:string?, $odd as xs:string?) as map(*) {
-    let $id := doc-list:get($kanton)//doc[ends-with(@xml:id, string-join(($kanton, $volume, $doc), '-'))]
+    let $id := ssrq-cache:load-from-static-cache-by-id($config:static-cache-path, $config:static-docs-list, $kanton)//doc[ends-with(@xml:id, string-join(($kanton, $volume, $doc), '-'))]
     let $xml := collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id/@xml:id]
     let $has-facs := exists($xml//tei:pb[@facs]) and not($odd eq $config:odd-normalized)
     return
@@ -449,7 +448,7 @@ declare function ssrq-helper:renderDepartment($data as map(*), $dep as xs:string
                     return $html/*/*[last()]/node()
                     }
                 </a>
-                <span class="badge">{sum(doc-list:get($dep)/volume ! ssrq-helper:count-docs(.))}</span>
+                <span class="badge">{sum(ssrq-cache:load-from-static-cache-by-id($config:static-cache-path, $config:static-docs-list, $dep)/volume ! ssrq-helper:count-docs(.))}</span>
             </div>
         </td>
     else
@@ -471,7 +470,7 @@ declare function ssrq-helper:renderDepartment($data as map(*), $dep as xs:string
 declare function ssrq-helper:list-volumes($node as node(), $model as map(*), $kanton as xs:string) as element(div) {
     <div class="volumes">
         {
-            for $volume in doc-list:get($kanton)/volume
+            for $volume in ssrq-cache:load-from-static-cache-by-id($config:static-cache-path, $config:static-docs-list, $kanton)/volume
             let $matching-doc := collection($config:data-root)/tei:TEI[.//tei:seriesStmt/tei:idno = $volume/doc[1]/@xml:id/data(.)]
             let $content-types := (
                 "intro"[$volume/doc[./special = 'intro']],
@@ -537,7 +536,7 @@ declare
 %templates:default("per-page", 10)
 %templates:default("sort", "date")
     function ssrq-helper:load-works($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $start as xs:int, $per-page as xs:int, $sort as xs:string?) as map(*) {
-        let $volume-docs := doc-list:get(($kanton,$volume) => string-join('-'))
+        let $volume-docs := ssrq-cache:load-from-static-cache-by-id($config:static-cache-path, $config:static-docs-list, ($kanton,$volume) => string-join('-'))
         let $grouped-docs := $volume-docs/doc[not(special)][not(opening)][not(case)][num eq '1']
                             union $volume-docs/doc[not(special)][not(opening)][case][doc eq '0'][num eq '1']
         return

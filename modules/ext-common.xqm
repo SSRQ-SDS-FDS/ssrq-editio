@@ -10,7 +10,8 @@ import module namespace counters="http://www.tei-c.org/tei-simple/xquery/counter
 import module namespace functx="http://www.functx.com";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
-import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "../../ssrq-data/modules/doc-list.xqm";
+import module namespace ssrq-cache="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache" at "repository/cache.xqm";
+import module namespace idno-parser="http://ssrq-sds-fds.ch/exist/apps/ssrq/parser/idno" at "parser/idno.xqm";
 
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
@@ -211,39 +212,12 @@ declare function ec:get-canton($id as xs:string?) {
 };
 
 declare function ec:format-id($id as xs:string?) as xs:string {
-    let $doc := id($id, $config:docs-list)
+    let $doc := ssrq-cache:load-from-static-cache-by-id($config:static-cache-path, $config:static-docs-list, $id)
     return
         if ($doc) then
             ec:print-id($doc)
         else
-            let $parsed-idno :=
-                <doc xml:id="{$id}">
-                    {
-                    for $group in ($id => analyze-string('^(SSRQ|SDS|FDS)
-                                            -([A-Z]{2})
-                                            -([A-Za-z0-9_]+)
-                                            -(?:((?:[A-Za-z0-9]+\.)*)([0-9]+)
-                                            -([0-9]+)|([a-z]{3,}))$', 'x'))//xpath:group
-                    return
-                        switch ($group/@nr)
-                        case '1' return <prefix>{$group/text()}</prefix>
-                        case '2' return <kanton>{$group/text()}</kanton>
-                        case '3' return <volume>{$group/text()}</volume>
-                        case '4' return (tokenize($group/text(), '\.') !
-                                        (
-                                            if (. => matches('^\d+$')) then
-                                            <case>{.}</case>
-                                            else if (. => matches('^[A-Za-z]+$')) then
-                                            <opening>{.}</opening> else
-                                            ()
-                                        )
-                                        )
-                        case '5' return <doc>{$group/text()}</doc>
-                        case '6' return <num>{$group/text()}</num>
-                        case '7' return <special>{$group/text()}</special>
-                        default return ()
-                    }
-                </doc>
+            let $parsed-idno := idno-parser:parse-regular($id)
             return
                 if ($parsed-idno/child::*) then
                     ec:print-id($parsed-idno)
@@ -812,7 +786,7 @@ declare function ec:get-head($msDesc as element()) as element(tei:head) {
 :)
 
 declare function ec:doc-infos($idno as xs:string) as map(*)? {
-    let $idno-doc := doc-list:get($idno)
+    let $idno-doc := ssrq-cache:load-from-static-cache-by-id($config:static-cache-path, $config:static-docs-list, $idno)
     let $main := if ($idno-doc/case => exists() and number($idno-doc/doc) eq 0) then
                     true()
                 else if ($idno-doc/case => empty()) then

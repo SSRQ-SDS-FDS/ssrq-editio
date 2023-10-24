@@ -4,7 +4,7 @@ module namespace id-search="http://ssrq-sds-fds.ch/exist/apps/ssrq/id-search";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "ext-common.xqm";
-import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
+import module namespace ssrq-cache="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache" at "repository/cache.xqm";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
@@ -27,8 +27,8 @@ declare function id-search:search($id-param as xs:string?) as element(results) {
         <results>
             {
                 for $result in $search-results
-                let $idno := $result/tei:teiHeader/tei:fileDesc/tei:seriesStmt/tei:idno/text()
-                let $key  := doc-list:get($idno) => ec:print-id()
+                let $idno := $result/tei:teiHeader/tei:fileDesc/tei:seriesStmt/tei:idno/text() (: ToDo needs to be refactored, when two idnos are used :)
+                let $key  := ssrq-cache:load-from-static-cache-by-id($config:static-cache-path, $config:static-docs-list, $idno) => ec:print-id()
                 order by $idno
                 return
                     <result>

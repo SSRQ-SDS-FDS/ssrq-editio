@@ -11,8 +11,8 @@ import module namespace console="http://exist-db.org/xquery/console" at "java:or
 import module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/search" at "ssrq-search.xqm";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xqm";
 import module namespace http="http://expath.org/ns/http-client" at "java:org.expath.exist.HttpClientModule";
-import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
 import module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/helper" at "ssrq-helper.xqm";
+import module namespace ssrq-cache="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache" at "repository/cache.xqm";
 
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 
@@ -107,7 +107,7 @@ declare function app:switch-view($node as node(), $model as map(*), $odd as xs:s
     element { node-name($node) } {
         $node/@*,
         attribute href {
-            ec:create-link("", map { "odd": 
+            ec:create-link("", map { "odd":
                 if (empty($odd) or $odd = $config:odd-diplomatic) then
                     $config:odd-normalized
                 else
@@ -578,7 +578,9 @@ function app:download-xml($node as node(), $model as map(*)) as element(a) {
 declare
 function app:download-pdf($node as node(), $model as map(*)) as element(a)? {
     let $uri := root($model?xml) => document-uri() => tokenize('/')
-    let $is-FR-case := let $doc-info := doc-list:get($uri[last()] => replace('.xml', '')) return $doc-info//kanton = 'FR' and $doc-info//case
+    let $is-FR-case :=
+        let $doc-info := ssrq-cache:load-from-static-cache-by-id($config:static-cache-path, $config:static-docs-list, $uri[last()] => replace('.xml', ''))
+        return $doc-info//kanton = 'FR' and $doc-info//case
     let $path := utils:path-concat(
         (
             $uri[not(. eq $uri[last()])], 'pdf',

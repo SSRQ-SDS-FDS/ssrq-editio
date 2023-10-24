@@ -17,8 +17,7 @@ import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "ext-common.xqm";
 import module namespace intl="http://exist-db.org/xquery/i18n/templates" at "lib/i18n-templates.xqm";
 import module namespace functx="http://www.functx.com";
-import module namespace data-filters="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/filters" at "/db/apps/ssrq-data/modules/filters.xqm";
-import module namespace doc-list="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/doc-list" at "/db/apps/ssrq-data/modules/doc-list.xqm";
+import module namespace articles-filters="http://ssrq-sds-fds.ch/exist/apps/ssrq/articles/filters" at "articles/filters.xqm";
 import module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/helper" at "ssrq-helper.xqm";
 
 declare variable $query:QUERY_OPTIONS :=
@@ -555,19 +554,29 @@ declare %private function query:get-current($config as map(*), $div as element()
 };
 
 declare
-function query:period-range($node as node(), $model as map(*)) {
+function query:period-range($node as node(), $model as map(*)) as map(xs:string, xs:anyAtomicType) {
     if ($model?hits) then
-        data-filters:period-range($model?hits ! root(.))
+        articles-filters:get-min-max-period($model?hits ! root(.))
     else
-        data-filters:period-range()
+        let $period-range := $config:static-filters-list-cache//period-range
+        return
+            map {
+                "min": $period-range/min/text(),
+                "max": $period-range/max/text()
+            }
 };
 
 declare
 function query:pubdate-range($node as node(), $model as map(*)) {
     if ($model?hits) then
-        data-filters:pubdate-range($model?hits ! root(.))
+        articles-filters:get-min-max-pubdate($model?hits ! root(.))
     else
-        data-filters:pubdate-range()
+        let $pubdate-range := $config:static-filters-list-cache//pubdate-range
+        return
+            map {
+                "min": $pubdate-range/min/text(),
+                "max": $pubdate-range/max/text()
+            }
 };
 
 declare
@@ -576,9 +585,9 @@ function query:list-archives($node as node(), $model as map(*), $filter-archive 
     $node/*,
     let $archives :=
         if ($model?hits) then
-            data-filters:archive-list($model?hits ! root(.))
+            articles-filters:create-archive-list($model?hits ! root(.))//archive/text()
         else
-            data-filters:archive-list()
+            $config:static-docs-list-cache//archive/text()
     for $archive-title in $archives
     return
         <option>

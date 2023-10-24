@@ -5,6 +5,7 @@ module namespace articles-list="http://ssrq-sds-fds.ch/exist/apps/ssrq/articles/
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
 import module namespace find="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder" at "../repository/finder.xqm";
 import module namespace idno-parser="http://ssrq-sds-fds.ch/exist/apps/ssrq/parser/idno" at "../parser/idno.xqm";
+import module namespace logger="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils/logger" at "../utils/logger.xqm";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
@@ -71,11 +72,28 @@ declare function articles-list:volumes($kanton as xs:string, $docs as element(do
     group by $volume := $doc//volume
     order by articles-list:get-volume-order-key($kanton, $volume)
     return
-        <volume xml:id="{$kanton}-{$volume}">
+        <volume xml:id="{$kanton}-{$volume}" pdf="{articles-list:check-pdf($docs[1])}">
             {
                 articles-list:sort-docs($docs)
             }
         </volume>
+};
+
+(:~
+: Checks if a pdf file exists for an volume.
+:
+: @param $idno as element(doc)? - The idno of an article.
+: @return xs:boolean - True if a pdf file exists for an volume, false otherwise.
+:)
+declare function articles-list:check-pdf($idno as element(doc)?) as xs:boolean  {
+    try {
+        let $dir := ($config:data-root, $idno/kanton, $idno/kanton || '_' || $idno/volume, 'pdf') => string-join('/')
+        let $name := ($idno/prefix, $idno/kanton, $idno/volume) => string-join('-')
+        return
+            util:binary-doc-available($dir || '/' || $name || '.pdf')
+    } catch * {
+        (logger:log-and-raise-error($idno), false())[1]
+    }
 };
 
 (:~

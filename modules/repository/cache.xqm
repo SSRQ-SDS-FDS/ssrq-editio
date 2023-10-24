@@ -75,6 +75,17 @@ declare function ssrq-cache:load-from-static-cache-by-id($dir as xs:string, $nam
             id($id, $doc)
 };
 
+(:~~
+: Load content from the static cache using the document name.
+: Assumes the stored content is a document.
+:
+: @param $dir The directory (collection) where the cache is located as xs:string
+: @param $name The name of the cache / the document as xs:string
+: @return The content as item()*
+:)
+declare function ssrq-cache:load-from-static-cache-by-name($dir as xs:string, $name as xs:string) as item()* {
+    doc(utils:path-concat-safe(($dir, $name)))
+};
 
 (: Creates a cache with a given max-size and max-age.
 :
