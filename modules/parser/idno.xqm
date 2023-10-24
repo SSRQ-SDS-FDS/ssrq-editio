@@ -1,6 +1,6 @@
 xquery version "3.1";
 
-module namespace idno-parser="http://ssrq-sds-fds.ch/exist/apps/ssrq/idno/parser";
+module namespace idno-parser="http://ssrq-sds-fds.ch/exist/apps/ssrq/parser/idno";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace xpath = 'http://www.w3.org/2005/xpath-functions';

@@ -4,7 +4,7 @@ module namespace articles-list="http://ssrq-sds-fds.ch/exist/apps/ssrq/articles/
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
 import module namespace find="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder" at "../repository/finder.xqm";
-import module namespace idno-parser="http://ssrq-sds-fds.ch/exist/apps/ssrq/idno/parser" at "../idno/parser.xqm";
+import module namespace idno-parser="http://ssrq-sds-fds.ch/exist/apps/ssrq/parser/idno" at "../parser/idno.xqm";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
