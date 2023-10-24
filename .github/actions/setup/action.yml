@@ -1,0 +1,34 @@
+name: Setup SSH, Python and Poetry
+description: A simple action to setup everything, including dependencies.
+
+inputs:
+  poetry-version:
+    description: Poetry version
+    required: false
+    default: '1.2.2'
+  python-version:
+    description: Python version
+    required: false
+    default: '3.11'
+  ssh-key:
+    description: The ssh-key
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Setup access to private repo(s)
+      uses: webfactory/ssh-agent@v0.7.0
+      with:
+       ssh-private-key: ${{ inputs.ssh-key }}
+    - name: Install poetry
+      shell: bash
+      run: pipx install poetry==${{ inputs.poetry-version }}
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        cache: 'poetry'
+        python-version: ${{ inputs.python-version }}
+    - name: Install dependencies
+      shell: bash
+      run: poetry install

@@ -1,0 +1,31 @@
+[tool.poetry]
+authors = ["Bpolitycki <bastian.politycki@unisg.ch>"]
+description = "Python based tooling for running and building editio."
+name = "cli"
+readme = "README.md"
+version = "0.1.0"
+
+[tool.poetry.scripts]
+editio = "cli.main:app"
+
+[tool.poetry.dependencies]
+loguru = "^0.7.2"
+pydantic = "^2.4.1"
+python = "^3.11"
+typer = "^0.9.0"
+libsass = "^0.22.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.9.1"
+pytest = "^7.4.2"
+ruff = "^0.0.291"
+httpx = "^0.25.0"
+parsel = "^1.8.1"
+pytest-asyncio = "^0.21.1"
+
+[tool.pytest.ini_options] # https://docs.pytest.org/en/latest/reference/reference.html#ini-options-ref
+testpaths = "tests"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]

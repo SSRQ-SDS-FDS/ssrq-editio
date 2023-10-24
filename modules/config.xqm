@@ -9,6 +9,7 @@ module namespace config="http://www.tei-c.org/tei-simple/config";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 import module namespace http="http://expath.org/ns/http-client" at "java:org.exist.xquery.modules.httpclient.HTTPClientModule";
 import module namespace ssrq-lang="http://ssrq-sds-fds.ch/exist/apps/ssrq/lang" at "ssrq-lang.xqm";
+import module namespace ssrq-cache="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache" at "repository/cache.xqm";
 
 declare namespace templates="http://exist-db.org/xquery/templates";
 
@@ -16,6 +17,7 @@ declare namespace repo="http://exist-db.org/xquery/repo";
 declare namespace expath="http://expath.org/ns/pkg";
 declare namespace jmx="http://exist-db.org/jmx";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
+declare namespace xpath = 'http://www.w3.org/2005/xpath-functions';
 
 (:~
  : Should documents be located by xml:id or filename?
@@ -161,24 +163,11 @@ declare variable $config:index-url :=
 (:
     Determine the application root collection from the current module load path.
 :)
-declare variable $config:app-root :=
-    let $rawPath := system:get-module-load-path()
-    let $modulePath :=
-        (: strip the xmldb: part :)
-        if (starts-with($rawPath, "xmldb:exist://")) then
-            if (starts-with($rawPath, "xmldb:exist://embedded-eXist-server")) then
-                substring($rawPath, 36)
-            else
-                substring($rawPath, 15)
-        else
-            $rawPath
-    return
-        substring-before($modulePath, "/modules")
-;
+declare variable $config:app-root as xs:string := analyze-string(system:get-module-load-path(), '(/db.*)/modules')//xpath:group[@nr = "1"]/string();
 
-declare variable $config:data-root := "/db/apps/ssrq-data/data";
+declare variable $config:data-root := utils:path-concat-safe(($config:app-root, "editio-data"));
 
-declare variable $config:temp-root := "/db/apps/ssrq-data/data/temp";
+declare variable $config:temp-root := utils:path-concat-safe(($config:app-root, "tmp-data"));
 
 declare variable $config:env := doc($config:app-root || '/env.xml')/settings;
 
@@ -198,7 +187,19 @@ declare variable $config:translations := doc(utils:path-concat-safe(($config:dat
 
 declare variable $config:abbr := doc(utils:path-concat-safe(($config:data-root, "misc/abbr.xml")))/*;
 
-declare variable $config:docs-list := doc(utils:path-concat-safe(("/db/apps/ssrq-data/", "cache/docs.xml")));
+declare variable $config:dynamic-cache-name := "ssrq-cache";
+
+declare variable $config:static-cache-name := "cache";
+
+declare variable $config:static-cache-path := utils:path-concat-safe(($config:app-root, $config:static-cache-name));
+
+declare variable $config:static-docs-list := 'docs.xml';
+
+declare variable $config:static-docs-list-cache := ssrq-cache:load-from-static-cache-by-name($config:static-cache-path, $config:static-docs-list);
+
+declare variable $config:static-filters-cache := 'filters.xml';
+
+declare variable $config:static-filters-list-cache := ssrq-cache:load-from-static-cache-by-name($config:static-cache-path, $config:static-filters-cache);
 
 declare variable $config:partners := doc(utils:path-concat-safe(($config:data-root, "misc/partners.xml")))/*;
 

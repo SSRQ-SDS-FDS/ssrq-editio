@@ -1,0 +1,15 @@
+[editio]
+settings = { env = "prod", cache = "true", index_prefix = "index", upload = "false", urls = { "de" = "ssrq-online.ch", "fr" = "sds-online.ch", "it" = "fds-online.ch", "en" = "sls-online.ch" } }
+volumes = [
+    { name = "FR_I_2_8", include = "all" },
+    { name = "NE_1", include = "sources_only" },
+    { name = "NE_3", include = "all" },
+    { name = "NE_4", include = "all" },
+    { name = "SG_III_4", include = "all" },
+    { name = "ZH_NF_I_1_3", include = "all" },
+    { name = "ZH_NF_I_1_11", include = "all" },
+    { name = "ZH_NF_I_2_1", include = "all" },
+    { name = "ZH_NF_II_3", include = "all" },
+    { name = "ZH_NF_II_11", include = "all" },
+    { name = "VD_D_1", include = "sources_only" },
+]

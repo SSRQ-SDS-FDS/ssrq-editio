@@ -1,0 +1,16 @@
+# docker-compose.yml
+version: '3.8'
+services:
+  editio:
+    build:
+      dockerfile: Dockerfile.dev
+      context: .
+      args:
+        - BUILD_DIR=build
+    ports:
+      - '${EDITIO_PORT}:8080'
+    environment:
+      - EXIST_PASSWORD
+    restart: unless-stopped
+    volumes:
+      - /opt/exist/data

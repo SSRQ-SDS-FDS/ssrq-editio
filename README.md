@@ -1,30 +1,59 @@
-# TEI-Quellenportal der Sammlung Schweizerischer Rechtsquellen (SSRQ)
+# Editio or the Digital Scholarly Edition of the Swiss Law Sources
 
-This is the main application repository for SSRQ.
+This is the main application repository for SLS.
 
-## Building
+The edition can be found online via [https://editio.sls-online.ch](https://editio.sls-online.ch)
 
-Just run `ant` in the root of the cloned repository and a `.xar` package will be
-created in `build`, which you can then deploy into eXist via the dashboard.
+## Get up and running
 
-The data for this application resides in a different package. You thus need to
-clone `ssrq-data` and deploy it prior to this xar.
+The digital scholarly edition is an eXist-DB based project and was originally build with `ant`. Since `29f7db1` the build-process has been rewritten and is based on python tooling (like other software e.g. [the TEI-XML schema](https://github.com/SSRQ-SDS-FDS/ssrq-schema)).
 
-### Using Build-Parameters
+### Development
 
-You can use different parameters to trigger different builds and change the caching-behaviour.
+#### Requirements
 
-Short example:
+You need to install the following software:
+
+1. Python (3.11 or higher) together with [`poetry`](https://python-poetry.org)
+2. [Docker](https://www.docker.com)
+
+As well as [Git](https://git-scm.com) (of course...)
+
+#### The `editio CLI`
+
+All tasks are abstracted with a simple CLI. Switch to the project directory and execute the following:
+
+```sh
+poetry shell # this may be optional
+poetry install
 ```
-ant -Denv=dev -Dcache=false -Dupload=true
-```
-will start a build for the dev environment with caching disabled.
 
-To trigger a production ready build just run:
-```
-ant
+This will activate the virtual python environment and install all dependencies. You are now ready to go.
+
+Run `editio --help` to see all available commands.
+
+#### Running the application
+
+At first build the xar-application:
+
+```sh
+editio build --enable-upload --update-data dev
 ```
 
-## Issue Reporting
+And then start the application inside a docker container:
 
-Please report issues in [Redmine](https://histhub.ssrq-sds-fds.ch/redmine/projects/portal-tei-publisher).
+```sh
+editio run
+```
+
+This will start the application on port `8080` and you can access it via [http://localhost:8080](http://localhost:8080/exist/apps/ssrq/).
+
+**Note**: If you're making any changes to the XQuery code, you need to rebuild the application and restart the container. Otherwise you may use [VSCode](https://code.visualstudio.com) in combination with the [eXist-DB plugin](https://marketplace.visualstudio.com/items?itemName=eXist-db.existdb-vscode), which will automatically upload the changed files to the running container. The server-side component of the plugin is already installed in the container. You just need to create a `.existdb.json`-config with the appropriate settings to get started.
+
+#### Running the tests
+
+To be done....
+
+### Deployment / Running in production
+
+To be done....
