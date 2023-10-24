@@ -1,5 +1,4 @@
 import pytest
-from parsel import Selector
 
 from tests.conftest import build_query, xquery_modules, xquery_tester
 
@@ -7,10 +6,7 @@ from tests.conftest import build_query, xquery_modules, xquery_tester
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "date, expected",
-    [
-        ("2023-03-01", "2023"),
-        ("1087-09-01", "1087"),
-    ],
+    [("2023-03-01", "2023"), ("1087-09-01", "1087"), ("1983", "1983")],
 )
 async def test_simple_idno_parsing(
     execute_query: xquery_tester, date: str, expected: str

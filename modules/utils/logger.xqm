@@ -20,5 +20,5 @@ declare function logger:log-and-raise-error($message as xs:string) as empty-sequ
 : @param $raise Whether to raise an error
 :)
 declare function logger:log-and-raise-error($message as xs:string, $raise as xs:boolean) as empty-sequence() {
-    console:log($message), error((), $message)
+    console:log($message), if ($raise) then error((), $message) else ()
 };

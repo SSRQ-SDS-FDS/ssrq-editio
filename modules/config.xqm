@@ -194,6 +194,10 @@ declare variable $config:static-cache-name := "cache";
 
 declare variable $config:static-cache-path := utils:path-concat-safe(($config:app-root, $config:static-cache-name));
 
+declare variable $config:static-docs-list := 'docs.xml';
+
+declare variable $config:static-filters-cache := 'filters.xml';
+
 declare variable $config:partners := doc(utils:path-concat-safe(($config:data-root, "misc/partners.xml")))/*;
 
 declare variable $config:output := "transform";
