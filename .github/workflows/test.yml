@@ -27,7 +27,7 @@ jobs:
       - name: Wait for eXist-DB
         uses: cygnetdigital/wait_for_response@v2.0.0
         with:
-          url: 'http://localhost:8080/'
+          url: 'http://localhost:8080/exist/apps/ssrq/'
           responseCode: '200'
           timeout: 200000
           interval: 600
