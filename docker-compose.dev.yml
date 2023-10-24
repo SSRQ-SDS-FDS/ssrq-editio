@@ -9,6 +9,12 @@ services:
         - BUILD_DIR=build
     ports:
       - '${EDITIO_PORT}:8080'
+    healthcheck:
+      test: curl --fail http://localhost:8080/exist/apps/ssrq/ || exit 1
+      interval: 45s
+      retries: 10
+      start_period: 30s
+      timeout: 450s
     environment:
       - EXIST_PASSWORD
     restart: unless-stopped

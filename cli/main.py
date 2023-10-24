@@ -113,7 +113,7 @@ def run(
     create_dev_setup(mode)
 
     docker_params = (
-        ["--build", "--detach", "--remove-orphans", "--renew-anon-volumes"]
+        ["--build", "--detach", "--remove-orphans", "--renew-anon-volumes", "--wait"]
         if clean
         else ["--detach"]
     )
