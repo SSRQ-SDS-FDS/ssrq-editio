@@ -29,7 +29,7 @@ jobs:
         with:
           url: 'http://localhost:8080/exist/apps/ssrq/'
           responseCode: '200'
-          timeout: 200000
+          timeout: 450000
           interval: 600
       - name: Execute tests
         run: poetry run editio test
