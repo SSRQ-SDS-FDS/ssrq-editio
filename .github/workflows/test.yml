@@ -25,4 +25,4 @@ jobs:
         shell: bash
         run: poetry run editio run
       - name: Execute tests
-        run: poetry run editio test
+        run: poetry run pytest

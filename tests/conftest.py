@@ -94,6 +94,11 @@ def execute_query(exist_execute_url: str) -> xquery_tester:
             "qu": query.replace("\n", " "),  # Inlining the query
             "output": "adaptive",
         }
-        return httpx.post(exist_execute_url, headers=headers, params=params)
+        return httpx.post(
+            exist_execute_url,
+            headers=headers,
+            params=params,
+            timeout=httpx.Timeout(10, connect=10),
+        )
 
     return _execute
