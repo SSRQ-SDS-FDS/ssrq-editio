@@ -113,7 +113,14 @@ def run(
     create_dev_setup(mode)
 
     docker_params = (
-        ["--build", "--detach", "--remove-orphans", "--renew-anon-volumes", "--wait"]
+        [
+            "--build",
+            "--detach",
+            "--force-recreate",
+            "--remove-orphans",
+            "--renew-anon-volumes",
+            "--wait",
+        ]
         if clean
         else ["--detach"]
     )
@@ -170,7 +177,7 @@ def execute_docker_compose_command(command: str, params: list[str], mode: str):
         case "dev":
             logger.info(f"Executing command '{command}' in dev mode")
             subprocess.run(
-                ["docker-compose", "-f", str(config.DEV_COMPOSE_FILE), command]
+                ["docker", "compose", "-f", str(config.DEV_COMPOSE_FILE), command]
                 + params,
                 check=True,
             )
