@@ -57,3 +57,8 @@ To be done....
 ### Deployment / Running in production
 
 To be done....
+
+
+#### Branches
+
+The `main` branch reflects the actual production state. The `dev` branch is used for development and testing. All other branches are feature branches and should should at first be merged into `dev` and then deleted. A new version will be created on the `dev` branch and merged into `main` for deployment.
