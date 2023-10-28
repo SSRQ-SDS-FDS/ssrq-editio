@@ -558,18 +558,6 @@ declare function ssrq-helper:browse($node as node(), $model as map(*)) as elemen
 };
 
 (:~
-: Helper-Function to construct a browse-up-link
-:
-: @return $node as node()
-:)
-declare function ssrq-helper:browseUp($node as node(), $model as map(*), $kanton as xs:string) as node() {
-    element { node-name($node) } {
-        attribute href {'?kanton=' || $kanton},
-        $node/node()
-    }
-};
-
-(:~
  : Inserts the current language into a node's attribute
  :
  : @param $attr the name of the attribute in which to put the language code

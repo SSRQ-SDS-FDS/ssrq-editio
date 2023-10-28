@@ -29,15 +29,6 @@ import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at 
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
-declare
-    %templates:wrap
-function app:show-for-document($node as node(), $model as map(*), $doc as xs:string?, $query as xs:string?, $start as xs:string?) {
-    if ($doc) then
-        templates:process($node/*, $model)
-    else
-        ()
-};
-
 (:~
  : List documents in data collection
  :)
@@ -72,34 +63,6 @@ function app:list-works($node as node(), $model as map(*), $filter as xs:string?
         }
     )
 };
-
-declare
-    %templates:wrap
-    %templates:default("start", 1)
-    %templates:default("per-page", 10)
-function app:browse($node as node(), $model as map(*), $start as xs:int, $per-page as xs:int, $filter as xs:string?) {
-    if (empty($model?all) and (empty($filter) or $filter = "")) then
-        templates:process($node/*[@class="empty"], $model)
-    else
-        subsequence($model?all, $start, $per-page) !
-            templates:process($node/*[not(@class="empty")], map:merge(
-                ($model, map {
-                    "work": .,
-                    "config": tpu:parse-pi(root(.), ())
-                }))
-            )
-};
-
-declare function app:add-identifier($node as node(), $model as map(*)) {
-    element { node-name($node) } {
-        $node/@*,
-        attribute data-doc {
-            config:get-identifier($model?work)
-        },
-        templates:process($node/node(), $model)
-    }
-};
-
 
 declare
     %templates:wrap

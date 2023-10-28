@@ -15,7 +15,6 @@ import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "nav
 import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "ssrq.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xqm";
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "ext-common.xqm";
-import module namespace intl="http://exist-db.org/xquery/i18n/templates" at "lib/i18n-templates.xqm";
 import module namespace functx="http://www.functx.com";
 import module namespace articles-filters="http://ssrq-sds-fds.ch/exist/apps/ssrq/articles/filters" at "articles/filters.xqm";
 import module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/helper" at "ssrq-helper.xqm";
@@ -533,24 +532,6 @@ declare function query:expand($nodes as node()*, $ids as xs:string+) {
                     query:expand($node/node(), $ids)
                 }
             default return $node
-};
-
-
-declare %private function query:get-current($config as map(*), $div as element()?) {
-    if (empty($div)) then
-        ()
-    else
-        if ($div instance of element(tei:teiHeader)) then
-            $div
-        else
-            if (
-                empty($div/preceding-sibling::tei:div)  (: first div in section :)
-                and count($div/preceding-sibling::*) < 5 (: less than 5 elements before div :)
-                and $div/.. instance of element(tei:div) (: parent is a div :)
-            ) then
-                nav:get-previous-div($config, $div/..)
-            else
-                $div
 };
 
 declare

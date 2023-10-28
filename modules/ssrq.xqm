@@ -51,45 +51,6 @@ declare function app:failed-to-load($id as xs:string) as element(TEI) {
     )[2]
 };
 
-declare
-    %templates:wrap
-function app:load($node as node(), $model as map(*), $doc as xs:string, $root as xs:string?,
-    $id as xs:string?, $view as xs:string?) {
-    let $doc := xmldb:decode($doc)
-    let $result :=
-        if ($id) then
-            let $tei :=
-                utils:coalesce(
-                    collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id],
-                    collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id || "_1"]
-                )
-            let $data :=
-                app:query-view($tei/tei:text, utils:coalesce($view, $config:default-view))
-            let $config :=
-                if ($data) then
-                    tpu:parse-pi(root($data), $view)
-                else
-                    ()
-            return
-                map {
-                    "config": $config,
-                    "data": $data
-                }
-        else
-            pages:load-xml($view, $root, $doc)
-    let $has-facs := exists($result?data//tei:pb[@facs]) and $result?config?odd = "ssrq.odd"
-    return
-        map {
-            "config": $result?config,
-            "data": utils:coalesce(
-                $result?data,
-                app:failed-to-load($doc)),
-            "doc-type": $result?data/ancestor::tei:TEI/@type/data(.),
-            "body-class": if ($has-facs) then 'col-md-6' else 'col-md-10',
-            "facs-class": if ($has-facs) then 'col-md-6' else 'hidden',
-            "sidebar-class": if ($has-facs) then 'hidden' else 'col-md-2'
-        }
-};
 
 declare function app:query-view($context as node(), $view as xs:string?) as node()* {
     switch ($view)
@@ -193,57 +154,6 @@ function app:show-list-items($node as node(), $model as map(*)) {
 };
 
 (:~
- :
- :)
-declare
-    %templates:wrap
-function app:kanton-auswahl($node as node(), $model as map(*), $filter as xs:string?, $kanton as xs:string?) {
-    let $useSession := (empty($filter) or $filter = session:get-attribute("filter")) and $kanton = session:get-attribute("kanton")
-    let $kanton :=
-        if ($useSession) then
-            session:get-attribute("kanton")
-        else
-            ($kanton, app:select-kanton())[1]
-    for $tr in $node/tr
-    let $class := if ($tr/td[2]/string() = $kanton) then 'active' else ()
-    return
-        <tr class="{$class}">
-            { templates:process(subsequence($tr/td, 1, 2), $model) }
-            <td>
-            {
-                let $current := $tr/td[2]
-                let $docs :=
-                    (
-                        collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, $current || "_")]
-                        [.//tei:text/tei:body/*]
-                        |
-                        (
-                            for $prefix in ("SSRQ_", "SDS_", "FDS_")
-                            return
-                                collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, $prefix || $current)]
-                                [.//tei:text/tei:body/*]
-                        )
-                    )
-                    except
-                        collection($config:temp-root)/tei:TEI
-                let $docs := app:filter-collections($docs)
-                return (
-                    $tr/td[3]/@*,
-                    if (exists($docs)) then
-                        <span>
-                            <a href="?kanton={$current}&amp;refresh=yes">{$tr/td[3]/node()} </a>
-                            <span class="badge">{count($docs)}</span>
-                        </span>
-                    else
-                        $tr/td[3]/node()
-                )
-            }
-            </td>
-        </tr>
-};
-
-
-(:~
  : Ausgabe der Stücke nach Kanton und ggf. Filter
  :)
 declare
@@ -340,27 +250,6 @@ declare function app:header-short($node as node(), $model as map(*)) {
         app:show-if-exists($node, $head, function() {
             $pm-config:web-transform($head, map { "root": $head }, $config:odd)
         })
-};
-
-
-declare function app:idno($node as node(), $model as map(*)) {
-    let $header := root($model?data)//tei:teiHeader
-    let $idno := $header/tei:fileDesc/tei:seriesStmt/tei:idno
-    return
-        app:show-if-exists($node, $idno, function() {
-            ec:format-id($idno)
-        })
-};
-
-declare function app:pers-names($header as node() ) {
-    let $namen :=  $header/tei:titleStmt/tei:respStmt[tei:resp[@key='transcript' or @key='headerinfo']]/tei:persName/text()
-return
-    if (count($namen) > 1) then (
-        string-join(subsequence($namen, 1, count($namen) -1), ', '),
-        <i18n:text xmlns:i18n="http://exist-db.org/xquery/i18n" key="and"> und </i18n:text>,
-        $namen[last()]
-    ) else
-        $namen
 };
 
 declare function app:origDate($node as node(), $model as map(*)) {
@@ -481,18 +370,6 @@ function app:display-data($node as node(), $model as map(*), $mode as xs:string?
 
 };
 
-
-declare function app:show-toc($node as node(), $model as map(*), $view as xs:string?) {
-    if ($view = "body") then
-        ()
-    else
-        element { node-name($node) } {
-            $node/@*,
-            templates:process($node/node(), $model)
-        }
-};
-
-
 declare
     %templates:wrap
 function app:short-header($node as node(), $model as map(*)) {
@@ -511,17 +388,6 @@ function app:short-header($node as node(), $model as map(*)) {
             <p>Could not read {util:document-name($model?work)}</p>
 };
 
-declare
-    %templates:wrap
-function app:keywords($node as node(), $model as map(*)) {
-    let $work := $model("work")/ancestor-or-self::tei:TEI
-    let $keywords := $work/tei:teiHeader//tei:keywords/tei:term
-    return
-        if ($keywords) then
-            map { "keywords": $keywords }
-        else
-            ()
-};
 
 declare
     %templates:wrap
