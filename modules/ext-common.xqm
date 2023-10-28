@@ -105,14 +105,6 @@ declare function ec:label($id as xs:string?, $upper as xs:boolean, $plural as xs
         "[Missing label]"
 };
 
-declare function ec:abbr($abbr as xs:string) {
-    let $lang := $config:lang-settings?lang
-    let $val := $config:abbr//tei:valItem[@ident=$abbr]
-    return (
-        $val/tei:desc[@xml:lang = $lang]/string(),
-        $val/tei:desc[1]/string()
-    )[1]
-};
 
 (:~ Doppelpunkt einfügen unter Berücksichtigung frz. Typographie :)
 declare function ec:colon() {
@@ -196,19 +188,6 @@ declare function ec:translate($attribute as attribute()?, $part as xs:string?, $
                 default return error(xs:QName("ec:UnsupportedSchemaPart"))
     )[$attribute]
     ! (if (. and $to-uppercase) then upper-case(substring(.,1,1)) || substring(.,2) else .)
-};
-
-
-declare function ec:display-sigle($id as xs:string?) {
-    let $components := tokenize($id, "_")
-    return
-        $components[1] || " " || $components[2] || "/" || $components[3]
-};
-
-declare function ec:get-canton($id as xs:string?) {
-    let $components := tokenize($id, "_")
-    return
-        $components[2]
 };
 
 declare function ec:format-id($id as xs:string?) as xs:string {
@@ -561,15 +540,6 @@ declare function ec:persName-list($names as element(tei:persName)*) {
         $names[last()]
     ) else
         $names
-};
-
-declare function ec:heading-id($head as node()) {
-    let $group := $head/ancestor::tei:group/preceding-sibling::tei:group => count() + 1
-    let $n := if ($head/@n) then $head/@n/data(.) => replace('\.', '-')
-            else if (not($head/@title)) then $head/ancestor::tei:div/preceding-sibling::tei:div => count() + 1
-            else ()
-    return
-        ('section', $group, $n) => string-join('-')
 };
 
 declare function ec:unique-id($node as node()) as xs:string {

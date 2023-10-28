@@ -281,15 +281,6 @@ declare %private function pages:milestone-chunk($ms1 as element(), $ms2 as eleme
             else ()
 };
 
-declare function pages:title($work as element()) {
-    let $main-title := $work/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[@type = 'main']/string()
-    return
-        if ($main-title) then
-            $main-title
-        else
-            $work/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[1]/string()
-};
-
 declare function pages:app-root($node as node(), $model as map(*)) {
     element { node-name($node) } {
         $node/@* except $node/@data-template,

@@ -10,18 +10,6 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 import module namespace html="http://www.tei-c.org/tei-simple/xquery/functions";
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "ext-common.xqm";
 
-
-declare function ec-html:link($config as map(*), $node as node(), $class as xs:string+, $content, $link, $target) {
-    <a href="{$link}" class="{$class}">
-    {
-        if ($target) then
-            attribute target { $target }
-        else
-            (),
-        html:apply-children($config, $node, $content)
-    }</a>
-};
-
 declare function ec-html:reference($config as map(*), $node as element(), $class as xs:string+, $content,
     $ref, $label) {
     (: no language parameter at the moment :)
