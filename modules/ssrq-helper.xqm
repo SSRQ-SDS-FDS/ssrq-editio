@@ -3,7 +3,7 @@ xquery version "3.1";
 module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/helper";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
-import module namespace templates="http://exist-db.org/xquery/templates" ;
+import module namespace templates="http://exist-db.org/xquery/html-templating";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xqm";
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xqm";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";

@@ -5,7 +5,7 @@ module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/search";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace i18n="http://exist-db.org/xquery/i18n";
 
-import module namespace templates="http://exist-db.org/xquery/templates";
+import module namespace templates="http://exist-db.org/xquery/html-templating";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace http="http://expath.org/ns/http-client";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
