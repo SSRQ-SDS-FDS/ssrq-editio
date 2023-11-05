@@ -2,7 +2,7 @@ xquery version "3.1";
 
 module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app";
 
-import module namespace templates="http://exist-db.org/xquery/templates" at "templates.xqm";
+import module namespace templates="http://exist-db.org/xquery/html-templating";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xqm";
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xqm";
@@ -468,6 +468,20 @@ function app:download-pdf($node as node(), $model as map(*)) as element(a)? {
         </a>[util:binary-doc-available($path)]
 };
 
+(: ~
+: Note: This function should be removed in the future
+: it is just some glue code, for the templating module and
+: which is used by the ssrq specific parse-params.
+: Why should try to use the lib:parse-params (which is part of the new
+: templating module) instead.
+:)
+declare %private function app:get-template-configuration($model as map(*), $func as xs:string) {
+    if (not(map:contains($model, $templates:CONFIGURATION))) then
+        error($templates:CONFIGURATION_ERROR, "Configuration map not found in model. Tried to call: " || $func)
+    else
+        $model($templates:CONFIGURATION)
+};
+
 declare function app:parse-params($node as node(), $model as map(*)) {
     element { node-name($node) } {
         for $attr in $node/@*
@@ -486,7 +500,7 @@ declare function app:parse-params($node as node(), $model as map(*)) {
                                     let $found := [
                                         request:get-parameter($paramName, $default),
                                         $model($paramName),
-                                        templates:get-configuration($model, "templates:form-control")($templates:CONFIG_PARAM_RESOLVER)($paramName)
+                                        app:get-template-configuration($model, "templates:form-control")($templates:CONFIG_PARAM_RESOLVER)($paramName)
                                     ]
                                     return
                                         array:fold-right($found, (), function($in, $value) {

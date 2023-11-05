@@ -26,7 +26,7 @@ module namespace pages="http://www.tei-c.org/tei-simple/pages";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace expath="http://expath.org/ns/pkg";
 
-import module namespace templates="http://exist-db.org/xquery/templates" at "../templates.xqm";
+import module namespace templates="http://exist-db.org/xquery/html-templating";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../pm-config.xqm";
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "util.xqm";

@@ -24,7 +24,7 @@ module namespace search="http://www.tei-c.org/tei-simple/search";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
-import module namespace templates="http://exist-db.org/xquery/templates";
+import module namespace templates="http://exist-db.org/xquery/html-templating";
 import module namespace kwic="http://exist-db.org/xquery/kwic" at "resource:org/exist/xquery/lib/kwic.xql";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "pages.xql";
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "util.xql";
