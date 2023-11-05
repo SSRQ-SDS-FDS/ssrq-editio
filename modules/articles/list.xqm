@@ -74,7 +74,7 @@ declare function articles-list:volumes($kanton as xs:string, $docs as element(do
     return
         <volume xml:id="{$kanton}-{$volume}" pdf="{articles-list:check-pdf($docs[1])}">
             {
-                articles-list:sort-docs($docs)
+                articles-list:sort-docs($doc)
             }
         </volume>
 };
