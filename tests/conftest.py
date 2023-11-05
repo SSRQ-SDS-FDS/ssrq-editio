@@ -88,17 +88,18 @@ def exist_execute_url() -> str:
 @pytest.fixture(scope="session")
 def execute_query(exist_execute_url: str) -> xquery_tester:
     async def _execute(query: str) -> httpx.Response:
-        headers = {"Content-Type": "application/xml"}
-        params = {
-            "base": "xmldb:exist://__new__2",
-            "qu": query.replace("\n", " "),  # Inlining the query
-            "output": "adaptive",
-        }
-        return httpx.post(
-            exist_execute_url,
-            headers=headers,
-            params=params,
-            timeout=httpx.Timeout(10, connect=10),
-        )
+        async with httpx.AsyncClient() as client:
+            headers = {"Content-Type": "application/xml"}
+            params = {
+                "base": "xmldb:exist://__new__2",
+                "qu": query.replace("\n", " "),  # Inlining the query
+                "output": "adaptive",
+            }
+            return await client.post(
+                exist_execute_url,
+                headers=headers,
+                params=params,
+                timeout=httpx.Timeout(10, connect=10),
+            )
 
     return _execute
