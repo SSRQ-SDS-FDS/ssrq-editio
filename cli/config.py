@@ -24,10 +24,10 @@ COMMON_IGNORES = [
     "cli",
     "data",
     "resources/scss",
+    "tests",
     "transform",
 ]
 PROD_IGNORES = COMMON_IGNORES + [
-    "test",
     "modules/lib/regenerate.xql",
     "modules/pub/upload.xql",
     "templates/upload.html",
