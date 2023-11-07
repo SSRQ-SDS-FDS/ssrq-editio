@@ -1,32 +1,35 @@
 import pytest
 
-from tests.conftest import build_query, xquery_modules, xquery_tester
+from tests.conftest import (
+    build_query,
+    xquery_modules,
+    xquery_tester,
+    assert_xquery_result,
+)
 
 
 @pytest.mark.asyncio
-async def test_find_articles(execute_query: xquery_tester):
+async def test_find_articles(execute_xquery: xquery_tester):
     xquery = build_query(
         modules=[xquery_modules["finder"]],
         query_body="""every $doc in find:regular-articles() satisfies
         $doc[not(@type)][.//tei:idno[ancestor::tei:seriesStmt][matches(., 'SSRQ|SDS|FDS')]]""",  # noqa
     )
-    response = await execute_query(xquery)
+    response = await execute_xquery(xquery)
 
-    assert response.status_code == 200
-    assert bool(response.text)
+    assert_xquery_result(response, True)
 
 
 @pytest.mark.asyncio
-async def test_find_paratextual_documents(execute_query: xquery_tester):
+async def test_find_paratextual_documents(execute_xquery: xquery_tester):
     xquery = build_query(
         modules=[xquery_modules["finder"]],
         query_body="""every $doc in find:paratextual-documents() satisfies
         $doc[@type][.//tei:idno[ancestor::tei:seriesStmt][matches(., 'SSRQ|SDS|FDS')]]""",  # noqa
     )
-    response = await execute_query(xquery)
+    response = await execute_xquery(xquery)
 
-    assert response.status_code == 200
-    assert bool(response.text)
+    assert_xquery_result(response, True)
 
 
 @pytest.mark.asyncio
@@ -35,7 +38,7 @@ async def test_find_paratextual_documents(execute_query: xquery_tester):
     [("SSRQ-SG-III_4-1-1", 1), ("Foo-bar", 0)],
 )
 async def test_find_by_idno_against_editio_data(
-    execute_query: xquery_tester, idno: str, expected: int
+    execute_xquery: xquery_tester, idno: str, expected: int
 ):
     xquery = build_query(
         modules=[xquery_modules["finder"]],
@@ -43,8 +46,6 @@ async def test_find_by_idno_against_editio_data(
         return
             count($doc) = {expected}""",  # noqa
     )
-    response = await execute_query(xquery)
+    response = await execute_xquery(xquery)
 
-    assert response.status_code == 200
-
-    assert response.text.replace('"', "") == "true()"
+    assert_xquery_result(response, True)

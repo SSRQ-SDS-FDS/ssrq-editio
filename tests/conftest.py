@@ -1,8 +1,10 @@
 from typing import Awaitable
+from parsel import Selector
 import pytest
 from cli import config
 import httpx
 from collections.abc import Callable
+import pytest_asyncio
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 
@@ -46,11 +48,16 @@ xquery_modules: dict[str, tuple[str, str, str]] = {
 
 
 def build_query(modules: list[tuple[str, str, str]], query_body: str) -> str:
+    """Builds a query from the given modules and query body.
+
+    Args:
+        modules (list[tuple[str, str, str]]): The modules to import
+        query_body (str): The query body
+
+    Returns:
+        str: The query"""
     module_imports = " ".join(
-        [
-            f'import module namespace {name}="{ns}" at "{loc}";'
-            for name, ns, loc in modules
-        ]
+        [f'import module namespace {name}="{ns}" at "{loc}";' for name, ns, loc in modules]
     )
     return " ".join(
         [
@@ -62,6 +69,106 @@ def build_query(modules: list[tuple[str, str, str]], query_body: str) -> str:
     )
 
 
+class XPathAssertion:
+    xpath: str
+    expected_result: bool | int | str | float | list | None
+
+    def __init__(self, xpath: str, expected_result: str | list[str] | None):
+        self.xpath = xpath
+        self.expected_result = expected_result
+
+    def query_and_assert(self, xml: Selector):
+        xpath_result = xml.xpath(self.xpath)
+        match self.expected_result:
+            case None:
+                assert len(xpath_result) == 0
+            case list(_):
+                assert xpath_result.getall() == self.expected_result
+            case _:
+                assert xpath_result.get() == self.expected_result
+
+
+def assert_xquery_result(
+    result: httpx.Response,
+    expected_result: bool | int | str | float | XPathAssertion | list[XPathAssertion],
+    expected_code: httpx.codes = httpx.codes.OK,
+):
+    """Asserts the result of an XQuery.
+
+    Args:
+        result (httpx.Response): The result of the XQuery
+        expected_result (bool | int | str | float | XPathAssertion | list[XPathAssertion]): The expected result
+        expected_code (httpx.codes, optional): The expected HTTP status code. Defaults to httpx.codes.OK.
+
+    Raises:
+        AssertionError: If the result is not equal to the expected result"""
+
+    assert result.status_code == expected_code
+
+    if isinstance(expected_result, XPathAssertion):
+        expected_result.query_and_assert(Selector(result.text, type="xml"))
+        return
+
+    if isinstance(expected_result, list):
+        xml_selector = Selector(result.text, type="xml")
+        for assertion in expected_result:
+            assertion.query_and_assert(xml_selector)
+        return
+
+    assert (
+        cast_query_result(
+            result=unquote_xquery_result(result=result.text),
+            expected_result=expected_result,
+        )
+        == expected_result
+    )
+
+
+def unquote_xquery_result(result: str) -> str:
+    """Removes the quotes from the result of an XQuery.
+
+    Args:
+        result (str): The result of the XQuery
+
+    Returns:
+        str: The unquoted result"""
+    if result.startswith('"'):
+        result = result[1:]
+    if result.endswith('"'):
+        result = result[:-1]
+    return result
+
+
+def cast_query_result(
+    result: str,
+    expected_result: bool | int | str | float,
+):
+    """Casts the result of an XQuery to the expected type.
+
+    Args:
+        result (str): The result of the XQuery
+        expected_result (bool | int | str | float): The expected result type
+
+    Raises:
+        ValueError: If the result could not be casted to the expected type
+
+    Returns:
+        bool | int | str | float: The casted result"""
+    match result, expected_result:
+        case "true()" | "false()", bool(expected_result):
+            return True if result == "true()" else False
+        case _, int(expected_result):
+            return int(result)
+        case _, float(expected_result):
+            return float(result)
+        case _, str(expected_result):
+            return result
+        case _, _:
+            raise ValueError(
+                f"Could not cast result '{result}' to expected type '{type(expected_result)}'"
+            )
+
+
 xquery_tester = Callable[[str], Awaitable[httpx.Response]]
 
 
@@ -69,10 +176,7 @@ xquery_tester = Callable[[str], Awaitable[httpx.Response]]
 def pytest_sessionstart(session):
     """Runs before the first test is executed – checks if the editio is running."""
     try:
-        assert (
-            httpx.get(f"http://localhost:{config.EDITIO_PORT}/exist/").status_code
-            <= 400
-        )
+        assert httpx.get(f"http://localhost:{config.EDITIO_PORT}/exist/").status_code <= 400
     except Exception:
         pytest.exit(
             reason="eXist-DB is not running – run 'editio start' first",
@@ -85,21 +189,26 @@ def exist_execute_url() -> str:
     return f"http://localhost:{config.EDITIO_PORT}/exist/apps/atom-editor/execute"
 
 
-@pytest.fixture(scope="session")
-def execute_query(exist_execute_url: str) -> xquery_tester:
+@pytest_asyncio.fixture
+async def async_http_client():
+    async with httpx.AsyncClient() as client:
+        yield client
+
+
+@pytest_asyncio.fixture
+async def execute_xquery(async_http_client, exist_execute_url: str) -> xquery_tester:
     async def _execute(query: str) -> httpx.Response:
-        async with httpx.AsyncClient() as client:
-            headers = {"Content-Type": "application/xml"}
-            params = {
-                "base": "xmldb:exist://__new__2",
-                "qu": query.replace("\n", " "),  # Inlining the query
-                "output": "adaptive",
-            }
-            return await client.post(
-                exist_execute_url,
-                headers=headers,
-                params=params,
-                timeout=httpx.Timeout(10, connect=10),
-            )
+        headers = {"Content-Type": "application/xml"}
+        params = {
+            "base": "xmldb:exist://__new__2",
+            "qu": query.replace("\n", " "),  # Inlining the query
+            "output": "adaptive",
+        }
+        return await async_http_client.post(
+            exist_execute_url,
+            headers=headers,
+            params=params,
+            timeout=httpx.Timeout(10, connect=10),
+        )
 
     return _execute
