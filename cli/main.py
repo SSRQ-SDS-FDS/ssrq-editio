@@ -60,9 +60,7 @@ def build(
         )
         logger.info("Data submodule is up to date")
 
-    logger.info(
-        f"Reading settings from {config.EDITIO_CONFIG} and merge them with CLI options"
-    )
+    logger.info(f"Reading settings from {config.EDITIO_CONFIG} and merge them with CLI options")
     settings = bundle_settings.merge_settings(
         settings=bundle_settings.read_settings(),
         cache=use_cache,
@@ -153,9 +151,7 @@ def test():
 
 def check_build_dir():
     if (build_dir := config.PROJECT_ROOT / "build").exists() is False:
-        logger.error(
-            f"Build directory {build_dir} does not exist – run 'editio build' first"
-        )
+        logger.error(f"Build directory {build_dir} does not exist – run 'editio build' first")
         raise typer.Exit(1)
 
 
@@ -173,12 +169,11 @@ def set_sys_env_variable(name: str, value: str):
 
 
 def execute_docker_compose_command(command: str, params: list[str], mode: str):
-    match (mode):
+    match mode:
         case "dev":
             logger.info(f"Executing command '{command}' in dev mode")
             subprocess.run(
-                ["docker", "compose", "-f", str(config.DEV_COMPOSE_FILE), command]
-                + params,
+                ["docker", "compose", "-f", str(config.DEV_COMPOSE_FILE), command] + params,
                 check=True,
             )
         case "prod":
