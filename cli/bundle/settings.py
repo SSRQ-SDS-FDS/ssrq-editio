@@ -30,9 +30,7 @@ def read_settings(cfg_path: Path = EDITIO_CONFIG) -> EditioEnv:
     return EditioEnv(**config["editio"]["settings"])
 
 
-def merge_settings(
-    settings: EditioEnv, cache: bool, upload: bool, env: str | None
-) -> EditioEnv:
+def merge_settings(settings: EditioEnv, cache: bool, upload: bool, env: str | None) -> EditioEnv:
     settings.cache = cache
     settings.upload = upload
     if env is not None and env in ["dev", "prod"]:
@@ -40,9 +38,7 @@ def merge_settings(
     return settings
 
 
-def write_settings_to_env_xml(
-    settings: EditioEnv, target_dir: Path, name: str = "env.xml"
-):
+def write_settings_to_env_xml(settings: EditioEnv, target_dir: Path, name: str = "env.xml"):
     with open(target_dir / name, "w") as f:
         f.write(
             f"""<?xml version="1.0" encoding="UTF-8"?>

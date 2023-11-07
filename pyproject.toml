@@ -26,6 +26,11 @@ pytest-asyncio = "^0.21.1"
 [tool.pytest.ini_options] # https://docs.pytest.org/en/latest/reference/reference.html#ini-options-ref
 testpaths = "tests"
 
+[tool.ruff]
+fix = true
+line-length = 100
+src = ["cli", "tests"]
+
 [build-system]
 build-backend = "poetry.core.masonry.api"
 requires = ["poetry-core"]

@@ -50,9 +50,7 @@ def find_files_to_bundle(source_dir: Path, ignores: list[str]):
     return [
         file
         for file in files
-        if all(
-            ignore_file_or_path not in file for ignore_file_or_path in mapped_ignores
-        )
+        if all(ignore_file_or_path not in file for ignore_file_or_path in mapped_ignores)
     ]
 
 
