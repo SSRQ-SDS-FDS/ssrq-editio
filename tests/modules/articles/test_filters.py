@@ -1,6 +1,11 @@
 import pytest
 
-from tests.conftest import build_query, xquery_modules, xquery_tester
+from tests.conftest import (
+    build_query,
+    xquery_modules,
+    xquery_tester,
+    assert_xquery_result,
+)
 
 PERIOD_MIN = 1050
 PUBDATE_MIN = 2017
@@ -8,7 +13,7 @@ PUBDATE_MIN = 2017
 
 @pytest.mark.asyncio
 async def test_create_pubdate_range_against_editio_data(
-    execute_query: xquery_tester,
+    execute_xquery: xquery_tester,
 ):
     """Tests the number of kantons returned ba the articles-list:by-kanton-and-volume()
     function. Tested against editio-data."""
@@ -18,15 +23,14 @@ async def test_create_pubdate_range_against_editio_data(
         return
             $range//min/text()""",  # noqa
     )
-    response = await execute_query(xquery)
+    response = await execute_xquery(xquery)
 
-    assert response.status_code == 200
-    assert int(response.text.replace('"', "")) == PUBDATE_MIN
+    assert_xquery_result(response, PUBDATE_MIN)
 
 
 @pytest.mark.asyncio
 async def test_create_period_range_against_editio_data(
-    execute_query: xquery_tester,
+    execute_xquery: xquery_tester,
 ):
     xquery = build_query(
         modules=[xquery_modules["articles-filters"], xquery_modules["finder"]],
@@ -34,15 +38,14 @@ async def test_create_period_range_against_editio_data(
         return
             $range//min/text()""",  # noqa
     )
-    response = await execute_query(xquery)
+    response = await execute_xquery(xquery)
 
-    assert response.status_code == 200
-    assert int(response.text.replace('"', "")) == PERIOD_MIN
+    assert_xquery_result(response, PERIOD_MIN)
 
 
 @pytest.mark.asyncio
 async def test_create_archive_list_returns_archives(
-    execute_query: xquery_tester,
+    execute_xquery: xquery_tester,
 ):
     """Tests the number of kantons returned ba the articles-list:by-kanton-and-volume()
     function. Tested against editio-data."""
@@ -52,7 +55,6 @@ async def test_create_archive_list_returns_archives(
         return
             count($archives//archive) = count(distinct-values($archives//text()))""",  # noqa
     )
-    response = await execute_query(xquery)
+    response = await execute_xquery(xquery)
 
-    assert response.status_code == 200
-    assert response.text.replace('"', "") == "true()"
+    assert_xquery_result(response, True)
