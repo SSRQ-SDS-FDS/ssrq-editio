@@ -1,6 +1,6 @@
 import pytest
 
-from tests.conftest import (
+from tests.eXist_app.conftest import (
     build_query,
     xquery_modules,
     xquery_tester,
