@@ -13,7 +13,7 @@ CSS_STYLESHEET_REGEX = re.compile(
 
 
 def handle_volumes(
-    vol_config: config_reader.VolumesConfig, target_dir: Path = config.VOLUMES_TARGET
+    vol_config: config_reader.VolumesConfig, target_dir: Path = config.BUILD_CONFIG.volumes.target
 ):
     check_target_folder(target_dir)
     create_canton_folders(vol_config, target_dir)

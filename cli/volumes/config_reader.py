@@ -2,7 +2,7 @@ from pathlib import Path
 import tomllib
 from typing import Literal
 
-from cli.config import EDITIO_CONFIG, VOLUMES_SOURCE
+from cli.config import EDITIO_CONFIG, BUILD_CONFIG
 from pydantic import BaseModel, computed_field
 
 
@@ -18,7 +18,7 @@ class Volume(BaseModel):
     @computed_field
     @property
     def folder(self) -> Path:
-        source = VOLUMES_SOURCE / self.name
+        source = BUILD_CONFIG.volumes.source / self.name
         if not source.exists():
             raise ValueError(f"Volume {self.name} does not exist")
         return source

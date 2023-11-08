@@ -176,7 +176,10 @@ xquery_tester = Callable[[str], Awaitable[httpx.Response]]
 def pytest_sessionstart(session):
     """Runs before the first test is executed – checks if the editio is running."""
     try:
-        assert httpx.get(f"http://localhost:{config.EDITIO_PORT}/exist/").status_code <= 400
+        assert (
+            httpx.get(f"http://localhost:{config.DOCKER_DEV_SETTINGS.dev.port}/exist/").status_code
+            <= 400
+        )
     except Exception:
         pytest.exit(
             reason="eXist-DB is not running – run 'editio start' first",
@@ -186,7 +189,7 @@ def pytest_sessionstart(session):
 
 @pytest.fixture(scope="session")
 def exist_execute_url() -> str:
-    return f"http://localhost:{config.EDITIO_PORT}/exist/apps/atom-editor/execute"
+    return f"http://localhost:{config.DOCKER_DEV_SETTINGS.dev.port}/exist/apps/atom-editor/execute"
 
 
 @pytest_asyncio.fixture

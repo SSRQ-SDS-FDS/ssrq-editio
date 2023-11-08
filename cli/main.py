@@ -43,7 +43,7 @@ def build(
 ):
     logger.info("Starting build process")
 
-    if update_data or config.VOLUMES_SOURCE.exists() is False:
+    if update_data or config.BUILD_CONFIG.volumes.source.exists() is False:
         logger.info("Updating / fetching tei-volumes submodule - this may take a while")
         subprocess.run(
             [
@@ -61,8 +61,8 @@ def build(
         logger.info("Data submodule is up to date")
 
     logger.info(f"Reading settings from {config.EDITIO_CONFIG} and merge them with CLI options")
-    settings = bundle_settings.merge_settings(
-        settings=bundle_settings.read_settings(),
+    settings = bundle_settings.merge_env_settings(
+        settings=bundle_settings.read_env_settings(config.EDITIO_CONFIG),
         cache=use_cache,
         upload=enable_upload,
         env=env,
@@ -70,12 +70,20 @@ def build(
     logger.info(f"Using the following settings: {settings}")
 
     bundle_settings.write_settings_to_env_xml(settings, config.PROJECT_ROOT)
-    vol_handle.handle_volumes(vol_config.read_config(), config.VOLUMES_TARGET)
-    misc_handle.copy_misc_data(config.MISC_DATA_SOURCE, config.MISC_DATA_TARGET)
-    sass_handle.compile_sass_to_css(config.SASS_SOURCE, config.CSS_TARGET)
+    vol_handle.handle_volumes(vol_config.read_config(), config.BUILD_CONFIG.volumes.target)
+    misc_handle.copy_misc_data(
+        config.BUILD_CONFIG.misc_data.source, config.BUILD_CONFIG.misc_data.target
+    )
+    sass_handle.compile_sass_to_css(config.BUILD_CONFIG.css.source, config.BUILD_CONFIG.css.target)
     bundle_application(
         config.PROJECT_ROOT / "build",
-        config.COMMON_IGNORES if settings.env == "dev" else config.PROD_IGNORES,
+        config.BUILD_CONFIG.expath,
+        config.EXIST_APP_DIR,
+        [str(f) for f in config.BUILD_CONFIG.common_ignores]
+        if settings.env == "dev"
+        else [
+            str(f) for f in config.BUILD_CONFIG.common_ignores + config.BUILD_CONFIG.prod_ignores
+        ],
     )
 
 
@@ -160,8 +168,8 @@ def create_dev_setup(mode: str):
     environment variables."""
     if mode != "dev":
         return
-    set_sys_env_variable("EXIST_PASSWORD", config.DEV_DUMMY_PASSWORD)
-    set_sys_env_variable("EDITIO_PORT", config.EDITIO_PORT)
+    set_sys_env_variable("EXIST_PASSWORD", config.DOCKER_DEV_SETTINGS.dev.password)
+    set_sys_env_variable("EDITIO_PORT", config.DOCKER_DEV_SETTINGS.dev.port)
 
 
 def set_sys_env_variable(name: str, value: str):
@@ -173,7 +181,14 @@ def execute_docker_compose_command(command: str, params: list[str], mode: str):
         case "dev":
             logger.info(f"Executing command '{command}' in dev mode")
             subprocess.run(
-                ["docker", "compose", "-f", str(config.DEV_COMPOSE_FILE), command] + params,
+                [
+                    "docker",
+                    "compose",
+                    "-f",
+                    str(config.PROJECT_ROOT / config.DOCKER_DEV_SETTINGS.dev.compose_file),
+                    command,
+                ]
+                + params,
                 check=True,
             )
         case "prod":
