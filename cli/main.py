@@ -7,7 +7,7 @@ from cli.volumes import handle as vol_handle
 from cli.misc_data import handle as misc_handle
 from cli.sass import handle as sass_handle
 from cli.bundle import settings as bundle_settings
-from cli.bundle.bundle import bundle_application
+from cli.bundle.bundle import bundle_application, get_infos_from_expath
 from loguru import logger
 import subprocess
 from os import environ
@@ -155,6 +155,17 @@ def stop(
 @app.command(help=""""Execute the tests with pytest.""")
 def test():
     pytest.main([str(config.PROJECT_ROOT)])
+
+
+@app.command(
+    help="""Shows the version of the editio CLI and the eXist-app.""",
+)
+def version():
+    import importlib.metadata
+
+    _, version = get_infos_from_expath(config.BUILD_CONFIG.expath)
+    logger.info(f"You are using version: {importlib.metadata.version('cli')} of the editio CLI")
+    logger.info(f"The eXist-application has version: {version}")
 
 
 def check_build_dir():

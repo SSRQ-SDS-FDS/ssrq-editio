@@ -3,7 +3,7 @@ authors = ["Bpolitycki <bastian.politycki@unisg.ch>"]
 description = "Python based tooling for running and building editio."
 name = "cli"
 readme = "README.md"
-version = "0.1.0"
+version = "0.2.0"
 
 [tool.poetry.scripts]
 editio = "cli.main:app"
