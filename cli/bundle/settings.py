@@ -1,8 +1,6 @@
 from pathlib import Path
 import tomllib
 from typing import Literal
-
-from cli.config import EDITIO_CONFIG, PROJECT_ROOT
 from pydantic import BaseModel
 
 
@@ -24,13 +22,64 @@ class EditioEnv(BaseModel):
         return f"cache: {self.cache}; env: {self.env}; upload: {self.upload}"
 
 
-def read_settings(cfg_path: Path = EDITIO_CONFIG) -> EditioEnv:
+class SourceTargetMap(BaseModel):
+    source: Path
+    target: Path
+
+
+class EditioBuildConfig(BaseModel):
+    common_ignores: list[Path]
+    prod_ignores: list[Path]
+    volumes: SourceTargetMap
+    misc_data: SourceTargetMap
+    css: SourceTargetMap
+    expath: Path
+
+
+class DockerEnvSetting(BaseModel):
+    compose_file: str
+    user: str
+    password: str
+    port: str
+
+
+class DockerSettings(BaseModel):
+    dev: DockerEnvSetting
+
+
+def read_env_settings(cfg_path: Path) -> EditioEnv:
     with open(cfg_path) as cfg:
         config = tomllib.loads(cfg.read())
     return EditioEnv(**config["editio"]["settings"])
 
 
-def merge_settings(settings: EditioEnv, cache: bool, upload: bool, env: str | None) -> EditioEnv:
+def read_build_config(cfg_path: Path) -> EditioBuildConfig:
+    with open(cfg_path) as cfg:
+        config = tomllib.loads(cfg.read())
+
+    config = config["editio"]["build"]
+
+    for key, value in config.items():
+        if isinstance(value, list):
+            config[key] = [cfg_path.parent / p for p in value]
+        elif isinstance(value, dict):
+            config[key] = {k: cfg_path.parent / p for k, p in value.items()}
+        else:
+            config[key] = cfg_path.parent / value
+
+    return EditioBuildConfig(**config)
+
+
+def read_docker_settings(cfg_path: Path) -> DockerSettings:
+    with open(cfg_path) as cfg:
+        config = tomllib.loads(cfg.read())
+
+    return DockerSettings(**config["editio"]["docker"])
+
+
+def merge_env_settings(
+    settings: EditioEnv, cache: bool, upload: bool, env: str | None
+) -> EditioEnv:
     settings.cache = cache
     settings.upload = upload
     if env is not None and env in ["dev", "prod"]:
@@ -54,6 +103,3 @@ def write_settings_to_env_xml(settings: EditioEnv, target_dir: Path, name: str =
             </settings>
             """
         )
-
-
-write_settings_to_env_xml(read_settings(), PROJECT_ROOT)

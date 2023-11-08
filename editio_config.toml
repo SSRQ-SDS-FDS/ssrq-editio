@@ -13,3 +13,39 @@ volumes = [
     { name = "ZH_NF_II_11", include = "all" },
     { name = "VD_D_1", include = "sources_only" },
 ]
+
+
+[editio.build]
+volumes = { source = "data/tei-volumes", target = "editio-data" }
+misc_data = { source = "data/tei-volumes/misc", target = "editio-data/misc" }
+css = { source = "eXist_app/resources/scss/style.scss", target = "eXist_app/resources/css/style.css" }
+expath = "eXist_app/expath-pkg.xml"
+prod_ignores = [
+    "eXist_app/modules/lib/regenerate.xql",
+    "eXist_app/modules/pub/upload.xql",
+    "eXist_app/templates/upload.html",
+    "eXist_app/routes/temp.html",
+]
+common_ignores = [
+    ".DS_Store",
+    ".git",
+    "Dockerfile",
+    "Dockerfile.dev",
+    "docker-compose.dev.yml",
+    "docker-compose.yml",
+    "eXist_app/build.xml",
+    ".existdb.json",
+    "editio_config.toml",
+    "pyproject.toml",
+    "poetry.lock",
+    "README.md",
+    "build",
+    "cli",
+    "data",
+    "eXist_app/resources/scss",
+    "tests",
+    "eXist_app/transform",
+]
+
+[editio.docker]
+dev = { compose_file = "docker-compose.dev.yml", user = "admin", password = "ssrq", port = "8080" }

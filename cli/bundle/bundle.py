@@ -6,7 +6,9 @@ from zipfile import ZipFile
 from loguru import logger
 
 
-def bundle_application(build_dir: Path, ignores: list[str]):
+def bundle_application(
+    build_dir: Path, expath_file: Path, exist_app_dir_name: str, ignores: list[str]
+):
     """Orchestrates the bundling of the application.
 
     Args:
@@ -19,7 +21,7 @@ def bundle_application(build_dir: Path, ignores: list[str]):
     files_to_bundle = find_files_to_bundle(config.PROJECT_ROOT, ignores)
     logger.info(f"Found {len(files_to_bundle)} files to bundle")
 
-    package_name, package_version = get_infos_from_expath(config.EXPATH_PKG)
+    package_name, package_version = get_infos_from_expath(expath_file)
     xar_name = f"{package_name}-{package_version}.xar"
     logger.info(f"Creating bundled application as {xar_name} in {build_dir}")
     create_xar(
@@ -27,6 +29,7 @@ def bundle_application(build_dir: Path, ignores: list[str]):
         name=xar_name,
         root=config.PROJECT_ROOT,
         files=files_to_bundle,
+        exist_app_dir_name=exist_app_dir_name,
     )
 
 
@@ -46,11 +49,10 @@ def check_and_clean_target_dir(target_dir: Path):
 
 def find_files_to_bundle(source_dir: Path, ignores: list[str]):
     files = glob(str(source_dir.absolute()) + "/**", recursive=True)
-    mapped_ignores = [str(source_dir / ignore) for ignore in ignores]
     return [
         file
         for file in files
-        if all(ignore_file_or_path not in file for ignore_file_or_path in mapped_ignores)
+        if all(ignore_file_or_path not in file for ignore_file_or_path in ignores)
     ]
 
 
@@ -63,7 +65,16 @@ def get_infos_from_expath(expath: Path) -> tuple[str, str]:
     return package_name, package_version
 
 
-def create_xar(target_dir: Path, name: str, root: Path, files: list[str]):
+def create_xar(target_dir: Path, name: str, root: Path, files: list[str], exist_app_dir_name: str):
     with ZipFile(target_dir / name, "w") as bundle:
         for file in files:
-            bundle.write(filename=file, arcname=file.replace(str(root) + "/", ""))
+            if file.endswith(exist_app_dir_name):
+                # Skip the exist app dir itself
+                continue
+            bundle.write(
+                filename=file,
+                arcname=file.replace(str(root) + "/", "").replace(
+                    exist_app_dir_name + "/",
+                    "",
+                ),
+            )
