@@ -49,3 +49,20 @@ async def test_find_by_idno_against_editio_data(
     response = await execute_xquery(xquery)
 
     assert_xquery_result(response, True)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "lang, expected",
+    [("de", True), ("en", True), ("fr", True), ("it", True), ("foo", False)],
+)
+async def test_find_i18n_catalogue_by_lang(
+    execute_xquery: xquery_tester, lang: str, expected: bool
+):
+    xquery = build_query(
+        modules=[xquery_modules["finder"]],
+        query_body=f"""find:i18n-catalogue-by-lang('{lang}') => exists()""",  # noqa
+    )
+    response = await execute_xquery(xquery)
+
+    assert_xquery_result(response, expected)

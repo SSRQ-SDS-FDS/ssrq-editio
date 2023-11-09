@@ -4,7 +4,7 @@ module namespace index="http://ssrq-sds-fds.ch/exist/apps/ssrq/index";
 
 import module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/helper" at "ssrq-helper.xqm";
 import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "ssrq.xqm";
-import module namespace i18n = 'http://exist-db.org/xquery/i18n' at "../lib/i18n.xqm";
+import module namespace i18n = 'http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module' at "../i18n/i18n.xqm";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace session="http://exist-db.org/xquery/session";
@@ -20,7 +20,7 @@ declare function index:get-index-entries($id as xs:string) as element()* {
                         <aside>{index:list-places($xml), index:list-persons($xml), index:list-organizations($xml), index:list-keys($xml), index:list-lemmata($xml)}</aside>,
                         $config:lang-settings?lang,
                         utils:path-concat(($config:app-root, 'resources/i18n')),
-                        $ssrq-lang:fallback
+                        $config:i18n-default-lang
                     )
 };
 

@@ -11,7 +11,6 @@ import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at 
 import module namespace session="http://exist-db.org/xquery/session";
 import module namespace request="http://exist-db.org/xquery/request";
 import module namespace console="http://exist-db.org/xquery/console";
-import module namespace ssrq-lang="http://ssrq-sds-fds.ch/exist/apps/ssrq/lang" at "modules/ssrq-lang.xqm";
 
 declare variable $exist:path external;
 declare variable $exist:resource external;
@@ -19,7 +18,6 @@ declare variable $exist:controller external;
 declare variable $exist:prefix external;
 declare variable $exist:root external;
 declare variable $routeBase := '/routes/';
-
 
 (: Helper function to match the name of a route to a route specified in $main-routes :)
 declare function controller:find-route-from-list($routes as map(*)+, $resource as xs:string, $error as node()) {

@@ -1,4 +1,4 @@
-<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="measure" mode="change">
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="measure" mode="change">
     <model predicate="$ec:language='de'" behaviour="alternate" cssClass="text-critical">
         <desc>Display measurement with given parameters in tooltip and highlight text with color</desc>
         <param name="default" value="."/>

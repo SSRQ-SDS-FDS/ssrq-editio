@@ -3,7 +3,7 @@ xquery version "3.1";
 module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/search";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
-declare namespace i18n="http://exist-db.org/xquery/i18n";
+declare namespace i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module";
 
 import module namespace templates="http://exist-db.org/xquery/html-templating";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";

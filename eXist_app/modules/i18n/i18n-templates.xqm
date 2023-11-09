@@ -1,12 +1,11 @@
-module namespace intl="http://exist-db.org/xquery/i18n/templates";
+module namespace intl="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/templates";
 
 (:~
  : i18n template functions. Integrates the i18n library module. Called from the templating framework.
  :)
-import module namespace i18n="http://exist-db.org/xquery/i18n" at "i18n.xqm";
+import module namespace i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" at "i18n.xqm";
 import module namespace templates="http://exist-db.org/xquery/html-templating";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
-
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
 
 (:~
@@ -15,17 +14,11 @@ import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at 
  :      lang=de Language selection
  :      catalogues=relative path    Path to the i18n catalogue XML files inside database
  :)
-declare function intl:translate($node as node(), $model as map(*), $lang as xs:string?, $catalogues as xs:string?) {
+declare function intl:translate($node as node(), $model as map(*), $lang as xs:string?) {
     let $lang := $config:lang-settings?lang
-    let $cpath :=
-        (: if path to catalogues is relative, resolve it relative to the app root :)
-        if (starts-with($catalogues, "/")) then
-            $catalogues
-        else
-            utils:path-concat-safe(($config:app-root, $catalogues))
     let $processed := templates:process($node/*, $model)
     let $translated :=
-        i18n:process($processed, $lang, $cpath, ())
+        i18n:process($processed, $lang, ())
     return
         element { node-name($node) } {
             $node/@*,

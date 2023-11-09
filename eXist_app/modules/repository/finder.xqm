@@ -44,3 +44,13 @@ declare function find:paratextual-documents() as element(tei:TEI)+ {
 declare function find:article-by-idno($idno as xs:string) as element(tei:TEI)? {
     collection($config:data-root)/tei:TEI[not(@type)][.//tei:seriesStmt/tei:idno[text() = $idno]]
 };
+
+(:~
+: A function to find language catalogues based on $config:i18n-catalogues.
+:
+: @param $lang the language of the catalogue to find as xs:string
+: @return the language catalogue as element(catalogue)
+:)
+declare function find:i18n-catalogue-by-lang($lang as xs:string) as element(catalogue)? {
+    collection($config:i18n-catalogues)/catalogue[@xml:lang = $lang]
+};

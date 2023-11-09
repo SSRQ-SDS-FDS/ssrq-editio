@@ -1,4 +1,4 @@
-<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" mode="change" ident="teiHeader">
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" mode="change" ident="teiHeader">
   <modelSequence output="latex">
     <model behaviour="section">
       <desc xml:lang="de" versionDate="2022-11-03">TEI2LaTeX Template für PDF-Metadaten</desc>

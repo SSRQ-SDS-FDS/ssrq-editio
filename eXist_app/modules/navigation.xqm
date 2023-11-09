@@ -79,7 +79,7 @@ declare %private function nav:get-previous-recursive($config as map(*), $div as 
 };
 
 declare function nav:output-footnotes($footnotes as element()*) {
-    <div class="footnotes" xmlns:i18n="http://exist-db.org/xquery/i18n">
+    <div class="footnotes" xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module">
         <h4 class="block-title"><i18n:text key="notes">Anmerkungen</i18n:text></h4>
         <ol class="textcritical">
         {
