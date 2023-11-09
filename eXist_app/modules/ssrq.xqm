@@ -309,7 +309,7 @@ declare
 function app:partners($node as node(), $model as map(*)) {
     let $lang := $config:lang-settings?lang
     return
-        (<h3 xmlns:i18n="http://exist-db.org/xquery/i18n"><i18n:text key="partners">Projektpartner</i18n:text></h3>,
+        (<h3 xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module"><i18n:text key="partners">Projektpartner</i18n:text></h3>,
         for $partner in $config:partners//tei:dataSpec[@ident="partners"]/tei:valList/tei:valItem
         let $desc := $partner/tei:desc[@xml:lang=$lang]
         let $value := $desc/tei:p/text()
@@ -322,7 +322,7 @@ function app:partners($node as node(), $model as map(*)) {
                     else $value
                 }
             </p>,
-        <h3 xmlns:i18n="http://exist-db.org/xquery/i18n"><i18n:text key="funding">Finanzielle Unterstützung</i18n:text></h3>,
+        <h3 xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module"><i18n:text key="funding">Finanzielle Unterstützung</i18n:text></h3>,
         for $partner in $config:partners//tei:dataSpec[@ident="funding"]/tei:valList/tei:valItem
         let $desc := $partner/tei:desc[@xml:lang=$lang]
         let $value := $desc/tei:p/text()
@@ -344,7 +344,7 @@ function app:show-credits($node as node(), $model as map(*)) {
     let $partner := root($model?xml)//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:p[@xml:id="facs"]/text()
     return
         if ($partner) then
-            <p xmlns:i18n="http://exist-db.org/xquery/i18n"><i18n:text key="credits"/>{' ' || $partner}</p>
+            <p xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module"><i18n:text key="credits"/>{' ' || $partner}</p>
         else
             ()
 };

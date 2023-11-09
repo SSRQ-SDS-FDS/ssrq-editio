@@ -1,11 +1,15 @@
-module namespace i18n = 'http://exist-db.org/xquery/i18n';
+module namespace i18n = 'http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module';
 
 (:~
     : I18N Internationalization Module
-
-    : @author Lars Windauer <lars.windauer@betterform.de>
-    : @author Tobias Krebs <tobi.krebs@betterform.de>
+    : Based on: https://github.com/eXist-db/i18n/tree/master
+    :
+    :
 :)
+
+import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
+import module namespace find="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder" at "../repository/finder.xqm";
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
 
 (:~
  : Start processing the provided content using the modules defined by $modules. $modules should
@@ -26,7 +30,7 @@ declare function i18n:apply($content as node()+, $modules as element(modules), $
     )
     for $root in $content
         return
-            i18n:process($root, (),(),())
+            i18n:process($root, (),())
 };
 
 (:~
@@ -37,9 +41,11 @@ declare function i18n:apply($content as node()+, $modules as element(modules), $
  : @param $model a sequence of items which will be passed to all called template functions. Use this to pass
  : information between templating instructions.
 :)
-declare function i18n:process($nodes as node()*, $selectedLang as xs:string?, $pathToCatalogues as xs:string, $defaultLang as xs:string?) {
+declare function i18n:process($nodes as node()*, $selectedLang as xs:string?, $defaultLang as xs:string?) {
+    let $default-lang := utils:coalesce($defaultLang, $config:i18n-default-lang)
+    let $selected-lang := utils:coalesce($selectedLang, $config:lang-settings)
     for $node in $nodes
-        let $selectedCatalogue := i18n:getLanguageCollection($nodes,$selectedLang, $pathToCatalogues,$defaultLang)
+        let $selectedCatalogue := i18n:get-language-collection($selected-lang, $default-lang)
         return
             i18n:process($node, $selectedCatalogue)
 };
@@ -62,11 +68,11 @@ declare function i18n:process($node as node(), $selectedCatalogue as node()) {
                 i18n:translate($node, $text,$selectedCatalogue)
 
         case element(i18n:text) return
-            i18n:getLocalizedText($node,$selectedCatalogue)
+            i18n:get-localized-text($node,$selectedCatalogue)
 
         case element() return
             element { node-name($node) } {
-                    i18n:translateAttributes($node,$selectedCatalogue),
+                    i18n:translate-attributes($node,$selectedCatalogue),
                     for $child in $node/node() return i18n:process($child,$selectedCatalogue)
             }
 
@@ -74,12 +80,12 @@ declare function i18n:process($node as node(), $selectedCatalogue as node()) {
             $node
 };
 
-declare function i18n:translateAttributes($node as node(), $selectedCatalogue as node()){
+declare function i18n:translate-attributes($node as node(), $selectedCatalogue as node()){
     for $attribute in $node/@*
-        return i18n:translateAttribute($attribute, $node, $selectedCatalogue)
+        return i18n:translate-attribute($attribute, $node, $selectedCatalogue)
 };
 
-declare function i18n:translateAttribute($attribute as attribute(), $node as node(),$selectedCatalogue as node()){
+declare function i18n:translate-attribute($attribute as attribute(), $node as node(),$selectedCatalogue as node()){
     if(starts-with($attribute, 'i18n(')) then
         let $key :=
             if(contains($attribute, ",")) then
@@ -107,8 +113,8 @@ declare %private function i18n:get-display-value-for-key($key, $catalog-working)
  : Get the localized value for a given key from the given catalgue
  : if no localized value is available, the default value is used
 :)
-declare function i18n:getLocalizedText($textNode as node(), $selectedCatalogue as node()){
-    if(exists($selectedCatalogue//msg[@key eq $textNode/@key])) then 
+declare function i18n:get-localized-text($textNode as node(), $selectedCatalogue as node()){
+    if(exists($selectedCatalogue//msg[@key eq $textNode/@key])) then
         (i18n:get-display-value-for-key($textNode/@key, $selectedCatalogue))
     else
         $textNode/(text() | *)
@@ -130,12 +136,12 @@ declare function i18n:translate($node as node(),$text as xs:string,$selectedCata
                 (: numerical parameters to substituce :)
                 let $selectedParam := $node/i18n:param[number($paramKey)]
                 return
-                    i18n:replaceParam($node, $selectedParam,$paramKey, $text,$selectedCatalogue)
+                    i18n:replace-param($node, $selectedParam,$paramKey, $text,$selectedCatalogue)
             else if(exists($params[@key eq $paramKey])) then
                 (: alphabetical parameters to substituce :)
                 let $selectedParam := $params[@key eq $paramKey]
                 return
-                    i18n:replaceParam($node, $selectedParam,$paramKey, $text,$selectedCatalogue)
+                    i18n:replace-param($node, $selectedParam,$paramKey, $text,$selectedCatalogue)
             else
                 (: ERROR while processing parmaters to substitute:)
                 concat("ERROR: Parameter ", $paramKey, " could not be substituted")
@@ -151,10 +157,10 @@ declare function i18n:translate($node as node(),$text as xs:string,$selectedCata
  : @param $paramKey currently processed parameterKey (numerical or alphabetical)
  : @param $text     the processed(!) content of i18n:text
 :)
-declare function i18n:replaceParam($node as node(), $param as node(),$paramKey as xs:string, $text as xs:string,$selectedCatalogue as node()) {
+declare function i18n:replace-param($node as node(), $param as node(),$paramKey as xs:string, $text as xs:string,$selectedCatalogue as node()) {
     if(exists($param/i18n:text)) then
         (: the parameter has to be translated as well :)
-        let $translatedParam := i18n:getLocalizedText($param/i18n:text, $selectedCatalogue)
+        let $translatedParam := i18n:get-localized-text($param/i18n:text, $selectedCatalogue)
         let $result := replace($text, concat("\{", $paramKey, "\}"), $translatedParam)
         return i18n:translate($node,$result,$selectedCatalogue)
     else
@@ -164,53 +170,21 @@ declare function i18n:replaceParam($node as node(), $param as node(),$paramKey a
             i18n:translate($node, $result,$selectedCatalogue)
 };
 
-declare function i18n:getLanguageCollection($node as node()*, $selectedLang as xs:string?, $pathToCatalogues as xs:string, $defaultLang as xs:string?) {
-  let $tmpNode :=  typeswitch ($node)
-        case document-node() return $node/node()
-        default return $node
 
-  let $lang := i18n:getSelectedLanguage($tmpNode,$selectedLang)
-  let $cataloguePath := i18n:getPathToCatalgogues($tmpNode,$pathToCatalogues)
+(:
+: Get the language collection for the given language
+: If no collection is found, the default language collection is returned
+:
+: @param $selected-lang the language to search for as xs:string
+: @param $default-lang the default language to search for as xs:string
+: @return the language collection as element(catalogue)
+:)
+declare function i18n:get-language-collection($selected-lang as xs:string, $default-lang as xs:string) as element(catalogue) {
+  let $catalogue := find:i18n-catalogue-by-lang($selected-lang)
   return
-    if(exists(collection($cataloguePath)//catalogue[@xml:lang eq $lang])) then
-        collection($cataloguePath)//catalogue[@xml:lang eq $lang]
-    else if(string-length(request:get-parameter("defaultLang", "")) gt 0) then
-        collection($cataloguePath)//catalogue[@xml:lang eq request:get-parameter("cataloguesPath", "")]
-    else if(string-length($defaultLang) gt 0) then
-        collection($cataloguePath)//catalogue[@xml:lang eq $defaultLang]
-    else if(exists($tmpNode/@i18n:default-lang)) then
-        collection($cataloguePath)//catalogue[@xml:lang eq $tmpNode/@i18n:default-lang]
+    if (exists($catalogue)) then
+        $catalogue
     else
-        collection($cataloguePath)//catalogue[@xml:lang eq "en"]
+        find:i18n-catalogue-by-lang($default-lang)
 
-};
-
-declare function i18n:getPathToCatalgogues($node as node()*,$pathToCatalogues as xs:string){
-    if(string-length($pathToCatalogues) gt 0) then
-        $pathToCatalogues
-    else if(string-length(request:get-parameter("cataloguesPath", "")) gt 0) then
-        request:get-parameter("cataloguesPath", "")
-    else if (exists($node/@i18n:catalogues)) then
-        $node/@i18n:catalogues
-    else 'ERROR: no path to language catalogues given'
-};
-
-declare function i18n:getSelectedLanguage($node as node()*, $selectedLang as xs:string?) {
-    let $header := request:get-header("Accept-Language")
-    return
-        if(string-length(request:get-parameter("lang", "")) gt 0) then
-            (: use http parameter lang as selected language :)
-            request:get-parameter("lang", "")
-        else if(exists($node/@xml:lang)) then
-            (: use xml:lang attribute on given node as selected language :)
-            $node/@xml:lang
-        else if($selectedLang != "") then
-            (: use given xquery parameter as selected language :)
-            $selectedLang
-        else if ($header != "") then
-            let $lang := tokenize($header, "\s*,\s*")
-            return
-                replace($lang[1], "^([^-;]+).*$", "$1")
-        else
-            'en'
 };

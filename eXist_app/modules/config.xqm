@@ -8,7 +8,7 @@ module namespace config="http://www.tei-c.org/tei-simple/config";
 
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 import module namespace http="http://expath.org/ns/http-client" at "java:org.exist.xquery.modules.httpclient.HTTPClientModule";
-import module namespace ssrq-lang="http://ssrq-sds-fds.ch/exist/apps/ssrq/lang" at "ssrq-lang.xqm";
+import module namespace i18n-settings="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/settings" at "i18n/settings.xqm";
 import module namespace ssrq-cache="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache" at "repository/cache.xqm";
 
 import module namespace templates="http://exist-db.org/xquery/html-templating";
@@ -149,7 +149,7 @@ declare variable $config:base-url :=
             $config:default-base-url
 ;
 
-declare variable $config:lang-settings := ssrq-lang:get-lang-settings();
+declare variable $config:lang-settings := i18n-settings:get-lang-settings();
 
 declare variable $config:index-url :=
     let $index-subdomain := 'index'
@@ -210,6 +210,12 @@ declare variable $config:output-root := utils:path-concat-safe(($config:app-root
 declare variable $config:module-config := doc(utils:path-concat-safe(($config:odd-root, "configuration.xml")))/*;
 
 declare variable $config:repo-descriptor := doc(utils:path-concat-safe(($config:app-root, "repo.xml")))/repo:meta;
+
+declare variable $config:i18n-catalogues := utils:path-concat-safe(($config:app-root, "resources/i18n"));
+
+declare variable $config:i18n-supported-languages := ("de", "fr", "en", "it");
+
+declare variable $config:i18n-default-lang := "de";
 
 (: FIXME: using path-concat-safe here results in a NullPointerException
  : declare variable $config:expath-descriptor := doc(utils:path-concat-safe(($config:app-root, "expath-pkg.xml")))/expath:package;

@@ -1,4 +1,4 @@
-<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="back" mode="change">
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="back" mode="change">
     <desc>back contains the commentary, which normally should appear as a numbered list</desc>
     <model output="latex" predicate="div/@n" behaviour="block">
         <pb:template>

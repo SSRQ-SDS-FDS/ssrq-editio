@@ -15,7 +15,7 @@ import module namespace idno-parser="http://ssrq-sds-fds.ch/exist/apps/ssrq/pars
 
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
-declare namespace i18n="http://exist-db.org/xquery/i18n";
+declare namespace i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module";
 declare namespace xpath = 'http://www.w3.org/2005/xpath-functions';
 
 declare variable $ec:COUNTER_TEXTCRITICAL := "text-critical-" || util:uuid();

@@ -19,7 +19,7 @@ import module namespace ssrq-cache="http://ssrq-sds-fds.ch/exist/apps/ssrq/repos
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace util="http://exist-db.org/xquery/util";
-declare namespace i18n="http://exist-db.org/xquery/i18n";
+declare namespace i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module";
 
 
 declare variable $ssrq-helper:TEMP_DOCS := collection($config:temp-root)/tei:TEI;
@@ -337,7 +337,7 @@ let $namen :=  $header//tei:persName/text()
 return
     if (count($namen) > 1) then (
         string-join(subsequence($namen, 1, count($namen) -1), ', '),
-        <i18n:text xmlns:i18n="http://exist-db.org/xquery/i18n" key="and"> und </i18n:text>,
+        <i18n:text xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" key="and"> und </i18n:text>,
         $namen[last()]
     ) else
         $namen
@@ -353,7 +353,7 @@ function ssrq-helper:render-idno-as-popup($node as node(), $model as map(*), $id
     return
         <span class="alternate">
             <span class="id">{$idno} <i class="glyphicon glyphicon-info-sign"/></span>
-            <span class="altcontent" xmlns:i18n="http://exist-db.org/xquery/i18n" popover-class="increase-popover-width">
+            <span class="altcontent" xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" popover-class="increase-popover-width">
                     <p>{$stmtTitle}, {$pm-config:web-transform($fileDescTitle, map { "root": $fileDescTitle, "view": "infopopup"}, $config:odd)}, <i18n:text key="by">von</i18n:text> {ssrq-helper:pers-names($header//tei:editor)}</p>
                     <p><i18n:text key="zitation">Zitation:</i18n:text>
                     { if ($idno-link => empty() or xs:boolean($idno-link)) then
