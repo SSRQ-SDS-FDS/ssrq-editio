@@ -8,6 +8,8 @@ from cli.misc_data import handle as misc_handle
 from cli.sass import handle as sass_handle
 from cli.bundle import settings as bundle_settings
 from cli.bundle.bundle import bundle_application, get_infos_from_expath
+from cli.sync.sync import sync_folder, ExistServerConfig, ExistEndpoints
+import asyncio
 from loguru import logger
 import subprocess
 from os import environ
@@ -155,6 +157,26 @@ def stop(
 @app.command(help=""""Execute the tests with pytest.""")
 def test():
     pytest.main([str(config.PROJECT_ROOT)])
+
+
+@app.command(help="""Sync changes in the app dir to eXist-DB""")
+def sync():
+    server_config = ExistServerConfig(
+        url="http://localhost",
+        port=config.DOCKER_DEV_SETTINGS.dev.port,
+        user=config.DOCKER_DEV_SETTINGS.dev.user,
+        password=config.DOCKER_DEV_SETTINGS.dev.password,
+        collection="/db/apps/ssrq/",
+        local_project_root=(config.PROJECT_ROOT / config.EXIST_APP_DIR),
+    )
+
+    asyncio.run(
+        sync_folder(
+            config=server_config,
+            watch_dir=config.PROJECT_ROOT / config.EXIST_APP_DIR,
+            endpoints=ExistEndpoints(),
+        )
+    )
 
 
 @app.command(
