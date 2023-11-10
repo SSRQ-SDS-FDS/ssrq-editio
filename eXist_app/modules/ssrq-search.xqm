@@ -108,9 +108,9 @@ declare function query:query-texts($subtypes as xs:string*, $query as xs:string)
                     collection($config:data-root)//tei:teiHeader//tei:msDesc//tei:listBibl[ft:query(., $query, $query:QUERY_OPTIONS)]
                 (: Editionstext: body + orig in Kommentar und Fussnoten :)
                 default return
-                    collection($config:data-root)//tei:body[*][not(@type="volinfo")][ft:query(., $query, $query:QUERY_OPTIONS)] |
+                    collection($config:data-root)//tei:body[*][ft:query(., $query, $query:QUERY_OPTIONS)] |
                     collection($config:data-root)//tei:back[.//tei:orig[ft:query(., $query, $query:QUERY_OPTIONS)]] |
-                    collection($config:data-root)//tei:body[*][not(@type="volinfo")][.//tei:note//tei:orig[ft:query(., $query, $query:QUERY_OPTIONS)]]
+                    collection($config:data-root)//tei:body[*][.//tei:note//tei:orig[ft:query(., $query, $query:QUERY_OPTIONS)]]
 
     return
         map {

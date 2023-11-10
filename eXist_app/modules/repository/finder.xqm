@@ -13,7 +13,7 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 : @return a sequence of TEI documents
 :)
 declare function find:regular-articles() as element(tei:TEI)+ {
-    collection($config:data-root)/tei:TEI[not(@type)][.//tei:seriesStmt/tei:idno[not(@type = 'uuid')]]
+    collection($config:data-root)/tei:TEI[not(@type)][.//tei:seriesStmt/tei:idno[not(@type)]]
 };
 
 (:~
@@ -31,7 +31,7 @@ declare function find:regular-articles-with-uuid() as element(tei:TEI)+ {
 : @return a sequence of TEI documents
 :)
 declare function find:paratextual-documents() as element(tei:TEI)+ {
-    collection($config:data-root)//tei:TEI[@type][.//tei:seriesStmt/tei:idno[not(@type = 'uuid')]]
+    collection($config:data-root)//tei:TEI[@type][.//tei:seriesStmt/tei:idno[not(@type)]]
 };
 
 
@@ -42,7 +42,7 @@ declare function find:paratextual-documents() as element(tei:TEI)+ {
 : @return the TEI document as element(tei:TEI)
 :)
 declare function find:article-by-idno($idno as xs:string) as element(tei:TEI)? {
-    collection($config:data-root)/tei:TEI[not(@type)][.//tei:seriesStmt/tei:idno[text() = $idno]]
+    collection($config:data-root)/tei:TEI[not(@type)][.//tei:seriesStmt/tei:idno[. = $idno]]
 };
 
 (:~
