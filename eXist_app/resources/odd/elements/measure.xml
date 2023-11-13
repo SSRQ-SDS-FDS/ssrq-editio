@@ -1,0 +1,12 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="measure" mode="change">
+    <model predicate="$ec:language='de'" behaviour="alternate" cssClass="text-critical">
+        <desc>Display measurement with given parameters in tooltip and highlight text with color</desc>
+        <param name="default" value="."/>
+        <param name="alternate" value="(ec:translate(@type, false(), true()), ec:colon(), @quantity, ' ', ec:translate(@origin, false(), false()), ' ', ec:translate(@unit, @quantity &gt; 1, false()), ' ', ec:translate(@commodity, false(), false()))"/>
+    </model>
+    <model predicate="$ec:language!='de'" behaviour="alternate" cssClass="text-critical">
+        <desc>Display measurement with given parameters in tooltip and highlight text with color</desc>
+        <param name="default" value="."/>
+        <param name="alternate" value="(ec:translate(@type, false(), true()), ec:colon(), @quantity, ' ', ec:translate(@unit, @quantity &gt; 1, false()), ' ', ec:translate(@commodity, false(), false()), ' ', ec:translate(@origin, false(), false()))"/>
+    </model>
+</elementSpec>

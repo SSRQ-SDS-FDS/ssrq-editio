@@ -13,7 +13,7 @@ CSS_STYLESHEET_REGEX = re.compile(
 
 
 def handle_volumes(
-    vol_config: config_reader.VolumesConfig, target_dir: Path = config.VOLUMES_TARGET
+    vol_config: config_reader.VolumesConfig, target_dir: Path = config.BUILD_CONFIG.volumes.target
 ):
     check_target_folder(target_dir)
     create_canton_folders(vol_config, target_dir)
@@ -36,9 +36,7 @@ def check_target_folder(target_dir: Path) -> None:
     target_dir.mkdir()
 
 
-def create_canton_folders(
-    vol_config: config_reader.VolumesConfig, target_dir: Path
-) -> None:
+def create_canton_folders(vol_config: config_reader.VolumesConfig, target_dir: Path) -> None:
     for canton in {volume.canton for volume in vol_config.volumes}:
         check_target_folder(target_dir / canton)
 
@@ -61,15 +59,11 @@ def handle_volume(volume: config_reader.Volume, target_dir: Path) -> None:
     postprocess_xml_files(list(volume_target_dir.glob("*.xml")))
 
     pdf_source = get_source_pdf_path(volume_source=volume.folder)
-    logger.info(
-        f"Copying pdf files for volume {volume.name}; using {pdf_source} as source"
-    )
+    logger.info(f"Copying pdf files for volume {volume.name}; using {pdf_source} as source")
     copy_pdf_files(pdf_source, volume_target_dir)
 
 
-def copy_data_files(
-    volume_source: Path, volume_target: Path, glob_pattern: str
-) -> None:
+def copy_data_files(volume_source: Path, volume_target: Path, glob_pattern: str) -> None:
     for file in (volume_source).glob(glob_pattern):
         shutil.copy(file, volume_target)
 

@@ -1,0 +1,23 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="origPlace" mode="add">
+    <model output="latex" behaviour="inline">
+        <param name="ref" value="@ref"/>
+        <pb:template>\placename{[[ref]]}{[[content]]}</pb:template>
+    </model>
+    <model predicate="parent::origin and node()" behaviour="listItem">
+        <param name="content" value="(ec:label('origPlace'), ec:colon(), .)"/>
+    </model>
+    <model predicate="parent::origin" behaviour="omit">
+        <desc>Leeres Element im header</desc>
+    </model>
+    <model output="web" behaviour="reference" cssClass="semantic place">
+        <desc>Semantic highlighting of origPlace names with tooltip and green text color</desc>
+        <param name="content" value="."/>
+        <param name="label" value="ec:label('origPlace')"/>
+        <param name="ref" value="@ref"/>
+    </model>
+    <model behaviour="alternate" cssClass="semantic place">
+        <desc>Semantic highlighting of origPlace names with tooltip and green text color</desc>
+        <param name="default" value="."/>
+        <param name="alternate" value="(ec:label('origPlace'), ec:colon(), . )"/>
+    </model>
+</elementSpec>

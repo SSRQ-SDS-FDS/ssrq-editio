@@ -1,8 +1,0 @@
-<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="valItem" mode="change">
-    <model predicate="ancestor::dataSpec[ancestor::TEI/@type = 'abbr']" behaviour="block" output="latex">
-        <param name="content" value="@ident/string() || ' &amp;amp; ' || (if(desc[@xml:lang = 'de']) then desc[@xml:lang = 'de']/text() else desc[1]/text()) || '\\'"/>
-    </model>
-    <model predicate="ancestor::dataSpec[ancestor::TEI/@type = 'abbr']" behaviour="listItem">
-        <param name="content" value="@ident/string() || ' = ' || (if (desc[@xml:lang = $ec:language]) then desc[@xml:lang = $ec:language]/text() else desc[1]/text())"/>
-    </model>
-</elementSpec>

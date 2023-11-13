@@ -1,0 +1,91 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="TEI" mode="change">
+    <model output="latex" predicate="request:get-parameter('archives', ())" behaviour="section">
+        <param name="archiveType" value="text/body/div/div"/>
+        <pb:template>
+            \subsection{Ungedruckte Quellen}
+            \setcounter{footnote}{0}
+
+            [[archiveType]]
+        </pb:template>
+    </model>
+    <model output="latex" predicate="request:get-parameter('literature', ())" behaviour="section">
+        <param name="introduction" value="text/body/div[1]"/>
+        <param name="literature" value="text/body/div/listBibl/biblStruct"/>
+        <pb:template>
+            \subsection{Literaturverzeichnis}
+
+            [[introduction]]
+
+            \begin{hangparas}{4.5mm}{1}
+
+            [[literature]]
+
+            \end{hangparas}
+        </pb:template>
+    </model>
+    <model output="latex" predicate="request:get-parameter('introduction', ())" behaviour="section">
+        <param name="lang" value="$ec:language"/>
+        <param name="content" value="text//body"/>
+        <param name="literature" value="teiHeader/fileDesc/sourceDesc/msDesc/additional/listBibl"/>
+        <pb:template>
+            \documentclass[10pt,twoside]{article}
+
+            \usepackage{ssrq_intro_[[lang]]}  % here's all the magic...
+
+            \begin{document}
+
+            \cleardoublepage			% Fortsetzung auf einer ungeraden Seite
+            \pagestyle{plain}			% Beginn der Seitennummerierung
+            \pagenumbering{arabic}		% arabische Seitenzahlen, mit 1 beginnend
+            \footnotesize				% sehr platzsparend... (normalsize ist 8pt)
+            \tableofcontents			% Inhaltsverzeichnis
+
+            % Einleitung
+            \cleardoublepage			% Fortsetzung auf einer ungeraden Seite
+            \small						% platzsparend... (normalsize ist 9pt)
+            \addcontentsline{toc}{section}{Einleitung}
+            \fancyhead[LE,RO]{\small Einleitung}			% Kopfzeile aussen
+            \thispagestyle{plain}							% aber nicht auf der ersten Seite
+
+            [[content]]
+
+            [[literature]]
+
+            \end{document}
+        </pb:template>
+    </model>
+    <model output="latex" behaviour="section">
+        <param name="lang" value="$ec:language"/>
+        <param name="metadata" value="teiHeader"/>
+        <param name="summary" value="teiHeader/fileDesc/sourceDesc/msDesc/msContents/summary"/>
+        <param name="comments" value="text//back"/>
+        <param name="content" value="text//body"/>
+        <param name="msdesc" value="teiHeader/fileDesc/sourceDesc/msDesc"/>
+        <param name="additionalSources" value="if (ec:existsAdditionalSource(teiHeader/fileDesc/seriesStmt/idno/text())) then ec:additionalSource(teiHeader/fileDesc/seriesStmt/idno/text()) else ''"/>
+        <param name="literature" value="teiHeader/fileDesc/sourceDesc/msDesc/additional/listBibl"/>
+        <pb:template>
+            \documentclass[10pt,twoside]{article}
+
+            \usepackage{ssrq_[[lang]]}  % here's all the magic...
+
+            \begin{document}
+
+            [[metadata]]
+
+            [[summary]]
+            [[comments]]
+            [[content]]
+
+            [[msdesc]]
+
+            [[additionalSources]]
+
+            [[literature]]
+
+            \printnotes*
+
+            \end{document}
+        </pb:template>
+    </model>
+    <model behaviour="document"/>
+</elementSpec>

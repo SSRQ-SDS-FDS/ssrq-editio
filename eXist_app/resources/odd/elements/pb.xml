@@ -1,0 +1,57 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="pb" mode="change">
+    <model output="latex" predicate="ancestor::body and not(preceding::pb[ancestor::body])" behaviour="omit">
+        <desc>Hide the first pagebreak in a document (beware: independent of position!)</desc>
+    </model>
+    <model output="latex" predicate="ancestor::body and not(following::pb[ancestor::body]) and not(following::p[ancestor::body]) and not(following::seg[ancestor::body])
+                                     and following::text()[ancestor::body] => string-join('') => normalize-space() => string-length() = 0" behaviour="omit">
+         <desc>Hide the last pagebreak in a document if it's not followed by text</desc>
+         </model>
+    <model output="latex" predicate="preceding-sibling::*[1][self::seg]" behaviour="omit">
+        <desc>seg directly followed by pb is handled by seg</desc>
+    </model>
+    <model output="latex" predicate="@n and matches(@n, '[vr]$')" behaviour="inline">
+        <param name="page" value="('fol. ', @n)"/>
+        <pb:template>\pb{} \textit{[[[page]]]} </pb:template>
+    </model>
+    <model output="latex" predicate="@n" behaviour="inline">
+        <param name="page" value="(ec:label('page-abbr', false()), ' ', @n)"/>
+        <pb:template>\pb{} \textit{[[[page]]]} </pb:template>
+    </model>
+    <model output="latex" behaviour="omit"/>
+    <model predicate="following-sibling::node()[1][self::lb]" behaviour="copy">
+        <desc>If followed by an lb, process the lb first, then the pb</desc>
+        <param name="content" value="(following-sibling::lb[1], $node)"/>
+    </model>
+    <modelSequence output="web">
+        <model predicate="@facs" behaviour="inline">
+            <desc>Facsimile image links will be extracted via javascript</desc>
+            <param name="src" value="@facs || '.ptif'"/>
+            <pb:template>
+                <span xmlns="" class="facs" data-facs="[[src]]"/>
+            </pb:template>
+            <outputRendition>
+                display: none;
+            </outputRendition>
+        </model>
+        <modelGrp>
+            <model predicate="ancestor::body and not(preceding::pb[ancestor::body])" behaviour="omit">
+                <desc>Hide the first pagebreak in a document (beware: independent of position!)</desc>
+            </model>
+            <model predicate="not(@n)" behaviour="alternate" cssClass="pb-empty">
+                <desc>Show tooltip on pagebreaks that don't contain attributes</desc>
+                <param name="default" value="'|'"/>
+                <param name="alternate" value="ec:label('pb')"/>
+            </model>
+            <model predicate="@n and matches(@n, '[vr]$')" behaviour="alternate" cssClass="pb-foliation">
+                <desc>Show pagebreak with a label, if pb contains a @n attribute and its value contains a number+string combination</desc>
+                <param name="default" value="'[fol. ' || @n || ']'"/>
+                <param name="alternate" value="ec:label('pb')"/>
+            </model>
+            <model predicate="@n" behaviour="alternate" cssClass="pb-pagination">
+                <desc>Show pagebreak with a label, if pb contains a @n attribute and its value only contains a number</desc>
+                <param name="default" value="('[', ec:label('page-abbr', false()), ' ', @n, ']')"/>
+                <param name="alternate" value="ec:label('pb')"/>
+            </model>
+        </modelGrp>
+    </modelSequence>
+</elementSpec>

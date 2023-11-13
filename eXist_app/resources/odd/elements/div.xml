@@ -1,0 +1,45 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="div" mode="change">
+    <model output="latex" predicate="request:get-parameter('archives', ()) and head[@type='title']" behaviour="block">
+        <param name="title" value="head/text()"/>
+        <param name="archive" value="div"/>
+        <pb:template>
+            \subsubsection{[[title]]}
+
+            \begin{hangparas}{4.5mm}{1}
+            [[archive]]
+            \end{hangparas}
+        </pb:template>
+    </model>
+    <model output="latex" predicate="request:get-parameter('archives', ()) and head[@type='subtitle']" behaviour="block">
+        <param name="archiveName" value="head/text()"/>
+        <param name="items" value="div"/>
+        <pb:template>
+            [[archiveName]]
+            \begin{itemize}
+            [[items]]
+            \end{itemize}
+            \vspace{1.5mm}
+        </pb:template>
+    </model>
+    <model output="latex" predicate="request:get-parameter('archives', ()) and listBibl" behaviour="block">
+        <param name="itemType" value="listBibl/head/text()"/>
+        <param name="ident" value="string-join(listBibl/bibl/idno, ec:semicolon())"/>
+        <param name="note" value="if (listBibl/note) then ('\footnote{' || listBibl/note || '}') else ()"/>
+        <pb:template>
+            \item [[itemType]]: [[ident]][[note]]
+        </pb:template>
+    </model>
+    <model predicate="ancestor::TEI[@type = 'lit'] and head[@type = 'archivelocation'] and listBibl" behaviour="biblList"/>
+    <model predicate="parent::back and @n" behaviour="listItem">
+        <desc>output as list item if in commentary</desc>
+    </model>
+    <model predicate="ancestor::TEI[@type] and @xml:lang" behaviour="section">
+        <desc>Rendering for multilingual introductions</desc>
+        <param name="content" value="                                 let $session-lang := $ec:language                                 let $lang := if (not(./ancestor::div[@type = 'section'][div[@xml:lang = $session-lang]])) then 'de' else $session-lang                                 return                                 if (@xml:lang = $lang) then                                 .                                 else if (./ancestor::div[@type = 'section'][div[@xml:lang = $lang]]) then                                 ()                                 else .                                 "/>
+        <outputRendition>
+            text-align: justify;
+        </outputRendition>
+    </model>
+    <model predicate="parent::body or parent::front or parent::back" behaviour="section"/>
+    <model behaviour="block"/>
+</elementSpec>

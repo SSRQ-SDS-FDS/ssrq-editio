@@ -1,0 +1,143 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="head" mode="change">
+    <model output="latex" predicate="request:get-parameter('introduction', ()) and @type='title' and @n" behaviour="block">
+        <pb:template>\section{[[content]]}</pb:template>
+    </model>
+    <model output="latex" predicate="request:get-parameter('introduction', ()) and @type='subtitle' and matches(@n, '^\d+\.\d+$')" behaviour="block">
+        <pb:template>\subsection{[[content]]}</pb:template>
+    </model>
+    <model output="latex" predicate="request:get-parameter('introduction', ()) and @type='subtitle' and matches(@n, '^\d+\.\d+\.\d+$')" behaviour="block">
+        <pb:template>\subsubsection{[[content]]}</pb:template>
+    </model>
+    <model output="latex" predicate="request:get-parameter('introduction', ()) and @type='subtitle' and matches(@n, '^\d+\.\d+\.\d+\.\d+$')" behaviour="block">
+        <pb:template>\subsubsubsection{[[content]]}</pb:template>
+    </model>
+    <model output="latex" predicate="request:get-parameter('introduction', ()) and @type='title'" behaviour="block">
+        <pb:template>\section*{[[content]]}</pb:template>
+    </model>
+    <model output="latex" predicate="following-sibling::head and parent::msDesc" behaviour="inline">
+        <param name="content" value="ec-latex:render-multilingual-head(parent::msDesc)"/>
+    </model>
+    <model output="latex" predicate="parent::msDesc" behaviour="inline"/>
+    <model output="latex" predicate="@resp and @n" behaviour="block">
+        <param name="n" value="@n"/>
+        <pb:template>
+            \vspace{1.5mm}
+            \noindent
+            [[[n]] [[content]]]
+            \vspace{1.5mm}
+        </pb:template>
+    </model>
+    <model output="latex" predicate="@resp" behaviour="block">
+        <pb:template>
+            \vspace{1.5mm}
+            \noindent
+            [[[content]]]
+            \vspace{1.5mm}
+        </pb:template>
+    </model>
+    <model output="latex" predicate="@n" behaviour="block">
+        <param name="n" value="@n"/>
+        <pb:template>
+            \vspace{1.5mm}
+            \noindent
+            [[[n]]] [[content]]
+            \vspace{1.5mm}
+        </pb:template>
+    </model>
+    <model output="latex" predicate="@type= ('title', 'subtitle', 'subsubtitle')" behaviour="block">
+        <pb:template>
+            \vspace{1.5mm}
+            \noindent
+            [[content]]
+            \vspace{1.5mm}
+        </pb:template>
+    </model>
+    <model predicate="parent::table" output="web" behaviour="thead"/>
+    <model predicate="@resp" behaviour="omit"/>
+    <model behaviour="block" predicate="ancestor::TEI[@type] and @type = 'title' and @n and @xml:lang and ec:get-head(parent::div) = .">
+        <param name="id" value="ec:unique-id(.)"/>
+        <param name="content" value="."/>
+        <param name="n" value="@n"/>
+        <pb:template xmlns="" xml:space="preserve">
+                            <h1 class="tei-head11" id="[[id]]"><span class="headingnumber">[[n]]</span> [[content]]</h1>
+                        </pb:template>
+    </model>
+    <model behaviour="omit" predicate="ancestor::TEI[@type] and @type = 'title' and @n and @xml:lang and not(ec:get-head(parent::div) = .)"/>
+
+    <model behaviour="block" predicate="ancestor::TEI[@type] and @type = 'title' and @n">
+        <param name="id" value="ec:unique-id(.)"/>
+        <param name="content" value="."/>
+        <param name="n" value="@n"/>
+        <pb:template xmlns="" xml:space="preserve">
+                            <h1 class="tei-head11" id="[[id]]"><span class="headingnumber">[[n]]</span> [[content]]</h1>
+                        </pb:template>
+    </model>
+    <model behaviour="block" predicate="ancestor::TEI[@type] and @type = 'title'">
+        <param name="id" value="ec:unique-id(.)"/>
+        <param name="content" value="."/>
+        <pb:template xmlns="" xml:space="preserve">
+                            <h1 class="tei-head11" id="[[id]]">[[content]]</h1>
+                        </pb:template>
+    </model>
+    <model predicate="@type='title'" behaviour="heading">
+        <param name="level" value="1"/>
+    </model>
+    <model behaviour="block" predicate="ancestor::TEI[@type] and @type = 'subtitle' and @n">
+        <param name="id" value="ec:unique-id(.)"/>
+        <param name="content" value="./text()"/>
+        <param name="n" value="@n"/>
+        <pb:template xmlns="" xml:space="preserve">
+                            <h2 class="tei-head14" id="[[id]]"><span class="headingnumber">[[n]]</span> [[content]]</h2>
+                        </pb:template>
+    </model>
+    <model behaviour="block" predicate="ancestor::TEI[@type] and @type = 'subtitle'">
+        <param name="id" value="ec:unique-id(.)"/>
+        <param name="content" value="./text()"/>
+        <pb:template xmlns="" xml:space="preserve">
+                            <h2 class="tei-head14" id="[[id]]">[[content]]</h2>
+                        </pb:template>
+    </model>
+    <model predicate="@type='subtitle'" behaviour="heading">
+        <param name="level" value="2"/>
+    </model>
+    <model predicate="ancestor::TEI[@type] and @type='archivelocation'" behaviour="heading" cssClass="archivelocation">
+        <param name="level" value="3"/>
+    </model>
+    <model behaviour="block" predicate="ancestor::TEI[@type]">
+        <param name="id" value="ec:unique-id(.)"/>
+        <param name="content" value="./text()"/>
+        <pb:template xmlns="" xml:space="preserve">
+                            <h2 class="tei-head14" id="[[id]]">[[content]]</h2>
+                        </pb:template>
+    </model>
+    <model predicate="@type = 'subsubtitle'" behaviour="heading">
+        <param name="level" value="3"/>
+    </model>
+    <model behaviour="heading" useSourceRendition="true">
+        <param name="level" value="2"/>
+    </model>
+    <model predicate="$parameters?header='short'" behaviour="heading">
+        <param name="content" value="string-join(.//text() except .//ref//text())"/>
+    </model>
+    <model predicate="parent::figure" behaviour="block">
+        <outputRendition>
+            font-style: italic;
+        </outputRendition>
+    </model>
+    <model predicate="parent::table" behaviour="caption">
+        <desc>head inside table should be output as caption element</desc>
+    </model>
+    <model predicate="parent::lg" behaviour="block">
+        <outputRendition>
+            font-style: italic;
+        </outputRendition>
+    </model>
+    <model predicate="parent::list" behaviour="block">
+        <outputRendition>
+            font-weight: bold;
+        </outputRendition>
+    </model>
+    <model predicate="ancestor::app" behaviour="inline">
+        <desc>Heading in app (don't format)</desc>
+    </model>
+</elementSpec>

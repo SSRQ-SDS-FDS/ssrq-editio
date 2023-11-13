@@ -1,8 +1,0 @@
-<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="addSpan" mode="change">
-    <model predicate="parent::subst" behaviour="inline"/>
-    <model behaviour="note">
-        <desc>Show footnote only</desc>
-        <param name="content" value="(ec:span((ec:label('add'), ' ', string-join((ec:translate(@place, false(), false()), ec:translate(@hand, false(), false()), ec:translate(@rend, false(), false())), ' '))), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else ())"/>
-        <param name="type" value="'text-critical-start'"/>
-    </model>
-</elementSpec>

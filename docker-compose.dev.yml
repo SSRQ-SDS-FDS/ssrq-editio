@@ -3,10 +3,11 @@ version: '3.8'
 services:
   editio:
     build:
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
       context: .
       args:
         - BUILD_DIR=build
+        - KEEP_ATOM_EDITOR=true
     ports:
       - '${EDITIO_PORT}:8080'
     healthcheck:
@@ -17,6 +18,7 @@ services:
       timeout: 450s
     environment:
       - EXIST_PASSWORD
+      - EXIST_ENV=development
     restart: unless-stopped
     volumes:
       - /opt/exist/data

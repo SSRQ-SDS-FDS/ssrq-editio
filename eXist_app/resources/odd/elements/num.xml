@@ -1,0 +1,7 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="num" mode="change">
+    <model behaviour="alternate" cssClass="text-critical">
+        <desc>Display number in tooltip and highlight text with color</desc>
+        <param name="default" value="."/>
+        <param name="alternate" value="(ec:label('amount'), ec:colon(), @value)"/>
+    </model>
+</elementSpec>

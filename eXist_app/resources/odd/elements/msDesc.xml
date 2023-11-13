@@ -1,0 +1,34 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="msDesc" mode="add">
+    <desc>Stückbeschreibung ausgeben</desc>
+    <!--<model output="latex" predicate="not(starts-with(msContents/msItem/filiation[@type='current'], 'Original'))" behaviour="block">-->
+    <model output="latex" predicate="count(msContents/msItem/filiation) &gt; 1" behaviour="block">
+        <param name="copy" value="(ec:label('copy'), ec:punct(':', false()))"/>
+        <param name="dating" value="if (exists(msContents/msItem/filiation[@type='current'][origDate])) then ec:print-date(msContents/msItem/filiation[@type='current']/origDate) else ec:print-date(history/origin/origDate)"/>
+        <param name="idno" value="(msIdentifier, ec:semicolon())"/>
+        <param name="filiation" value="(msContents/msItem/filiation[@type='current']/text(), ec:semicolon())"/>
+        <param name="author" value="if (msContents/msItem/author) then (msContents/msItem/author, ec:semicolon()) else ()"/>
+        <param name="material" value="physDesc/objectDesc/supportDesc/support/material/text()"/>
+        <param name="dimensions" value="if (physDesc/objectDesc/supportDesc/extent) then (', ', physDesc/objectDesc/supportDesc/extent/dimensions) else ()"/>
+        <param name="condition" value="if (physDesc/objectDesc/supportDesc/condition) then (', ' || physDesc/objectDesc/supportDesc/condition/text()) else ()"/>
+        <param name="seal" value="if (physDesc/sealDesc/seal/node()) then (ec:semicolon(), physDesc/sealDesc) else ()"/>
+        <pb:template>
+            \manudesc{\textbf{[[copy]]} ([[dating]]) [[idno]][[filiation]][[author]][[material]][[dimensions]][[condition]][[seal]].}
+        </pb:template>
+    </model>
+    <model output="latex" behaviour="block">
+        <param name="original" value="(ec:label('original'), ec:punct(':', false()))"/>
+        <param name="idno" value="(msIdentifier, ec:semicolon())"/>
+        <param name="filiation" value="if (msContents/msItem/filiation[@type='current']='Original' or msContents/msItem/filiation[@type='current']='') then () else (msContents/msItem/filiation[@type='current']/text(), ec:semicolon())"/>
+        <param name="material" value="physDesc/objectDesc/supportDesc/support/material/text()"/>
+        <param name="author" value="if (msContents/msItem/author) then (msContents/msItem/author, ec:semicolon()) else ()"/>
+        <param name="dimensions" value="if (physDesc/objectDesc/supportDesc/extent) then (', ', physDesc/objectDesc/supportDesc/extent/dimensions) else ()"/>
+        <param name="condition" value="if (physDesc/objectDesc/supportDesc/condition) then (', ' || physDesc/objectDesc/supportDesc/condition/text()) else ()"/>
+        <param name="seal" value="if (physDesc/sealDesc/seal/node()) then (ec:semicolon(), physDesc/sealDesc) else ()"/>
+        <pb:template>
+            \manudesc{\textbf{[[original]]} [[idno]][[filiation]][[author]][[material]][[dimensions]][[condition]][[seal]].}
+        </pb:template>
+    </model>
+    <model behaviour="list">
+        <param name="content" value="(msIdentifier,history/origin/origDate,msContents/msItem/filiation[@type='current'], physDesc/objectDesc/supportDesc/condition, physDesc/objectDesc/supportDesc, physDesc, msContents/msItem/textLang, msContents/msItem/author[@role=&quot;scribe&quot;], additional)"/>
+    </model>
+</elementSpec>

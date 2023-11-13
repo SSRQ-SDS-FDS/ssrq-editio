@@ -1,7 +1,0 @@
-<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://exist-db.org/xquery/i18n" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="damageSpan" mode="change">
-    <model predicate="@agent" behaviour="note">
-        <param name="type" value="'text-critical-start'"/>
-        <param name="content" value="(ec:label('damage'), ' ', ec:label('through', false()), ' ', ec:translate(@agent, false(), false()))"/>
-    </model>
-    <model behaviour="omit"/>
-</elementSpec>

@@ -1,0 +1,18 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="titleStmt" mode="change">
+    <model output="latex" behaviour="meta">
+        <param name="content" value="."/>
+    </model>
+    <model output="fo" behaviour="heading"/>
+    <modelSequence output="web" predicate="$parameters?header='short'">
+        <model behaviour="block">
+            <param name="content" value="title[1]"/>
+        </model>
+        <model behaviour="block">
+            <param name="content" value="subsequence(title, 2)"/>
+        </model>
+        <model behaviour="block">
+            <param name="content" value="author"/>
+        </model>
+    </modelSequence>
+    <model output="web" behaviour="block"/>
+</elementSpec>

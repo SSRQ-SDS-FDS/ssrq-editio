@@ -1,0 +1,62 @@
+<collection xmlns="http://exist-db.org/collection-config/1.0">
+    <index xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        <lucene>
+            <!-- Lucene fulltext-index, entries sorted by XML-hierachy -->
+            <!-- Not used – can be considered as deprecated
+            <text qname="tei:TEI" index="no">
+                <field name="kanton" expression="if (not(@type=('volinfo','introduction','biblio')) and .//tei:text/tei:body/*) then replace(tei:teiHeader//tei:seriesStmt/tei:idno, '^[^_]+_([^_]+).*$', '$1') else 'XXX'"/>
+                <field name="idno" expression=".[not(@type)]/tei:teiHeader//tei:seriesStmt/tei:idno"/>
+                <field name="title" expression="if (not(@type=('volinfo','introduction','biblio'))) then tei:teiHeader//tei:msDesc/tei:head else 'XXX'"/>
+            </text>
+            -->
+            <text match="//tei:fileDesc/tei:titleStmt/tei:title"/>
+            <text match="//tei:msDesc/tei:head"/>
+            <text match="//tei:msDesc/tei:msIdentifier/tei:idno"/>
+            <text match="//tei:msDesc/tei:msContents/tei:summary">
+                <ignore qname="tei:orig"/>
+            </text>
+            <text match="//tei:msDesc/tei:msContents/tei:summary//tei:orig"/>
+            <text match="//tei:msDesc//tei:listBibl"/>
+            <text match="//tei:teiHeader//tei:seal"/>
+            <text match="//tei:teiHeader//tei:supportDesc/tei:condition"/>
+            <text match="//tei:sourceDesc/tei:biblFull/tei:titleStmt/tei:title"/>
+            <text qname="tei:body">
+                <ignore qname="tei:note"/>
+            </text>
+            <!-- The following lines seem to be redundant, but they are not;
+                 we want to query the elements indepent from each other –
+                 so we need seperate indices
+            -->
+            <text match="//tei:body//tei:note">
+                <ignore qname="tei:orig"/>
+            </text>
+            <text match="//tei:body//tei:note//tei:orig"/>
+            <text qname="tei:back">
+                <ignore qname="tei:note"/>
+                <ignore qname="tei:orig"/>
+            </text>
+            <text match="//tei:back//tei:orig"/>
+            <text match="//tei:back//tei:note">
+                <ignore qname="tei:orig"/>
+            </text>
+        </lucene>
+        <range>
+            <create qname="tei:idno" type="xs:string"/>
+            <create qname="@ident" type="xs:string"/>
+            <create qname="@key" type="xs:string"/>
+            <create qname="@ref" type="xs:string"/>
+            <create qname="@scribe" type="xs:string"/>
+            <create qname="@type" type="xs:string"/>
+            <create qname="@when" type="xs:date"/>
+            <create qname="@xml:lang" type="xs:string"/>
+            <create qname="tei:dataSpec">
+                <field name="dataSpec-ident" match="@ident" type="xs:string"/>
+                <field name="data-Spec-valItem-ident" match="tei:valItem/@ident" type="xs:string"/>
+                <field name="data-Spec-valItem-desc-lang" match="tei:valItem/tei:desc/@xml:lang" type="xs:string"/>
+            </create>
+            <create qname="tei:date">
+                <field name="date-type" match="@type" type="xs:string"/>
+            </create>
+        </range>
+    </index>
+</collection>

@@ -48,7 +48,7 @@ editio run
 
 This will start the application on port `8080` and you can access it via [http://localhost:8080](http://localhost:8080/exist/apps/ssrq/).
 
-**Note**: If you're making any changes to the XQuery code, you need to rebuild the application and restart the container. Otherwise you may use [VSCode](https://code.visualstudio.com) in combination with the [eXist-DB plugin](https://marketplace.visualstudio.com/items?itemName=eXist-db.existdb-vscode), which will automatically upload the changed files to the running container. The server-side component of the plugin is already installed in the container. You just need to create a `.existdb.json`-config with the appropriate settings to get started.
+**Note**: If you're making any changes to the XQuery code, you need to rebuild the application and restart the container. Otherwise you will have to run `editio sync` before you make any changes to the code. This is a drop-in replacement for the `sync`-command of the [eXist-DB plugin for VSCode](https://code.visualstudio.com) and will upload all changed files to the running container. The `sync`-command does not depend on VSCode and can be used with any editor.
 
 #### Running the tests
 

@@ -1,0 +1,51 @@
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" ident="p" mode="change">
+    <model output="latex" predicate="descendant::back[1]" behaviour="block">
+        <pb:template>
+            \noindent
+            [[content]]
+        </pb:template>
+    </model>
+    <model output="latex" predicate="preceding-sibling::*[1][self::head]" behaviour="block">
+        <pb:template>
+            \noindent
+            [[content]]
+        </pb:template>
+    </model>
+    <model output="latex" behaviour="block">
+        <pb:template>[[content]]</pb:template>
+    </model>
+    <model predicate="ancestor::TEI[@type] and @xml:lang" behaviour="paragraph" useSourceRendition="true">
+        <param name="content" value="let $session-lang := $ec:language
+                                     let $lang := if (not(./parent::div[p[@xml:lang = $session-lang]])) then 'de' else $session-lang
+                                     return
+                                        if (@xml:lang = $lang) then
+                                            .
+                                        else if (./parent::div[p[@xml:lang = $lang]]) then
+                                            ()
+                                        else .
+                                    "/>
+        <outputRendition>
+            text-align: justify;
+        </outputRendition>
+    </model>
+    <model predicate="ancestor::summary and @xml:lang" behaviour="paragraph" useSourceRendition="true">
+        <param name="content" value="let $session-lang := $ec:language
+                                     let $lang := if (not(./ancestor::summary[p[@xml:lang = $session-lang]])) then 'de' else $session-lang
+                                     return
+                                        if (@xml:lang = $lang) then
+                                            .
+                                        else if (./ancestor::summary[p[@xml:lang = $lang]]) then
+                                            ()
+                                        else .
+                                    "/>
+        <outputRendition>
+            text-align: justify;
+        </outputRendition>
+    </model>
+    <model predicate="ancestor::back or ancestor::summary" behaviour="paragraph" useSourceRendition="true">
+        <outputRendition>
+            text-align: justify;
+        </outputRendition>
+    </model>
+    <model behaviour="block"/>
+</elementSpec>
