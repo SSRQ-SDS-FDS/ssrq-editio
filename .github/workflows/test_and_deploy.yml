@@ -1,0 +1,65 @@
+name: Test ssrq-editio workflow
+
+on:
+  pull_request:
+    branches: ['dev']
+  push:
+    branches: ['dev']
+  workflow_dispatch:
+
+jobs:
+  test-editio:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.TEI_VOLUMES_PAT }}
+          submodules: 'recursive'
+      - name: Setup SSH and Python with Poetry
+        uses: ./.github/actions/setup
+      - name: Build editio-app
+        shell: bash
+        run: poetry run editio build --enable-upload dev
+      - name: Start the editio-app
+        shell: bash
+        run: poetry run editio run
+      - name: Execute tests
+        run: poetry run pytest
+
+  deploy_to_staging:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.TEI_VOLUMES_PAT }}
+          submodules: 'recursive'
+      - name: Set up SSH key and known hosts
+        shell: bash
+        run: |
+          env
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_DEPLOY_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p 22 -t ed25519 ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+      - name: Setup Python with Poetry
+        uses: ./.github/actions/setup
+      - name: Build editio-app
+        shell: bash
+        run: poetry run editio build --use-cache prod
+      - name: Prepare deployment to staging and deploy
+        shell: bash
+        run: |
+          echo -e "EXIST_PASSWORD=${{ secrets.EXIST_PASSWORD }}\nVIRTUAL_HOST=${{ secrets.STAGING_VHOST }}\nLETSENCRYPT_HOST=${{ secrets.STAGING_VHOST }}\nPROXY_NETWORK=${{ secrets.PROXY_NET }}" > .env
+          rsync -e "ssh -i $HOME/.ssh/id_ed25519 -p 22" -avz Dockerfile docker-compose.yml .env build/ ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/opt/docker-apps/editio-staging
+          ssh -i $HOME/.ssh/id_ed25519 -p 22 ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "cd /opt/docker-apps/editio-staging && \
+          rm -rf build && \
+          mkdir build && \
+          mv *.xar build/ && \
+          docker compose down -v && \
+          docker compose up -d --build --wait"
+          rm .env
