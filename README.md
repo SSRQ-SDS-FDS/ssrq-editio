@@ -56,8 +56,9 @@ To be done....
 
 ### Deployment / Running in production
 
-To be done....
+#### Staging-Server
 
+The deployment of the staging-version is automated via GitHub-Actions. See the workflow-files for more details.
 
 #### Branches
 
