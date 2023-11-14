@@ -59,7 +59,12 @@ xmldb:create-collection($target, "transform"),
 sm:chown(xs:anyURI($target || "/transform"), "ssrq"),
 sm:chgrp(xs:anyURI($target || "/transform"), "tei"),
 if (xs:boolean(doc($target || "/env.xml")//upload)) then
-    sm:chmod(xs:anyURI($target || "/modules/pub/upload.xql"), "rwsr-xr-x")
+    (
+        sm:chmod(xs:anyURI($target || "/modules/pub/upload.xql"), "rwsr-xr-x"),
+        xmldb:create-collection($config:data-root, "temp"),
+        sm:chown(xs:anyURI($config:temp-root), "ssrq"),
+        sm:chgrp(xs:anyURI($config:temp-root), "tei")
+    )
 else
     (),
 ssrq-cache:destroy-dynamic-cache-if-exists($config:dynamic-cache-name),

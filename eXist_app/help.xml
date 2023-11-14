@@ -37,7 +37,7 @@
                <head rendition="#heading">Erweiterte Suche nach Textgattung, Facetten, Felder</head>
                <p>Personen:</p>
                <list>
-                  <item>Nachnamen ohne Namelink</item
+                  <item>Nachnamen ohne Namelink</item>
                   <item>Nachnamen und Vornamen. Namen durch Leerzeichen trennen (z.B.: Schmid Thomas)</item>
                   <item>Personen ohne Nachnamen. NN Leerzeichen Vorname (z.B.: NN Ulrich)</item>
                </list>
