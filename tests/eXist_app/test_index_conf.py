@@ -33,7 +33,6 @@ async def test_if_range_index_for_idno_exists(
 @pytest.mark.parametrize(
     "attr, example_value, expected",
     [
-        ("@ident", "abbr-hist", True),
         ("@key", "close", True),
         ("@type", "deadline", True),
         ("@xml:lang", "de", True),

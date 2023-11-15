@@ -349,23 +349,32 @@ function ssrq-helper:render-idno-as-popup($node as node(), $model as map(*), $id
     let $header := $model?xml//tei:teiHeader/tei:fileDesc
     let $stmtTitle := $header/tei:seriesStmt/tei:title/text()
     let $fileDescTitle := $header/tei:titleStmt/tei:title
-    let $idno := try { ec:print-id($model?idno) } catch * { $model?idno }
+    let $idno_infos := ssrq-helper:get-idno-infos($model?idno)
     return
         <span class="alternate">
-            <span class="id">{$idno} <i class="glyphicon glyphicon-info-sign"/></span>
+            <span class="id" data-idno="{$idno_infos[2]}">{$idno_infos[1]} <i class="glyphicon glyphicon-info-sign"/></span>
             <span class="altcontent" xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" popover-class="increase-popover-width">
                     <p>{$stmtTitle}, {$pm-config:web-transform($fileDescTitle, map { "root": $fileDescTitle, "view": "infopopup"}, $config:odd)}, <i18n:text key="by">von</i18n:text> {ssrq-helper:pers-names($header//tei:editor)}</p>
                     <p><i18n:text key="zitation">Zitation:</i18n:text>
                     { if ($idno-link => empty() or xs:boolean($idno-link)) then
-                        <a href="{ec:create-p-link-from-id($model?idno/@xml:id)}">{$idno}</a>
+                        <a href="{ec:create-p-link-from-id($idno_infos[2])}">{$idno_infos[1]}</a>
                       else
-                        $idno
+                        $idno_infos[1]
                     }
                     </p>
                     <p><i18n:text key="lizenz">Lizenz:</i18n:text> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de">CC BY-NC-SA</a></p>
             </span>
         </span>
 };
+
+declare function ssrq-helper:get-idno-infos($idno as element()) as xs:string+ {
+     typeswitch($idno)
+            case element(doc) return
+                (ec:print-id($idno), $idno/@xml:id)
+            default return
+                ($idno/string(), $idno/string())
+};
+
 
 declare
 function ssrq-helper:cantonslist-container($node as node(), $model as map(*)) {

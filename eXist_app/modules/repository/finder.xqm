@@ -2,6 +2,7 @@ xquery version "3.1";
 
 module namespace find="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder";
 
+import module namespace ft="http://exist-db.org/xquery/lucene" at "java:org.exist.xquery.modules.lucene.LuceneModule";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
@@ -42,7 +43,30 @@ declare function find:paratextual-documents() as element(tei:TEI)+ {
 : @return the TEI document as element(tei:TEI)
 :)
 declare function find:article-by-idno($idno as xs:string) as element(tei:TEI)? {
-    collection($config:data-root)/tei:TEI[not(@type)][.//tei:seriesStmt/tei:idno[. = $idno]]
+    find:article-by-idno($idno, $config:data-root)
+};
+
+(:~
+: A function to find a specific TEI document by its tei:idno.
+:
+: @param $idno the tei:idno of the document to find as xs:string
+: @param $collection-path the path to the collection to search in as xs:string
+: @return the TEI document as element(tei:TEI)
+:)
+declare function find:article-by-idno($idno as xs:string, $collection-path) as element(tei:TEI)? {
+    collection($collection-path)/tei:TEI[not(@type)][.//tei:seriesStmt/tei:idno[. = $idno]]
+};
+
+
+(:~
+: A function to find articles by the endings of their idno.
+:
+:
+: @param $idno the ending of the idno of the document to find as xs:string
+: @return the TEI document as element(tei:TEI)
+:)
+declare function find:article-by-idno-ending($idno as xs:string) as element(tei:TEI)? {
+    (collection($config:data-root)/tei:TEI[not(@type)][.//tei:seriesStmt/tei:idno[ends-with(., $idno)]])[1]
 };
 
 (:~

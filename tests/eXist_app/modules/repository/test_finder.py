@@ -44,8 +44,34 @@ async def test_find_by_idno_against_editio_data(
         modules=[xquery_modules["finder"]],
         query_body=f"""let $doc := find:article-by-idno("{idno}")
         return
-            count($doc) = {expected}""",  # noqa
+            count($doc)""",  # noqa
     )
+    response = await execute_xquery(xquery)
+
+    assert_xquery_result(response, expected)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "idno_fragment, full_idno",
+    [
+        ("SG-III_4-1-1", "SSRQ-SG-III_4-1-1"),
+        ("I_2_8-11.0-1", "SSRQ-FR-I_2_8-11.0-1"),
+        ("NE-3-6-1", "SDS-NE-3-6-1"),
+        ("NE-4-1.A.1-1", "SDS-NE-4-1.A.1-1"),
+        ("Foo-bar", None),
+    ],
+)
+async def test_find_article_by_idno_ending(
+    execute_xquery: xquery_tester, idno_fragment: str, full_idno: str | None
+):
+    xquery = build_query(
+        modules=[xquery_modules["finder"]],
+        query_body=f"""let $doc := find:article-by-idno-ending("{idno_fragment}")
+        return
+            {'$doc//tei:seriesStmt/tei:idno/string() = ' + f"'{full_idno}'" if full_idno is not None else 'empty($doc)'}""",  # noqa
+    )
+
     response = await execute_xquery(xquery)
 
     assert_xquery_result(response, True)

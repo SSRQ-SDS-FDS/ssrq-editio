@@ -14,7 +14,7 @@ from tests.eXist_app.conftest import (
     [
         ("app-root", "/db/apps/ssrq"),
         ("data-root", "/db/apps/ssrq/editio-data"),
-        ("temp-root", "/db/apps/ssrq/tmp-data"),
+        ("temp-root", "/db/apps/ssrq/temp"),
         ("odd-root", "/db/apps/ssrq/resources/odd"),
     ],
 )

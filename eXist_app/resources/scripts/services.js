@@ -33,8 +33,8 @@ $(document).ready(function () {
     .replace(/^\//, '')
     .replace(/\.html$/, '')
     .replace(/\/+/g, '-');
-  docId = docId.startsWith('temp-') ? docId.replace('temp-', '') : docId;
-  const apiUrl = `${root}/api/facets?doc=${docId}${
+  const idno = document.querySelector('[data-idno]').dataset.idno;
+  const apiUrl = `${root}/api/facets?doc=${idno}${
     context.searchParams.has('lang') &&
     ['de', 'en', 'fr', 'it'].some(
       (lang) => lang === context.searchParams.get('lang')

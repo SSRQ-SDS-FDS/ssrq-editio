@@ -167,7 +167,7 @@ declare variable $config:app-root as xs:string := analyze-string(system:get-modu
 
 declare variable $config:data-root := utils:path-concat-safe(($config:app-root, "editio-data"));
 
-declare variable $config:temp-root := utils:path-concat-safe(($config:data-root, "temp"));
+declare variable $config:temp-root := utils:path-concat-safe(($config:app-root, "temp"));
 
 declare variable $config:env := doc($config:app-root || '/env.xml')/settings;
 
