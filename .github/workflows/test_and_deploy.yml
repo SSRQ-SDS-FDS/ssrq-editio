@@ -51,15 +51,16 @@ jobs:
       - name: Build editio-app
         shell: bash
         run: poetry run editio build --use-cache prod
-      - name: Prepare deployment to staging and deploy
+      - name: Prepare deployment to staging, deploy and reset proxy-cache
         shell: bash
         run: |
           echo -e "EXIST_PASSWORD=${{ secrets.EXIST_PASSWORD }}\nVIRTUAL_HOST=${{ secrets.STAGING_VHOST }}\nLETSENCRYPT_HOST=${{ secrets.STAGING_VHOST }}\nPROXY_NETWORK=${{ secrets.PROXY_NET }}" > .env
           rsync -e "ssh -i $HOME/.ssh/id_ed25519 -p 22" -avz Dockerfile docker-compose.yml .env build/ ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/opt/docker-apps/editio-staging
-          ssh -i $HOME/.ssh/id_ed25519 -p 22 ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "cd /opt/docker-apps/editio-staging && \
+          ssh -t -i $HOME/.ssh/id_ed25519 -p 22 ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "cd /opt/docker-apps/editio-staging && \
           rm -rf build && \
           mkdir build && \
           mv *.xar build/ && \
           docker compose down -v && \
-          docker compose up -d --build --wait"
+          docker compose up -d --build --wait && \
+          docker exec -it \$(docker ps --filter 'name=front-proxy' --format '{{.ID}}') sh -c 'rm -rf /var/cache/nginx/ssrq_proxy_cache && mkdir /var/cache/nginx/ssrq_proxy_cache && chown nginx /var/cache/nginx/ssrq_proxy_cache'"
           rm .env
