@@ -56,6 +56,7 @@ def build(
                 "update",
                 "--init",
                 "--recursive",
+                "--remote",
             ],
             capture_output=True,
             check=True,
