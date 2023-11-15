@@ -4,22 +4,19 @@ module namespace index="http://ssrq-sds-fds.ch/exist/apps/ssrq/index";
 
 import module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/helper" at "ssrq-helper.xqm";
 import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "ssrq.xqm";
-import module namespace i18n = 'http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module' at "../i18n/i18n.xqm";
+import module namespace i18n = 'http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module' at "./i18n/i18n.xqm";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace session="http://exist-db.org/xquery/session";
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "ext-common.xqm";
-import module namespace ssrq-lang="http://ssrq-sds-fds.ch/exist/apps/ssrq/lang" at "ssrq-lang.xqm";
+import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
-declare function index:get-index-entries($id as xs:string) as element()* {
-    let $xml := collection($config:data-root)//tei:TEI[.//tei:seriesStmt/tei:idno[normalize-space(text()) = $id]]
-    return
-        i18n:process(
-                        <aside>{index:list-places($xml), index:list-persons($xml), index:list-organizations($xml), index:list-keys($xml), index:list-lemmata($xml)}</aside>,
+declare function index:get-index-entries($doc as element(tei:TEI)) as element()* {
+    i18n:process(
+                        <aside>{index:list-places($doc), index:list-persons($doc), index:list-organizations($doc), index:list-keys($doc), index:list-lemmata($doc)}</aside>,
                         $config:lang-settings?lang,
-                        utils:path-concat(($config:app-root, 'resources/i18n')),
                         $config:i18n-default-lang
                     )
 };

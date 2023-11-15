@@ -16,6 +16,7 @@ import module namespace index="http://ssrq-sds-fds.ch/exist/apps/ssrq/index" at 
 import module namespace request="http://exist-db.org/xquery/request";
 import module namespace response="http://exist-db.org/xquery/response";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
+import module namespace find="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder" at "../repository/finder.xqm";
 
 declare namespace api = "http://ssrq-sds-fds.ch/exist/apps/ssrq/api";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
@@ -32,7 +33,8 @@ return
     (: Load all index-entries for a single document and return the result as html :)
     case 'facets'
         return
-            let $resp := request:get-parameter("doc", "") => index:get-index-entries()
+            let $idno := request:get-parameter("doc", "")
+            let $resp := (find:article-by-idno($idno), find:article-by-idno($idno, $config:temp-root))[1]  => index:get-index-entries()
             return
                 $resp
     case 'id-search'
