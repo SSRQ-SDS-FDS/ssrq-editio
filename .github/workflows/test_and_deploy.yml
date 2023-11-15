@@ -62,5 +62,5 @@ jobs:
           mv *.xar build/ && \
           docker compose down -v && \
           docker compose up -d --build --wait && \
-          docker exec -it \$(docker ps --filter 'name=front-proxy' --format '{{.ID}}') sh -c 'rm -rf /var/cache/nginx/ssrq_proxy_cache && mkdir /var/cache/nginx/ssrq_proxy_cache && chown nginx /var/cache/nginx/ssrq_proxy_cache'"
+          docker exec -t \$(docker ps --filter 'name=front-proxy' --format '{{.ID}}') sh -c 'rm -rf /var/cache/nginx/ssrq_proxy_cache && mkdir /var/cache/nginx/ssrq_proxy_cache && chown nginx /var/cache/nginx/ssrq_proxy_cache'"
           rm .env
