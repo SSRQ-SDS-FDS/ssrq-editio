@@ -221,7 +221,7 @@ function ssrq-helper:count-docs($volume as element(volume)) as xs:integer {
 
 
 (: ~
-: Templating function to load documents from ssrq-data by their tei:idno
+: Templating function to load documents from the data-dir by their tei:idno
 : given as parameters of the url
 :
 : @author: Bastian Politycki
@@ -284,7 +284,7 @@ function ssrq-helper:get-temp($node as node(), $model as map(*), $file as xs:str
 };
 
 (: ~
-: Templating function to load pdf documents from ssrq-data by their tei:idno
+: Templating function to load pdf documents from the data-dir by their tei:idno
 : given as parameters of the url
 :
 : @author: Bastian Politycki
@@ -295,7 +295,7 @@ function ssrq-helper:get-temp($node as node(), $model as map(*), $file as xs:str
 declare
 function ssrq-helper:load-pdf-by-idno($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $doc as xs:string?)  {
     let $filename-suffix := string-join(('', $kanton, $volume, $doc), '-') || '.pdf'
-    let $collection := utils:path-concat-safe(('/db/apps/ssrq-data/data', $kanton, ($kanton || '_' || $volume), 'pdf'))
+    let $collection := utils:path-concat-safe(($config:data-root, $kanton, ($kanton || '_' || $volume), 'pdf'))
     let $result := xmldb:get-child-resources($collection)[ends-with(., $filename-suffix)]
     return
         if (count($result) = 1) then

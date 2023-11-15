@@ -4,7 +4,6 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "../c
 
 import module namespace pmu="http://www.tei-c.org/tei-simple/xquery/util";
 import module namespace odd="http://www.tei-c.org/tei-simple/odd2odd";
-import module namespace config-data="http://ssrq-sds-fds.ch/exist/apps/ssrq-data/config" at "/db/apps/ssrq-data/modules/config.xqm";
 import module namespace cache="http://exist-db.org/xquery/cache";
 import module namespace ssrq-pm="http://ssrq-sds-fds.ch/exist/apps/ssrq/pm" at "../ssrq-pm.xqm";
 
@@ -44,7 +43,7 @@ declare function local:get-line($src, $line as xs:int) {
 
 (ssrq-pm:compile-odd-to-odd($config:odd-root,  $config:odd-source,  $config:odd-diplomatic),
 (: clear cache :)
-let $clear := cache:clear($config-data:CACHE)
+let $clear := cache:clear($config:dynamic-cache-name)
 let $result :=
     for $source in ($config:odd-diplomatic, $config:odd-normalized)
         for $module in ("web", "latex")
