@@ -17,7 +17,7 @@ declare variable $articles-list:ZH-order-helper as xs:string+ := ('NF_I_1_3', 'N
 : @return element(docs) - A list of all articles grouped by kanton and volume.
 :)
 declare function articles-list:by-kanton-and-volume() as element(docs) {
-    articles-list:by-kanton-and-volume(find:regular-articles#0)
+    articles-list:by-kanton-and-volume((find:regular-articles#0, find:paratextual-documents#0))
 };
 
 (:~
