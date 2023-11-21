@@ -58,3 +58,17 @@ async def test_every_doc_belongs_to_volume(
     response = await execute_xquery(xquery)
 
     assert_xquery_result(response, expected_result=True)
+
+
+@pytest.mark.asyncio
+async def test_list_articles_with_default_loader_includes_paratexts(
+    execute_xquery: xquery_tester,
+):
+    """Test the grouping of docs by volume. Every doc should belong to a volume."""
+    xquery = build_query(
+        modules=[xquery_modules["articles-list"]],
+        query_body="""count(articles-list:by-kanton-and-volume()//doc[special]) > 0""",
+    )
+    response = await execute_xquery(xquery)
+
+    assert_xquery_result(response, expected_result=True)
