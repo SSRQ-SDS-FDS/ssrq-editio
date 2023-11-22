@@ -1,0 +1,107 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "SSRQ · SDS · FDS: Editio Views",
+    "description": "This is the API documentation for views of the Editio application."
+  },
+  "tags": [
+    {
+      "name": "views",
+      "description": "HTML-views generated (mostly by the templating engine)"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "The Home route of editio",
+        "tags": ["views"],
+        "operationId": "views:home-handler",
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "query",
+            "description": "The selected language",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["de", "en", "fr", "it"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The home route of editio",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/about/api.html": {
+      "get": {
+        "summary": "The API documentation",
+        "tags": ["views"],
+        "operationId": "views:api-handler",
+        "x-error-handler": "views:error-handler",
+        "responses": {
+          "200": {
+            "description": "The API documentation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requested view not found",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/about/api.json": {
+      "get": {
+        "summary": "The API documentation as JSON",
+        "tags": ["views"],
+        "operationId": "views:api-handler",
+        "x-error-handler": "views:error-handler",
+        "responses": {
+          "200": {
+            "description": "The API documentation as JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

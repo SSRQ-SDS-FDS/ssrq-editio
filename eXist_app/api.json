@@ -1,0 +1,61 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "SSRQ · SDS · FDS: Editio API",
+    "description": "This is the API documentation for the editio application."
+  },
+  "tags": [
+    {
+      "name": "occurrences",
+      "description": "Endpoints to retrieve information about occurrences of entities in the corpus"
+    }
+  ],
+  "paths": {
+    "/api/occurrences": {
+      "get": {
+        "summary": "Returns a list of entity-occurrences mentioned in the articles, variants included.",
+        "tags": ["occurrences"],
+        "operationId": "occurrences-list:all-handler",
+        "responses": {
+          "200": {
+            "description": "Lists all occurrences, which are mentioned in the SSRQ corpus",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "keywords": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "lemmata": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "persons": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "places": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
