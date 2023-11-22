@@ -10,6 +10,7 @@ ADD --chown=wegajetty https://github.com/eeditiones/tei-publisher-lib/releases/d
 ADD --chown=wegajetty https://github.com/eXist-db/shared-resources/releases/download/v0.9.1/shared-resources-0.9.1.xar ${EXIST_HOME}/autodeploy/
 ADD --chown=wegajetty https://github.com/eXist-db/templating/releases/download/v${TEMPLATING_VERSION}/templating-${TEMPLATING_VERSION}.xar ${EXIST_HOME}/autodeploy/
 ADD --chown=wegajetty https://github.com/eXist-db/atom-editor-support/releases/download/v1.1.0/atom-editor-1.1.0.xar ${EXIST_HOME}/autodeploy/
+ADD --chown=wegajetty https://github.com/eeditiones/roaster/releases/download/v1.8.1/roaster-1.8.1.xar ${EXIST_HOME}/autodeploy/
 
 # We only need the atom-editor-module in development mode
 RUN if [ "${KEEP_ATOM_EDITOR}" != "true" ]; then rm -f ${EXIST_HOME}/autodeploy/atom-editor-1.1.0.xar; fi
