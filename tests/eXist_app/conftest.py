@@ -5,6 +5,7 @@ from cli import config
 import httpx
 from collections.abc import Callable
 import pytest_asyncio
+from cli.config import DOCKER_DEV_SETTINGS
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 
@@ -188,7 +189,7 @@ def pytest_sessionstart(session):
 
 
 @pytest.fixture(scope="session")
-def exist_execute_url() -> str:
+def exist_url() -> str:
     return f"http://localhost:{config.DOCKER_DEV_SETTINGS.dev.port}/exist/apps/atom-editor/execute"
 
 
@@ -199,19 +200,19 @@ async def async_http_client():
 
 
 @pytest_asyncio.fixture
-async def execute_xquery(async_http_client, exist_execute_url: str) -> xquery_tester:
+async def execute_xquery(async_http_client: httpx.AsyncClient, exist_url: str) -> xquery_tester:
     async def _execute(query: str) -> httpx.Response:
-        headers = {"Content-Type": "application/xml"}
-        params = {
-            "base": "xmldb:exist://__new__2",
-            "qu": query.replace("\n", " "),  # Inlining the query
-            "output": "adaptive",
-        }
         return await async_http_client.post(
-            exist_execute_url,
-            headers=headers,
-            params=params,
+            exist_url,
+            auth=httpx.BasicAuth(DOCKER_DEV_SETTINGS.dev.user, DOCKER_DEV_SETTINGS.dev.password),
+            headers={"Content-Type": "application/xml"},
+            params={
+                "base": "xmldb:exist://__new__2",
+                "qu": query.replace("\n", " "),  # Inlining the query
+                "output": "adaptive",
+            },
             timeout=httpx.Timeout(10, connect=10),
+            follow_redirects=True,
         )
 
     return _execute
