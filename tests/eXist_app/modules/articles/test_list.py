@@ -11,7 +11,7 @@ EXPECTED_KANTONS = 5
 EXPECTED_NE_VOLUMES = 3
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 async def test_number_of_kantons_from_list_by_kanton_and_volume(
     execute_xquery: xquery_tester,
 ):
@@ -26,7 +26,7 @@ async def test_number_of_kantons_from_list_by_kanton_and_volume(
     assert_xquery_result(response, expected_result=EXPECTED_KANTONS)
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 async def test_number_of_volumes_per_kanton(
     execute_xquery: xquery_tester,
 ):
@@ -41,7 +41,7 @@ async def test_number_of_volumes_per_kanton(
     assert_xquery_result(response, expected_result=EXPECTED_NE_VOLUMES)
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 async def test_every_doc_belongs_to_volume(
     execute_xquery: xquery_tester,
 ):
@@ -60,7 +60,7 @@ async def test_every_doc_belongs_to_volume(
     assert_xquery_result(response, expected_result=True)
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 async def test_list_articles_with_default_loader_includes_paratexts(
     execute_xquery: xquery_tester,
 ):

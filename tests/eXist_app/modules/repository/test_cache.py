@@ -1,28 +1,30 @@
 import pytest
-import pytest_asyncio
+from pytest_asyncio_cooperative import Lock
 
 from tests.eXist_app.conftest import (
+    assert_xquery_result,
     build_query,
     xquery_modules,
     xquery_tester,
-    assert_xquery_result,
 )
-from cli import config
+
+cache_test_lock = Lock()
 
 
-@pytest_asyncio.fixture
+@pytest.fixture
 async def teardown_dummy_collection(execute_xquery: xquery_tester):
-    yield
-    # remove dummy collection after test
-    await execute_xquery(
-        build_query(
-            modules=[xquery_modules["ssrq-cache"]],
-            query_body=f"""xmldb:remove("/db/apps/dummy")""",  # noqa
+    async with cache_test_lock():
+        yield
+        # remove dummy collection after test
+        await execute_xquery(
+            build_query(
+                modules=[xquery_modules["ssrq-cache"]],
+                query_body=f"""xmldb:remove("/db/apps/dummy")""",  # noqa
+            )
         )
-    )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 async def test_cache_can_create_static_dir(
     execute_xquery: xquery_tester, teardown_dummy_collection
 ):
@@ -35,7 +37,7 @@ async def test_cache_can_create_static_dir(
     assert_xquery_result(response, True)
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 async def test_cache_can_store_and_load_from_static_cache(
     execute_xquery: xquery_tester, teardown_dummy_collection
 ):
@@ -57,21 +59,21 @@ async def test_cache_can_store_and_load_from_static_cache(
     assert_xquery_result(response, '<hello xml:id="bar">baz</hello>')
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 async def test_dynamic_cache_creation_and_deletion(execute_xquery: xquery_tester):
     """The cache should be created and deletion method will return true
     if it is and delete it afterwards. We're testing two methods here."""
     xquery = build_query(
         modules=[xquery_modules["ssrq-cache"]],
-        query_body=f"""(ssrq-cache:create-dynamic-cache("foo", 3, 3),
-        ssrq-cache:destroy-dynamic-cache-if-exists("foo"))[last()]""",  # noqa
+        query_body=f"""(ssrq-cache:create-dynamic-cache("foo_baz", 3, 3),
+        ssrq-cache:destroy-dynamic-cache-if-exists("foo_baz"))[last()]""",  # noqa
     )
     response = await execute_xquery(xquery)
 
     assert_xquery_result(response, True)
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 async def test_cache_key_creation(execute_xquery: xquery_tester):
     xquery = build_query(
         modules=[xquery_modules["ssrq-cache"]],
@@ -82,7 +84,7 @@ async def test_cache_key_creation(execute_xquery: xquery_tester):
     assert_xquery_result(response, True)
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 async def test_store_and_get_from_dynamic_cache(execute_xquery: xquery_tester):
     xquery = build_query(
         modules=[xquery_modules["ssrq-cache"]],

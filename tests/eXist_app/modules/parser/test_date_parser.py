@@ -8,7 +8,7 @@ from tests.eXist_app.conftest import (
 )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 @pytest.mark.parametrize(
     "date, expected",
     [("2023-03-01", "2023"), ("1087-09-01", "1087"), ("1983", "1983")],

@@ -8,7 +8,7 @@ from tests.eXist_app.conftest import (
 )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 @pytest.mark.parametrize(
     "name, expected",
     [
