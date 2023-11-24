@@ -4,7 +4,6 @@ import pytest
 from cli import config
 import httpx
 from collections.abc import Callable
-import pytest_asyncio
 from cli.config import DOCKER_DEV_SETTINGS
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
@@ -39,6 +38,16 @@ xquery_modules: dict[str, tuple[str, str, str]] = {
         "idno-parser",
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/parser/idno",
         "/db/apps/ssrq/modules/parser/idno.xqm",
+    ),
+    "occurrences-find": (
+        "occurrences-find",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/occurrences/find",
+        "/db/apps/ssrq/modules/occurrences/find.xqm",
+    ),
+    "occurrences-list": (
+        "occurrences-list",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/occurrences/list",
+        "/db/apps/ssrq/modules/occurrences/list.xqm",
     ),
     "ssrq-cache": (
         "ssrq-cache",
@@ -193,14 +202,14 @@ def exist_url() -> str:
     return f"http://localhost:{config.DOCKER_DEV_SETTINGS.dev.port}/exist/apps/atom-editor/execute"
 
 
-@pytest_asyncio.fixture
+@pytest.fixture
 async def async_http_client():
     async with httpx.AsyncClient() as client:
         yield client
 
 
-@pytest_asyncio.fixture
-async def execute_xquery(async_http_client: httpx.AsyncClient, exist_url: str) -> xquery_tester:
+@pytest.fixture
+def execute_xquery(async_http_client: httpx.AsyncClient, exist_url: str) -> xquery_tester:
     async def _execute(query: str) -> httpx.Response:
         return await async_http_client.post(
             exist_url,

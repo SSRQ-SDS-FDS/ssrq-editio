@@ -8,7 +8,7 @@ from tests.eXist_app.conftest import (
 )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 async def test_find_articles(execute_xquery: xquery_tester):
     xquery = build_query(
         modules=[xquery_modules["finder"]],
@@ -20,7 +20,7 @@ async def test_find_articles(execute_xquery: xquery_tester):
     assert_xquery_result(response, True)
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 async def test_find_paratextual_documents(execute_xquery: xquery_tester):
     xquery = build_query(
         modules=[xquery_modules["finder"]],
@@ -32,7 +32,7 @@ async def test_find_paratextual_documents(execute_xquery: xquery_tester):
     assert_xquery_result(response, True)
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 @pytest.mark.parametrize(
     "idno, expected",
     [("SSRQ-SG-III_4-1-1", 1), ("Foo-bar", 0)],
@@ -51,7 +51,7 @@ async def test_find_by_idno_against_editio_data(
     assert_xquery_result(response, expected)
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 @pytest.mark.parametrize(
     "idno_fragment, full_idno",
     [
@@ -77,7 +77,7 @@ async def test_find_article_by_idno_ending(
     assert_xquery_result(response, True)
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 @pytest.mark.parametrize(
     "lang, expected",
     [("de", True), ("en", True), ("fr", True), ("it", True), ("foo", False)],

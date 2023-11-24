@@ -9,7 +9,7 @@ from tests.eXist_app.conftest import (
 )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 async def test_simple_idno_parsing(execute_xquery: xquery_tester):
     """Test the parsing of idnos."""
     xquery = build_query(
@@ -27,7 +27,7 @@ async def test_simple_idno_parsing(execute_xquery: xquery_tester):
     )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 async def test_idno_parsing_with_case(execute_xquery: xquery_tester):
     """Test the parsing of idnos."""
     xquery = build_query(
@@ -46,7 +46,7 @@ async def test_idno_parsing_with_case(execute_xquery: xquery_tester):
     )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 async def test_idno_parsing_with_case_and_opening(execute_xquery: xquery_tester):
     """Test the parsing of idnos."""
     xquery = build_query(

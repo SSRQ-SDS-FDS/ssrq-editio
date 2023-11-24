@@ -8,7 +8,7 @@ from tests.eXist_app.conftest import (
 )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 @pytest.mark.parametrize(
     "idno, expected",
     [("SSRQ-SG-III_4-1-1", True), ("BAC 011.0030", True), ("QZYT", False)],
@@ -27,7 +27,7 @@ async def test_if_range_index_for_idno_exists(
     assert_xquery_result(response, expected)
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio_cooperative
 @pytest.mark.parametrize(
     "attr, example_value, expected",
     [
