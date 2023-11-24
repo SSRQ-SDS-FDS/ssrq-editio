@@ -24,8 +24,6 @@ async def test_if_range_index_for_idno_exists(
     )
     response = await execute_xquery(xquery)
 
-    print(response.text)
-
     assert_xquery_result(response, expected)
 
 
@@ -48,7 +46,5 @@ async def test_if_range_index_attr_exists(
         => exists()""",  # noqa
     )
     response = await execute_xquery(xquery)
-
-    print(response.text)
 
     assert_xquery_result(response, expected)
