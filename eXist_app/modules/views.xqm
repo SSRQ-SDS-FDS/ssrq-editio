@@ -3,6 +3,7 @@ xquery version "3.1";
 module namespace views="http://ssrq-sds-fds.ch/exist/apps/ssrq/views";
 
 import module namespace errors = "http://e-editiones.org/roaster/errors";
+import module namespace router="http://e-editiones.org/roaster/router";
 import module namespace templates = "http://exist-db.org/xquery/html-templating";
 
 
@@ -14,6 +15,7 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "ssrq.xqm";
 import module namespace browse="http://www.tei-c.org/tei-simple/templates" at "lib/browse.xqm";
 import module namespace error="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/error" at "templates/error.xqm";
+import module namespace volumes="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/volumes" at "templates/volumes.xqm";
 import module namespace i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/templates" at "i18n/i18n-templates.xqm";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xqm";
 import module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/search" at "ssrq-search.xqm";
@@ -23,10 +25,13 @@ import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at 
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 
 declare variable $views:routes := map {
-    'api-docs' : 'api.html',
+    'api' : 'api.html',
     'api-json' : 'api.json',
     'error' : 'error-page.html',
-    'home' : 'index.html'
+    'home' : 'index.html',
+    'kanton-volumes': 'volumes.html',
+    'partners': 'partners.html',
+    'volume-docs': 'docs-table.html'
 };
 
 declare variable $views:config := map {
@@ -66,13 +71,27 @@ declare function views:get-template-config($request as map(*)) {
         }))
 };
 
-declare function views:api-handler($request as map(*)) as item() {
-    if ($request?path => ends-with($views:routes?api-docs)) then
-        views:render-view($request, $views:routes?api-docs)
-    else if ($request?path => ends-with($views:routes?api-json)) then
-        views:serve-api-definition()
-    else
-        error($errors:NOT_FOUND, 'Could not load: ' || $request?path)
+(: ~
+: This handler serves all content routes under /about
+:
+: @param $request The request map
+: @return The rendered page
+: @throws 404 if the page does not exist
+:)
+declare function views:about-handler($request as map(*)) as node() {
+    let $page := map:get($views:routes, $request?parameters?page)
+    return
+        if ($page) then
+            views:render-view($request, $page)
+        else
+            error($errors:NOT_FOUND, 'Could not load: ' || $request?path)
+};
+
+declare function views:serve-api-definition($request as map(*)) as map(*) {
+    let $api-definitions := json-doc(utils:path-concat-safe(($config:app-root, $views:routes?api-json)))
+    return
+        $api-definitions
+        => map:put('servers', [map {'description': 'Server context of the API', 'url': $config:base-url}])
 };
 
 declare function views:error-handler($error) {
@@ -86,21 +105,14 @@ declare function views:home-handler($request as map(*)) as node() {
     views:render-view($request, $views:routes?home)
 };
 
-
-declare %private function views:serve-api-docs() as node() {
-    let $route-template-path := utils:path-concat-safe(($config:app-root, 'routes', $views:routes?api-docs))
-    return
-     if (doc-available($route-template-path)) then
-            doc($route-template-path)
-    else error((), 'not found help me')
+declare function views:volumes-per-kanton-handler($request as map(*)) as item() {
+    if (not(ends-with($request?path, '/')))
+    then
+        router:response (301, "text/plain", "redirecting", map { "Location": utils:path-concat-safe(($config:base-url, $request?path, "/")) })
+    else
+        views:render-view($request, $views:routes?kanton-volumes)
 };
 
-declare %private function views:serve-api-definition() as map(*) {
-    let $api-definitions := json-doc(utils:path-concat-safe(($config:app-root, $views:routes?api-json)))
-    return
-        $api-definitions
-        => map:put('servers', [map {'description': 'Server context of the API', 'url': $config:base-url}])
-};
 
 declare %private function views:render-view($request as map(*), $route-name as xs:string) as node() {
     let $route-template-path := utils:path-concat-safe(($config:app-root, 'routes', $route-name))

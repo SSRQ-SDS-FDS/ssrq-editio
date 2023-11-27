@@ -43,15 +43,36 @@
         }
       }
     },
-    "/about/api.html": {
+    "/about/{page}": {
       "get": {
-        "summary": "The API documentation",
+        "summary": "Content pages of the about section; e.g. /about/partners",
         "tags": ["views"],
-        "operationId": "views:api-handler",
+        "operationId": "views:about-handler",
         "x-error-handler": "views:error-handler",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^([a-z]*)$"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "description": "The selected language",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["de", "en", "fr", "it"]
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "The API documentation",
+            "description": "The requestes content page of the about section",
             "content": {
               "text/html": {
                 "schema": {
@@ -77,8 +98,7 @@
       "get": {
         "summary": "The API documentation as JSON",
         "tags": ["views"],
-        "operationId": "views:api-handler",
-        "x-error-handler": "views:error-handler",
+        "operationId": "views:serve-api-definition",
         "responses": {
           "200": {
             "description": "The API documentation as JSON",
@@ -92,6 +112,67 @@
           },
           "404": {
             "description": "Resource not found",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{kanton}": {
+      "get": {
+        "summary": "List of volumes per Kanton",
+        "tags": ["views"],
+        "operationId": "views:volumes-per-kanton-handler",
+        "x-error-handler": "views:error-handler",
+        "parameters": [
+          {
+            "name": "kanton",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^/([A-Z]{2})/?$"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "description": "The selected language",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["de", "en", "fr", "it"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The list of volumes per Kanton",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "301": {
+            "description": "Redirect to the canonical URL, if the route is not ending with a slash",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requested view not found",
             "content": {
               "text/html": {
                 "schema": {

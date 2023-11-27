@@ -13,6 +13,7 @@ import module namespace occurrences-list="http://ssrq-sds-fds.ch/exist/apps/ssrq
 import module namespace views="http://ssrq-sds-fds.ch/exist/apps/ssrq/views" at "views.xqm";
 
 declare variable $ssrq-router:definitions := ("views.json", "api.json");
+declare variable $ssrq-router:params-to-rewrite := ('kanton', 'volume');
 
 (:~
  : This function "knows" all modules and their functions
@@ -23,5 +24,38 @@ declare function ssrq-router:lookup ($name as xs:string) {
     function-lookup(xs:QName($name), 1)
 };
 
+(:~
+ : This function rewrites the parameters set in $params-to-rewrite.
+ : The ending slash is removed from the parameter value.
+ :
+ : @param $request as map(*) The request with the parameters to be rewritten.
+ : @param $parameters-to-rewrite as xs:string+ The names of the parameters to be rewritten.
+ : @return map(*) The request with the rewritten parameters.
+ :)
+declare function ssrq-router:rewrite-params($request as map(*), $parameters-to-rewrite as xs:string+) as map(*) {
+    let $parameters := $request?parameters
+    return
+        if (empty($parameters)) then
+            $request
+        else
+            let $parameter-names := map:keys($parameters)
+            let $rewritten-parameters := map:merge(
+                for $param in $parameters-to-rewrite
+                return
+                    if ($param = $parameter-names) then
+                        map{$param: replace($parameters($param), "^(.*)/$", "$1")}
+                    else ()
+            )
+            return
+                map:put($request, 'parameters', map:merge(($parameters, $rewritten-parameters)))
+};
 
-roaster:route($ssrq-router:definitions, ssrq-router:lookup#1, ())
+declare function ssrq-router:params-cache-middleware ($request as map(*), $response as map(*)) as map(*)+ {
+    ssrq-router:rewrite-params($request, $ssrq-router:params-to-rewrite),
+    $response
+};
+
+declare variable $ssrq-router:middleware := (
+    ssrq-router:params-cache-middleware#2
+);
+roaster:route($ssrq-router:definitions, ssrq-router:lookup#1, $ssrq-router:middleware)
