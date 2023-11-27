@@ -25,6 +25,7 @@ import module namespace i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/templa
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xqm";
 import module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/search" at "ssrq-search.xqm";
 import module namespace search="http://www.tei-c.org/tei-simple/search" at "lib/search.xqm";
+import module namespace ssrq-cache="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache" at "./repository/ssrq-cache.xqm";
 import module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/helper" at "ssrq-helper.xqm";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 
@@ -106,7 +107,7 @@ declare function views:error-handler($error) {
 
 
 declare function views:home-handler($request as map(*)) as node() {
-    views:render-view($request, $views:routes?home)
+    views:handle-view-with-caching($request, $views:routes?home)
 };
 
 declare function views:volumes-per-kanton-handler($request as map(*)) as item() {
@@ -114,9 +115,8 @@ declare function views:volumes-per-kanton-handler($request as map(*)) as item() 
     then
         router:response (301, "text/plain", "redirecting", map { "Location": utils:path-concat-safe(($config:base-url, $request?path, "/")) })
     else
-        views:render-view($request, $views:routes?kanton-volumes)
+        views:handle-view-with-caching($request, $views:routes?kanton-volumes)
 };
-
 
 declare %private function views:render-view($request as map(*), $route-name as xs:string) as node() {
     let $route-template-path := utils:path-concat-safe(($config:app-root, 'routes', $route-name))
@@ -125,4 +125,21 @@ declare %private function views:render-view($request as map(*), $route-name as x
             templates:apply(doc($route-template-path), $views:lookup, (), views:get-template-config($request))
         else
             error($errors:NOT_FOUND, 'Could not load template: ' || $route-name)
+};
+
+declare %private function views:handle-view-with-caching($request as map(*), $route-name as xs:string) {
+    if ($request?use-cache) then
+        let $cached-content := ssrq-cache:load-from-dynamic-cache($config:dynamic-cache-name, $request?cache-key)
+        return
+            if ($cached-content) then
+                $cached-content
+            else
+                let $rendered-view := views:render-view($request, $route-name)
+                return
+                    (
+                        ssrq-cache:store-in-dynamic-cache($config:dynamic-cache-name, $request?cache-key, $rendered-view),
+                        $rendered-view
+                    )[last()]
+    else
+        views:render-view($request, $route-name)
 };

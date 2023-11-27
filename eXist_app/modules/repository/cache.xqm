@@ -2,6 +2,8 @@ xquery version "3.1";
 
 module namespace ssrq-cache="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache";
 
+import module namespace util="http://exist-db.org/xquery/util";
+
 import module namespace cache="http://exist-db.org/xquery/cache" at "java:org.exist.xquery.modules.cache.CacheModule";
 import module namespace request="http://exist-db.org/xquery/request" at "java:org.exist.xquery.functions.request.RequestModule";
 import module namespace sm="http://exist-db.org/xquery/securitymanager" at "java:org.exist.xquery.functions.securitymanager.SecurityManagerModule";
@@ -142,7 +144,6 @@ declare function ssrq-cache:load-from-dynamic-cache($cache-name as xs:string, $k
     )[1]
 };
 
-
 (:~
 : Create a unique key based on the current request.
 :
@@ -150,12 +151,40 @@ declare function ssrq-cache:load-from-dynamic-cache($cache-name as xs:string, $k
 : @return The unique key as xs:string
 :)
 declare function ssrq-cache:create-unique-cache-key($prefix as xs:string?) as xs:string {
+    ssrq-cache:create-unique-cache-key($prefix, (), ())
+};
+
+
+(:~
+: Create a unique key based on the current request.
+:
+: @param $prefix The prefix for the key as xs:string?
+: @param $context The context for the key as xs:string?
+: @return The unique key as xs:string
+:)
+declare function ssrq-cache:create-unique-cache-key($prefix as xs:string?, $context as xs:string?, $params as xs:string*) as xs:string {
     (
-        $prefix, ssrq-cache:get-context-name-from-request(),
-        ssrq-cache:get-parameter-names-from-request(),
+        $prefix, utils:coalesce($context, ssrq-cache:get-context-name-from-request()),
+        utils:coalesce($params, ssrq-cache:get-parameter-names-from-request()),
         $config:lang-settings?lang
     )
     => string-join('_')
+};
+
+(:~
+: Create a unique key as UUID based on the current request.
+:
+: @param $prefix The prefix for the key as xs:string?
+: @param $context The context for the key as xs:string?
+: @return The unique key as xs:string
+:)
+declare function ssrq-cache:create-unique-cache-key-as-uuid($context as xs:string, $params as xs:string*) as xs:string {
+    string-join((
+        $context,
+        $params,
+        $config:lang-settings?lang
+    ), '_')
+    => util:uuid()
 };
 
 

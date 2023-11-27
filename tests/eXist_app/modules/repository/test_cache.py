@@ -85,6 +85,29 @@ async def test_cache_key_creation(execute_xquery: xquery_tester):
 
 
 @pytest.mark.asyncio_cooperative
+async def test_cache_key_creation_with_context_and_params(execute_xquery: xquery_tester):
+    xquery = build_query(
+        modules=[xquery_modules["ssrq-cache"]],
+        query_body=f"""ssrq-cache:create-unique-cache-key("foo", '/route/bar', 'baz') => starts-with("foo_/route/bar_baz")""",  # noqa
+    )
+    response = await execute_xquery(xquery)
+
+    assert_xquery_result(response, True)
+
+
+@pytest.mark.asyncio_cooperative
+async def test_cache_key_creation_as_uuid_is_deterministic(execute_xquery: xquery_tester):
+    xquery = build_query(
+        modules=[xquery_modules["ssrq-cache"]],
+        query_body="""ssrq-cache:create-unique-cache-key-as-uuid("baz", "bar")
+        = ssrq-cache:create-unique-cache-key-as-uuid("baz", "bar")""",  # noqa
+    )
+    response = await execute_xquery(xquery)
+
+    assert_xquery_result(response, True)
+
+
+@pytest.mark.asyncio_cooperative
 async def test_store_and_get_from_dynamic_cache(execute_xquery: xquery_tester):
     xquery = build_query(
         modules=[xquery_modules["ssrq-cache"]],
