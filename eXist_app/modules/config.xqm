@@ -189,6 +189,8 @@ declare variable $config:abbr := doc(utils:path-concat-safe(($config:data-root, 
 
 declare variable $config:dynamic-cache-name := "ssrq-cache";
 
+declare variable $config:dynamic-cache-setinngs := map {'max-size': 32768, 'max-age': 86400000};
+
 declare variable $config:static-cache-name := "cache";
 
 declare variable $config:static-cache-path := utils:path-concat-safe(($config:app-root, $config:static-cache-name));

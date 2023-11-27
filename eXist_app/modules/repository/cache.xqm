@@ -112,6 +112,7 @@ declare function ssrq-cache:destroy-dynamic-cache-if-exists($cache-name as xs:st
 
 (:~
 : Store content in the dynamic cache and create a unique key, if no key is given.
+: If the cache does not exist, it will be created, using the default settings.
 :
 : @param $cache-name The name of the cache as xs:string
 : @param $prefix The prefix for the key as xs:string?
@@ -120,6 +121,7 @@ declare function ssrq-cache:destroy-dynamic-cache-if-exists($cache-name as xs:st
 :)
 declare function ssrq-cache:store-in-dynamic-cache($cache-name as xs:string, $key as xs:string?, $value as item()*) as xs:string {
     let $computed-key := if ($key) then $key else ssrq-cache:create-unique-cache-key(())
+    let $_create_cache := ssrq-cache:create-dynamic-cache-if-missing($cache-name)
     let $_ := cache:put($cache-name, $computed-key, $value)
     return
         $key
@@ -173,6 +175,19 @@ declare %private function ssrq-cache:apply-if-cache-exists($cache-name as xs:str
             apply($callback, array{$args ! .})
         else
             ()
+};
+
+(:~
+: Create a dynamic cache, if it does not exist.
+:
+: @param $cache-name The name of the cache as xs:string
+: @return status as xs:boolean (false() if the cache already exists or could not be created)
+:)
+declare %private function ssrq-cache:create-dynamic-cache-if-missing($cache-name as xs:string) as xs:boolean {
+    if ($cache-name = cache:names()) then
+        false()
+    else
+        ssrq-cache:create-dynamic-cache($cache-name, $config:dynamic-cache-setinngs?max-size, $config:dynamic-cache-setinngs?max-age)
 };
 
 declare %private function ssrq-cache:get-context-name-from-request() as xs:string {
