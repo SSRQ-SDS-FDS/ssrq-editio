@@ -8,8 +8,11 @@ import module namespace router="http://e-editiones.org/roaster/router";
 import module namespace rutil="http://e-editiones.org/roaster/util";
 import module namespace errors="http://e-editiones.org/roaster/errors";
 import module namespace auth="http://e-editiones.org/roaster/auth";
+import module namespace util="http://exist-db.org/xquery/util";
 
+import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace occurrences-list="http://ssrq-sds-fds.ch/exist/apps/ssrq/occurrences/list" at "occurrences/list.xqm";
+import module namespace ssrq-cache="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache" at "../repository/cache.xqm";
 import module namespace views="http://ssrq-sds-fds.ch/exist/apps/ssrq/views" at "views.xqm";
 
 declare variable $ssrq-router:definitions := ("views.json", "api.json");
@@ -50,8 +53,28 @@ declare function ssrq-router:rewrite-params($request as map(*), $parameters-to-r
                 map:put($request, 'parameters', map:merge(($parameters, $rewritten-parameters)))
 };
 
+(:~
+ : This function adds the cache info to the request.
+ : The cache key is created from the path and the parameters.
+ : The cache key is unique for each request.
+ :
+ : @param $request as map(*) The request.
+ : @return map(*) The request with the cache info.
+ :)
+declare function ssrq-router:add-cache-info($request as map(*)) as map(*) {
+    if (xs:boolean($config:env/cache/text())) then
+        let $parameters := $request?parameters
+        let $cache-key := ssrq-cache:create-unique-cache-key-as-uuid($request?path, (map:keys($parameters)[not(. = 'lang')] ! $parameters(.)))
+        return
+            map:merge(($request, map{'use-cache': true(), 'cache-key': $cache-key}))
+    else
+        map:put($request, 'use-cache', false())
+};
+
 declare function ssrq-router:params-cache-middleware ($request as map(*), $response as map(*)) as map(*)+ {
-    ssrq-router:rewrite-params($request, $ssrq-router:params-to-rewrite),
+    ssrq-router:add-cache-info(
+        ssrq-router:rewrite-params($request, $ssrq-router:params-to-rewrite)
+    ),
     $response
 };
 
