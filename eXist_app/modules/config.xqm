@@ -211,7 +211,9 @@ declare variable $config:module-config := doc(utils:path-concat-safe(($config:od
 
 declare variable $config:repo-descriptor := doc(utils:path-concat-safe(($config:app-root, "repo.xml")))/repo:meta;
 
-declare variable $config:i18n-catalogues := utils:path-concat-safe(($config:app-root, "resources/i18n"));
+declare variable $config:app-resources := utils:path-concat-safe(($config:app-root, "resources"));
+
+declare variable $config:i18n-catalogues := utils:path-concat-safe(($config:app-resources, "i18n"));
 
 declare variable $config:i18n-supported-languages := ("de", "fr", "en", "it");
 

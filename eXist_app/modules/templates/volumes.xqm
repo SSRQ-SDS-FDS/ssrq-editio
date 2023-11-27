@@ -13,7 +13,7 @@ declare namespace i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 (:~
-: Templating function, which will liat
+: Templating function, which will list
 : all volumes of per kanton
 :
 : @param $node node() - the current node (passed by the template engine)

@@ -7,6 +7,12 @@ import module namespace router="http://e-editiones.org/roaster/router";
 import module namespace templates = "http://exist-db.org/xquery/html-templating";
 
 
+(: ~
+: The following are the views which will be rendered by the templating.
+:)
+import module namespace kantons="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/kantons" at "templates/kantons.xqm";
+import module namespace volumes="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/volumes" at "templates/volumes.xqm";
+
 (:
  : The following modules provide functions which will be called by the
  : templating.
@@ -15,14 +21,12 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "ssrq.xqm";
 import module namespace browse="http://www.tei-c.org/tei-simple/templates" at "lib/browse.xqm";
 import module namespace error="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/error" at "templates/error.xqm";
-import module namespace volumes="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/volumes" at "templates/volumes.xqm";
 import module namespace i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/templates" at "i18n/i18n-templates.xqm";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xqm";
 import module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/search" at "ssrq-search.xqm";
 import module namespace search="http://www.tei-c.org/tei-simple/search" at "lib/search.xqm";
 import module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/helper" at "ssrq-helper.xqm";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
-import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 
 declare variable $views:routes := map {
     'api' : 'api.html',
