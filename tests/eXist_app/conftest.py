@@ -54,6 +54,11 @@ xquery_modules: dict[str, tuple[str, str, str]] = {
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache",
         "/db/apps/ssrq/modules/repository/cache.xqm",
     ),
+    "ssrq-router": (
+        "ssrq-router",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/router",
+        "/db/apps/ssrq/modules/router.xql",
+    ),
 }
 
 
@@ -202,7 +207,7 @@ def exist_url() -> str:
     return f"http://localhost:{config.DOCKER_DEV_SETTINGS.dev.port}/exist/apps/atom-editor/execute"
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 async def async_http_client():
     async with httpx.AsyncClient() as client:
         yield client
