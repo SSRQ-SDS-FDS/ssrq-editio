@@ -6,12 +6,13 @@ import module namespace errors = "http://e-editiones.org/roaster/errors";
 import module namespace router="http://e-editiones.org/roaster/router";
 import module namespace templates = "http://exist-db.org/xquery/html-templating";
 
-
 (: ~
 : The following are the views which will be rendered by the templating.
 :)
+import module namespace documents="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/documents" at "templates/documents.xqm";
 import module namespace kantons="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/kantons" at "templates/kantons.xqm";
 import module namespace volumes="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/volumes" at "templates/volumes.xqm";
+import module namespace template-utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/utils" at "templates/template-utils.xqm";
 
 (:
  : The following modules provide functions which will be called by the
@@ -36,7 +37,7 @@ declare variable $views:routes := map {
     'home' : 'index.html',
     'kanton-volumes': 'volumes.html',
     'partners': 'partners.html',
-    'volume-docs': 'docs-table.html'
+    'volume-docs': 'documents.html'
 };
 
 declare variable $views:config := map {
@@ -56,7 +57,7 @@ declare function views:get-template-config($request as map(*)) {
     map:merge((
         $views:config,
         map {
-            $templates:CONFIG_PARAM_RESOLVER : function($param) {
+            $templates:CONFIG_PARAM_RESOLVER : function($param as xs:string) {
                 let $pval := array:fold-right(
                     [
                         request:get-parameter($param, ()),
@@ -116,6 +117,14 @@ declare function views:volumes-per-kanton-handler($request as map(*)) as item() 
         router:response (301, "text/plain", "redirecting", map { "Location": utils:path-concat-safe(($config:base-url, $request?path, "/")) })
     else
         views:handle-view-with-caching($request, $views:routes?kanton-volumes)
+};
+
+declare function views:documents-per-volume-handler($request as map(*)) as item() {
+    if (not(ends-with($request?path, '/')))
+    then
+        router:response (301, "text/plain", "redirecting", map { "Location": utils:path-concat-safe(($config:base-url, $request?path, "/")) })
+    else
+        views:handle-view-with-caching($request, $views:routes?volume-docs)
 };
 
 declare %private function views:render-view($request as map(*), $route-name as xs:string) as node() {

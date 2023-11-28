@@ -70,6 +70,7 @@ declare function ssrq-helper:include-upload-template($node as node(), $model as 
         ()
 };
 
+(: DEPRECATED: template-utils:resolve-links :)
 declare
 function ssrq-helper:resolve-links($node as node(), $model as map(*)) {
     element { node-name($node) } {
@@ -78,6 +79,7 @@ function ssrq-helper:resolve-links($node as node(), $model as map(*)) {
     } => ssrq-helper:resolve-links()
 };
 
+(: DEPRECATED: template-utils:resolve-links :)
 declare function ssrq-helper:resolve-links($nodes as node()*) {
     let $proc-attribute := function ($input-value, $add-lang-param) {
         let $url :=
@@ -377,7 +379,7 @@ declare function ssrq-helper:get-idno-infos($idno as element()) as xs:string+ {
 
 declare
 function ssrq-helper:render-work($node as node(), $model as map(*), $kanton as xs:string?, $volume as xs:string?) as element(li)* {
-    for $doc in $model?page
+    for $doc in $model?current-page-documents
     let $xml := collection($config:data-root)/tei:TEI[.//tei:idno eq $doc/@xml:id/data(.)]
     return
         <li class="document ml-1">
@@ -443,6 +445,8 @@ declare function ssrq-helper:insert-lang($node as node(), $model as map(*),
         ()
 };
 
+
+(:TODO -> Build a generic pagination solution, which can also be used by the search! :)
 (:~
 : Builds an bootstrap-based-pagination bar
 :
