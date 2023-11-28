@@ -173,3 +173,17 @@ declare function utils:realpath($path as xs:string, $cwd as xs:string) as xs:str
 declare function utils:coalesce($a, $b) {
   if ($a) then $a else $b
 };
+
+(:~
+ : The coalesce-execute function evaluates the expressions $a and $b and always
+ : returns the first truthy value. Can be used to execute / evaluate functions.
+ :
+ : @param $a the first value
+ : @param $b the second value
+ : @return either $a() or $b()
+ :)
+declare function utils:coalexec($a as function(*), $b as function(*)) as item()* {
+  let $res := $a()
+  return
+    if ($res) then $res else $b()
+};
