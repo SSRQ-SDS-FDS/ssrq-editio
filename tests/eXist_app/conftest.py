@@ -29,6 +29,11 @@ xquery_modules: dict[str, tuple[str, str, str]] = {
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/parser/date",
         "/db/apps/ssrq/modules/parser/date.xqm",
     ),
+    "documents": (
+        "documents",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/documents",
+        "/db/apps/ssrq/modules/templates/documents.xqm",
+    ),
     "finder": (
         "find",
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder",
@@ -63,6 +68,16 @@ xquery_modules: dict[str, tuple[str, str, str]] = {
         "ssrq-router",
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/router",
         "/db/apps/ssrq/modules/router.xql",
+    ),
+    "template-utils": (
+        "template-utils",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/utils",
+        "/db/apps/ssrq/modules/templates/template-utils.xqm",
+    ),
+    "views": (
+        "views",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/views",
+        "/db/apps/ssrq/modules/views.xqm",
     ),
 }
 
