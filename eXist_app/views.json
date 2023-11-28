@@ -136,7 +136,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "pattern": "^/([A-Z]{2})/?$"
+              "pattern": "^([A-Z]{2})/?$"
             }
           },
           {
@@ -153,6 +153,76 @@
         "responses": {
           "200": {
             "description": "The list of volumes per Kanton",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "301": {
+            "description": "Redirect to the canonical URL, if the route is not ending with a slash",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requested view not found",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{kanton}/{volume}": {
+      "get": {
+        "summary": "List of documents per volume",
+        "tags": ["views"],
+        "operationId": "views:documents-per-volume-handler",
+        "x-error-handler": "views:error-handler",
+        "parameters": [
+          {
+            "name": "kanton",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^([A-Z]{2})/?$"
+            }
+          },
+          {
+            "name": "volume",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^([A-Za-z0-9_]+)/?$"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "description": "The selected language",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["de", "en", "fr", "it"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The list of documents per volume",
             "content": {
               "text/html": {
                 "schema": {
