@@ -76,8 +76,8 @@ def postprocess_xml_files(files: list[Path]) -> None:
 
     with fileinput.input(files=files, inplace=True, mode="r") as file:
         for line in file:
-            if not CSS_STYLESHEET_REGEX.match(line):
-                print(line, end="")
+            if len((new_line := CSS_STYLESHEET_REGEX.sub("", line)).strip()) > 0:
+                print(new_line, end="")
 
 
 def get_source_pdf_path(volume_source: Path) -> Path:
