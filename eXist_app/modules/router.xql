@@ -14,6 +14,7 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 import module namespace occurrences-list="http://ssrq-sds-fds.ch/exist/apps/ssrq/occurrences/list" at "occurrences/list.xqm";
 import module namespace ssrq-cache="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache" at "../repository/cache.xqm";
 import module namespace views="http://ssrq-sds-fds.ch/exist/apps/ssrq/views" at "views.xqm";
+import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 
 declare variable $ssrq-router:definitions := ("views.json", "api.json");
 declare variable $ssrq-router:params-to-rewrite := ('kanton', 'volume');
@@ -63,8 +64,8 @@ declare function ssrq-router:rewrite-params($request as map(*), $parameters-to-r
  :)
 declare function ssrq-router:add-cache-info($request as map(*)) as map(*) {
     if (xs:boolean($config:env/cache/text())) then
-        let $parameters := $request?parameters
-        let $cache-key := ssrq-cache:create-unique-cache-key-as-uuid($request?path, (map:keys($parameters)[not(. = 'lang')] ! $parameters(.)))
+        let $parameters := if (empty($request?parameters)) then () else (map:keys($request?parameters)[not(. = 'lang')] ! $request?parameters(.))
+        let $cache-key := ssrq-cache:create-unique-cache-key-as-uuid($request?path, $parameters)
         return
             map:merge(($request, map{'use-cache': true(), 'cache-key': $cache-key}))
     else
