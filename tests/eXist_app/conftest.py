@@ -39,6 +39,11 @@ xquery_modules: dict[str, tuple[str, str, str]] = {
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/parser/idno",
         "/db/apps/ssrq/modules/parser/idno.xqm",
     ),
+    "kantons": (
+        "kantons",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/kantons",
+        "/db/apps/ssrq/modules/templates/kantons.xqm",
+    ),
     "occurrences-find": (
         "occurrences-find",
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/occurrences/find",
