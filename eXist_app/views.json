@@ -332,6 +332,75 @@
           }
         }
       }
+    },
+    "/{kanton}/{volume}/{paratext}.xml": {
+      "get": {
+        "summary": "The XML view of a paratext",
+        "tags": ["views"],
+        "operationId": "views:paratext-handler",
+        "x-error-handler": "views:error-handler",
+        "parameters": [
+          {
+            "name": "kanton",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^([A-Z]{2})/?$"
+            }
+          },
+          {
+            "name": "volume",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^([A-Za-z0-9_]+)/?$"
+            }
+          },
+          {
+            "name": "paratext",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^(intro|bailiffs|lit).xml$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The XML view of a paratext",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requested view not found",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error encountered",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

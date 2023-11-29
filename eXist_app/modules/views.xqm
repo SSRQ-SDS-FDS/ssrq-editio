@@ -9,6 +9,8 @@ import module namespace templates = "http://exist-db.org/xquery/html-templating"
 (: ~
 : The following are the views which will be rendered by the templating.
 :)
+import module namespace articles-idno="http://ssrq-sds-fds.ch/exist/apps/ssrq/articles/idno" at "articles/idno.xqm";
+import module namespace find="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder" at "repository/finder.xqm";
 import module namespace documents="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/documents" at "templates/documents.xqm";
 import module namespace kantons="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/kantons" at "templates/kantons.xqm";
 import module namespace volumes="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/volumes" at "templates/volumes.xqm";
@@ -121,7 +123,10 @@ declare function views:volumes-per-kanton-handler($request as map(*)) as item() 
 };
 
 declare function views:paratext-handler($request as map(*)) as node() {
-    views:handle-view-with-caching($request, $views:routes?paratexts)
+    if (ends-with($request?path, '.html')) then
+        views:handle-view-with-caching($request, $views:routes?paratexts)
+    else
+        views:serve-xml($request?parameters)
 };
 
 declare function views:documents-per-volume-handler($request as map(*)) as item() {
@@ -156,4 +161,24 @@ declare %private function views:handle-view-with-caching($request as map(*), $ro
                     )[last()]
     else
         views:render-view($request, $route-name)
+};
+
+(:~
+: Handling function, which serves the XML for a given document.
+:
+: @param $params The request parameters
+: @return The XML for the document
+: @throws 404 if the document does not exist
+:)
+declare %private function views:serve-xml($params as map(*)) as node() {
+    let $id := articles-idno:construct((), $params?kanton, $params?volume, $params?doc, $params?paratext)
+    let $xml := if ($id?type = $config:paratext-types) then
+                    find:paratextual-document-by-idno($id?idno)
+                else
+                    find:article-by-idno($id?idno)
+    return
+        if (exists($xml)) then
+            $xml
+        else
+            error($errors:NOT_FOUND, 'Could not xml for: ' || $id)
 };
