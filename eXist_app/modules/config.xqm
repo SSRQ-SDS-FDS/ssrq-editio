@@ -221,6 +221,8 @@ declare variable $config:i18n-supported-languages := ("de", "fr", "en", "it");
 
 declare variable $config:i18n-default-lang := "de";
 
+declare variable $config:paratext-types := ("intro", "bailiffs", "lit");
+
 (: FIXME: using path-concat-safe here results in a NullPointerException
  : declare variable $config:expath-descriptor := doc(utils:path-concat-safe(($config:app-root, "expath-pkg.xml")))/expath:package;
  :)

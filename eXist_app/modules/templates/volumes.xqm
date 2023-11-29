@@ -62,7 +62,7 @@ declare %private function volumes:render-volume-info($volume as element(volume),
                 <a class="part" href="{ec:create-app-link(($kanton, $volume/@xml:id => substring(4), ''))}">
                     <i18n:text key="articles">Stücke</i18n:text>
                 </a>,
-                volumes:create-links-for-content-types($volume, $kanton)
+                volumes:create-anchor-for-content-types($volume, $kanton)
             }
     </div>
 };
@@ -86,20 +86,39 @@ declare %private function volumes:render-volume-title($volume as element(volume)
 : @param $kanton xs:string - the kanton
 : @return element(a)+ - the links
 :)
-declare %private function volumes:create-links-for-content-types($volume as element(volume), $kanton as xs:string) as element(a)+ {
-    let $content-types := (
-                ("bailiffs", "intro", "lit") ! .[$volume/doc[./special = .]],
-                "pdf"[xs:boolean($volume/@pdf)]
-    )
-    for $content-type in $content-types
-    let $link :=
-        switch ($content-type)
-        case 'pdf' return
-            ec:create-app-link(($kanton, $volume/doc[1]/volume || '.pdf'))
-        default return
-            ec:create-app-link(($kanton, $volume/doc[1]/volume, $content-type || '.html'))
+declare %private function volumes:create-anchor-for-content-types($volume as element(volume), $kanton as xs:string) as element(a)+ {
+    for $content-type in (volumes:find-paratexts($volume), "pdf"[xs:boolean($volume/@pdf)])
     return
-        <a class="part" href="{$link}">
+        <a class="part" href="{volumes:link-to-paratext($content-type, $kanton, $volume)}">
             <i18n:text key="{$content-type}">{$content-type}</i18n:text>
         </a>
+};
+
+(:~
+: Find the paratexts-types for a given volume
+:
+: @param $volume element(volume) - the volume (part of the static docs list)
+: @return xs:string* - the paratexts-types
+:)
+declare %private function volumes:find-paratexts($volume as element(volume)) as  xs:string* {
+    for $type in $config:paratext-types
+    return
+        $type[$volume/doc[./special = $type]]
+};
+
+(:~
+: Create a link to a editorial paratext
+: based on it's type
+:
+: @param $type xs:string - the type of the paratext
+: @param $kanton xs:string - the kanton
+: @param $volume xs:string - the volume
+: @return xs:string - the link
+:)
+declare %private function volumes:link-to-paratext($type as xs:string, $kanton as xs:string, $volume as xs:string) as xs:string {
+    switch ($type)
+        case 'pdf' return
+            ec:create-app-link(($kanton, $volume || '.pdf'))
+        default return
+            ec:create-app-link(($kanton, $volume, $type || '.html'))
 };
