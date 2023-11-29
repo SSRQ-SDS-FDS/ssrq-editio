@@ -17,7 +17,8 @@ import module namespace views="http://ssrq-sds-fds.ch/exist/apps/ssrq/views" at 
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 
 declare variable $ssrq-router:definitions := ("views.json", "api.json");
-declare variable $ssrq-router:params-to-rewrite := ('kanton', 'paratext', 'volume');
+declare variable $ssrq-router:params-to-rewrite := ('kanton', 'volume');
+declare variable $ssrq-router:id-param-name := 'id';
 
 (:~
  : This function "knows" all modules and their functions
@@ -36,22 +37,25 @@ declare function ssrq-router:lookup ($name as xs:string) {
  : @param $parameters-to-rewrite as xs:string+ The names of the parameters to be rewritten.
  : @return map(*) The request with the rewritten parameters.
  :)
-declare function ssrq-router:rewrite-params($request as map(*), $parameters-to-rewrite as xs:string+) as map(*) {
+declare function ssrq-router:rewrite-params($request as map(*), $parameters-to-rewrite as xs:string+, $special-id-param as xs:string) as map(*) {
     let $parameters := $request?parameters
     return
         if (empty($parameters)) then
             $request
         else
-            let $parameter-names := map:keys($parameters)
-            let $rewritten-parameters := map:merge(
-                for $param in $parameters-to-rewrite
-                return
-                    if ($param = $parameter-names) then
-                        map{$param: replace($parameters($param), "^(.*)[/\.(html|tex|xml)]$", "$1")}
-                    else ()
-            )
+            let $parameters-rewritten :=
+                map:for-each($parameters, function($key, $value) {
+                    if ($key = $parameters-to-rewrite) then
+                        map:entry($key, replace($value, "^(.*)/$", "$1"))
+                    else if ($key = $special-id-param) then
+                        let $new-value := replace($value, "^(.*)[\.(html|tex|xml)]$", "$1")
+                        let $new-key := if ($value = $config:paratext-types) then 'paratext' else 'doc'
+                        return
+                            map:entry($new-key, $new-value)
+                    else map:entry($key, $value)
+                }) => map:merge()
             return
-                map:put($request, 'parameters', map:merge(($parameters, $rewritten-parameters)))
+                map:put($request, 'parameters', $parameters-rewritten)
 };
 
 (:~
@@ -74,7 +78,7 @@ declare function ssrq-router:add-cache-info($request as map(*)) as map(*) {
 
 declare function ssrq-router:params-cache-middleware ($request as map(*), $response as map(*)) as map(*)+ {
     ssrq-router:add-cache-info(
-        ssrq-router:rewrite-params($request, $ssrq-router:params-to-rewrite)
+        ssrq-router:rewrite-params($request, $ssrq-router:params-to-rewrite, $ssrq-router:id-param-name)
     ),
     $response
 };
