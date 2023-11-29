@@ -284,8 +284,8 @@ declare
 function app:additional-sources($node as node(), $model as map(*)) as element(div)? {
     let $additional-sources :=
         for $header in collection($config:data-root)//tei:teiHeader
-            [matches(.//tei:seriesStmt/tei:idno[1], ($model?idno/*[not(name(.) = 'num')]/text(), '\d+') => string-join('-'))]
-            [not(.//tei:seriesStmt/tei:idno = $model?idno/@xml:id/data(.))]
+            [matches(.//tei:seriesStmt/tei:idno[1], ($model?doc/*[not(name(.) = 'num')]/text(), '\d+') => string-join('-'))]
+            [not(.//tei:seriesStmt/tei:idno = $model?doc/@xml:id/data(.))]
         order by $header//tei:seriesStmt/tei:idno[1]
         return
             $header//tei:msDesc
@@ -433,7 +433,7 @@ function app:download($node as node(), $model as map(*)) as element(li)? {
 
 declare
 function app:download-xml($node as node(), $model as map(*)) as element(a) {
-    <a href="{ssrq-helper:link-to-resource($model, '.xml')}">
+    <a href="">
         {
             $node/@*,
             templates:process($node/node(), $model)
