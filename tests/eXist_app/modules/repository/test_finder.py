@@ -92,3 +92,22 @@ async def test_find_i18n_catalogue_by_lang(
     response = await execute_xquery(xquery)
 
     assert_xquery_result(response, expected)
+
+
+@pytest.mark.asyncio_cooperative
+@pytest.mark.parametrize(
+    "idno, expected",
+    [("SSRQ-SG-III_4-lit", 1), ("Foo-bar", 0)],
+)
+async def test_find_paratext_by_idno_against_editio_data(
+    execute_xquery: xquery_tester, idno: str, expected: int
+):
+    xquery = build_query(
+        modules=[xquery_modules["finder"]],
+        query_body=f"""let $doc := find:paratextual-document-by-idno("{idno}")
+        return
+            count($doc)""",  # noqa
+    )
+    response = await execute_xquery(xquery)
+
+    assert_xquery_result(response, expected)

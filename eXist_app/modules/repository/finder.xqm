@@ -35,6 +35,26 @@ declare function find:paratextual-documents() as element(tei:TEI)+ {
     collection($config:data-root)//tei:TEI[@type][.//tei:seriesStmt/tei:idno[not(@type)]]
 };
 
+(:~
+: A function to find a specific paratextual document by its tei:idno.
+:
+: @param $idno the tei:idno of the document to find as xs:string
+: @return the TEI document as element(tei:TEI)?
+:)
+declare function find:paratextual-document-by-idno($idno as xs:string) as element(tei:TEI)? {
+    find:paratextual-document-by-idno($idno, $config:data-root)
+};
+
+(:~
+: A function to find a specific paratextual document by its tei:idno.
+:
+: @param $idno the tei:idno of the document to find as xs:string
+: @param $collection-path the path to the collection to search in as xs:string
+: @return the TEI document as element(tei:TEI)?
+:)
+declare function find:paratextual-document-by-idno($idno as xs:string, $collection-path as xs:string) as element(tei:TEI)? {
+    collection($config:data-root)//tei:TEI[@type][.//tei:seriesStmt/tei:idno[not(@type)][. = $idno]]
+};
 
 (:~
 : A function to find a specific TEI document by its tei:idno.
