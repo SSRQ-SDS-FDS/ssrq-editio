@@ -20,7 +20,8 @@ async def test_rewrite_params(
                                                    "volume": "NE_4/"}
                                             }
                       let $rewritten-request :=
-                        ssrq-router:rewrite-params($initial-request, $ssrq-router:params-to-rewrite)
+                        ssrq-router:rewrite-params($initial-request, $ssrq-router:params-to-rewrite,
+                        $ssrq-router:id-param-name)
         return
             map:keys($rewritten-request) = ("path", "parameters") and
             map:keys($rewritten-request?parameters) = ("kanton", "volume") and
@@ -29,5 +30,7 @@ async def test_rewrite_params(
         """,  # noqa,
     )
     response = await execute_xquery(xquery)
+
+    print(response.text)
 
     assert_xquery_result(response, True)
