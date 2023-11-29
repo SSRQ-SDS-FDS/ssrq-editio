@@ -30,6 +30,7 @@
     &:focus,
     &:active {
       color: lighten($color-white, 10%) !important;
+      outline: none;
     }
   }
 
@@ -72,6 +73,12 @@
         }
       }
     }
+  }
+
+  .tp-buttongrp {
+    display: flex;
+    flex: 0.75;
+    justify-content: space-evenly;
   }
 }
 

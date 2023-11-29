@@ -96,4 +96,6 @@
     <msg key="existent">esistente</msg>
     <msg key="nonexistent">non esistente</msg>
     <msg key="index">Indice</msg>
+    <msg key="zoom-in">Ingrandire il carattere</msg>
+    <msg key="zoom-out">Ridurre la dimensione dei caratteri</msg>
 </catalogue>

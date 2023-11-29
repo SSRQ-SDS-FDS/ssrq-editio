@@ -96,4 +96,6 @@
     <msg key="existent">existant</msg>
     <msg key="nonexistent">pas existant</msg>
     <msg key="index">Index</msg>
+    <msg key="zoom-in">Agrandir la police</msg>
+    <msg key="zoom-out">Réduire la taille de la police</msg>
 </catalogue>
