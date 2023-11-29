@@ -91,6 +91,13 @@ def build(
 
 
 @app.command(
+    help="""Compile the cass while developing the application.""",
+)
+def compile_sass():
+    sass_handle.compile_sass_to_css(config.BUILD_CONFIG.css.source, config.BUILD_CONFIG.css.target)
+
+
+@app.command(
     help="""Show logs from the eXist-DB docker container.""",
 )
 def logs(

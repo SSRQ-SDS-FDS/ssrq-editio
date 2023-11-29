@@ -1,12 +1,16 @@
-import os
-from pathlib import Path
 import mimetypes
-from watchfiles import awatch, Change
-from pydantic import BaseModel
+import os
 from dataclasses import dataclass
+from enum import Enum
+from pathlib import Path
+
 from httpx import AsyncClient, BasicAuth, codes
 from loguru import logger
-from enum import Enum
+from pydantic import BaseModel
+from watchfiles import Change, awatch
+
+from cli.config import BUILD_CONFIG
+from cli.sass import handle as sass_handle
 
 
 class ExistServerConfig(BaseModel):
@@ -65,6 +69,10 @@ async def _handle_change(
     async_client: AsyncClient,
 ):
     match change:
+        case _, file if file.endswith(".scss"):
+            logger.info(f"File {file} changed")
+            logger.info("Compiling SCSS to CSS...")
+            sass_handle.compile_sass_to_css(BUILD_CONFIG.css.source, BUILD_CONFIG.css.target)
         case Change.modified, _:
             logger.info(f"File {change[1]} changed")
             await store(
