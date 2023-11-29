@@ -78,7 +78,7 @@ declare function template-utils:display-pdf-download($node as node(), $model as 
     let $pdf := find:pdf-by-idno($model?idno, $model?doc)
     return
         if ($pdf?available) then
-            <a href="{$model?filename}">
+            <a href="{$pdf?filename}">
                 {
                     $node/@* except $node/@data-template,
                     templates:process($node/node(), $model)

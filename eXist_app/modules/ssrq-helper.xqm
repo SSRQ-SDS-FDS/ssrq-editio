@@ -285,33 +285,6 @@ function ssrq-helper:get-temp($node as node(), $model as map(*), $file as xs:str
 
 };
 
-(: ~
-: Templating function to load pdf documents from the data-dir by their tei:idno
-: given as parameters of the url
-:
-: @author: Bastian Politycki
-: @date: 2022.05.30
-: @return a map, which holds the actual tei xml-file and some additional config-infos
-:
-:)
-declare
-function ssrq-helper:load-pdf-by-idno($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $doc as xs:string?)  {
-    let $filename-suffix := string-join(('', $kanton, $volume, $doc), '-') || '.pdf'
-    let $collection := utils:path-concat-safe(($config:data-root, $kanton, ($kanton || '_' || $volume), 'pdf'))
-    let $result := xmldb:get-child-resources($collection)[ends-with(., $filename-suffix)]
-    return
-        if (count($result) = 1) then
-            let $path := utils:path-concat-safe(($collection, $result))
-            let $l := console:log($path)
-            return
-                if (util:binary-doc-available($path)) then
-                    (response:set-header('Content-Disposition', 'inline; filename="' || $result || '"'),
-                     response:stream-binary(util:binary-doc($path), "media-type=application/pdf"))
-                else
-                    error(xs:QName('ssrq:helper'), 'Unable to load ' || $path)
-        else
-            error(xs:QName('ssrq:helper'), 'No unique result found for ' || $filename-suffix)
-};
 
 declare
 function ssrq-helper:xml-to-tex($node as node(), $model as map(*))  {
@@ -351,7 +324,7 @@ function ssrq-helper:render-idno-as-popup($node as node(), $model as map(*), $id
     let $header := $model?xml//tei:teiHeader/tei:fileDesc
     let $stmtTitle := $header/tei:seriesStmt/tei:title/text()
     let $fileDescTitle := $header/tei:titleStmt/tei:title
-    let $idno_infos := ssrq-helper:get-idno-infos($model?idno)
+    let $idno_infos := ssrq-helper:get-idno-infos($model?doc)
     return
         <span class="alternate">
             <span class="id" data-idno="{$idno_infos[2]}">{$idno_infos[1]} <i class="glyphicon glyphicon-info-sign"/></span>

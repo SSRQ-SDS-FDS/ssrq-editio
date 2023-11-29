@@ -20,7 +20,7 @@ declare function articles-idno:construct($prefix as xs:string?,
                                          $volume as xs:string,
                                          $doc as xs:string?,
                                          $paratext as xs:string?) as map(*) {
-    if ($doc and paratext) then
+    if ($doc and $paratext) then
         error($errors:SERVER_ERROR, "Either $doc or $paratext must be specified, not both.")
     else
         let $parts-joined := string-join(($prefix, $kanton, $volume, ($doc, $paratext)[1]), "-")
@@ -33,7 +33,7 @@ declare function articles-idno:construct($prefix as xs:string?,
             map {
                 "doc": $doc-info,
                 "idno": $idno,
-                "type": ($paratext[$paratext = $config:paratext-types], "article")[1]
+                "type": if (exists($paratext) and $paratext[$paratext = $config:paratext-types]) then $paratext else "article"
             }
 };
 

@@ -5,7 +5,7 @@
   data-template-with="templates/page.html"
   data-template-at="content"
 >
-  <div data-template="ssrq-helper:load-by-idno">
+  <div data-template="template-utils:load-by-idno">
     <div
       data-template="templates:include"
       data-template-path="templates/menu.html"
@@ -15,10 +15,6 @@
       data-template-path="templates/toolbar.html"
     />
     <main id="tp-canvas">
-      <div
-        data-template="ssrq-helper:cache-store-retrieve"
-        data-template-prefix="doc"
-      >
         <section
           id="main-wrapper"
           class="${body-class}"
@@ -74,28 +70,28 @@
               />
             </div>
           </div>
-          <div class="comment tp-row" data-template="app:additional-sources">
-            <div class="tp-column">
-              <h4 class="block-title">
-                <a
-                  class="accordion-toggle collapsed"
-                  role="button"
-                  data-toggle="collapse"
-                  href="#additional"
-                  aria-expanded="false"
-                  aria-controls="additonal"
-                >
-                  <i18n:text key="addFill" />
-                </a>
-              </h4>
-              <div
-                id="additional"
-                class="collapse"
-                data-template="app:display-data"
-                data-template-mode="filiation"
-              />
+            <div class="comment tp-row" data-template="app:additional-sources">
+                <div class="tp-column">
+                <h4 class="block-title">
+                    <a
+                    class="accordion-toggle collapsed"
+                    role="button"
+                    data-toggle="collapse"
+                    href="#additional"
+                    aria-expanded="false"
+                    aria-controls="additonal"
+                    >
+                    <i18n:text key="addFill" />
+                    </a>
+                </h4>
+                <div
+                    id="additional"
+                    class="collapse"
+                    data-template="app:display-data"
+                    data-template-mode="filiation"
+                />
+                </div>
             </div>
-          </div>
           <div class="comment tp-row" data-template="app:comment">
             <div class="tp-column">
               <h4 class="block-title">
@@ -130,7 +126,6 @@
             </div>
           </section>
         </section>
-      </div>
       <div
         data-template="templates:if-model-key-equals"
         data-template-key="has-facs"

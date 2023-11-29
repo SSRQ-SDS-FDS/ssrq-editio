@@ -3,8 +3,10 @@ xquery version "3.1";
 module namespace views="http://ssrq-sds-fds.ch/exist/apps/ssrq/views";
 
 import module namespace errors = "http://e-editiones.org/roaster/errors";
+import module namespace response = "http://exist-db.org/xquery/response";
 import module namespace router="http://e-editiones.org/roaster/router";
 import module namespace templates = "http://exist-db.org/xquery/html-templating";
+import module namespace util="http://exist-db.org/xquery/util";
 
 (: ~
 : The following are the views which will be rendered by the templating.
@@ -15,6 +17,7 @@ import module namespace documents="http://ssrq-sds-fds.ch/exist/apps/ssrq/templa
 import module namespace kantons="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/kantons" at "templates/kantons.xqm";
 import module namespace volumes="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/volumes" at "templates/volumes.xqm";
 import module namespace template-utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/utils" at "templates/template-utils.xqm";
+import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 
 (:
  : The following modules provide functions which will be called by the
@@ -35,6 +38,7 @@ import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at 
 declare variable $views:routes := map {
     'api' : 'api.html',
     'api-json' : 'api.json',
+    'document' : 'document.html',
     'error' : 'error-page.html',
     'home' : 'index.html',
     'kanton-volumes': 'volumes.html',
@@ -122,19 +126,43 @@ declare function views:volumes-per-kanton-handler($request as map(*)) as item() 
         views:handle-view-with-caching($request, $views:routes?kanton-volumes)
 };
 
-declare function views:paratext-handler($request as map(*)) as node() {
-    if (ends-with($request?path, '.html')) then
-        views:handle-view-with-caching($request, $views:routes?paratexts)
-    else
-        views:serve-xml($request?parameters)
-};
-
 declare function views:documents-per-volume-handler($request as map(*)) as item() {
     if (not(ends-with($request?path, '/')))
     then
         router:response (301, "text/plain", "redirecting", map { "Location": utils:path-concat-safe(($config:base-url, $request?path, "/")) })
     else
         views:handle-view-with-caching($request, $views:routes?volume-docs)
+};
+
+declare function views:volume-pdf-handler($request as map(*)) as item() {
+    views:serve-pdf($request, false())
+};
+
+declare function views:single-handler($request as map(*)) as item()? {
+    if (map:contains($request?parameters, 'doc')) then
+        views:document-handler($request)
+    else if (map:contains($request?parameters, 'paratext')) then
+        views:paratext-handler($request)
+    else
+        error($errors:SERVER_ERROR, 'Missing doc or paratext parameter – cannot serve requested document')
+};
+
+declare %private function views:document-handler($request as map(*)) as item()? {
+    if (ends-with($request?path, '.html')) then
+        views:handle-view-with-caching($request, $views:routes?document)
+    else if (ends-with($request?path, '.pdf')) then
+        views:serve-pdf($request, true())
+    else
+        views:serve-xml($request?parameters)
+};
+
+declare %private function views:paratext-handler($request as map(*)) as node() {
+    if (ends-with($request?path, '.html')) then
+        views:handle-view-with-caching($request, $views:routes?paratexts)
+    else if (ends-with($request?path, '.xml')) then
+        views:serve-xml($request?parameters)
+    else
+        error($errors:SERVER_ERROR, 'Requested view not implemented for editorial paratexts')
 };
 
 declare %private function views:render-view($request as map(*), $route-name as xs:string) as node() {
@@ -181,4 +209,30 @@ declare %private function views:serve-xml($params as map(*)) as node() {
             $xml
         else
             error($errors:NOT_FOUND, 'Could not xml for: ' || $id)
+};
+
+(:
+: Stream a PDF file to the client.
+:
+: @param $request The request map
+: @param $use-idno Whether to use the idno to find the pdf or not
+: @return The rendered page
+:)
+declare %private function views:serve-pdf($request as map(*), $use-idno as xs:boolean)  as empty-sequence() {
+    let $params := $request?parameters
+    let $pdf :=
+        if ($use-idno) then
+            let $id := articles-idno:construct((), $params?kanton, $params?volume, $params?doc, $params?paratext)
+            return
+                find:pdf-by-idno($id?idno, $id?doc)
+        else
+            find:pdf-by-kanton-and-volume($params?kanton, $params?volume)
+    return
+        if ($pdf?available) then
+                (
+                    response:set-header('Content-Disposition', 'inline; filename="' || tokenize($pdf?real-path, '/')[last()] || '"'),
+                    response:stream-binary(util:binary-doc($pdf?real-path), "application/pdf")
+                )
+        else
+            error($errors:NOT_FOUND, 'Could not find pdf for: ' || $request?path)
 };

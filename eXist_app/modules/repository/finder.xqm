@@ -4,6 +4,7 @@ module namespace find="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder"
 
 import module namespace ft="http://exist-db.org/xquery/lucene" at "java:org.exist.xquery.modules.lucene.LuceneModule";
 import module namespace util="http://exist-db.org/xquery/util";
+import module namespace xmldb="http://exist-db.org/xquery/xmldb";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
 import module namespace articles-idno="http://ssrq-sds-fds.ch/exist/apps/ssrq/articles/idno" at "../articles/idno.xqm";
@@ -120,13 +121,50 @@ declare function find:pdf-by-idno($idno as xs:string, $doc as element(doc)) as m
             return
                 map {
                     "available": util:binary-doc-available($pdf-path),
-                    "filename": link:to-resource($doc, not($is-case-in-fr), '.pdf')
+                    "filename": link:to-resource($doc, not($is-case-in-fr), '.pdf'),
+                    "real-path": $pdf-path
                 }
         else
             map {
                 "available": false(),
-                "filename": ''
+                "filename": '',
+                "real-path": ''
             }
+};
+
+(:~
+: Find the path to pdf
+: by kanton and volume
+:
+: @param $kanton the kanton as xs:string
+: @param $volume the volume as xs:string
+: @return path information as map(*) with keys "filename", "path" and "uri"
+: @throws repository:find if no unique result is found
+:)
+declare function find:pdf-by-kanton-and-volume($kanton as xs:string, $volume as xs:string) as map(*) {
+    let $suffix := string-join(($kanton, $volume), '-') || '.pdf'
+    let $collection := utils:path-concat-safe(($config:data-root, $kanton, ($kanton || '_' || $volume), 'pdf'))
+    let $result := xmldb:get-child-resources(
+        utils:path-concat-safe(($config:data-root, $kanton, ($kanton || '_' || $volume), 'pdf'))
+        )[ends-with(., $suffix)]
+    return
+        if (count($result) = 1) then
+            let $path := utils:path-concat-safe(($collection, $result))
+            return
+                if (util:binary-doc-available($path)) then
+                     map {
+                        "available": true(),
+                        "filename": $suffix,
+                        "real-path": $path
+                    }
+                else
+                    map {
+                        "available": false(),
+                        "filename": '',
+                        "real-path": ''
+                    }
+        else
+            error(xs:QName('repository:find'), 'No unique result found for ' || $suffix)
 };
 
 (:~
