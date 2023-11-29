@@ -17,7 +17,7 @@ import module namespace views="http://ssrq-sds-fds.ch/exist/apps/ssrq/views" at 
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 
 declare variable $ssrq-router:definitions := ("views.json", "api.json");
-declare variable $ssrq-router:params-to-rewrite := ('kanton', 'volume');
+declare variable $ssrq-router:params-to-rewrite := ('kanton', 'paratext', 'volume');
 
 (:~
  : This function "knows" all modules and their functions
@@ -47,7 +47,7 @@ declare function ssrq-router:rewrite-params($request as map(*), $parameters-to-r
                 for $param in $parameters-to-rewrite
                 return
                     if ($param = $parameter-names) then
-                        map{$param: replace($parameters($param), "^(.*)/$", "$1")}
+                        map{$param: replace($parameters($param), "^(.*)[/\.(html|tex|xml)]$", "$1")}
                     else ()
             )
             return

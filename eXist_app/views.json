@@ -253,6 +253,85 @@
           }
         }
       }
+    },
+    "/{kanton}/{volume}/{paratext}.html": {
+      "get": {
+        "summary": "The HTML view of a paratext",
+        "tags": ["views"],
+        "operationId": "views:paratext-handler",
+        "x-error-handler": "views:error-handler",
+        "parameters": [
+          {
+            "name": "kanton",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^([A-Z]{2})/?$"
+            }
+          },
+          {
+            "name": "volume",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^([A-Za-z0-9_]+)/?$"
+            }
+          },
+          {
+            "name": "paratext",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^(intro|bailiffs|lit).html$"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "description": "The selected language",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["de", "en", "fr", "it"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The HTML view of a paratext",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requested view not found",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error encountered",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

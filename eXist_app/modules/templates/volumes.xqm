@@ -89,7 +89,7 @@ declare %private function volumes:render-volume-title($volume as element(volume)
 declare %private function volumes:create-anchor-for-content-types($volume as element(volume), $kanton as xs:string) as element(a)+ {
     for $content-type in (volumes:find-paratexts($volume), "pdf"[xs:boolean($volume/@pdf)])
     return
-        <a class="part" href="{volumes:link-to-paratext($content-type, $kanton, $volume)}">
+        <a class="part" href="{volumes:link-to-paratext($content-type, $kanton, volumes:get-volume-name($kanton, $volume))}">
             <i18n:text key="{$content-type}">{$content-type}</i18n:text>
         </a>
 };
@@ -104,6 +104,19 @@ declare %private function volumes:find-paratexts($volume as element(volume)) as 
     for $type in $config:paratext-types
     return
         $type[$volume/doc[./special = $type]]
+};
+
+(:~
+: Get the name of a volume
+: by it's @xml:id from the volume-element
+: with the kanton stripped
+:
+: @param $kanton xs:string - the kanton
+: @param $volume element(volume) - the volume
+: @return xs:string - the name
+:)
+declare %private function volumes:get-volume-name($kanton as xs:string, $volume as element(volume)) as xs:string {
+    substring-after($volume/@xml:id, $kanton || '-')
 };
 
 (:~

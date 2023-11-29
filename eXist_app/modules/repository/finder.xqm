@@ -3,7 +3,12 @@ xquery version "3.1";
 module namespace find="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder";
 
 import module namespace ft="http://exist-db.org/xquery/lucene" at "java:org.exist.xquery.modules.lucene.LuceneModule";
+import module namespace util="http://exist-db.org/xquery/util";
+
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
+import module namespace articles-idno="http://ssrq-sds-fds.ch/exist/apps/ssrq/articles/idno" at "../articles/idno.xqm";
+import module namespace link="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/link" at "link.xqm";
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
@@ -97,4 +102,47 @@ declare function find:article-by-idno-ending($idno as xs:string) as element(tei:
 :)
 declare function find:i18n-catalogue-by-lang($lang as xs:string) as element(catalogue)? {
     collection($config:i18n-catalogues)/catalogue[@xml:lang = $lang]
+};
+
+
+declare function find:pdf-by-idno($idno as xs:string, $doc as element(doc)) as map(*) {
+    let $xml :=  utils:coalexec(function() { find:article-by-idno($idno)},
+                                function() { find:paratextual-document-by-idno($idno) })
+    return
+        if (exists($xml)) then
+            let $path := find:path-to-doc($xml)
+            let $is-case-in-fr := articles-idno:is-case-in-fr($doc)
+            let $filename := if ($is-case-in-fr) then
+                                    replace($path?filename, '\.\d+', '')
+                                else
+                                    $path?filename
+            let $pdf-path := utils:path-concat(($path?path, 'pdf', replace($filename, '\.xml$', '.pdf')))
+            return
+                map {
+                    "available": util:binary-doc-available($pdf-path),
+                    "filename": link:to-resource($doc, not($is-case-in-fr), '.pdf')
+                }
+        else
+            map {
+                "available": false(),
+                "filename": ''
+            }
+};
+
+(:~
+: Find the path to a document,
+: based on the document-uri of the root element.
+:
+: @param $doc the document to find as element()
+: @return path information as map(*) with keys "filename", "path" and "uri"
+:)
+declare function find:path-to-doc($doc as element()) as map(*) {
+    let $uri := $doc => root() => document-uri()
+    let $uri-parts := tokenize($uri, '/')
+    return
+        map {
+            "filename": $uri-parts[last()],
+            "path": string-join($uri-parts[position() < last()], '/'),
+            "uri": $uri
+        }
 };

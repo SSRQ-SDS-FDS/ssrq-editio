@@ -36,6 +36,7 @@ declare variable $views:routes := map {
     'error' : 'error-page.html',
     'home' : 'index.html',
     'kanton-volumes': 'volumes.html',
+    'paratexts': 'paratexts.html',
     'partners': 'partners.html',
     'volume-docs': 'documents.html'
 };
@@ -117,6 +118,10 @@ declare function views:volumes-per-kanton-handler($request as map(*)) as item() 
         router:response (301, "text/plain", "redirecting", map { "Location": utils:path-concat-safe(($config:base-url, $request?path, "/")) })
     else
         views:handle-view-with-caching($request, $views:routes?kanton-volumes)
+};
+
+declare function views:paratext-handler($request as map(*)) as node() {
+    views:handle-view-with-caching($request, $views:routes?paratexts)
 };
 
 declare function views:documents-per-volume-handler($request as map(*)) as item() {
