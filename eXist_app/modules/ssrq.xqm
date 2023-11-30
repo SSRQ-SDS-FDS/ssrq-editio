@@ -153,87 +153,6 @@ function app:show-list-items($node as node(), $model as map(*)) {
         $item
 };
 
-(:~
- : Ausgabe der Stücke nach Kanton und ggf. Filter
- :)
-declare
-    %templates:default("sort", "date")
-function app:list-works($node as node(), $model as map(*), $filter as xs:string?, $kanton as xs:string?, $browse as xs:string?,
-    $sort as xs:string, $refresh as xs:string?) {
-    let $kanton := ($kanton, app:select-kanton())[1]
-    let $sessionData :=
-        if ($refresh) then
-            session:clear()
-        else
-            session:get-attribute("ssrq.works")
-    let $log := console:log("Refresh: " || $refresh || "; kanton=" || $kanton || "; count: " || count($sessionData))
-    let $filtered :=
-        if ($sessionData) then
-            $sessionData
-        else if ($filter) then
-            let $ordered :=
-                for $item in
-                    ft:search($config:data-root, $browse || ":" || $filter, ("author", "title"))/search
-                return
-                    $item
-            for $doc in $ordered
-            return
-                doc($doc/@uri)/tei:TEI[matches(tei:teiHeader//tei:seriesStmt/tei:idno, ``[^(?:SSRQ|SDS|FDS)_`{$kanton}`.*$]``)]
-                    [.//tei:text/tei:body/*]
-        else
-            (
-                collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, $kanton || "_")]
-                    [.//tei:text/tei:body/*],
-                for $prefix in ("SSRQ_", "SDS_", "FDS_")
-                return
-                    collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, $prefix || $kanton)]
-                        [.//tei:text/tei:body/*]
-            )
-            except
-            collection($config:temp-root)/tei:TEI
-    let $sorted := query:sort(app:filter-collections($filtered), $sort)
-    return (
-        session:set-attribute("ssrq.works", $sorted),
-        session:set-attribute("ssrq.browse", $browse),
-        session:set-attribute("ssrq.filter", $filter),
-        session:set-attribute("ssrq.kanton", $kanton),
-        session:set-attribute("ssrq.sort", $sort),
-        map {
-            "all" : $sorted,
-            "mode": "browse"
-        }
-    )
-};
-
-declare function app:filter-collections($docs) {
-    let $refs := collection($config:data-root)//tei:div[@type='collection']//tei:ref/string()
-    return
-        $docs except $docs[substring-before(util:document-name(.), ".xml") = $refs]
-};
-
-
-declare function app:select-kanton() {
-    let $first := fold-left(("ZH", "BE", "LU", "UR", "SZ", "OW", "NW", "GL", "ZG", "FR", "SO", "BS", "BL", "SH", "AR", "AI", "SG",
-        "GR", "AG", "TG", "TI", "VD", "VS", "NE", "GE", "JU"), (), function($zero, $kanton) {
-            if ($zero) then
-                $zero
-            else if (exists(
-                (
-                    for $prefix in ("SSRQ_", "SDS_", "FDS_")
-                    return
-                        collection($config:data-root)/tei:TEI[starts-with(tei:teiHeader//tei:seriesStmt/tei:idno, $prefix || $kanton)]
-                )
-                except
-                collection($config:temp-root)/tei:TEI
-            )) then
-                $kanton
-            else
-                $zero
-        })
-    return
-        $first
-};
-
 declare %private function app:show-if-exists($node as node(), $test as node()*, $func as function(*)) {
     if ($test and normalize-space($test[1]/string()) != "") then
         element { node-name($node) } {
@@ -338,6 +257,7 @@ function app:partners($node as node(), $model as map(*)) {
         )
 };
 
+(: TODO: Bedarf der Anpassung an das neue Schema :)
 declare
      %templates:wrap
 function app:show-credits($node as node(), $model as map(*)) {
@@ -391,12 +311,6 @@ function app:short-header($node as node(), $model as map(*)) {
 
 declare
     %templates:wrap
-function app:keyword($node as node(), $model as map(*)) {
-    $model?keyword/text()
-};
-
-declare
-    %templates:wrap
 function app:help($node as node(), $model as map(*)) {
     let $lang := $config:lang-settings?lang
     let $helpDoc := doc($config:app-root || "/help.xml")
@@ -416,56 +330,6 @@ declare
     %templates:wrap
 function app:show-help($node as node(), $model as map(*), $field as xs:string) {
     $pm-config:web-transform($model($field), (), $config:odd)
-};
-
-declare
-%templates:wrap
-function app:download($node as node(), $model as map(*)) as element(li)? {
-    if ($model => map:contains('xml') and (
-            empty($model?show-download) or $model?show-download)) then
-        <li class="dropdown">
-            {
-                 templates:process($node/node(), $model)
-            }
-        </li>
-    else ()
-};
-
-declare
-function app:download-xml($node as node(), $model as map(*)) as element(a) {
-    <a href="">
-        {
-            $node/@*,
-            templates:process($node/node(), $model)
-        }
-    </a>
-};
-
-declare
-function app:download-pdf($node as node(), $model as map(*)) as element(a)? {
-    let $uri := root($model?xml) => document-uri() => tokenize('/')
-    let $is-FR-case :=
-        let $doc-info := ssrq-cache:load-from-static-cache-by-id($config:static-cache-path, $config:static-docs-list, $uri[last()] => replace('.xml', ''))
-        return $doc-info//kanton = 'FR' and $doc-info//case
-    let $path := utils:path-concat(
-        (
-            $uri[not(. eq $uri[last()])], 'pdf',
-            let $filename := $uri[last()] => replace('.xml', '.pdf')
-            return
-                (: FR pdfs are bundled into cases and we need to extract and cut the doc-number from the filename :)
-                if ($is-FR-case) then
-                    $filename => replace('\.\d+', '')
-                else
-                    $filename
-        )
-    )
-    return
-        <a href="{ssrq-helper:link-to-resource($model, '.pdf', not($is-FR-case))}">
-            {
-                $node/@*,
-                templates:process($node/node(), $model)
-            }
-        </a>[util:binary-doc-available($path)]
 };
 
 (: ~
