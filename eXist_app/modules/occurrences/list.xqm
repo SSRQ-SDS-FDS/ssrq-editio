@@ -8,16 +8,6 @@ import module namespace occurrences-find="http://ssrq-sds-fds.ch/exist/apps/ssrq
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 (:~
-: Handler function for the API-Endpoint.
-:
-: @param $request as map(*) - The request map.
-: @return map(*) - A map of all occurences; splitted by entity-type.
-:)
-declare function occurrences-list:all-handler($request as map(*)) as map(*) {
-    occurrences-list:all()
-};
-
-(:~
 : Returns a list of all occurences in the corpus as a map.
 : Uses find:regular-articles#0 as the default loader function.
 :

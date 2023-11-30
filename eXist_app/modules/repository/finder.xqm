@@ -184,3 +184,19 @@ declare function find:path-to-doc($doc as element()) as map(*) {
             "uri": $uri
         }
 };
+
+(:~ Load a document given by an array of request-parameters
+: It assumes, the array has a length of 5
+:
+: @param $params the request-parameters as array(xs:string)
+: @return the document as map(*) – with the keys 'doc', 'idno', 'type' and 'xml'
+:)
+declare function find:load-by-request-params($params as array(xs:string)) as map(*) {
+    let $id := apply(function-lookup(xs:QName('articles-idno:construct'), 5), $params)
+    let $xml := if ($id?type = $config:paratext-types) then
+                    find:paratextual-document-by-idno($id?idno)
+                else
+                    find:article-by-idno($id?idno)
+    return
+        map:put($id, 'xml', $xml)
+};

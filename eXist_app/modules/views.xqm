@@ -21,8 +21,9 @@ import module namespace console="http://exist-db.org/xquery/console" at "java:or
 
 (:
  : The following modules provide functions which will be called by the
- : templating.
+ : templating or used in the views.
  :)
+import module namespace api="http://ssrq-sds-fds.ch/exist/apps/ssrq/api" at "api.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "ssrq.xqm";
 import module namespace browse="http://www.tei-c.org/tei-simple/templates" at "lib/browse.xqm";
@@ -33,6 +34,7 @@ import module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/search" at
 import module namespace search="http://www.tei-c.org/tei-simple/search" at "lib/search.xqm";
 import module namespace ssrq-cache="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache" at "./repository/ssrq-cache.xqm";
 import module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/helper" at "ssrq-helper.xqm";
+import module namespace tex="http://ssrq-sds-fds.ch/exist/apps/ssrq/processing/tex" at "processing/tex.xqm";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 
 declare variable $views:routes := map {
@@ -135,34 +137,40 @@ declare function views:documents-per-volume-handler($request as map(*)) as item(
 };
 
 declare function views:volume-pdf-handler($request as map(*)) as item() {
-    views:serve-pdf($request, false())
+    api:serve-pdf($request, false())
 };
 
 declare function views:single-handler($request as map(*)) as item()? {
-    if (map:contains($request?parameters, 'doc')) then
-        views:document-handler($request)
-    else if (map:contains($request?parameters, 'paratext')) then
-        views:paratext-handler($request)
-    else
-        error($errors:SERVER_ERROR, 'Missing doc or paratext parameter – cannot serve requested document')
+    let $path-extension := substring-after($request?path, '.')
+    return
+        if (map:contains($request?parameters, 'doc')) then
+            views:document-handler($request, $path-extension)
+        else if (map:contains($request?parameters, 'paratext')) then
+            views:paratext-handler($request, $path-extension)
+        else
+            error($errors:SERVER_ERROR, 'Missing doc or paratext parameter – cannot serve requested document')
 };
 
-declare %private function views:document-handler($request as map(*)) as item()? {
-    if (ends-with($request?path, '.html')) then
-        views:handle-view-with-caching($request, $views:routes?document)
-    else if (ends-with($request?path, '.pdf')) then
-        views:serve-pdf($request, true())
-    else
-        views:serve-xml($request?parameters)
+declare %private function views:document-handler($request as map(*), $path-extension as xs:string) as item()? {
+    switch ($path-extension)
+        case 'html'
+            return views:handle-view-with-caching($request, $views:routes?document)
+        case 'pdf' case 'tex' case 'xml'
+            return
+                router:response (301, "text/plain", "redirecting", map { "Location": utils:path-concat-safe(($config:base-url, $config:api-prefix, $config:api-version, $request?path)) })
+        default
+            return error($errors:SERVER_ERROR, 'Requested view not implemented for documents')
 };
 
-declare %private function views:paratext-handler($request as map(*)) as node() {
-    if (ends-with($request?path, '.html')) then
-        views:handle-view-with-caching($request, $views:routes?paratexts)
-    else if (ends-with($request?path, '.xml')) then
-        views:serve-xml($request?parameters)
-    else
-        error($errors:SERVER_ERROR, 'Requested view not implemented for editorial paratexts')
+declare %private function views:paratext-handler($request as map(*), $path-extension as xs:string) as item() {
+    switch ($path-extension)
+        case 'html'
+            return views:handle-view-with-caching($request, $views:routes?paratexts)
+        case 'tex' case 'xml'
+            return
+                router:response (301, "text/plain", "redirecting", map { "Location": utils:path-concat-safe(($config:base-url, $config:api-prefix, $config:api-version, $request?path)) })
+        default
+            return error($errors:SERVER_ERROR, 'Requested view not implemented for editorial paratexts')
 };
 
 declare %private function views:render-view($request as map(*), $route-name as xs:string) as node() {
@@ -189,50 +197,4 @@ declare %private function views:handle-view-with-caching($request as map(*), $ro
                     )[last()]
     else
         views:render-view($request, $route-name)
-};
-
-(:~
-: Handling function, which serves the XML for a given document.
-:
-: @param $params The request parameters
-: @return The XML for the document
-: @throws 404 if the document does not exist
-:)
-declare %private function views:serve-xml($params as map(*)) as node() {
-    let $id := articles-idno:construct((), $params?kanton, $params?volume, $params?doc, $params?paratext)
-    let $xml := if ($id?type = $config:paratext-types) then
-                    find:paratextual-document-by-idno($id?idno)
-                else
-                    find:article-by-idno($id?idno)
-    return
-        if (exists($xml)) then
-            $xml
-        else
-            error($errors:NOT_FOUND, 'Could not xml for: ' || $id)
-};
-
-(:
-: Stream a PDF file to the client.
-:
-: @param $request The request map
-: @param $use-idno Whether to use the idno to find the pdf or not
-: @return The rendered page
-:)
-declare %private function views:serve-pdf($request as map(*), $use-idno as xs:boolean)  as empty-sequence() {
-    let $params := $request?parameters
-    let $pdf :=
-        if ($use-idno) then
-            let $id := articles-idno:construct((), $params?kanton, $params?volume, $params?doc, $params?paratext)
-            return
-                find:pdf-by-idno($id?idno, $id?doc)
-        else
-            find:pdf-by-kanton-and-volume($params?kanton, $params?volume)
-    return
-        if ($pdf?available) then
-                (
-                    response:set-header('Content-Disposition', 'inline; filename="' || tokenize($pdf?real-path, '/')[last()] || '"'),
-                    response:stream-binary(util:binary-doc($pdf?real-path), "application/pdf")
-                )
-        else
-            error($errors:NOT_FOUND, 'Could not find pdf for: ' || $request?path)
 };

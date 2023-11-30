@@ -218,6 +218,27 @@
               "type": "string",
               "enum": ["de", "en", "fr", "it"]
             }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "The start of the pagination",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "per-page",
+            "in": "query",
+            "description": "The number of documents per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
           }
         ],
         "responses": {
@@ -254,11 +275,72 @@
         }
       }
     },
-    "/{kanton}/{volume}/{paratext}.html": {
+    "/{kanton}/{volume}.pdf": {
       "get": {
-        "summary": "The HTML view of a paratext",
+        "summary": "The PDF (printed book) of a volume",
         "tags": ["views"],
-        "operationId": "views:paratext-handler",
+        "operationId": "views:volume-pdf-handler",
+        "x-error-handler": "views:error-handler",
+        "parameters": [
+          {
+            "name": "kanton",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^([A-Z]{2})/?$"
+            }
+          },
+          {
+            "name": "volume",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^([A-Za-z0-9_]+)/?$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The list of documents per volume",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requested view not found",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error encountered",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{kanton}/{volume}/{id}.html": {
+      "get": {
+        "summary": "The HTML view of a document",
+        "tags": ["views"],
+        "operationId": "views:single-handler",
         "x-error-handler": "views:error-handler",
         "parameters": [
           {
@@ -280,12 +362,13 @@
             }
           },
           {
-            "name": "paratext",
+            "name": "id",
+            "description": "The ID, rewritten by the middleware to paratext or doc",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "pattern": "^(intro|bailiffs|lit).html$"
+              "pattern": "^(?:((?:[A-Za-z0-9]+.)*)([0-9]+)-([0-9]+)|(intro|bailiffs|lit)).html$"
             }
           },
           {
@@ -301,7 +384,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The HTML view of a paratext",
+            "description": "The HTML view of a document",
             "content": {
               "text/html": {
                 "schema": {
@@ -333,12 +416,11 @@
         }
       }
     },
-    "/{kanton}/{volume}/{paratext}.xml": {
+    "/{kanton}/{volume}/{id}.xml": {
       "get": {
-        "summary": "The XML view of a paratext",
+        "summary": "Serves the XML source of the document via the API; implemented for human readable URLs",
         "tags": ["views"],
-        "operationId": "views:paratext-handler",
-        "x-error-handler": "views:error-handler",
+        "operationId": "views:single-handler",
         "parameters": [
           {
             "name": "kanton",
@@ -359,40 +441,116 @@
             }
           },
           {
-            "name": "paratext",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "pattern": "^(intro|bailiffs|lit).xml$"
+              "pattern": "^(?:((?:[A-Za-z0-9]+.)*)([0-9]+)-([0-9]+)|(intro|bailiffs|lit)).xml$"
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "The XML view of a paratext",
+          "301": {
+            "description": "Redirect to the API",
             "content": {
-              "application/xml": {
+              "text/plain": {
                 "schema": {
                   "type": "string"
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/{kanton}/{volume}/{id}.pdf": {
+      "get": {
+        "summary": "Serves the PDF of the document via the API; implemented for human readable URLs",
+        "tags": ["views"],
+        "operationId": "views:single-handler",
+        "parameters": [
+          {
+            "name": "kanton",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^([A-Z]{2})/?$"
+            }
           },
-          "404": {
-            "description": "Requested view not found",
+          {
+            "name": "volume",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^([A-Za-z0-9_]+)/?$"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^(?:((?:[A-Za-z0-9]+.)*)([0-9]+)-([0-9]+)).pdf$"
+            }
+          }
+        ],
+        "responses": {
+          "301": {
+            "description": "Redirect to the API",
             "content": {
-              "text/html": {
+              "text/plain": {
                 "schema": {
                   "type": "string"
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/{kanton}/{volume}/{id}.tex": {
+      "get": {
+        "summary": "Serves the generated TeX of the document via the API; implemented for human readable URLs",
+        "tags": ["views"],
+        "operationId": "views:single-handler",
+        "parameters": [
+          {
+            "name": "kanton",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^([A-Z]{2})/?$"
+            }
           },
-          "500": {
-            "description": "Internal server error encountered",
+          {
+            "name": "volume",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^([A-Za-z0-9_]+)/?$"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^(?:((?:[A-Za-z0-9]+.)*)([0-9]+)-([0-9]+)|(intro|bailiffs|lit)).tex$"
+            }
+          }
+        ],
+        "responses": {
+          "301": {
+            "description": "Redirect to the API",
             "content": {
-              "text/html": {
+              "text/plain": {
                 "schema": {
                   "type": "string"
                 }

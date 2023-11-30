@@ -24,17 +24,3 @@ async def test_keys_in_occurences_list_all(execute_xquery: xquery_tester):
     response = await execute_xquery(xquery)
 
     assert_xquery_result(response, True)
-
-
-@pytest.mark.asyncio_cooperative
-async def test_if_handler_is_eq_to_occurences_list_all(execute_xquery: xquery_tester):
-    """Test handler produces same result as the all-function."""
-    xquery = build_query(
-        modules=[
-            xquery_modules["occurrences-list"],
-        ],
-        query_body="deep-equal(occurrences-list:all(),occurrences-list:all-handler(map{}))",
-    )
-    response = await execute_xquery(xquery)
-
-    assert_xquery_result(response, True)

@@ -10,8 +10,8 @@ import module namespace errors="http://e-editiones.org/roaster/errors";
 import module namespace auth="http://e-editiones.org/roaster/auth";
 import module namespace util="http://exist-db.org/xquery/util";
 
+import module namespace api="http://ssrq-sds-fds.ch/exist/apps/ssrq/api" at "api.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
-import module namespace occurrences-list="http://ssrq-sds-fds.ch/exist/apps/ssrq/occurrences/list" at "occurrences/list.xqm";
 import module namespace ssrq-cache="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache" at "../repository/cache.xqm";
 import module namespace views="http://ssrq-sds-fds.ch/exist/apps/ssrq/views" at "views.xqm";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";

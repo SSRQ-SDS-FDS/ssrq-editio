@@ -1,25 +1,238 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "0.0.1",
+    "version": "1.0.0",
     "title": "SSRQ · SDS · FDS: Editio API",
-    "description": "This is the API documentation for the editio application."
+    "description": "Documentation of the public API of the digital scholarly edition."
   },
   "tags": [
+    {
+      "name": "documents",
+      "description": "Endpoints to retireve the source of a document or generated variants (e.g. TeX)"
+    },
     {
       "name": "occurrences",
       "description": "Endpoints to retrieve information about occurrences of entities in the corpus"
     }
   ],
   "paths": {
-    "/api/occurrences": {
+    "/api/v1/{kanton}/{volume}/{id}.pdf": {
+      "get": {
+        "summary": "Rendered PDF-preview of a document",
+        "tags": ["documents"],
+        "operationId": "api:document-handler",
+        "x-error-handler": "views:error-handler",
+        "parameters": [
+          {
+            "name": "kanton",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^([A-Z]{2})/?$"
+            }
+          },
+          {
+            "name": "volume",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^([A-Za-z0-9_]+)/?$"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^(?:((?:[A-Za-z0-9]+.)*)([0-9]+)-([0-9]+)).pdf$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The PDF view of a document",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requested view not found",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error encountered",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/{kanton}/{volume}/{id}.tex": {
+      "get": {
+        "summary": "The TeX view of a document",
+        "tags": ["documents"],
+        "operationId": "api:document-handler",
+        "x-error-handler": "views:error-handler",
+        "parameters": [
+          {
+            "name": "kanton",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^([A-Z]{2})/?$"
+            }
+          },
+          {
+            "name": "volume",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^([A-Za-z0-9_]+)/?$"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^(?:((?:[A-Za-z0-9]+.)*)([0-9]+)-([0-9]+)|(intro|bailiffs|lit)).tex$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The generated TeX of a single document",
+            "content": {
+              "text/plain; charset=UTF-8": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requested view not found",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error encountered",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/{kanton}/{volume}/{id}.xml": {
+      "get": {
+        "summary": "The XML view of a document",
+        "tags": ["documents"],
+        "operationId": "api:document-handler",
+        "x-error-handler": "views:error-handler",
+        "parameters": [
+          {
+            "name": "kanton",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^([A-Z]{2})/?$"
+            }
+          },
+          {
+            "name": "volume",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^([A-Za-z0-9_]+)/?$"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^(?:((?:[A-Za-z0-9]+.)*)([0-9]+)-([0-9]+)|(intro|bailiffs|lit)).xml$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The XML view of a document",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requested view not found",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error encountered",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/occurrences": {
       "get": {
         "summary": "Returns a list of entity-occurrences mentioned in the articles, variants included.",
         "tags": ["occurrences"],
-        "operationId": "occurrences-list:all-handler",
+        "operationId": "api:occurrences-handler",
+        "x-error-handler": "views:error-handler",
         "responses": {
           "200": {
-            "description": "Lists all occurrences, which are mentioned in the SSRQ corpus",
+            "description": "Lists all occurrences / occurrence-ids, which are mentioned in the SSRQ corpus",
             "content": {
               "application/json": {
                 "schema": {

@@ -24,20 +24,16 @@ declare function template-utils:load-by-idno($node as node(),
                                              $doc as xs:string?,
                                              $paratext as xs:string?,
                                              $odd as xs:string?) as map(*) {
-    let $id := articles-idno:construct((), $kanton, $volume, $doc, $paratext)
-    let $xml := if ($id?type = $config:paratext-types) then
-                    find:paratextual-document-by-idno($id?idno)
-                else
-                    find:article-by-idno($id?idno)
-    let $has-facs := exists($xml//tei:pb[@facs]) and not($odd eq $config:odd-normalized)
+    let $loaded-document := find:load-by-request-params([(), $kanton, $volume, $doc, $paratext])
+    let $has-facs := exists($loaded-document?xml//tei:pb[@facs]) and not($odd eq $config:odd-normalized)
     return
         map {
-            "idno": $id?idno,
-            "doc": $id?doc,
-            "xml": utils:coalesce($xml, app:failed-to-load($id?idno)), (: deprecated :)
+            "idno": $loaded-document?idno,
+            "doc": $loaded-document?doc,
+            "xml": utils:coalesce($loaded-document?xml, app:failed-to-load($loaded-document?idno)), (: deprecated :)
             "config": map {
                 "odd": utils:coalesce($odd, $config:odd),
-                "view": app:query-view($xml/tei:text, $config:default-view)
+                "view": app:query-view($loaded-document?xml/tei:text, $config:default-view)
             },
             "body-class": if ($has-facs) then 'col-md-6' else 'col-md-10',
             "has-facs": xs:string($has-facs)
