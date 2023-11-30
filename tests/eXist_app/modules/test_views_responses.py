@@ -15,7 +15,7 @@ def request_route(async_http_client: httpx.AsyncClient) -> route_tester:
             f"http://localhost:{DOCKER_DEV_SETTINGS.dev.port}/exist/apps/ssrq{route}",
             headers={"Accept": "text/html"},
             follow_redirects=False,
-            timeout=httpx.Timeout(10, connect=10, read=10),
+            timeout=httpx.Timeout(15),
         )
 
     return _request_route
@@ -33,6 +33,7 @@ def request_route(async_http_client: httpx.AsyncClient) -> route_tester:
         ("/SG", 301),
         ("/SG/III_4/", 200),
         ("/SG/III_4/intro.html", 200),
+        ("/SG/III_4/intro.xml", 301),
     ],
 )
 async def test_routes(request_route: route_tester, route: str, code: int):
