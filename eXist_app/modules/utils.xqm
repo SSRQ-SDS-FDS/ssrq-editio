@@ -187,3 +187,13 @@ declare function utils:coalexec($a as function(*), $b as function(*)) as item()*
   return
     if ($res) then $res else $b()
 };
+
+(:~
+: Extracts the file extension from a path.
+:
+: @param $path as xs:string
+: @return the file extension as xs:string
+:)
+declare function utils:extract-extension-from-path($path as xs:string) as xs:string {
+    tokenize($path, "\.")[last()]
+};
