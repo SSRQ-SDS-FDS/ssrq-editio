@@ -46,6 +46,7 @@ declare variable $views:routes := map {
     'kanton-volumes': 'volumes.html',
     'paratexts': 'paratexts.html',
     'partners': 'partners.html',
+    'search': 'search.html',
     'volume-docs': 'documents.html'
 };
 
@@ -140,8 +141,12 @@ declare function views:volume-pdf-handler($request as map(*)) as item() {
     api:serve-pdf($request, false())
 };
 
+declare function views:search-handler($request as map(*)) as node() {
+    views:render-view($request, $views:routes?search)
+};
+
 declare function views:single-handler($request as map(*)) as item()? {
-    let $path-extension := substring-after($request?path, '.')
+    let $path-extension := utils:extract-extension-from-path($request?path)
     return
         if (map:contains($request?parameters, 'doc')) then
             views:document-handler($request, $path-extension)
@@ -154,7 +159,8 @@ declare function views:single-handler($request as map(*)) as item()? {
 declare %private function views:document-handler($request as map(*), $path-extension as xs:string) as item()? {
     switch ($path-extension)
         case 'html'
-            return views:handle-view-with-caching($request, $views:routes?document)
+            return
+                views:handle-view-with-caching($request, $views:routes?document)
         case 'pdf' case 'tex' case 'xml'
             return
                 router:response (301, "text/plain", "redirecting", map { "Location": utils:path-concat-safe(($config:base-url, $config:api-prefix, $config:api-version, $request?path)) })
@@ -165,7 +171,8 @@ declare %private function views:document-handler($request as map(*), $path-exten
 declare %private function views:paratext-handler($request as map(*), $path-extension as xs:string) as item() {
     switch ($path-extension)
         case 'html'
-            return views:handle-view-with-caching($request, $views:routes?paratexts)
+            return
+                views:handle-view-with-caching($request, $views:routes?paratexts)
         case 'tex' case 'xml'
             return
                 router:response (301, "text/plain", "redirecting", map { "Location": utils:path-concat-safe(($config:base-url, $config:api-prefix, $config:api-version, $request?path)) })

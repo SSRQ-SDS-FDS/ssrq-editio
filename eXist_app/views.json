@@ -559,6 +559,68 @@
           }
         }
       }
+    },
+    "/search": {
+      "get": {
+        "summary": "Search for snippets in the corpus",
+        "tags": ["views"],
+        "operationId": "views:search-handler",
+        "x-error-handler": "views:error-handler",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "The search query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "description": "The selected language",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["de", "en", "fr", "it"]
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "The start of the pagination",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "per-page",
+            "in": "query",
+            "description": "The number of documents per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The search page",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

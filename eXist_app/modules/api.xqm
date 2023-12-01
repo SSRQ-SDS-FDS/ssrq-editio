@@ -18,6 +18,7 @@ import module namespace find="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/
 import module namespace error="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/error" at "templates/error.xqm";
 import module namespace occurrences-list="http://ssrq-sds-fds.ch/exist/apps/ssrq/occurrences/list" at "occurrences/list.xqm";
 import module namespace tex="http://ssrq-sds-fds.ch/exist/apps/ssrq/processing/tex" at "processing/tex.xqm";
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 
 (:~
 : Handle API-calls concerning documents.
@@ -29,17 +30,15 @@ declare function api:document-handler($request as map(*)) as item()? {
     if (not(map:contains($request?parameters, 'doc')) and not(map:contains($request?parameters, 'paratext'))) then
         error($errors:SERVER_ERROR, 'Missing doc or paratext parameter – cannot serve requested document')
     else
-        let $path-extension := substring-after($request?path, '.')
-        return
-            switch ($path-extension)
-                case 'pdf'
-                    return api:serve-pdf($request, true())
-                case 'tex'
-                    return api:serve-tex($request?parameters)
-                case 'xml'
-                    return api:serve-xml($request?parameters)
-                default
-                    return error($errors:SERVER_ERROR, 'Requested endpoint not found: ' || $request?path)
+        switch (utils:extract-extension-from-path($request?path))
+            case 'pdf'
+                return api:serve-pdf($request, true())
+            case 'tex'
+                return api:serve-tex($request?parameters)
+            case 'xml'
+                return api:serve-xml($request?parameters)
+            default
+                return error($errors:SERVER_ERROR, 'Requested endpoint not found: ' || $request?path)
 };
 
 (:~
