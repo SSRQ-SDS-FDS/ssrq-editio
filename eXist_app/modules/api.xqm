@@ -67,6 +67,7 @@ declare function api:serve-pdf($request as map(*), $use-idno as xs:boolean)  as 
     let $pdf :=
         if ($use-idno) then
             let $id := articles-idno:construct((), $params?kanton, $params?volume, $params?doc, $params?paratext)
+            let $_ := console:log('idno: ' || $id?doc)
             return
                 find:pdf-by-idno($id?idno, $id?doc)
         else
