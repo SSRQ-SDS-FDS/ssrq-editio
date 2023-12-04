@@ -89,7 +89,6 @@ function pages:load($node as node(), $model as map(*), $doc as xs:string, $root 
 declare function pages:load-xml($view as xs:string?, $root as xs:string?, $doc as xs:string) {
     let $data := pages:get-document($doc)
     let $config := tpu:parse-pi(root($data), $view)
-    let $log := console:log("view: " || $config?view)
     return
         map {
             "config": $config,
