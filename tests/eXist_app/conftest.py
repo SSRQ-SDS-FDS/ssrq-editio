@@ -59,6 +59,11 @@ xquery_modules: dict[str, tuple[str, str, str]] = {
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/occurrences/list",
         "/db/apps/ssrq/modules/occurrences/list.xqm",
     ),
+    "pagination": (
+        "pagination",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/pagination",
+        "/db/apps/ssrq/modules/templates/pagination.xqm",
+    ),
     "ssrq-cache": (
         "ssrq-cache",
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache",
