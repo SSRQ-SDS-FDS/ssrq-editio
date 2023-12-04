@@ -164,7 +164,7 @@ def stop(
 
 @app.command(help=""""Execute the tests with pytest.""")
 def test():
-    pytest.main([str(config.PROJECT_ROOT)])
+    pytest.main([str(config.PROJECT_ROOT), "--max-asyncio-tasks", "10"])
 
 
 @app.command(help="""Sync changes in the app dir to eXist-DB""")
