@@ -150,7 +150,7 @@ async def store(
         )
 
     if response.status_code != codes.OK or response.json().get("status") == "error":
-        logger.error(f"Upload of {rel_path} failed: {response.json().get('message')}")
+        logger.error(f"Upload of {rel_path} failed; HTTP status: {response.status_code}")
         return HttpReturnTypes.ERROR
 
     if content_type == "application/xquery" and file_is_added:
