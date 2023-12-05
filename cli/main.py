@@ -5,7 +5,7 @@ from cli import config
 from cli.volumes import config_reader as vol_config
 from cli.volumes import handle as vol_handle
 from cli.misc_data import handle as misc_handle
-from cli.sass import handle as sass_handle
+from cli.css import handle as css_handle
 from cli.bundle import settings as bundle_settings
 from cli.bundle.bundle import bundle_application, get_infos_from_expath
 from cli.sync.sync import sync_folder, ExistServerConfig, ExistEndpoints
@@ -77,7 +77,7 @@ def build(
     misc_handle.copy_misc_data(
         config.BUILD_CONFIG.misc_data.source, config.BUILD_CONFIG.misc_data.target
     )
-    sass_handle.compile_sass_to_css(config.BUILD_CONFIG.css.source, config.BUILD_CONFIG.css.target)
+    css_handle.compile_css(config.BUILD_CONFIG.css.source, config.BUILD_CONFIG.css.target)
     bundle_application(
         config.PROJECT_ROOT / "build",
         config.BUILD_CONFIG.expath,
@@ -93,8 +93,8 @@ def build(
 @app.command(
     help="""Compile the cass while developing the application.""",
 )
-def compile_sass():
-    sass_handle.compile_sass_to_css(config.BUILD_CONFIG.css.source, config.BUILD_CONFIG.css.target)
+def compile_css():
+    css_handle.compile_css(config.BUILD_CONFIG.css.source, config.BUILD_CONFIG.css.target)
 
 
 @app.command(

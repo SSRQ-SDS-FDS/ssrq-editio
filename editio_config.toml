@@ -18,7 +18,7 @@ volumes = [
 [editio.build]
 volumes = { source = "data/tei-volumes", target = "editio-data" }
 misc_data = { source = "data/tei-volumes/misc", target = "editio-data/misc" }
-css = { source = "eXist_app/resources/scss/style.scss", target = "eXist_app/resources/css/style.css" }
+css = { source = "eXist_app/resources/css/src/main.css", target = "eXist_app/resources/css/style.css" }
 expath = "eXist_app/expath-pkg.xml"
 prod_ignores = [
     "eXist_app/modules/lib/regenerate.xql",
@@ -42,7 +42,7 @@ common_ignores = [
     "build",
     "cli",
     "data",
-    "eXist_app/resources/scss",
+    "eXist_app/resources/css/src",
     "tests",
     "eXist_app/transform",
 ]
