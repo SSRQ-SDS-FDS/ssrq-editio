@@ -10,7 +10,7 @@ from pydantic import BaseModel
 from watchfiles import Change, awatch
 
 from cli.config import BUILD_CONFIG
-from cli.sass import handle as sass_handle
+from cli.css import handle as css_handle
 
 
 class ExistServerConfig(BaseModel):
@@ -69,10 +69,10 @@ async def _handle_change(
     async_client: AsyncClient,
 ):
     match change:
-        case _, file if file.endswith(".scss"):
-            logger.info(f"File {file} changed")
-            logger.info("Compiling SCSS to CSS...")
-            sass_handle.compile_sass_to_css(BUILD_CONFIG.css.source, BUILD_CONFIG.css.target)
+        case _, file if (file.endswith(".css") or file.endswith(".config.js")) and "src" in file:
+            logger.info(f"Style sources changed in: {file}")
+            logger.info("Compiling new styles.css...")
+            css_handle.compile_css(BUILD_CONFIG.css.source, BUILD_CONFIG.css.target)
         case Change.modified, _:
             logger.info(f"File {change[1]} changed")
             await store(
