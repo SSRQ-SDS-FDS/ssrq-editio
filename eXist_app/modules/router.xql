@@ -53,7 +53,9 @@ declare function ssrq-router:rewrite-params($request as map(*), $parameters-to-r
                         return
                             map:entry($new-key, $new-value)
                     else map:entry($key, $value)
-                }) => map:merge()
+                })
+                => map:merge()
+                => map:put('request-path', $request?path)
             return
                 map:put($request, 'parameters', $parameters-rewritten)
 };
