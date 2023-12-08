@@ -47,7 +47,7 @@
       <div class="relative" x-data="{ search: false }">
         <form action="{app}/search" method="get" x-show="search">
           <input
-            x-on:click.away="search = false"
+            x-on:click.outside="search = false"
             type="text"
             name="query"
             class="min-w-[20rem] w-auto max-w-[28rem] py-1 pl-2 pr-2 placeholder-ssrq-greyed-600 bg-transparent border-[0.02rem] border-black focus:outline-none focus:border-gray-600 rounded-sm"
@@ -71,7 +71,10 @@
           </i>
         </span>
       </div>
-      <details class="sm:hidden relative lg:inline-block text-left ml-1.5">
+      <details
+        class="sm:hidden relative lg:inline-block text-left ml-1.5"
+        x-on:click.outside="$el.open ? $el.open = false : null"
+      >
         <summary
           class="inline-flex items-center justify-center w-full rounded-md shadow-sm py-2 hover:bg-none focus:outline-none cursor-pointer text-sm"
           title="i18n(language)"
