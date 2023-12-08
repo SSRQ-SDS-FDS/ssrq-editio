@@ -93,8 +93,15 @@ def build(
 @app.command(
     help="""Compile the cass while developing the application.""",
 )
-def compile_css():
-    css_handle.compile_css(config.BUILD_CONFIG.css.source, config.BUILD_CONFIG.css.target)
+def compile_css(
+    watch: bool = typer.Option(
+        False,
+        "--watch",
+        "-w",
+        help="If true the compiler will watch for changes and recompile the css.",
+    ),
+):
+    css_handle.compile_css(config.BUILD_CONFIG.css.source, config.BUILD_CONFIG.css.target, watch)
 
 
 @app.command(
