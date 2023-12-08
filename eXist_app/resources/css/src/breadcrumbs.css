@@ -1,0 +1,31 @@
+@layer components {
+  .breadcrumbs {
+    @apply w-full flex justify-center my-2 text-sm font-thin;
+  }
+  .breadcrumbs ol {
+    @apply mx-auto inline-flex items-center;
+  }
+  .breadcrumbs ol li:first-child svg {
+    @apply w-2.5 h-2.5 me-1;
+  }
+  .breadcrumbs li:not([aria-current="page"]) {
+    @apply inline-flex items-center text-ssrq-greyed-400 hover:text-ssrq-primary;
+  }
+  .breadcrumbs li[aria-current="page"] {
+    @apply inline-flex items-center;
+  }
+  .breadcrumbs li[aria-current="page"] span {
+    @apply border-b-2 border-ssrq-primary;
+  }
+  .breadcrumbs li div {
+    @apply flex items-center;
+  }
+  .breadcrumbs li div svg {
+    @apply w-2.5 h-2.5 mx-1 text-ssrq-greyed-400;
+  }
+  .breadcrumbs li div svg ~ a,
+  .breadcrumbs li div span,
+  .breadcrumbs li div a {
+    @apply mx-1;
+  }
+}

@@ -1,4 +1,5 @@
 @import "./cover.css";
+@import "./breadcrumbs.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -34,7 +35,6 @@
   }
   .title-2 {
     @apply text-2xl font-normal mb-1;
-    @apply text-gray-700;
   }
   .title-3 {
     @apply text-xl font-normal;

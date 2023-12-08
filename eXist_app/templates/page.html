@@ -1,20 +1,20 @@
-<!doctype html>
 <html data-template="pages:app-root">
   <head data-template="lib:include" data-template-path="templates/head.html" />
   <body
     xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module"
     id="body"
     data-template="i18n:translate"
+    class="flex flex-col min-h-screen"
   >
     <nav data-template="lib:include" data-template-path="templates/nav.html" />
-    <main class="pt-16" data-template="template-utils:resolve-links">
+    <main class="pt-16 flex-1" data-template="template-utils:resolve-links">
       <section
         data-template="lib:include"
         data-template-path="templates/banner.html"
       />
+      <div id="content" />
     </main>
 
-    <div id="content" />
     <footer
       data-template="lib:include"
       data-template-path="templates/footer.html"

@@ -5,7 +5,7 @@ module namespace nav="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/nav";
 import module namespace templates = "http://exist-db.org/xquery/html-templating";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
-import module namespace console="http://exist-db.org/xquery/console";
+import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 
 declare namespace i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
@@ -47,6 +47,45 @@ declare function nav:lang-selections($node as node(), $model as map(*)) as eleme
               class="block px-4 py-2 text-sm hover:text-ssrq-primary">
                 {$display-lang}
             </a>
+        </li>
+};
+
+(:~
+: Templating function, which creates the parts
+: for a breadcrumb navigation, based
+: on the path-components of the current request.
+:
+: @param $node the node to be processed (passed by the templating engine)
+: @param $model the model to be used (passed by the templating engine)
+: @return the breadcrumbs navigation as a list of li elements
+:)
+declare function nav:breadcrumbs($node as node(), $model as map(*)) as element(li)+ {
+    let $path-components := utils:path-tokenize($model?configuration?param-resolver('request-path'))[string-length() > 0]
+    let $len-components := count($path-components)
+    for $component at $index in $path-components
+    let $content := replace(replace($component, '-', ' '), '^(.*)\.\w+$', '$1')
+    return
+        <li>
+            {
+                attribute aria-current {"page"}[$index = $len-components]
+            }
+            <div>
+                <svg aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 9 4-4-4-4" />
+                </svg>
+                {
+                    if ($index < $len-components) then
+                        <a href="{utils:path-concat(($config:base-url, $component))}">
+                            <i18n:text key="{$component}">{$content}</i18n:text>
+                        </a>
+                    else
+                        <span>
+                            <i18n:text key="{$component}">{$content}</i18n:text>
+                        </span>
+                }
+            </div>
         </li>
 };
 
