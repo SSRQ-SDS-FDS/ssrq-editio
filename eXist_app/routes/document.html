@@ -15,117 +15,117 @@
       data-template-path="templates/toolbar.html"
     />
     <main id="tp-canvas">
-        <section
-          id="main-wrapper"
-          class="${body-class}"
-          data-template="app:parse-params"
-        >
-          <div class="tp-document-title-wrapper tp-row">
-            <div class="tp-column">
-              <h5 id="idno" data-template="ssrq-helper:render-idno-as-popup" />
-              <h4 data-template="app:header-short" />
-              <h5 data-template="app:origDate" />
-            </div>
+      <section
+        id="main-wrapper"
+        class="${body-class}"
+        data-template="app:parse-params"
+      >
+        <div class="tp-document-title-wrapper tp-row">
+          <div class="tp-column">
+            <h5 id="idno" data-template="ssrq-helper:render-idno-as-popup" />
+            <h4 data-template="app:header-short" />
+            <h5 data-template="app:origDate" />
           </div>
-          <div class="comment tp-row" data-template="app:regest">
-            <div class="tp-column">
-              <h4 class="block-title">
-                <a
-                  class="accordion-toggle collapsed"
-                  role="button"
-                  data-toggle="collapse"
-                  href="#regest"
-                  aria-expanded="false"
-                  aria-controls="regest"
-                >
-                  <i18n:text key="regest" />
-                </a>
-              </h4>
-              <div
-                id="regest"
-                class="collapse"
-                data-template="app:display-data"
-              />
-            </div>
+        </div>
+        <div class="comment tp-row" data-template="app:regest">
+          <div class="tp-column">
+            <h4 class="block-title">
+              <a
+                class="accordion-toggle collapsed"
+                role="button"
+                data-toggle="collapse"
+                href="#regest"
+                aria-expanded="false"
+                aria-controls="regest"
+              >
+                <i18n:text key="regest" />
+              </a>
+            </h4>
+            <div
+              id="regest"
+              class="collapse"
+              data-template="app:display-data"
+            />
           </div>
+        </div>
 
-          <div class="comment tp-row" data-template="app:source-description">
-            <div class="tp-column">
-              <h4 class="block-title">
-                <a
-                  class="accordion-toggle collapsed"
-                  role="button"
-                  data-toggle="collapse"
-                  href="#sourceDesc"
-                  aria-expanded="false"
-                  aria-controls="regest"
-                >
-                  <i18n:text key="describe" />
-                </a>
-              </h4>
-              <div
-                id="sourceDesc"
-                class="collapse"
-                data-template="app:display-data"
-              />
-            </div>
+        <div class="comment tp-row" data-template="app:source-description">
+          <div class="tp-column">
+            <h4 class="block-title">
+              <a
+                class="accordion-toggle collapsed"
+                role="button"
+                data-toggle="collapse"
+                href="#sourceDesc"
+                aria-expanded="false"
+                aria-controls="regest"
+              >
+                <i18n:text key="describe" />
+              </a>
+            </h4>
+            <div
+              id="sourceDesc"
+              class="collapse"
+              data-template="app:display-data"
+            />
           </div>
-            <div class="comment tp-row" data-template="app:additional-sources">
-                <div class="tp-column">
-                <h4 class="block-title">
-                    <a
-                    class="accordion-toggle collapsed"
-                    role="button"
-                    data-toggle="collapse"
-                    href="#additional"
-                    aria-expanded="false"
-                    aria-controls="additonal"
-                    >
-                    <i18n:text key="addFill" />
-                    </a>
-                </h4>
-                <div
-                    id="additional"
-                    class="collapse"
-                    data-template="app:display-data"
-                    data-template-mode="filiation"
-                />
-                </div>
-            </div>
-          <div class="comment tp-row" data-template="app:comment">
-            <div class="tp-column">
-              <h4 class="block-title">
-                <a
-                  class="accordion-toggle collapsed"
-                  role="button"
-                  data-toggle="collapse"
-                  href="#comment"
-                  aria-expanded="false"
-                  aria-controls="comment"
-                >
-                  <i18n:text key="comment" />
-                </a>
-              </h4>
-              <div
-                id="comment"
-                class="collapse"
-                data-template="app:display-data"
-              />
-            </div>
+        </div>
+        <div class="comment tp-row" data-template="app:additional-sources">
+          <div class="tp-column">
+            <h4 class="block-title">
+              <a
+                class="accordion-toggle collapsed"
+                role="button"
+                data-toggle="collapse"
+                href="#additional"
+                aria-expanded="false"
+                aria-controls="additonal"
+              >
+                <i18n:text key="addFill" />
+              </a>
+            </h4>
+            <div
+              id="additional"
+              class="collapse"
+              data-template="app:display-data"
+              data-template-mode="filiation"
+            />
           </div>
-          <section class="tp-row">
-            <div class="tp-column">
-              <h4 class="block-title">
-                <i18n:text key="editionText" />
-              </h4>
-              <div id="document-wrapper">
-                <div id="document-pane">
-                  <div data-template="ssrq-helper:render" class="content" />
-                </div>
+        </div>
+        <div class="comment tp-row" data-template="app:comment">
+          <div class="tp-column">
+            <h4 class="block-title">
+              <a
+                class="accordion-toggle collapsed"
+                role="button"
+                data-toggle="collapse"
+                href="#comment"
+                aria-expanded="false"
+                aria-controls="comment"
+              >
+                <i18n:text key="comment" />
+              </a>
+            </h4>
+            <div
+              id="comment"
+              class="collapse"
+              data-template="app:display-data"
+            />
+          </div>
+        </div>
+        <section class="tp-row">
+          <div class="tp-column">
+            <h4 class="block-title">
+              <i18n:text key="editionText" />
+            </h4>
+            <div id="document-wrapper">
+              <div id="document-pane">
+                <div data-template="ssrq-helper:render" class="content" />
               </div>
             </div>
-          </section>
+          </div>
         </section>
+      </section>
       <div
         data-template="templates:if-model-key-equals"
         data-template-key="has-facs"
