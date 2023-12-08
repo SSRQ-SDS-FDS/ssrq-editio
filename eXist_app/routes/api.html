@@ -1,33 +1,43 @@
-<div data-template="templates:surround" data-template-with="templates/page.html" data-template-at="content">
-    <div data-template="templates:include" data-template-path="templates/menu.html" />
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <style>
-                    pre.version {
-                        background-color: transparent;
-                        border: none;
-                    }
-                </style>
-                <div id="basic" />
-                <script src="https://unpkg.com/swagger-ui-dist@4/swagger-ui-bundle.js" charset="UTF-8"/>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        const link = document.createElement('link');
-                        link.rel = 'stylesheet';
-                        link.href = 'https://unpkg.com/swagger-ui-dist@4/swagger-ui.css';
-                        document.head.appendChild(link);
-                        SwaggerUIBundle({
-                            url: 'api.json',
-                            dom_id: '#basic',
-                            displayOperationId: true,
-                            displayRequestDuration: true,
-                            showExtensions: true,
-                            withCredentials: true
-                        });
-                    })
-                </script>
-            </div>
-        </div>
+<div
+  data-template="templates:surround"
+  data-template-with="templates/page.html"
+  data-template-at="content"
+>
+  <div
+    data-template="templates:include"
+    data-template-path="templates/menu.html"
+  />
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <style>
+          pre.version {
+            background-color: transparent;
+            border: none;
+          }
+        </style>
+        <div id="basic" />
+        <script
+          src="https://unpkg.com/swagger-ui-dist@4/swagger-ui-bundle.js"
+          charset="UTF-8"
+        />
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            const link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = "https://unpkg.com/swagger-ui-dist@4/swagger-ui.css";
+            document.head.appendChild(link);
+            SwaggerUIBundle({
+              url: "api.json",
+              dom_id: "#basic",
+              displayOperationId: true,
+              displayRequestDuration: true,
+              showExtensions: true,
+              withCredentials: true,
+            });
+          });
+        </script>
+      </div>
     </div>
+  </div>
 </div>

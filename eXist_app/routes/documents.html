@@ -1,34 +1,54 @@
-<div xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" data-template="templates:surround"
-    data-template-with="templates/main.html" data-template-at="main-content">
-    <section id="documents-panel" data-template="documents:list" data-template-per-page="20">
-        <div xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" data-template="i18n:translate">
-            <div class="flex-row-spaced">
-                <ul class="pagination" data-template-key="total-documents" data-template="ssrq-helper:paginate" data-template-per-page="20"
-                    data-template-max-pages="5" data-template-min-hits="21" />
-                <h5>
-                    <span class="result-count">
-                        <a data-template="template-utils:display-hits" data-template-link-base-params="kanton;volume"/>
-                        <i18n:text key="found">found</i18n:text>
-                    </span>
-                </h5>
-            </div>
-            <button class="back-button" data-template="template-utils:resolve-links">
-                <a href="{app}/{kanton}/">
-                    <i class="material-icons">arrow_upward</i>
-                    <i18n:text key="back-up" />
-                </a>
-            </button>
+<div
+  xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module"
+  data-template="templates:surround"
+  data-template-with="templates/main.html"
+  data-template-at="main-content"
+>
+  <section
+    id="documents-panel"
+    data-template="documents:list"
+    data-template-per-page="20"
+  >
+    <div
+      xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module"
+      data-template="i18n:translate"
+    >
+      <div class="flex-row-spaced">
+        <ul
+          class="pagination"
+          data-template-key="total-documents"
+          data-template="ssrq-helper:paginate"
+          data-template-per-page="20"
+          data-template-max-pages="5"
+          data-template-min-hits="21"
+        />
+        <h5>
+          <span class="result-count">
+            <a
+              data-template="template-utils:display-hits"
+              data-template-link-base-params="kanton;volume"
+            />
+            <i18n:text key="found">found</i18n:text>
+          </span>
+        </h5>
+      </div>
+      <button class="back-button" data-template="template-utils:resolve-links">
+        <a href="{app}/{kanton}/">
+          <i class="material-icons">arrow_upward</i>
+          <i18n:text key="back-up" />
+        </a>
+      </button>
+    </div>
+    <div class="row" data-template="i18n:translate">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-12" id="documents">
+            <ul class="documents">
+              <li data-template="ssrq-helper:render-work" />
+            </ul>
+          </div>
         </div>
-        <div class="row" data-template="i18n:translate">
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-12" id="documents">
-                        <ul class="documents">
-                            <li data-template="ssrq-helper:render-work" />
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+      </div>
+    </div>
+  </section>
 </div>

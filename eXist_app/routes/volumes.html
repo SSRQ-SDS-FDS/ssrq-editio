@@ -1,13 +1,20 @@
-<div xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" data-template="templates:surround"
-    data-template-with="templates/main.html" data-template-at="main-content">
-    <section xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" class="collection"
-        data-template="i18n:translate">
-        <button data-template="template-utils:resolve-links" class="back-button">
-            <a href="{app}/">
-                <i class="material-icons">folder</i>
-                <i18n:text key="back-up" />
-            </a>
-        </button>
-        <div data-template="volumes:list"></div>
-    </section>
+<div
+  xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module"
+  data-template="templates:surround"
+  data-template-with="templates/main.html"
+  data-template-at="main-content"
+>
+  <section
+    xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module"
+    class="collection"
+    data-template="i18n:translate"
+  >
+    <button data-template="template-utils:resolve-links" class="back-button">
+      <a href="{app}/">
+        <i class="material-icons">folder</i>
+        <i18n:text key="back-up" />
+      </a>
+    </button>
+    <div data-template="volumes:list"></div>
+  </section>
 </div>
