@@ -46,6 +46,7 @@
     <msg key="searchEdition">Ricerca nel testo editionale</msg>
     <msg key="filters">Ricerca in un campo</msg>
     <msg key="canton">Cantone</msg>
+    <msg key="canton-overview">Cantoni e sezioni</msg>
     <msg key="section">Sezione</msg>
     <msg key="loading">viene caricato</msg>
     <msg key="describe">Descrizione della fonte</msg>
@@ -57,15 +58,15 @@
     <msg key="doctitel">Collana Fonti del diritto svizzero online</msg>
     <msg key="kontakt">Contatto</msg>
     <msg key="transrichtlinien">
-        <a href="https://www.ssrq-sds-fds.ch/wiki/Transkriptionsrichtlinien/it">Principi di trascrizione</a>
+        <a href="https://schema.ssrq-sds-fds.ch/latest/base/transcription/">Principi di trascrizione</a>
     </msg>
     <msg key="datrichtlinien">
-        <a href="https://www.ssrq-sds-fds.ch/wiki/Datierungsrichtlinien">Principi di datazione</a>
+        <a href="https://schema.ssrq-sds-fds.ch/latest/base/dating_guidelines/">Principi di datazione</a>
     </msg>
     <msg key="search">Ricerca</msg>
     <msg key="doSearch">Cercare</msg>
     <msg key="reset">Reset</msg>
-    <msg key="lizenz">Licenza: </msg>
+    <msg key="lizenz">Licenza</msg>
     <msg key="sorting">Ordinamento</msg>
     <msg key="loading-facets">caricare le voci del registro ...</msg>
     <msg key="error-title">Si è generato un errore!</msg>
@@ -98,4 +99,8 @@
     <msg key="index">Indice</msg>
     <msg key="zoom-in">Ingrandire il carattere</msg>
     <msg key="zoom-out">Ridurre la dimensione dei caratteri</msg>
+    <msg key="additional-languages">Lingue disponibili</msg>
+    <msg key="project"><a target="_blank" href="https://www.ssrq-sds-fds.ch/it/home/">Progetto</a></msg>
+    <!-- ToDo prüfen: -->
+    <msg key="published-by">Pubblicato dalla Fondazione Fonti del Diritto della Società Svizzera degli Avvocati</msg>
 </catalogue>

@@ -46,6 +46,7 @@
     <msg key="searchEdition">Search Edition Text</msg>
     <msg key="filters">Filters and Facets</msg>
     <msg key="canton">Canton</msg>
+    <msg key="canton-overview">Cantons and sections</msg>
     <msg key="section">Section</msg>
     <msg key="loading">loading</msg>
     <msg key="describe">Metadata</msg>
@@ -57,15 +58,15 @@
     <msg key="doctitel">Collection of Swiss Law Sources online</msg>
     <msg key="kontakt">Contact</msg>
     <msg key="transrichtlinien">
-        <a href="https://www.ssrq-sds-fds.ch/wiki/Transkriptionsrichtlinien">Transcription guidelines</a>
+        <a href="https://schema.ssrq-sds-fds.ch/latest/base/transcription/">Transcription guidelines</a>
     </msg>
     <msg key="datrichtlinien">
-        <a href="https://www.ssrq-sds-fds.ch/wiki/Datierungsrichtlinien">Dating guidelines</a>
+        <a href="https://schema.ssrq-sds-fds.ch/latest/base/dating_guidelines/">Dating guidelines</a>
     </msg>
     <msg key="search">Search</msg>
     <msg key="doSearch">Search</msg>
     <msg key="reset">Reset</msg>
-    <msg key="lizenz">License: </msg>
+    <msg key="lizenz">License</msg>
     <msg key="sorting">Sort order</msg>
     <msg key="loading-facets">Loading ...</msg>
     <msg key="error-title">An error occurred!</msg>
@@ -98,4 +99,7 @@
     <msg key="index">Index</msg>
     <msg key="zoom-in">Increase font size</msg>
     <msg key="zoom-out">Reduce font size</msg>
+    <msg key="additional-languages">Additional Languages</msg>
+    <msg key="project"><a target="_blank" href="https://www.ssrq-sds-fds.ch/en/home/">Project</a></msg>
+    <msg key="published-by">Published by the Law Sources Foundation of the Swiss Lawyers Society</msg>
 </catalogue>
