@@ -217,9 +217,11 @@ declare variable $config:app-resources := utils:path-concat-safe(($config:app-ro
 
 declare variable $config:i18n-catalogues := utils:path-concat-safe(($config:app-resources, "i18n"));
 
-declare variable $config:i18n-supported-languages := ("de", "fr", "en", "it");
+declare variable $config:i18n-supported-languages := ("de", "fr", "it", "en");
 
 declare variable $config:i18n-default-lang := "de";
+
+declare variable $config:i18n-supported-languages-display := ("DEU", "FRA", "ITA", "ENG");
 
 declare variable $config:paratext-types := ("intro", "bailiffs", "lit");
 

@@ -13,9 +13,39 @@ import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension
 import module namespace find="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder" at "../repository/finder.xqm";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
 import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "../ssrq.xqm";
+import module namespace console="http://exist-db.org/xquery/console";
 
+declare namespace i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace xpath="http://www.w3.org/2005/xpath-functions";
+
+
+(:
+: Prints the title from the model –
+: and uses the param-resolver to resolve the values;
+: the titles are translated using the i18n module
+: If a translation is not found, the title is printed as given.
+: Nothing is returned if no title is found.
+:
+: @param $node node() - the current node (passed by the template engine)
+: @param $model map(*) - the model (passed by the template engine)
+: @return element() - the title
+:)
+declare function template-utils:print-title($node as node(), $model as map(*)) as element()? {
+    element { node-name($node) } {
+        $node/@* except $node/@data-template,
+        (
+            for $title-key at $i in ('maintitle', 'subtitle')
+            let $title-part := $model?configuration?param-resolver($title-key)
+            where exists($title-part)
+            return
+                element { 'h' || $i } {
+                    attribute class { if ($i = 1) then 'title-1' else 'title-2' },
+                    <i18n:text key="{$title-part}">{$title-part}</i18n:text>
+                }
+        )
+    }[*]
+};
 
 declare function template-utils:load-by-idno($node as node(),
                                              $model as map(*),

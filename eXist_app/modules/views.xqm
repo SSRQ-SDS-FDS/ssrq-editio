@@ -3,6 +3,7 @@ xquery version "3.1";
 module namespace views="http://ssrq-sds-fds.ch/exist/apps/ssrq/views";
 
 import module namespace errors = "http://e-editiones.org/roaster/errors";
+import module namespace lib="http://exist-db.org/xquery/html-templating/lib";
 import module namespace response = "http://exist-db.org/xquery/response";
 import module namespace router="http://e-editiones.org/roaster/router";
 import module namespace templates = "http://exist-db.org/xquery/html-templating";
@@ -15,6 +16,7 @@ import module namespace articles-idno="http://ssrq-sds-fds.ch/exist/apps/ssrq/ar
 import module namespace find="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder" at "repository/finder.xqm";
 import module namespace documents="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/documents" at "templates/documents.xqm";
 import module namespace kantons="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/kantons" at "templates/kantons.xqm";
+import module namespace nav="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/nav" at "templates/nav.xqm";
 import module namespace volumes="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/volumes" at "templates/volumes.xqm";
 import module namespace template-utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/utils" at "templates/template-utils.xqm";
 import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
@@ -52,7 +54,8 @@ declare variable $views:routes := map {
 
 declare variable $views:config := map {
     $templates:CONFIG_APP_ROOT : $config:app-root,
-    $templates:CONFIG_STOP_ON_ERROR : true()
+    $templates:CONFIG_STOP_ON_ERROR : true(),
+    $templates:CONFIG_USE_CLASS_SYNTAX : false()
 };
 
 declare variable $views:lookup := function($functionName as xs:string, $arity as xs:int) {
@@ -116,9 +119,8 @@ declare function views:error-handler($error) {
         templates:apply($template, $views:lookup, map { "description": $error?description }, views:get-template-config(map{}))
 };
 
-
 declare function views:home-handler($request as map(*)) as node() {
-    views:handle-view-with-caching($request, $views:routes?home)
+    views:handle-view-with-caching(views:add-title-to-request($request, ()), $views:routes?home)
 };
 
 declare function views:volumes-per-kanton-handler($request as map(*)) as item() {
@@ -204,4 +206,30 @@ declare %private function views:handle-view-with-caching($request as map(*), $ro
                     )[last()]
     else
         views:render-view($request, $route-name)
+};
+
+(:
+: Small utility function, which
+: can be used by handlers to add a title to the model.
+: Per default the title for the SSRQ-page as a whole is added.
+:
+: @param $request The request to which the title should be added in the parameters section
+: @param $subtitle The subtitle to be added
+: @return The model with the added title
+:)
+declare %private function views:add-title-to-request($request as map(*), $subtitle as xs:string?) as map(*) {
+    views:add-title-to-request($request, 'doctitel', $subtitle)
+};
+
+(:
+: Small utility function, which
+: can be used by handlers to add a title to the model.
+:
+: @param $request The request to which the title should be added in the parameters section
+: @param $title The title to be added
+: @param $subtitle The subtitle to be added
+: @return The model with the added title
+:)
+declare %private function views:add-title-to-request($request as map(*), $title as xs:string?, $subtitle as xs:string?) as map(*) {
+    map:put($request, 'parameters', map:merge(($request?parameters, map { 'maintitle': $title, 'subtitle': $subtitle })))
 };
