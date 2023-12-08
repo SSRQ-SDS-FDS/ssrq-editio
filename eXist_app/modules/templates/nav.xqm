@@ -70,9 +70,3 @@ declare %private function nav:create-menu-link($entry as map(*)) as element(a) {
         <i18n:text key="{$entry?key}"/>
     </a>
 };
-
-declare %private function nav:create-lang-selector($lang as xs:string, $index as xs:integer) as element(a) {
-    <a class="px-2.5 py-2 transition-colors duration-300 transform rounded-lg hover:text-ssrq-primary md:mx-2" href="{$entry?url}">
-        <i18n:text key="{$entry?key}"/>
-    </a>
-};
