@@ -1,9 +1,9 @@
 function insertTooltipFromApi(context, eventListener) {
-  var key = $(context).attr('data-ref');
+  var key = $(context).attr("data-ref");
   var label = $(context).text();
 
   function filterSpan(i, span) {
-    var ref = $(span).attr('data-ref');
+    var ref = $(span).attr("data-ref");
     return ref === key || /^[\.a-zA-Z]/.test(ref.substring(key.length));
   }
 
@@ -14,12 +14,12 @@ function insertTooltipFromApi(context, eventListener) {
 
   if (eventListener) {
     $(context)
-      .find('.select-facet')
-      .on('change', function () {
+      .find(".select-facet")
+      .on("change", function () {
         if (this.checked) {
-          refs.parents('.reference').addClass('highlight');
+          refs.parents(".reference").addClass("highlight");
         } else {
-          refs.parents('.reference').removeClass('highlight');
+          refs.parents(".reference").removeClass("highlight");
         }
       });
   }
@@ -30,22 +30,22 @@ $(document).ready(function () {
   const context = new URL(location.href);
   let docId = (context.origin + context.pathname)
     .split(root)[1]
-    .replace(/^\//, '')
-    .replace(/\.html$/, '')
-    .replace(/\/+/g, '-');
-  const idno = document.querySelector('[data-idno]').dataset.idno;
+    .replace(/^\//, "")
+    .replace(/\.html$/, "")
+    .replace(/\/+/g, "-");
+  const idno = document.querySelector("[data-idno]").dataset.idno;
   const apiUrl = `${root}/api/facets?doc=${idno}${
-    context.searchParams.has('lang') &&
-    ['de', 'en', 'fr', 'it'].some(
-      (lang) => lang === context.searchParams.get('lang')
+    context.searchParams.has("lang") &&
+    ["de", "en", "fr", "it"].some(
+      (lang) => lang === context.searchParams.get("lang"),
     )
-      ? `&lang=${context.searchParams.get('lang')}`
-      : ''
+      ? `&lang=${context.searchParams.get("lang")}`
+      : ""
   }`;
-  const aside = $('#aside');
+  const aside = $("#aside");
   if (aside.length) {
     aside.load(apiUrl, function () {
-      aside.find('li').each(function () {
+      aside.find("li").each(function () {
         insertTooltipFromApi(this, true);
       });
     });
@@ -54,7 +54,7 @@ $(document).ready(function () {
       url: apiUrl,
       success: function (response) {
         $(response)
-          .find('li')
+          .find("li")
           .each(function () {
             insertTooltipFromApi(this, aside.length > 0);
           });
@@ -62,7 +62,7 @@ $(document).ready(function () {
     });
   }
 
-  $('.reference span[data-url]').click(function (ev) {
-    window.open($(this).attr('data-url'), 'ssrq.references');
+  $(".reference span[data-url]").click(function (ev) {
+    window.open($(this).attr("data-url"), "ssrq.references");
   });
 });
