@@ -126,15 +126,18 @@ declare function views:home-handler($request as map(*)) as node() {
 declare function views:volumes-per-kanton-handler($request as map(*)) as item() {
     if (not(ends-with($request?path, '/')))
     then
-        router:response (301, "text/plain", "redirecting", map { "Location": utils:path-concat-safe(($config:base-url, $request?path, "/")) })
+        views:redirect-to(($request?path, "/"))
     else
-        views:handle-view-with-caching($request, $views:routes?kanton-volumes)
+        views:handle-view-with-caching(
+            views:add-title-to-request($request, (i18n:create-i18n-container('canton'), ' ', $request?parameters?kanton)),
+            $views:routes?kanton-volumes
+        )
 };
 
 declare function views:documents-per-volume-handler($request as map(*)) as item() {
     if (not(ends-with($request?path, '/')))
     then
-        router:response (301, "text/plain", "redirecting", map { "Location": utils:path-concat-safe(($config:base-url, $request?path, "/")) })
+        views:redirect-to(($request?path, "/"))
     else
         views:handle-view-with-caching($request, $views:routes?volume-docs)
 };
@@ -165,7 +168,7 @@ declare %private function views:document-handler($request as map(*), $path-exten
                 views:handle-view-with-caching($request, $views:routes?document)
         case 'pdf' case 'tex' case 'xml'
             return
-                router:response (301, "text/plain", "redirecting", map { "Location": utils:path-concat-safe(($config:base-url, $config:api-prefix, $config:api-version, $request?path)) })
+                views:redirect-to(($config:api-prefix, $config:api-version, $request?path))
         default
             return error($errors:SERVER_ERROR, 'Requested view not implemented for documents')
 };
@@ -177,7 +180,7 @@ declare %private function views:paratext-handler($request as map(*), $path-exten
                 views:handle-view-with-caching($request, $views:routes?paratexts)
         case 'tex' case 'xml'
             return
-                router:response (301, "text/plain", "redirecting", map { "Location": utils:path-concat-safe(($config:base-url, $config:api-prefix, $config:api-version, $request?path)) })
+                views:redirect-to(($config:api-prefix, $config:api-version, $request?path))
         default
             return error($errors:SERVER_ERROR, 'Requested view not implemented for editorial paratexts')
 };
@@ -217,7 +220,7 @@ declare %private function views:handle-view-with-caching($request as map(*), $ro
 : @param $subtitle The subtitle to be added
 : @return The model with the added title
 :)
-declare %private function views:add-title-to-request($request as map(*), $subtitle as xs:string?) as map(*) {
+declare %private function views:add-title-to-request($request as map(*), $subtitle as item()*) as map(*) {
     views:add-title-to-request($request, 'doctitel', $subtitle)
 };
 
@@ -230,6 +233,20 @@ declare %private function views:add-title-to-request($request as map(*), $subtit
 : @param $subtitle The subtitle to be added
 : @return The model with the added title
 :)
-declare %private function views:add-title-to-request($request as map(*), $title as xs:string?, $subtitle as xs:string?) as map(*) {
+declare %private function views:add-title-to-request($request as map(*), $title as item()*, $subtitle as item()*) as map(*) {
     map:put($request, 'parameters', map:merge(($request?parameters, map { 'maintitle': $title, 'subtitle': $subtitle })))
+};
+
+(: Redirects the request
+: to a given path. Uses $config:base-url as base.
+: Response code is 301.
+:
+: @param $redirect-path The path to which the request should be redirected
+:)
+declare function views:redirect-to($redirect-path as xs:string*) {
+    router:response (301,
+                    "text/plain",
+                    "redirecting",
+                    map { "Location": utils:path-concat-safe(($config:base-url, $redirect-path)) }
+                    )
 };
