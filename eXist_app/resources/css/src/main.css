@@ -31,10 +31,10 @@
     @apply ml-2.5;
   }
   .title-1 {
-    @apply text-3xl font-bold mb-2;
+    @apply text-3xl font-medium mb-2 text-ssrq-greyed-900;
   }
   .title-2 {
-    @apply text-2xl font-normal mb-1;
+    @apply text-2xl font-normal mb-1 text-ssrq-greyed-900;
   }
   .title-3 {
     @apply text-xl font-normal;
@@ -60,13 +60,26 @@
   .kanton-card_content-heading {
     @apply flex w-full justify-between items-center mb-1.5;
   }
-  .kanton-card_content-heading span {
+  .kanton-card_content-heading span,
+  .volume header span:not(.volume-id) {
     @apply bg-ssrq-primary text-white text-xs font-normal inline-flex items-center px-1.5 py-0.5 rounded-md border-none;
   }
   .kanton-card_content-heading h4 {
     @apply text-base pb-1 font-light;
   }
   .kanton-card_content h3 {
-    @apply title-3 font-semibold text-base;
+    @apply title-3 font-medium text-base;
+  }
+  .volume .volume-title {
+    @apply my-2;
+  }
+  .volume .volume-title h3 {
+    @apply font-semibold text-base mb-2 text-ssrq-greyed-900;
+  }
+  .volume footer a {
+    @apply text-blue-600 hover:underline cursor-pointer;
+  }
+  .volume footer a:not(:first-child) {
+    @apply ml-2;
   }
 }

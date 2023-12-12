@@ -25,3 +25,7 @@ declare function intl:translate($node as node(), $model as map(*), $lang as xs:s
             $translated
         }
 };
+
+declare function intl:create-i18n-container($key as xs:string) as element() {
+    <i18n:text key="{$key}">{$key}</i18n:text>
+};

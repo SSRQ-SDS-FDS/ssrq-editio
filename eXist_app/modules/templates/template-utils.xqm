@@ -41,7 +41,10 @@ declare function template-utils:print-title($node as node(), $model as map(*)) a
             return
                 element { 'h' || $i } {
                     attribute class { if ($i = 1) then 'title-1' else 'title-2' },
-                    <i18n:text key="{$title-part}">{$title-part}</i18n:text>
+                    if ($title-part instance of xs:string) then
+                        <i18n:text key="{$title-part}">{$title-part}</i18n:text>
+                    else
+                        $title-part
                 }
         )
     }[*]
@@ -111,6 +114,26 @@ declare function template-utils:display-pdf-download($node as node(), $model as 
                 }
             </a>
         else ()
+};
+
+(: Render a badge
+: with a document symbol and a simple counter
+:
+: @param $count xs:integer - the counter
+: @return element(span) - the rendered badge
+:)
+declare function template-utils:counter-badge($count as xs:integer) as element(span) {
+    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20
+    20" fill="currentColor" class="w-3.5 h-3.5 me-0.5">
+                            <path fill-rule="evenodd"
+                                d="M4.5 2A1.5 1.5 0 003 3.5v13A1.5 1.5 0 004.5
+    18h11a1.5 1.5 0 001.5-1.5V7.621a1.5 1.5 0 00-.44-1.06l-4.12-4.122A1.5 1.5 0
+    0011.378 2H4.5zm2.25 8.5a.75.75 0 000 1.5h6.5a.75.75 0 000-1.5h-6.5zm0
+    3a.75.75 0 000 1.5h6.5a.75.75 0 000-1.5h-6.5z"
+                                clip-rule="evenodd"/>
+                        </svg> {$count}
+    </span>
 };
 
 (:~

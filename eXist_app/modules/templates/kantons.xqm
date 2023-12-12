@@ -10,6 +10,7 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "../c
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "../ext-common.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../pm-config.xqm";
 import module namespace ssrq-cache="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache" at "../repository/cache.xqm";
+import module namespace template-utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/utils" at "./template-utils.xqm";
 
 declare namespace i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
@@ -122,17 +123,7 @@ declare %private function kantons:badge($kanton as xs:string+) as element(img)+ 
 
 declare %private function kantons:docs-badge($kanton as element(kanton)?) as element(span)? {
     if (exists($kanton)) then
-        <span>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20
-    20" fill="currentColor" class="w-3.5 h-3.5 me-0.5">
-                            <path fill-rule="evenodd"
-                                d="M4.5 2A1.5 1.5 0 003 3.5v13A1.5 1.5 0 004.5
-    18h11a1.5 1.5 0 001.5-1.5V7.621a1.5 1.5 0 00-.44-1.06l-4.12-4.122A1.5 1.5 0
-    0011.378 2H4.5zm2.25 8.5a.75.75 0 000 1.5h6.5a.75.75 0 000-1.5h-6.5zm0
-    3a.75.75 0 000 1.5h6.5a.75.75 0 000-1.5h-6.5z"
-                                clip-rule="evenodd"/>
-                        </svg> {articles-list:count($kanton/volume)}
-        </span>
+        template-utils:counter-badge(articles-list:count($kanton/volume))
     else
         ()
 };
