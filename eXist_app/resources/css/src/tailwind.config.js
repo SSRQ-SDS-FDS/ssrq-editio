@@ -34,6 +34,16 @@ module.exports = {
       },
     },
     fontFamily: {
+      monospace: [
+        "ui-monospace",
+        "SFMono-Regular",
+        "Menlo",
+        "Monaco",
+        "Consolas",
+        "Liberation Mono",
+        "Courier New",
+        "monospace",
+      ],
       sans: ["Open Sans", "Verdana", "Helvetica", "sans-serif"],
       seris: ["Lexia Fontes", "Georgia", "Times New Roman", "serif"],
     },
