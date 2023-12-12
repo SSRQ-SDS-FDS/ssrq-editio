@@ -116,7 +116,11 @@ declare function views:serve-api-definition($request as map(*)) as map(*) {
 declare function views:error-handler($error) {
     let $template := doc(utils:path-concat-safe(($config:app-root, 'routes', $views:routes?error)))
     return
-        templates:apply($template, $views:lookup, map { "description": $error?description }, views:get-template-config(map{}))
+        templates:apply($template,
+                        $views:lookup,
+                        map { "description": $error?description },
+                        views:get-template-config(map{'parameters': map {'maintitle': i18n:create-i18n-container('error-title')}})
+        )
 };
 
 declare function views:home-handler($request as map(*)) as node() {
