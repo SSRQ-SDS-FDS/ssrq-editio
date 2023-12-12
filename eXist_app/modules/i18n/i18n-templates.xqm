@@ -14,8 +14,7 @@ import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at 
  :      lang=de Language selection
  :      catalogues=relative path    Path to the i18n catalogue XML files inside database
  :)
-declare function intl:translate($node as node(), $model as map(*), $lang as xs:string?) {
-    let $lang := $config:lang-settings?lang
+declare function intl:translate($node as node(), $model as map(*), $lang as xs:string) {
     let $processed := templates:process($node/*, $model)
     let $translated :=
         i18n:process($processed, $lang, ())

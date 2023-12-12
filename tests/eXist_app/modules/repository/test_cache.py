@@ -99,8 +99,8 @@ async def test_cache_key_creation_with_context_and_params(execute_xquery: xquery
 async def test_cache_key_creation_as_uuid_is_deterministic(execute_xquery: xquery_tester):
     xquery = build_query(
         modules=[xquery_modules["ssrq-cache"]],
-        query_body="""ssrq-cache:create-unique-cache-key-as-uuid("baz", "bar")
-        = ssrq-cache:create-unique-cache-key-as-uuid("baz", "bar")""",  # noqa
+        query_body="""ssrq-cache:create-unique-cache-key-as-uuid("baz", "bar", "de")
+        = ssrq-cache:create-unique-cache-key-as-uuid("baz", "bar", "de")""",  # noqa
     )
     response = await execute_xquery(xquery)
 
