@@ -7,8 +7,12 @@ from tests.eXist_app.conftest import (
     assert_xquery_result,
 )
 
-EXPECTED_KANTONS = 5
-EXPECTED_NE_VOLUMES = 3
+from cli.volumes import config_reader
+
+VOLUME_CONFIG = config_reader.read_config()
+
+EXPECTED_KANTONS = len(VOLUME_CONFIG.volumes)
+EXPECTED_NE_VOLUMES = len([vol for vol in VOLUME_CONFIG.volumes if vol.canton == "NE"])
 
 
 @pytest.mark.asyncio_cooperative

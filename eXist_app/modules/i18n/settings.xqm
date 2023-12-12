@@ -68,3 +68,20 @@ declare function i18n-settings:get-lang-settings() as map(*) {
                 i18n-settings:get-browser-lang()
         }
 };
+
+(:
+: Get the language set in the request / the application
+: from the model using the param-resolver
+: or using the default configuration
+:
+: @param $model the model as map(*)
+: @return the language as xs:string
+:)
+declare function i18n-settings:get-lang-from-model-or-config($model as map(*)) as xs:string {
+    let $lang := try { $model?configuration?param-resolver('lang') } catch * { () }
+    return
+        if (exists($lang)) then
+            $lang
+        else
+            $config:lang-settings?lang
+};
