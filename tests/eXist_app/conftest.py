@@ -84,6 +84,11 @@ xquery_modules: dict[str, tuple[str, str, str]] = {
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/views",
         "/db/apps/ssrq/modules/views.xqm",
     ),
+    "volumes": (
+        "volumes",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/volumes",
+        "/db/apps/ssrq/modules/templates/volumes.xqm",
+    ),
 }
 
 
