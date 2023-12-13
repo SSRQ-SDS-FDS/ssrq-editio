@@ -12,31 +12,38 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "../c
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "../ext-common.xqm";
 import module namespace find="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder" at "../repository/finder.xqm";
 import module namespace i18n-settings="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/settings" at "../i18n/settings.xqm";
+import module namespace i18n = 'http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module' at '../i18n/i18n.xqm';
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
 import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "../ssrq.xqm";
 import module namespace console="http://exist-db.org/xquery/console";
 
-declare namespace i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace xpath="http://www.w3.org/2005/xpath-functions";
 
 (:
 : Utility templating function to create an attribute
-: data-app with the base URL on the root element.
+: data-app with the base URL on the root element and
+: apply the i18n-translation on it's children. Therefore it
+: will at first process all templates on the children and
+: then apply the i18n-translation.
 :
 : @param $node node() - the current node (passed by the template engine)
 : @param $model map(*) - the model (passed by the template engine)
 : @return element(html) - the root element with the attribute
 :)
-declare function template-utils:app-root($node as node(), $model as map(*)) as element(html) {
-    element { node-name($node) } {
-        $node/@* except $node/@data-template,
-        attribute lang {
-            i18n-settings:get-lang-from-model-or-config($model)
-        },
-        attribute data-app { $config:base-url },
-        templates:process($node/*, $model)
-    }
+declare function template-utils:create-root-and-translate($node as node(), $model as map(*)) as element(html) {
+    let $lang := i18n-settings:get-lang-from-model-or-config($model)
+    return
+        <html lang="{$lang}" data-app="{$config:base-url}">
+            {
+                $node/@* except $node/@data-template,
+                i18n:process(
+                    templates:process($node/*, $model),
+                    $lang,
+                    ()
+                )
+            }
+        </html>
 };
 
 (:
