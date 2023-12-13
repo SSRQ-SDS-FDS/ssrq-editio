@@ -39,10 +39,20 @@ xquery_modules: dict[str, tuple[str, str, str]] = {
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder",
         "/db/apps/ssrq/modules/repository/finder.xqm",
     ),
+    "head": (
+        "head",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/head",
+        "/db/apps/ssrq/modules/templates/head.xqm",
+    ),
     "idno-parser": (
         "idno-parser",
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/parser/idno",
         "/db/apps/ssrq/modules/parser/idno.xqm",
+    ),
+    "i18n-settings": (
+        "i18n-settings",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/settings",
+        "/db/apps/ssrq/modules/i18n/settings.xqm",
     ),
     "kantons": (
         "kantons",
