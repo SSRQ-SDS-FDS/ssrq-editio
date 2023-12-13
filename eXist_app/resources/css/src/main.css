@@ -76,6 +76,9 @@
   .volume .volume-title h3 {
     @apply font-semibold text-base mb-2 text-ssrq-greyed-900;
   }
+  .volume .volume-title p {
+    @apply text-sm;
+  }
   .volume footer a {
     @apply text-blue-600 hover:underline cursor-pointer;
   }
