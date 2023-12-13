@@ -15,6 +15,7 @@ import module namespace util="http://exist-db.org/xquery/util";
 import module namespace articles-idno="http://ssrq-sds-fds.ch/exist/apps/ssrq/articles/idno" at "articles/idno.xqm";
 import module namespace find="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder" at "repository/finder.xqm";
 import module namespace documents="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/documents" at "templates/documents.xqm";
+import module namespace head="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/head" at "templates/head.xqm";
 import module namespace kantons="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/kantons" at "templates/kantons.xqm";
 import module namespace nav="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/nav" at "templates/nav.xqm";
 import module namespace volumes="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/volumes" at "templates/volumes.xqm";
