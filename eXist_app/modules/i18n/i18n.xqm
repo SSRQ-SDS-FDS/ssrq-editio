@@ -43,7 +43,10 @@ declare function i18n:apply($content as node()+, $modules as element(modules), $
 :)
 declare function i18n:process($nodes as node()*, $selectedLang as xs:string?, $defaultLang as xs:string?) {
     let $default-lang := utils:coalesce($defaultLang, $config:i18n-default-lang)
-    let $selected-lang := utils:coalesce($selectedLang, $config:lang-settings)
+    let $selected-lang := utils:coalexec(
+                            function() { $selectedLang },
+                            function() { $config:lang-settings }
+                        )
     for $node in $nodes
         let $selectedCatalogue := i18n:get-language-collection($selected-lang, $default-lang)
         return
