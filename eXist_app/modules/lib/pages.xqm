@@ -207,15 +207,6 @@ declare function pages:clean-footnotes($nodes as node()*) {
                 $node
 };
 
-declare
-    %templates:wrap
-function pages:styles($node as node(), $model as map(*)) {
-    attribute href {
-        let $name := replace($config:odd, "^([^/.]+).*$", "$1")
-        return
-            utils:path-concat(("{app}", $config:output, $name || ".css"))
-    }
-};
 
 declare function pages:get-content($config as map(*), $div as element()) {
     typeswitch ($div)
