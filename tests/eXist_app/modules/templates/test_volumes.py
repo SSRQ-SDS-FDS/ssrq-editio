@@ -16,7 +16,7 @@ async def test_volumes_list_for_sg(execute_xquery: xquery_tester):
     xquery = build_query(
         modules=[xquery_modules["views"], xquery_modules["volumes"]],
         query_body="""let $config := views:get-template-config(map{"parameters": map{"kanton": "SG"}})
-        let $result := volumes:list(<div/>, $config, 'SG')?volumes
+        let $result := volumes:list(<div/>, map{ 'configuration': $config }, 'SG')?volumes
         return
             count($result) eq 1 and
             (
@@ -38,7 +38,7 @@ async def test_render_volume_title(execute_xquery: xquery_tester):
     xquery = build_query(
         modules=[xquery_modules["views"], xquery_modules["volumes"]],
         query_body="""let $config := views:get-template-config(map{"parameters": map{"kanton": "SG"}})
-        let $model := volumes:list(<div/>, $config, 'SG')
+        let $model := volumes:list(<div/>, map{ 'configuration': $config }, 'SG')
         for $volume in $model?volumes
         let $mod-model := map:put($model, 'volume', $volume)
         return
