@@ -186,16 +186,6 @@ declare function ssrq-helper:link-to-resource($model as map(*), $file-ext as xs:
 };
 
 
-(:~~
-: Utility Function to insert an alt-Attribute into html:img
-:
-: @return $node as node()
-:)
-declare function ssrq-helper:insertAlt($node as node(), $model as map(*)) as node() {
-    <img class="{$node/@class/data(.)}" src="{$node/@src/data(.)}" alt="{config:app-title($node, $model)}"/>
-};
-
-
 (:~
 : Counter function used to display values inside the counter-‚bubbles‘
 :

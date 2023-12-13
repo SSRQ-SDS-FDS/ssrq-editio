@@ -162,6 +162,22 @@ declare function template-utils:counter-badge($count as xs:integer) as element(s
     </span>
 };
 
+(:~~
+: Utility Function to insert the
+: app-title as an alt-Attribute into html:img
+:
+: @param $node node() - the current node (passed by the template engine)
+: @param $model map(*) - the model (passed by the template engine)
+: @return attribute(alt) - the alt-Attribute
+:)
+declare %templates:wrap function template-utils:insert-alt($node as node(), $model as map(*)) as attribute(alt) {
+    let $lang := i18n-settings:get-lang-from-model-or-config($model)
+    return
+        attribute alt {
+            $config:app-titles($lang)
+        }
+};
+
 (:~
 : Utility templating function to resolve links written like {app}/foo/bar
 : in the template.
