@@ -33,6 +33,17 @@ declare function find:regular-articles-with-uuid() as element(tei:TEI)+ {
 };
 
 (:~
+: Loads a collection of articles
+: by a given database path
+:
+: @param $db-path the path to the collection to search in as xs:string
+: @return a sequence of TEI documents as element(tei:TEI)*
+:)
+declare function find:articles-by-path($db-path as xs:string) as element(tei:TEI)* {
+    collection($db-path)/tei:TEI[not(@type)]
+};
+
+(:~
 : A function to find all TEI documents / paratextual documents in the data repository.
 :
 : @return a sequence of TEI documents
