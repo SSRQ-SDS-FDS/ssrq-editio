@@ -11,6 +11,14 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 declare variable $xsl:stylesheet-root := utils:path-concat(($config:app-root, 'resources', 'xsl'));
 
+(:~
+: Apply an XSLT stylesheet to one or more documents.
+:
+: @param $stylesheet as xs:string The path to the stylesheet to apply.
+: @param $input as node()+ The document(s) to transform.
+: @param $params as map(*)? The parameters to pass to the stylesheet.
+: @return node()* The transformed document(s).
+:)
 declare function xsl:apply($stylesheet as xs:string, $input as node()+, $params as map(*)?) as node()* {
     transform:transform(
         $input,
@@ -19,6 +27,12 @@ declare function xsl:apply($stylesheet as xs:string, $input as node()+, $params 
     )
 };
 
+(:~
+: Create a parameters element from a map.
+:
+: @param $params as map(*)? The parameters to pass to the stylesheet.
+: @return element(parameters)? The parameters element.
+:)
 declare %private function xsl:create-parameters($params as map(*)?) as element(parameters)? {
     if (empty($params)) then
         ()
@@ -33,6 +47,12 @@ declare %private function xsl:create-parameters($params as map(*)?) as element(p
         </parameters>
 };
 
+(:~
+: Load an XSLT stylesheet.
+:
+: @param $stylesheet as xs:string The path to the stylesheet to load.
+: @return node() The loaded stylesheet.
+:)
 declare %private function xsl:load-stylesheet($stylesheet as xs:string) as node() {
     doc(utils:path-concat(($xsl:stylesheet-root, $stylesheet)))
 };
