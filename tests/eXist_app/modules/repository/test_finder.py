@@ -164,3 +164,25 @@ async def test_find_pdf_by_idno_against_editio_data(
         )
     else:
         assert not cast_query_result(result[0], False)
+
+
+@pytest.mark.asyncio_cooperative
+async def test_find_articles_by_path(
+    execute_xquery: xquery_tester,
+):
+    """Test if the correct number of articles is found for a given path."""
+    xquery = build_query(
+        modules=[xquery_modules["config"], xquery_modules["finder"]],
+        query_body="""find:articles-by-path($config:data-root || '/SG/SG_III_4') => count()""",  # noqa
+    )
+
+    assert_xquery_result(await execute_xquery(xquery), 259)
+
+@pytest.mark.asyncio_cooperative
+async def test_construct_path_from_kanton_and_volume(execute_xquery: xquery_tester):
+    xquery = build_query(
+        modules=[xquery_modules["finder"]],
+        query_body="""find:construct-path-from-kanton-and-volume('SG', 'III_4')""",  # noqa
+    )
+
+    assert_xquery_result(await execute_xquery(xquery), "/db/apps/ssrq/editio-data/SG/SG_III_4")
