@@ -155,9 +155,7 @@ declare function find:pdf-by-idno($idno as xs:string, $doc as element(doc)) as m
 declare function find:pdf-by-kanton-and-volume($kanton as xs:string, $volume as xs:string) as map(*) {
     let $suffix := string-join(($kanton, $volume), '-') || '.pdf'
     let $collection := utils:path-concat-safe(($config:data-root, $kanton, ($kanton || '_' || $volume), 'pdf'))
-    let $result := xmldb:get-child-resources(
-        utils:path-concat-safe(($config:data-root, $kanton, ($kanton || '_' || $volume), 'pdf'))
-        )[ends-with(., $suffix)]
+    let $result := xmldb:get-child-resources(find:construct-path-from-kanton-and-volume($kanton, $volume) || '/pdf')[ends-with(., $suffix)]
     return
         if (count($result) = 1) then
             let $path := utils:path-concat-safe(($collection, $result))
@@ -210,4 +208,16 @@ declare function find:load-by-request-params($params as array(xs:string)) as map
                     find:article-by-idno($id?idno)
     return
         map:put($id, 'xml', $xml)
+};
+
+(:~
+: Construct the path to a volume collection
+: from the Kanton and Volume given as xs:string
+:
+: @param $kanton the kanton as xs:string
+: @param $volume the volume as xs:string
+: @return the path as xs:string
+:)
+declare function find:construct-path-from-kanton-and-volume($kanton as xs:string, $volume as xs:string) as xs:string {
+    utils:path-concat-safe(($config:data-root, $kanton, ($kanton || '_' || $volume)))
 };
