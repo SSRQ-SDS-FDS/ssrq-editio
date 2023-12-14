@@ -1,14 +1,18 @@
 <collection xmlns="http://exist-db.org/collection-config/1.0">
     <index xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
         <lucene>
-            <!-- Lucene fulltext-index, entries sorted by XML-hierachy -->
-            <!-- Not used – can be considered as deprecated
-            <text qname="tei:TEI" index="no">
-                <field name="kanton" expression="if (not(@type=('volinfo','introduction','biblio')) and .//tei:text/tei:body/*) then replace(tei:teiHeader//tei:seriesStmt/tei:idno, '^[^_]+_([^_]+).*$', '$1') else 'XXX'"/>
-                <field name="idno" expression=".[not(@type)]/tei:teiHeader//tei:seriesStmt/tei:idno"/>
-                <field name="title" expression="if (not(@type=('volinfo','introduction','biblio'))) then tei:teiHeader//tei:msDesc/tei:head else 'XXX'"/>
+            <module uri="http://ssrq-sds-fds.ch/exist/apps/ssrq/query/index" prefix="index" at="modules/query/index.xqm"/>
+            <module uri="http://ssrq-sds-fds.ch/exist/apps/ssrq/parser/idno" prefix="idno-parser" at="modules/parser/idno.xqm"/>
+
+            <!-- Index the documents as a whole; not in use for fulltext-search. Instead this index-configuration is used
+            for querying the list of documents per volume -->
+            <text qname="tei:TEI">
+                <field name="idno" expression="//tei:seriesStmt/tei:idno[1]"/>
+                <field name="main" expression="idno-parser:parse(., true())?is-main" type="xs:boolean" binary="yes"/>
+                <field name="printed-idno" expression=". => idno-parser:print()" type="xs:string" binary="yes"/>
+                <field name="sort-number" expression="idno-parser:parse(., false())?sort-number" type="xs:integer" binary="yes"/>
+                <field name="title" expression=". => index:get-title()"/>
             </text>
-            -->
             <text match="//tei:fileDesc/tei:titleStmt/tei:title"/>
             <text match="//tei:msDesc/tei:head"/>
             <text match="//tei:msDesc/tei:msIdentifier/tei:idno"/>
