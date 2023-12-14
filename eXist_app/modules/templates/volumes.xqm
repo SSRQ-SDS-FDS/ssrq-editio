@@ -12,7 +12,7 @@ import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at
 import module namespace ssrq-cache="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache" at "../repository/cache.xqm";
 import module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/helper" at "../ssrq-helper.xqm";
 import module namespace template-utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/utils" at "template-utils.xqm";
-import module namespace console="http://exist-db.org/xquery/console";
+import module namespace xsl="http://ssrq-sds-fds.ch/exist/apps/ssrq/processing/xsl" at "../processing/xsl.xqm";
 
 declare namespace i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
@@ -80,14 +80,7 @@ declare %private function volumes:get-volumes($kanton as xs:string) as element(v
 : @return element(div) - the rendered volume title
 :)
 declare function volumes:render-volume-title($node as node(), $model as map(*)) as element(div) {
-    let $example-document := array:get($model?volume, 2)
-    let $title := $pm-config:web-transform($example-document//tei:fileDesc, map { "root": $example-document, "view": "volumes" }, $config:odd)
-    return
-        element { node-name($node) } {
-            $title/@* except $title/@class,
-            attribute class { 'volume-title' },
-            $title/node()
-        }
+    xsl:apply('volume-title.xsl', array:get($model?volume, 2), ())
 };
 
 (:
