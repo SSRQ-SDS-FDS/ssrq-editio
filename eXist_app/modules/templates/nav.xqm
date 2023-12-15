@@ -6,6 +6,7 @@ import module namespace templates = "http://exist-db.org/xquery/html-templating"
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
+import module namespace idno-parser="http://ssrq-sds-fds.ch/exist/apps/ssrq/parser/idno" at "../parser/idno.xqm";
 
 declare namespace i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
@@ -63,7 +64,6 @@ declare function nav:breadcrumbs($node as node(), $model as map(*)) as element(l
     let $path-components := utils:path-tokenize($model?configuration?param-resolver('request-path'))[string-length() > 0]
     let $len-components := count($path-components)
     for $component at $index in $path-components
-    let $content := replace(replace($component, '-', ' '), '^(.*)\.\w+$', '$1')
     return
         <li>
             {
@@ -78,11 +78,11 @@ declare function nav:breadcrumbs($node as node(), $model as map(*)) as element(l
                 {
                     if ($index < $len-components) then
                         <a href="{utils:path-concat(($config:base-url, $component))}">
-                            <i18n:text key="{$component}">{$content}</i18n:text>
+                            <i18n:text key="{$component}">{nav:clean-breadcrumb-content($component)}</i18n:text>
                         </a>
                     else
                         <span>
-                            <i18n:text key="{$component}">{$content}</i18n:text>
+                            <i18n:text key="{$component}">{nav:clean-breadcrumb-content($component)}</i18n:text>
                         </span>
                 }
             </div>
@@ -108,4 +108,19 @@ declare %private function nav:create-menu-link($entry as map(*)) as element(a) {
         }
         <i18n:text key="{$entry?key}"/>
     </a>
+};
+
+(:~
+: Cleans the (displayed) content of a breadcrumb component
+: by replacing dashes with spaces and removing
+: the file extension.
+:
+: @param $content the content to be cleaned
+: @return the cleaned content as xs:string
+:)
+declare %private function nav:clean-breadcrumb-content($content as xs:string) as xs:string {
+    replace($content, '-', ' ')
+    => replace('^(.*)\.\w+$', '$1')
+    => idno-parser:print-volume()
+    => replace('^((?:[A-Za-z0-9]+\.)*([0-9]+)) 1$', '$1')
 };
