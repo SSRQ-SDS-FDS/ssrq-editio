@@ -138,3 +138,22 @@ declare function idno-parser:print($input as xs:string) as xs:string {
                             $part
                 , ' ')
 };
+
+(:
+: Creates a human readable string from an volume name.
+:
+: @param $volume The volume name as xs:string
+: @return The parsed volume name as xs:string
+:)
+declare function idno-parser:print-volume($volume as xs:string) as xs:string {
+    let $parts := tokenize($volume, '_')
+    let $len := count($parts)
+    return string-join(
+            for $part at $i in $parts
+            return
+                if ($part => matches('[IVX0-9]+')) then
+                    ($part, '/'[$i ne $len])
+                else
+                    ($part, ' '[$i ne $len])
+            )
+};
