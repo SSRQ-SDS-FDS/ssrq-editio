@@ -37,7 +37,7 @@ declare function template-utils:create-root-and-translate($node as node(), $mode
         <html lang="{$lang}" data-app="{$config:base-url}">
             {
                 $node/@* except $node/@data-template,
-                i18n:process(
+                i18n:process-with-xsl(
                     templates:process($node/*, $model),
                     $lang,
                     ()

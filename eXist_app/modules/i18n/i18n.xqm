@@ -10,6 +10,7 @@ module namespace i18n = 'http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module';
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
 import module namespace find="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder" at "../repository/finder.xqm";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
+import module namespace xsl="http://ssrq-sds-fds.ch/exist/apps/ssrq/processing/xsl" at "../processing/xsl.xqm";
 
 (:~
  : Start processing the provided content using the modules defined by $modules. $modules should
@@ -41,16 +42,30 @@ declare function i18n:apply($content as node()+, $modules as element(modules), $
  : @param $model a sequence of items which will be passed to all called template functions. Use this to pass
  : information between templating instructions.
 :)
-declare function i18n:process($nodes as node()*, $selectedLang as xs:string?, $defaultLang as xs:string?) {
-    let $default-lang := utils:coalesce($defaultLang, $config:i18n-default-lang)
-    let $selected-lang := utils:coalexec(
-                            function() { $selectedLang },
-                            function() { $config:lang-settings }
-                        )
+declare function i18n:process($nodes as node()*, $selectedLang as xs:string?, $defaultLang as xs:string?) as node()* {
+    let $lang := i18n:determine-languages($selectedLang, $defaultLang)
     for $node in $nodes
-        let $selectedCatalogue := i18n:get-language-collection($selected-lang, $default-lang)
+        let $selectedCatalogue := i18n:get-language-collection($lang?selected, $lang?default)
         return
             i18n:process($node, $selectedCatalogue)
+};
+
+(:
+: Apply the tranlation to the given nodes using the given language
+: with XSLT
+:
+: @param $nodes the nodes to process
+: @param $selectedLang the language to search for as xs:string
+: @param $defaultLang the default language to search for as xs:string
+: @return the translated nodes as node()*
+:)
+declare function i18n:process-with-xsl($nodes as node()*, $selectedLang as xs:string?, $defaultLang as xs:string?) as node()* {
+    let $lang := i18n:determine-languages($selectedLang, $defaultLang)
+    let $catalogue-path := (i18n:get-language-collection($lang?selected, $lang?default) => find:path-to-doc())?uri
+    return
+        xsl:apply('i18n.xsl', $nodes, map {
+            'lang-catalogue-path': $catalogue-path
+        })
 };
 
 (:~
@@ -190,4 +205,18 @@ declare function i18n:get-language-collection($selected-lang as xs:string, $defa
     else
         find:i18n-catalogue-by-lang($default-lang)
 
+};
+
+(:
+: Get the language for the translation
+:
+: @param $selected-lang the language to search for as xs:string
+: @param $default-lang the default language to search for as xs:string
+: @return the language collection as map(*)
+:)
+declare %private function i18n:determine-languages($selected-lang as xs:string?, $default-lang as xs:string?) as map(*) {
+    map {
+        'default': utils:coalesce($default-lang, $config:i18n-default-lang),
+        'selected': utils:coalexec(function() { $selected-lang }, function() { $config:lang-settings })
+    }
 };
