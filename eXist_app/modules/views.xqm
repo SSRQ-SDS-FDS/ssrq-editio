@@ -40,6 +40,8 @@ import module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/help
 import module namespace tex="http://ssrq-sds-fds.ch/exist/apps/ssrq/processing/tex" at "processing/tex.xqm";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 
+import module namespace idno-parser="http://ssrq-sds-fds.ch/exist/apps/ssrq/parser/idno" at "parser/idno.xqm";
+
 declare variable $views:routes := map {
     'api' : 'api.html',
     'api-json' : 'api.json',
@@ -144,7 +146,12 @@ declare function views:documents-per-volume-handler($request as map(*)) as item(
     then
         views:redirect-to(($request?path, "/"))
     else
-        views:handle-view-with-caching($request, $views:routes?volume-docs)
+        views:handle-view-with-caching(
+            views:add-title-to-request($request,
+                            (i18n:create-i18n-container('canton'), ' ',  $request?parameters?kanton, ' · ', i18n:create-i18n-container('volume'), ' ', idno-parser:print-volume($request?parameters?volume))
+                        ),
+            $views:routes?volume-docs
+        )
 };
 
 declare function views:volume-pdf-handler($request as map(*)) as item() {
