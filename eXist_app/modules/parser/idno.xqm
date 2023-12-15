@@ -66,7 +66,7 @@ declare function idno-parser:parse($input as item(), $check-is-main as xs:boolea
             default return ()
     }
     let $doc-info as element(doc) :=
-        <doc>
+        <doc xml:id="{$idno}">
             {
         for $group in (analyze-string($idno, '^(SSRQ|SDS|FDS)
                                 -([A-Z]{2})
