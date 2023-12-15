@@ -249,6 +249,15 @@
               "type": "integer",
               "default": 20
             }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "description": "A simple query string to filter by title or IDNO",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {

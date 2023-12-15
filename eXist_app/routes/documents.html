@@ -1,10 +1,14 @@
 <div
   xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module"
   data-template="templates:surround"
-  data-template-with="templates/main.html"
-  data-template-at="main-content"
+  data-template-with="templates/page.html"
+  data-template-at="content"
 >
-  <section
+  <nav
+    data-template="lib:include"
+    data-template-path="templates/breadcrumbs.html"
+  />
+  <!-- <section
     id="documents-panel"
     data-template="documents:list"
     data-template-per-page="20"
@@ -50,5 +54,5 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 </div>
