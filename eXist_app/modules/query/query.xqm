@@ -1,6 +1,6 @@
 xquery version "3.1";
 
-module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/query";
+module namespace query="http://ssrq-sds-fds.ch/exist/apps/ssrq/query/query";
 
 import module namespace ft="http://exist-db.org/xquery/lucene" at "java:org.exist.xquery.modules.lucene.LuceneModule";
 import module namespace util="http://exist-db.org/xquery/util";
@@ -8,7 +8,7 @@ import module namespace xmldb="http://exist-db.org/xquery/xmldb";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
 import module namespace articles-idno="http://ssrq-sds-fds.ch/exist/apps/ssrq/articles/idno" at "../articles/idno.xqm";
-import module namespace link="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/link" at "link.xqm";
+import module namespace link="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/link" at "../repository/link.xqm";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
@@ -41,7 +41,20 @@ declare function query:with-col($query, $options) {
 :)
 declare %private function query:create-options($allow-leading-wildcard as xs:boolean, $rewrite-filter as xs:boolean) as map(*) {
     map {
-        "leading-wildcard": $allow-leading-wildcard,
-        "filter-rewrite": $rewrite-filter
+        "leading-wildcard": query:convert-bool-to-lucene-value($allow-leading-wildcard),
+        "filter-rewrite": query:convert-bool-to-lucene-value($rewrite-filter)
     }
+};
+
+(:~
+: Lucene does not uses boolean, but strings
+: with "yes" and "no" as values. This function
+: will convert a boolean to the corresponding
+: string.
+:
+: @param $value as xs:boolean - The boolean value to convert.
+: @return xs:string - The string value.
+:)
+declare function query:convert-bool-to-lucene-value($value as xs:boolean) as xs:string {
+    if ($value) then "yes" else "no"
 };
