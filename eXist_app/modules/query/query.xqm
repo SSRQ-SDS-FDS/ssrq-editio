@@ -31,6 +31,15 @@ declare function query:with-col($query, $options) {
     collection($config:data-root)/tei:TEI[not(@type)]//tei:body[*][.//tei:note//tei:orig[ft:query(., $query, $options)]]
 };
 
+declare function query:articles-by-title-or-idno($articles as element(tei:TEI)+, $query as xs:string?) as element(tei:TEI)* {
+    let $options := map:merge((
+        query:create-options(true(), true()),
+        map:entry('fields', ('main', 'idno', 'printed-idno', 'sort-number', 'title'))
+    ))
+    return
+        $articles[ft:query(., query:build-field-query($query, ('title', 'idno'), 'OR'), $options)]
+};
+
 (: ~
 : Controls how to generate options for the fulltext-search.
 : See https://exist-db.org/exist/apps/doc/lucene#parameters for details.
@@ -57,4 +66,21 @@ declare %private function query:create-options($allow-leading-wildcard as xs:boo
 :)
 declare function query:convert-bool-to-lucene-value($value as xs:boolean) as xs:string {
     if ($value) then "yes" else "no"
+};
+
+(:
+: Build a query string from a given query and a list of fields.
+: Note: The returned query will only search in fields
+:
+: @param $query as xs:string? – The given query
+: @param fields as xs:string+ – One or more fields to search in.
+: @param $operand as xs:string – The operand to use between the fields.
+: @return xs:string? – The query string.
+:)
+declare function query:build-field-query($query as xs:string?, $fields as xs:string+, $operand as xs:string) as xs:string? {
+    if (empty($query)) then
+        ()
+    else
+        ($fields ! string-join((., $query), ':'))
+        => string-join(' ' || $operand  || ' ')
 };
