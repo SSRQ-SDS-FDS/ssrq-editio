@@ -3,7 +3,6 @@
         <param name="ref" value="@ref"/>
         <pb:template>\persname{[[ref]]}{[[content]]}</pb:template>
     </model>
-    <model predicate="$parameters?view='volumes'" behaviour="inline"/>
     <model behaviour="reference" cssClass="semantic person">
         <desc>Semantic highlighting of person with blue text color</desc>
         <param name="content" value="."/>
