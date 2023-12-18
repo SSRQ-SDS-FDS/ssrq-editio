@@ -10,7 +10,7 @@
                 <field name="idno" expression="//tei:seriesStmt/tei:idno[1]"/>
                 <field name="main" expression="idno-parser:parse(., true())?is-main" type="xs:boolean" binary="yes"/>
                 <field name="printed-idno" expression=". => idno-parser:print()" type="xs:string" binary="yes"/>
-                <field name="sort-number" expression="idno-parser:parse(., false())?sort-number" type="xs:integer" binary="yes"/>
+                <field name="sort-number" expression="idno-parser:parse(., false())?sort-key" type="xs:integer" binary="yes"/>
                 <field name="title" expression=". => index:get-title()"/>
             </text>
             <text match="//tei:fileDesc/tei:titleStmt/tei:title"/>
