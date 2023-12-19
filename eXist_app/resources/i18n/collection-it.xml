@@ -13,6 +13,7 @@
     <msg key="close">Chiudere</msg>
     <msg key="search-results">Risultati della ricerca</msg>
     <msg key="found">trovato</msg>
+    <msg key="found-single">trovato</msg>
     <msg key="view-switch">Passare dalla vista vicino alla sorgente a quella normalizzata.</msg>
     <msg key="view-normalized">Normalizzata</msg>
     <msg key="yes">Sì</msg>
@@ -103,4 +104,5 @@
     <msg key="project"><a target="_blank" href="https://www.ssrq-sds-fds.ch/it/home/">Progetto</a></msg>
     <!-- ToDo prüfen: -->
     <msg key="published-by">Pubblicato dalla Fondazione Fonti del Diritto della Società Svizzera degli Avvocati</msg>
+    <msg key="has-facs">Facsimile disponibile</msg>
 </catalogue>

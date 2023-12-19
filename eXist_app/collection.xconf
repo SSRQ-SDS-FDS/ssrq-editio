@@ -7,8 +7,10 @@
             <!-- Index the documents as a whole; not in use for fulltext-search. Instead this index-configuration is used
             for querying the list of documents per volume -->
             <text qname="tei:TEI">
+                <field name="has-facs" expression="exists(//tei:pb[@facs])" binary="yes" type="xs:string"/>
                 <field name="idno" expression="//tei:seriesStmt/tei:idno[1]"/>
                 <field name="main" expression="idno-parser:parse(., true())?is-main" type="xs:boolean" binary="yes"/>
+                <field name="origPlace-ref" expression="(//tei:origPlace[ancestor::tei:history]/@ref/data(.))[1]" binary="yes" as="xs:string"/>
                 <field name="printed-idno" expression=". => idno-parser:print()" type="xs:string" binary="yes"/>
                 <field name="sort-number" expression="idno-parser:parse(., false())?sort-key" type="xs:integer" binary="yes"/>
                 <field name="title" expression=". => index:get-title()"/>
@@ -61,6 +63,7 @@
             <create qname="tei:date">
                 <field name="date-type" match="@type" type="xs:string"/>
             </create>
+            <create qname="tei:origDate"/>
         </range>
     </index>
 </collection>
