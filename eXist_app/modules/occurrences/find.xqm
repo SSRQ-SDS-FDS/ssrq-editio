@@ -2,6 +2,9 @@ xquery version "3.1";
 
 module namespace occurrences-find="http://ssrq-sds-fds.ch/exist/apps/ssrq/occurrences/find";
 
+import module namespace api="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/api" at "../repository/api.xqm";
+import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
+
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 (:~ Find all keywords in a
@@ -54,4 +57,12 @@ declare function occurrences-find:places($docs as element(tei:TEI)+) as xs:strin
     group by $loc-key
     order by $loc-key
     return $loc-key
+};
+
+declare function occurrences-find:get-std-name($id as xs:string, $lang as xs:string) as xs:string {
+    let $entity-type := substring($id, 1, 3)
+    return
+        switch ($entity-type)
+            case 'loc' return api:request-json($api:STDNAME, map{ 'id': $id, 'lang': $config:iso-639-3($lang) })('#text')
+            default return 'TODO'
 };

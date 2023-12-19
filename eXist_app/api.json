@@ -269,6 +269,56 @@
           }
         }
       }
+    },
+    "/api/v1/occurrences/{entityId}": {
+      "get": {
+        "summary": "Returns a list of entity-occurrences mentioned in the articles, variants included.",
+        "tags": ["occurrences"],
+        "operationId": "api:occurrences-handler",
+        "x-error-handler": "views:error-handler",
+        "parameters": [
+          {
+            "name": "entityId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "description": "The selected language",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["de", "en", "fr", "it"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lists information on a specific occurrence-id, which is mentioned in the SSRQ corpus",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the occurrence"
+                    },
+                    "stdName": {
+                      "type": "string",
+                      "description": "The standardized name of the occurrence"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

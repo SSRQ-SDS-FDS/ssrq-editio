@@ -177,11 +177,21 @@ declare variable $config:i18n-default-lang := "de";
 
 declare variable $config:i18n-supported-languages-display := ("DEU", "FRA", "ITA", "ENG");
 
+declare variable $config:iso-639-3 := map {'de'     : 'deu',
+                                          'fr'     : 'fra',
+                                          'it'     : 'ita',
+                                          'en'     : 'eng'
+                                         };
+
 declare variable $config:paratext-types := ("intro", "bailiffs", "lit");
 
 declare variable $config:api-prefix := 'api';
 
 declare variable $config:api-version := 'v1';
+
+declare variable $config:ssrq-api-host := 'https://www.ssrq-sds-fds.ch';
+
+declare variable $config:ssrq-places-db-std-name := $config:ssrq-api-host || '/places-db-edit/views/get-std-name.xq';
 
 (: FIXME: using path-concat-safe here results in a NullPointerException
  : declare variable $config:expath-descriptor := doc(utils:path-concat-safe(($config:app-root, "expath-pkg.xml")))/expath:package;
