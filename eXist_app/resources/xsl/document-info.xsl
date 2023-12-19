@@ -7,7 +7,6 @@
                 exclude-result-prefixes="#all" expand-text="yes" version="3.0">
     
     <xsl:import href="./common.xsl"/>
-    <xsl:import href="./html-functions.xsl"/>
     
     <xsl:output method="html" indent="yes"/>
     <xsl:mode on-no-match="deep-skip"/>
