@@ -14,6 +14,7 @@
     <msg key="search-results">Risultati della ricerca</msg>
     <msg key="found">trovato</msg>
     <msg key="found-single">trovato</msg>
+    <msg key="no-hits-found">Nessun risultato</msg>
     <msg key="view-switch">Passare dalla vista vicino alla sorgente a quella normalizzata.</msg>
     <msg key="view-normalized">Normalizzata</msg>
     <msg key="yes">Sì</msg>

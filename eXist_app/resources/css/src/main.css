@@ -94,18 +94,24 @@
     @apply max-w-5xl flex-1 lg:px-12 sm:px-6 mx-auto mt-4 mb-9 flex flex-col items-center;
   }
   .documents .document-info {
-      @apply w-full px-8 py-4 bg-white rounded-lg shadow-md my-2 flex-1 hover:shadow hover:bg-blue-50;
+    @apply w-full px-8 py-4 bg-white rounded-lg shadow-md my-2 flex-1 hover:shadow hover:bg-blue-50;
   }
   .documents .document-info header {
-      @apply mb-2;
+    @apply mb-2;
   }
   .documents .document-info header span:not(:last-child) {
-      @apply sm:mr-2 md:mr-4;
+    @apply sm:mr-2 md:mr-4;
   }
   .documents .document-info header {
     @apply text-ssrq-greyed-600 text-sm;
   }
   .documents .document-info header span {
     @apply inline-flex items-center;
+  }
+  .documents #loading-overlay {
+    display: none;
+  }
+  .documents #loading-overlay.htmx-request {
+    display: block;
   }
 }

@@ -45,7 +45,7 @@ function documents:list($node as node(),
     let $volume-documents as element(tei:TEI)+ := find:articles-by-path(documents:construct-volume-path($kanton, $volume))
     let $documents-filtered as element(tei:TEI)* := query:articles-by-title-or-idno($volume-documents, $q)
     return
-        <section class="documents" x-data="placesStdNames()" x-init="fetchAndInsert" data-lang="{$lang}" data-endpoint="{$config:base-url}/{$config:api-prefix}/{$config:api-version}/occurrences">
+        <section class="documents relative" x-data="placesStdNames()" x-init="fetchAndInsert" data-lang="{$lang}" data-endpoint="{$config:base-url}/{$config:api-prefix}/{$config:api-version}/occurrences">
             {
                 if (empty($documents-filtered)) then
                     documents:no-hits()
@@ -64,6 +64,7 @@ function documents:list($node as node(),
                     return
                         (
                             pagination:container('top', ($pagination, $hits-container)),
+                            template-utils:loader-overlay(),
                             $documents-rendered?title-cards,
                             pagination:container('bottom', $pagination)
                         )
@@ -119,5 +120,7 @@ declare %private function documents:construct-volume-path($kanton as xs:string, 
 
 
 declare %private function documents:no-hits() as element() {
-    <h3>{i18n:create-i18n-container('no-hits-found')}</h3>
+    <div class="w-full h-12 flex justify-center items-center my-4 rounded bg-ssrq-greyed-100">
+        <h3>{i18n:create-i18n-container('no-hits-found')}</h3>
+    </div>
 };

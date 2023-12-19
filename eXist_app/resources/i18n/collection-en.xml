@@ -14,6 +14,7 @@
     <msg key="search-results">Search Results</msg>
     <msg key="found">found</msg>
     <msg key="found-single">found</msg>
+    <msg key="no-hits-found">No hits</msg>
     <msg key="view-switch">Switch between normalized and diplomatic view</msg>
     <msg key="view-normalized">Normalized</msg>
     <msg key="yes">Yes</msg>
