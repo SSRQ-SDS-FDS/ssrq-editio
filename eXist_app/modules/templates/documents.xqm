@@ -60,12 +60,12 @@ function documents:list($node as node(),
                                             $link-components,
                                             $link-params
                                         )
-                    let $hits-container :=  template-utils:display-hits($count, link:to-app($link-components, map:merge(($link-params, map{'per-page': $count }))))
+                    let $hits-container :=  template-utils:display-hits($count, link:to-app($link-components, map:merge(($link-params, map{'per-page': $count }[$count > $per-page]))))
                     return
                         (
                             pagination:container('top', ($pagination, $hits-container)),
                             $documents-rendered?title-cards,
-                            pagination:container('bottom', ($pagination, $hits-container))
+                            pagination:container('bottom', $pagination)
                         )
             }
         </section>
