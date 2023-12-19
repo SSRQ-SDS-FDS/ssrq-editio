@@ -15,11 +15,10 @@ class EditioEnv(BaseModel):
     env: Literal["dev", "prod"]
     cache: bool
     index_prefix: str
-    upload: bool
     urls: EditioUrls
 
     def __str__(self):
-        return f"cache: {self.cache}; env: {self.env}; upload: {self.upload}"
+        return f"cache: {self.cache}; env: {self.env}"
 
 
 class SourceTargetMap(BaseModel):
@@ -77,11 +76,8 @@ def read_docker_settings(cfg_path: Path) -> DockerSettings:
     return DockerSettings(**config["editio"]["docker"])
 
 
-def merge_env_settings(
-    settings: EditioEnv, cache: bool, upload: bool, env: str | None
-) -> EditioEnv:
+def merge_env_settings(settings: EditioEnv, cache: bool, env: str | None) -> EditioEnv:
     settings.cache = cache
-    settings.upload = upload
     if env is not None and env in ["dev", "prod"]:
         settings.env = env  # type: ignore
     return settings
@@ -94,7 +90,6 @@ def write_settings_to_env_xml(settings: EditioEnv, target_dir: Path, name: str =
             <settings>
                 <env>{settings.env}</env>
                 <cache>{str(settings.cache).lower()}</cache>
-                <upload>{str(settings.upload).lower()}</upload>
                 <urls>
                     <prefix type="index">{settings.index_prefix}</prefix>
                     {"".join(f'<url lang="{lang}">{url}</url>'

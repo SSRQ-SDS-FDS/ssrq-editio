@@ -58,15 +58,6 @@ ssrq-cache:put-into-static-cache($config:static-cache-path, $config:static-filte
 xmldb:create-collection($target, "transform"),
 sm:chown(xs:anyURI($target || "/transform"), "ssrq"),
 sm:chgrp(xs:anyURI($target || "/transform"), "tei"),
-if (xs:boolean(doc($target || "/env.xml")//upload)) then
-    (
-        sm:chmod(xs:anyURI($target || "/modules/pub/upload.xql"), "rwsr-xr-x"),
-        xmldb:create-collection($config:app-root, "temp"),
-        sm:chown(xs:anyURI($config:temp-root), "ssrq"),
-        sm:chgrp(xs:anyURI($config:temp-root), "tei")
-    )
-else
-    (),
 ssrq-cache:destroy-dynamic-cache-if-exists($config:dynamic-cache-name),
 ssrq-cache:create-dynamic-cache($config:dynamic-cache-name, 32768, 86400000), (: Creates a cache with a max age of 24h :)
 local:generate-code($target)
