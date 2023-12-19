@@ -61,13 +61,7 @@ declare function link:to-app($components as xs:string*, $params as map(*)?) {
 : @return xs:string – The link.
 :)
 declare function link:create($components as xs:string*, $params as map(*)?) {
-    let $host := string-join($components, '/')
-    let $params := link:build-query-string($params)
-    return
-        if ($host => ends-with('/')) then
-            concat($host, $params)
-        else
-            concat($host, '/', $params)
+    string-join((string-join($components, '/'), link:build-query-string($params)))
 };
 
 (:~

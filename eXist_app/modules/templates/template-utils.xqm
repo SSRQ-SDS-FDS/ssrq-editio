@@ -275,11 +275,11 @@ declare %private function template-utils:resolve-links-from-template($template a
         let $path := functx:substring-before-if-contains($url, "?")
         return
             link:create(
-                $path,
+                $path[string-length(.) > 0],
                 if (
                     $add-lang-param
                     and starts-with($input-value, "{app}")
-                    and not($query-map?lang)
+                    and not(map:contains($query-map, 'lang'))
                 ) then
                     $query-map => map:put("lang", $config:lang-settings?lang)
                 else
@@ -300,7 +300,7 @@ declare function template-utils:create-url-base-for-link($input-value as attribu
                     switch ($current)
                     case 'app' return $config:base-url
                     case 'uri' return request:get-uri()
-                    case 'qs' return "" || request:get-query-string()
+                    case 'qs'  return "" || request:get-query-string()
                     default return
                         utils:coalexec(
                             function() { $model?configuration?param-resolver($current) },
