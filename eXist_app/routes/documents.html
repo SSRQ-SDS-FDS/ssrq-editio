@@ -24,6 +24,12 @@
           data-template="templates:form-control"
           class="px-4 py-1 min-w-[16rem] text-sm text-ssrq-greyed-800 bg-white border rounded-md focus:border-ssrq-primary focus:border-[0.025rem] focus:outline-none focus:ring focus:ring-ssrq-primary focus:ring-opacity-40"
           placeholder="IDNO / Titel"
+          hx-get="{app}/{kanton}/{volume}/?lang={lang}"
+          hx-indicator="#loading-overlay"
+          hx-params="not per-page,page lang"
+          hx-push-url="true"
+          hx-trigger="input changed delay:500ms, submit"
+          hx-target="body"
         /><!--
         <button
           class="px-4 py-2 text-sm font-medium text-white transition-colors duration-300 transform bg-ssrq-primary rounded-md ml-1 hover:shadow-sm focus:outline-none focus:shadow-sm"

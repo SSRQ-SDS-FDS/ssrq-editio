@@ -14,6 +14,7 @@
     <msg key="search-results">Résultats de la recherche</msg>
     <msg key="found">trouvé</msg>
     <msg key="found-single">trouvé</msg>
+    <msg key="no-hits-found">Aucun résultat</msg>
     <msg key="view-switch">Changer de la présentation normalisée à la diplomatique.</msg>
     <msg key="view-normalized">Normalisé</msg>
     <msg key="yes">Oui</msg>

@@ -14,6 +14,7 @@
     <msg key="search-results">Suchergebnis</msg>
     <msg key="found">gefundene Treffer</msg>
     <msg key="found-single">gefundener Treffer</msg>
+    <msg key="no-hits-found">Keine Treffer</msg>
     <msg key="view-switch">Zwischen quellennaher und normalisierter Ansicht wechseln</msg>
     <msg key="view-normalized">Normalisiert</msg>
     <msg key="yes">Ja</msg>
