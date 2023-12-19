@@ -1,18 +1,17 @@
 <collection xmlns="http://exist-db.org/collection-config/1.0">
     <index xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
         <lucene>
-            <module uri="http://ssrq-sds-fds.ch/exist/apps/ssrq/query/index" prefix="index" at="modules/query/index.xqm"/>
-            <module uri="http://ssrq-sds-fds.ch/exist/apps/ssrq/parser/idno" prefix="idno-parser" at="modules/parser/idno.xqm"/>
+            <module uri="http://ssrq-sds-fds.ch/exist/apps/ssrq/query/index" prefix="index" at="index.xql"/>
 
             <!-- Index the documents as a whole; not in use for fulltext-search. Instead this index-configuration is used
             for querying the list of documents per volume -->
             <text qname="tei:TEI">
                 <field name="has-facs" expression="exists(//tei:pb[@facs])" binary="yes" type="xs:string"/>
                 <field name="idno" expression="//tei:seriesStmt/tei:idno[1]"/>
-                <field name="main" expression="idno-parser:parse(., true())?is-main" type="xs:boolean" binary="yes"/>
+                <field name="main" expression="index:parse-idno(., true())?is-main" type="xs:boolean" binary="yes"/>
                 <field name="origPlace-ref" expression="(//tei:origPlace[ancestor::tei:history]/@ref/data(.))[1]" binary="yes" as="xs:string"/>
-                <field name="printed-idno" expression=". => idno-parser:print()" type="xs:string" binary="yes"/>
-                <field name="sort-number" expression="idno-parser:parse(., false())?sort-key" type="xs:integer" binary="yes"/>
+                <field name="printed-idno" expression=". => index:idno-print()" type="xs:string" binary="yes"/>
+                <field name="sort-number" expression="index:parse-idno(., false())?sort-key" type="xs:integer" binary="yes"/>
                 <field name="title" expression=". => index:get-title()"/>
             </text>
             <text match="//tei:fileDesc/tei:titleStmt/tei:title"/>
