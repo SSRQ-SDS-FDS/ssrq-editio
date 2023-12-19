@@ -22,8 +22,9 @@ declare namespace xpath = 'http://www.w3.org/2005/xpath-functions';
 : @param $doc The document to extract the title from
 : @return The title of the document
 :)
-declare function index:get-title($doc as element(tei:TEI)) as xs:string? {
-    ($doc//tei:msDesc/tei:head)[1]//text()[not(parent::tei:note)]
+declare function index:get-title($doc as element(tei:TEI)) as xs:string* {
+    ($doc//tei:msDesc)[1]/tei:head !
+    .//text()[not(parent::tei:note)]
     => string-join(' ')
     => replace('\s+', ' ')
 };

@@ -10,7 +10,6 @@ declare namespace controller="http://ssrq-sds-fds.ch/exist/apps/controller";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "modules/utils.xqm";
 import module namespace session="http://exist-db.org/xquery/session";
 import module namespace request="http://exist-db.org/xquery/request";
-import module namespace console="http://exist-db.org/xquery/console";
 import module namespace roaster="http://e-editiones.org/roaster";
 
 declare variable $exist:path external;

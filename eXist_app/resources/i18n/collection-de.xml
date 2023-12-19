@@ -13,6 +13,7 @@
     <msg key="close">Schliessen</msg>
     <msg key="search-results">Suchergebnis</msg>
     <msg key="found">gefundene Treffer</msg>
+    <msg key="found-single">gefundener Treffer</msg>
     <msg key="view-switch">Zwischen quellennaher und normalisierter Ansicht wechseln</msg>
     <msg key="view-normalized">Normalisiert</msg>
     <msg key="yes">Ja</msg>
@@ -102,4 +103,5 @@
     <msg key="additional-languages">Verfügbare Sprachen</msg>
     <msg key="project"><a target="_blank" href="https://www.ssrq-sds-fds.ch/home/">Projekt</a></msg>
     <msg key="published-by">Herausgegeben von der Rechtsquellenstiftung des Schweizerischen Juristenvereins</msg>
+    <msg key="has-facs">Faksimile vorhanden</msg>
 </catalogue>

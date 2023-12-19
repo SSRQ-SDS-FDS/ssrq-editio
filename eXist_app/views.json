@@ -230,7 +230,7 @@
             }
           },
           {
-            "name": "start",
+            "name": "page",
             "in": "query",
             "description": "The start of the pagination",
             "required": false,

@@ -34,7 +34,7 @@ declare function query:with-col($query, $options) {
 declare function query:articles-by-title-or-idno($articles as element(tei:TEI)+, $query as xs:string?) as element(tei:TEI)* {
     let $options := map:merge((
         query:create-options(true(), true()),
-        map:entry('fields', ('main', 'idno', 'printed-idno', 'sort-number', 'title'))
+        map:entry('fields', ('main', 'has-facs', 'idno', 'origPlace-ref', 'printed-idno', 'sort-number', 'title'))
     ))
     return
         $articles[ft:query(., query:build-field-query($query, ('title', 'idno'), 'OR'), $options)]
@@ -78,9 +78,9 @@ declare function query:convert-bool-to-lucene-value($value as xs:boolean) as xs:
 : @return xs:string? – The query string.
 :)
 declare function query:build-field-query($query as xs:string?, $fields as xs:string+, $operand as xs:string) as xs:string? {
-    if (empty($query)) then
-        ()
-    else
+    if (exists($query) and $query[normalize-space()]) then
         ($fields ! string-join((., $query), ':'))
         => string-join(' ' || $operand  || ' ')
+    else
+        ()
 };

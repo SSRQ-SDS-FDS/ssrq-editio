@@ -13,6 +13,7 @@
     <msg key="close">Fermer</msg>
     <msg key="search-results">Résultats de la recherche</msg>
     <msg key="found">trouvé</msg>
+    <msg key="found-single">trouvé</msg>
     <msg key="view-switch">Changer de la présentation normalisée à la diplomatique.</msg>
     <msg key="view-normalized">Normalisé</msg>
     <msg key="yes">Oui</msg>
@@ -103,4 +104,5 @@
     <msg key="project"><a target="_blank" href="https://www.ssrq-sds-fds.ch/fr/home/">Le projet</a></msg>
     <!-- ToDo prüfen: -->
     <msg key="published-by">Publié par la Fondation des sources du droit de la Société suisse des juristes</msg>
+    <msg key="has-facs">Fac-similé disponible</msg>
 </catalogue>

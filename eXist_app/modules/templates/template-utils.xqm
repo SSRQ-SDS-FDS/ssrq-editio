@@ -13,9 +13,10 @@ import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension
 import module namespace find="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder" at "../repository/finder.xqm";
 import module namespace i18n-settings="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/settings" at "../i18n/settings.xqm";
 import module namespace i18n = 'http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module' at '../i18n/i18n.xqm';
+import module namespace i18n-templates="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/templates" at "../i18n/i18n-templates.xqm";
+import module namespace link="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/link" at "../repository/link.xqm";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
 import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "../ssrq.xqm";
-import module namespace console="http://exist-db.org/xquery/console";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace xpath="http://www.w3.org/2005/xpath-functions";
@@ -109,16 +110,13 @@ declare function template-utils:load-by-idno($node as node(),
 : @param $link-base-params xs:string? - the base URL for the link, with parameters
 : @return element(a) - the link
 :)
-declare
-%templates:wrap
-%templates:default("total-key", "total-documents")
-function template-utils:display-hits($node as node(),
-                                     $model as map(*),
-                                     $total-key as xs:string,
-                                     $link-base-params as xs:string?) as element(a) {
-    let $link-base := if ($link-base-params) then tokenize($link-base-params, ';') ! $model?configuration?param-resolver(.) else ()
-    return
-    <a href="{ec:create-app-link($link-base, map{'per-page': $model($total-key)})}">{$model($total-key)}</a>
+declare function template-utils:display-hits($hits as xs:integer, $link as xs:string) as element(a) {
+    <a href="{$link}">
+        <span class="text-ssrq-primary mr-1">
+            {$hits}
+        </span>
+            {i18n-templates:create-i18n-container(if ($hits = 1) then 'found-single' else 'found')}
+    </a>
 };
 
 (:~
@@ -151,7 +149,7 @@ declare function template-utils:display-pdf-download($node as node(), $model as 
 declare function template-utils:counter-badge($count as xs:integer) as element(span) {
     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20
-    20" fill="currentColor" class="w-3.5 h-3.5 me-0.5">
+    20" fill="currentColor" class="w-3.5 h-3.5 mr-0.5">
                             <path fill-rule="evenodd"
                                 d="M4.5 2A1.5 1.5 0 003 3.5v13A1.5 1.5 0 004.5
     18h11a1.5 1.5 0 001.5-1.5V7.621a1.5 1.5 0 00-.44-1.06l-4.12-4.122A1.5 1.5 0
@@ -276,10 +274,16 @@ declare %private function template-utils:resolve-links-from-template($template a
         let $query-map := template-utils:create-query-map($url)
         let $path := functx:substring-before-if-contains($url, "?")
         return
-            ec:create-link(
+            link:create(
                 $path,
-                $query-map,
-                $add-lang-param and starts-with($input-value, "{app}")
+                if (
+                    $add-lang-param
+                    and starts-with($input-value, "{app}")
+                    and not($query-map?lang)
+                ) then
+                    $query-map => map:put("lang", $config:lang-settings?lang)
+                else
+                    $query-map
             )
  };
 

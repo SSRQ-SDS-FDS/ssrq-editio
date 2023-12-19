@@ -14,6 +14,12 @@
         <xsl:sequence select="to-html:inline(@rend, ./node(), ())"/>
     </xsl:template>
     
+    <xsl:template match="tei:orig[$mode = 'web']">
+        <xsl:text>«</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:text>»</xsl:text>
+    </xsl:template>
+    
     <xsl:template match="text()">
         <xsl:value-of select="normalize-space(.)"/>
     </xsl:template>
