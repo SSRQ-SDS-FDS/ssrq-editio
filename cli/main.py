@@ -24,11 +24,6 @@ app = typer.Typer(name="editio")
              as .xar in `build`.""",
 )
 def build(
-    enable_upload: bool = typer.Option(
-        False,
-        "--enable-upload",
-        help="Enable upload functionality inside the application.",
-    ),
     use_cache: bool = typer.Option(
         False, "--use-cache", help="Control if the application uses the cache."
     ),
@@ -67,7 +62,6 @@ def build(
     settings = bundle_settings.merge_env_settings(
         settings=bundle_settings.read_env_settings(config.EDITIO_CONFIG),
         cache=use_cache,
-        upload=enable_upload,
         env=env,
     )
     logger.info(f"Using the following settings: {settings}")

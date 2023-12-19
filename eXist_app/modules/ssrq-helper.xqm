@@ -28,14 +28,6 @@ declare variable $ssrq-helper:SPECIAL_DOCS := collection($config:data-root)/tei:
 declare variable $ssrq-helper:CANTONS := util:binary-doc($config:app-root || '/resources/json/cantons.json')  => util:binary-to-string() => parse-json();
 declare variable $ssrq-helper:STATIC := $config:app-root || '/static';
 
-
-declare function ssrq-helper:include-upload-template($node as node(), $model as map(*)) as element(div)? {
-    if (xs:boolean($config:env/upload/text())) then
-        doc(utils:path-concat-safe(($config:app-root, 'templates', 'upload.html')))/div => templates:process($model)
-    else
-        ()
-};
-
 (: DEPRECATED: template-utils:resolve-links :)
 declare
 function ssrq-helper:resolve-links($node as node(), $model as map(*)) {
