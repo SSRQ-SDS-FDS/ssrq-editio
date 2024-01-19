@@ -18,6 +18,7 @@ import module namespace ssrq-cache="http://ssrq-sds-fds.ch/exist/apps/ssrq/repos
 import module namespace template-utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/utils" at "template-utils.xqm";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
 import module namespace xsl="http://ssrq-sds-fds.ch/exist/apps/ssrq/processing/xsl" at "../processing/xsl.xqm";
+import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
@@ -72,6 +73,8 @@ function documents:list($node as node(),
         </section>
 };
 
+
+
 (:
 : Output the documents as a list of short-titles.
 : Uses information stored in the ft-index, which is returned
@@ -79,19 +82,27 @@ function documents:list($node as node(),
 : of a Lucene ft-search.
 :)
 declare %private function documents:title-cards($documents as element(tei:TEI)+, $lang as xs:string, $page as xs:integer, $per-page as xs:integer) as map(*) {
-    let $ordered-documents :=
-        (
-            for $document in $documents
-            where ft:binary-field($document, 'main', 'xs:boolean')
-            order by ft:binary-field($document, 'sort-number', 'xs:integer')
-            return $document
-        )
+    let $ordered-documents := documents:reorder-hits-and-filter($documents)
     let $paginated-documents := pagination:get-subsequence($ordered-documents, $page, $per-page)
     return
         map {
             'title-cards': $paginated-documents?subset ! documents:render-card(., $lang),
             'total': $paginated-documents?total
         }
+};
+
+(:
+: Reorder the hits by the sort-number field and filter out
+: all documents, which are not marked as main.
+:
+: @param $documents element(tei:TEI)+ - the documents to reorder and filter
+: @return element(tei:TEI)+ - the reordered and filtered documents
+:)
+declare function documents:reorder-hits-and-filter($documents as element(tei:TEI)+) as element(tei:TEI)+ {
+    for $document in $documents
+    where xs:boolean(ft:binary-field($document, 'main', 'xs:boolean')) (: see the eXist-db issue: https://github.com/eXist-db/exist/issues/5193 :)
+    order by ft:binary-field($document, 'sort-number', 'xs:integer')
+    return $document
 };
 
 declare %private function documents:render-card($document as element(tei:TEI), $lang as xs:string) as element() {

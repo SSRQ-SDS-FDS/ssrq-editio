@@ -155,7 +155,13 @@ class XPathAssertion:
 
 def assert_xquery_result(
     result: httpx.Response,
-    expected_result: bool | int | str | float | XPathAssertion | list[XPathAssertion],
+    expected_result: bool
+    | int
+    | str
+    | float
+    | tuple[bool | int | str | float, ...]
+    | XPathAssertion
+    | list[XPathAssertion],
     expected_code: httpx.codes = httpx.codes.OK,
 ):
     """Asserts the result of an XQuery.
@@ -178,6 +184,15 @@ def assert_xquery_result(
         xml_selector = Selector(result.text, type="xml")
         for assertion in expected_result:
             assertion.query_and_assert(xml_selector)
+        return
+
+    if isinstance(expected_result, tuple):
+        unqouted_result = unquote_xquery_result(result=result.text)
+        for i, x in enumerate(unqouted_result.split("\n")):
+            assert (
+                cast_query_result(result=x.strip(), expected_result=expected_result[i])
+                == expected_result[i]
+            )
         return
 
     assert (
