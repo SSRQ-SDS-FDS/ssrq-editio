@@ -26,6 +26,7 @@ parsel = "^1.8.1"
 pre-commit = "^3.5.0"
 
 [tool.pytest.ini_options] # https://docs.pytest.org/en/latest/reference/reference.html#ini-options-ref
+markers = ["depends_on_data"]
 testpaths = "tests"
 
 [tool.ruff]
