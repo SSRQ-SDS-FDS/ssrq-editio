@@ -11,6 +11,7 @@ from tests.eXist_app.conftest import (
 
 
 @pytest.mark.asyncio_cooperative
+@pytest.mark.depends_on_data
 async def test_volumes_list_for_sg(execute_xquery: xquery_tester):
     "Expect one volume (SG III 4) for kanton SG"
     xquery = build_query(
@@ -33,6 +34,7 @@ async def test_volumes_list_for_sg(execute_xquery: xquery_tester):
 
 
 @pytest.mark.asyncio_cooperative
+@pytest.mark.depends_on_data
 async def test_render_volume_title(execute_xquery: xquery_tester):
     "Test if the rendered volume title for SG III 4 is rendered as expected"
     xquery = build_query(

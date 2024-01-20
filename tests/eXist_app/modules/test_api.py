@@ -29,6 +29,7 @@ def request_route(async_http_client: httpx.AsyncClient) -> route_tester:
         ("/api/v1/FR/I_2_8/2.0-1.xml", 200),
     ],
 )
+@pytest.mark.depends_on_data
 async def test_api_routes(request_route: route_tester, route: str, code: int):
     """Test if a request to an endpoints, returns the expected status-code."""
     response = await request_route(route)

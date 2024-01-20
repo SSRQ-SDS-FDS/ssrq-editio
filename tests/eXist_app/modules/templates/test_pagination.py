@@ -54,7 +54,8 @@ async def test_calc_pagination(
 async def test_calc_start_index(
     execute_xquery: xquery_tester, inputs: tuple[int, int, int], expected: int
 ):
-    """Algorithm should return correct start index based on page number, items per page, and total items."""
+    """Algorithm should return correct start index based on page number, items per page,
+    and total items."""
     xquery = build_query(
         modules=[xquery_modules["pagination"]],
         query_body=f"""pagination:calc-start-index({inputs[0]}, {inputs[1]} , {inputs[2]})""",  # noqa
