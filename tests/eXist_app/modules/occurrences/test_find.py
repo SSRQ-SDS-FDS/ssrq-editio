@@ -9,6 +9,7 @@ from tests.eXist_app.conftest import (
 
 
 @pytest.mark.asyncio_cooperative
+@pytest.mark.depends_on_data
 async def test_occurences_find_keywords(execute_xquery: xquery_tester):
     """Check if the number of found keywords is equal to the number of keywords in the article."""
     xquery = build_query(
@@ -28,6 +29,7 @@ async def test_occurences_find_keywords(execute_xquery: xquery_tester):
 
 
 @pytest.mark.asyncio_cooperative
+@pytest.mark.depends_on_data
 async def test_occurrences_find_lemmata(execute_xquery: xquery_tester):
     """Check if lemmata function works as expected."""
     xquery = build_query(
@@ -47,6 +49,7 @@ async def test_occurrences_find_lemmata(execute_xquery: xquery_tester):
 
 
 @pytest.mark.asyncio_cooperative
+@pytest.mark.depends_on_data
 async def test_occurrences_find_persons(execute_xquery: xquery_tester):
     """Check if all persons in the article are found."""
     xquery = build_query(
@@ -66,6 +69,7 @@ async def test_occurrences_find_persons(execute_xquery: xquery_tester):
 
 
 @pytest.mark.asyncio_cooperative
+@pytest.mark.depends_on_data
 async def test_occurrences_find_places(execute_xquery: xquery_tester):
     """Check if places function works as expected."""
     xquery = build_query(
@@ -86,7 +90,7 @@ async def test_occurrences_find_places(execute_xquery: xquery_tester):
 
 @pytest.mark.asyncio_cooperative
 @pytest.mark.parametrize("function_name", ["keywords", "lemmata", "persons", "places"])
-async def test_occurrences_find_with_random_idno_should_fai(
+async def test_occurrences_find_with_random_idno_should_fail(
     function_name, execute_xquery: xquery_tester
 ):
     """Check if the eXist does not return OK, which produce an AssertionError."""

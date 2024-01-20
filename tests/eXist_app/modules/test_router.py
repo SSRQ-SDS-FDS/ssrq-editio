@@ -31,6 +31,4 @@ async def test_rewrite_params(
     )
     response = await execute_xquery(xquery)
 
-    print(response.text)
-
     assert_xquery_result(response, True)

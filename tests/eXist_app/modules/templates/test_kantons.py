@@ -14,7 +14,7 @@ from httpx import codes
 
 
 @pytest.mark.asyncio_cooperative
-async def test_kantons_list_returns_one_row_per_kanton(execute_xquery: xquery_tester):
+async def test_kantons_list_returns_one_entry_per_kanton(execute_xquery: xquery_tester):
     xquery = build_query(
         modules=[xquery_modules["kantons"], xquery_modules["views"]],
         query_body="""kantons:list(<div/>, map{})""",
