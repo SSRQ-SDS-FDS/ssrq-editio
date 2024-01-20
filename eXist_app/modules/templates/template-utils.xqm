@@ -58,9 +58,7 @@ declare function template-utils:create-root-and-translate($node as node(), $mode
 : @param $model map(*) - the model (passed by the template engine)
 : @return element() - the title
 :)
-declare
-    %templates:default('cite-modal', 'true')
- function template-utils:print-title($node as node(), $model as map(*), $cite-modal as xs:boolean) as element()? {
+declare function template-utils:print-title($node as node(), $model as map(*)) as element()? {
     element { node-name($node) } {
         $node/@* except $node/@data-template,
         (
@@ -75,38 +73,9 @@ declare
                     else
                         $title-part
                 }
-        ),
-        if ($cite-modal) then
-            template-utils:cite-modal($node, $model)
-        else ()
-
+        )
     }[*]
 };
-
-declare function template-utils:cite-modal($node as node(), $model as map(*)) {
-    let $loaded-document := find:load-by-request-params(
-                            [
-                                (),
-                                $model($templates:CONFIGURATION)($templates:CONFIG_PARAM_RESOLVER)('kanton'),
-                                $model($templates:CONFIGURATION)($templates:CONFIG_PARAM_RESOLVER)('volume'),
-                                $model($templates:CONFIGURATION)($templates:CONFIG_PARAM_RESOLVER)('doc'),
-                                $model($templates:CONFIGURATION)($templates:CONFIG_PARAM_RESOLVER)('paratext')
-                                ]
-                            )
-    return
-        <div x-data="{{ modelOpen: false }}">
-            <button class="flex items-center justify-center px-3 py-2 space-x-2 text-sm tracking-wide text-white capitalize transition-colors duration-200 transform bg-indigo-500 rounded-md dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:bg-indigo-700 hover:bg-indigo-600 focus:outline-none focus:bg-indigo-500 focus:ring focus:ring-indigo-300 focus:ring-opacity-50">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" data-slot="icon" class="w-6 h-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
-</svg>
-
-
-        <span>Invite Member</span>
-    </button>
-        </div>
-};
-
-
 
 declare function template-utils:load-by-idno($node as node(),
                                              $model as map(*),
