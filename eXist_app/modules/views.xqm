@@ -12,6 +12,7 @@ import module namespace util="http://exist-db.org/xquery/util";
 (: ~
 : The following are the views which will be rendered by the templating.
 :)
+import module namespace about="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/about" at "templates/about.xqm";
 import module namespace articles-idno="http://ssrq-sds-fds.ch/exist/apps/ssrq/articles/idno" at "articles/idno.xqm";
 import module namespace find="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder" at "repository/finder.xqm";
 import module namespace documents="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/documents" at "templates/documents.xqm";
@@ -50,7 +51,7 @@ declare variable $views:routes := map {
     'home' : 'index.html',
     'kanton-volumes': 'volumes.html',
     'paratexts': 'paratexts.html',
-    'partners': 'partners.html',
+    'partners-and-funding': 'partners.html',
     'search': 'search.html',
     'volume-docs': 'documents.html'
 };
@@ -100,13 +101,24 @@ declare function views:get-template-config($request as map(*)) {
 : @return The rendered page
 : @throws 404 if the page does not exist
 :)
-declare function views:about-handler($request as map(*)) as node() {
-    let $page := map:get($views:routes, $request?parameters?page)
-    return
-        if ($page) then
-            views:render-view($request, $page)
-        else
-            error($errors:NOT_FOUND, 'Could not load: ' || $request?path)
+declare function views:about-handler($request as map(*)) as item() {
+    if (exists($request?parameters?page)) then
+        let $page := map:get($views:routes, $request?parameters?page)
+        return
+            switch ($page)
+                case 'partners.html'
+                    return
+                        views:add-title-to-request(
+                            $request,
+                            i18n:create-i18n-container('partners-and-funding')
+                        )
+                        => views:handle-view-with-caching($page)
+            default
+                return
+                    error($errors:NOT_FOUND, 'Could not load: ' || $request?path)
+    else
+        (: As we have no general about page, we will redirect to the start page :)
+        views:redirect-to(("/"))
 };
 
 declare function views:serve-api-definition($request as map(*)) as map(*) {

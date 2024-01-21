@@ -106,4 +106,5 @@
     <!-- ToDo prüfen: -->
     <msg key="published-by">Publié par la Fondation des sources du droit de la Société suisse des juristes</msg>
     <msg key="has-facs">Fac-similé disponible</msg>
+    <msg key="about">Informations</msg>
 </catalogue>

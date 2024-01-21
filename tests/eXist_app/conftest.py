@@ -9,6 +9,11 @@ from cli.config import DOCKER_DEV_SETTINGS
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 
 xquery_modules: dict[str, tuple[str, str, str]] = {
+    "about": (
+        "about",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/about",
+        "/db/apps/ssrq/modules/templates/about.xqm",
+    ),
     "articles-filters": (
         "articles-filters",
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/articles/filters",

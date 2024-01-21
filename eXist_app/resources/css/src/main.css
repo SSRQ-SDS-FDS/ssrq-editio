@@ -1,5 +1,6 @@
 @import "./cover.css";
 @import "./breadcrumbs.css";
+@import "./layout.css";
 @import "./pagination.css";
 @tailwind base;
 @tailwind components;

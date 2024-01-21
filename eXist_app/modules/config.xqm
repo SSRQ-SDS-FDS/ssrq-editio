@@ -133,6 +133,8 @@ declare variable $config:odd-diplomatic := "ssrq.odd";
 
 declare variable $config:odd-normalized := "ssrq-norm.odd";
 
+declare variable $config:misc-path := utils:path-concat-safe(($config:data-root, "misc"));
+
 declare variable $config:odd-root := utils:path-concat-safe(($config:app-root, "resources/odd"));
 
 declare variable $config:schema-odd := collection(utils:path-concat-safe(($config:data-root, "misc/schema")));
@@ -157,7 +159,7 @@ declare variable $config:static-filters-cache := 'filters.xml';
 
 declare variable $config:static-filters-list-cache := ssrq-cache:load-from-static-cache-by-name($config:static-cache-path, $config:static-filters-cache);
 
-declare variable $config:partners := doc(utils:path-concat-safe(($config:data-root, "misc/partners.xml")))/*;
+declare variable $config:partners as xs:string := "partners.xml";
 
 declare variable $config:output := "transform";
 
