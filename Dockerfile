@@ -1,4 +1,4 @@
-FROM stadlerpeter/existdb:6
+FROM docker.io/stadlerpeter/existdb:6
 
 USER wegajetty
 
@@ -15,4 +15,4 @@ ADD --chown=wegajetty https://github.com/eeditiones/roaster/releases/download/v1
 # We only need the atom-editor-module in development mode
 RUN if [ "${KEEP_ATOM_EDITOR}" != "true" ]; then rm -f ${EXIST_HOME}/autodeploy/atom-editor-1.1.0.xar; fi
 
-COPY ${BUILD_DIR}/*.xar ${EXIST_HOME}/autodeploy/
+COPY --chown=wegajetty ${BUILD_DIR}/*.xar ${EXIST_HOME}/autodeploy/

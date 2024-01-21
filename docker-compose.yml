@@ -19,7 +19,10 @@ services:
       - EXIST_ENV=production
       - VIRTUAL_HOST
       - LETSENCRYPT_HOST
+      - PUID=1000
+      - PGID=1000
     restart: unless-stopped
+    user: wegajetty
     volumes:
       - /opt/exist/data
 
