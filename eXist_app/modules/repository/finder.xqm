@@ -221,3 +221,20 @@ declare function find:load-by-request-params($params as array(xs:string)) as map
 declare function find:construct-path-from-kanton-and-volume($kanton as xs:string, $volume as xs:string) as xs:string {
     utils:path-concat-safe(($config:data-root, $kanton, ($kanton || '_' || $volume)))
 };
+
+(:~
+: Load a document given by its path
+: Checks if the document is available
+: – if not, it throws an error
+:
+: @param $path the path to the document as xs:string+
+: @return the document as node()
+:)
+declare function find:load-document-by-path($path-components as xs:string+) as node() {
+    let $path := utils:path-concat($path-components)
+    return
+        if (doc-available($path)) then
+            doc($path)
+        else
+            error(xs:QName('repository:find'), 'Document not found at ' || $path)
+};
