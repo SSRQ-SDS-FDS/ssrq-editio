@@ -223,39 +223,6 @@ function app:abbr-blocks($node as node(), $model as map(*)) {
     $pm-config:web-transform($config:abbr//tei:dataSpec, map { "root": $config:abbr//tei:dataSpec}, $config:odd)
 };
 
-declare
-     %templates:wrap
-function app:partners($node as node(), $model as map(*)) {
-    let $lang := $config:lang-settings?lang
-    return
-        (<h3 xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module"><i18n:text key="partners">Projektpartner</i18n:text></h3>,
-        for $partner in $config:partners//tei:dataSpec[@ident="partners"]/tei:valList/tei:valItem
-        let $desc := $partner/tei:desc[@xml:lang=$lang]
-        let $value := $desc/tei:p/text()
-        order by $value => substring(1, 1) => upper-case()
-        return
-            <p>
-                {
-                    if ($desc/tei:ref)
-                    then <a href="{$desc/tei:ref}">{$value}</a>
-                    else $value
-                }
-            </p>,
-        <h3 xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module"><i18n:text key="funding">Finanzielle Unterstützung</i18n:text></h3>,
-        for $partner in $config:partners//tei:dataSpec[@ident="funding"]/tei:valList/tei:valItem
-        let $desc := $partner/tei:desc[@xml:lang=$lang]
-        let $value := $desc/tei:p/text()
-        order by $value => substring(1, 1) => upper-case()
-        return
-            <p>
-                {
-                    if ($desc/tei:ref)
-                    then <a href="{$desc/tei:ref}">{$value}</a>
-                    else $value
-                }
-            </p>
-        )
-};
 
 (: TODO: Bedarf der Anpassung an das neue Schema :)
 declare

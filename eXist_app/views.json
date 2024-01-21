@@ -43,6 +43,38 @@
         }
       }
     },
+    "/about": {
+      "get": {
+        "summary": "Fallback for about",
+        "tags": ["views"],
+        "operationId": "views:about-handler",
+        "x-error-handler": "views:error-handler",
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "query",
+            "description": "The selected language",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["de", "en", "fr", "it"]
+            }
+          }
+        ],
+        "responses": {
+          "301": {
+            "description": "Redirect to the start page",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/about/{page}": {
       "get": {
         "summary": "Content pages of the about section; e.g. /about/partners",

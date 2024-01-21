@@ -106,4 +106,5 @@
     <!-- ToDo prüfen: -->
     <msg key="published-by">Pubblicato dalla Fondazione Fonti del Diritto della Società Svizzera degli Avvocati</msg>
     <msg key="has-facs">Facsimile disponibile</msg>
+    <msg key="about">Informazioni</msg>
 </catalogue>
