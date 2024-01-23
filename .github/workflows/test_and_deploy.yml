@@ -57,9 +57,6 @@ jobs:
           ssh-keyscan -p 22 -t ed25519 ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
       - name: Setup Python with Poetry
         uses: ./.github/actions/setup
-      - name: Download and setup tailwind binary
-        shell: bash
-        run: poetry run tailwindcss --help
       - name: Build editio-app
         shell: bash
         run: poetry run editio build --use-cache prod
