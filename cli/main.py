@@ -164,8 +164,22 @@ def stop(
 
 
 @app.command(help=""""Execute the tests with pytest.""")
-def test():
-    pytest.main([str(config.PROJECT_ROOT), "--max-asyncio-tasks", "10"])
+def test(
+    skip_data_tests: bool = typer.Option(
+        False,
+        "--skip-data-tests",
+        help="Skip execution of tests, which depend on (production) data.",
+    ),
+):
+    logger.info("Starting test execution")
+    args = [str(config.PROJECT_ROOT), "--max-asyncio-tasks", "10"]
+
+    if skip_data_tests:
+        args.append("-m")
+        args.append("depends_on_data")
+        logger.info("Skipping tests, which depend on data")
+
+    pytest.main(args)
 
 
 @app.command(help="""Sync changes in the app dir to eXist-DB""")
