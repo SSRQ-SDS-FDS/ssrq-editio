@@ -6,7 +6,6 @@ services:
       context: .
       args:
         - BUILD_DIR=build
-        - MAX_MEMORY=4096
         - KEEP_ATOM_EDITOR=false
     healthcheck:
       test: curl --fail http://localhost:8080/exist/apps/dashboard/index.html || exit 1
@@ -14,15 +13,14 @@ services:
       retries: 10
       start_period: 20s
       timeout: 450s
+    ports:
+      - 5600:8080
     environment:
       - EXIST_PASSWORD
       - EXIST_ENV=production
       - VIRTUAL_HOST
       - LETSENCRYPT_HOST
-      - PUID=1000
-      - PGID=1000
     restart: unless-stopped
-    user: wegajetty
     volumes:
       - /opt/exist/data
 
