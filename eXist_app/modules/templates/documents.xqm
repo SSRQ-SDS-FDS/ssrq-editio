@@ -32,7 +32,6 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 : @return map(*) - the model (passed to the template engine)
 :)
 declare
-%templates:wrap
 %templates:default("page", 1)
 %templates:default("per-page", 20)
 function documents:list($node as node(),
