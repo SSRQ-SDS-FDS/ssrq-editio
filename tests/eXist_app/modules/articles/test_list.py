@@ -7,11 +7,16 @@ from tests.eXist_app.conftest import (
     assert_xquery_result,
 )
 
-EXPECTED_KANTONS = 5
-EXPECTED_NE_VOLUMES = 3
+from cli.volumes import config_reader
+
+VOLUME_CONFIG = config_reader.read_config()
+
+EXPECTED_KANTONS = len(VOLUME_CONFIG.volumes)
+EXPECTED_NE_VOLUMES = len([vol for vol in VOLUME_CONFIG.volumes if vol.canton == "NE"])
 
 
 @pytest.mark.asyncio_cooperative
+@pytest.mark.depends_on_data
 async def test_number_of_kantons_from_list_by_kanton_and_volume(
     execute_xquery: xquery_tester,
 ):
@@ -27,6 +32,7 @@ async def test_number_of_kantons_from_list_by_kanton_and_volume(
 
 
 @pytest.mark.asyncio_cooperative
+@pytest.mark.depends_on_data
 async def test_number_of_volumes_per_kanton(
     execute_xquery: xquery_tester,
 ):
@@ -42,6 +48,7 @@ async def test_number_of_volumes_per_kanton(
 
 
 @pytest.mark.asyncio_cooperative
+@pytest.mark.depends_on_data
 async def test_every_doc_belongs_to_volume(
     execute_xquery: xquery_tester,
 ):
@@ -61,6 +68,7 @@ async def test_every_doc_belongs_to_volume(
 
 
 @pytest.mark.asyncio_cooperative
+@pytest.mark.depends_on_data
 async def test_list_articles_with_default_loader_includes_paratexts(
     execute_xquery: xquery_tester,
 ):

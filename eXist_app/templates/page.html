@@ -1,44 +1,23 @@
-<html data-template="pages:app-root">
-    <head data-template="ssrq-helper:resolve-links">
-        <title data-template="config:app-title">App Title</title>
-        <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <meta data-template="config:app-meta"/>
-        <link rel="shortcut icon" href="{app}/resources/images/favicon-ssrq-32.png"/>
-        <link rel="stylesheet" type="text/css" href="{app}/resources/fonts/font.css"/>
-        <link rel="stylesheet" type="text/css" href="{app}/resources/css/vendor/bootstrap.min.css"/>
-        <link rel="stylesheet" type="text/css" href="{app}/resources/css/vendor/bootstrap-material-design.min.css"/>
-        <link rel="stylesheet" type="text/css" href="{app}/resources/css/style.css"/>
-        <link rel="stylesheet" type="text/css" data-template="pages:styles"/>
-        <script type="text/javascript" src="{app}/resources/scripts/vendor/jquery-1.11.3.min.js"/>
-        <script type="text/javascript" src="{app}/resources/scripts/vendor/bootstrap.min.js"/>
-        <script type="text/javascript" src="{app}/resources/scripts/vendor/material.min.js"/>
-        <script type="text/javascript" src="{app}/resources/scripts/app.js"/>
-    </head>
-    <body xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" id="body" data-template="i18n:translate">
-        <div id="content"/>
-        <div id="messageDialog" class="modal fade" tabindex="-1" style="display: none;">
-            <div class="modal-dialog" style="z-index: 1080;">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title">Action</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="message"/>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" data-dismiss="modal">
-                            <i18n:text key="close"/>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-            <script type="text/javascript">
-            $(document).ready(function () {
-                $.material.init();
-            });
-        </script>
-    </body>
+<html data-template="template-utils:create-root-and-translate">
+  <head data-template="lib:include" data-template-path="templates/head.html" />
+  <body id="body" class="flex flex-col min-h-screen">
+    <nav data-template="lib:include" data-template-path="templates/nav.html" />
+    <main class="pt-16 flex-1" data-template="template-utils:resolve-links">
+      <div id="content" />
+    </main>
+    <footer
+      data-template="lib:include"
+      data-template-path="templates/footer.html"
+    />
+    <script
+      src="{app}/resources/scripts/main.js"
+      data-template="template-utils:resolve-links"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+    <script
+      src="https://unpkg.com/htmx.org@1.9.9"
+      integrity="sha384-QFjmbokDn2DjBjq+fM+8LUIVrAgqcNW2s0PjAxHETgRn9l4fvX31ZxDxvwQnyMOX"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>

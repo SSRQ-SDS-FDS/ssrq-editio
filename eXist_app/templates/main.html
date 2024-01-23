@@ -1,34 +1,46 @@
-<div xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" data-template="templates:surround"
-    data-template-with="templates/page.html" data-template-at="content">
-    <div data-template="templates:include" data-template-path="templates/menu.html" />
-    <div class="container-fluid">
-        <header class="row">
-            <div class="col-md-12">
-                <div class="page-header">
-                    <h1>
-                        <i18n:text key="doctitel" />
-                    </h1>
-                </div>
-            </div>
-        </header>
-        <main class="row">
-            <section class="col-md-3 col-md-push-9">
-                <div data-template="templates:include" data-template-path="templates/search.html" />
-                <div data-template="ssrq-helper:include-upload-template" />
-            </section>
-            <section class="col-md-9 col-md-pull-3">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            <i18n:text key="documents">Documents</i18n:text>
-                        </h3>
-                    </div>
-                    <div class="panel-body">
-                        <div id="main-content"/>
-                    </div>
-                </div>
-            </section>
-        </main>
-        <div data-template="templates:include" data-template-path="templates/footer.html" />
-    </div>
+<div
+  xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module"
+  data-template="templates:surround"
+  data-template-with="templates/page.html"
+  data-template-at="content"
+>
+  <div
+    data-template="templates:include"
+    data-template-path="templates/menu.html"
+  />
+  <div class="container-fluid">
+    <header class="row">
+      <div class="col-md-12">
+        <div class="page-header">
+          <h1>
+            <i18n:text key="doctitel" />
+          </h1>
+        </div>
+      </div>
+    </header>
+    <main class="row">
+      <section class="col-md-3 col-md-push-9">
+        <div
+          data-template="templates:include"
+          data-template-path="templates/search.html"
+        />
+      </section>
+      <section class="col-md-9 col-md-pull-3">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              <i18n:text key="documents">Documents</i18n:text>
+            </h3>
+          </div>
+          <div class="panel-body">
+            <div id="main-content" />
+          </div>
+        </div>
+      </section>
+    </main>
+    <div
+      data-template="templates:include"
+      data-template-path="templates/footer.html"
+    />
+  </div>
 </div>

@@ -13,6 +13,7 @@ from tests.eXist_app.conftest import (
     "idno, expected",
     [("SSRQ-SG-III_4-1-1", True), ("BAC 011.0030", True), ("QZYT", False)],
 )
+@pytest.mark.depends_on_data
 async def test_if_range_index_for_idno_exists(
     execute_xquery: xquery_tester, idno: str, expected: bool
 ):
@@ -36,6 +37,7 @@ async def test_if_range_index_for_idno_exists(
         ("@xml:lang", "de", True),
     ],
 )
+@pytest.mark.depends_on_data
 async def test_if_range_index_attr_exists(
     execute_xquery: xquery_tester, attr: str, example_value: str, expected: bool
 ):

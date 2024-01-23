@@ -28,48 +28,6 @@ declare variable $ssrq-helper:SPECIAL_DOCS := collection($config:data-root)/tei:
 declare variable $ssrq-helper:CANTONS := util:binary-doc($config:app-root || '/resources/json/cantons.json')  => util:binary-to-string() => parse-json();
 declare variable $ssrq-helper:STATIC := $config:app-root || '/static';
 
-(:~
-: This function is called by the eXist templating engine and
-: will cache the inner content of a $node if caching is enabled in env.xml.
-:
-: @return the rendered (cached or compiled) result as node()
-:)
-declare function ssrq-helper:cache-store-retrieve($node as node(), $model as map(*), $prefix as xs:string?) as node() {
-    let $use-cache := xs:boolean($config:env/cache/text())
-    let $cache-key := ssrq-helper:make-cache-key($prefix)
-    let $cached-content :=
-        if ($use-cache) then
-            cache:get($config:dynamic-cache-name, $cache-key)
-        else
-            ()
-    return
-        if (not(empty($cached-content))) then
-            $cached-content
-        else
-            let $output := templates:process($node/*, $model)
-            (: Put things in cache, but return $output, becacuse cache:put returns an empty sequence altough $output is not empty... :)
-            let $put := if ($use-cache) then cache:put($config:dynamic-cache-name, $cache-key, $output) else ()
-            return
-                $output
-};
-
-(: A small helper function to generate a mostly unique key by the request-parameter-names :)
-declare function ssrq-helper:make-cache-key($prefix as xs:string) as xs:string {
-    let $context := request:get-url() => substring-after('apps') => replace('/', '')
-    let $params := request:get-parameter-names()[not(. = 'lang') and not(. = 'doc')] ! request:get-parameter(., ())
-    let $lang := $config:lang-settings?lang
-    return
-        ($prefix, $context, $params, $lang) => string-join('_')
-
-};
-
-declare function ssrq-helper:include-upload-template($node as node(), $model as map(*)) as element(div)? {
-    if (xs:boolean($config:env/upload/text())) then
-        doc(utils:path-concat-safe(($config:app-root, 'templates', 'upload.html')))/div => templates:process($model)
-    else
-        ()
-};
-
 (: DEPRECATED: template-utils:resolve-links :)
 declare
 function ssrq-helper:resolve-links($node as node(), $model as map(*)) {
@@ -169,45 +127,7 @@ declare function ssrq-helper:resolve-links($nodes as node()*) {
                 $node
 };
 
-declare function ssrq-helper:link-to-resource($model as map(*), $file-ext as xs:string) as xs:string {
-    ssrq-helper:link-to-resource($model, $file-ext, true())
-};
 
-declare function ssrq-helper:link-to-resource($model as map(*), $file-ext as xs:string, $use-doc as xs:boolean) as xs:string {
-    ec:create-app-link((
-        $model?idno/kanton,
-        $model?idno/volume,
-        (
-            if ($model?idno/special) then
-                $model?idno/special
-            else
-                concat(string-join(($model?idno/case, $model?idno/opening, $model?idno/doc[$use-doc]), '.'), '-', $model?idno/num)
-        ) || $file-ext))
-};
-
-
-(:~~
-: Utility Function to insert an alt-Attribute into html:img
-:
-: @return $node as node()
-:)
-declare function ssrq-helper:insertAlt($node as node(), $model as map(*)) as node() {
-    <img class="{$node/@class/data(.)}" src="{$node/@src/data(.)}" alt="{config:app-title($node, $model)}"/>
-};
-
-
-(:~
-: Counter function used to display values inside the counter-‚bubbles‘
-:
-: @param $volume a volume element from docs.xml
-: @return result as xs:integer
-:)
-declare
-function ssrq-helper:count-docs($volume as element(volume)) as xs:integer {
-    $volume/doc[not(special)] ! (./*[name()!='num'] => string-join("-"))
-    => distinct-values()
-    => count()
-};
 
 
 (:~
@@ -222,34 +142,6 @@ function ssrq-helper:count-docs($volume as element(volume)) as xs:integer {
 :)
 
 
-(: ~
-: Templating function to load documents from the data-dir by their tei:idno
-: given as parameters of the url
-:
-: @author: Bastian Politycki
-: @date: 2022.05.30
-: @return a map, which holds the actual tei xml-file and some additional config-infos
-:
-:)
-declare
-function ssrq-helper:load-by-idno($node as node(), $model as map(*), $kanton as xs:string, $volume as xs:string, $doc as xs:string, $view as xs:string?, $odd as xs:string?) as map(*) {
-    let $id := ssrq-cache:load-from-static-cache-by-id($config:static-cache-path, $config:static-docs-list, $kanton)//doc[ends-with(@xml:id, string-join(($kanton, $volume, $doc), '-'))]
-    let $xml := collection($config:data-root)/tei:TEI[tei:teiHeader//tei:seriesStmt/tei:idno = $id/@xml:id]
-    let $has-facs := exists($xml//tei:pb[@facs]) and not($odd eq $config:odd-normalized)
-    return
-        map {
-            "idno": $id,
-            "filename": (root($xml) => document-uri() => tokenize('/'))[last()],
-            "xml": utils:coalesce($xml, app:failed-to-load($doc)),
-            "config": map {
-                "odd": utils:coalesce($odd, $config:odd),
-                "view": app:query-view($xml/tei:text, utils:coalesce($view, $config:default-view))
-            },
-            "body-class": if ($has-facs) then 'col-md-6' else 'col-md-10',
-            "has-facs": xs:string($has-facs)
-        }
-
-};
 
 (: ~
 : Templating function to load documents from the /temp collection
@@ -388,16 +280,6 @@ declare
             }
 };
 
-(:~
-: Display current works on selected page
-:
-: @return html:ul
-:)
-declare function ssrq-helper:browse($node as node(), $model as map(*)) as element(ul) {
-        <ul class="documents">
-            {$model?page}
-        </ul>
-};
 
 (:~
  : Inserts the current language into a node's attribute
@@ -561,23 +443,4 @@ declare function ssrq-helper:printToc($node as node(), $model as map(*)) as node
 :)
 declare function ssrq-helper:getSubsections($root as node()) as node()* {
     $root//tei:div[tei:head] except $root//tei:div[tei:head]//tei:div
-};
-
-
-declare function ssrq-helper:stream-xml-from-model($node as node(), $model as map(*)) as item()* {
-    (
-        if ($model?filename) then
-            response:set-header('Content-Disposition', 'inline; filename="' || $model?filename || '"')
-        else
-            (),
-     response:stream($model?xml, 'media-type=application/xml')
-    )
-};
-
-declare function ssrq-helper:link-to-index($node as node(), $model as map(*)) as element(a) {
-    element { node-name($node) } {
-        attribute href { $config:index-url },
-        $node/@* except $node/@data-template,
-        templates:process($node/node(), $model)
-    }
 };

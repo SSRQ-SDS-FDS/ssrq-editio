@@ -9,6 +9,11 @@ from cli.config import DOCKER_DEV_SETTINGS
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 
 xquery_modules: dict[str, tuple[str, str, str]] = {
+    "about": (
+        "about",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/about",
+        "/db/apps/ssrq/modules/templates/about.xqm",
+    ),
     "articles-filters": (
         "articles-filters",
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/articles/filters",
@@ -39,15 +44,30 @@ xquery_modules: dict[str, tuple[str, str, str]] = {
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder",
         "/db/apps/ssrq/modules/repository/finder.xqm",
     ),
+    "head": (
+        "head",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/head",
+        "/db/apps/ssrq/modules/templates/head.xqm",
+    ),
     "idno-parser": (
         "idno-parser",
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/parser/idno",
         "/db/apps/ssrq/modules/parser/idno.xqm",
     ),
+    "i18n-settings": (
+        "i18n-settings",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/settings",
+        "/db/apps/ssrq/modules/i18n/settings.xqm",
+    ),
     "kantons": (
         "kantons",
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/kantons",
         "/db/apps/ssrq/modules/templates/kantons.xqm",
+    ),
+    "nav": (
+        "nav",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/nav",
+        "/db/apps/ssrq/modules/templates/nav.xqm",
     ),
     "occurrences-find": (
         "occurrences-find",
@@ -63,6 +83,11 @@ xquery_modules: dict[str, tuple[str, str, str]] = {
         "pagination",
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/pagination",
         "/db/apps/ssrq/modules/templates/pagination.xqm",
+    ),
+    "query": (
+        "query",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/query/query",
+        "/db/apps/ssrq/modules/query/query.xqm",
     ),
     "ssrq-cache": (
         "ssrq-cache",
@@ -83,6 +108,11 @@ xquery_modules: dict[str, tuple[str, str, str]] = {
         "views",
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/views",
         "/db/apps/ssrq/modules/views.xqm",
+    ),
+    "volumes": (
+        "volumes",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/volumes",
+        "/db/apps/ssrq/modules/templates/volumes.xqm",
     ),
 }
 
@@ -130,7 +160,13 @@ class XPathAssertion:
 
 def assert_xquery_result(
     result: httpx.Response,
-    expected_result: bool | int | str | float | XPathAssertion | list[XPathAssertion],
+    expected_result: bool
+    | int
+    | str
+    | float
+    | tuple[bool | int | str | float, ...]
+    | XPathAssertion
+    | list[XPathAssertion],
     expected_code: httpx.codes = httpx.codes.OK,
 ):
     """Asserts the result of an XQuery.
@@ -153,6 +189,15 @@ def assert_xquery_result(
         xml_selector = Selector(result.text, type="xml")
         for assertion in expected_result:
             assertion.query_and_assert(xml_selector)
+        return
+
+    if isinstance(expected_result, tuple):
+        unqouted_result = unquote_xquery_result(result=result.text)
+        for i, x in enumerate(unqouted_result.split("\n")):
+            assert (
+                cast_query_result(result=x.strip(), expected_result=expected_result[i])
+                == expected_result[i]
+            )
         return
 
     assert (

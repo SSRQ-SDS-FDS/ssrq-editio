@@ -1,16 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<div class="templates:surround?with=templates/page.html&amp;at=content">
-    <div data-template="templates:include" data-template-path="templates/menu.html"/>
-    <div class="container-fluid">
-        <div class="row" xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module">
-            <div class="col-md-12">
-                <h1><i18n:text key="error-title"/></h1>
-                <p><i18n:text key="error-description"/></p>
-                <!-- To-Do: Implement logic for error messages -->
-                <section >
-                    <pre class="error templates:error-description" data-template="error:display"/>
-                </section>
-            </div>
-        </div>
-    </div>
+<div
+  data-template="templates:surround"
+  data-template-with="templates/page.html"
+  data-template-at="content"
+  xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module"
+>
+  <div class="w-full flex flex-col p-12">
+    <p>
+      <i18n:text key="error-description" />
+    </p>
+    <section class="my-2">
+      <pre
+        class="font-monospace text-xs w-full overflow-auto bg-ssrq-greyed-100 p-2"
+        data-template="error:display"
+      />
+    </section>
+  </div>
 </div>

@@ -14,10 +14,10 @@ from httpx import codes
 
 
 @pytest.mark.asyncio_cooperative
-async def test_kantons_list_returns_one_row_per_kanton(execute_xquery: xquery_tester):
+async def test_kantons_list_returns_one_entry_per_kanton(execute_xquery: xquery_tester):
     xquery = build_query(
-        modules=[xquery_modules["kantons"]],
-        query_body="kantons:list(<div/>, map{})",
+        modules=[xquery_modules["kantons"], xquery_modules["views"]],
+        query_body="""kantons:list(<div/>, map{})""",
     )
     response = await execute_xquery(xquery)
 
@@ -26,4 +26,6 @@ async def test_kantons_list_returns_one_row_per_kanton(execute_xquery: xquery_te
     with open(PROJECT_ROOT / EXIST_APP_DIR / "resources/json/cantons.json") as kantons_file:
         kantons = json.load(kantons_file)
 
-    assert len(Selector(response.text).xpath("//tr")) == len(kantons.keys())
+    assert len(
+        Selector(response.text).xpath("//div[@class = 'kanton-card_content-heading']/h4")
+    ) == len(kantons.keys())

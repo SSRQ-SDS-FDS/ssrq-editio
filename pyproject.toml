@@ -13,9 +13,9 @@ loguru = "^0.7.2"
 pydantic = "^2.4.1"
 python = "^3.11"
 typer = "^0.9.0"
-libsass = "^0.22.0"
 watchfiles = "^0.21.0"
 pytest-asyncio-cooperative = "^0.31.0"
+pytailwindcss = "^0.2.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.9.1"
@@ -23,8 +23,10 @@ pytest = "^7.4.2"
 ruff = "^0.0.291"
 httpx = "^0.25.0"
 parsel = "^1.8.1"
+pre-commit = "^3.5.0"
 
 [tool.pytest.ini_options] # https://docs.pytest.org/en/latest/reference/reference.html#ini-options-ref
+markers = ["depends_on_data"]
 testpaths = "tests"
 
 [tool.ruff]

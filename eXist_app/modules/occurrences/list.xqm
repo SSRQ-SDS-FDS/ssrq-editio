@@ -33,3 +33,10 @@ declare function occurrences-list:all($loader-functions as (function() as elemen
             "places": occurrences-find:places($docs)
         }
 };
+
+declare function occurrences-list:details($id as xs:string, $lang as xs:string) as map(*) {
+    map {
+        'id': $id,
+        'stdName': occurrences-find:get-std-name($id, $lang)
+    }
+};

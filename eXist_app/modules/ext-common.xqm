@@ -470,27 +470,27 @@ declare function ec:print-date($date as node()*) {
     (: save typing in ssrq.odd :)
     let $lang := $config:lang-settings?lang
     let $date-string :=
-        if ($date/@when) then
-          if (matches($date/@when, "^\d{4}-\d{2}$")) then
-            format-date(xs:date($date/@when || '-01'), "[MNn] [Y0001]", $lang, (), ())
+        if ($date/@when-custom) then
+          if (matches($date/@when-custom, "^\d{4}-\d{2}$")) then
+            format-date(xs:date($date/@when-custom || '-01'), "[MNn] [Y0001]", $lang, (), ())
           else
-            format-date(xs:date($date/@when), '[Y] [MNn] [D1]', $lang, (), ())
-        else if (matches($date/@from, '-01-01$') and matches($date/@to, '-12-31$')) then (: precision is one year :)
-            if (substring($date/@from, 1, 4) = substring($date/@to, 1, 4)) then
-                substring($date/@from, 1, 4)
+            format-date(xs:date($date/@when-custom), '[Y] [MNn] [D1]', $lang, (), ())
+        else if (matches($date/@from-custom, '-01-01$') and matches($date/@to-custom, '-12-31$')) then (: precision is one year :)
+            if (substring($date/@from-custom, 1, 4) = substring($date/@to-custom, 1, 4)) then
+                substring($date/@from-custom, 1, 4)
             else
-                ec:print-date-period(xs:int(substring($date/@from, 1, 4)), xs:int(substring($date/@to, 1, 4)))
-        else if (substring($date/@from, 1, 4) = substring($date/@to, 1, 4)) then (: within the same year :)
-            if (substring($date/@from, 6, 2) = substring($date/@to, 6, 2)) then (: within the same month :)
-                format-date(xs:date($date/@from), '[Y] [MNn] [D1]', $lang, (), ()) || ' – ' || format-date(xs:date($date/@to), '[D1]')
+                ec:print-date-period(xs:int(substring($date/@from-custom, 1, 4)), xs:int(substring($date/@to-custom, 1, 4)))
+        else if (substring($date/@from-custom, 1, 4) = substring($date/@to-custom, 1, 4)) then (: within the same year :)
+            if (substring($date/@from-custom, 6, 2) = substring($date/@to-custom, 6, 2)) then (: within the same month :)
+                format-date(xs:date($date/@from-custom), '[Y] [MNn] [D1]', $lang, (), ()) || ' – ' || format-date(xs:date($date/@to-custom), '[D1]')
             else
-                format-date(xs:date($date/@from), '[Y] [MNn] [D1]', $lang, (), ()) || ' – ' || format-date(xs:date($date/@to), '[MNn] [D1]', $lang, (), ())
+                format-date(xs:date($date/@from-custom), '[Y] [MNn] [D1]', $lang, (), ()) || ' – ' || format-date(xs:date($date/@to-custom), '[MNn] [D1]', $lang, (), ())
         else
-            string-join((format-date(xs:date($date/@from), '[Y] [MNn] [D1]', $lang, (), ()),
+            string-join((format-date(xs:date($date/@from-custom), '[Y] [MNn] [D1]', $lang, (), ()),
             ' – ',
-            format-date(xs:date($date/@to), '[Y] [MNn] [D1]', $lang, (), ())))
+            format-date(xs:date($date/@to-custom), '[Y] [MNn] [D1]', $lang, (), ())))
     let $old-style :=
-        if ($date/@calendar='Julian') then
+        if ($date/@calendar => starts-with('julian')) then
             ' ' || ec:label('old-style-abbr', false())
         else
             ()

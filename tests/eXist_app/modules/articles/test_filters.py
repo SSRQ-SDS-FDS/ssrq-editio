@@ -12,6 +12,7 @@ PUBDATE_MIN = 2017
 
 
 @pytest.mark.asyncio_cooperative
+@pytest.mark.depends_on_data
 async def test_create_pubdate_range_against_editio_data(
     execute_xquery: xquery_tester,
 ):
@@ -29,6 +30,7 @@ async def test_create_pubdate_range_against_editio_data(
 
 
 @pytest.mark.asyncio_cooperative
+@pytest.mark.depends_on_data
 async def test_create_period_range_against_editio_data(
     execute_xquery: xquery_tester,
 ):
@@ -44,6 +46,7 @@ async def test_create_period_range_against_editio_data(
 
 
 @pytest.mark.asyncio_cooperative
+@pytest.mark.depends_on_data
 async def test_create_archive_list_returns_archives(
     execute_xquery: xquery_tester,
 ):

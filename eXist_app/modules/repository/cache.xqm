@@ -178,11 +178,11 @@ declare function ssrq-cache:create-unique-cache-key($prefix as xs:string?, $cont
 : @param $context The context for the key as xs:string?
 : @return The unique key as xs:string
 :)
-declare function ssrq-cache:create-unique-cache-key-as-uuid($context as xs:string, $params as xs:string*) as xs:string {
+declare function ssrq-cache:create-unique-cache-key-as-uuid($context as xs:string, $params as xs:string*, $lang as xs:string) as xs:string {
     string-join((
         $context,
         $params,
-        $config:lang-settings?lang
+        $lang
     ), '_')
     => util:uuid()
 };

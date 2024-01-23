@@ -150,3 +150,18 @@ declare function articles-list:get-doc-order-key($doc as element(doc), $volume-c
     else
         number($doc/doc)
 };
+
+(:~
+: Counts the documents in one or more volumes.
+:
+: @param $volume as element(volume)+ - A list of one or more volumes.
+: @return xs:integer - The number of documents in the volumes (summed up).
+:)
+declare function articles-list:count($volumes as element(volume)+) as xs:integer {
+    let $articles :=
+        for $volume in $volumes
+        for $d in $volume/doc[not(special)]
+        group by $value := string-join($d/* except $d/num, '-')
+        return $value
+    return count($articles)
+};

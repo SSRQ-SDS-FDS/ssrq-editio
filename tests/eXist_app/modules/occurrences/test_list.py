@@ -9,6 +9,7 @@ from tests.eXist_app.conftest import (
 
 
 @pytest.mark.asyncio_cooperative
+@pytest.mark.depends_on_data
 async def test_keys_in_occurences_list_all(execute_xquery: xquery_tester):
     """Test the keys returned keys in occurences_list_all."""
     xquery = build_query(

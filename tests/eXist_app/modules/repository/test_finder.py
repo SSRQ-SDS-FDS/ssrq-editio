@@ -21,6 +21,7 @@ async def pdf_access_lock():
 
 
 @pytest.mark.asyncio_cooperative
+@pytest.mark.depends_on_data
 async def test_find_articles(execute_xquery: xquery_tester):
     xquery = build_query(
         modules=[xquery_modules["finder"]],
@@ -33,6 +34,7 @@ async def test_find_articles(execute_xquery: xquery_tester):
 
 
 @pytest.mark.asyncio_cooperative
+@pytest.mark.depends_on_data
 async def test_find_paratextual_documents(execute_xquery: xquery_tester):
     xquery = build_query(
         modules=[xquery_modules["finder"]],
@@ -49,6 +51,7 @@ async def test_find_paratextual_documents(execute_xquery: xquery_tester):
     "idno, expected",
     [("SSRQ-SG-III_4-1-1", 1), ("Foo-bar", 0)],
 )
+@pytest.mark.depends_on_data
 async def test_find_by_idno_against_editio_data(
     execute_xquery: xquery_tester, idno: str, expected: int
 ):
@@ -73,6 +76,7 @@ async def test_find_by_idno_against_editio_data(
         ("NE-4-1.A.1-1", "SDS-NE-4-1.A.1-1"),
     ],
 )
+@pytest.mark.depends_on_data
 async def test_find_article_by_idno_ending(
     execute_xquery: xquery_tester, idno_fragment: str, full_idno: str | None
 ):
@@ -93,6 +97,7 @@ async def test_find_article_by_idno_ending(
     "lang, expected",
     [("de", True), ("en", True), ("fr", True), ("it", True), ("foo", False)],
 )
+@pytest.mark.depends_on_data
 async def test_find_i18n_catalogue_by_lang(
     execute_xquery: xquery_tester, lang: str, expected: bool
 ):
@@ -110,6 +115,7 @@ async def test_find_i18n_catalogue_by_lang(
     "idno, expected",
     [("SSRQ-SG-III_4-lit", 1), ("Foo-bar", 0)],
 )
+@pytest.mark.depends_on_data
 async def test_find_paratext_by_idno_against_editio_data(
     execute_xquery: xquery_tester, idno: str, expected: int
 ):
@@ -134,6 +140,7 @@ async def test_find_paratext_by_idno_against_editio_data(
         ("SDS-NE-4-1.A.1-1", "NE/4/1.A.1-1.pdf"),
     ],
 )
+@pytest.mark.depends_on_data
 async def test_find_pdf_by_idno_against_editio_data(
     execute_xquery: xquery_tester, idno: str, expected_filename: str | None, pdf_access_lock: Lock
 ):
@@ -164,3 +171,28 @@ async def test_find_pdf_by_idno_against_editio_data(
         )
     else:
         assert not cast_query_result(result[0], False)
+
+
+@pytest.mark.asyncio_cooperative
+@pytest.mark.depends_on_data
+async def test_find_articles_by_path(
+    execute_xquery: xquery_tester,
+):
+    """Test if the correct number of articles is found for a given path."""
+    xquery = build_query(
+        modules=[xquery_modules["config"], xquery_modules["finder"]],
+        query_body="""find:articles-by-path($config:data-root || '/SG/SG_III_4') => count()""",  # noqa
+    )
+
+    assert_xquery_result(await execute_xquery(xquery), 259)
+
+
+@pytest.mark.asyncio_cooperative
+@pytest.mark.depends_on_data
+async def test_construct_path_from_kanton_and_volume(execute_xquery: xquery_tester):
+    xquery = build_query(
+        modules=[xquery_modules["finder"]],
+        query_body="""find:construct-path-from-kanton-and-volume('SG', 'III_4')""",  # noqa
+    )
+
+    assert_xquery_result(await execute_xquery(xquery), "/db/apps/ssrq/editio-data/SG/SG_III_4")

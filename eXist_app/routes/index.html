@@ -1,18 +1,28 @@
-<div xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" data-template="templates:surround"
-    data-template-with="templates/main.html" data-template-at="main-content">
-    <section id="cantonlist">
-        <table id="cantons" class="table" data-template="i18n:translate">
-            <thead>
-                <tr>
-                    <th colspan="2">
-                        <i18n:text key="canton" />
-                    </th>
-                    <th>
-                        <i18n:text key="section" />
-                    </th>
-                </tr>
-            </thead>
-            <tbody data-template="kantons:list"></tbody>
-        </table>
-    </section>
+<div
+  xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module"
+  data-template="templates:surround"
+  data-template-with="templates/page.html"
+  data-template-at="content"
+>
+  <section
+    data-template="lib:include"
+    data-template-path="templates/banner.html"
+  />
+  <section
+    id="cantonlist"
+    class="max-w-4xl lg:px-12 sm:px-4 mx-auto mt-4 mb-9"
+    data-template="template-utils:resolve-links"
+  >
+    <div class="flex items-center text-center mb-2.5">
+      <hr class="flex-grow border-ssrq-primary mx-2" />
+      <h2 class="title-2 text-ssrq-greyed-800">
+        <i18n:text key="canton-overview" />
+      </h2>
+      <hr class="flex-grow border-ssrq-primary mx-2" />
+    </div>
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 auto-rows-max gap-3 justify-items-center"
+      data-template="kantons:list"
+    ></div>
+  </section>
 </div>

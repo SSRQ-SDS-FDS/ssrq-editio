@@ -61,57 +61,6 @@ declare variable $config:pagination-fill := 5;
  :)
 declare variable $config:css-content-class := "content";
 
-(:~
- : Configuration XML for Apache FOP used to render PDF. Important here
- : are the font directories.
- :)
-declare variable $config:fop-config :=
-    let $fontsDir := config:get-fonts-dir()
-    return
-        <fop version="1.0">
-            <!-- Strict user configuration -->
-            <strict-configuration>true</strict-configuration>
-
-            <!-- Strict FO validation -->
-            <strict-validation>false</strict-validation>
-
-            <!-- Base URL for resolving relative URLs -->
-            <base>./</base>
-
-            <renderers>
-                <renderer mime="application/pdf">
-                    <fonts>
-                    {
-                        if ($fontsDir) then (
-                            <font kerning="yes"
-                                embed-url="file:{$fontsDir}/LexiaFontes_Rg.ttf"
-                                encoding-mode="single-byte">
-                                <font-triplet name="Lexia Fontes" style="normal" weight="normal"/>
-                            </font>,
-                            <font kerning="yes"
-                                embed-url="file:{$fontsDir}/LexiaFontes_Bd.ttf"
-                                encoding-mode="single-byte">
-                                <font-triplet name="Lexia Fontes" style="normal" weight="700"/>
-                            </font>,
-                            <font kerning="yes"
-                                embed-url="file:{$fontsDir}/LexiaFontes_It.ttf"
-                                encoding-mode="single-byte">
-                                <font-triplet name="Lexia Fontes" style="italic" weight="normal"/>
-                            </font>,
-                            <font kerning="yes"
-                                embed-url="file:{$fontsDir}/LexiaFontes_BdIt.ttf"
-                                encoding-mode="single-byte">
-                                <font-triplet name="Lexia Fontes" style="italic" weight="700"/>
-                            </font>
-                        ) else
-                            ()
-                    }
-                    </fonts>
-                </renderer>
-            </renderers>
-        </fop>
-;
-
 declare variable $config:user-agent :=
     let $default-ua :=
         try {
@@ -160,9 +109,14 @@ declare variable $config:index-url :=
             $config:base-url => replace('^//\w+(\..*)$', '//' || $config:env/urls/prefix[@type = 'index'] || '$1')
 ;
 
-(:
-    Determine the application root collection from the current module load path.
-:)
+
+declare variable $config:app-titles := map {
+    "de": "SSRQ online",
+    "en": "SLS online",
+    "fr": "SDS online",
+    "it": "FDS online"
+};
+
 declare variable $config:app-root as xs:string := analyze-string(system:get-module-load-path(), '(/db.*)/modules')//xpath:group[@nr = "1"]/string();
 
 declare variable $config:data-root := utils:path-concat-safe(($config:app-root, "editio-data"));
@@ -178,6 +132,8 @@ declare variable $config:odd-source := "ssrq-source.odd";
 declare variable $config:odd-diplomatic := "ssrq.odd";
 
 declare variable $config:odd-normalized := "ssrq-norm.odd";
+
+declare variable $config:misc-path := utils:path-concat-safe(($config:data-root, "misc"));
 
 declare variable $config:odd-root := utils:path-concat-safe(($config:app-root, "resources/odd"));
 
@@ -203,7 +159,7 @@ declare variable $config:static-filters-cache := 'filters.xml';
 
 declare variable $config:static-filters-list-cache := ssrq-cache:load-from-static-cache-by-name($config:static-cache-path, $config:static-filters-cache);
 
-declare variable $config:partners := doc(utils:path-concat-safe(($config:data-root, "misc/partners.xml")))/*;
+declare variable $config:partners as xs:string := "partners.xml";
 
 declare variable $config:output := "transform";
 
@@ -217,15 +173,27 @@ declare variable $config:app-resources := utils:path-concat-safe(($config:app-ro
 
 declare variable $config:i18n-catalogues := utils:path-concat-safe(($config:app-resources, "i18n"));
 
-declare variable $config:i18n-supported-languages := ("de", "fr", "en", "it");
+declare variable $config:i18n-supported-languages := ("de", "fr", "it", "en");
 
 declare variable $config:i18n-default-lang := "de";
+
+declare variable $config:i18n-supported-languages-display := ("DEU", "FRA", "ITA", "ENG");
+
+declare variable $config:iso-639-3 := map {'de'     : 'deu',
+                                          'fr'     : 'fra',
+                                          'it'     : 'ita',
+                                          'en'     : 'eng'
+                                         };
 
 declare variable $config:paratext-types := ("intro", "bailiffs", "lit");
 
 declare variable $config:api-prefix := 'api';
 
 declare variable $config:api-version := 'v1';
+
+declare variable $config:ssrq-api-host := 'https://www.ssrq-sds-fds.ch';
+
+declare variable $config:ssrq-places-db-std-name := $config:ssrq-api-host || '/places-db-edit/views/get-std-name.xq';
 
 (: FIXME: using path-concat-safe here results in a NullPointerException
  : declare variable $config:expath-descriptor := doc(utils:path-concat-safe(($config:app-root, "expath-pkg.xml")))/expath:package;
@@ -282,78 +250,4 @@ declare function config:repo-descriptor() as element(repo:meta) {
  :)
 declare function config:expath-descriptor() as element(expath:package) {
     $config:expath-descriptor
-};
-
-declare %templates:wrap function config:app-title($node as node(), $model as map(*)) as text() {
-    $config:expath-descriptor/expath:title/text()
-};
-
-declare function config:app-meta($node as node(), $model as map(*)) as element()* {
-    <meta xmlns="http://www.w3.org/1999/xhtml" name="description" content="{$config:repo-descriptor/repo:description/text()}"/>,
-    for $author in $config:repo-descriptor/repo:author
-    return
-        <meta xmlns="http://www.w3.org/1999/xhtml" name="creator" content="{$author/text()}"/>
-};
-
-(:~
- : For debugging: generates a table showing all properties defined
- : in the application descriptors.
- :)
-declare function config:app-info($node as node(), $model as map(*)) {
-    let $expath := config:expath-descriptor()
-    let $repo := config:repo-descriptor()
-    return
-        <table class="app-info">
-            <tr>
-                <td>app collection:</td>
-                <td>{$config:app-root}</td>
-            </tr>
-            {
-                for $attr in ($expath/@*, $expath/*, $repo/*)
-                return
-                    <tr>
-                        <td>{node-name($attr)}:</td>
-                        <td>{$attr/string()}</td>
-                    </tr>
-            }
-            <tr>
-                <td>Controller:</td>
-                <td>{ request:get-attribute("$exist:controller") }</td>
-            </tr>
-        </table>
-};
-
-(: Try to dynamically determine data directory by calling JMX. :)
-declare function config:get-data-dir() as xs:string? {
-    try {
-        let $request := <http:request method="GET" href="http://localhost:{request:get-server-port()}/{request:get-context-path()}/status?c=disk"/>
-        let $response := http:send-request($request)
-        return
-            if ($response[1]/@status = "200") then
-                $response[2]//jmx:DataDirectory/string()
-            else
-                ()
-    } catch * {
-        ()
-    }
-};
-
-declare function config:get-repo-dir() {
-    let $data-dir := config:get-data-dir()
-    let $pkg-root := $config:expath-descriptor/@abbrev || "-" || $config:expath-descriptor/@version
-    return
-        if ($data-dir) then
-            utils:path-concat(($data-dir, "expathrepo", $pkg-root))
-        else
-            ()
-};
-
-
-declare function config:get-fonts-dir() as xs:string? {
-    let $repo-dir := config:get-repo-dir()
-    return
-        if ($repo-dir) then
-            utils:path-concat(($repo-dir, "resources", "fonts"))
-        else
-            ()
 };

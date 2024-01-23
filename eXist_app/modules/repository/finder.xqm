@@ -33,6 +33,17 @@ declare function find:regular-articles-with-uuid() as element(tei:TEI)+ {
 };
 
 (:~
+: Loads a collection of articles
+: by a given database path
+:
+: @param $db-path the path to the collection to search in as xs:string
+: @return a sequence of TEI documents as element(tei:TEI)*
+:)
+declare function find:articles-by-path($db-path as xs:string) as element(tei:TEI)* {
+    collection($db-path)/tei:TEI[not(@type)]
+};
+
+(:~
 : A function to find all TEI documents / paratextual documents in the data repository.
 :
 : @return a sequence of TEI documents
@@ -144,9 +155,7 @@ declare function find:pdf-by-idno($idno as xs:string, $doc as element(doc)) as m
 declare function find:pdf-by-kanton-and-volume($kanton as xs:string, $volume as xs:string) as map(*) {
     let $suffix := string-join(($kanton, $volume), '-') || '.pdf'
     let $collection := utils:path-concat-safe(($config:data-root, $kanton, ($kanton || '_' || $volume), 'pdf'))
-    let $result := xmldb:get-child-resources(
-        utils:path-concat-safe(($config:data-root, $kanton, ($kanton || '_' || $volume), 'pdf'))
-        )[ends-with(., $suffix)]
+    let $result := xmldb:get-child-resources(find:construct-path-from-kanton-and-volume($kanton, $volume) || '/pdf')[ends-with(., $suffix)]
     return
         if (count($result) = 1) then
             let $path := utils:path-concat-safe(($collection, $result))
@@ -199,4 +208,33 @@ declare function find:load-by-request-params($params as array(xs:string)) as map
                     find:article-by-idno($id?idno)
     return
         map:put($id, 'xml', $xml)
+};
+
+(:~
+: Construct the path to a volume collection
+: from the Kanton and Volume given as xs:string
+:
+: @param $kanton the kanton as xs:string
+: @param $volume the volume as xs:string
+: @return the path as xs:string
+:)
+declare function find:construct-path-from-kanton-and-volume($kanton as xs:string, $volume as xs:string) as xs:string {
+    utils:path-concat-safe(($config:data-root, $kanton, ($kanton || '_' || $volume)))
+};
+
+(:~
+: Load a document given by its path
+: Checks if the document is available
+: – if not, it throws an error
+:
+: @param $path the path to the document as xs:string+
+: @return the document as node()
+:)
+declare function find:load-document-by-path($path-components as xs:string+) as node() {
+    let $path := utils:path-concat($path-components)
+    return
+        if (doc-available($path)) then
+            doc($path)
+        else
+            error(xs:QName('repository:find'), 'Document not found at ' || $path)
 };

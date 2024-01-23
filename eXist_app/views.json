@@ -43,6 +43,38 @@
         }
       }
     },
+    "/about": {
+      "get": {
+        "summary": "Fallback for about",
+        "tags": ["views"],
+        "operationId": "views:about-handler",
+        "x-error-handler": "views:error-handler",
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "query",
+            "description": "The selected language",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["de", "en", "fr", "it"]
+            }
+          }
+        ],
+        "responses": {
+          "301": {
+            "description": "Redirect to the start page",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/about/{page}": {
       "get": {
         "summary": "Content pages of the about section; e.g. /about/partners",
@@ -180,6 +212,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error encountered",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -220,7 +262,7 @@
             }
           },
           {
-            "name": "start",
+            "name": "page",
             "in": "query",
             "description": "The start of the pagination",
             "required": false,
@@ -238,6 +280,15 @@
             "schema": {
               "type": "integer",
               "default": 20
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "description": "A simple query string to filter by title or IDNO",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -264,6 +315,16 @@
           },
           "404": {
             "description": "Requested view not found",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error encountered",
             "content": {
               "text/html": {
                 "schema": {

@@ -11,11 +11,71 @@ import module namespace articles-idno="http://ssrq-sds-fds.ch/exist/apps/ssrq/ar
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "../ext-common.xqm";
 import module namespace find="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder" at "../repository/finder.xqm";
+import module namespace i18n-settings="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/settings" at "../i18n/settings.xqm";
+import module namespace i18n = 'http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module' at '../i18n/i18n.xqm';
+import module namespace i18n-templates="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/templates" at "../i18n/i18n-templates.xqm";
+import module namespace link="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/link" at "../repository/link.xqm";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
 import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "../ssrq.xqm";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace xpath="http://www.w3.org/2005/xpath-functions";
+
+(:
+: Utility templating function to create an attribute
+: data-app with the base URL on the root element and
+: apply the i18n-translation on it's children. Therefore it
+: will at first process all templates on the children and
+: then apply the i18n-translation.
+:
+: @param $node node() - the current node (passed by the template engine)
+: @param $model map(*) - the model (passed by the template engine)
+: @return element(html) - the root element with the attribute
+:)
+declare function template-utils:create-root-and-translate($node as node(), $model as map(*)) as element(html) {
+    let $lang := i18n-settings:get-lang-from-model-or-config($model)
+    return
+        <html lang="{$lang}" data-app="{$config:base-url}">
+            {
+                $node/@* except $node/@data-template,
+                i18n:process-with-xsl(
+                    templates:process($node/*, $model),
+                    $lang,
+                    ()
+                )
+            }
+        </html>
+};
+
+(:
+: Prints the title from the model –
+: and uses the param-resolver to resolve the values;
+: the titles are translated using the i18n module
+: If a translation is not found, the title is printed as given.
+: Nothing is returned if no title is found.
+:
+: @param $node node() - the current node (passed by the template engine)
+: @param $model map(*) - the model (passed by the template engine)
+: @return element() - the title
+:)
+declare function template-utils:print-title($node as node(), $model as map(*)) as element()? {
+    element { node-name($node) } {
+        $node/@* except $node/@data-template,
+        (
+            for $title-key at $i in ('maintitle', 'subtitle')
+            let $title-part as item()* := $model?configuration?param-resolver($title-key)
+            where exists($title-part)
+            return
+                element { 'h' || $i } {
+                    attribute class { if ($i = 1) then 'title-1' else 'title-2' },
+                    if ($title-part instance of xs:string) then
+                        <i18n:text key="{$title-part}">{$title-part}</i18n:text>
+                    else
+                        $title-part
+                }
+        )
+    }[*]
+};
 
 declare function template-utils:load-by-idno($node as node(),
                                              $model as map(*),
@@ -50,16 +110,13 @@ declare function template-utils:load-by-idno($node as node(),
 : @param $link-base-params xs:string? - the base URL for the link, with parameters
 : @return element(a) - the link
 :)
-declare
-%templates:wrap
-%templates:default("total-key", "total-documents")
-function template-utils:display-hits($node as node(),
-                                     $model as map(*),
-                                     $total-key as xs:string,
-                                     $link-base-params as xs:string?) as element(a) {
-    let $link-base := if ($link-base-params) then tokenize($link-base-params, ';') ! $model?configuration?param-resolver(.) else ()
-    return
-    <a href="{ec:create-app-link($link-base, map{'per-page': $model($total-key)})}">{$model($total-key)}</a>
+declare function template-utils:display-hits($hits as xs:integer, $link as xs:string) as element(a) {
+    <a href="{$link}">
+        <span class="text-ssrq-primary mr-1">
+            {$hits}
+        </span>
+            {i18n-templates:create-i18n-container(if ($hits = 1) then 'found-single' else 'found')}
+    </a>
 };
 
 (:~
@@ -83,6 +140,42 @@ declare function template-utils:display-pdf-download($node as node(), $model as 
         else ()
 };
 
+(: Render a badge
+: with a document symbol and a simple counter
+:
+: @param $count xs:integer - the counter
+: @return element(span) - the rendered badge
+:)
+declare function template-utils:counter-badge($count as xs:integer) as element(span) {
+    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20
+    20" fill="currentColor" class="w-3.5 h-3.5 mr-0.5">
+                            <path fill-rule="evenodd"
+                                d="M4.5 2A1.5 1.5 0 003 3.5v13A1.5 1.5 0 004.5
+    18h11a1.5 1.5 0 001.5-1.5V7.621a1.5 1.5 0 00-.44-1.06l-4.12-4.122A1.5 1.5 0
+    0011.378 2H4.5zm2.25 8.5a.75.75 0 000 1.5h6.5a.75.75 0 000-1.5h-6.5zm0
+    3a.75.75 0 000 1.5h6.5a.75.75 0 000-1.5h-6.5z"
+                                clip-rule="evenodd"/>
+                        </svg> {$count}
+    </span>
+};
+
+(:~~
+: Utility Function to insert the
+: app-title as an alt-Attribute into html:img
+:
+: @param $node node() - the current node (passed by the template engine)
+: @param $model map(*) - the model (passed by the template engine)
+: @return attribute(alt) - the alt-Attribute
+:)
+declare %templates:wrap function template-utils:insert-alt($node as node(), $model as map(*)) as attribute(alt) {
+    let $lang := i18n-settings:get-lang-from-model-or-config($model)
+    return
+        attribute alt {
+            $config:app-titles($lang)
+        }
+};
+
 (:~
 : Utility templating function to resolve links written like {app}/foo/bar
 : in the template.
@@ -98,6 +191,21 @@ declare function template-utils:resolve-links($node as node(), $model as map(*),
             templates:process($node/node(), $model)
         }, $model, $add-lang-param
     )
+};
+
+declare function template-utils:loader-overlay() as element(div) {
+    <div class="absolute bg-white bg-opacity-60 z-10 h-full w-full flex items-start" id="loading-overlay">
+    <div class="flex items-center justify-center">
+      <span class="text-3xl mr-4">{i18n-templates:create-i18n-container('loading')}</span>
+      <svg class="animate-spin h-5 w-5 text-ssrq-primary" xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+        </path>
+      </svg>
+    </div>
+  </div>
 };
 
 (:~
@@ -157,11 +265,22 @@ declare %private function template-utils:resolve-links-from-template($template a
                         $node/@*,
                         template-utils:resolve-links-from-template($node/node(), $model, $add-lang-param)
                     }
+            case element(input) return
+                if ($node/@hx-get) then
+                    element { node-name($node) } {
+                        attribute hx-get { template-utils:create-link($node/@hx-get, false(), $model) },
+                        $node/@* except $node/@hx-get
+                    }
+                else
+                    element { node-name($node) } {
+                        $node/@*,
+                        template-utils:resolve-links-from-template($node/node(), $model, $add-lang-param)
+                    }
             case element() return
                 element { node-name($node) } {
-                    $node/@*,
-                    template-utils:resolve-links-from-template($node/node(), $model, $add-lang-param)
-                }
+                        $node/@*,
+                        template-utils:resolve-links-from-template($node/node(), $model, $add-lang-param)
+                    }
             default return
                 $node
 };
@@ -181,10 +300,16 @@ declare %private function template-utils:resolve-links-from-template($template a
         let $query-map := template-utils:create-query-map($url)
         let $path := functx:substring-before-if-contains($url, "?")
         return
-            ec:create-link(
-                $path,
-                $query-map,
-                $add-lang-param and starts-with($input-value, "{app}")
+            link:create(
+                $path[string-length(.) > 0],
+                if (
+                    $add-lang-param
+                    and starts-with($input-value, "{app}")
+                    and not(map:contains($query-map, 'lang'))
+                ) then
+                    $query-map => map:put("lang", $config:lang-settings?lang)
+                else
+                    $query-map
             )
  };
 
@@ -201,7 +326,7 @@ declare function template-utils:create-url-base-for-link($input-value as attribu
                     switch ($current)
                     case 'app' return $config:base-url
                     case 'uri' return request:get-uri()
-                    case 'qs' return "" || request:get-query-string()
+                    case 'qs'  return "" || request:get-query-string()
                     default return
                         utils:coalexec(
                             function() { $model?configuration?param-resolver($current) },

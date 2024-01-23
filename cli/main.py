@@ -5,7 +5,7 @@ from cli import config
 from cli.volumes import config_reader as vol_config
 from cli.volumes import handle as vol_handle
 from cli.misc_data import handle as misc_handle
-from cli.sass import handle as sass_handle
+from cli.css import handle as css_handle
 from cli.bundle import settings as bundle_settings
 from cli.bundle.bundle import bundle_application, get_infos_from_expath
 from cli.sync.sync import sync_folder, ExistServerConfig, ExistEndpoints
@@ -24,11 +24,6 @@ app = typer.Typer(name="editio")
              as .xar in `build`.""",
 )
 def build(
-    enable_upload: bool = typer.Option(
-        False,
-        "--enable-upload",
-        help="Enable upload functionality inside the application.",
-    ),
     use_cache: bool = typer.Option(
         False, "--use-cache", help="Control if the application uses the cache."
     ),
@@ -67,7 +62,6 @@ def build(
     settings = bundle_settings.merge_env_settings(
         settings=bundle_settings.read_env_settings(config.EDITIO_CONFIG),
         cache=use_cache,
-        upload=enable_upload,
         env=env,
     )
     logger.info(f"Using the following settings: {settings}")
@@ -77,7 +71,7 @@ def build(
     misc_handle.copy_misc_data(
         config.BUILD_CONFIG.misc_data.source, config.BUILD_CONFIG.misc_data.target
     )
-    sass_handle.compile_sass_to_css(config.BUILD_CONFIG.css.source, config.BUILD_CONFIG.css.target)
+    css_handle.compile_css(config.BUILD_CONFIG.css.source, config.BUILD_CONFIG.css.target)
     bundle_application(
         config.PROJECT_ROOT / "build",
         config.BUILD_CONFIG.expath,
@@ -93,8 +87,15 @@ def build(
 @app.command(
     help="""Compile the cass while developing the application.""",
 )
-def compile_sass():
-    sass_handle.compile_sass_to_css(config.BUILD_CONFIG.css.source, config.BUILD_CONFIG.css.target)
+def compile_css(
+    watch: bool = typer.Option(
+        False,
+        "--watch",
+        "-w",
+        help="If true the compiler will watch for changes and recompile the css.",
+    ),
+):
+    css_handle.compile_css(config.BUILD_CONFIG.css.source, config.BUILD_CONFIG.css.target, watch)
 
 
 @app.command(

@@ -2,34 +2,64 @@ xquery version "3.1";
 
 module namespace volumes="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/volumes";
 
+import module namespace templates = "http://exist-db.org/xquery/html-templating";
+
+import module namespace articles-list="http://ssrq-sds-fds.ch/exist/apps/ssrq/articles/list" at "../articles/list.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "../ext-common.xqm";
 import module namespace find="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder" at "../repository/finder.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "../pm-config.xqm";
 import module namespace ssrq-cache="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache" at "../repository/cache.xqm";
 import module namespace ssrq-helper="http://ssrq-sds-fds.ch/exist/apps/ssrq/helper" at "../ssrq-helper.xqm";
+import module namespace template-utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/utils" at "template-utils.xqm";
+import module namespace xsl="http://ssrq-sds-fds.ch/exist/apps/ssrq/processing/xsl" at "../processing/xsl.xqm";
 
 declare namespace i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 (:~
 : Templating function, which will list
-: all volumes of per kanton
+: all volumes per kanton and write them
+: to the $model
 :
 : @param $node node() - the current node (passed by the template engine)
 : @param $model map(*) - the model (passed by the template engine)
 : @param $kanton xs:string - the kanton (passed by the template engine / the request)
-: @return element(div) - the rendered volumes
+: @return map(*) - a map, which will be merged with the model with the key "volumes"
+:                  and array of the volume-element and a example-TEI-document for the volume as value
 :)
-declare function volumes:list($node as node(), $model as map(*), $kanton as xs:string) as element(div) {
-    <div class="volumes">
-        {
-            for $volume in volumes:get-volumes($kanton)
-            return
-                volumes:render-volume-info($volume, $kanton)
-        }
-    </div>
+declare %templates:wrap function volumes:list($node as node(), $model as map(*), $kanton as xs:string) as map(xs:string, item()+) {
+    map {
+        "volumes": volumes:get-volumes($kanton) ! [., find:article-by-idno(./doc[1]/@xml:id/data(.))]
+    }
+};
 
+(: Creates a human readable id for the volume
+: based on the info from the static docs list
+:
+: @param $node node() - the current node (passed by the template engine)
+: @param $model map(*) - the model (passed by the template engine)
+: @return node() - the node, which called the templating function, with the id as text
+:)
+declare function volumes:id($node as node(), $model as map(*)) as node() {
+    let $doc as element(doc) := array:get($model?volume, 1)/doc[1]
+    return
+        element { node-name($node) } {
+            $node/@* except $node/@data-template,
+            string-join(($doc/prefix, $doc/kanton, $doc/volume), ' ')
+        }
+};
+
+(:~
+: Render a small badge with the number of articles
+: in a volume
+:
+: @param $node node() - the current node (passed by the template engine)
+: @param $model map(*) - the model (passed by the template engine)
+: @return element(span) - the rendered badge
+:)
+declare function volumes:count($node as node(), $model as map(*)) as element(span) {
+    template-utils:counter-badge(articles-list:count(array:get($model?volume, 1)))
 };
 
 (:~
@@ -44,39 +74,35 @@ declare %private function volumes:get-volumes($kanton as xs:string) as element(v
 };
 
 (:~
-: Render the volume info
-:
-: @param $volume element(volume) - the volume
-: @param $kanton xs:string - the kanton
-: @return element(div) - the rendered volume info
-:)
-declare %private function volumes:render-volume-info($volume as element(volume), $kanton as xs:string) as element(div) {
-    <div class="volume">
-        <div class="volume-counter">
-            <span class="badge">
-                {ssrq-helper:count-docs($volume)}
-            </span>
-            </div>
-            {
-                volumes:render-volume-title($volume),
-                <a class="part" href="{ec:create-app-link(($kanton, $volume/@xml:id => substring(4), ''))}">
-                    <i18n:text key="articles">Stücke</i18n:text>
-                </a>,
-                volumes:create-anchor-for-content-types($volume, $kanton)
-            }
-    </div>
-};
-
-(:~
 : Render the volume title using the processing-model
 :
 : @param $volume element(volume) - the volume
 : @return element(div) - the rendered volume title
 :)
-declare %private function volumes:render-volume-title($volume as element(volume)) as element(div) {
-    let $example-document := find:article-by-idno($volume/doc[1]/@xml:id/data(.))
+declare function volumes:render-volume-title($node as node(), $model as map(*)) as element(div) {
+    xsl:apply('volume-title.xsl', array:get($model?volume, 2), ())
+};
+
+(:
+: Templating function, which will render
+: links to the different content types
+: of a volume
+:
+: @param $node node() - the current node (passed by the template engine)
+: @param $model map(*) - the model (passed by the template engine)
+: @return element(a)+ - the links
+:)
+declare function volumes:render-links($node as node(), $model as map(*)) as element(a)+ {
+    let $doc := array:get($model?volume, 1)/doc[1]
+    let $kanton := $doc/kanton
+    let $volume := $doc/volume
     return
-        $pm-config:web-transform($example-document//tei:fileDesc, map { "root": $example-document, "view": "volumes" }, $config:odd)
+        (
+            <a class="part" href="{ec:create-app-link(($kanton, $volume))}">
+                <i18n:text key="articles">Stücke</i18n:text>
+            </a>,
+            volumes:create-anchor-for-content-types(array:get($model?volume, 1), $kanton)
+        )
 };
 
 (:~

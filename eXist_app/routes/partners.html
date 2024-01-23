@@ -1,18 +1,16 @@
-<div xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module" data-template="templates:surround" data-template-with="templates/page.html" data-template-at="content">
-    <div data-template="templates:include" data-template-path="templates/menu.html"/>
-    <section class="container-fluid">
-        <header class="row">
-            <div class="col-md-12">
-                <div class="page-header">
-                    <h2>
-                        <i18n:text key="partners-and-funding"/>
-                    </h2>
-                </div>
-            </div>
-        </header>
-
-        <main class="tp-row">
-            <div data-template="app:partners" class="partners"/>
-        </main>
-    </section>
+<div
+  xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module"
+  data-template="templates:surround"
+  data-template-with="templates/page.html"
+  data-template-at="content"
+>
+  <section
+    data-template="lib:include"
+    data-template-path="templates/banner.html"
+  />
+  <nav
+    data-template="lib:include"
+    data-template-path="templates/breadcrumbs.html"
+  />
+  <section class="centered-section my-4" data-template="about:list-partners" />
 </div>

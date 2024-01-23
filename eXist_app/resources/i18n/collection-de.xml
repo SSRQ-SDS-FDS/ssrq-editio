@@ -13,6 +13,8 @@
     <msg key="close">Schliessen</msg>
     <msg key="search-results">Suchergebnis</msg>
     <msg key="found">gefundene Treffer</msg>
+    <msg key="found-single">gefundener Treffer</msg>
+    <msg key="no-hits-found">Keine Treffer</msg>
     <msg key="view-switch">Zwischen quellennaher und normalisierter Ansicht wechseln</msg>
     <msg key="view-normalized">Normalisiert</msg>
     <msg key="yes">Ja</msg>
@@ -46,6 +48,7 @@
     <msg key="searchEdition">durchsuche Editionstext</msg>
     <msg key="filters">Felder und Facetten</msg>
     <msg key="canton">Kanton</msg>
+    <msg key="canton-overview">Kantone und Abteilungen</msg>
     <msg key="section">Abteilung</msg>
     <msg key="loading">es wird geladen</msg>
     <msg key="describe">Stückbeschreibung</msg>
@@ -57,15 +60,15 @@
     <msg key="doctitel">Sammlung Schweizerischer Rechtsquellen online</msg>
     <msg key="kontakt">Kontakt</msg>
     <msg key="transrichtlinien">
-        <a href="https://www.ssrq-sds-fds.ch/wiki/Transkriptionsrichtlinien">Transkriptionsrichtlinien</a>
+        <a href="https://schema.ssrq-sds-fds.ch/latest/base/transcription/">Transkriptionsrichtlinien</a>
     </msg>
     <msg key="datrichtlinien">
-        <a href="https://www.ssrq-sds-fds.ch/wiki/Datierungsrichtlinien">Datierungsrichtlinien</a>
+        <a href="https://schema.ssrq-sds-fds.ch/latest/base/dating_guidelines/">Datierungsrichtlinien</a>
     </msg>
     <msg key="search">Suche</msg>
     <msg key="doSearch">Suchen</msg>
     <msg key="reset">Zurücksetzen</msg>
-    <msg key="lizenz">Lizenz: </msg>
+    <msg key="lizenz">Lizenz</msg>
     <msg key="sorting">Sortierung</msg>
     <msg key="loading-facets">Lade Registereinträge ...</msg>
     <msg key="error-title">Ein Fehler ist aufgetreten!</msg>
@@ -98,4 +101,9 @@
     <msg key="index">Index</msg>
     <msg key="zoom-in">Schrift vergrößern</msg>
     <msg key="zoom-out">Schrift verkleinern</msg>
+    <msg key="additional-languages">Verfügbare Sprachen</msg>
+    <msg key="project"><a target="_blank" href="https://www.ssrq-sds-fds.ch/home/">Projekt</a></msg>
+    <msg key="published-by">Herausgegeben von der Rechtsquellenstiftung des Schweizerischen Juristenvereins</msg>
+    <msg key="has-facs">Faksimile vorhanden</msg>
+    <msg key="about">Informationen</msg>
 </catalogue>

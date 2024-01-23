@@ -39,23 +39,25 @@ declare function ssrq-router:lookup ($name as xs:string) {
  :)
 declare function ssrq-router:rewrite-params($request as map(*), $parameters-to-rewrite as xs:string+, $special-id-param as xs:string) as map(*) {
     let $parameters := $request?parameters
+    let $required-parameters := map{'request-path': $request?path, 'lang': ($parameters?lang, $config:lang-settings?lang)[1]}
     return
         if (empty($parameters)) then
-            $request
+            map:put($request, 'parameters', map:merge($required-parameters))
         else
             let $parameters-rewritten :=
-                map:for-each($parameters, function($key, $value) {
-                    if ($key = $parameters-to-rewrite) then
-                        map:entry($key, replace($value, "^(.*)/$", "$1"))
-                    else if ($key = $special-id-param) then
-                        let $new-value := replace($value, "^(.*)[\.(html|tex|xml)]$", "$1")
-                        let $new-key := if ($value = $config:paratext-types) then 'paratext' else 'doc'
-                        return
-                            map:entry($new-key, $new-value)
-                    else map:entry($key, $value)
-                }) => map:merge()
+                    map:for-each($parameters, function($key, $value) {
+                        if ($key = $parameters-to-rewrite) then
+                            map:entry($key, replace($value, "^(.*)/$", "$1"))
+                        else if ($key = $special-id-param) then
+                            let $new-value := replace($value, "^(.*)[\.(html|tex|xml)]$", "$1")
+                            let $new-key := if ($value = $config:paratext-types) then 'paratext' else 'doc'
+                            return
+                                map:entry($new-key, $new-value)
+                        else map:entry($key, $value)
+                    })
+            let $rewritten-with-required-parameters := map:merge(($parameters-rewritten, $required-parameters))
             return
-                map:put($request, 'parameters', $parameters-rewritten)
+                map:put($request, 'parameters', $rewritten-with-required-parameters)
 };
 
 (:~
@@ -69,7 +71,7 @@ declare function ssrq-router:rewrite-params($request as map(*), $parameters-to-r
 declare function ssrq-router:add-cache-info($request as map(*)) as map(*) {
     if (xs:boolean($config:env/cache/text())) then
         let $parameters := if (empty($request?parameters)) then () else (map:keys($request?parameters)[not(. = 'lang')] ! $request?parameters(.))
-        let $cache-key := ssrq-cache:create-unique-cache-key-as-uuid($request?path, $parameters)
+        let $cache-key := ssrq-cache:create-unique-cache-key-as-uuid($request?path, $parameters, $request?parameters?lang)
         return
             map:merge(($request, map{'use-cache': true(), 'cache-key': $cache-key}))
     else
