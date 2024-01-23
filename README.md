@@ -54,7 +54,13 @@ This will start the application on port `8080` and you can access it via [http:/
 
 #### Running the tests
 
-To be done....
+The tests are written with [pytest](https://pytest.org) and can be run with the following command:
+
+```sh
+editio test
+```
+
+Some tests are marked with `@depends_on_data` and may only pass if the needed data-files are available inside eXist-db. You can skip these tests with the flag `--skip-data-tests`.
 
 ### Deployment / Running in production
 
