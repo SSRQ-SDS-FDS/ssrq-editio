@@ -32,13 +32,15 @@ This will activate the virtual python environment and install all dependencies. 
 
 Run `editio --help` to see all available commands.
 
-#### Running the application
+#### Running the application (in dev mode)
 
 At first build the xar-application:
 
 ```sh
-editio build --enable-upload --update-data dev
+editio build 'dev'
 ```
+
+If you want to update the data subrepo set the `-u` flag.
 
 And then start the application inside a docker container:
 
@@ -48,7 +50,7 @@ editio run
 
 This will start the application on port `8080` and you can access it via [http://localhost:8080](http://localhost:8080/exist/apps/ssrq/).
 
-**Note**: If you're making any changes to the XQuery code, you need to rebuild the application and restart the container. Otherwise you will have to run `editio sync` before you make any changes to the code. This is a drop-in replacement for the `sync`-command of the [eXist-DB plugin for VSCode](https://code.visualstudio.com) and will upload all changed files to the running container. The `sync`-command does not depend on VSCode and can be used with any editor.
+**Note**: If you're making any changes to the XQuery code, you need to rebuild the application and restart the container. Otherwise you will have to run `editio sync` before you make any changes to the code. This is a more stable drop-in replacement for the `sync`-command of the [eXist-DB plugin for VSCode](https://code.visualstudio.com) and will upload all changed files to the running container. The `sync`-command does not depend on VSCode and can be used with any environment.
 
 #### Running the tests
 
