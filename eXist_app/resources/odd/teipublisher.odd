@@ -41,12 +41,6 @@
                     <model predicate="parent::table" behaviour="block">
                         <outputRendition>font-style: italic;</outputRendition>
                     </model>
-                    <model predicate="parent::lg" behaviour="block">
-                        <outputRendition>font-style: italic;</outputRendition>
-                    </model>
-                    <model predicate="parent::list" behaviour="block">
-                        <outputRendition>font-weight: bold;</outputRendition>
-                    </model>
                     <model predicate="parent::div" behaviour="heading">
                         <param name="level" value="count(ancestor::div)"/>
                     </model>
@@ -58,7 +52,7 @@
                     <model output="web" predicate="$parameters?header='short'" behaviour="block"/>
                     <model output="web" behaviour="metadata"/>
                 </elementSpec>
-                <elementSpec mode="change" ident="fileDesc">
+                <elementSpec ident="fileDesc" mode="change" >
                     <modelSequence predicate="$parameters?header='short'">
                         <model behaviour="block" cssClass="header-short">
                             <param name="content" value="titleStmt"/>
@@ -147,16 +141,11 @@
                         <outputRendition>font-style: italic;</outputRendition>
                     </model>
                 </elementSpec>
-                <elementSpec mode="change" ident="author">
+                <elementSpec ident="author" mode="change">
                     <model predicate="ancestor::teiHeader" behaviour="block">
                         <outputRendition scope="before">content: 'By ';</outputRendition>
                     </model>
                     <model behaviour="inline"/>
-                </elementSpec>
-                <elementSpec mode="change" ident="edition">
-                    <model predicate="ancestor::teiHeader" behaviour="block">
-                        <outputRendition scope="before">content: 'Edition: ';</outputRendition>
-                    </model>
                 </elementSpec>
             </schemaSpec>
         </body>
