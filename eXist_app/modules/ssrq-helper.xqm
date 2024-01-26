@@ -161,7 +161,7 @@ function ssrq-helper:get-temp($node as node(), $model as map(*), $file as xs:str
             let $has-facs := exists($xml//tei:pb[@facs]) and not($odd eq $config:odd-normalized)
             return
                 map {
-                    "idno": $xml//tei:seriesStmt[@xml:id = 'ssrq-sds-fds']//tei:idno,
+                    "idno": $xml//tei:seriesStmt//tei:idno,
                     "filename": $file,
                     "show-download": false(),
                     "xml": $xml,
