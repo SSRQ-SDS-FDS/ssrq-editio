@@ -30,7 +30,7 @@ jobs:
         run: poetry run tailwindcss --help
       - name: Build editio-app
         shell: bash
-        run: poetry run editio build --enable-upload dev
+        run: poetry run editio build dev
       - name: Start the editio-app
         shell: bash
         run: poetry run editio run
@@ -39,7 +39,7 @@ jobs:
 
   deploy_to_staging:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name != 'pull_request'}}
+    if: ${{ github.event_name == 'workflow_dispatch' }}
 
     steps:
       - name: Checkout repo
