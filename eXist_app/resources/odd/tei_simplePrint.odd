@@ -945,7 +945,9 @@
               </model>
             </elementSpec>
             <elementSpec ident="author" mode="change">
-              <model predicate="ancestor::teiHeader" behaviour="omit"/>
+              <model predicate="ancestor::teiHeader" behaviour="block">
+                <outputRendition scope="before">content: 'By ';</outputRendition>
+              </model>
               <model behaviour="inline"/>
             </elementSpec>
             <elementSpec ident="back" mode="change">
@@ -1065,12 +1067,20 @@
             </elementSpec>
             <elementSpec ident="figure" mode="change">
               <model predicate="head or @rendition='simple:display'" behaviour="block"/>
-              <model behaviour="inline">
-                <outputRendition> display: block; border-top: solid 1pt blue; border-bottom: solid
-                  1pt blue; </outputRendition>
-              </model>
+              <model behaviour="inline"/>
             </elementSpec>
             <elementSpec ident="fileDesc" mode="change">
+              <modelSequence predicate="$parameters?header='short'">
+                <model behaviour="block" cssClass="header-short">
+                  <param name="content" value="titleStmt"/>
+                </model>
+                <model behaviour="block" cssClass="header-short">
+                  <param name="content" value="editionStmt"/>
+                </model>
+                <model behaviour="block" cssClass="header-short">
+                  <param name="content" value="publicationStmt"/>
+                </model>
+              </modelSequence>
               <model behaviour="title">
                 <param name="content" value="titleStmt"/>
               </model>
@@ -1114,6 +1124,9 @@
               </model>
             </elementSpec>
             <elementSpec ident="head" mode="change">
+              <model predicate="$parameters?header='short'" behaviour="inline">
+                <param name="content" value="replace(string-join(.//text()[not(parent::ref)]), '^(.*?)[^\w]*$', '$1')"/>
+              </model>
               <model predicate="parent::figure" behaviour="block">
                 <outputRendition>font-style: italic;</outputRendition>
               </model>
@@ -1141,6 +1154,13 @@
                 <param name="type" value="'line'"/>
                 <param name="label" value="@n"/>
               </model>
+            </elementSpec>
+            <elementSpec ident="licence" mode="add">
+              <model output="web" behaviour="link" predicate="@target" cssClass="licence">
+                <param name="content" value="'Licence'"/>
+                <param name="link" value="@target"/>
+              </model>
+              <model behaviour="omit"/>
             </elementSpec>
             <elementSpec ident="list" mode="change">
               <model predicate="not(@rendition)" behaviour="list">
@@ -1198,6 +1218,12 @@
               </model>
             </elementSpec>
             <elementSpec ident="profileDesc" mode="change">
+              <model behaviour="omit"/>
+            </elementSpec>
+            <elementSpec ident="publicationStmt" mode="add">
+              <model output="web" behaviour="block">
+                <param name="content" value="availability/licence"/>
+              </model>
               <model behaviour="omit"/>
             </elementSpec>
             <elementSpec ident="publisher" mode="change">
@@ -1312,18 +1338,21 @@
               <attList>
                 <attDef ident="type" mode="delete"/>
               </attList>
-              <model behaviour="metadata"/> 
+              <model output="latex" behaviour="metadata"/>
+              <model output="web" predicate="$parameters?header='short'" behaviour="block"/>
+              <model output="web" behaviour="metadata"/>
+              <model output="fo" behaviour="omit"/> 
             </elementSpec>
             <elementSpec ident="text" mode="change">
-              <model behaviour="body">
-                <outputRendition> max-width: 80%; margin: auto; font-family: Verdana, Tahoma,
-                  Geneva, Arial, Helvetica, sans-serif; </outputRendition>
-              </model>
+              <model behaviour="body"/>
             </elementSpec>
             <elementSpec ident="time" mode="change">
               <model behaviour="inline"/>
             </elementSpec>
             <elementSpec ident="title" mode="change">
+              <model predicate="$parameters?header='short'" behaviour="heading">
+                <param name="level" value="5"/>
+              </model>
               <modelSequence predicate="parent::titleStmt/parent::fileDesc">
                 <model predicate="preceding-sibling::title" behaviour="text">
                   <param name="content" value="' — '"/>
@@ -1336,6 +1365,25 @@
               <model behaviour="inline">
                 <outputRendition>font-style: italic;</outputRendition>
               </model>
+            </elementSpec>
+            <elementSpec ident="titleStmt" mode="add">
+              <model output="latex" behaviour="meta">
+                <param name="content" value="."/>
+              </model>
+              <model output="fo" behaviour="heading"/>
+              <modelSequence output="web" predicate="$parameters?header='short'">
+                <model behaviour="link">
+                  <param name="content" value="title[1]"/>
+                  <param name="link" value="$parameters?doc"/>
+                </model>
+                <model behaviour="block">
+                  <param name="content" value="subsequence(title, 2)"/>
+                </model>
+                <model behaviour="block">
+                  <param name="content" value="author"/>
+                </model>
+              </modelSequence>
+              <model output="web" behaviour="block"/>
             </elementSpec>
             <elementSpec ident="unclear" mode="change">
               <attList>
