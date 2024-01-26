@@ -30,7 +30,7 @@
     </teiHeader>
     <text>
         <body>
-            <schemaSpec start="TEI teiCorpus" ident="ssrq" source="teipublisher.odd">
+            <schemaSpec start="TEI teiCorpus" ident="ssrq" source="tei_simplePrint.odd">
                 <specGrpRef target="elements/_text_.xml"/>
                 <specGrpRef target="elements/TEI.xml"/>
                 <specGrpRef target="elements/ab.xml"/>
