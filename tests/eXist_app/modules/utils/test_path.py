@@ -28,6 +28,17 @@ async def test_get_filename(execute_xquery: xquery_tester, name: str, expected: 
 
 
 @pytest.mark.asyncio_cooperative
+async def test_get_filename_with_two_arguments(execute_xquery: xquery_tester):
+    xquery = build_query(
+        modules=[xquery_modules["path"]],
+        query_body=f"""path:get-filename("foo", false())""",  # noqa
+    )
+    response = await execute_xquery(xquery)
+
+    assert_xquery_result(response, "foo")
+
+
+@pytest.mark.asyncio_cooperative
 @pytest.mark.parametrize(
     "name, expected",
     [
