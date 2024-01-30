@@ -78,7 +78,7 @@ declare function nav:breadcrumbs($node as node(), $model as map(*)) as element(l
                 </svg>
                 {
                     if ($index < $len-components) then
-                        <a href="{utils:path-concat(($config:base-url, $component))}">
+                        <a href="{nav:create-breadcrumb-link($path-components, $index)}">
                             <i18n:text key="{$component}">{nav:clean-breadcrumb-content($component)}</i18n:text>
                         </a>
                     else
@@ -88,6 +88,21 @@ declare function nav:breadcrumbs($node as node(), $model as map(*)) as element(l
                 }
             </div>
         </li>
+};
+
+(:~
+: Creates a href link based on a sequence of path components
+: and an index (the current position of the breadcrumb).
+:
+: @param $path-components the path components as xs:string+
+: @param $index the index of the current breadcrumb as xs:integer
+: @return the link as xs:string
+:)
+declare function nav:create-breadcrumb-link($path-components as xs:string+, $index as xs:integer) as xs:string {
+    utils:path-concat((
+        $config:base-url,
+        $path-components[position() <= $index]
+    ))
 };
 
 (:~
