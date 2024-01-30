@@ -8,7 +8,7 @@ from tests.eXist_app.conftest import (
 )
 
 PERIOD_MIN = 1050
-PUBDATE_MIN = 2017
+PUBDATE_MIN = 2018
 
 
 @pytest.mark.asyncio_cooperative
