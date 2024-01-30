@@ -11,14 +11,28 @@ module namespace path="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils/path";
 : @return the file name as xs:string?
 :)
 declare function path:get-filename($path as xs:string) as xs:string? {
+    path:get-filename($path, true())
+};
+
+(:~
+: Returns the name of the file denoted by the given path.
+: If the given path denotes a directory, the empty sequence is returned.
+:
+: @param $path the path to extract the file name from as xs:string
+: @param $return-empty if true, the empty sequence is returned if the given path denotes a directory,
+: otherwise the path itself is returned as xs:string
+: @return the file name as xs:string?
+:)
+declare function path:get-filename($path as xs:string, $return-empty as xs:boolean) as xs:string? {
     let $components := path:tokenize($path)
     let $name := $components[last()]
     return
         if (path:is-file-name($name)) then
             path:remove-file-extension($name, path:extract-file-extension($name))
         else
-            ()
+            $path[not($return-empty)]
 };
+
 
 (:~
  : Tells if the given argument denotes a file name, i.e. is not a path.
