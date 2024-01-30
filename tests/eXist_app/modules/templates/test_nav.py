@@ -36,3 +36,29 @@ async def test_create_url_base_for_link(
     response = await execute_xquery(xquery)
 
     assert_xquery_result(response, expected_result)
+
+
+@pytest.mark.asyncio_cooperative
+@pytest.mark.parametrize(
+    "components, index, expected",
+    [
+        (("SG", "III_4"), 1, "/SG"),
+        (("SG", "III_4"), 2, "/SG/III_4"),
+        (("SG", "III_4", "intro"), 2, "/SG/III_4"),
+    ],
+)
+async def test_create_breadcrumb_link(
+    execute_xquery: xquery_tester, components: tuple[str, ...], index: int, expected: str
+):
+    """Test the creation of a breadcrumb link."""
+    components_input = ", ".join(f'"{component}"' for component in components)
+    xquery = build_query(
+        modules=[xquery_modules["config"], xquery_modules["nav"]],
+        query_body=f"""let $link := nav:create-breadcrumb-link(({components_input}), {index})
+            return
+                $link
+                => replace($config:base-url, '')""",  # noqa
+    )
+    response = await execute_xquery(xquery)
+
+    assert_xquery_result(response, expected)
