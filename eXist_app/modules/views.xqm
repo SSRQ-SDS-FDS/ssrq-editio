@@ -113,6 +113,9 @@ declare function views:about-handler($request as map(*)) as item() {
                             i18n:create-i18n-container('partners-and-funding')
                         )
                         => views:handle-view-with-caching($page)
+                case 'api.html'
+                    return
+                        views:handle-view-with-caching($request, $page)
             default
                 return
                     error($errors:NOT_FOUND, 'Could not load: ' || $request?path)
