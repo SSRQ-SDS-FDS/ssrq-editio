@@ -43,7 +43,8 @@ async def test_views_with_data_dependency(request_route: route_tester, route: st
     "route, code",
     [
         ("/", 200),
-        ("/about/partners", 200),
+        ("/about", 301),
+        ("/about/partners-and-funding", 200),
         ("/about/foo", 404),
     ],
 )
