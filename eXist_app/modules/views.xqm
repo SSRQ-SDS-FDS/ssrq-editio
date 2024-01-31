@@ -21,7 +21,7 @@ import module namespace kantons="http://ssrq-sds-fds.ch/exist/apps/ssrq/template
 import module namespace nav="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/nav" at "templates/nav.xqm";
 import module namespace volumes="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/volumes" at "templates/volumes.xqm";
 import module namespace template-utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/utils" at "templates/template-utils.xqm";
-import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
+import module namespace toolbar="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/toolbar" at "templates/toolbar.xqm";
 
 (:
  : The following modules provide functions which will be called by the
@@ -42,6 +42,7 @@ import module namespace tex="http://ssrq-sds-fds.ch/exist/apps/ssrq/processing/t
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 
 import module namespace idno-parser="http://ssrq-sds-fds.ch/exist/apps/ssrq/parser/idno" at "parser/idno.xqm";
+import module namespace path="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils/path" at "utils/path.xqm";
 
 declare variable $views:routes := map {
     'api' : 'api.html',
@@ -178,7 +179,7 @@ declare function views:search-handler($request as map(*)) as node() {
 };
 
 declare function views:single-handler($request as map(*)) as item()? {
-    let $path-extension := utils:extract-extension-from-path($request?path)
+    let $path-extension := path:extract-file-extension($request?path)
     return
         if (map:contains($request?parameters, 'doc')) then
             views:document-handler($request, $path-extension)
