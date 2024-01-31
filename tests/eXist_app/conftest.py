@@ -109,6 +109,11 @@ xquery_modules: dict[str, tuple[str, str, str]] = {
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/utils",
         "/db/apps/ssrq/modules/templates/template-utils.xqm",
     ),
+    "toolbar": (
+        "toolbar",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/toolbar",
+        "/db/apps/ssrq/modules/templates/toolbar.xqm",
+    ),
     "views": (
         "views",
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/views",
