@@ -68,7 +68,7 @@ declare function articles-filters:create-pubdate-range($docs as element(tei:TEI)
 
 declare function articles-filters:get-min-max-pubdate($docs as element(tei:TEI)+) as map(xs:string, xs:anyAtomicType) {
     let $dates as xs:integer* :=
-        $docs//tei:teiHeader//tei:publicationStmt/tei:date[@type='electronic']/@when ! date-parser:extract-year(.)
+        $docs//tei:teiHeader//tei:publicationStmt/tei:date[@type='electronic']/@when-custom ! date-parser:extract-year(.)
     return
         map {
             "min": min($dates),
@@ -96,7 +96,7 @@ declare function articles-filters:create-period-range($docs as element(tei:TEI)+
 
 declare function articles-filters:get-min-max-period($docs as element(tei:TEI)+) as map(xs:string, xs:anyAtomicType) {
     let $dates as xs:integer* :=
-        $docs//tei:teiHeader//tei:history/tei:origin/tei:origDate/@when ! date-parser:extract-year(.)
+        $docs//tei:teiHeader//tei:history/tei:origin/tei:origDate/@when-custom ! date-parser:extract-year(.)
     return
         map {
             "min": min($dates),
