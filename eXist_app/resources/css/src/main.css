@@ -42,7 +42,7 @@
   .title-3 {
     @apply text-xl font-normal;
   }
-  .page-title .kanton-card {
+  .kanton-card {
     @apply align-middle border-b border-gray-300 bg-ssrq-greyed-50 rounded-lg hover:shadow max-w-[16rem];
   }
   .kanton-card.has-docs {
