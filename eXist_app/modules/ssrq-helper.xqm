@@ -13,7 +13,6 @@ import module namespace session="http://exist-db.org/xquery/session";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "ssrq.xqm";
 import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "ext-common.xqm";
-import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xqm";
 import module namespace response="http://exist-db.org/xquery/response";
 import module namespace ssrq-cache="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache" at "repository/cache.xqm";
 
@@ -189,15 +188,6 @@ function ssrq-helper:xml-to-tex($node as node(), $model as map(*))  {
     }
 };
 
-(:
-: A simplified and ssrq-specific version of pages:view(), which
-: depends in a strange way on ssrq.xqm and duplicates various parts of the processing logic
-:
-:)
-
-declare function ssrq-helper:render($node as node(), $model as map(*)) {
-    pages:process-content($model?xml//tei:body, $model?xml, $model?config?odd, ())
-};
 
 declare function ssrq-helper:pers-names($header as node()*) {
 let $namen :=  $header//tei:persName/text()
