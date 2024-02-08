@@ -1,119 +1,14 @@
-@import "./cover.css";
-@import "./breadcrumbs.css";
-@import "./layout.css";
-@import "./pagination.css";
-@import "./toolbar.css";
+/* Import components */
+@import "./components/cover.css";
+@import "./components/breadcrumbs.css";
+@import "./components/nav.css";
+@import "./components/pagination.css";
+@import "./components/toolbar.css";
+/* Import components for specific pages */
+@import "./routes/kantons_volumes_documents.css";
+/* Import utilities */
+@import "./utilities/icon.css";
+@import "./utilities/layout.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@layer components {
-  .icon {
-    @apply px-1;
-  }
-
-  .icon svg {
-    @apply w-5 h-5;
-  }
-
-  .icon.is-small svg {
-    @apply w-4 h-4;
-  }
-  .menu-link {
-    @apply px-2.5 py-2 transition-colors duration-300 transform rounded-lg hover:text-ssrq-primary md:mx-2;
-  }
-  .mobile-lang-selector {
-    @apply flex;
-    @apply pt-2 pl-2.5;
-  }
-  .mobile-lang-selector li a {
-    @apply py-0.5 px-2 text-sm bg-white rounded-sm;
-    @apply hover:bg-ssrq-alt-50 transition-colors duration-200;
-  }
-  .mobile-lang-selector li:not(:first-child) a {
-    @apply ml-2.5;
-  }
-  .title-1 {
-    @apply text-3xl font-medium mb-2 text-ssrq-greyed-900;
-  }
-  .title-2 {
-    @apply text-2xl font-normal mb-1 text-ssrq-greyed-900;
-  }
-  .title-3 {
-    @apply text-xl font-normal;
-  }
-  .kanton-card {
-    @apply align-middle border-b border-gray-300 bg-ssrq-greyed-50 rounded-lg hover:shadow max-w-[16rem];
-  }
-  .kanton-card.has-docs {
-    @apply hover:cursor-pointer;
-  }
-  .kanton-card.inactive {
-    @apply opacity-50 cursor-not-allowed pointer-events-none;
-  }
-  .kanton-card_img-container {
-    @apply flex justify-center items-center bg-ssrq-greyed-100 p-5 rounded-t-lg h-[10rem];
-  }
-  .kanton-card_img {
-    @apply h-2/4 mx-1.5;
-  }
-  .kanton-card_content {
-    @apply p-4 rounded-b-lg;
-  }
-  .kanton-card_content-heading {
-    @apply flex w-full justify-between items-center mb-1.5;
-  }
-  .kanton-card_content-heading span,
-  .volume header span:not(.volume-id) {
-    @apply bg-ssrq-primary text-white text-xs font-normal inline-flex items-center px-1.5 py-0.5 rounded-md border-none;
-  }
-  .kanton-card_content-heading h4 {
-    @apply text-base pb-1 font-light;
-  }
-  .kanton-card_content h3 {
-    @apply title-3 font-medium text-base;
-  }
-  .volume .volume-title {
-    @apply my-2;
-  }
-  .volume .volume-title h3,
-  .documents .document-info h3 {
-    @apply font-semibold text-base mb-2 text-ssrq-greyed-900;
-  }
-  .volume {
-    @apply flex-1;
-  }
-  .volume .volume-title p {
-    @apply text-sm;
-  }
-  .volume footer a {
-    @apply text-blue-600 hover:underline cursor-pointer;
-  }
-  .volume footer a:not(:first-child) {
-    @apply ml-2;
-  }
-  .documents {
-    @apply max-w-5xl flex-1 lg:px-12 sm:px-6 mx-auto mt-4 mb-9 flex flex-col items-center;
-  }
-  .documents .document-info {
-    @apply w-full px-8 py-4 bg-white rounded-lg shadow-md my-2 flex-1 hover:shadow hover:bg-blue-50;
-  }
-  .documents .document-info header {
-    @apply mb-2;
-  }
-  .documents .document-info header span:not(:last-child) {
-    @apply sm:mr-2 md:mr-4;
-  }
-  .documents .document-info header {
-    @apply text-ssrq-greyed-600 text-sm;
-  }
-  .documents .document-info header span {
-    @apply inline-flex items-center;
-  }
-  .documents #loading-overlay {
-    display: none;
-  }
-  .documents #loading-overlay.htmx-request {
-    display: block;
-  }
-}

@@ -1,4 +1,4 @@
-@layer components {
+@layer utilities {
   .centered-section {
     @apply block w-full max-w-5xl lg:px-12 sm:px-4 items-center justify-start mx-auto;
   }

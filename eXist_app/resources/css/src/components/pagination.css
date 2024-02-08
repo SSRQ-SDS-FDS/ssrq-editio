@@ -15,7 +15,7 @@
     @apply w-8 h-8 text-sm text-white transition-colors duration-300 bg-ssrq-primary border-none rounded-full focus:shadow cursor-default;
   }
   ul.pagination li:not(.current) a button {
-      @apply w-8 h-8 transition-colors duration-300 border border-ssrq-greyed-700 rounded-full hover:bg-ssrq-primary hover:text-white hover:border-none focus:shadow cursor-pointer;
+    @apply w-8 h-8 transition-colors duration-300 border border-ssrq-greyed-700 rounded-full hover:bg-ssrq-primary hover:text-white hover:border-none focus:shadow cursor-pointer;
   }
   ul.pagination li.ellipsis {
     @apply text-base text-ssrq-greyed-700;

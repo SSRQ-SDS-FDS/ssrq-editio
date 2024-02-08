@@ -1,0 +1,13 @@
+@layer utilities {
+  .title-1 {
+    @apply text-3xl font-medium mb-2 text-ssrq-greyed-900;
+  }
+
+  .title-2 {
+    @apply text-2xl font-normal mb-1 text-ssrq-greyed-900;
+  }
+
+  .title-3 {
+    @apply text-xl font-normal;
+  }
+}
