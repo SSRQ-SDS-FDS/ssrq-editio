@@ -89,6 +89,11 @@ xquery_modules: dict[str, tuple[str, str, str]] = {
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/utils/path",
         "/db/apps/ssrq/modules/utils/path.xqm",
     ),
+    "pxml": (
+        "pxml",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/processing/xml",
+        "/db/apps/ssrq/modules/processing/xml.xqm",
+    ),
     "query": (
         "query",
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/query/query",

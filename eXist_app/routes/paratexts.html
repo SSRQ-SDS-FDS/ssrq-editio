@@ -4,67 +4,18 @@
   data-template-with="templates/page.html"
   data-template-at="content"
 >
+  <header data-template="toolbar:container" data-template-tools="xml" />
+  <nav
+    data-template="lib:include"
+    data-template-path="templates/breadcrumbs.html"
+  />
   <div data-template="template-utils:load-by-idno">
-    <div
-      data-template="templates:include"
-      data-template-path="templates/menu.html"
-    />
-    <div
-      data-template="templates:include"
-      data-template-path="templates/toolbar.html"
-    />
-    <main class="container-fluid">
-      <section class="row mb-2" id="main-wrapper">
-        <div class="tp-document-title-wrapper tp-row introduction">
-          <div class="tp-column">
-            <h5 id="idno" data-template="ssrq-helper:render-idno-as-popup" />
-            <div data-template="ssrq-helper:printToc" />
-          </div>
-        </div>
-        <section class="tp-row introduction">
-          <div class="tp-column">
-            <h4 class="block-title"></h4>
-            <div id="document-wrapper">
-              <div id="document-panel">
-                <div data-template="ssrq-helper:render" class="content" />
-              </div>
-            </div>
-          </div>
-        </section>
-      </section>
-      <div
-        data-template="templates:include"
-        data-template-path="templates/footer.html"
-      />
-      <a href="#to-top" class="to-top-button">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="#d1dae0"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
-            clip-rule="evenodd"
-          />
-        </svg>
-      </a>
-    </main>
-
-    <script
-      type="application/javascript"
-      src="{app}/resources/scripts/vendor/svg-pan-zoom.min.js"
-      data-template="ssrq-helper:resolve-links"
-    ></script>
-    <script
-      type="application/javascript"
-      src="{app}/resources/scripts/utils.js"
-      data-template="ssrq-helper:resolve-links"
-    />
-    <script
-      type="application/javascript"
-      src="{app}/resources/scripts/services.js"
-      data-template="ssrq-helper:resolve-links"
-    />
+    <article class="centered-section mt-4 mb-16 paratexts px-3">
+      <h1 data-template="paratext:page-title" />
+      <div data-template="paratext:toc" />
+      <div data-template="paratext:render-content" />
+    </article>
   </div>
+  <a data-template="lib:include" data-template-path="templates/to-top.html" />
+  <script type="module" src="{app}/resources/js/routes/paratexts.js" />
 </div>

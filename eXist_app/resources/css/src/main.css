@@ -4,11 +4,14 @@
 @import "./components/nav.css";
 @import "./components/pagination.css";
 @import "./components/toolbar.css";
+@import "./components/to-top.css";
 /* Import components for specific pages */
 @import "./routes/kantons_volumes_documents.css";
+@import "./routes/paratexts.css";
 /* Import utilities */
 @import "./utilities/icon.css";
 @import "./utilities/layout.css";
+@import "./utilities/text.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
