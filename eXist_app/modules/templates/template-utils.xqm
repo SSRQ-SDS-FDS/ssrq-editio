@@ -9,14 +9,12 @@ import module namespace request="http://exist-db.org/xquery/request";
 
 import module namespace articles-idno="http://ssrq-sds-fds.ch/exist/apps/ssrq/articles/idno" at "../articles/idno.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
-import module namespace ec="http://ssrq-sds-fds.ch/exist/apps/ssrq/odd/extension/common" at "../ext-common.xqm";
 import module namespace find="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder" at "../repository/finder.xqm";
 import module namespace i18n-settings="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/settings" at "../i18n/settings.xqm";
 import module namespace i18n = 'http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module' at '../i18n/i18n.xqm';
 import module namespace i18n-templates="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/templates" at "../i18n/i18n-templates.xqm";
 import module namespace link="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/link" at "../repository/link.xqm";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "../utils.xqm";
-import module namespace app="http://ssrq-sds-fds.ch/exist/apps/ssrq/app" at "../ssrq.xqm";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace xpath="http://www.w3.org/2005/xpath-functions";
@@ -77,6 +75,21 @@ declare function template-utils:print-title($node as node(), $model as map(*)) a
     }[*]
 };
 
+(:~
+: Wrapper function, which laods document,
+: by the information supplied in the current request.
+: The returned model contains the loaded xml document, together with
+: additional information and can be used by subsequent templates.
+:
+: @param $node node() - the current node (passed by the template engine)
+: @param $model map(*) - the model (passed by the template engine)
+: @param $kanton xs:string - the kanton
+: @param $volume xs:string - the volume
+: @param $doc xs:string - the document
+: @param $paratext xs:string - the paratext
+: @param $odd xs:string - the odd
+: @return map(*) - the model
+:)
 declare function template-utils:load-by-idno($node as node(),
                                              $model as map(*),
                                              $kanton as xs:string,
@@ -85,18 +98,16 @@ declare function template-utils:load-by-idno($node as node(),
                                              $paratext as xs:string?,
                                              $odd as xs:string?) as map(*) {
     let $loaded-document := find:load-by-request-params([(), $kanton, $volume, $doc, $paratext])
-    let $has-facs := exists($loaded-document?xml//tei:pb[@facs]) and not($odd eq $config:odd-normalized)
     return
         map {
+            (: The complete idno – constructed from the request parameters :)
             "idno": $loaded-document?idno,
+            (: Structured information as element(doc) :)
             "doc": $loaded-document?doc,
-            "xml": utils:coalesce($loaded-document?xml, app:failed-to-load($loaded-document?idno)), (: deprecated :)
-            "config": map {
-                "odd": utils:coalesce($odd, $config:odd),
-                "view": app:query-view($loaded-document?xml/tei:text, $config:default-view)
-            },
-            "body-class": if ($has-facs) then 'col-md-6' else 'col-md-10',
-            "has-facs": xs:string($has-facs)
+            (: The ODD, which should be used for rendering :)
+            "odd": utils:coalesce($odd, $config:odd),
+            (: The TEI-XML source of the requested document :)
+            "xml": $loaded-document?xml
         }
 };
 
