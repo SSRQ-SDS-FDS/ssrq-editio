@@ -3,27 +3,18 @@ xquery version "3.1";
 module namespace html="http://ssrq-sds-fds.ch/exist/apps/ssrq/processing/html";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
+import module namespace i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/templates" at "../i18n/i18n-templates.xqm";
 import module namespace pm-web="http://www.tei-c.org/pm/models/ssrq/web/module" at "../../transform/ssrq-web-module.xql";
 import module namespace norm-web="http://www.tei-c.org/pm/models/ssrq-norm/web/module" at "../../transform/ssrq-norm-web-module.xql";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
-declare function html:create-and-postprocess($xml as element(), $parameters as map(*)?, $odd as xs:string) as element(div) {
+declare function html:create-and-postprocess($xml as element(), $parameters as map(*)?, $odd as xs:string?) as element()* {
     let $html as node()* := html:create($xml, $parameters, $odd)
     let $body := html:remove-footnotes($html)
     let $footnotes := html:extract-footnotes($html)
     return
-        (:
-            ToDo: Previous versions in pages.xqm used a class margin-right for the container
-            – but it seems this a fragment of the default publisher implementation.
-            Check this.
-        :)
-        <div class="{$config:css-content-class}">
-            {
-                $body,
-                footnotes
-            }
-        </div>
+        ($body, $footnotes)
 };
 
 (:~
@@ -35,10 +26,10 @@ declare function html:create-and-postprocess($xml as element(), $parameters as m
 : @param $odd The ODD to use for the transformation
 : @return The HTML output
 :)
-declare function html:create($xml as element(), $parameters as map(*)?, $odd as xs:string) as node() {
+declare function html:create($xml as element(), $parameters as map(*)?, $odd as xs:string?) as node() {
     switch ($odd)
         case "ssrq-norm.odd" return
-            norm-web:create($xml, html:create-parameters($xml, $parameters))
+            norm-web:transform($xml, html:create-parameters($xml, $parameters))
         default return
             pm-web:transform($xml, html:create-parameters($xml, $parameters))
 };
@@ -97,13 +88,13 @@ declare %private function html:remove-footnotes($nodes as node()*) as node()* {
 : @param $html The HTML to extract footnotes from
 : @return The footnotes as a div element
 :)
-declare %private function html:extract-footnotes($html as node()*) as element(div)? {
+declare %private function html:extract-footnotes($html as node()*) as element(section)? {
     if ($html//li[@class = "footnote"]) then
         let $footnotes := $html//li[@class = "footnote"][not(ancestor::li[@class = "footnote"])]
         return
-            <div class="footnotes" xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module">
+            <section class="{$config:css-footnote-class}">
                 <h4 class="block-title">
-                    <i18n:text key="notes">Anmerkungen</i18n:text>
+                    {i18n:create-i18n-container('notes')}
                 </h4>
                 <ol class="textcritical">
                 {
@@ -131,7 +122,7 @@ declare %private function html:extract-footnotes($html as node()*) as element(di
                         html:check-note($note)
                 }
                 </ol>
-            </div>
+            </section>
     else
         ()
 };

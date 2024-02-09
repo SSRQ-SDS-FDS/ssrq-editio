@@ -56,10 +56,8 @@ declare variable $config:pagination-depth := 0;
  :)
 declare variable $config:pagination-fill := 5;
 
-(:
- : The CSS class to declare on the main text content div.
- :)
-declare variable $config:css-content-class := "content";
+declare variable $config:css-content-class := "text-content";
+declare variable $config:css-footnote-class := "footnotes";
 
 declare variable $config:user-agent :=
     let $default-ua :=
