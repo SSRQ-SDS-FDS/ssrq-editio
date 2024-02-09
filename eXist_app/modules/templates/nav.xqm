@@ -83,7 +83,9 @@ declare function nav:breadcrumbs($node as node(), $model as map(*)) as element(l
                         </a>
                     else
                         <span>
-                            <i18n:text key="{$component}">{nav:clean-breadcrumb-content($component)}</i18n:text>
+                            <i18n:text key="{path:remove-file-extension($component, path:extract-file-extension($component))}">
+                                {nav:clean-breadcrumb-content($component)}
+                            </i18n:text>
                         </span>
                 }
             </div>
