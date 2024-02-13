@@ -1,6 +1,7 @@
 /* Import components */
 @import "./components/cover.css";
 @import "./components/breadcrumbs.css";
+@import "./components/footer.css";
 @import "./components/nav.css";
 @import "./components/pagination.css";
 @import "./components/toolbar.css";
