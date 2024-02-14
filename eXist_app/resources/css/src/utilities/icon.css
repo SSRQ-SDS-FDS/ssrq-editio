@@ -1,0 +1,13 @@
+@layer utilities {
+  .icon {
+    @apply px-1;
+  }
+
+  .icon svg {
+    @apply w-5 h-5;
+  }
+
+  .icon.is-small svg {
+    @apply w-4 h-4;
+  }
+}

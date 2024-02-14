@@ -12,9 +12,9 @@ import module namespace util="http://exist-db.org/xquery/util";
 
 import module namespace api="http://ssrq-sds-fds.ch/exist/apps/ssrq/api" at "api.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
+import module namespace path="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils/path" at "utils/path.xqm";
 import module namespace ssrq-cache="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/cache" at "../repository/cache.xqm";
 import module namespace views="http://ssrq-sds-fds.ch/exist/apps/ssrq/views" at "views.xqm";
-import module namespace console="http://exist-db.org/xquery/console" at "java:org.exist.console.xquery.ConsoleModule";
 
 declare variable $ssrq-router:definitions := ("views.json", "api.json");
 declare variable $ssrq-router:params-to-rewrite := ('kanton', 'volume');
@@ -49,10 +49,12 @@ declare function ssrq-router:rewrite-params($request as map(*), $parameters-to-r
                         if ($key = $parameters-to-rewrite) then
                             map:entry($key, replace($value, "^(.*)/$", "$1"))
                         else if ($key = $special-id-param) then
-                            let $new-value := replace($value, "^(.*)[\.(html|tex|xml)]$", "$1")
-                            let $new-key := if ($value = $config:paratext-types) then 'paratext' else 'doc'
+                            let $name := path:get-filename($value, false())
                             return
-                                map:entry($new-key, $new-value)
+                                map:entry(
+                                    if ($name = $config:paratext-types) then 'paratext' else 'doc',
+                                    $name
+                                )
                         else map:entry($key, $value)
                     })
             let $rewritten-with-required-parameters := map:merge(($parameters-rewritten, $required-parameters))

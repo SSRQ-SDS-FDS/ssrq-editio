@@ -5,6 +5,7 @@ module namespace nav="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/nav";
 import module namespace templates = "http://exist-db.org/xquery/html-templating";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "../config.xqm";
+import module namespace path="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils/path" at "../utils/path.xqm";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 import module namespace idno-parser="http://ssrq-sds-fds.ch/exist/apps/ssrq/parser/idno" at "../parser/idno.xqm";
 
@@ -61,7 +62,7 @@ declare function nav:lang-selections($node as node(), $model as map(*)) as eleme
 : @return the breadcrumbs navigation as a list of li elements
 :)
 declare function nav:breadcrumbs($node as node(), $model as map(*)) as element(li)+ {
-    let $path-components := utils:path-tokenize($model?configuration?param-resolver('request-path'))[string-length() > 0]
+    let $path-components := path:tokenize($model?configuration?param-resolver('request-path'))
     let $len-components := count($path-components)
     for $component at $index in $path-components
     return
@@ -77,16 +78,33 @@ declare function nav:breadcrumbs($node as node(), $model as map(*)) as element(l
                 </svg>
                 {
                     if ($index < $len-components) then
-                        <a href="{utils:path-concat(($config:base-url, $component))}">
+                        <a href="{nav:create-breadcrumb-link($path-components, $index)}">
                             <i18n:text key="{$component}">{nav:clean-breadcrumb-content($component)}</i18n:text>
                         </a>
                     else
                         <span>
-                            <i18n:text key="{$component}">{nav:clean-breadcrumb-content($component)}</i18n:text>
+                            <i18n:text key="{path:remove-file-extension($component, path:extract-file-extension($component))}">
+                                {nav:clean-breadcrumb-content($component)}
+                            </i18n:text>
                         </span>
                 }
             </div>
         </li>
+};
+
+(:~
+: Creates a href link based on a sequence of path components
+: and an index (the current position of the breadcrumb).
+:
+: @param $path-components the path components as xs:string+
+: @param $index the index of the current breadcrumb as xs:integer
+: @return the link as xs:string
+:)
+declare function nav:create-breadcrumb-link($path-components as xs:string+, $index as xs:integer) as xs:string {
+    utils:path-concat((
+        $config:base-url,
+        $path-components[position() <= $index]
+    ))
 };
 
 (:~

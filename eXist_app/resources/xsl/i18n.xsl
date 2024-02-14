@@ -13,7 +13,7 @@
     <xsl:variable name="lang-catalogue" select="doc($lang-catalogue-path)"/>
     
     <xsl:template match="i18n:text">
-        <xsl:value-of select="i18n:translate(@key, .)"/>
+        <xsl:sequence select="i18n:translate(@key, .)"/>
     </xsl:template>
     
     <xsl:template match="@*[matches(., '^i18n\((.*)\)$')]">
@@ -21,14 +21,14 @@
         <xsl:attribute name="{name()}" select="i18n:translate($key, $key)"/>
     </xsl:template>
     
-    <xsl:function name="i18n:translate" as="xs:string">
+    <xsl:function name="i18n:translate" as="item()+">
         <xsl:param name="key" as="xs:string"/>
         <xsl:param name="default" as="xs:string"/>
         <xsl:variable name="entry" as="element()?" select="$lang-catalogue//msg[@key = $key]"/>
         <xsl:sequence>
             <xsl:choose>
                 <xsl:when test="exists($entry)">
-                    <xsl:value-of select="$entry"/>
+                    <xsl:apply-templates select="$entry/node()"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of select="$default"/>

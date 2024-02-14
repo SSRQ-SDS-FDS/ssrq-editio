@@ -1,0 +1,13 @@
+@layer components {
+  .to-top-button {
+    @apply invisible opacity-0 transition-all duration-500 fixed bottom-5 right-12 z-50;
+  }
+
+  .to-top-button svg {
+    @apply h-16 w-16 text-ssrq-primary;
+  }
+
+  .to-top-button.is-active {
+    @apply visible opacity-90;
+  }
+}

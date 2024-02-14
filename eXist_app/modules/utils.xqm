@@ -37,16 +37,6 @@ declare %private function utils:pathcomp-remove-backdirs($components as xs:strin
 };
 
 (:~
- : Tells if the given argument denotes a file name, i.e. is not a path.
- :
- : @param $name the path/file name to check
- : @return boolean
- :)
-declare function utils:is-file-name($name as xs:string) as xs:boolean {
-    not($name => contains("/"))
-};
-
-(:~
  : Tokenizes a given path into its components.
  : e.g. /foo/bar/baz will become ("foo", "bar", "baz")
  :
@@ -186,14 +176,4 @@ declare function utils:coalexec($a as function(*), $b as function(*)) as item()*
   let $res := $a()
   return
     if ($res) then $res else $b()
-};
-
-(:~
-: Extracts the file extension from a path.
-:
-: @param $path as xs:string
-: @return the file extension as xs:string
-:)
-declare function utils:extract-extension-from-path($path as xs:string) as xs:string {
-    tokenize($path, "\.")[last()]
 };

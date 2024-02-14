@@ -84,6 +84,16 @@ xquery_modules: dict[str, tuple[str, str, str]] = {
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/pagination",
         "/db/apps/ssrq/modules/templates/pagination.xqm",
     ),
+    "path": (
+        "path",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/utils/path",
+        "/db/apps/ssrq/modules/utils/path.xqm",
+    ),
+    "pxml": (
+        "pxml",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/processing/xml",
+        "/db/apps/ssrq/modules/processing/xml.xqm",
+    ),
     "query": (
         "query",
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/query/query",
@@ -103,6 +113,11 @@ xquery_modules: dict[str, tuple[str, str, str]] = {
         "template-utils",
         "http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/utils",
         "/db/apps/ssrq/modules/templates/template-utils.xqm",
+    ),
+    "toolbar": (
+        "toolbar",
+        "http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/toolbar",
+        "/db/apps/ssrq/modules/templates/toolbar.xqm",
     ),
     "views": (
         "views",
@@ -195,7 +210,9 @@ def assert_xquery_result(
         unqouted_result = unquote_xquery_result(result=result.text)
         for i, x in enumerate(unqouted_result.split("\n")):
             assert (
-                cast_query_result(result=x.strip(), expected_result=expected_result[i])
+                cast_query_result(
+                    result=unquote_xquery_result(x.strip()), expected_result=expected_result[i]
+                )
                 == expected_result[i]
             )
         return

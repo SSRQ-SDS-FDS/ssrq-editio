@@ -1,0 +1,19 @@
+@layer components {
+  .menu-link {
+    @apply px-2.5 py-2 transition-colors duration-300 transform rounded-lg hover:text-ssrq-primary md:mx-2;
+  }
+
+  .mobile-lang-selector {
+    @apply flex;
+    @apply pt-2 pl-2.5;
+  }
+
+  .mobile-lang-selector li a {
+    @apply py-0.5 px-2 text-sm bg-white rounded-sm;
+    @apply hover:bg-ssrq-alt-50 transition-colors duration-200;
+  }
+
+  .mobile-lang-selector li:not(:first-child) a {
+    @apply ml-2.5;
+  }
+}

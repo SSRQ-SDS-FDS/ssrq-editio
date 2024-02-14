@@ -1,0 +1,52 @@
+@layer utilities {
+  .title-1 {
+    @apply text-3xl font-medium mb-2 text-ssrq-greyed-900;
+  }
+  .title-2 {
+    @apply text-2xl font-normal mb-1 text-ssrq-greyed-900;
+  }
+  .title-3 {
+    @apply text-xl font-normal;
+  }
+  h4.block-title {
+    @apply font-sans text-xl text-ssrq-primary mb-4;
+  }
+  .text-content {
+    @apply font-serif;
+  }
+  .text-content > * > section:not(:first-of-type) {
+    @apply border-t border-ssrq-greyed-200 my-10;
+  }
+  .text-content h1 {
+    @apply text-2xl font-bold my-4 text-ssrq-greyed-900;
+  }
+  .text-content h2 {
+    @apply text-xl font-bold my-4 text-ssrq-greyed-900;
+  }
+  .text-content h3 {
+    @apply text-lg font-bold my-4 text-ssrq-greyed-900;
+  }
+  .text-content h4 {
+    @apply text-base font-bold my-4 text-ssrq-greyed-900;
+  }
+  .text-content h5 {
+    @apply text-base font-semibold my-4 text-ssrq-greyed-900;
+  }
+  .text-content .note-wrap,
+  .footnotes .note-wrap {
+    @apply text-[80%] mr-[0.1rem] align-super cursor-pointer;
+  }
+  .text-content a,
+  .footnotes a {
+    @apply text-blue-600 hover:underline cursor-pointer;
+  }
+  .footnotes {
+    @apply mt-4 pt-4 border-t border-gray-200 text-sm;
+  }
+  .footnotes .textcritical {
+    @apply mb-4;
+  }
+  .footnotes .fn-content .note {
+    @apply hidden;
+  }
+}

@@ -1,28 +1,29 @@
 <footer
   xmlns:i18n="http://ssrq-sds-fds.ch/exist/apps/ssrq/i18n/module"
-  class="bg-ssrq-greyed-800 text-ssrq-greyed-50 border-t-4 border-t-ssrq-primary"
+  class="page-footer"
   data-template="template-utils:resolve-links"
 >
   <div
     class="container flex flex-col justify-between items-center p-6 mx-auto space-y-4 sm:space-y-0 sm:flex-row"
   >
-    <ul class="text-sm self-start sm:mr-4 md:mr-0">
-      <li class="transition-colors duration-300 hover:text-ssrq-primary">
+    <ul class="additional-links">
+      <li>
         <i18n:text key="project">Projekt</i18n:text>
       </li>
-      <li class="transition-colors duration-300 hover:text-ssrq-primary">
-        <a href="{app}/about/api"> API </a>
+      <li>
+        <a href="https://schema.ssrq-sds-fds.ch/latest/" target="_blank">
+          <i18n:text key="editorial-principles"
+            >Editorische Richtlinien</i18n:text
+          >
+        </a>
       </li>
-      <li class="transition-colors duration-300 hover:text-ssrq-primary">
+      <li>
+        <a href="{app}/about/api">API</a>
+      </li>
+      <li>
         <a href="{app}/about/partners-and-funding">
           <i18n:text key="partners-and-funding" />
         </a>
-      </li>
-      <li class="transition-colors duration-300 hover:text-ssrq-primary">
-        <i18n:text key="transrichtlinien">Transkriptionsrichtlinieh</i18n:text>
-      </li>
-      <li class="transition-colors duration-300 hover:text-ssrq-primary">
-        <i18n:text key="datrichtlinien">Datierungsrcithlinien</i18n:text>
       </li>
     </ul>
 

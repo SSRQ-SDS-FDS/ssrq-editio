@@ -17,6 +17,7 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 import module namespace find="http://ssrq-sds-fds.ch/exist/apps/ssrq/repository/finder" at "repository/finder.xqm";
 import module namespace error="http://ssrq-sds-fds.ch/exist/apps/ssrq/templates/error" at "templates/error.xqm";
 import module namespace occurrences-list="http://ssrq-sds-fds.ch/exist/apps/ssrq/occurrences/list" at "occurrences/list.xqm";
+import module namespace path="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils/path" at "utils/path.xqm";
 import module namespace tex="http://ssrq-sds-fds.ch/exist/apps/ssrq/processing/tex" at "processing/tex.xqm";
 import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at "utils.xqm";
 (:~
@@ -29,7 +30,7 @@ declare function api:document-handler($request as map(*)) as item()? {
     if (not(map:contains($request?parameters, 'doc')) and not(map:contains($request?parameters, 'paratext'))) then
         error($errors:SERVER_ERROR, 'Missing doc or paratext parameter – cannot serve requested document')
     else
-        switch (utils:extract-extension-from-path($request?path))
+        switch (path:extract-file-extension($request?path))
             case 'pdf'
                 return api:serve-pdf($request, true())
             case 'tex'

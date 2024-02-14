@@ -1,0 +1,46 @@
+@layer components {
+  .paratexts .text-content div[class^="tei-p"] {
+    @apply my-3;
+  }
+  .paratexts .text-content .headingnumber {
+    @apply after:content-['\00a0'];
+  }
+  .paratexts span.is-italic {
+    @apply italic;
+  }
+
+  .paratexts span.is-italic ~ .note-wrap {
+    @apply ml-[0.1em];
+  }
+
+  .paratexts #document-wrapper h4.archivelocation {
+    @apply font-normal !important;
+  }
+
+  .paratexts .biblList ul,
+  .paratexts ul.biblioList {
+    list-style-type: "— " !important;
+    @apply ml-4 pl-4;
+  }
+
+  .paratexts table tbody tr td {
+    @apply border-none !important;
+  }
+
+  .paratexts h1[class^="tei-head"] {
+    @apply mt-16;
+  }
+  .paratexts .svg-container {
+    @apply flex flex-col items-center justify-center overflow-hidden my-8;
+  }
+
+  .paratexts .svg-container svg {
+    @apply border-gray-200 border-[0.5px] m-auto w-full h-full min-h-[450px] max-h-[80vh];
+  }
+  .paratexts img {
+    @apply block mx-auto my-8 mt-16 max-w-full max-h-[50vh];
+  }
+  .paratexts img + p.img__title {
+    @apply text-center mb-16;
+  }
+}
