@@ -83,7 +83,7 @@ async def test_idno_parsing_with_main_check(
     """Test the result of the parsing and check if article is 'main'."""
     xquery = build_query(
         modules=[xquery_modules["idno-parser"]],
-        query_body=f"idno-parser:parse('{idno}', true())?is-main",
+        query_body=f"xs:boolean(idno-parser:parse('{idno}')/@is-main)",
     )
     response = await execute_xquery(xquery)
 
