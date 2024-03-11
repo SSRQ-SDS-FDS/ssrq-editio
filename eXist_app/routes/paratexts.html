@@ -4,12 +4,13 @@
   data-template-with="templates/page.html"
   data-template-at="content"
 >
-  <header data-template="toolbar:container" data-template-tools="xml" />
-  <nav
-    data-template="lib:include"
-    data-template-path="templates/breadcrumbs.html"
-  />
   <div data-template="template-utils:load-by-idno">
+    <header data-template="toolbar:container" data-template-tools="xml,cite" />
+    <nav
+      data-template="lib:include"
+      data-template-path="templates/breadcrumbs.html"
+    />
+
     <article class="centered-section mt-4 mb-16 paratexts px-3">
       <h1 data-template="paratext:page-title" />
       <div data-template="paratext:toc" />

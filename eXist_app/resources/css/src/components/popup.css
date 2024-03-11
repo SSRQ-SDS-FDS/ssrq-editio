@@ -1,9 +1,15 @@
 @layer components {
   .popup > summary {
-    @apply list-none;
+    @apply list-none cursor-pointer;
   }
   .popup > summary::-webkit-details-marker,
   .popup > summary::marker {
     @apply hidden;
+  }
+  .popup > div.popup-content {
+    @apply absolute bg-white border rounded-md p-4 text-black text-sm;
+  }
+  .popup > div.popup-content .popup-close-button {
+    @apply absolute top-0 right-0 p-4 focus: outline-none;
   }
 }

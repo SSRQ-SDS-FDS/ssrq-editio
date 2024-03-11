@@ -18,6 +18,7 @@ import module namespace utils="http://ssrq-sds-fds.ch/exist/apps/ssrq/utils" at 
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace xpath="http://www.w3.org/2005/xpath-functions";
+declare namespace x-on="https://alpinejs.dev/";
 
 (:
 : Utility templating function to create an attribute
@@ -376,4 +377,49 @@ declare function template-utils:create-query-map($url as xs:string) as map(*) {
                 else
                     map{.:()}
     ) => map:merge()
+};
+
+(:~
+: Utility templating function to create a tooltip or dropdown
+:
+: @param $anchor item()+ - the anchor element
+: @param $anchor-classes xs:string* - the anchor classes
+: @param $content item()+ - the content
+: @param $mouseevents xs:boolean - whether to use mouse events
+: @return element(details) - the tooltip or dropdown
+:)
+declare function template-utils:tooltip-or-dropdown($anchor as item()+, $anchor-classes as xs:string*, $content as item()+, $content-box-classes as xs:string*, $mouseevents as xs:boolean) as element(details) {
+    element details {
+        attribute x-data { "" },
+        attribute class { "inline relative popup" },
+        attribute x-on:click.outside { "$el.open = !$el.open" },
+        if ($mouseevents) then
+            (
+                attribute x-on:mouseenter { "$el.open = !$el.open" },
+                attribute x-on:mouseleave { "$el.open = false" }
+            )
+        else (),
+        element summary {
+            attribute class { string-join($anchor-classes, ' ') },
+            $anchor
+        },
+        element div {
+            attribute class { string-join(("popup-content", $content-box-classes), ' ')},
+            element button {
+                attribute class { "popup-close-button" },
+                attribute x-on:click { "$root.open = false" },
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="hover:text-ssrq-primary w-5 h-5 text-ssrq-greyed-700">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5
+                            4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+            },
+            $content
+        }
+    }
 };

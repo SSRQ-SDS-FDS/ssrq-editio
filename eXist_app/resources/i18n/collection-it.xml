@@ -2,6 +2,7 @@
 <catalogue xml:lang="it">
     <msg key="abbr">Abbreviazione</msg>
     <msg key="about">Informazioni</msg>
+    <msg key="accessed">recuperato il</msg>
     <msg key="addFill">Altre tradizioni</msg>
     <msg key="additional-languages">Lingue disponibili</msg>
     <msg key="and"> e </msg>
@@ -13,6 +14,7 @@
     <msg key="by"> da </msg>
     <msg key="canton">Cantone</msg>
     <msg key="canton-overview">Cantoni e sezioni</msg>
+    <msg key="cite-suggestion">Citazione suggerita</msg>
     <msg key="close">Chiudere</msg>
     <msg key="comment">Commento</msg>
     <msg key="condition">Stato di conservazione</msg>

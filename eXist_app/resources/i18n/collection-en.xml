@@ -2,6 +2,7 @@
 <catalogue xml:lang="en">
     <msg key="abbr">Abbreviations</msg>
     <msg key="about">About</msg>
+    <msg key="accessed">accessed on</msg>
     <msg key="addFill">Additional Filiations</msg>
     <msg key="additional-languages">Additional Languages</msg>
     <msg key="and"> and </msg>
@@ -13,6 +14,7 @@
     <msg key="by"> by </msg>
     <msg key="canton">Canton</msg>
     <msg key="canton-overview">Cantons and sections</msg>
+    <msg key="cite-suggestion">Suggested citation</msg>
     <msg key="close">Close</msg>
     <msg key="comment">Comments</msg>
     <msg key="condition">Condition</msg>
