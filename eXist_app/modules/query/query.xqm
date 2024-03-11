@@ -34,7 +34,7 @@ declare function query:with-col($query, $options) {
 declare function query:articles-by-title-or-idno($articles as element(tei:TEI)+, $query as xs:string?) as element(tei:TEI)* {
     let $options := map:merge((
         query:create-options(true(), true()),
-        map:entry('fields', ('main', 'has-facs', 'idno', 'origPlace-ref', 'printed-idno', 'sort-number', 'title'))
+        map:entry('fields', ('has-facs', 'idno', 'origPlace-ref', 'title'))
     ))
     return
         $articles[ft:query(., query:build-field-query($query, ('title', 'idno'), 'OR'), $options)]
