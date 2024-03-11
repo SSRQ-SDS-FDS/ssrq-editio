@@ -4,6 +4,7 @@
 @import "./components/footer.css";
 @import "./components/nav.css";
 @import "./components/pagination.css";
+@import "./components/popup.css";
 @import "./components/toolbar.css";
 @import "./components/to-top.css";
 /* Import components for specific pages */
