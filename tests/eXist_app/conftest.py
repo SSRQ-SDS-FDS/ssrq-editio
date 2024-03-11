@@ -312,7 +312,7 @@ def execute_xquery(async_http_client: httpx.AsyncClient, exist_url: str) -> xque
                 "qu": query.replace("\n", " "),  # Inlining the query
                 "output": "adaptive",
             },
-            timeout=httpx.Timeout(10, connect=10),
+            timeout=httpx.Timeout(None),
             follow_redirects=True,
         )
 
