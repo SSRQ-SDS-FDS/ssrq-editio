@@ -35,7 +35,7 @@ jobs:
         shell: bash
         run: poetry run editio run
       - name: Execute tests
-        run: poetry run pytest --max-asyncio-tasks 2 --asyncio-task-timeout 15
+        run: poetry run pytest --max-asyncio-tasks 4 --asyncio-task-timeout 25
 
   deploy_to_staging:
     runs-on: ubuntu-latest

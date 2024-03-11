@@ -39,7 +39,7 @@ declare function articles-list:by-kanton-and-volume($loader-functions as (functi
 : @return element(kanton)+ - A list of all articles grouped by kanton.
 :)
 declare function articles-list:kantons($docs as element(tei:TEI)+) as element(kanton)+ {
-    articles-list:kantons($docs, idno-parser:parse-regular#1)
+    articles-list:kantons($docs, idno-parser:parse#1)
 };
 
 (:~
@@ -49,9 +49,9 @@ declare function articles-list:kantons($docs as element(tei:TEI)+) as element(ka
 : @param $idno-parser as function(xs:string) as element(doc) - A function that parses the idno of an article.
 : @return element(kanton)+ - A list of all articles grouped by kanton.
 :)
-declare function articles-list:kantons($docs as element(tei:TEI)+, $idno-parser as function(xs:string) as element(doc)) as element(kanton)+ {
+declare function articles-list:kantons($docs as element(tei:TEI)+, $idno-parser as function(element(tei:TEI)) as element(doc)) as element(kanton)+ {
     for $doc in $docs
-    let $parsed-idno as element(doc) := $idno-parser($doc//tei:seriesStmt/tei:idno[not(@type)])
+    let $parsed-idno as element(doc) := $idno-parser($doc)
     group by $kanton := $parsed-idno//kanton
     order by $kanton
     return

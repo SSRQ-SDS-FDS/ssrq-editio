@@ -1,13 +1,11 @@
 import pytest
 
-from httpx import codes
 
 from tests.eXist_app.conftest import (
     build_query,
     xquery_modules,
     xquery_tester,
     assert_xquery_result,
-    unquote_xquery_result,
 )
 
 
@@ -24,9 +22,12 @@ from tests.eXist_app.conftest import (
 async def test_toolbar_container_return_type(
     execute_xquery: xquery_tester, tools: str | None, expected: bool
 ):
+    template_config = (
+        "map{ 'configuration': views:get-template-config(map{'parameters': map{'doc': '1-1'}})}"
+    )
     xquery = build_query(
-        modules=[xquery_modules["toolbar"]],
-        query_body=f"""let $toolbar := toolbar:container(<div/>, map{{}}, {f"\'{tools}\'" if tools else ()})
+        modules=[xquery_modules["toolbar"], xquery_modules["views"]],
+        query_body=f"""let $toolbar := toolbar:container(<div/>, {template_config}, {f"\'{tools}\'" if tools else ()})
             return
                 exists($toolbar)""",  # noqa
     )
