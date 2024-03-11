@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <catalogue xml:lang="de">
     <msg key="about">Informationen</msg>
+    <msg key="accessed">abgerufen am</msg>
     <msg key="addFill">Weitere Überlieferungen</msg>
     <msg key="additional-languages">Verfügbare Sprachen</msg>
     <msg key="and"> und </msg>
@@ -12,6 +13,7 @@
     <msg key="by"> von </msg>
     <msg key="canton">Kanton</msg>
     <msg key="canton-overview">Kantone und Abteilungen</msg>
+    <msg key="cite-suggestion">Zitiervorschlag</msg>
     <msg key="close">Schliessen</msg>
     <msg key="comment">Kommentar</msg>
     <msg key="condition">Erhaltungszustand</msg>
@@ -104,5 +106,5 @@
     <msg key="website-link">//www.ssrq-sds-fds.ch/home/</msg>
     <msg key="work-id">Stücknummer</msg>
     <msg key="yes">Ja</msg>
-    <msg key="zitation">Zitation: </msg>
+    <msg key="zitation">Zitation</msg>
 </catalogue>

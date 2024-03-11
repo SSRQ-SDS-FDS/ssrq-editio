@@ -49,4 +49,7 @@
   .footnotes .fn-content .note {
     @apply hidden;
   }
+  .weblink {
+    @apply text-blue-600 hover:underline cursor-pointer;
+  }
 }
