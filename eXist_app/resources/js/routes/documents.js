@@ -1,5 +1,5 @@
-document.addEventListener('alpine:init', () => {
-  Alpine.data('placesStdNames', () => ({
+document.addEventListener("alpine:init", () => {
+  Alpine.data("placesStdNames", () => ({
     async fetchAndInsert() {
       /**
        * @type {string}
@@ -9,7 +9,7 @@ document.addEventListener('alpine:init', () => {
        * @type {string}
        */
       const apiLang = this.$el.dataset.lang;
-      for (const place of [...this.$el.querySelectorAll('[data-place-ref]')]) {
+      for (const place of [...this.$el.querySelectorAll("[data-place-ref]")]) {
         /**
          * @type {string}
          */

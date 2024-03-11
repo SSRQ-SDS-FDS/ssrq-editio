@@ -97,29 +97,33 @@ declare %private function documents:title-cards($documents as element(tei:TEI)+,
 : @param $documents element(tei:TEI)+ - the documents to reorder and filter
 : @return element(tei:TEI)+ - the reordered and filtered documents
 :)
-declare function documents:reorder-hits-and-filter($documents as element(tei:TEI)+) as element(tei:TEI)+ {
+declare function documents:reorder-hits-and-filter($documents as element(tei:TEI)+) as map(*)+ {
     for $document in $documents
-    where xs:boolean(ft:binary-field($document, 'main', 'xs:boolean')) (: see the eXist-db issue: https://github.com/eXist-db/exist/issues/5193 :)
-    order by ft:binary-field($document, 'sort-number', 'xs:integer')
-    return $document
+    let $doc-info := ssrq-cache:load-from-static-cache-by-id($config:static-cache-path, $config:static-docs-list, ft:field($document, 'idno'))
+    where xs:boolean($doc-info/@is-main)
+    order by xs:integer($doc-info/@sort-key)
+    return map {
+        'doc-info': $doc-info,
+        'xml': $document
+    }
 };
 
-declare %private function documents:render-card($document as element(tei:TEI), $lang as xs:string) as element() {
+declare %private function documents:render-card($document as map(*), $lang as xs:string) as element() {
     xsl:apply(
         'document-info.xsl',
-        $document,
+        $document?xml,
         map {
-            'formatted-date': date-parser:print(($document//tei:origDate[@type = 'document'])[1]),
-            'has-facs': ft:binary-field($document, 'has-facs', 'xs:string'),
+            'formatted-date': date-parser:print(($document?xml//tei:origDate[@type = 'document'])[1]),
+            'has-facs': ft:binary-field($document?xml, 'has-facs', 'xs:string'),
             'lang': $lang,
             'link': link:to-resource(
-                ssrq-cache:load-from-static-cache-by-id($config:static-cache-path, $config:static-docs-list, ft:field($document, 'idno')),
+                $document?doc-info,
                 true(),
                 '.html',
                 map {'lang': $lang}
             ),
-            'origPlace-ref': ft:binary-field($document, 'origPlace-ref', 'xs:string'),
-            'printed-idno': ft:binary-field($document, 'printed-idno', 'xs:string')
+            'origPlace-ref': ft:binary-field($document?xml, 'origPlace-ref', 'xs:string'),
+            'printed-idno': $document?doc-info/@printed-idno
         }
     )
 };

@@ -37,7 +37,7 @@ declare function idno-parser:parse($input as item()) as element(doc) {
             default return
                 error((), 'The input must be either a TEI-XML document or a string')
     let $doc-info as element(doc) :=
-        <doc xml:id="{$idno}">
+        <doc xml:id="{$idno}" printed-idno="{idno-parser:print($idno)}">
             {
                 for $group in (analyze-string($idno, '^(SSRQ|SDS|FDS)
                                         -([A-Z]{2})
