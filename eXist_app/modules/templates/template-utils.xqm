@@ -392,7 +392,7 @@ declare function template-utils:tooltip-or-dropdown($anchor as item()+, $anchor-
     element details {
         attribute x-data { "" },
         attribute class { "inline relative popup" },
-        attribute x-on:click.outside { "$el.open = !$el.open" },
+        attribute x-on:click.outside { "$el.open ? $el.open = false : null" },
         if ($mouseevents) then
             (
                 attribute x-on:mouseenter { "$el.open = !$el.open" },
