@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
     scroll({
       target,
       behavior: "smooth",
-      top: offSet,
+      top: offSet > e.target.offsetTop ? offSet - e.target.offsetTop : offSet, // This will ensure, that we will not move the target behind the toolbar
     });
   };
 
