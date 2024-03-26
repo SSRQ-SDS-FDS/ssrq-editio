@@ -1,0 +1,44 @@
+name: Release editio data
+
+on:
+  workflow_dispatch:
+    inputs:
+      schema_url:
+        description: 'The URL of the schema used to validate the data'
+        type: string
+        required: true
+        default: 'https://schema.ssrq-sds-fds.ch/'
+      schema_version:
+        description: 'The version of the schema used to validate the data'
+        type: string
+        required: true
+        default: 'latest'
+
+jobs:
+  copy-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout src repo
+        uses: actions/checkout@v4
+        with:
+          path: 'src'
+          submodules: 'recursive'
+          token: ${{ secrets.TEI_VOLUMES_PAT }}
+      - name: Install poetry
+        shell: bash
+        run: pipx install poetry
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'poetry'
+      - name: Install dependencies
+        shell: bash
+        run: poetry install -C src
+      - name: Create data bundle
+        shell: bash
+        run: |
+          poetry run -C src editio build 'prod'
+          rm -rf src/editio-data/misc
+          echo -e "${{ inputs.schema_url }}${{ inputs.schema_version }}" > src/editio-data/.schema
+          echo "Using schema pointing to $(cat src/editio-data/.schema)"
