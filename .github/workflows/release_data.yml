@@ -30,6 +30,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
+          python-version: '3.11'
           cache: 'poetry'
       - name: Install dependencies
         shell: bash
@@ -40,4 +41,4 @@ jobs:
           poetry run -C src editio build 'prod'
           rm -rf src/editio-data/misc
           echo -e "${{ inputs.schema_url }}${{ inputs.schema_version }}" > src/editio-data/.schema
-          echo "Using schema pointing to ${cat src/editio-data/.schema}"
+          echo "Using schema pointing to $(cat src/editio-data/.schema)"
