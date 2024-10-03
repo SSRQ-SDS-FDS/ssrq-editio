@@ -1,0 +1,7 @@
+{% import 'components/message.html.j2' as mc %}
+{% extends "layouts/page.html.j2" %}
+
+{% block content %}
+<p>Hello, World!</p>
+{{ mc.message("This is a message from the commponent.") }}
+{% endblock %}

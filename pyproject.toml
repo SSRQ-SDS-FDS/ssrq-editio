@@ -1,39 +1,24 @@
-[tool.poetry]
-authors = ["Bpolitycki <bastian.politycki@unisg.ch>"]
-description = "Python based tooling for running and building editio."
-name = "cli"
+[project]
+name = "ssrq-editio"
+version = "0.0.1"
+description = "The digital scholarly edition of the Swiss Law Sources"
 readme = "README.md"
-version = "0.2.0"
+requires-python = ">=3.12"
+dependencies = ["fastapi[standard]>=0.115.0"]
 
-[tool.poetry.scripts]
-editio = "cli.main:app"
-
-[tool.poetry.dependencies]
-loguru = "^0.7.2"
-pydantic = "^2.4.1"
-python = "^3.11"
-typer = "^0.9.0"
-watchfiles = "^0.21.0"
-pytest-asyncio-cooperative = "^0.31.0"
-pytailwindcss = "^0.2.0"
-
-[tool.poetry.group.dev.dependencies]
-black = "^23.9.1"
-pytest = "^7.4.2"
-ruff = "^0.0.291"
-httpx = "^0.25.0"
-parsel = "^1.8.1"
-pre-commit = "^3.5.0"
-
-[tool.pytest.ini_options] # https://docs.pytest.org/en/latest/reference/reference.html#ini-options-ref
-markers = ["depends_on_data"]
-testpaths = "tests"
+[tool.uv]
+dev-dependencies = [
+    "mypy>=1.11.2",
+    "pre-commit>=3.8.0",
+    "pytest>=8.3.3",
+    "ruff>=0.6.8",
+    "rust-just>=1.36.0",
+]
 
 [tool.ruff]
 fix = true
 line-length = 100
-src = ["cli", "tests"]
 
 [build-system]
-build-backend = "poetry.core.masonry.api"
-requires = ["poetry-core"]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
