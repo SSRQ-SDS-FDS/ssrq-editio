@@ -6,7 +6,13 @@ The edition can be found online via [https://editio.sls-online.ch](https://editi
 
 ## Get up and running
 
-The digital scholarly edition is an eXist-DB based project and was originally build with `ant`. Since `29f7db1` the build-process has been rewritten and is based on python tooling (like other software e.g. [the TEI-XML schema](https://github.com/SSRQ-SDS-FDS/ssrq-schema)).
+The digital scholarly edition is an Python based project. Originally it was based on the [TEIPublisher](https://teipublisher.com). It has been rewritten in Python and uses XSLT to transform the TEI-XML files into HTML. The rewritten application tries to tackle some of the shortcomings of the original project:
+
+- poor performance
+- spaghetti code
+- just a handful of tests
+- various bugs (we had more than 100 open issues in our internal tracker)
+- complex setup and configuration
 
 ### Development
 
@@ -14,60 +20,35 @@ The digital scholarly edition is an eXist-DB based project and was originally bu
 
 You need to install the following software:
 
-1. Python (3.11 or higher) together with [`poetry`](https://python-poetry.org)
+1. Python (3.12 or higher) together with [`uv`](https://github.com/astral-sh/uv)
 2. [Docker](https://www.docker.com)
 
 As well as [Git](https://git-scm.com) (of course...)
 
-#### The `editio CLI`
+From a birds-eye view, the application mainly relies on the following technologies:
 
-All tasks are abstracted with a simple CLI. Switch to the project directory and execute the following:
+- [FastAPI](https://fastapi.tiangolo.com) used for the backend
+- [TailwindCSS](https://tailwindcss.com) for the styling
+- [htmx](https://htmx.org) and [Alpine.js](https://alpinejs.dev) for interactivity in the frontend
+- [MongoDB](https://www.mongodb.com) as the database
+- [Saxon's XSLT 3.0 processor](https://www.saxonica.com/welcome/welcome.xml) to process the TEI-XML files
 
-```sh
-poetry shell # this may be optional
-poetry install
-```
-
-This will activate the virtual python environment and install all dependencies. You are now ready to go.
-
-Run `editio --help` to see all available commands.
-
-#### Running the application (in dev mode)
-
-At first build the xar-application:
+To get started with the development environment, you first need to install the required Python packages. They are list in the `pyproject.toml` file and can be installed in the following way:
 
 ```sh
-editio build 'dev'
+uv sync
 ```
 
-If you want to update the data subrepo set the `-u` flag.
+From here on you can use the `just` command (in an activated virtual environment) to executes various tasks. To see a list of all available tasks, run `just help`.
 
-And then start the application inside a docker container:
+#### Populating the database
 
-```sh
-editio run
-```
-
-This will start the application on port `8080` and you can access it via [http://localhost:8080](http://localhost:8080/exist/apps/ssrq/).
-
-**Note**: If you're making any changes to the XQuery code, you need to rebuild the application and restart the container. Otherwise you will have to run `editio sync` before you make any changes to the code. This is a more stable drop-in replacement for the `sync`-command of the [eXist-DB plugin for VSCode](https://code.visualstudio.com) and will upload all changed files to the running container. The `sync`-command does not depend on VSCode and can be used with any environment.
-
-#### Running the tests
-
-The tests are written with [pytest](https://pytest.org) and can be run with the following command:
-
-```sh
-editio test
-```
-
-Some tests are marked with `@depends_on_data` and may only pass if the needed data-files are available inside eXist-db. You can skip these tests with the flag `--skip-data-tests`.
-
-### Deployment / Running in production
-
-#### Staging-Server
-
-The deployment of the staging-version is automated via GitHub-Actions. See the workflow-files for more details.
+To be done.
 
 #### Branches
 
 The `main` branch reflects the actual production state. The `dev` branch is used for development and testing. All other branches are feature branches and should should at first be merged into `dev` and then deleted. A new version will be created on the `dev` branch and merged into `main` for deployment.
+
+### Deployment
+
+To be Done.
