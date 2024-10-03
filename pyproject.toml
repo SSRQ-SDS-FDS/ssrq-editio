@@ -15,9 +15,16 @@ dev-dependencies = [
     "rust-just>=1.36.0",
 ]
 
+[tool.mypy]
+files = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = "tests"
+
 [tool.ruff]
 fix = true
 line-length = 100
+src = ["src", "tests"]
 
 [build-system]
 requires = ["hatchling"]
