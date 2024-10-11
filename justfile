@@ -13,8 +13,8 @@ lint:
   uv run ruff check && uv run mypy
 
 # Execute pytest, after running the linting
-test: lint
-  uv run pytest
+test args="": lint
+  uv run pytest {{args}}
 
 # Shows all recipes using just -l
 help:

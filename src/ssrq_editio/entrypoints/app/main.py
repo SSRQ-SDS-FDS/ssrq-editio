@@ -1,8 +1,10 @@
-from fastapi import Request
-from fastapi.responses import HTMLResponse
-from ssrq_editio.entrypoints.app.setup import app, templates
+from ssrq_editio.entrypoints.app.setup import app, setup_routers
+from ssrq_editio.entrypoints.app.routers import html, api
 
-
-@app.get("/", response_class=HTMLResponse)
-def hello(request: Request):
-    return templates.TemplateResponse("index.html.j2", {"request": request})
+setup_routers(
+    app,
+    (
+        api,
+        html,
+    ),
+)

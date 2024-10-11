@@ -417,6 +417,15 @@ wheels = [
 ]
 
 [[package]]
+name = "pytailwindcss"
+version = "0.2.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/f3/55/91e655cfbd8e18a777cae3bdd91be02a85fa69e29a4685ab92a87b2ec8cd/pytailwindcss-0.2.0.tar.gz", hash = "sha256:112718583a33f42c57b2718270dd0e0605574da0023cab4829fad3a98ebe450b", size = 5686 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ab/51/a5142efe05873e947a71389ca86572866692ca01113037f99dd009cb0f55/pytailwindcss-0.2.0-py3-none-any.whl", hash = "sha256:30e7bd3b78de19a39a7e66329db02d393ee540f010924397b4d780e85041fae4", size = 7288 },
+]
+
+[[package]]
 name = "pytest"
 version = "8.3.3"
 source = { registry = "https://pypi.org/simple" }
@@ -429,6 +438,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/8b/6c/62bbd536103af674e227c41a8f3dcd022d591f6eed5facb5a0f31ee33bbc/pytest-8.3.3.tar.gz", hash = "sha256:70b98107bd648308a7952b06e6ca9a50bc660be218d53c257cc1fc94fda10181", size = 1442487 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/6b/77/7440a06a8ead44c7757a64362dd22df5760f9b12dc5f11b6188cd2fc27a0/pytest-8.3.3-py3-none-any.whl", hash = "sha256:a6853c7375b2663155079443d2e45de913a911a11d669df02a50814944db57b2", size = 342341 },
+]
+
+[[package]]
+name = "pytest-asyncio-cooperative"
+version = "0.37.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/3d/a6/d94fa0a18c24b51eef2104ea3cedecd5fd7c112dc4181230f567ba97a1ce/pytest_asyncio_cooperative-0.37.0.tar.gz", hash = "sha256:c7d8823c638374420c9b7e55caa345527153c76e0c458ac9416df4b039705e6b", size = 7389 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/87/61/98564b708b227c10c525c0fd066681d3e9dcf3f43d1f4bb23473b6c1cbba/pytest_asyncio_cooperative-0.37.0-py3-none-any.whl", hash = "sha256:cc8a03cbdce0ffa8c78cba6b7584a42e84d0b65b88b20fbb6e553bdf87612506", size = 9203 },
 ]
 
 [[package]]
@@ -559,6 +577,7 @@ version = "0.0.1"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi", extra = ["standard"] },
+    { name = "pytailwindcss" },
 ]
 
 [package.dev-dependencies]
@@ -566,18 +585,23 @@ dev = [
     { name = "mypy" },
     { name = "pre-commit" },
     { name = "pytest" },
+    { name = "pytest-asyncio-cooperative" },
     { name = "ruff" },
     { name = "rust-just" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "fastapi", extras = ["standard"], specifier = ">=0.115.0" }]
+requires-dist = [
+    { name = "fastapi", extras = ["standard"], specifier = ">=0.115.0" },
+    { name = "pytailwindcss", specifier = ">=0.2.0" },
+]
 
 [package.metadata.requires-dev]
 dev = [
     { name = "mypy", specifier = ">=1.11.2" },
     { name = "pre-commit", specifier = ">=3.8.0" },
     { name = "pytest", specifier = ">=8.3.3" },
+    { name = "pytest-asyncio-cooperative", specifier = ">=0.37.0" },
     { name = "ruff", specifier = ">=0.6.8" },
     { name = "rust-just", specifier = ">=1.36.0" },
 ]

@@ -4,12 +4,16 @@ version = "0.0.1"
 description = "The digital scholarly edition of the Swiss Law Sources"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = ["fastapi[standard]>=0.115.0"]
+dependencies = [
+    "fastapi[standard]>=0.115.0",
+    "pytailwindcss>=0.2.0",
+]
 
 [tool.uv]
 dev-dependencies = [
     "mypy>=1.11.2",
     "pre-commit>=3.8.0",
+    "pytest-asyncio-cooperative>=0.37.0",
     "pytest>=8.3.3",
     "ruff>=0.6.8",
     "rust-just>=1.36.0",
