@@ -5,6 +5,7 @@ description = "The digital scholarly edition of the Swiss Law Sources"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "anyio>=4.6.0",
     "cachebox>=4.3.1",
     "fastapi[standard]>=0.115.0",
     "jinjax>=0.48",
