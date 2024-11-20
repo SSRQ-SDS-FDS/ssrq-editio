@@ -2,6 +2,7 @@
 name = "ssrq-editio"
 version = "0.0.1"
 dependencies = [
+    "aiosqlite>=0.20.0",
     "anyio>=4.6.0",
     "cachebox>=4.3.1",
     "fastapi[standard]>=0.115.0",
