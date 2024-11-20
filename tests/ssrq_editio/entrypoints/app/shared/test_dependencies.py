@@ -1,6 +1,7 @@
 import pytest
-from ssrq_editio.entrypoints.app.shared.dependencies import get_lang
 from ssrq_utils.lang.display import Lang
+
+from ssrq_editio.entrypoints.app.shared.dependencies import get_lang
 
 
 @pytest.mark.asyncio_cooperative

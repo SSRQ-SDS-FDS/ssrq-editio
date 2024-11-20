@@ -1,6 +1,6 @@
+import jinjax
 import pytest
 
-import jinjax
 from ssrq_editio.entrypoints.app.config import COMPONENT_DIR
 
 

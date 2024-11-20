@@ -1,6 +1,6 @@
+import pytest
 from httpx import AsyncClient
 from httpx._status_codes import codes
-import pytest
 
 
 @pytest.mark.asyncio_cooperative

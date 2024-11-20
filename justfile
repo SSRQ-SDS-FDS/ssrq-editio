@@ -12,6 +12,9 @@ fmt:
 lint:
   uv run ruff check && uv run mypy
 
+run:
+	uv run fastapi run {{web_app}}
+
 # Execute pytest, after running the linting
 test args="": lint
   uv run pytest {{args}}

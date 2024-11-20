@@ -1,12 +1,14 @@
 from pathlib import Path
 from typing import Any, TypedDict, cast
+
 from fastapi import Request
-from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
-from ssrq_editio.entrypoints.app.setup import templates as TEMPLATES
-from ssrq_utils.lang.display import Lang
+from fastapi.templating import Jinja2Templates
 from ssrq_utils.i18n.translator import Translator
+from ssrq_utils.lang.display import Lang
+
 from ssrq_editio.entrypoints.app.config import TRANSLATION_SOURCE
+from ssrq_editio.entrypoints.app.setup import templates as TEMPLATES
 
 
 class ViewContext(TypedDict):

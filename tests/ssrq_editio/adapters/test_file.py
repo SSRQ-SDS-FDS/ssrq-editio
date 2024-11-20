@@ -1,6 +1,8 @@
 from pathlib import Path
-from ssrq_editio.adapters.file import load
+
 import pytest
+
+from ssrq_editio.adapters.file import load
 
 
 @pytest.mark.asyncio_cooperative

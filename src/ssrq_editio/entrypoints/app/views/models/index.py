@@ -1,6 +1,8 @@
 from fastapi import Request
-from ssrq_editio.entrypoints.app.views.models.base import ViewModel
 from ssrq_utils.lang.display import Lang
+
+from ssrq_editio.entrypoints.app.views.models.base import ViewModel
+
 from .base import ViewContext
 
 

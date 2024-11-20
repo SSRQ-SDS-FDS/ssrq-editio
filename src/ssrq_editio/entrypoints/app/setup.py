@@ -1,9 +1,11 @@
 from pathlib import Path
+
+import jinjax
 from fastapi import APIRouter, FastAPI
-from ssrq_editio.entrypoints.app.config import ASSET_DIR, TEMPLATE_DIR, COMPONENT_DIR
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-import jinjax
+
+from ssrq_editio.entrypoints.app.config import ASSET_DIR, COMPONENT_DIR, TEMPLATE_DIR
 
 
 def app_factory(

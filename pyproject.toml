@@ -1,20 +1,19 @@
 [project]
 name = "ssrq-editio"
 version = "0.0.1"
-description = "The digital scholarly edition of the Swiss Law Sources"
-readme = "README.md"
-requires-python = ">=3.12"
 dependencies = [
     "anyio>=4.6.0",
     "cachebox>=4.3.1",
     "fastapi[standard]>=0.115.0",
     "jinjax>=0.48",
+    "loguru>=0.7.2",
     "pytailwindcss>=0.2.0",
     "ssrq-utils",
 ]
 
 [tool.uv]
 dev-dependencies = [
+    "commitizen>=3.31.0",
     "mypy>=1.11.2",
     "pre-commit>=3.8.0",
     "pytest-asyncio-cooperative>=0.37.0",
@@ -36,6 +35,15 @@ testpaths = "tests"
 fix = true
 line-length = 100
 src = ["src", "tests"]
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["C90", "E4", "E7", "E9", "F", "I"]
+ignore = []
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
 
 [build-system]
 requires = ["hatchling"]

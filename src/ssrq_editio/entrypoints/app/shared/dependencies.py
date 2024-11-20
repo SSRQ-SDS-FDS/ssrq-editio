@@ -1,7 +1,7 @@
 from typing import Annotated
+
 from fastapi import Depends, Header, Query
 from ssrq_utils.lang.display import Lang
-
 
 __all__ = ["LangDependency"]
 

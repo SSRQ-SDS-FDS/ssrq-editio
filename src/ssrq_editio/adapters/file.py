@@ -1,6 +1,7 @@
 from pathlib import Path
-from anyio import open_file
+
 import cachebox
+from anyio import open_file
 
 
 @cachebox.cached(cachebox.Cache(maxsize=256))

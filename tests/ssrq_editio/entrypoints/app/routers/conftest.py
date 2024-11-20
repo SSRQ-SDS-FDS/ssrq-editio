@@ -1,7 +1,9 @@
 from typing import AsyncGenerator
+
 import pytest
-from ssrq_editio.entrypoints.app.main import app
 from httpx import ASGITransport, AsyncClient
+
+from ssrq_editio.entrypoints.app.main import app
 
 
 @pytest.fixture(scope="module")
