@@ -1,0 +1,3 @@
+[submodule "src/ssrq_editio/data/SG_III_4"]
+	path = src/ssrq_editio/data/SG_III_4
+	url = https://github.com/SSRQ-SDS-FDS/SG_III_4.git
