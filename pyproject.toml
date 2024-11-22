@@ -11,7 +11,11 @@ dependencies = [
     "loguru>=0.7.2",
     "pytailwindcss>=0.2.0",
     "ssrq-utils",
+    "typer>=0.12.5",
 ]
+
+[project.scripts]
+editio = "ssrq_editio.entrypoints.cli:app"
 
 [tool.uv]
 dev-dependencies = [
@@ -22,6 +26,7 @@ dev-dependencies = [
     "pytest>=8.3.3",
     "ruff>=0.6.8",
     "rust-just>=1.36.0",
+    "sqlfluff>=3.2.5",
 ]
 
 [tool.uv.sources]

@@ -20,22 +20,17 @@ repos:
         require_serial: true
         language: system
         stages: [commit-msg]
-      - id: ruff
-        name: ruff
-        entry: ruff
-        args: ["check", "--extend-fixable=F401,F841", "--fix-only"]
+      - id: lint
+        name: lint
+        entry: just
+        args: ["lint"]
         require_serial: true
         language: system
         types: [python]
-      - id: ruff
-        name: ruff-fmt
-        entry: ruff
-        args: ["format"]
+      - id: fmt
+        name: format
+        entry: just
+        args: ["fmt"]
         require_serial: true
-        language: system
-        types: [python]
-      - id: mypy
-        name: mypy
-        entry: mypy
         language: system
         types: [python]

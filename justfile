@@ -1,3 +1,4 @@
+sql_dir := "./src/ssrq_editio/adapters/db/sql/**/*.sql"
 web_app := "./src/ssrq_editio/entrypoints/app/main.py"
 
 # Start the development server
@@ -7,10 +8,12 @@ dev:
 # Format the code
 fmt:
   uv run ruff format .
+  uv run sqlfluff format {{sql_dir}} --dialect sqlite
 
 # Lint the source code using Mypy & Ruff
 lint:
   uv run ruff check && uv run mypy
+  uv run sqlfluff lint {{sql_dir}} --dialect sqlite
 
 run:
 	uv run fastapi run {{web_app}}
