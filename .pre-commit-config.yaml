@@ -15,22 +15,39 @@ repos:
     hooks:
       - id: commitizen
         name: commitizen
-        entry: cz check
+        entry: uvx cz check
         args: [--commit-msg-file]
         require_serial: true
         language: system
         stages: [commit-msg]
-      - id: lint
-        name: lint
-        entry: just
-        args: ["lint"]
+      - id: ruff
+        name: ruff
+        entry: uvx ruff
+        args: ["check", "--extend-fixable=F401,F841", "--fix-only"]
         require_serial: true
         language: system
         types: [python]
-      - id: fmt
-        name: format
-        entry: just
-        args: ["fmt"]
+      - id: ruff
+        name: ruff-fmt
+        entry: uvx ruff
+        args: ["format"]
         require_serial: true
+        language: system
+        types: [python]
+      - id: mypy
+        name: mypy
+        entry: uv run mypy
+        language: system
+        types: [python]
+      - id: sqlfluff
+        name: sqlfluff-fmt
+        entry: uvx sqlfluff
+        args: ["format", "--dialect", "sqlite"]
+        language: system
+        types: [python]
+      - id: sqlfluff
+        name: sqlfluff-lint
+        entry: uvx sqlfluff
+        args: ["lint", "--dialect", "sqlite"]
         language: system
         types: [python]

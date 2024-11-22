@@ -3,7 +3,7 @@ from typing import AsyncGenerator
 import aiosqlite
 import pytest
 
-from ssrq_editio.services.db.connection import db_session
+from ssrq_editio.adapters.db.connection import db_session
 
 
 @pytest.mark.asyncio_cooperative
