@@ -1,3 +1,6 @@
 [submodule "src/ssrq_editio/data/SG_III_4"]
 	path = src/ssrq_editio/data/SG_III_4
 	url = https://github.com/SSRQ-SDS-FDS/SG_III_4.git
+[submodule "src/ssrq_editio/data/VD_D_2"]
+	path = src/ssrq_editio/data/VD_D_2
+	url = https://github.com/SSRQ-SDS-FDS/VD_D_2.git
