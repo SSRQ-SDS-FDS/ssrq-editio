@@ -344,3 +344,8 @@ nosetests.xml
 coverage.xml
 *.cover
 .hypothesis/
+
+# Ignore SQLite database files
+*.sqlite3
+*.sqlite
+*.db
