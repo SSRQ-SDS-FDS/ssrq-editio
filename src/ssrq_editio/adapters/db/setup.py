@@ -59,5 +59,5 @@ async def setup_tables(
     """
     for table_query in table_queries:
         query = await load(TABLE_DIR, table_query)
-        await cursor.execute(query)
+        await cursor.executescript(query)
     return cursor

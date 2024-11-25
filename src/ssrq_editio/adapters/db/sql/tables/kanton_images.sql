@@ -5,3 +5,5 @@ CREATE TABLE IF NOT EXISTS kanton_images
     kanton_id INTEGER NOT NULL,
     FOREIGN KEY (kanton_id) REFERENCES kantons (id)
 );
+
+CREATE INDEX idx_kanton_images_kanton_id ON kanton_images (kanton_id);

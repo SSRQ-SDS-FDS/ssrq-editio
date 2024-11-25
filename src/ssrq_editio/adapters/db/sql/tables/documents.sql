@@ -12,3 +12,6 @@ CREATE TABLE IF NOT EXISTS documents
     FOREIGN KEY (volume_id) REFERENCES volumes (id),
     FOREIGN KEY (orig_place) REFERENCES places (id)
 );
+
+CREATE INDEX idx_documents_volume_id ON documents (volume_id);
+CREATE INDEX idx_documents_is_main ON documents (is_main);

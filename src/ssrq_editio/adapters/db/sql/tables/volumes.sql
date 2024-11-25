@@ -8,3 +8,5 @@ CREATE TABLE IF NOT EXISTS volumes
     literature TEXT NULL,
     FOREIGN KEY (kanton_id) REFERENCES kantons (id)
 );
+
+CREATE INDEX idx_volumes_kanton_id ON volumes (kanton_id);
