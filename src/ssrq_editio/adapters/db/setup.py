@@ -11,6 +11,16 @@ TABLE_DIR = SQL_DIR / "tables"
 TABLES = (
     TABLE_DIR / "kantons.sql",
     TABLE_DIR / "kanton_images.sql",
+    TABLE_DIR / "volumes.sql",
+    TABLE_DIR / "editors.sql",
+    TABLE_DIR / "persons.sql",
+    TABLE_DIR / "places.sql",
+    TABLE_DIR / "terms.sql",
+    TABLE_DIR / "persons_places.sql",
+    TABLE_DIR / "persons_terms.sql",
+    TABLE_DIR / "documents.sql",
+    TABLE_DIR / "search.sql",
+    TABLE_DIR / "occurrences.sql",
 )
 
 

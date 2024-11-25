@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS editors
+(
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    volume_id INTEGER NOT NULL,
+    FOREIGN KEY (volume_id) REFERENCES volumes (id)
+);
