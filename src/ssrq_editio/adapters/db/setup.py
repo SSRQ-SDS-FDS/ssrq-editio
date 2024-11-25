@@ -18,6 +18,7 @@ async def setup_db(connection: aiosqlite.Connection, table_queries: tuple[Path, 
     async with connection.cursor() as cursor:
         await setup_foreign_key(cursor)
         await setup_tables(cursor, table_queries)
+    await connection.commit()
 
 
 async def setup_foreign_key(cursor: aiosqlite.Cursor) -> aiosqlite.Cursor:
