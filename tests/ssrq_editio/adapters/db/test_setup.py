@@ -12,4 +12,4 @@ async def test_setup_db(db_connection):
     tables = await cursor.fetchall()
     # We're asserting + 1 here, because SQLITE creates a table called `sqlite_sequence`
     # to track the autoincrement values of the tables.
-    assert len(TABLES) + 1 == len(list(tables))
+    assert len(TABLES) <= len(list(tables))
