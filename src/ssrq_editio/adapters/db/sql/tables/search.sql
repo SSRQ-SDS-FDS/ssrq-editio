@@ -1,11 +1,9 @@
-CREATE TABLE IF NOT EXISTS search
-(
-    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    volume_title TEXT NOT NULL,
-    document_title TEXT NOT NULL,
-    summary TEXT NULL,
-    content TEXT NULL,
-    commentary TEXT NULL,
-    uuid TEXT NOT NULL,
-    FOREIGN KEY (uuid) REFERENCES documents (uuid)
+CREATE VIRTUAL TABLE  IF NOT EXISTS search  -- noqa
+USING fts5(  -- noqa
+    volume_title,
+    document_title,
+    summary,
+    content,
+    commentary,
+    uuid UNINDEXED
 );
