@@ -1,8 +1,13 @@
+css_dir := "./src/ssrq_editio/entrypoints/app/static/css"
 sql_dir := "./src/ssrq_editio/adapters/db/sql/**/*.sql"
 web_app := "./src/ssrq_editio/entrypoints/app/main.py"
 
+# Compile the CSS using TailwindCSS, pass "-w" to watch for changes
+css args="":
+    uv run tailwindcss -c tailwind.config.js -i {{css_dir}}/src/main.css -o {{css_dir}}/style.css -m {{args}}
+
 # Start the development server
-dev:
+dev: css
 	uv run fastapi dev {{web_app}}
 
 # Format the code
