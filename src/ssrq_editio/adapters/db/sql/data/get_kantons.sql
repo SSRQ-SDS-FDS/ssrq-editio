@@ -3,7 +3,7 @@ SELECT
     k.de_title,
     k.fr_title,
     k.it_title,
-    GROUP_CONCAT(ki.filename, ', ') AS filenames,
+    GROUP_CONCAT(ki.filename, ',') AS filenames,
     (
         SELECT COUNT(*)
         FROM documents AS d
