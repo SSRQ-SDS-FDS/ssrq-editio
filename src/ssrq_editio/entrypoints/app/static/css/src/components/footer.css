@@ -2,10 +2,4 @@
   .page-footer {
     @apply bg-ssrq-greyed-800 text-ssrq-greyed-50 border-t-4 border-t-ssrq-primary;
   }
-  .page-footer ul.additional-links {
-    @apply text-sm self-start sm:mr-4 md:mr-0;
-  }
-  .page-footer ul.additional-links li {
-    @apply transition-colors hover:text-ssrq-primary group-hover:cursor-pointer duration-300;
-  }
 }

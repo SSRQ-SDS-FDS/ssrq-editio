@@ -1,3 +1,4 @@
+import importlib.metadata
 from pathlib import Path
 
 import jinjax
@@ -24,7 +25,13 @@ def app_factory(
     Returns:
         tuple[FastAPI, Jinja2Templates]: The FastAPI app and Jinja2Templates instance.
     """
-    app = FastAPI(docs_url="/api", redoc_url=None)
+    app = FastAPI(
+        docs_url="/api",
+        redoc_url=None,
+        version=importlib.metadata.version("ssrq_editio"),
+        summary="API of the digital scholarly edition published by the Law Sources Foundation of the Swiss Lawyers Society",
+        title="SSRQ · SDS · FDS / Editio API",
+    )
     app.mount("/static", StaticFiles(directory=asset_dir), name="static")
     templates = Jinja2Templates(directory=template_dir)
     templates.env.add_extension(jinjax.JinjaX)

@@ -1,0 +1,35 @@
+{# def
+    items: list[tuple[str, str]],
+    main_entry: str,
+    lang: Lang,
+    request: Request,
+    translator: Translator
+
+#}
+{% do attrs.add_class("nav-dropdown") %}
+<details
+  {{
+  attrs.render()
+  }}
+  @click.outside="$el.open ? $el.open = false : null"
+  @mouseenter="$el.classList.contains('is-mobile') ? null : $el.open = true"
+  @mouseleave="$el.classList.contains('is-mobile') ? null : $el.open = false"
+>
+    <summary
+      title="{{ translator.translate(lang, main_entry) }}">{{
+      translator.translate(lang,
+      main_entry)
+      }}</summary
+    >
+    <ul>
+        {% for key, entry in items %}
+            <li>
+                <a class="menu-link m-0 p-0"
+                   href="{{ url_for(entry) if not entry.startswith('http') else entry }}"
+                   >
+                    {{ translator.translate(lang, key) }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</details>

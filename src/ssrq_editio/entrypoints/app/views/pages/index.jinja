@@ -1,5 +1,24 @@
 {% extends "layouts/page.jinja" %}
-
 {% block content %}
-    <Message>hello from the component :)</Message>
+    <Banner :request="request">
+    <h1 class="title-1">{{ data.page_description }}</h1>
+    </Banner>
+    <section id="cantonlist" class="max-w-4xl lg:px-12 sm:px-4 mx-auto mt-4 mb-9">
+        <div class="flex items-center text-center mb-2.5">
+            <hr class="flex-grow border-ssrq-primary mx-2" />
+            <h2 class="title-2 text-ssrq-greyed-800">{{ translator.translate(lang, 'canton_overview') }}</h2>
+            <hr class="flex-grow border-ssrq-primary mx-2" />
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 auto-rows-max gap-3 justify-items-center">
+            {% for kanton in data.content.kantons %}
+                {% if kanton.docs > 0 %}
+                    <a href="{{ url_for('kanton', kanton=kanton.short_name) }}">
+                        <KantonCard :kanton="kanton" :lang="lang" :request="request" class="kanton-card has-docs" />
+                    </a>
+                {% else %}
+                    <KantonCard :kanton="kanton" :lang="lang" :request="request" class="kanton-card inactive" />
+                {% endif %}
+            {% endfor %}
+        </div>
+    </section>
 {% endblock %}

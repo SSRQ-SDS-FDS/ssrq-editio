@@ -16,4 +16,47 @@
   .mobile-lang-selector li:not(:first-child) a {
     @apply ml-2.5;
   }
+
+  .nav-dropdown {
+    @apply relative text-left ml-1.5;
+  }
+
+  .nav-dropdown > summary {
+    @apply list-none cursor-pointer;
+  }
+
+  .nav-dropdown > summary::-webkit-details-marker,
+  .nav-dropdown > summary::marker {
+    @apply hidden;
+  }
+
+  .nav-dropdown li {
+    @apply my-3 mx-1;
+  }
+
+  @screen sm {
+    .nav-dropdown {
+      @apply hidden;
+    }
+    .nav-dropdown.is-mobile {
+      @apply inline-block px-2.5 py-2;
+    }
+    .nav-dropdown.is-mobile li {
+      @apply text-sm pl-2;
+    }
+  }
+
+  @screen lg {
+    .nav-dropdown {
+      @apply inline-block mx-2;
+    }
+
+    .nav-dropdown summary {
+      @apply inline-flex items-center justify-center w-full rounded-md py-2 hover:bg-none focus:outline-none cursor-pointer;
+    }
+
+    .nav-dropdown ul {
+      @apply absolute w-auto min-w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-1;
+    }
+  }
 }

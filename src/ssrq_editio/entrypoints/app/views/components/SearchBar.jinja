@@ -1,0 +1,30 @@
+{#def
+    lang: Lang,
+    request: Request,
+    translator: Translator
+#}
+<div class="relative"
+     x-data="{ searchForm: false }"
+     @click.outside="searchForm = false">
+    <!--
+        The input field is only shown when the searchForm variable is true /
+        using a template will prevent flickering
+    -->
+    <template x-if="searchForm">
+        <form action="{{ url_for("search") }}" method="get" class="pt-[1rem]">
+            <input type="text"
+                   name="query"
+                   class="form-input h-full min-w-[20rem] w-auto max-w-[28rem] py-1 pl-2 pr-2 placeholder-ssrq-greyed-600 bg-transparent border-[0.02rem] border-black focus:outline-none focus:border-gray-600 rounded-sm"
+                   placeholder="{{ translator.translate(lang, 'search') }}" />
+        </form>
+    </template>
+    <span class="absolute inset-y-0 right-0 flex items-center pr-1 hover:cursor-pointer"
+          @click="searchForm = true">
+        <i class="icon is-small">
+            <svg viewBox="0 0 24 24" fill="none">
+                <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                </path>
+            </svg>
+        </i>
+    </span>
+</div>

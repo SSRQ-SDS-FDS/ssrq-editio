@@ -1,0 +1,12 @@
+{# def
+    lang: Lang,
+    request: Request
+#}
+{% for language in ('de', 'en', 'fr', 'it') %}
+    {% if language != lang.value %}
+        <li>
+            <a href="{{ request.url.include_query_params(lang=language) }}"
+               class="block px-4 py-2 text-sm hover:text-ssrq-primary">{{ language | upper }}</a>
+        </li>
+    {% endif %}
+{% endfor %}

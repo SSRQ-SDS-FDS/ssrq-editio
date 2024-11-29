@@ -1,0 +1,31 @@
+{# def
+    kanton: Kanton,
+    lang: Lang,
+    request: Request
+
+#}
+<div {{ attrs.render() }}>
+    <div class="kanton-card_inner-container">
+        <div class="kanton-card_img-container">
+            {% for file in kanton.filenames %}
+                <img class="kanton-card_img"
+                     src="{{ url_for('static', path='images/kantone/' ~ file ~ '.svg') }}"
+                     loading="lazy"
+                     alt="{{ 'Badge' ~ file}}" />
+            {% endfor %}
+        </div>
+        <div class="kanton-card_content">
+            <div class="kanton-card_content-heading">
+                <h4>{{ kanton.short_name.replace('-', '/') }}</h4>
+                <CounterBadge :count="kanton.docs" />
+            </div>
+            <h3>
+                {% if lang.value + '_title' in kanton %}
+                    {{ kanton[lang.value + '_title'] | safe }}
+                {% else %}
+                    {{ kanton.de_title | safe }}
+                {% endif %}
+            </h3>
+        </div>
+    </div>
+</div>
