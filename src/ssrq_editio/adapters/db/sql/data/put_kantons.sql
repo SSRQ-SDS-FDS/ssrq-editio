@@ -19,8 +19,8 @@ INSERT INTO kantons (id, short_name, de_title, fr_title, it_title) VALUES
     9,
     'FR',
     'IX. Abteilung: Die Rechtsquellen des Kantons Freiburg',
-    'IX. partie : Les sources du droit du canton de Fribourg',
-    'IX sezione: Le fonti del diritto del cantone di Friburgo'
+    'IX<sup>e</sup> partie : Les sources du droit du canton de Fribourg',
+    NULL
 ),
 (10, 'SO', 'X. Abteilung: Die Rechtsquellen des Kantons Solothurn', NULL, NULL),
 (11, 'BS/BL', 'XI. Abteilung: Die Rechtsquellen der Kantone Basel', NULL, NULL),
@@ -67,32 +67,38 @@ INSERT INTO kantons (id, short_name, de_title, fr_title, it_title) VALUES
     NULL,
     NULL
 ),
-(19, 'VD', 'XIX. partie : Les sources du droit du canton de Vaud', NULL, NULL),
+(
+    19,
+    'VD',
+    'XIX<sup>e</sup> partie : Les sources du droit du canton de Vaud',
+    NULL,
+    NULL
+),
 (
     20,
     'VS',
-    'XX. partie : Les sources du droit du canton du Valais',
     'XX. Abteilung: Die Rechtsquellen des Kantons Wallis',
+    'XX<sup>e</sup> partie : Les sources du droit du canton du Valais',
     NULL
 ),
 (
     21,
     'NE',
-    'XXI. partie : Les sources du droit du canton de Neuchâtel',
+    'XXI<sup>e</sup> partie : Les sources du droit du canton de Neuchâtel',
     NULL,
     NULL
 ),
 (
     22,
     'GE',
-    'XXII. partie : Les sources du droit du canton de Genève',
+    'XXII<sup>e</sup> partie : Les sources du droit du canton de Genève',
     NULL,
     NULL
 ),
 (
     23,
     'JU',
-    'XXIII. partie : Les sources du droit du canton du Jura',
+    'XXIII<sup>e</sup> partie : Les sources du droit du canton du Jura',
     NULL,
     NULL
 );
