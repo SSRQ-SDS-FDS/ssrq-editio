@@ -11,10 +11,20 @@ from ssrq_editio.entrypoints.app.config import TRANSLATION_SOURCE
 from ssrq_editio.entrypoints.app.setup import templates as TEMPLATES
 
 
+class ViewCoreData(TypedDict):
+    page_description: str
+    page_title: str
+
+
+class ViewData(ViewCoreData, total=False):
+    content: Any
+
+
 class ViewContext(TypedDict):
-    data: dict[str, Any]
+    data: ViewData
     request: Request
     lang: Lang
+    translator: Translator
 
 
 class ViewModel:
@@ -36,10 +46,32 @@ class ViewModel:
         self.lang = lang
         self.translator = Translator(translation_source)
 
-    async def to_html(self) -> HTMLResponse:
+    async def create_context(self) -> ViewContext:
+        raise NotImplementedError
+
+    def error_to_html(self, error: Exception) -> HTMLResponse:
         return self.templates.TemplateResponse(
-            f"pages/{self.page}", cast(dict, await self.create_context())
+            "pages/error.jinja",
+            {
+                "data": {},
+                "error": str(error),
+                "lang": self.lang,
+                "request": self.request,
+                "translator": self.translator,
+            },
+            status_code=500,
         )
 
-    async def create_context(self) -> ViewContext:
+    async def to_html(self) -> HTMLResponse:
+        try:
+            return self.templates.TemplateResponse(
+                f"pages/{self.page}", cast(dict, await self.create_context())
+            )
+        except Exception as error:
+            return self.error_to_html(error)
+
+    def _get_description(self) -> str:
+        return self.translator.translate(self.lang, "title")
+
+    def _get_title(self) -> str:
         raise NotImplementedError
