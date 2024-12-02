@@ -27,6 +27,7 @@ dev-dependencies = [
     "ruff>=0.6.8",
     "rust-just>=1.36.0",
     "sqlfluff>=3.2.5",
+    "parsel>=1.9.1",
 ]
 
 [tool.uv.sources]
