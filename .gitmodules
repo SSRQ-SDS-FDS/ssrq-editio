@@ -4,3 +4,6 @@
 [submodule "src/ssrq_editio/data/VD_D_2"]
 	path = src/ssrq_editio/data/VD_D_2
 	url = https://github.com/SSRQ-SDS-FDS/VD_D_2.git
+[submodule "src/ssrq_editio/services/xslt/scripts/convert"]
+	path = src/ssrq_editio/services/xslt/scripts/convert
+	url = https://github.com/SSRQ-SDS-FDS/ssrq-convert.git
