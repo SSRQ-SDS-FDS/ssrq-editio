@@ -4,13 +4,13 @@
     "kanton": "SG",
     "name": "III 4",
     "pdf": "TeX/SSRQ-SG-III-4.pdf",
-    "lit": null
+    "literature": null
   },
   {
     "key": "VD_D_2",
     "kanton": "VD",
     "name": "D 2",
     "pdf": null,
-    "lit": "https://www.zotero.org/groups/5048222/ssrq/collections/JKFJK5W5"
+    "literature": "https://www.zotero.org/groups/5048222/ssrq/collections/JKFJK5W5"
   }
 ]

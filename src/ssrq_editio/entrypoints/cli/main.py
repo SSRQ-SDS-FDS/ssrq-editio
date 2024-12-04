@@ -1,10 +1,12 @@
 import asyncio
 import inspect
+from pathlib import Path
 
 import typer
 
 import ssrq_editio.entrypoints.cli.config as config  # type: ignore
 from ssrq_editio.entrypoints.app.config import DB_NAME
+from ssrq_editio.entrypoints.cli.config import VOLUME_CONFIG
 from ssrq_editio.entrypoints.cli.handlers.db import setup
 from ssrq_editio.services.logger import SSRQ_LOGGER
 
@@ -15,9 +17,11 @@ app = typer.Typer()
 def prepare_db(
     clean: bool = typer.Option(False, help="Clean / remove the DB if it exists."),
     db: str = typer.Argument(DB_NAME, help="The name of the database."),
+    config: Path = typer.Argument(VOLUME_CONFIG, help="The path to the volume config."),
+    data: Path = typer.Argument(config.VOLUME_SRC, help="The path to the volume data."),
 ):
     """Prepare and popluate the database."""
-    asyncio.run(setup(db, clean))
+    asyncio.run(setup(db, clean, config, data))
 
 
 @app.command("show-config")

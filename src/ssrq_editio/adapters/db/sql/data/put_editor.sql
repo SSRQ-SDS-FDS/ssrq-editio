@@ -1,1 +1,1 @@
-INSERT into editors (name, volume_id) VALUES (?, ?);
+INSERT INTO editors (name, volume_id) VALUES (?, ?);

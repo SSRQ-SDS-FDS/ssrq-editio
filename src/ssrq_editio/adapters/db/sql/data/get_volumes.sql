@@ -1,18 +1,18 @@
 SELECT
-    v.id as key,
+    v.id AS "key",
     v.name,
-    k.short_name as kanton,
+    k.short_name AS kanton,
     v.title,
     v.pdf,
     v.literature,
     GROUP_CONCAT(e.name, ',') AS editors
 FROM
-    volumes as v
+    volumes AS v
 LEFT JOIN
-    editors as e
+    editors AS e
     ON v.id = e.volume_id
-JOIN
-    kantons as k
+INNER JOIN
+    kantons AS k
     ON v.kanton_id = k.id
 WHERE
     k.short_name = ?

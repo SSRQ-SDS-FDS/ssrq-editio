@@ -1,0 +1,10 @@
+from ssrq_editio.models.volumes import Volume
+from ssrq_editio.services.volumes import create_search_pattern
+
+
+def test_create_search_pattern():
+    volume = Volume(
+        key="foo", name="foo bar", title="bar", kanton="baz", literature=None, pdf=None, editors=[]
+    )
+    result = create_search_pattern(volume)
+    assert result == "foo/online/*-1.xml"

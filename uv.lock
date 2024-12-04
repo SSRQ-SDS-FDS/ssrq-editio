@@ -902,6 +902,35 @@ wheels = [
 ]
 
 [[package]]
+name = "saxonche"
+version = "12.5.0"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a8/91/6bfe1f6162d7ece9548b1be172a79c97b664ac46cb8ae95ebaabea3183ed/saxonche-12.5.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:8ab8ff38eba50b86c547dfe62494e8525e49737fb8c111377a530f8e4aba5398", size = 20008043 },
+    { url = "https://files.pythonhosted.org/packages/4e/d5/013dce06296ba66ff784bab7012a02761cdc83d4f6ada13c99be3191a24e/saxonche-12.5.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:38a735bc7e7f7ec8fd31cf8d88d6880ea76d21f2c3da151c2d86a589f6cd6603", size = 20041576 },
+    { url = "https://files.pythonhosted.org/packages/cb/f3/6854faadad8822986e25a593891f54e3c647852283292e3fd405e6f959fa/saxonche-12.5.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:bfa0f72280e518bc48cb2dc648534ec9cde8da3e7f1b4a60beca8ca29c9ede31", size = 22600140 },
+    { url = "https://files.pythonhosted.org/packages/c3/10/c5a981264acca896ee869caef22e5d61d08827cd468a870da02f0cfa46d2/saxonche-12.5.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:620849d0411e32a20193099106ddfe97d3ba07aa4b76ef0edab94920fdae0b34", size = 22560433 },
+    { url = "https://files.pythonhosted.org/packages/8e/33/1cbf5607699b1eb823bf120b21b2769f3db9798d76a466e200df7d4271c2/saxonche-12.5.0-cp311-cp311-win_amd64.whl", hash = "sha256:a2d30fbe608390a9e32e27d8065696df398d3c56c5a776fd5e794e940d42b14b", size = 19670059 },
+    { url = "https://files.pythonhosted.org/packages/54/8a/1696522b1de1c259d1844b1f91ff1f7a3ebc9350a762e3dced47b00635e9/saxonche-12.5.0-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:bc3f406ed0529ef56a796a3ddb66608047bc4d641ead57891b6924dfe0234f90", size = 20016000 },
+    { url = "https://files.pythonhosted.org/packages/51/28/a02b53ff75eeeb66d21402283f29517ad025e5b0766aec390ed84c0d1085/saxonche-12.5.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:620d586392ef7084ba8d0c6747bed2193da49cd137866ba619c479185fa24ed4", size = 20046021 },
+    { url = "https://files.pythonhosted.org/packages/d9/52/13486e53a09cf493afa9c37d8ec96a3261707132fabb1445e588bdbe7a41/saxonche-12.5.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:2374c58755944fa1bed6a5275eac2c988f132b461da15a33c66f79548b81f043", size = 22501203 },
+    { url = "https://files.pythonhosted.org/packages/76/cb/439fca18dce85321e50a7f82d9963934d2a443128abdc7861cc5cb349942/saxonche-12.5.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:78f4f606165f2d9c14c871132c3b3fd2ecaaa8a2f3d6a624c63f56524cef7470", size = 22477149 },
+    { url = "https://files.pythonhosted.org/packages/2a/66/c2303d0f5266d40085407cee487b30366446bdb61135b959c875e1fe48b7/saxonche-12.5.0-cp312-cp312-win_amd64.whl", hash = "sha256:bcdfc89a6ea6fb0e6b796cd55b6496cd21fc813110a692ed49a3457a47cafe31", size = 19672026 },
+]
+
+[[package]]
+name = "saxonche-stubs"
+version = "0.7.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "saxonche" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/35/07/777535e6debc571f05a7021b2f512670c7ca3b64f8f3ac181e05d913230d/saxonche_stubs-0.7.2.tar.gz", hash = "sha256:29b55c8ae8181be4ded520d73d282efa9c7c2a25f54d4f06f65af7deb9fe3cdb", size = 4130 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/24/d8/a7a980a1bb382b752881c08b192eeb1fc7d8fd7348a3667dc642d5a41289/saxonche_stubs-0.7.2-py3-none-any.whl", hash = "sha256:8818562851f2631c374630418da95335b7e33fa0dd8e5b7749df5d3d602aca91", size = 4247 },
+]
+
+[[package]]
 name = "shellingham"
 version = "1.5.4"
 source = { registry = "https://pypi.org/simple" }
@@ -954,6 +983,7 @@ dependencies = [
     { name = "jinjax" },
     { name = "loguru" },
     { name = "pytailwindcss" },
+    { name = "saxonche" },
     { name = "ssrq-utils" },
     { name = "typer" },
 ]
@@ -968,6 +998,7 @@ dev = [
     { name = "pytest-asyncio-cooperative" },
     { name = "ruff" },
     { name = "rust-just" },
+    { name = "saxonche-stubs" },
     { name = "sqlfluff" },
 ]
 
@@ -980,6 +1011,7 @@ requires-dist = [
     { name = "jinjax", specifier = ">=0.48" },
     { name = "loguru", specifier = ">=0.7.2" },
     { name = "pytailwindcss", specifier = ">=0.2.0" },
+    { name = "saxonche", specifier = ">=12.5.0" },
     { name = "ssrq-utils", git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git?tag=v0.2.0" },
     { name = "typer", specifier = ">=0.12.5" },
 ]
@@ -994,6 +1026,7 @@ dev = [
     { name = "pytest-asyncio-cooperative", specifier = ">=0.37.0" },
     { name = "ruff", specifier = ">=0.6.8" },
     { name = "rust-just", specifier = ">=1.36.0" },
+    { name = "saxonche-stubs", specifier = ">=0.7.2" },
     { name = "sqlfluff", specifier = ">=3.2.5" },
 ]
 
