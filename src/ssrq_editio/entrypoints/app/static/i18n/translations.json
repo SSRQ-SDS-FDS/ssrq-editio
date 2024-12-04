@@ -1,5 +1,6 @@
 {
   "de": {
+    "api": "API",
     "canton": "Kanton",
     "canton_overview": "Kantone und Abteilungen",
     "editorial_principles": "Editionsrichtlinien",
@@ -20,6 +21,7 @@
     "title": "Sammlung Schweizerischer Rechtsquellen online"
   },
   "en": {
+    "api": "API",
     "canton": "Canton",
     "canton_overview": "Cantons and sections",
     "editorial_principles": "Principes éditoriaux",
@@ -40,6 +42,7 @@
     "title": "Collection of Swiss Law Sources online"
   },
   "fr": {
+    "api": "API",
     "canton": "Canton",
     "canton_overview": "Cantons et parties",
     "editorial_principles": "Editorial Principles",
@@ -60,6 +63,7 @@
     "title": "Les sources du droit suisse online"
   },
   "it": {
+    "api": "API",
     "canton": "Cantone",
     "canton_overview": "Cantoni e sezioni",
     "editorial_principles": "Principi editoriali",

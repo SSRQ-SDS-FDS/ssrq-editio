@@ -31,3 +31,13 @@ async def list_kantons(
         await cursor.execute(query)
         data = await cursor.fetchall()
         return Kantons(kantons=tuple(Kanton(**kanton) for kanton in data))
+
+
+async def list_kantons_abbreviations(
+    connection: aiosqlite.Connection, query_file: Path = SQL_DATA_DIR / "get_kantons.sql"
+) -> list[str]:
+    async with connection.cursor() as cursor:
+        query = await load(SQL_DATA_DIR, query_file)
+        await cursor.execute(query)
+        data = await cursor.fetchall()
+        return [kanton["short_name"] for kanton in data]
