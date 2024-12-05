@@ -1,0 +1,21 @@
+{# def
+    lang: Lang,
+    request: Request,
+    translator: Translator,
+    volume: Volume
+#}
+<article
+      class="volume w-full px-8 py-4 bg-white rounded-lg shadow-md my-2"
+>
+    <header class="flex items-center justify-between">
+        <span class="text-sm volume-id">
+            {{ volume.prefix }} {{ volume.kanton }} {{ volume.name }}
+        </span>
+        <CounterBadge :count="volume.docs" />
+    </header>
+    <div class="volume-title">
+        {{ norm_punct(volume.title, lang) | safe }}
+    </div>
+    <EditorList :editors="volume.editors" :lang="lang" :translator="translator" />
+    <VolumeLinks :lang="lang" :request="request" :translator="translator" :volume="volume" />
+</article>

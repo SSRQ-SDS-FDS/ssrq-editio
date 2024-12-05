@@ -1,0 +1,14 @@
+{% extends "layouts/page.jinja" %}
+{% block content %}
+    <Banner :request="request">
+        <h1 class="title-1">{{ translator.translate(lang, 'canton') }} {{ data.content[0].kanton }}</h1>
+        <h2 class="title-2">{{ translator.translate(lang, 'volumes') }}</h2>
+    </Banner>
+    <section
+      class="max-w-5xl lg:px-12 sm:px-4 mx-auto mt-4 mb-9 flex flex-col items-center"
+    >
+        {% for volume in data.content %}
+            <VolumeCard :lang="lang" :request="request" :translator="translator" :volume="volume" />
+        {% endfor %}
+    </section>
+{% endblock %}

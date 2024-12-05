@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from pydantic import BaseModel, BeforeValidator
+from pydantic import BaseModel, BeforeValidator, computed_field
 
 
 class Volume(BaseModel):
@@ -15,6 +15,10 @@ class Volume(BaseModel):
         list[str], BeforeValidator(lambda x: x.split(",") if isinstance(x, str) else x)
     ] = []
     docs: int = 0
+
+    @computed_field
+    def machine_name(self) -> str:
+        return self.name.replace(" ", "_")
 
 
 class Volumes(BaseModel):

@@ -5,6 +5,7 @@ import jinjax
 from fastapi import APIRouter, FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from ssrq_utils.i18n.text import normalize_punctuation_marks
 
 from ssrq_editio.entrypoints.app.config import ASSET_DIR, COMPONENT_DIR, TEMPLATE_DIR
 
@@ -34,6 +35,11 @@ def app_factory(
     )
     app.mount("/static", StaticFiles(directory=asset_dir), name="static")
     templates = Jinja2Templates(directory=template_dir)
+
+    # Set filters and globals for Jinja2
+    templates.env.globals.update(norm_punct=normalize_punctuation_marks)
+
+    # Add JinjaX extension, which allows us to us Component-based templates
     templates.env.add_extension(jinjax.JinjaX)
     catalog = jinjax.Catalog(jinja_env=templates.env)
     catalog.add_folder(component_dir)

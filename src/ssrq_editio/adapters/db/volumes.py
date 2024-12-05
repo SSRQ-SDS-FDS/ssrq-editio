@@ -29,6 +29,7 @@ async def initialize_volume_data(
                 volume.name,
                 volume.kanton,
                 volume.title,
+                volume.prefix,
                 volume.pdf,
                 volume.literature,
             ),

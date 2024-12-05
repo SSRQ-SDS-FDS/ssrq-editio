@@ -1012,7 +1012,7 @@ requires-dist = [
     { name = "loguru", specifier = ">=0.7.2" },
     { name = "pytailwindcss", specifier = ">=0.2.0" },
     { name = "saxonche", specifier = ">=12.5.0" },
-    { name = "ssrq-utils", git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git?tag=v0.2.0" },
+    { name = "ssrq-utils", git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git?tag=v0.3.0" },
     { name = "typer", specifier = ">=0.12.5" },
 ]
 
@@ -1032,8 +1032,8 @@ dev = [
 
 [[package]]
 name = "ssrq-utils"
-version = "0.2.0"
-source = { git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git?tag=v0.2.0#50b05810d6ffed5c08c730344ac29396c4e4144a" }
+version = "0.3.0"
+source = { git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git?tag=v0.3.0#a52fb33317e44d161f3d785f39b215dde8d9a361" }
 dependencies = [
     { name = "cachebox" },
     { name = "pydantic" },

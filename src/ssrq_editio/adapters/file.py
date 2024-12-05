@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import AsyncGenerator
 
 import cachebox
 from anyio import open_file
@@ -20,6 +21,20 @@ async def load(dir: Path, name: str | Path) -> str:
     """
     async with await open_file(dir / name, "r", encoding="utf-8") as f:  # pragma: no cover
         return await f.read()
+
+
+async def stream(path: Path) -> AsyncGenerator[bytes, None]:
+    """Stream the content of a file in an async fashion.
+
+    Args:
+        path (Path): Path to the file to stream.
+
+    Yields:
+        AsyncGenerator[bytes, None]: Bytes of the file.
+    """
+    async with await open_file(path, "rb") as f:
+        while chunk := await f.read(1024):
+            yield chunk
 
 
 async def list_dir_content(dir: Path, pattern: str) -> tuple[Path, ...]:

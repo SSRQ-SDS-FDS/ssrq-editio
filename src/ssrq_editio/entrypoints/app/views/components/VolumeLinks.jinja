@@ -1,0 +1,21 @@
+{# def
+    lang: Lang,
+    request: Request,
+    translator: Translator,
+    volume: Volume
+#}
+<footer class="mt-4 flex">
+    <a href="{{ url_for('document_list', kanton=volume.kanton, volume=volume.machine_name) }}">
+        {{ translator.translate(lang, 'articles') }}
+    </a>
+    {% if volume.literature %}
+    <a href="{{ volume.literature }}" target="_blank">
+        {{ translator.translate(lang, 'literature') }}
+    </a>
+    {% endif %}
+    {% if volume.pdf %}
+    <a href="{{ url_for('volume_pdf', kanton=volume.kanton, volume=volume.machine_name) }}" target="_blank">
+        {{ translator.translate(lang, 'pdf') }}
+    </a>
+    {% endif %}
+</footer>
