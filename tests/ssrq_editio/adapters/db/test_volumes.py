@@ -15,6 +15,7 @@ TEST_VOLUME = Volume(
     pdf="foo.pdf",
     literature="foo",
     editors=["foo Editor"],
+    prefix="SSRQ",
 )
 
 

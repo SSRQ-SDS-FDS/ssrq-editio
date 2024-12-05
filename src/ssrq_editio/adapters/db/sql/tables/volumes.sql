@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS volumes
     name TEXT NOT NULL,
     kanton_id INTEGER NOT NULL,
     title TEXT NOT NULL,
+    prefix TEXT NOT NULL,
     pdf TEXT NULL,
     literature TEXT NULL,
     FOREIGN KEY (kanton_id) REFERENCES kantons (id)

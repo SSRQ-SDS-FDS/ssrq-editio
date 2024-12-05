@@ -3,6 +3,7 @@ SELECT
     v.name,
     k.short_name AS kanton,
     v.title,
+    v.prefix,
     v.pdf,
     v.literature,
     GROUP_CONCAT(e.name, ',') AS editors
