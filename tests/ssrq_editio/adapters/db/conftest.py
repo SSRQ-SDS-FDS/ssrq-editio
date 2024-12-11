@@ -2,14 +2,22 @@ from pathlib import Path
 from typing import AsyncGenerator
 
 import aiosqlite
+import httpx
 import pytest
 from pytest_asyncio_cooperative import Lock  # type: ignore[import]
 
 from ssrq_editio.adapters.db.connection import db_session
 from ssrq_editio.adapters.db.kantons import initialize_kanton_data
 from ssrq_editio.adapters.db.setup import setup_db
+from ssrq_editio.adapters.entities import get_places as fetch_places
 
 db_lock = Lock()
+
+
+@pytest.fixture
+async def entities(httpx_client: httpx.AsyncClient):
+    places = await fetch_places(httpx_client, "http://testserver/places.xml")
+    return (places,)
 
 
 @pytest.fixture(scope="function")

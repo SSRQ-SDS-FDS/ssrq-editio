@@ -1,3 +1,5 @@
+from typing import Sequence
+
 from pydantic import BaseModel
 
 
@@ -11,7 +13,7 @@ class Entity(BaseModel):
 
 
 class Entities(BaseModel):
-    entities: list[Entity]
+    entities: Sequence[Entity]
 
 
 class Place(Entity):
@@ -22,4 +24,4 @@ class Place(Entity):
 
 
 class Places(Entities):
-    pass
+    entities: Sequence[Place]
