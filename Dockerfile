@@ -2,6 +2,7 @@ FROM ghcr.io/astral-sh/uv:python3.12-bookworm
 
 ENV WORKERS=2
 ENV PORT=8000
+ENV ALLOWED_HOSTS=*
 
 WORKDIR /editio
 
@@ -20,4 +21,4 @@ RUN uv run editio prepare-db --clean && \
 
 EXPOSE $PORT
 
-CMD ["sh", "-c", "uv run fastapi run --port $PORT --workers $WORKERS ./src/ssrq_editio/entrypoints/app/main.py"]
+CMD ["sh", "-c", "uv run uvicorn src.ssrq_editio.entrypoints.app.main:app --host 0.0.0.0 --port $PORT --workers $WORKERS --proxy-headers --forwarded-allow-ips=$ALLOWED_HOSTS"]
