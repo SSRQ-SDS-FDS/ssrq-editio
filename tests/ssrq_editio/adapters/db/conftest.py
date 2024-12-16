@@ -14,7 +14,7 @@ from ssrq_editio.adapters.entities import get_places as fetch_places
 db_lock = Lock()
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 async def entities(httpx_client: httpx.AsyncClient):
     places = await fetch_places(httpx_client, "http://testserver/places.xml")
     return (places,)
