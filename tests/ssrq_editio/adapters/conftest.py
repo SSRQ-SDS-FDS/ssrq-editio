@@ -11,7 +11,7 @@ my_test_client = httpx.Client(
 )
 
 
-@pytest.fixture()
+@pytest.fixture(scope="session")
 def httpx_client(example_path: Path):
     def mock_response(request: httpx.Request):
         file_name = Path(request.url.path).name

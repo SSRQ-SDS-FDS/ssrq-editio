@@ -3,8 +3,13 @@ from typing import Any
 import aiosqlite
 import pytest
 
-from ssrq_editio.adapters.db.entities import search_places, store_entities
-from ssrq_editio.models.entities import Entities, Places
+from ssrq_editio.adapters.db.entities import (
+    search_keywords,
+    search_lemmata,
+    search_places,
+    store_entities,
+)
+from ssrq_editio.models.entities import Entities, Keywords, Lemmata, Places
 
 
 @pytest.mark.asyncio_cooperative
@@ -40,5 +45,59 @@ async def test_search_places(db_setup, entities, search: str | None, expected: A
             assert len(result.entities) == 0
         case _ if callable(expected):
             assert expected(places[0].entities) == expected(result.entities)
+        case _:
+            assert len(result.entities) > 0
+
+
+@pytest.mark.asyncio_cooperative
+@pytest.mark.parametrize(
+    ("search", "expected"),
+    [
+        (None, len),
+        ("key000129", "Wein"),
+        ("Wa", []),
+    ],
+)
+async def test_search_keywords(db_setup, entities, search: str | None, expected: Any):
+    keywords = tuple([e for e in entities if isinstance(e, Keywords)])
+    await store_entities(keywords, db_setup)
+    result = await search_keywords(connection=db_setup, search=search)
+
+    assert isinstance(result, Keywords)
+
+    match expected:
+        case str():
+            assert len(result.entities) == 1
+        case None:
+            assert len(result.entities) == 0
+        case _ if callable(expected):
+            assert expected(keywords[0].entities) == expected(result.entities)
+        case _:
+            assert len(result.entities) > 0
+
+
+@pytest.mark.asyncio_cooperative
+@pytest.mark.parametrize(
+    ("search", "expected"),
+    [
+        (None, len),
+        ("lem008330", "roter Wein"),
+        ("krieg", []),
+    ],
+)
+async def test_search_lemmata(db_setup, entities, search: str | None, expected: Any):
+    lemmata = tuple([e for e in entities if isinstance(e, Lemmata)])
+    await store_entities(lemmata, db_setup)
+    result = await search_lemmata(connection=db_setup, search=search)
+
+    assert isinstance(result, Lemmata)
+
+    match expected:
+        case str():
+            assert len(result.entities) == 1
+        case None:
+            assert len(result.entities) == 0
+        case _ if callable(expected):
+            assert expected(lemmata[0].entities) == expected(result.entities)
         case _:
             assert len(result.entities) > 0
