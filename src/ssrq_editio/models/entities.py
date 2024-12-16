@@ -39,6 +39,14 @@ class Entities(BaseModel):
     entities: Sequence[Entity]
 
 
+class Family(Entity):
+    rm_name: str | None
+
+
+class Families(Entities):
+    entities: Sequence[Family]
+
+
 class Keyword(Entity):
     pass
 
@@ -53,6 +61,16 @@ class Lemma(Entity):
 
 class Lemmata(Entities):
     entities: Sequence[Lemma]
+
+
+class Organization(Entity):
+    rm_name: str | None
+    de_type: str
+    fr_type: str
+
+
+class Organizations(Entities):
+    entities: Sequence[Organization]
 
 
 class Person(Entity):

@@ -8,10 +8,14 @@ from parsel import Selector
 
 from ssrq_editio.models.entities import (
     Entities,
+    Families,
+    Family,
     Keyword,
     Keywords,
     Lemma,
     Lemmata,
+    Organization,
+    Organizations,
     Person,
     Persons,
     Place,
@@ -22,6 +26,10 @@ PLACES_API = getenv("PLACES_API", "https://loci.ssrq-sds-fds.ch/views/places4ind
 KEYWORDS_API = getenv("KEYWORDS_API", "https://termini.ssrq-sds-fds.ch/views/keywords4index-v3.xq")
 LEMMATA_API = getenv("LEMMATA_API", "https://termini.ssrq-sds-fds.ch/views/lemmas4index-v3.xq")
 PERSONS_API = getenv("PERSONS_API", "https://api.personae.ssrq-sds-fds.ch/?persons_for_index")
+FAMILIES_API = getenv("FAMILIES_API", "https://api.personae.ssrq-sds-fds.ch/?families_for_index")
+ORGANIZATION_API = getenv(
+    "ORG_API", "https://api.personae.ssrq-sds-fds.ch/?organisations_for_index"
+)
 
 
 class APIFetchError(Exception):
@@ -82,7 +90,7 @@ async def get_lemmata(client: AsyncClient, url: str) -> Lemmata:
     response = await client.get(url, follow_redirects=True)
 
     if response.status_code != codes.OK:
-        raise APIFetchError(f"Failed to fetch keywords from {url}")
+        raise APIFetchError(f"Failed to fetch lemmata from {url}")
 
     tree = Selector(response.text, type="xml")
 
@@ -98,6 +106,56 @@ async def get_lemmata(client: AsyncClient, url: str) -> Lemmata:
                 rm_name=keyword.xpath("./stdName[@lang='roh']/text()").get(),
             )
             for keyword in tree.xpath(".//lemma")
+        ]
+    )
+
+
+async def get_families(client: AsyncClient, url: str) -> Families:
+    response = await client.get(url, follow_redirects=True, timeout=60)
+
+    if response.status_code != codes.OK:
+        raise APIFetchError(f"Failed to fetch families from {url}")
+
+    tree = Selector(response.text, type="xml")
+
+    return Families(
+        entities=[
+            Family(
+                id=cast(str, keyword.xpath("./@id").get()),
+                occurrences=None,
+                de_name=keyword.xpath("./standard_name[@lang='deu']/text()").get(),
+                fr_name=keyword.xpath("./standard_name[@lang='fra']/text()").get(),
+                it_name=keyword.xpath("./standard_name[@lang='ita']/text()").get(),
+                lt_name=keyword.xpath("./standard_name[@lang='lat']/text()").get(),
+                rm_name=keyword.xpath("./standard_name[@lang='roh']/text()").get(),
+            )
+            for keyword in tree.xpath(".//family")
+        ]
+    )
+
+
+async def get_orgs(client: AsyncClient, url: str) -> Organizations:
+    response = await client.get(url, follow_redirects=True, timeout=60)
+
+    if response.status_code != codes.OK:
+        raise APIFetchError(f"Failed to fetch orgs from {url}")
+
+    tree = Selector(response.text, type="xml")
+
+    return Organizations(
+        entities=[
+            Organization(
+                id=cast(str, keyword.xpath("./@id").get()),
+                occurrences=None,
+                de_name=keyword.xpath("./standard_name[@lang='deu']/text()").get(),
+                fr_name=keyword.xpath("./standard_name[@lang='fra']/text()").get(),
+                it_name=keyword.xpath("./standard_name[@lang='ita']/text()").get(),
+                lt_name=keyword.xpath("./standard_name[@lang='lat']/text()").get(),
+                rm_name=keyword.xpath("./standard_name[@lang='roh']/text()").get(),
+                de_type=cast(str, keyword.xpath(".//definition[@lang='deu']/text()").get()),
+                fr_type=cast(str, keyword.xpath(".//definition[@lang='deu']/text()").get()),
+            )
+            for keyword in tree.xpath(".//organisation")
         ]
     )
 
@@ -157,6 +215,8 @@ API_ADAPTER: tuple[tuple[str, Callable[[AsyncClient, str], Coroutine[Any, Any, E
     (PLACES_API, get_places),
     (KEYWORDS_API, get_keywords),
     (LEMMATA_API, get_lemmata),
+    (FAMILIES_API, get_families),
+    (ORGANIZATION_API, get_orgs),
     (PERSONS_API, get_persons),
 )
 
@@ -166,6 +226,17 @@ async def fetch_entities(
         tuple[str, Callable[[AsyncClient, str], Coroutine[Any, Any, Entities]]], ...
     ] = API_ADAPTER,
 ) -> tuple[Entities, ...]:
+    """Fetches entities from the configured APIs.
+
+    To fetch entities from a different API, pass a tuple of URL and adapter function to the
+    `api_adapter_config` argument. Will fetch in parallel using asyncio.
+
+    Args:
+        api_adapter_config: A tuple of tuples containing the URL and adapter function for each API.
+
+    Returns:
+        A tuple of entities fetched from the configured APIs.
+    """
     async with AsyncClient() as client:
         async with TaskGroup() as group:
             tasks = [group.create_task(adapter(client, url)) for url, adapter in api_adapter_config]
