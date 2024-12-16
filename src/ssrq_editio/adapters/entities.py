@@ -37,6 +37,15 @@ class APIFetchError(Exception):
 
 
 async def get_places(client: AsyncClient, url: str) -> Places:
+    """Adapter, which supports fetching places from the XRX index v3-API.
+
+    Args:
+        client: An instance of `httpx.AsyncClient`.
+        url: The URL of the API endpoint.
+
+    Returns:
+        A `Places` object containing the fetched places.
+    """
     response = await client.get(url, follow_redirects=True)
 
     if response.status_code != codes.OK:
@@ -64,6 +73,15 @@ async def get_places(client: AsyncClient, url: str) -> Places:
 
 
 async def get_keywords(client: AsyncClient, url: str) -> Keywords:
+    """Adapter, which supports fetching keywords from the XRX index v3-API.
+
+    Args:
+        client: An instance of `httpx.AsyncClient`.
+        url: The URL of the API endpoint.
+
+    Returns:
+        A `Keywords` object containing the fetched places.
+    """
     response = await client.get(url, follow_redirects=True)
 
     if response.status_code != codes.OK:
@@ -87,6 +105,15 @@ async def get_keywords(client: AsyncClient, url: str) -> Keywords:
 
 
 async def get_lemmata(client: AsyncClient, url: str) -> Lemmata:
+    """Adapter, which supports fetching lemmata from the XRX index v3-API.
+
+    Args:
+        client: An instance of `httpx.AsyncClient`.
+        url: The URL of the API endpoint.
+
+    Returns:
+        A `Lemmata` object containing the fetched places.
+    """
     response = await client.get(url, follow_redirects=True)
 
     if response.status_code != codes.OK:
@@ -111,7 +138,16 @@ async def get_lemmata(client: AsyncClient, url: str) -> Lemmata:
 
 
 async def get_families(client: AsyncClient, url: str) -> Families:
-    response = await client.get(url, follow_redirects=True, timeout=60)
+    """Adapter, which supports fetching families from the PersonsDB-index-API.
+
+    Args:
+        client: An instance of `httpx.AsyncClient`.
+        url: The URL of the API endpoint.
+
+    Returns:
+        A `Families` object containing the fetched places.
+    """
+    response = await client.get(url, follow_redirects=True)
 
     if response.status_code != codes.OK:
         raise APIFetchError(f"Failed to fetch families from {url}")
@@ -135,7 +171,16 @@ async def get_families(client: AsyncClient, url: str) -> Families:
 
 
 async def get_orgs(client: AsyncClient, url: str) -> Organizations:
-    response = await client.get(url, follow_redirects=True, timeout=60)
+    """Adapter, which supports fetching orgs from the PersonsDB-index-API.
+
+    Args:
+        client: An instance of `httpx.AsyncClient`.
+        url: The URL of the API endpoint.
+
+    Returns:
+        A `Organizations` object containing the fetched places.
+    """
+    response = await client.get(url, follow_redirects=True)
 
     if response.status_code != codes.OK:
         raise APIFetchError(f"Failed to fetch orgs from {url}")
@@ -161,6 +206,16 @@ async def get_orgs(client: AsyncClient, url: str) -> Organizations:
 
 
 async def get_persons(client: AsyncClient, url: str) -> Persons:
+    """Adapter, which supports fetching persons from the PersonsDB-index-API.
+
+    Args:
+        client: An instance of `httpx.AsyncClient`.
+        url: The URL of the API endpoint.
+
+    Returns:
+        A `Persons` object containing the fetched places.
+    """
+
     def _get_forename(name: str | None) -> str | None:
         if name is None:
             return None
@@ -173,7 +228,7 @@ async def get_persons(client: AsyncClient, url: str) -> Persons:
 
         return ", ".join(name.split(", ")[:-1]).strip()
 
-    response = await client.get(url, follow_redirects=True, timeout=180)
+    response = await client.get(url, follow_redirects=True)
 
     if response.status_code != codes.OK:
         raise APIFetchError(f"Failed to fetch persons from {url}")
@@ -237,7 +292,7 @@ async def fetch_entities(
     Returns:
         A tuple of entities fetched from the configured APIs.
     """
-    async with AsyncClient() as client:
+    async with AsyncClient(timeout=180) as client:
         async with TaskGroup() as group:
             tasks = [group.create_task(adapter(client, url)) for url, adapter in api_adapter_config]
 
