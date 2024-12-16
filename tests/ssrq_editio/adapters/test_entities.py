@@ -1,8 +1,8 @@
 import httpx
 import pytest
 
-from ssrq_editio.adapters.entities import get_keywords, get_lemmata, get_places
-from ssrq_editio.models.entities import Keywords, Lemmata, Places
+from ssrq_editio.adapters.entities import get_keywords, get_lemmata, get_persons, get_places
+from ssrq_editio.models.entities import Keywords, Lemmata, Persons, Places
 
 
 @pytest.mark.asyncio_cooperative
@@ -18,7 +18,7 @@ async def test_get_keywords(httpx_client: httpx.AsyncClient):
     result = await get_keywords(httpx_client, "http://testserver/keywords.xml")
     assert result is not None
     assert isinstance(result, Keywords)
-    assert any(place.de_name is not None for place in result.entities)
+    assert any(keyword.de_name is not None for keyword in result.entities)
 
 
 @pytest.mark.asyncio_cooperative
@@ -26,4 +26,13 @@ async def test_get_lemmata(httpx_client: httpx.AsyncClient):
     result = await get_lemmata(httpx_client, "http://testserver/lemmata.xml")
     assert result is not None
     assert isinstance(result, Lemmata)
-    assert any(place.de_name is not None for place in result.entities)
+    assert any(lemma.de_name is not None for lemma in result.entities)
+
+
+@pytest.mark.asyncio_cooperative
+async def test_get_persons(httpx_client: httpx.AsyncClient):
+    result = await get_persons(httpx_client, "http://testserver/persons.xml")
+    assert result is not None
+    assert isinstance(result, Persons)
+    assert any(persons.de_name is not None for persons in result.entities)
+    assert any(persons.de_surname is not None for persons in result.entities)

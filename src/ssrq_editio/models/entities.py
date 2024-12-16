@@ -55,6 +55,25 @@ class Lemmata(Entities):
     entities: Sequence[Lemma]
 
 
+class Person(Entity):
+    rm_name: str | None
+    de_surname: str | None
+    fr_surname: str | None
+    it_surname: str | None
+    lt_surname: str | None
+    rm_surname: str | None
+    sex: str
+    first_mention: str | None
+    last_mention: str | None
+    birth: str | None
+    death: str | None
+    # ToDo occupations / locations !
+
+
+class Persons(Entities):
+    entities: Sequence[Person]
+
+
 class Place(Entity):
     cs_name: str | None
     nl_name: str | None

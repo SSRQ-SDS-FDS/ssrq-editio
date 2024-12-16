@@ -6,11 +6,22 @@ from httpx import AsyncClient
 from httpx._status_codes import codes
 from parsel import Selector
 
-from ssrq_editio.models.entities import Entities, Keyword, Keywords, Lemma, Lemmata, Place, Places
+from ssrq_editio.models.entities import (
+    Entities,
+    Keyword,
+    Keywords,
+    Lemma,
+    Lemmata,
+    Person,
+    Persons,
+    Place,
+    Places,
+)
 
 PLACES_API = getenv("PLACES_API", "https://loci.ssrq-sds-fds.ch/views/places4index-v3.xq")
 KEYWORDS_API = getenv("KEYWORDS_API", "https://termini.ssrq-sds-fds.ch/views/keywords4index-v3.xq")
 LEMMATA_API = getenv("LEMMATA_API", "https://termini.ssrq-sds-fds.ch/views/lemmas4index-v3.xq")
+PERSONS_API = getenv("PERSONS_API", "https://api.personae.ssrq-sds-fds.ch/?persons_for_index")
 
 
 class APIFetchError(Exception):
@@ -91,8 +102,62 @@ async def get_lemmata(client: AsyncClient, url: str) -> Lemmata:
     )
 
 
+async def get_persons(client: AsyncClient, url: str) -> Persons:
+    def _get_forename(name: str | None) -> str | None:
+        if name is None:
+            return None
+
+        return name.split(", ")[-1].strip()
+
+    def _get_surname(name: str | None) -> str | None:
+        if name is None:
+            return None
+
+        return ", ".join(name.split(", ")[:-1]).strip()
+
+    response = await client.get(url, follow_redirects=True, timeout=180)
+
+    if response.status_code != codes.OK:
+        raise APIFetchError(f"Failed to fetch persons from {url}")
+    tree = Selector(response.text, type="xml")
+
+    persons = []
+
+    for person in tree.xpath(".//person"):
+        standard_names = {
+            lang: person.xpath(f"./standard_name[@lang='{lang}']/text()").get()
+            for lang in ["deu", "fra", "ita", "lat", "roh"]
+        }
+        persons.append(
+            Person(
+                id=cast(str, person.xpath("./@id").get()),
+                occurrences=None,
+                de_name=_get_forename(standard_names["deu"]),
+                fr_name=_get_forename(standard_names["fra"]),
+                it_name=_get_forename(standard_names["ita"]),
+                lt_name=_get_forename(standard_names["lat"]),
+                rm_name=_get_forename(standard_names["roh"]),
+                de_surname=_get_surname(standard_names["deu"]),
+                fr_surname=_get_surname(standard_names["fra"]),
+                it_surname=_get_surname(standard_names["ita"]),
+                lt_surname=_get_surname(standard_names["lat"]),
+                rm_surname=_get_surname(standard_names["roh"]),
+                sex=cast(str, person.xpath("./sex/text()").get()),
+                first_mention=person.xpath("./first_mention/text()").get(),
+                last_mention=person.xpath("./last_mention/text()").get(),
+                birth=person.xpath("./birth/text()").get(),
+                death=person.xpath("./death/text()").get(),
+            )
+        )
+
+    return Persons(entities=persons)
+
+
 API_ADAPTER: tuple[tuple[str, Callable[[AsyncClient, str], Coroutine[Any, Any, Entities]]], ...] = (
     (PLACES_API, get_places),
+    (KEYWORDS_API, get_keywords),
+    (LEMMATA_API, get_lemmata),
+    (PERSONS_API, get_persons),
 )
 
 
