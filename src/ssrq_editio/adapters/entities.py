@@ -6,9 +6,11 @@ from httpx import AsyncClient
 from httpx._status_codes import codes
 from parsel import Selector
 
-from ssrq_editio.models.entities import Entities, Place, Places
+from ssrq_editio.models.entities import Entities, Keyword, Keywords, Lemma, Lemmata, Place, Places
 
 PLACES_API = getenv("PLACES_API", "https://loci.ssrq-sds-fds.ch/views/places4index-v3.xq")
+KEYWORDS_API = getenv("KEYWORDS_API", "https://termini.ssrq-sds-fds.ch/views/keywords4index-v3.xq")
+LEMMATA_API = getenv("LEMMATA_API", "https://termini.ssrq-sds-fds.ch/views/lemmas4index-v3.xq")
 
 
 class APIFetchError(Exception):
@@ -38,6 +40,53 @@ async def get_places(client: AsyncClient, url: str) -> Places:
                 occurrences=None,
             )
             for place in tree.xpath(".//place")
+        ]
+    )
+
+
+async def get_keywords(client: AsyncClient, url: str) -> Keywords:
+    response = await client.get(url, follow_redirects=True)
+
+    if response.status_code != codes.OK:
+        raise APIFetchError(f"Failed to fetch keywords from {url}")
+
+    tree = Selector(response.text, type="xml")
+
+    return Keywords(
+        entities=[
+            Keyword(
+                id=cast(str, keyword.xpath("./@id").get()),
+                occurrences=None,
+                de_name=keyword.xpath("./name[@lang='deu']/text()").get(),
+                fr_name=keyword.xpath("./name[@lang='fra']/text()").get(),
+                it_name=keyword.xpath("./name[@lang='ita']/text()").get(),
+                lt_name=None,
+            )
+            for keyword in tree.xpath(".//keyword")
+        ]
+    )
+
+
+async def get_lemmata(client: AsyncClient, url: str) -> Lemmata:
+    response = await client.get(url, follow_redirects=True)
+
+    if response.status_code != codes.OK:
+        raise APIFetchError(f"Failed to fetch keywords from {url}")
+
+    tree = Selector(response.text, type="xml")
+
+    return Lemmata(
+        entities=[
+            Lemma(
+                id=cast(str, keyword.xpath("./@id").get()),
+                occurrences=None,
+                de_name=keyword.xpath("./stdName[@lang='deu']/text()").get(),
+                fr_name=keyword.xpath("./stdName[@lang='fra']/text()").get(),
+                it_name=keyword.xpath("./stdName[@lang='ita']/text()").get(),
+                lt_name=keyword.xpath("./stdName[@lang='lat']/text()").get(),
+                rm_name=keyword.xpath("./stdName[@lang='roh']/text()").get(),
+            )
+            for keyword in tree.xpath(".//lemma")
         ]
     )
 

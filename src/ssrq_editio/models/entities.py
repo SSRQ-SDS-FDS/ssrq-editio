@@ -1,6 +1,7 @@
 from typing import Sequence
 
 from pydantic import BaseModel
+from ssrq_utils.lang.display import Lang
 
 
 class Entity(BaseModel):
@@ -11,9 +12,47 @@ class Entity(BaseModel):
     lt_name: str | None
     occurrences: list[str] | None = None
 
+    def get_name_by_lang(self, lang: Lang) -> str:
+        """Retrieve the name of the entity in the specified language.
+
+        If the name is not available in the specified language, the function
+        will return the name in the next available language. If no name is
+        available, an empty string is returned.
+
+        Args:
+            lang (Lang): Language enum object.
+
+        Returns:
+            str: Name of the entity in the specified language.
+        """
+        name = getattr(self, f"{lang.value}_name", None)
+
+        if name:
+            return name
+
+        return next(
+            (name for name in (self.de_name, self.fr_name, self.it_name, self.lt_name) if name), ""
+        )
+
 
 class Entities(BaseModel):
     entities: Sequence[Entity]
+
+
+class Keyword(Entity):
+    pass
+
+
+class Keywords(Entities):
+    entities: Sequence[Keyword]
+
+
+class Lemma(Entity):
+    rm_name: str | None
+
+
+class Lemmata(Entities):
+    entities: Sequence[Lemma]
 
 
 class Place(Entity):
