@@ -1,4 +1,4 @@
-SELECT * FROM terms -- noqa: AM04
+SELECT * FROM lemmata -- noqa: AM04
 WHERE
     id LIKE '%' || :search || '%'
     OR de_name LIKE '%' || :search || '%'

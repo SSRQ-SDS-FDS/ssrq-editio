@@ -1,7 +1,17 @@
+from enum import Enum
 from typing import Sequence
 
 from pydantic import BaseModel
 from ssrq_utils.lang.display import Lang
+
+
+class EntityTypes(Enum):
+    FAMILIES = "families"
+    KEYWORDS = "keywords"
+    LEMMATA = "lemmata"
+    ORGANIZATIONS = "organizations"
+    PERSONS = "persons"
+    PLACES = "places"
 
 
 class Entity(BaseModel):
@@ -34,6 +44,16 @@ class Entity(BaseModel):
             (name for name in (self.de_name, self.fr_name, self.it_name, self.lt_name) if name), ""
         )
 
+    def list_languages(self) -> list[str]:
+        """Lists all languages for which a name is available.
+
+        Returns:
+            list[str]: List of languages for which a name is available.
+        """
+        return sorted(
+            [key[:2] for key, value in self.model_dump().items() if key.endswith("_name") and value]
+        )
+
 
 class Entities(BaseModel):
     entities: Sequence[Entity]
@@ -41,6 +61,7 @@ class Entities(BaseModel):
 
 class Family(Entity):
     rm_name: str | None
+    # ToDo: locations
 
 
 class Families(Entities):
@@ -57,6 +78,43 @@ class Keywords(Entities):
 
 class Lemma(Entity):
     rm_name: str | None
+    de_definition: str | None
+    fr_definition: str | None
+    it_definition: str | None
+
+    def get_name_by_lang(self, lang: Lang) -> str:
+        name = getattr(self, f"{lang.value}_name", None)
+
+        if name:
+            return name
+
+        return next(
+            (
+                name
+                for name in (self.de_name, self.fr_name, self.it_name, self.lt_name, self.rm_name)
+                if name
+            ),
+            "",
+        )
+
+    def get_definition_by_lang(self, lang: Lang) -> str:
+        definition = getattr(self, f"{lang.value}_definition", None)
+
+        if definition:
+            return definition
+
+        return next(
+            (
+                definition
+                for definition in (
+                    self.de_definition,
+                    self.fr_definition,
+                    self.it_definition,
+                )
+                if definition
+            ),
+            "",
+        )
 
 
 class Lemmata(Entities):
@@ -67,6 +125,7 @@ class Organization(Entity):
     rm_name: str | None
     de_type: str
     fr_type: str
+    # ToDo: locations
 
 
 class Organizations(Entities):

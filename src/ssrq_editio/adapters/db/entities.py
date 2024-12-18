@@ -37,8 +37,10 @@ async def store_entities(
     for entity in entities:
         if isinstance(entity, Places):
             await _store_places(entity, connection, batch_size)
-        elif isinstance(entity, Keywords) or isinstance(entity, Lemmata):
-            await _store_keywords_or_lemmata(entity, connection, batch_size)
+        elif isinstance(entity, Keywords):
+            await _store_keywords(entity, connection, batch_size)
+        elif isinstance(entity, Lemmata):
+            await _store_lemmata(entity, connection, batch_size)
         continue
 
 
@@ -78,16 +80,16 @@ async def _store_places(
     )
 
 
-async def _store_keywords_or_lemmata(
-    terms: Lemmata | Keywords,
+async def _store_keywords(
+    terms: Keywords,
     connection: Connection,
     batch_size: int,
-    query: Path = SQL_DATA_DIR / "put_terms.sql",
+    query: Path = SQL_DATA_DIR / "put_keywords.sql",
 ):
-    """Stores keywords or lemmata in the database.
+    """Stores keywords in the database.
 
     Args:
-        terms (Lemmata | Keywords): A Lemmata or Keywords object
+        terms (Keywords): A Lemmata or Keywords object
         connection (Connection): An aiosqlite Connection
         batch_size (int): The size of the batch
         query (str): The query to execute. Defaults to "put_terms.sql".
@@ -104,7 +106,42 @@ async def _store_keywords_or_lemmata(
                 term.fr_name,
                 term.it_name,
                 term.lt_name,
-                getattr(term, "rm_name", None),
+            )
+            for term in terms.entities
+        ],
+    )
+
+
+async def _store_lemmata(
+    terms: Lemmata,
+    connection: Connection,
+    batch_size: int,
+    query: Path = SQL_DATA_DIR / "put_lemmata.sql",
+):
+    """Stores lemmata in the database.
+
+    Args:
+        terms (Lemmata): A Lemmata or Keywords object
+        connection (Connection): An aiosqlite Connection
+        batch_size (int): The size of the batch
+        query (str): The query to execute. Defaults to "put_terms.sql".
+    """
+    sql_query = await load(dir=query.parent, name=query.name)
+    await store_batches(
+        connection,
+        batch_size,
+        sql_query,
+        [
+            (
+                term.id,
+                term.de_name,
+                term.fr_name,
+                term.it_name,
+                term.lt_name,
+                term.rm_name,
+                term.de_definition,
+                term.fr_definition,
+                term.it_definition,
             )
             for term in terms.entities
         ],
@@ -112,7 +149,9 @@ async def _store_keywords_or_lemmata(
 
 
 async def search_lemmata(
-    connection: Connection, query: Path = SQL_DATA_DIR / "get_terms.sql", search: str | None = None
+    connection: Connection,
+    query: Path = SQL_DATA_DIR / "get_lemmata.sql",
+    search: str | None = None,
 ) -> Lemmata:
     """Searches for lemmata in the database.
 
@@ -129,18 +168,17 @@ async def search_lemmata(
     """
     return Lemmata(
         entities=list(
-            filter(
-                lambda x: x.id.startswith("lem"),
-                await _search_entities(
-                    connection, Lemma, await load(dir=query.parent, name=query.name), search
-                ),
-            )
+            await _search_entities(
+                connection, Lemma, await load(dir=query.parent, name=query.name), search
+            ),
         )
     )
 
 
 async def search_keywords(
-    connection: Connection, query: Path = SQL_DATA_DIR / "get_terms.sql", search: str | None = None
+    connection: Connection,
+    query: Path = SQL_DATA_DIR / "get_keywords.sql",
+    search: str | None = None,
 ) -> Keywords:
     """Searches for keywords in the database.
 
@@ -157,11 +195,8 @@ async def search_keywords(
     """
     return Keywords(
         entities=list(
-            filter(
-                lambda x: x.id.startswith("key"),
-                await _search_entities(
-                    connection, Keyword, await load(dir=query.parent, name=query.name), search
-                ),
+            await _search_entities(
+                connection, Keyword, await load(dir=query.parent, name=query.name), search
             )
         )
     )

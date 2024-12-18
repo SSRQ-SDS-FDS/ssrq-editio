@@ -21,6 +21,7 @@ from ssrq_editio.models.entities import (
     Place,
     Places,
 )
+from ssrq_editio.services.utils import normalize
 
 PLACES_API = getenv("PLACES_API", "https://loci.ssrq-sds-fds.ch/views/places4index-v3.xq")
 KEYWORDS_API = getenv("KEYWORDS_API", "https://termini.ssrq-sds-fds.ch/views/keywords4index-v3.xq")
@@ -94,9 +95,9 @@ async def get_keywords(client: AsyncClient, url: str) -> Keywords:
             Keyword(
                 id=cast(str, keyword.xpath("./@id").get()),
                 occurrences=None,
-                de_name=keyword.xpath("./name[@lang='deu']/text()").get(),
-                fr_name=keyword.xpath("./name[@lang='fra']/text()").get(),
-                it_name=keyword.xpath("./name[@lang='ita']/text()").get(),
+                de_name=normalize(keyword.xpath("./name[@lang='deu']/text()").get()),
+                fr_name=normalize(keyword.xpath("./name[@lang='fra']/text()").get()),
+                it_name=normalize(keyword.xpath("./name[@lang='ita']/text()").get()),
                 lt_name=None,
             )
             for keyword in tree.xpath(".//keyword")
@@ -126,11 +127,14 @@ async def get_lemmata(client: AsyncClient, url: str) -> Lemmata:
             Lemma(
                 id=cast(str, keyword.xpath("./@id").get()),
                 occurrences=None,
-                de_name=keyword.xpath("./stdName[@lang='deu']/text()").get(),
-                fr_name=keyword.xpath("./stdName[@lang='fra']/text()").get(),
-                it_name=keyword.xpath("./stdName[@lang='ita']/text()").get(),
-                lt_name=keyword.xpath("./stdName[@lang='lat']/text()").get(),
-                rm_name=keyword.xpath("./stdName[@lang='roh']/text()").get(),
+                de_name=normalize(keyword.xpath("./stdName[@lang='deu']/text()").get()),
+                fr_name=normalize(keyword.xpath("./stdName[@lang='fra']/text()").get()),
+                it_name=normalize(keyword.xpath("./stdName[@lang='ita']/text()").get()),
+                lt_name=normalize(keyword.xpath("./stdName[@lang='lat']/text()").get()),
+                rm_name=normalize(keyword.xpath("./stdName[@lang='roh']/text()").get()),
+                de_definition=normalize(keyword.xpath("./definition[@lang='deu']/text()").get()),
+                fr_definition=normalize(keyword.xpath("./definition[@lang='fra']/text()").get()),
+                it_definition=normalize(keyword.xpath("./definition[@lang='ita']/text()").get()),
             )
             for keyword in tree.xpath(".//lemma")
         ]
