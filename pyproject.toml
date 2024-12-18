@@ -9,8 +9,10 @@ dependencies = [
     "fastapi[standard]>=0.115.0",
     "jinjax>=0.48",
     "loguru>=0.7.2",
+    "markdown>=3.7",
     "pytailwindcss>=0.2.0",
     "python-dotenv>=1.0.1",
+    "pyucollate",
     "saxonche>=12.5.0",
     "ssrq-utils",
     "typer>=0.12.5",
@@ -36,6 +38,7 @@ dev-dependencies = [
 
 [tool.uv.sources]
 ssrq-utils = { git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git", tag = "v0.3.0" }
+pyucollate = { git = "https://github.com/SSRQ-SDS-FDS/pyucollate.git" }
 
 [tool.mypy]
 files = ["src"]

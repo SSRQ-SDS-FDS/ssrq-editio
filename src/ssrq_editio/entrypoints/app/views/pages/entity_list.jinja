@@ -1,0 +1,63 @@
+{% extends "layouts/page.jinja" %}
+{% block content %}
+<Banner :request="request">
+    <h1
+      class="title-1 flex items-center">
+      {{translator.translate(lang, 'index-of-' + data.content.entity_type)}}
+      <a href="{{ url_for('info_edition' )}}#{{ data.content.entity_type }}" class="icon link-button">
+        <InfoButton />
+        </a>
+    </h1>
+</Banner>
+<Breadcrumbs
+  :request="request"
+  :parts="[(translator.translate(lang, data.content.entity_type), None)]"
+/>
+<section class="flex w-full max-w-5xl lg:px-12 sm:px-4 items-center justify-start mx-auto">
+    <SimpleSearchForm
+      :endpoint="url_for('entity_view', entity_type = data.content.entity_type)"
+      :placeholder="'id-or-name'"
+      :lang="lang"
+      :translator="translator"
+      :query="data.content.query"
+    />
+</section>
+<section class="entities relative">
+    {% if data.content.entities %}
+        <Pagination
+          class="top"
+          :current_page="data.content.current_page"
+          :pages="data.content.pages"
+          :request="request"
+        >
+            <HitCounter
+                :lang="lang"
+                :request="request"
+                :translator="translator"
+                :total="data.content.total"
+            />
+        </Pagination>
+            {% for hit in data.content.entities %}
+                <EntityCard
+                  :entity="hit"
+                  :entity_type="data.content.entity_type"
+                  :lang="lang"
+                  :translator="translator"
+                />
+            {% endfor %}
+        <Pagination
+          class="bottom"
+          :current_page="data.content.current_page"
+          :pages="data.content.pages"
+          :request="request"
+        />
+    {% else %}
+        <NoHits
+          :lang="lang"
+          :translator="translator"
+        />
+    {% endif %}
+</section>
+
+
+{% endblock %}

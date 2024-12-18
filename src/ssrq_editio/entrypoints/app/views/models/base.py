@@ -9,6 +9,7 @@ from ssrq_utils.lang.display import Lang
 
 from ssrq_editio.entrypoints.app.config import TRANSLATION_SOURCE
 from ssrq_editio.entrypoints.app.setup import templates as TEMPLATES
+from ssrq_editio.services.sort import UnicodeCollator
 
 
 class ViewCoreData(TypedDict):
@@ -28,6 +29,7 @@ class ViewContext(TypedDict):
 
 
 class ViewModel:
+    collator: UnicodeCollator
     lang: Lang
     request: Request
     page: str
@@ -41,6 +43,7 @@ class ViewModel:
         jinja_templates: Jinja2Templates = TEMPLATES,
         translation_source: Path = TRANSLATION_SOURCE,
     ):
+        self.collator = UnicodeCollator()
         self.request = request
         self.templates = jinja_templates
         self.lang = lang

@@ -1,0 +1,12 @@
+{#def
+    lang: Lang,
+    request: Request,
+    translator: Translator,
+    total: int
+#}
+
+<a href="{{ request.url.include_query_params(per_page=total) }}">
+    <span class="text-ssrq-primary mr-1">{{- total -}}
+</span>
+    {{- translator.translate(lang, 'found-single' if total == 1 else 'found') -}}
+</a>

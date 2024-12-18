@@ -5,6 +5,9 @@
   .pagination-container.top {
     @apply pb-4 border-b-2 border-ssrq-greyed-100;
   }
+  .pagination-container.top > a {
+    @apply ml-auto;
+  }
   .pagination-container.bottom {
     @apply pt-4 border-t-2 border-ssrq-greyed-100;
   }
@@ -12,10 +15,10 @@
     @apply inline-flex items-center space-x-2;
   }
   ul.pagination li.current button {
-    @apply w-8 h-8 text-sm text-white transition-colors duration-300 bg-ssrq-primary border-none rounded-full focus:shadow cursor-default;
+    @apply w-auto min-w-8 h-8 p-1 text-sm text-white transition-colors duration-300 bg-ssrq-primary border-none rounded-full focus:shadow cursor-default;
   }
   ul.pagination li:not(.current) a button {
-    @apply w-8 h-8 transition-colors duration-300 border border-ssrq-greyed-700 rounded-full hover:bg-ssrq-primary hover:text-white hover:border-none focus:shadow cursor-pointer;
+    @apply w-auto min-w-8 h-8 p-1 transition-colors duration-300 border border-ssrq-greyed-700 rounded-full hover:bg-ssrq-primary hover:text-white hover:border-none focus:shadow cursor-pointer;
   }
   ul.pagination li.ellipsis {
     @apply text-base text-ssrq-greyed-700;

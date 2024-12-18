@@ -2,9 +2,6 @@
   .toolbar {
     @apply w-full bg-ssrq-primary p-4 text-white mb-4 sticky top-16 bg-opacity-95 flex justify-center;
   }
-  .toolbar .link-button {
-    @apply flex items-center border-b-2 border-transparent hover:border-ssrq-secondary w-auto mx-4;
-  }
   .toolbar .icon.link-button .description {
     @apply ml-2 hidden md:inline;
   }

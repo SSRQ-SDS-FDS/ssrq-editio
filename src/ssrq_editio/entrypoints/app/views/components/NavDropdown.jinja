@@ -25,7 +25,7 @@
         {% for key, entry in items %}
             <li>
                 <a class="menu-link m-0 p-0"
-                   href="{{ url_for(entry) if not entry.startswith('http') else entry }}"
+                   href="{{ url_for(entry) if entry is string and not entry.startswith('http') else entry }}"
                    >
                     {{ translator.translate(lang, key) }}
                 </a>

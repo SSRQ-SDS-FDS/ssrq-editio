@@ -1,0 +1,31 @@
+{# def
+    current_page: int,
+    pages: list[int] | None,
+    request: Request
+#}
+{% do attrs.add_class("pagination-container") %}
+
+<div {{ attrs.render() }}>
+    {% if pages %}
+        <ul class="pagination">
+            {% for page in pages %}
+                {% if page == current_page %}
+                    <li class="current">
+                        <button>{{ page }}</button>
+                    </li>
+                {% elif page == -1 %}
+                    <li class="ellipsis">
+                        ...
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{{ request.url.include_query_params(page=page) }}">
+                            <button>{{ page }}</button>
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {{ content }}
+</div>

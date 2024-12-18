@@ -65,27 +65,37 @@
     @apply ml-2;
   }
 
-  .documents {
+  .documents,
+  .entities {
     @apply max-w-5xl flex-1 lg:px-12 sm:px-6 mx-auto mt-4 mb-9 flex flex-col items-center;
   }
 
-  .documents .document-info {
+  .documents .document-info,
+  .entities .entity-info {
     @apply w-full px-8 py-4 bg-white rounded-lg shadow-md my-2 flex-1 hover:shadow hover:bg-blue-50;
   }
 
-  .documents .document-info header {
+  .entities .entity-info {
+    @apply hover:bg-white;
+  }
+
+  .documents .document-info header,
+  .entities .entity-info header {
     @apply mb-2;
   }
 
-  .documents .document-info header span:not(:last-child) {
-    @apply sm:mr-2 md:mr-4;
+  .documents .document-info header span:not(:last-child),
+  .entities .entity-info header span:not(:last-child) {
+    @apply mr-2;
   }
 
-  .documents .document-info header {
+  .documents .document-info header,
+  .entities .entity-info header {
     @apply text-ssrq-greyed-600 text-sm;
   }
 
-  .documents .document-info header span {
+  .documents .document-info header span,
+  .entities .entity-info header span {
     @apply inline-flex items-center;
   }
 
