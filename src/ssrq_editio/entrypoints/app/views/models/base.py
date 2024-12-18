@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Any, TypedDict, cast
 
+import cachebox
 from fastapi import Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -66,6 +67,9 @@ class ViewModel:
         )
 
     async def to_html(self) -> HTMLResponse:
+        return await serve_html_response(self)
+
+    async def _to_html(self) -> HTMLResponse:
         try:
             return self.templates.TemplateResponse(
                 f"pages/{self.page}", cast(dict, await self.create_context())
@@ -78,3 +82,24 @@ class ViewModel:
 
     def _get_title(self) -> str:
         raise NotImplementedError
+
+
+def _calculate_cache_key(args, kwargs) -> str:
+    view: ViewModel = args[0]
+    return f"{view.request.url._url}_{view.request.method}_{view.request.headers.get('HX-Request', '')}"
+
+
+@cachebox.cached(cache=cachebox.LRUCache(maxsize=512), key_maker=_calculate_cache_key)
+async def serve_html_response(view: ViewModel) -> HTMLResponse:
+    """A helper function to serve the HTML response from the view model.
+
+    It will cache the responses on a global bases in memory, which
+    should speed up the response time for the same request.
+
+    Args:
+        view (ViewModel): The view model instance.
+
+    Returns:
+        HTMLResponse: The HTML response.
+    """
+    return await view._to_html()
