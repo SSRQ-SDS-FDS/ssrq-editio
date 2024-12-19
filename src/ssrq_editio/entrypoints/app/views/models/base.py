@@ -32,6 +32,7 @@ class ViewModel:
     lang: Lang
     request: Request
     page: str
+    template_partial: str | None = None
     translator: Translator
     templates: Jinja2Templates
 
@@ -68,11 +69,25 @@ class ViewModel:
 
     async def _to_html(self) -> HTMLResponse:
         try:
+            context = cast(dict, await self.create_context())
+            page_template = f"pages/{self.page}"
+
+            # If the request is an htmx request and a partial template is set,
+            # we will return the partial template instead of the full page.
+            if self._is_htmx_request() and self.template_partial:
+                return self.templates.TemplateResponse(
+                    page_template,
+                    context,
+                    block_name=self.template_partial,
+                )  # type: ignore
             return self.templates.TemplateResponse(
                 f"pages/{self.page}", cast(dict, await self.create_context())
             )
         except Exception as error:
             return self.error_to_html(error)
+
+    def _is_htmx_request(self) -> bool:
+        return bool(self.request.headers.get("HX-Request"))
 
     def _get_description(self) -> str:
         return self.translator.translate(self.lang, "title")

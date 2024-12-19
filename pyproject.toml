@@ -7,6 +7,7 @@ dependencies = [
     "anyio>=4.6.0",
     "cachebox>=4.3.1",
     "fastapi[standard]>=0.115.0",
+    "jinja2-fragments>=1.6.0",
     "jinjax>=0.48",
     "loguru>=0.7.2",
     "markdown>=3.7",

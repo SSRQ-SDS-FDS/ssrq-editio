@@ -414,6 +414,18 @@ wheels = [
 ]
 
 [[package]]
+name = "jinja2-fragments"
+version = "1.6.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "jinja2" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/d7/f7/d1abfa00ca1e2b28d62e48078cc039f5c92a0ed73d23bcb68a0186cccf51/jinja2_fragments-1.6.0.tar.gz", hash = "sha256:5bd7dd49b7dbfa174d45d6a991cfe3cba4a08a4b66f87cf248aa739eebc435f8", size = 14667 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/04/97/4f7a4be716e9121f14b83bc6920cf190176dbaa8ea108e76fe76d56ea11e/jinja2_fragments-1.6.0-py3-none-any.whl", hash = "sha256:49a5815cd7210edf234bf137b6005abf1ad336ff93c65519deddc41d91713986", size = 11134 },
+]
+
+[[package]]
 name = "jinjax"
 version = "0.48"
 source = { registry = "https://pypi.org/simple" }
@@ -1013,6 +1025,7 @@ dependencies = [
     { name = "anyio" },
     { name = "cachebox" },
     { name = "fastapi", extra = ["standard"] },
+    { name = "jinja2-fragments" },
     { name = "jinjax" },
     { name = "loguru" },
     { name = "markdown" },
@@ -1044,6 +1057,7 @@ requires-dist = [
     { name = "anyio", specifier = ">=4.6.0" },
     { name = "cachebox", specifier = ">=4.3.1" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.0" },
+    { name = "jinja2-fragments", specifier = ">=1.6.0" },
     { name = "jinjax", specifier = ">=0.48" },
     { name = "loguru", specifier = ">=0.7.2" },
     { name = "markdown", specifier = ">=3.7" },

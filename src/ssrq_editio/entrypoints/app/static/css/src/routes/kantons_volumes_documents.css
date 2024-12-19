@@ -99,11 +99,11 @@
     @apply inline-flex items-center;
   }
 
-  .documents #loading-overlay {
+  .documents #loading-overlay, .entities #loading-overlay {
     display: none;
   }
 
-  .documents #loading-overlay.htmx-request {
+  .documents #loading-overlay.htmx-request, .entities #loading-overlay.htmx-request {
     display: block;
   }
 }

@@ -20,9 +20,15 @@
       :lang="lang"
       :translator="translator"
       :query="data.content.query"
+      :hx="True"
+      :hx_indicator="'#loading-overlay'"
+      :hx_params="'not per-page,page lang'"
+      :hx_target="'#entities'"
     />
 </section>
-<section class="entities relative">
+{% block entities %}
+<section class="entities relative" id="entities">
+    <Loader :lang="lang" :translator="translator" />
     {% if data.content.entities %}
         <Pagination
           class="top"
@@ -58,6 +64,6 @@
         />
     {% endif %}
 </section>
-
+{% endblock %}
 
 {% endblock %}

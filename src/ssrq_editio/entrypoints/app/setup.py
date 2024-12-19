@@ -5,6 +5,7 @@ import jinjax
 from fastapi import APIRouter, FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from jinja2_fragments.fastapi import Jinja2Blocks
 from markdown import markdown  # type: ignore
 from ssrq_utils.i18n.text import normalize_punctuation_marks
 
@@ -35,7 +36,7 @@ def app_factory(
         title="SSRQ · SDS · FDS / Editio API",
     )
     app.mount("/static", StaticFiles(directory=asset_dir), name="static")
-    templates = Jinja2Templates(directory=template_dir)
+    templates = Jinja2Blocks(directory=template_dir)
 
     # Set filters and globals for Jinja2
     templates.env.globals.update(norm_punct=normalize_punctuation_marks)

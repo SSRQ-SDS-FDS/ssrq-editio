@@ -32,6 +32,7 @@ class EntityViewModel(ViewModel):
     ):
         super().__init__(request, lang)
         self.page = "entity_list.jinja"
+        self.template_partial = "entities"
         self.connection = connection
         self.entity_type = entity_type
         self.query = query
