@@ -4,9 +4,9 @@ from aiosqlite import Connection
 from fastapi import Request
 from ssrq_utils.lang.display import Lang
 
-from ssrq_editio.adapters.db.entities import search_lemmata
+from ssrq_editio.adapters.db.entities import search_keywords, search_lemmata
 from ssrq_editio.entrypoints.app.views.models.base import ViewContext, ViewModel
-from ssrq_editio.models.entities import Entity, EntityTypes
+from ssrq_editio.models.entities import Entities, Entity, EntityTypes
 from ssrq_editio.services.paginate import create_pages
 from ssrq_editio.services.sort import sort_entities_by_name
 
@@ -63,9 +63,12 @@ class EntityViewModel(ViewModel):
         return f"{self.translator.translate(self.lang, "short_title")} · {self.translator.translate(self.lang, self.entity_type.value)}"
 
     async def _get_entities(self) -> None | tuple[int, tuple[Sequence[Entity], list[int] | None]]:
+        result: Entities
         match self.entity_type:
             case EntityTypes.LEMMATA:
                 result = await search_lemmata(self.connection, search=self.query)
+            case EntityTypes.KEYWORDS:
+                result = await search_keywords(self.connection, search=self.query)
             case _:
                 raise NotImplementedError
 

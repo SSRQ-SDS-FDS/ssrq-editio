@@ -106,6 +106,9 @@ async def _store_keywords(
                 term.fr_name,
                 term.it_name,
                 term.lt_name,
+                term.de_definition,
+                term.fr_definition,
+                term.it_definition,
             )
             for term in terms.entities
         ],

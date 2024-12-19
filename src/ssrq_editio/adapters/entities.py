@@ -98,6 +98,9 @@ async def get_keywords(client: AsyncClient, url: str) -> Keywords:
                 de_name=normalize(keyword.xpath("./name[@lang='deu']/text()").get()),
                 fr_name=normalize(keyword.xpath("./name[@lang='fra']/text()").get()),
                 it_name=normalize(keyword.xpath("./name[@lang='ita']/text()").get()),
+                de_definition=normalize(keyword.xpath("./definition[@lang='deu']/text()").get()),
+                fr_definition=normalize(keyword.xpath("./definition[@lang='fra']/text()").get()),
+                it_definition=normalize(keyword.xpath("./definition[@lang='ita']/text()").get()),
                 lt_name=None,
             )
             for keyword in tree.xpath(".//keyword")

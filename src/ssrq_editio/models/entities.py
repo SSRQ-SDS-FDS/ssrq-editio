@@ -69,7 +69,28 @@ class Families(Entities):
 
 
 class Keyword(Entity):
-    pass
+    de_definition: str | None
+    fr_definition: str | None
+    it_definition: str | None
+
+    def get_definition_by_lang(self, lang: Lang) -> str:
+        definition = getattr(self, f"{lang.value}_definition", None)
+
+        if definition:
+            return definition
+
+        return next(
+            (
+                definition
+                for definition in (
+                    self.de_definition,
+                    self.fr_definition,
+                    self.it_definition,
+                )
+                if definition
+            ),
+            "",
+        )
 
 
 class Keywords(Entities):

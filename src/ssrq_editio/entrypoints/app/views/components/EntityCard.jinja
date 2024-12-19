@@ -27,9 +27,13 @@
         </span>
     </header>
     <list class="list-none">
-        {% if entity_type == "lemmata" %}
-            <li><span class="font-medium">{{ translator.translate(lang, 'normalized-spelling') }}:</span> {{ entity.get_name_by_lang(lang) }}</li>
-            <li><span class="font-medium">{{ translator.translate(lang, 'definition') }}:</span> {{ entity.get_definition_by_lang(lang) }}</li>
+        {% if entity_type in ["lemmata", "keywords"] %}
+            <li>
+                <span class="font-medium">{{ translator.translate(lang, 'normalized-spelling') }}:</span> {{ entity.get_name_by_lang(lang) }}
+            </li>
+            <li>
+                <span class="font-medium">{{ translator.translate(lang, 'definition') }}:</span> {{ entity.get_definition_by_lang(lang) }}
+            </li>
         {% endif %}
         <li><span class="font-medium">{{ translator.translate(lang, 'occurrences') }}:</span> ToDo ...</li>
         <li><span class="font-medium">{{ translator.translate(lang, 'permalink') }}:</span> <a class="text-ssrq-primary" target="_blank" href="{{permalink}}">{{ permalink }}</a></li>
