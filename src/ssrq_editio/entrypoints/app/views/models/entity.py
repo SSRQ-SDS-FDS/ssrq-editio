@@ -8,6 +8,7 @@ from ssrq_editio.adapters.db.entities import search_lemmata
 from ssrq_editio.entrypoints.app.views.models.base import ViewContext, ViewModel
 from ssrq_editio.models.entities import Entity, EntityTypes
 from ssrq_editio.services.paginate import create_pages
+from ssrq_editio.services.sort import sort_entities_by_name
 
 
 class EntityViewModel(ViewModel):
@@ -71,6 +72,8 @@ class EntityViewModel(ViewModel):
         if total_hits == 0:
             return None
 
-        sorted_entities = self.collator.sort_entities_by_name(result.entities, self.lang)
-
-        return total_hits, create_pages(sorted_entities, self.current_page, self.per_page)
+        return total_hits, create_pages(
+            sort_entities_by_name(entities=result.entities, lang=self.lang),
+            self.current_page,
+            self.per_page,
+        )
