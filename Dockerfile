@@ -9,6 +9,13 @@ WORKDIR /editio
 COPY data.config.json uv.lock pyproject.toml justfile tailwind.config.js /editio/
 COPY src /editio/src
 
+RUN apt-get update && \
+    apt-get install -y curl build-essential && \
+    apt-get update && \
+    curl https://sh.rustup.rs -sSf | bash -s -- -y
+
+ENV PATH="/root/.cargo/bin:${PATH}"
+
 RUN uv venv && \
     uv sync --all-extras --dev --no-cache && \
     adduser ssrq_editio && \
