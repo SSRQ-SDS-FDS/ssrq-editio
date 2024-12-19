@@ -6,7 +6,7 @@ import pytest
 from ssrq_editio.adapters.db.connection import db_session
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 async def test_db_session():
     """Test creating a database session / connection
     is possible using an in-memory database."""

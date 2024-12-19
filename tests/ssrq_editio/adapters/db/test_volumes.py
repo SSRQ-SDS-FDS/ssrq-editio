@@ -19,7 +19,7 @@ TEST_VOLUME = Volume(
 )
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 async def test_initialize_volume_data(db_kanton_data):
     """Test if all volumes are inserted into the volumes table."""
     await initialize_volume_data(db_kanton_data, TEST_VOLUME)
@@ -28,7 +28,7 @@ async def test_initialize_volume_data(db_kanton_data):
     assert len(rows) == 1
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 async def test_list_volumes_with_editors(db_kanton_data):
     """Test if all inserted volumes can be listed with their editors."""
     await initialize_volume_with_editors(db_kanton_data, TEST_VOLUME)
@@ -39,7 +39,7 @@ async def test_list_volumes_with_editors(db_kanton_data):
     assert isinstance(volumes[0], Volume)
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 async def test_list_volumes_with_editors_for_unknown_kanton(db_kanton_data):
     """Test if None is returned for unknown kanton."""
     await initialize_volume_with_editors(db_kanton_data, TEST_VOLUME)

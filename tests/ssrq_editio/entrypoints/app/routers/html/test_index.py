@@ -5,7 +5,7 @@ from parsel import Selector
 from ssrq_utils.lang.display import Lang
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 @pytest.mark.parametrize(
     ("method", "expected_status_code"),
     [
@@ -23,7 +23,7 @@ async def test_index_request_methods(
     assert response.status_code == expected_status_code
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 @pytest.mark.parametrize(
     ("lang"),
     [
@@ -32,17 +32,30 @@ async def test_index_request_methods(
         ("fr"),
     ],
 )
-async def test_index_html_has_lang(app_client: AsyncClient, lang: str):
+async def test_index_html_has_lang_when_only_query_is_used(app_client: AsyncClient, lang: str):
     response = await app_client.get("/", params={"lang": lang})
     assert response.status_code == codes.OK
     assert f'lang="{lang}"' in response.text
-    # also check, if X-Lang has precedence over lang query parameter
-    response = await app_client.get("/", headers={"X-Lang": lang}, params={"lang": "it"})
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize(
+    ("lang"),
+    [
+        ("de"),
+        ("en"),
+        ("fr"),
+    ],
+)
+async def test_index_html_has_lang_x_lang_has_presedence_over_query(
+    app_client: AsyncClient, lang: str
+):
+    response = await app_client.get("/", params={"lang": "it"}, headers={"X-Lang": lang})
     assert response.status_code == codes.OK
     assert f'lang="{lang}"' in response.text
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 @pytest.mark.parametrize(
     ("lang"),
     [
@@ -65,7 +78,7 @@ async def test_index_html_has_i18n_title_and_description(
     assert description == translator.translate(Lang.from_string(lang), "title")
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 async def test_index_html_has_kanton_cards(app_client: AsyncClient):
     response = await app_client.get("/")
     assert response.status_code == codes.OK

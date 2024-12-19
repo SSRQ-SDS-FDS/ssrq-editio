@@ -98,7 +98,7 @@ class ViewModel:
 
 def _calculate_cache_key(args, kwargs) -> str:
     view: ViewModel = args[0]
-    return f"{view.request.url._url}_{view.request.method}_{view.request.headers.get('HX-Request', '')}"
+    return f"{view.request.url._url}_{view.lang.value}_{view.request.method}_{view.request.headers.get('HX-Request', '')}"
 
 
 @cachebox.cached(cache=cachebox.LRUCache(maxsize=512), key_maker=_calculate_cache_key)

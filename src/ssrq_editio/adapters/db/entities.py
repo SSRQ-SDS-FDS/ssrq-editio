@@ -235,6 +235,6 @@ async def _search_entities(
     search: str | None = None,
 ) -> list[T]:
     async with connection.cursor() as cursor:
-        await cursor.execute(sql_query, (search or "",))
+        await cursor.execute(sql_query, {"search": search or ""})
         data = await cursor.fetchall()
         return [entity_type(**item) for item in data]

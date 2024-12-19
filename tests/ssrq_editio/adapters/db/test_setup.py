@@ -3,7 +3,7 @@ import pytest
 from ssrq_editio.adapters.db.setup import TABLES, setup_db
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 async def test_setup_db(db_connection):
     """Test if all tables are created in the database,
     by comparing the len() of `TABLES` with the number of tables."""

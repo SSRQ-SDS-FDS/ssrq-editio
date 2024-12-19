@@ -4,7 +4,7 @@ from ssrq_utils.lang.display import Lang
 from ssrq_editio.entrypoints.app.shared.dependencies import get_lang
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 @pytest.mark.parametrize(
     ("x_lang", "lang", "expected_lang"),
     [

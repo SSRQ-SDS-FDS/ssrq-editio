@@ -12,7 +12,7 @@ from ssrq_editio.adapters.entities import (
 from ssrq_editio.models.entities import Families, Keywords, Lemmata, Organizations, Persons, Places
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 async def test_get_places(httpx_client: httpx.AsyncClient):
     result = await get_places(httpx_client, "http://testserver/places.xml")
     assert result is not None
@@ -20,7 +20,7 @@ async def test_get_places(httpx_client: httpx.AsyncClient):
     assert any(place.de_name is not None for place in result.entities)
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 async def test_get_keywords(httpx_client: httpx.AsyncClient):
     result = await get_keywords(httpx_client, "http://testserver/keywords.xml")
     assert result is not None
@@ -28,7 +28,7 @@ async def test_get_keywords(httpx_client: httpx.AsyncClient):
     assert any(keyword.de_name is not None for keyword in result.entities)
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 async def test_get_lemmata(httpx_client: httpx.AsyncClient):
     result = await get_lemmata(httpx_client, "http://testserver/lemmata.xml")
     assert result is not None
@@ -36,7 +36,7 @@ async def test_get_lemmata(httpx_client: httpx.AsyncClient):
     assert any(lemma.de_name is not None for lemma in result.entities)
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 async def test_get_persons(httpx_client: httpx.AsyncClient):
     result = await get_persons(httpx_client, "http://testserver/persons.xml")
     assert result is not None
@@ -45,7 +45,7 @@ async def test_get_persons(httpx_client: httpx.AsyncClient):
     assert any(persons.de_surname is not None for persons in result.entities)
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 async def test_get_families(httpx_client: httpx.AsyncClient):
     result = await get_families(httpx_client, "http://testserver/families.xml")
     assert result is not None
@@ -53,7 +53,7 @@ async def test_get_families(httpx_client: httpx.AsyncClient):
     assert any(persons.de_name is not None for persons in result.entities)
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 async def test_get_orgs(httpx_client: httpx.AsyncClient):
     result = await get_orgs(httpx_client, "http://testserver/orgs.xml")
     assert result is not None

@@ -12,7 +12,7 @@ from ssrq_editio.adapters.db.entities import (
 from ssrq_editio.models.entities import Entities, Keywords, Lemmata, Places
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 async def test_store_entities(db_setup: aiosqlite.Connection, entities: tuple[Entities, ...]):
     """Smoke test to store entities in the database."""
     try:
@@ -21,7 +21,7 @@ async def test_store_entities(db_setup: aiosqlite.Connection, entities: tuple[En
         pytest.fail(str(error))
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 @pytest.mark.parametrize(
     ("search", "expected"),
     [
@@ -49,7 +49,7 @@ async def test_search_places(db_setup, entities, search: str | None, expected: A
             assert len(result.entities) > 0
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 @pytest.mark.parametrize(
     ("search", "expected"),
     [
@@ -76,7 +76,7 @@ async def test_search_keywords(db_setup, entities, search: str | None, expected:
             assert len(result.entities) > 0
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 @pytest.mark.parametrize(
     ("search", "expected"),
     [

@@ -1,10 +1,8 @@
-from pathlib import Path
 from typing import AsyncGenerator
 
 import aiosqlite
 import httpx
 import pytest
-from pytest_asyncio_cooperative import Lock  # type: ignore[import]
 
 from ssrq_editio.adapters.db.connection import db_session
 from ssrq_editio.adapters.db.kantons import initialize_kanton_data
@@ -13,8 +11,6 @@ from ssrq_editio.adapters.entities import get_keywords as fetch_keywords
 from ssrq_editio.adapters.entities import get_lemmata as fetch_lemmata
 from ssrq_editio.adapters.entities import get_persons as fetch_persons
 from ssrq_editio.adapters.entities import get_places as fetch_places
-
-db_lock = Lock()
 
 
 @pytest.fixture(scope="module")
@@ -32,21 +28,7 @@ async def entities(httpx_client: httpx.AsyncClient):
 
 
 @pytest.fixture(scope="function")
-async def db_file_lock():
-    async with db_lock():
-        yield
-
-
-@pytest.fixture(scope="session")
-def db_name():
-    name = Path("test.sqlite3")
-    if name.exists():  # erase at the beginning
-        name.unlink()
-    return name
-
-
-@pytest.fixture(scope="function")
-async def db_connection(db_file_lock, db_name) -> AsyncGenerator[aiosqlite.Connection, None]:
+async def db_connection() -> AsyncGenerator[aiosqlite.Connection, None]:
     """This fixtures creates a tmp new database file and yields a connection.
 
     We don't use a memory based DB here, because we want to mimic the real
@@ -54,12 +36,8 @@ async def db_connection(db_file_lock, db_name) -> AsyncGenerator[aiosqlite.Conne
     after the test has run. To avoid race conditions, we use a lock to ensure
     that only one test can access the database file at a time.
     """
-    async for connection in db_session(db_name, False):
+    async for connection in db_session("test.sqlite", True):
         yield connection
-    try:
-        db_name.unlink()
-    except FileNotFoundError:
-        pass
 
 
 @pytest.fixture(scope="function")

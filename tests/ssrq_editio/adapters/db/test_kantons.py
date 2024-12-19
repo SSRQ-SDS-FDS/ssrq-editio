@@ -1,6 +1,5 @@
 import pytest
 
-from ssrq_editio.adapters.db.connection import db_session
 from ssrq_editio.adapters.db.kantons import initialize_kanton_data, list_kantons
 from ssrq_editio.models.kantons import Kantons
 
@@ -25,19 +24,16 @@ FROM cnt;
 """
 
 
-@pytest.mark.asyncio_cooperative
-async def test_initialize_kanton_data(db_setup, db_name):
+@pytest.mark.anyio
+async def test_initialize_kanton_data(db_setup):
     """Test if all kantons are inserted into the kantons table."""
     await initialize_kanton_data(db_setup)
-    # Close the connection to check if the commit was successful.
-    await db_setup.close()
-    async for connection in db_session(db_name, False):
-        cursor = await connection.execute("SELECT * FROM kantons;")
-        rows = await cursor.fetchall()
-        assert len(rows) == 23  # type: ignore
+    cursor = await db_setup.execute("SELECT * FROM kantons;")
+    rows = await cursor.fetchall()
+    assert len(rows) == 23  # type: ignore
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 async def test_list_kantons(db_kanton_data):
     """Test if all kantons are listed as Kantons-object(s)."""
     kantons = await list_kantons(db_kanton_data)
@@ -45,7 +41,7 @@ async def test_list_kantons(db_kanton_data):
     assert len(kantons.kantons) == 23
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 async def test_list_kantons_with_fake_data(db_kanton_data):
     """Test if all kantons are listed as Kantons-object(s)."""
     async with db_kanton_data.cursor() as cursor:

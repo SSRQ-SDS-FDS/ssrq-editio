@@ -14,3 +14,8 @@ def example_path():
 @pytest.fixture(scope="session")
 def translator():
     return Translator(TRANSLATION_SOURCE)
+
+
+@pytest.fixture(scope="session")
+def anyio_backend():
+    return "asyncio"

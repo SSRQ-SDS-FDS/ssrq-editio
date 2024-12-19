@@ -4,7 +4,7 @@ from httpx._status_codes import codes
 from parsel import Selector
 
 
-@pytest.mark.asyncio_cooperative
+@pytest.mark.anyio
 async def test_volume_page_lists_test_volumes(app_client: AsyncClient):
     response = await app_client.get("/SG")
     assert response.status_code == codes.OK
