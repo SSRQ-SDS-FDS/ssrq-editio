@@ -8,7 +8,7 @@ css args="":
 
 # Start the development server
 dev: css
-	uv run fastapi dev {{web_app}}
+	uv run watchfiles "fastapi dev {{web_app}} --no-reload" src
 
 # Format the code
 fmt:

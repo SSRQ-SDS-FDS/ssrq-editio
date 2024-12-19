@@ -1049,6 +1049,7 @@ dev = [
     { name = "rust-just" },
     { name = "saxonche-stubs" },
     { name = "sqlfluff" },
+    { name = "watchfiles" },
 ]
 
 [package.metadata]
@@ -1081,6 +1082,7 @@ dev = [
     { name = "rust-just", specifier = ">=1.36.0" },
     { name = "saxonche-stubs", specifier = ">=0.7.2" },
     { name = "sqlfluff", specifier = ">=3.2.5" },
+    { name = "watchfiles", specifier = ">=0.24.0" },
 ]
 
 [[package]]

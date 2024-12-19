@@ -34,6 +34,7 @@ dev-dependencies = [
     "sqlfluff>=3.2.5",
     "parsel>=1.9.1",
     "saxonche-stubs>=0.7.2",
+    "watchfiles>=0.24.0",
 ]
 
 [tool.uv.sources]
