@@ -18,6 +18,7 @@ async def test_get_places(httpx_client: httpx.AsyncClient):
     assert result is not None
     assert isinstance(result, Places)
     assert any(place.de_name is not None for place in result.entities)
+    assert all(len(place.de_place_types) > 0 for place in result.entities)
 
 
 @pytest.mark.anyio

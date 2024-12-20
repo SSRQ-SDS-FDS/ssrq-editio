@@ -8,5 +8,7 @@ CREATE TABLE IF NOT EXISTS places
     lt_name TEXT NULL,
     nl_name TEXT NULL,
     pl_name TEXT NULL,
-    rm_name TEXT NULL
+    rm_name TEXT NULL,
+    de_place_types TEXT NOT NULL,
+    fr_place_types TEXT NOT NULL
 );

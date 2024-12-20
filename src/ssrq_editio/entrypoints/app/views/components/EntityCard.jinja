@@ -34,6 +34,13 @@
             <li>
                 <span class="font-medium">{{ translator.translate(lang, 'definition') }}:</span> {{ entity.get_definition_by_lang(lang) }}
             </li>
+        {% elif entity_type == "places" %}
+            <li>
+                <span class="font-medium">{{ translator.translate(lang, 'standard_name') }}:</span> {{ entity.get_name_by_lang(lang) }}
+            </li>
+            <li>
+                <span class="font-medium">{{ translator.translate(lang, 'place_type') }}:</span> {{ entity.get_place_type_by_lang(lang) }}
+            </li>
         {% endif %}
         <li><span class="font-medium">{{ translator.translate(lang, 'occurrences') }}:</span> ToDo ...</li>
         <li><span class="font-medium">{{ translator.translate(lang, 'permalink') }}:</span> <a class="text-ssrq-primary" target="_blank" href="{{permalink}}">{{ permalink }}</a></li>

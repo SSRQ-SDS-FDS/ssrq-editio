@@ -1,8 +1,10 @@
 from enum import Enum
-from typing import Sequence
+from typing import Annotated, Sequence
 
-from pydantic import BaseModel
+from pydantic import BaseModel, BeforeValidator
+from pydantic_core import from_json
 from ssrq_utils.lang.display import Lang
+from ssrq_utils.uca import uca_simple_sort
 
 
 class EntityTypes(Enum):
@@ -177,6 +179,43 @@ class Place(Entity):
     nl_name: str | None
     pl_name: str | None
     rm_name: str | None
+    de_place_types: Annotated[
+        list[str], BeforeValidator(lambda x: x if isinstance(x, list) else from_json(x))
+    ]
+    fr_place_types: Annotated[
+        list[str], BeforeValidator(lambda x: x if isinstance(x, list) else from_json(x))
+    ]
+
+    def get_name_by_lang(self, lang: Lang) -> str:
+        name = getattr(self, f"{lang.value}_name", None)
+
+        if name:
+            return name
+
+        return next(
+            (
+                name
+                for name in (
+                    self.de_name,
+                    self.fr_name,
+                    self.it_name,
+                    self.lt_name,
+                    self.rm_name,
+                    self.nl_name,
+                    self.pl_name,
+                    self.cs_name,
+                )
+                if name
+            ),
+            "",
+        )
+
+    def get_place_type_by_lang(self, lang: Lang) -> str:
+        match lang:
+            case Lang.FR:
+                return ", ".join(uca_simple_sort(self.fr_place_types))
+            case _:
+                return ", ".join(uca_simple_sort(self.de_place_types))
 
 
 class Places(Entities):

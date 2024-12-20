@@ -66,6 +66,12 @@ async def get_places(client: AsyncClient, url: str) -> Places:
                 fr_name=place.xpath("./stdName[@lang='fra']/text()").get(),
                 it_name=place.xpath("./stdName[@lang='ita']/text()").get(),
                 lt_name=place.xpath("./stdName[@lang='lat']/text()").get(),
+                de_place_types=[
+                    pt.get() for pt in place.xpath("./type/definition[@lang='deu']/text()")
+                ],
+                fr_place_types=[
+                    pt.get() for pt in place.xpath("./type/definition[@lang='fra']/text()")
+                ],
                 occurrences=None,
             )
             for place in tree.xpath(".//place")

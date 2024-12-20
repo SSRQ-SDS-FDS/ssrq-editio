@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 from typing import Type, TypeVar
 
@@ -74,6 +75,8 @@ async def _store_places(
                 place.nl_name,
                 place.pl_name,
                 place.rm_name,
+                json.dumps(place.de_place_types),
+                json.dumps(place.fr_place_types),
             )
             for place in places.entities
         ],
