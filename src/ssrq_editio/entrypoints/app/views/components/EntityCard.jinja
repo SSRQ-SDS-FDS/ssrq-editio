@@ -45,9 +45,11 @@
             <li>
                 <span class="font-medium">{{ translator.translate(lang, 'standard_name') }}:</span> {{ entity.get_name_by_lang(lang) }}
             </li>
+            <!--
             <li>
                 <span class="font-medium">{{ translator.translate(lang, 'sex') }}:</span> {{ entity.sex }}
             </li>
+            -->
             <li>
                 <span class="font-medium">{{ translator.translate(lang, 'birth_or_first_mention') }}:</span> {{ entity.birth or entity.first_mention or '–' }}
             </li>
