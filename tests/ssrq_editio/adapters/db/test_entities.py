@@ -6,10 +6,11 @@ import pytest
 from ssrq_editio.adapters.db.entities import (
     search_keywords,
     search_lemmata,
+    search_persons,
     search_places,
     store_entities,
 )
-from ssrq_editio.models.entities import Entities, Keywords, Lemmata, Places
+from ssrq_editio.models.entities import Entities, Keywords, Lemmata, Persons, Places
 
 
 @pytest.mark.anyio
@@ -99,5 +100,33 @@ async def test_search_lemmata(db_setup, entities, search: str | None, expected: 
             assert len(result.entities) == 0
         case _ if callable(expected):
             assert expected(lemmata[0].entities) == expected(result.entities)
+        case _:
+            assert len(result.entities) > 0
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize(
+    ("search", "expected"),
+    [
+        (None, len),
+        ("foo bar", None),
+        ("per007472", "Salis, von, Peter"),
+        ("Meier", []),
+    ],
+)
+async def test_search_persons(db_setup, entities, search: str | None, expected: Any):
+    persons = tuple([e for e in entities if isinstance(e, Persons)])
+    await store_entities(persons, db_setup)
+    result = await search_persons(connection=db_setup, search=search)
+
+    assert isinstance(result, Persons)
+
+    match expected:
+        case str():
+            assert len(result.entities) == 1
+        case None:
+            assert len(result.entities) == 0
+        case _ if callable(expected):
+            assert expected(persons[0].entities) == expected(result.entities)
         case _:
             assert len(result.entities) > 0

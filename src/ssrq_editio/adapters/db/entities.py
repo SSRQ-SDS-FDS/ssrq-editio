@@ -14,6 +14,8 @@ from ssrq_editio.models.entities import (
     Keywords,
     Lemma,
     Lemmata,
+    Person,
+    Persons,
     Place,
     Places,
 )
@@ -42,7 +44,52 @@ async def store_entities(
             await _store_keywords(entity, connection, batch_size)
         elif isinstance(entity, Lemmata):
             await _store_lemmata(entity, connection, batch_size)
+        elif isinstance(entity, Persons):
+            await _store_persons(entity, connection, batch_size)
         continue
+
+
+async def _store_persons(
+    persons: Persons,
+    connection: Connection,
+    batch_size: int,
+    query: Path = SQL_DATA_DIR / "put_person.sql",
+):
+    """Stores persons in the database.
+
+    Args:
+        persons (Persons): A Places object
+        connection (Connection): An aiosqlite Connection
+        batch_size (int): The size of the batch
+        query (str): The query to execute. Defaults to "put_person.sql".
+    """
+    sql_query = await load(dir=query.parent, name=query.name)
+    await store_batches(
+        connection,
+        batch_size,
+        sql_query,
+        [
+            (
+                person.id,
+                person.de_name,
+                person.fr_name,
+                person.it_name,
+                person.lt_name,
+                person.rm_name,
+                person.de_surname,
+                person.fr_surname,
+                person.it_surname,
+                person.lt_surname,
+                person.rm_surname,
+                person.sex,
+                person.first_mention,
+                person.last_mention,
+                person.birth,
+                person.death,
+            )
+            for person in persons.entities
+        ],
+    )
 
 
 async def _store_places(
@@ -204,6 +251,31 @@ async def search_keywords(
             await _search_entities(
                 connection, Keyword, await load(dir=query.parent, name=query.name), search
             )
+        )
+    )
+
+
+async def search_persons(
+    connection: Connection,
+    query: Path = SQL_DATA_DIR / "get_persons.sql",
+    search: str | None = None,
+) -> Persons:
+    """Searches for persons in the database.
+
+    If no query-string is provided, all places are returned, because
+    the query is executed with an empty string.
+
+    Args:
+        connection (Connection): An aiosqlite Connection
+        query (Path): The query to execute. Defaults to "get_persons.sql".
+        search (str | None): A query-string. Defaults to None.
+
+    Returns:
+        Persons: A Persons object
+    """
+    return Persons(
+        entities=await _search_entities(
+            connection, Person, await load(dir=query.parent, name=query.name), search
         )
     )
 

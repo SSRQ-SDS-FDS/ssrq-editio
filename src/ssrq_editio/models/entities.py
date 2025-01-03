@@ -169,6 +169,31 @@ class Person(Entity):
     death: str | None
     # ToDo occupations / locations !
 
+    def get_name_by_lang(self, lang: Lang) -> str:
+        name = getattr(self, f"{lang.value}_name", None)
+        surname = getattr(self, f"{lang.value}_surname", None)
+
+        if name and surname:
+            return f"{surname}, {name}"
+
+        return next(
+            (
+                f"{sname}, {nname}" if sname else nname
+                for nname, sname in zip(
+                    (self.de_name, self.fr_name, self.it_name, self.lt_name, self.rm_name),
+                    (
+                        self.de_surname,
+                        self.fr_surname,
+                        self.it_surname,
+                        self.lt_surname,
+                        self.rm_surname,
+                    ),
+                )
+                if nname
+            ),
+            "",
+        )
+
 
 class Persons(Entities):
     entities: Sequence[Person]

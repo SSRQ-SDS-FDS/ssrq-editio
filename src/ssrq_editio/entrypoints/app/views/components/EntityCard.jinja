@@ -41,6 +41,19 @@
             <li>
                 <span class="font-medium">{{ translator.translate(lang, 'place_type') }}:</span> {{ entity.get_place_type_by_lang(lang) }}
             </li>
+        {% elif entity_type == "persons" %}
+            <li>
+                <span class="font-medium">{{ translator.translate(lang, 'standard_name') }}:</span> {{ entity.get_name_by_lang(lang) }}
+            </li>
+            <li>
+                <span class="font-medium">{{ translator.translate(lang, 'sex') }}:</span> {{ entity.sex }}
+            </li>
+            <li>
+                <span class="font-medium">{{ translator.translate(lang, 'birth_or_first_mention') }}:</span> {{ entity.birth or entity.first_mention or '–' }}
+            </li>
+            <li>
+                <span class="font-medium">{{ translator.translate(lang, 'death_or_last_mention') }}:</span> {{ entity.death or entity.last_mention or '–' }}
+            </li>
         {% endif %}
         <li><span class="font-medium">{{ translator.translate(lang, 'occurrences') }}:</span> ToDo ...</li>
         <li><span class="font-medium">{{ translator.translate(lang, 'permalink') }}:</span> <a class="text-ssrq-primary" target="_blank" href="{{permalink}}">{{ permalink }}</a></li>
