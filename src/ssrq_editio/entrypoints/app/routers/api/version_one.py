@@ -1,14 +1,18 @@
+from typing import Sequence
+
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
+from ssrq_utils.lang.display import Lang
 
-from ssrq_editio.adapters.db.entities import count_entities
+from ssrq_editio.adapters.db.entities import count_entities, list_entity_ids
 from ssrq_editio.adapters.db.kantons import list_kantons_abbreviations
 from ssrq_editio.adapters.db.volumes import list_volumes_with_editors
 from ssrq_editio.entrypoints.app.shared.dependencies import DBDependency
 from ssrq_editio.entrypoints.cli.config import VOLUME_SRC
-from ssrq_editio.models.entities import EntityTypes
+from ssrq_editio.models.entities import EntityTypes, Keyword, Lemma, Person, Place
 from ssrq_editio.models.kantons import KantonName
 from ssrq_editio.models.volumes import Volumes
+from ssrq_editio.services.entities import ENTITY_ID_PATTERN, get_entities, validate_entity_id
 from ssrq_editio.services.volumes import stream_volume_pdf
 
 version_one = APIRouter(prefix="/v1", tags=["v1"])
@@ -59,7 +63,79 @@ async def entities() -> list[EntityTypes]:
     return [et for et in EntityTypes.__members__.values()]
 
 
-@version_one.get("/entities/{entity}", name="entity_count")
+@version_one.get("/entities/{entity}", name="entity_list")
+async def entity_list(
+    connection: DBDependency, entity: EntityTypes
+) -> Sequence[Keyword | Lemma | Person | Place]:
+    """Returns a list of all entities for a specific entity type. The list is not paginated."""
+    try:
+        return (await get_entities(connection=connection, entity_type=entity)).entities  # type: ignore # ToDO: Fix typing here...
+    except NotImplementedError:
+        raise HTTPException(
+            status_code=501, detail=f"At the moment this endpoint does not support »{entity}«."
+        )
+
+
+@version_one.get("/entities/{entity}/count", name="entity_count")
 async def entity_count(connection: DBDependency, entity: EntityTypes) -> int:
     """Returns the number of entities in the database for a specific entity type."""
     return await count_entities(connection, entity)
+
+
+@version_one.get("/entities/{entity}/ids", name="entity_ids")
+async def entity_ids(connection: DBDependency, entity: EntityTypes) -> list[str]:
+    """Returns a list of all entity IDs for a specific entity type."""
+    return await list_entity_ids(connection, entity)
+
+
+@version_one.get("/entities/{entity}/{id}", name="entity_detail")
+async def entity_detail(
+    connection: DBDependency, entity: EntityTypes, id: str
+) -> Keyword | Lemma | Person | Place:
+    """Shows the details of a specific entity."""
+    if not validate_entity_id(id):
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid entity ID »{id}«. ID must match the pattern »{ENTITY_ID_PATTERN.pattern}«.",
+        )
+
+    try:
+        # ToDO: Replace the try / except approach with a more elegant solution.
+        return (await get_entities(connection=connection, entity_type=entity, query=id)).entities[0]  # type: ignore # ToDO: Fix typing here...
+    except IndexError:
+        raise HTTPException(status_code=404, detail=f"No entity found with ID »{id}«.")
+    except NotImplementedError:
+        raise HTTPException(
+            status_code=501,
+            detail=f"At the moment this endpoint does not support »{entity}« or no entity found with {id}.",
+        )
+
+
+@version_one.get("/entities/{entity}/{id}/name", name="entity_name")
+async def entity_std_name(
+    connection: DBDependency,
+    entity: EntityTypes,
+    id: str,
+    lang: Lang = Lang.DE,  # ToDo: Also allow other languages like rm, pl, etc.
+) -> str:
+    """Show the standard-name of an entity for a given language. If there is no name for this
+    language the standard-names are retrieved in the following order: de, fr, it, lt, rm.."""
+    if not validate_entity_id(id):
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid entity ID »{id}«. ID must match the pattern »{ENTITY_ID_PATTERN.pattern}«.",
+        )
+
+    try:
+        return (
+            (await get_entities(connection=connection, entity_type=entity, query=id))
+            .entities[0]
+            .get_name_by_lang(lang)
+        )  # type: ignore # ToDO: Fix typing here...
+    except IndexError:
+        raise HTTPException(status_code=404, detail=f"No entity found with ID »{id}«.")
+    except NotImplementedError:
+        raise HTTPException(
+            status_code=501,
+            detail=f"At the moment this endpoint does not support »{entity}«.",
+        )

@@ -5,6 +5,7 @@ import pytest
 
 from ssrq_editio.adapters.db.entities import (
     count_entities,
+    list_entity_ids,
     search_keywords,
     search_lemmata,
     search_persons,
@@ -142,3 +143,26 @@ async def test_count_entities(
     await store_entities(places, db_setup)
     result = await count_entities(connection=db_setup, table=EntityTypes.PLACES)
     assert result == len(places[0].entities)
+
+
+@pytest.mark.anyio
+async def test_list_entity_ids(
+    db_setup,
+    entities,
+):
+    places = tuple(e for e in entities if isinstance(e, Places))
+    await store_entities(places, db_setup)
+    result = await list_entity_ids(connection=db_setup, table=EntityTypes.PLACES)
+    assert len(result) == len(places[0].entities)
+    assert all(e_id.id in result for e_id in places[0].entities)
+
+
+@pytest.mark.anyio
+async def test_list_entity_ids_with_invalid_table_name(
+    db_setup,
+    entities,
+):
+    places = tuple(e for e in entities if isinstance(e, Places))
+    await store_entities(places, db_setup)
+    with pytest.raises(ValueError):
+        await list_entity_ids(connection=db_setup, table="place")  # type: ignore

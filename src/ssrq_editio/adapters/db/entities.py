@@ -53,6 +53,25 @@ async def count_entities(connection: Connection, table: EntityTypes) -> int:
         return int(data[0]) if data else 0
 
 
+async def list_entity_ids(connection: Connection, table: EntityTypes) -> list[str]:
+    """Lists the IDs of the entities in the database in a specific table.
+
+    Args:
+        connection (Connection): An aiosqlite Connection
+        table (EntityTypes): An EntityTypes object, which corresponds to a table.
+
+    Returns:
+        list[str]: A list of entity IDs.
+    """
+    if not isinstance(table, EntityTypes):
+        raise ValueError("The table must be an instance of Entities.")
+
+    async with connection.cursor() as cursor:
+        await cursor.execute(f"SELECT id FROM {table.value}")
+        data = await cursor.fetchall()
+        return [item[0] for item in data]
+
+
 async def store_entities(
     entities: tuple[Entities, ...], connection: Connection, batch_size: int = 256
 ):
