@@ -10,6 +10,7 @@ from ssrq_editio.adapters.file import load
 from ssrq_editio.models.entities import (
     Entities,
     Entity,
+    EntityTypes,
     Keyword,
     Keywords,
     Lemma,
@@ -20,9 +21,36 @@ from ssrq_editio.models.entities import (
     Places,
 )
 
-__all__ = ["store_entities", "search_places"]
+__all__ = [
+    "count_entities",
+    "search_keywords",
+    "search_lemmata",
+    "search_persons",
+    "search_places",
+    "store_entities",
+]
 
 T = TypeVar("T", bound=Entity)
+
+
+async def count_entities(connection: Connection, table: EntityTypes) -> int:
+    """Counts the number of entities in the database in a specific table.
+
+    Args:
+        connection (Connection): An aiosqlite Connection
+        table (EntityTypes): An EntityTypes object, which corresponds to a table.
+
+    Returns:
+        int: The number of entities in the table.
+    """
+    if not isinstance(table, EntityTypes):
+        # TypeGuard, which will prevent SQL injection attacks
+        raise ValueError("The table must be an instance of Entities.")
+
+    async with connection.cursor() as cursor:
+        await cursor.execute(f"SELECT COUNT(*) FROM {table.value}")
+        data = await cursor.fetchone()
+        return int(data[0]) if data else 0
 
 
 async def store_entities(

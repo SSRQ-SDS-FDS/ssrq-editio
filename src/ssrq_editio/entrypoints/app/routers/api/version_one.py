@@ -1,10 +1,12 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 
+from ssrq_editio.adapters.db.entities import count_entities
 from ssrq_editio.adapters.db.kantons import list_kantons_abbreviations
 from ssrq_editio.adapters.db.volumes import list_volumes_with_editors
 from ssrq_editio.entrypoints.app.shared.dependencies import DBDependency
 from ssrq_editio.entrypoints.cli.config import VOLUME_SRC
+from ssrq_editio.models.entities import EntityTypes
 from ssrq_editio.models.kantons import KantonName
 from ssrq_editio.models.volumes import Volumes
 from ssrq_editio.services.volumes import stream_volume_pdf
@@ -49,3 +51,15 @@ async def volume_pdf(
         )
     except Exception as e:
         raise HTTPException(status_code=404, detail=str(e))
+
+
+@version_one.get("/entities", name="Entities")
+async def entities() -> list[EntityTypes]:
+    """Returns a list of all entity types."""
+    return [et for et in EntityTypes.__members__.values()]
+
+
+@version_one.get("/entities/{entity}", name="entity_count")
+async def entity_count(connection: DBDependency, entity: EntityTypes) -> int:
+    """Returns the number of entities in the database for a specific entity type."""
+    return await count_entities(connection, entity)

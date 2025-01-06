@@ -4,13 +4,14 @@ import aiosqlite
 import pytest
 
 from ssrq_editio.adapters.db.entities import (
+    count_entities,
     search_keywords,
     search_lemmata,
     search_persons,
     search_places,
     store_entities,
 )
-from ssrq_editio.models.entities import Entities, Keywords, Lemmata, Persons, Places
+from ssrq_editio.models.entities import Entities, EntityTypes, Keywords, Lemmata, Persons, Places
 
 
 @pytest.mark.anyio
@@ -130,3 +131,14 @@ async def test_search_persons(db_setup, entities, search: str | None, expected: 
             assert expected(persons[0].entities) == expected(result.entities)
         case _:
             assert len(result.entities) > 0
+
+
+@pytest.mark.anyio
+async def test_count_entities(
+    db_setup,
+    entities,
+):
+    places = tuple(e for e in entities if isinstance(e, Places))
+    await store_entities(places, db_setup)
+    result = await count_entities(connection=db_setup, table=EntityTypes.PLACES)
+    assert result == len(places[0].entities)

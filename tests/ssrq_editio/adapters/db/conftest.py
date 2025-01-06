@@ -1,30 +1,11 @@
 from typing import AsyncGenerator
 
 import aiosqlite
-import httpx
 import pytest
 
 from ssrq_editio.adapters.db.connection import db_session
 from ssrq_editio.adapters.db.kantons import initialize_kanton_data
 from ssrq_editio.adapters.db.setup import setup_db
-from ssrq_editio.adapters.entities import get_keywords as fetch_keywords
-from ssrq_editio.adapters.entities import get_lemmata as fetch_lemmata
-from ssrq_editio.adapters.entities import get_persons as fetch_persons
-from ssrq_editio.adapters.entities import get_places as fetch_places
-
-
-@pytest.fixture(scope="module")
-async def entities(httpx_client: httpx.AsyncClient):
-    places = await fetch_places(httpx_client, "http://testserver/places.xml")
-    keywords = await fetch_keywords(httpx_client, "http://testserver/keywords.xml")
-    lemmata = await fetch_lemmata(httpx_client, "http://testserver/lemmata.xml")
-    persons = await fetch_persons(httpx_client, "http://testserver/persons.xml")
-    return (
-        places,
-        keywords,
-        lemmata,
-        persons,
-    )
 
 
 @pytest.fixture(scope="function")

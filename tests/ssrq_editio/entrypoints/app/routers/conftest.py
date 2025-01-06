@@ -5,6 +5,7 @@ from aiosqlite import Connection
 from httpx import ASGITransport, AsyncClient
 
 from ssrq_editio.adapters.db.connection import db_session
+from ssrq_editio.adapters.db.entities import store_entities
 from ssrq_editio.adapters.db.kantons import initialize_kanton_data
 from ssrq_editio.adapters.db.setup import setup_db
 from ssrq_editio.adapters.db.volumes import initialize_volume_with_editors
@@ -34,10 +35,11 @@ async def app_db_connection() -> AsyncGenerator[Connection, None]:
 
 
 @pytest.fixture(scope="module")
-async def app_db_setup(app_db_connection) -> AsyncGenerator[Connection, None]:
+async def app_db_setup(app_db_connection, entities) -> AsyncGenerator[Connection, None]:
     await setup_db(app_db_connection)
     await initialize_kanton_data(app_db_connection)
     await initialize_volume_with_editors(app_db_connection, TEST_VOLUMES[0])
+    await store_entities(entities, app_db_connection)
     yield app_db_connection
 
 
