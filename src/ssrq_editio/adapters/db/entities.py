@@ -53,6 +53,15 @@ async def count_entities(connection: Connection, table: EntityTypes) -> int:
         return int(data[0]) if data else 0
 
 
+async def delete_entities(
+    connection: Connection,
+    query: Path = SQL_DATA_DIR / "delete_entities.sql",
+):
+    sql_query = await load(dir=query.parent, name=query.name)
+    await connection.executescript(sql_query)
+    await connection.commit()
+
+
 async def list_entity_ids(connection: Connection, table: EntityTypes) -> list[str]:
     """Lists the IDs of the entities in the database in a specific table.
 
@@ -73,7 +82,10 @@ async def list_entity_ids(connection: Connection, table: EntityTypes) -> list[st
 
 
 async def store_entities(
-    entities: tuple[Entities, ...], connection: Connection, batch_size: int = 256
+    entities: tuple[Entities, ...],
+    connection: Connection,
+    batch_size: int = 256,
+    prune: bool = False,
 ):
     """Stores entities in the database by mapping
     the entities to the appropriate store function, which
@@ -83,7 +95,11 @@ async def store_entities(
         entities (tuple[Entities, ...]): A tuple of Entities
         connection (Connection): An aiosqlite Connection
         batch_size (int): The size of the batch. Defaults to 256.
+        prune (bool): Whether to prune the database before storing the entities. Defaults to False.
     """
+    if prune:
+        await delete_entities(connection)
+
     for entity in entities:
         if isinstance(entity, Places):
             await _store_places(entity, connection, batch_size)
@@ -94,6 +110,8 @@ async def store_entities(
         elif isinstance(entity, Persons):
             await _store_persons(entity, connection, batch_size)
         continue
+
+    # ToDO: Write a query to gather occurrences from the database and execute it here.
 
 
 async def _store_persons(

@@ -64,11 +64,11 @@ async def setup_volumes(connection: Connection, config_src: Path, data_src: Path
         SSRQ_LOGGER.success(f"Inserted volume data for {volume.key} into the database.")
 
 
-async def setup_entities(connection: Connection):
+async def setup_entities(connection: Connection, prune: bool = False):
     SSRQ_LOGGER.info(
         "Starting to fetch entities from the provided API-endpoints (may take a while)..."
     )
     entities = await fetch_entities()
     SSRQ_LOGGER.success("Fetched entity-data, starting DB-insert..")
-    await store_entities(entities, connection)
+    await store_entities(entities=entities, connection=connection, prune=prune)
     SSRQ_LOGGER.success("Inserted entities into the database.")

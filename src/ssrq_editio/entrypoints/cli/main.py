@@ -5,9 +5,10 @@ from pathlib import Path
 import typer
 
 import ssrq_editio.entrypoints.cli.config as config  # type: ignore
+from ssrq_editio.adapters.db.connection import db_session
 from ssrq_editio.entrypoints.app.config import DB_NAME
 from ssrq_editio.entrypoints.cli.config import VOLUME_CONFIG
-from ssrq_editio.entrypoints.cli.handlers.db import setup
+from ssrq_editio.entrypoints.cli.handlers.db import setup, setup_entities
 from ssrq_editio.services.logger import SSRQ_LOGGER
 
 app = typer.Typer()
@@ -22,6 +23,19 @@ def prepare_db(
 ):
     """Prepare and popluate the database."""
     asyncio.run(setup(db, clean, config, data))
+
+
+@app.command("fetch-entities")
+def fetch_entities(
+    db: str = typer.Argument(DB_NAME, help="The name of the database."),
+):
+    """Fetches entities and inserts them into the DB. The tables get pruned before."""
+
+    async def reinsert_entities():
+        async for session in db_session(db):
+            await setup_entities(connection=session, prune=True)
+
+    asyncio.run(reinsert_entities())
 
 
 @app.command("show-config")

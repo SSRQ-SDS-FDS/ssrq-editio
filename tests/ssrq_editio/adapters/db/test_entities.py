@@ -5,6 +5,7 @@ import pytest
 
 from ssrq_editio.adapters.db.entities import (
     count_entities,
+    delete_entities,
     list_entity_ids,
     search_keywords,
     search_lemmata,
@@ -22,6 +23,16 @@ async def test_store_entities(db_setup: aiosqlite.Connection, entities: tuple[En
         await store_entities(entities, db_setup)
     except Exception as error:
         pytest.fail(str(error))
+
+
+@pytest.mark.anyio
+async def test_delete_entities(db_setup: aiosqlite.Connection, entities: tuple[Entities, ...]):
+    """Smoke test to store entities in the database."""
+    await delete_entities(connection=db_setup)
+    assert await list_entity_ids(connection=db_setup, table=EntityTypes.PLACES) == []
+    assert await list_entity_ids(connection=db_setup, table=EntityTypes.PERSONS) == []
+    assert await list_entity_ids(connection=db_setup, table=EntityTypes.LEMMATA) == []
+    assert await list_entity_ids(connection=db_setup, table=EntityTypes.KEYWORDS) == []
 
 
 @pytest.mark.anyio

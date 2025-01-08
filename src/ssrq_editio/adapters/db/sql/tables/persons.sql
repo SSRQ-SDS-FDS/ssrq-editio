@@ -61,23 +61,3 @@ CREATE TRIGGER IF NOT EXISTS persons_ai AFTER INSERT ON persons BEGIN
         new.rm_surname
     );
 END;
-
-CREATE TRIGGER IF NOT EXISTS persons_au AFTER UPDATE ON persons BEGIN
-    UPDATE persons_fts SET
-        id = new.id,
-        de_name = new.de_name,
-        fr_name = new.fr_name,
-        it_name = new.it_name,
-        lt_name = new.lt_name,
-        rm_name = new.rm_name,
-        de_surname = new.de_surname,
-        fr_surname = new.fr_surname,
-        it_surname = new.it_surname,
-        lt_surname = new.lt_surname,
-        rm_surname = new.rm_surname
-    WHERE id = old.id;
-END;
-
-CREATE TRIGGER IF NOT EXISTS persons_ad AFTER DELETE ON persons BEGIN
-    DELETE FROM persons_fts WHERE id = old.id;
-END;
