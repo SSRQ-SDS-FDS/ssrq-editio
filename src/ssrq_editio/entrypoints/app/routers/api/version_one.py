@@ -1,4 +1,4 @@
-from typing import Sequence
+from typing import Sequence, cast
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
@@ -65,11 +65,22 @@ async def entities() -> list[EntityTypes]:
 
 @version_one.get("/entities/{entity}", name="entity_list")
 async def entity_list(
-    connection: DBDependency, entity: EntityTypes
+    connection: DBDependency, entity: EntityTypes, query: str | None = None
 ) -> Sequence[Keyword | Lemma | Person | Place]:
-    """Returns a list of all entities for a specific entity type. The list is not paginated."""
+    """Returns a list of all entities for a specific entity type. The list is not paginated.
+
+    Can be filtered by a query string, which is used to search for entities.
+    """
     try:
-        return (await get_entities(connection=connection, entity_type=entity)).entities  # type: ignore # ToDO: Fix typing here...
+        result = await get_entities(connection=connection, entity_type=entity, query=query)
+
+        if len(result.entities) == 0:
+            raise HTTPException(
+                status_code=404,
+                detail=f"No entities of type  »{entity.value}« found for query »{query}«.",
+            )
+
+        return cast(Sequence[Keyword | Lemma | Person | Place], result.entities)
     except NotImplementedError:
         raise HTTPException(
             status_code=501, detail=f"At the moment this endpoint does not support »{entity}«."
