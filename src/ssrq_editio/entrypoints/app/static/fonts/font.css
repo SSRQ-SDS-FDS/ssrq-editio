@@ -5,8 +5,8 @@
 @font-face {
   font-family: "Lexia Fontes";
   src:
-    url("LexiaFontes_Bd.woff") format("woff"),
-    url("LexiaFontes_Bd.ttf") format("truetype");
+    url("Lexia/src/LexiaFontes_Bd.woff") format("woff"),
+    url("Lexia/src/LexiaFontes_Bd.ttf") format("truetype");
   font-style: normal;
   font-weight: 700;
 }
@@ -14,8 +14,8 @@
 @font-face {
   font-family: "Lexia Fontes";
   src:
-    url("LexiaFontes_BdIt.woff") format("woff"),
-    url("LexiaFontes_BdIt.ttf") format("truetype");
+    url("Lexia/src/LexiaFontes_BdIt.woff") format("woff"),
+    url("Lexia/src/LexiaFontes_BdIt.ttf") format("truetype");
   font-style: italic;
   font-weight: 700;
 }
@@ -23,8 +23,8 @@
 @font-face {
   font-family: "Lexia Fontes";
   src:
-    url("LexiaFontes_It.woff") format("woff"),
-    url("LexiaFontes_It.ttf") format("truetype");
+    url("Lexia/src/LexiaFontes_It.woff") format("woff"),
+    url("Lexia/src/LexiaFontes_It.ttf") format("truetype");
   font-style: italic;
   font-weight: 400;
 }
@@ -32,8 +32,8 @@
 @font-face {
   font-family: "Lexia Fontes";
   src:
-    url("LexiaFontes_Rg.woff") format("woff"),
-    url("LexiaFontes_Rg.ttf") format("truetype");
+    url("Lexia/src/LexiaFontes_Rg.woff") format("woff"),
+    url("Lexia/src/LexiaFontes_Rg.ttf") format("truetype");
   font-style: normal;
   font-weight: 400;
 }

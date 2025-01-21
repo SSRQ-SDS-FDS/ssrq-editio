@@ -7,3 +7,6 @@
 [submodule "src/ssrq_editio/services/xslt/scripts/convert"]
 	path = src/ssrq_editio/services/xslt/scripts/convert
 	url = https://github.com/SSRQ-SDS-FDS/ssrq-convert.git
+[submodule "src/ssrq_editio/entrypoints/app/static/fonts/Lexia"]
+	path = src/ssrq_editio/entrypoints/app/static/fonts/Lexia
+	url = https://github.com/SSRQ-SDS-FDS/ssrq-lexia.git
