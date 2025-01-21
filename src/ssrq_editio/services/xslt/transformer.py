@@ -123,7 +123,7 @@ def _apply_params(
     saxon_proc: PySaxonProcessor, xslt_proc: PyXslt30Processor, params: list[XSLTParam]
 ):
     for param in params:
-        match param:
+        match param.value:
             case str():
                 xslt_proc.set_parameter(param.name, saxon_proc.make_string_value(param.value))
             case int():

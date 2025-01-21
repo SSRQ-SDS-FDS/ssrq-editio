@@ -4,6 +4,7 @@ from typing import AsyncGenerator
 import cachebox
 from anyio import open_file
 from anyio.to_thread import run_sync
+from httpx import AsyncClient
 
 
 @cachebox.cached(cachebox.Cache(maxsize=256))
@@ -21,6 +22,32 @@ async def load(dir: Path, name: str | Path) -> str:
     """
     async with await open_file(dir / name, "r", encoding="utf-8") as f:  # pragma: no cover
         return await f.read()
+
+
+async def write(dir: Path, name: str | Path, content: str) -> None:
+    """Write content to a file in an async fashion.
+
+    Args:
+        dir (Path): Directory where the file is located.
+        name (str | Path): Name of the file to write.
+        content (str): Content to write to the file.
+    """
+    async with await open_file(dir / name, "w", encoding="utf-8") as f:
+        await f.write(content)
+
+
+async def load_via_http(url: str):
+    """Load content of a file via HTTP in an async fashion.
+
+    Args:
+        url (str): URL of the file to load.
+
+    Returns:
+        str: Content of the file.
+    """
+    async with AsyncClient() as client:
+        response = await client.get(url, follow_redirects=True)
+        return response.text
 
 
 async def stream(path: Path) -> AsyncGenerator[bytes, None]:

@@ -349,3 +349,7 @@ coverage.xml
 *.sqlite3
 *.sqlite
 *.db
+
+# Ignore tmp-files
+*.tmp.*
+*.tmp
