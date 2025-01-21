@@ -10,6 +10,13 @@ from ssrq_editio.adapters.file import load
 from ssrq_editio.services.xslt.config import XSLT_SRC_DIR
 
 
+class XSLTTransformationError(ValueError):
+    """An exception to raise when an XSLT transformation fails."""
+
+    def __init__(self, message: str):
+        super().__init__(message)
+
+
 class XSLTParam(NamedTuple):
     name: str
     value: str | int | bool

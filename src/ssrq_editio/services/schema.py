@@ -4,7 +4,7 @@ from pathlib import Path
 from ssrq_editio.adapters.file import load, load_via_http, write
 from ssrq_editio.entrypoints.cli.config import TMP_SCHEMA
 from ssrq_editio.services.xslt.config import SCHEMA2TRANSLATIONS_XSL
-from ssrq_editio.services.xslt.transformer import apply_xslt
+from ssrq_editio.services.xslt.transformer import XSLTTransformationError, apply_xslt
 
 SCHEMA_SRC = getenv("SCHEMA_SRC", "https://schema.ssrq-sds-fds.ch/dev/TEI_Schema.odd")
 
@@ -41,7 +41,9 @@ async def transpile_schema_to_translations(
     )
 
     if result[0] is None:
-        raise ValueError("Failed to convert schema to translations.")
+        raise XSLTTransformationError(
+            f"Failed to convert schema to translations; src: {schema_src}, xslt: {xslt_script}"
+        )
 
     await write(translations_dst.parent, translations_dst.name, result[0])
 

@@ -9,12 +9,27 @@ INSERT INTO volumes (id, name, kanton_id, title, prefix) VALUES ("2", "baz", 2, 
 
 WITH RECURSIVE
     cnt(x) AS (SELECT 1 UNION ALL SELECT x+1 FROM cnt WHERE x < 30)
-INSERT INTO documents (uuid, idno, is_main, sort_key, orig_date, facs, printed_idno, volume_id, orig_place)
+INSERT INTO documents (
+    uuid,
+    idno,
+    is_main,
+    sort_key,
+    de_orig_date,
+    fr_orig_date,
+    en_orig_date,
+    it_orig_date,
+    facs,
+    printed_idno,
+    volume_id,
+    orig_place)
 SELECT
     printf('uuid-%03d', x),
     printf('idno-%03d', x),
     1,
     x,
+    '2023-01-01',
+    '2023-01-01',
+    '2023-01-01',
     '2023-01-01',
     0,
     printf('printed_idno-%03d', x),
