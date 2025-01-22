@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-model href="https://schema.ssrq-sds-fds.ch/latest/TEI_Schema.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?><?xml-model href="https://schema.ssrq-sds-fds.ch/latest/TEI_Schema.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?><TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="fr">
+   <teiHeader>
+      <fileDesc>
+         <titleStmt><title>XXI<hi rend="sup">e</hi> partie&#160;: Les sources du droit du canton de Neuchâtel, Tome 1&#160;: Les sources directes</title><editor>
+               <persName>Dominique Favarger</persName>
+            </editor><editor><persName>Maurice de Tribolet</persName>
+            </editor><respStmt><persName>Dominique Favarger</persName><resp>Transcription</resp></respStmt><respStmt><persName>Maurice de Tribolet</persName><resp>Transcription</resp></respStmt><respStmt><persName>Arnaud Besson</persName><resp>Contrôle de qualité</resp></respStmt><respStmt><persName>Adrien Wyssbrod</persName><resp>Codage XML du transcript</resp></respStmt><respStmt><orgName>Archives de l'État de Neuchâtel (AEN)</orgName><resp>Création d'un fac-similé</resp></respStmt></titleStmt>
+         <publicationStmt><publisher>SSRQ-SDS-FDS</publisher>
+            <date type="electronic" when-custom="2024-01-24"/>    <date type="print" from-custom="1982-01-01" to-custom="1982-12-31"/>
+            <availability><licence target="https://creativecommons.org/licenses/by-nc-sa/4.0/">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</licence></availability>
+   </publicationStmt>
+         <seriesStmt>
+            <title>Les sources du droit suisse</title>
+            <respStmt>
+               <orgName>Fondation des
+      sources du droit de la Société suisse des juristes</orgName>
+               <resp>Publication</resp>
+            </respStmt>
+            <idno>SDS-NE-1-143-1</idno><idno type="uuid">8eb3d575-762e-4876-aa7e-546ae612480b</idno>
+         </seriesStmt>
+         <sourceDesc>
+            <msDesc>
+               <msIdentifier><settlement xml:lang="fr" ref="loc007786">Neuchâtel</settlement><repository xml:lang="fr">Archives de l'État de Neuchâtel</repository><idno xml:lang="fr">AEN AS O27.1</idno></msIdentifier>
+               <head>Articles généraux (points de franchises) octroyées par Frédéric 1<hi rend="sup">er</hi>, roi de Prusse à tout l'État<note>Note
+                     Favarger&#160;1982&#160;: Le roi de Prusse avait été investi de la souveraineté
+                     de Neuchâtel et Valangin par sentence du Tribunal des Trois-États rendue le
+                     3&#160;novembre&#160;1707, et qui précisait de façon expresse que le roi
+                     conserverait les libertés «&#160;tant des bourgeois que des autres peuples de
+                     cet État&#160;», Tribolet, <hi rend="italic">Histoire</hi>,
+                     p.&#160;18-20.</note></head>
+               <msContents>
+
+                  <msItem>
+                     <textLang xml:lang="fr"/>
+
+                  </msItem>
+               </msContents>
+               <physDesc><objectDesc>
+                     <supportDesc>
+                        <support>
+                           <material type="paper"/>
+                        </support>
+                        <extent>
+                           <dimensions type="leaves">
+                              <height unit="cm" quantity="36.9"/>
+                              <width unit="cm" quantity="53.5"/>
+                           </dimensions>
+                        </extent>
+                     </supportDesc>
+                  </objectDesc><sealDesc>
+                     <seal n="1" condition="well-preserved" attachment="sealed_on_a_cord" material="wax_in_a_capsule" shape="round"/>
+                  </sealDesc></physDesc>
+               <history>
+                  <origin><origDate type="document" when-custom="1708-10-01" calendar="unknown"/><origPlace type="document" ref="loc016171.01">Cologne sur Sprée</origPlace></origin>
+               </history>
+               <additional>
+                  <listBibl type="edition">
+
+                     <bibl><ref target="https://www.ssrq-sds-fds.ch/online/NE_1/index.html#p_333">SDS NE 1, N<hi rend="sup">o</hi>&#160;143</ref></bibl>
+                  </listBibl>
+               </additional>
+            </msDesc>
+         </sourceDesc>
+      </fileDesc>
+      <encodingDesc>
+         <editorialDecl>
+            <p>
+               <ref target="https://p.ssrq-sds-fds.ch/guidelines/transcription"/>
+            </p>
+         </editorialDecl>
+      </encodingDesc>
+      <profileDesc>
+         <textClass>
+            <keywords>
+               <term ref="key000658"/>
+               <term ref="key000273"/>
+               <term ref="key005297"/>
+               <term ref="key004136"/>
+               <term ref="key000086"/>
+               <term ref="key000847"/>
+            </keywords>
+         </textClass>
+      </profileDesc>
+   </teiHeader>
+   <text type="transcript"><body>
+               <pb n="Ir" facs="AEN_AS_O27_1_Ir"/>
+               <pb n="1r" facs="AEN_AS_O27_1_1r"/>
+               <pb n="1v" facs="AEN_AS_O27_1_1v_2r"/>
+               <pb n="2r" facs="AEN_AS_O27_1_1v_2r"/>
+               <div>
+                  <p><seg><lb/>Frédéric par la grâce de Dieu <lb/>roy de Prusse, marggrave de
+                     Brandebourg, archi<lb break="no"/>chambellan et prince électeur du saint empire
+                     romain, <lb/>souverain prince d’Orange, de Neufchatel et <lb/>Vallengin. <gap reason="missing"/></seg><seg><lb/>À tous presens <lb/>et a venir salut. Ayant esté
+                     informé que nôtre mi<lb break="no"/>nistre d’état et ambassadeur extraordinaire
+                     et plénipo <lb/>tentiaire en Suisse, le sieur comte de Metternich auroit <lb/>en
+                     vertu des pleins pouvoirs general et special par nous à <lb/>lui donnez en datte
+                     du 23 juin 1707, accordé et concédé <lb/>en nôtre nom, aux corps et communautez,
+                     bourgeois, su<lb break="no"/>jets et habitans de la souveraineté de
+                     Neufchatel <lb/>et Vallangin, qui s’etoient unis pour ce sujet par
+                     acte <lb/>signé de sa main et scellé de son sceau accoutumé <pb n="2v" facs="AEN_AS_O27_1_2v_3r"/><lb/>certains articles generaux pour tout l’état au
+                        nom<lb break="no"/>bre de neuf dont la teneur s’ensuit de mot a mot.</seg></p>
+                  <head><lb/>I.</head> <p><lb/>Que la religion soit inviolablement conservée et main<lb break="no"/>tenue dans son état présent sans qu’il soit fait a cet <lb/>égard aucune
+                     innovation. Et pour cet effet&#160;:</p>
+                  <p><lb/>1<hi rend="sup">o</hi> Que selon ce qui fut réglé lors de la réformation,
+                     le  <lb/>seul exercice de la religion protestante se fasse dans <lb/>tout l’état,
+                     excepté dans les paroisses du Landeron et <lb/>de Cressier. Bien entendu que le
+                     prince soit celui qui le <lb/>représentera pourront faire l’exercice privé et
+                     particulier <lb/>de leur religion dans le lieu de leur residence ordinai<lb break="no"/>re. Et cela pour eux, leurs familles et leurs domestiques.</p>
+                  <p><lb/>2<hi rend="sup">o</hi> Que l’ordre de la discipline ecclesiastique soit
+                        main<lb break="no"/>tenu suivant la pratique usitée jusques a
+                     présent <lb/>tant dans les consistoires que dans la compagnie des <lb/>pasteurs.
+                     Que ladite compagnie jouisse librement de <lb/>tous ses droits et en particulier
+                     de celui qu’elle a et <lb/>dont elle est en possession d’élire, de is suspendre,
+                     de <lb/>déposer et changer les ministres, et de juger des choses <lb/>qui
+                     concernent le saint ministère sans qu’on puisse y ap<lb break="no"/>porter
+                     aucun empêchement&#160;; et que lorsque, par un <lb/>mutuel consentement de ladite
+                     compagnie et des peu<lb break="no"/>ples de quelque lieu de cet état, on voudra
+                     ériger <lb/>quelque nouvelle église, d’ou que les fonds soient pris, <pb n="3r" facs="AEN_AS_O27_1_2v_3r"/><lb/>le souverain soit tenu d’y donner son
+                     consentement et au<lb break="no"/>torisation en tant que de besoin aussi tôt
+                     qu’il en sera <lb/>requis.</p>
+                  <p><lb/>3<hi rend="sup">o</hi> Que comme le souverain a entre les mains les
+                     biens <lb/>de l’église depuis la réformation et qu’il y a divers <lb/>lieux dans
+                     cet état, ou, manque de fonds, on ne peut pas <lb/>pourvoir a l’édification des
+                     peuples, il soit convenu <lb/>d’une somme levée annuellement sur ces biens,
+                     laquelle <lb/>sera perpétuellement appliquée à des usages religieux <lb/>où il
+                     sera necessaire, tant dans la ville que dans le  <lb/>reste de l’état.</p>
+                  <p><lb/>4<hi rend="sup">o</hi> Qu’aucune personne ne pourra s’habituer dans
+                     un <lb/>lieu de religion differente de la sienne. Que si un <lb/>protestant veut
+                     se faire catholique romain, qu’il <lb/>aille demeurer et s’établir dans une
+                     paroisse catholi<lb break="no"/>que romaine comme les catholiques romains
+                     qui <lb/>voudront se faire protestants iront résider dans quel<lb break="no"/>que paroisse protestante et que de part ni d’autre, <lb/>on ne puisse se
+                     débaucher ni s’enlever les enfans les uns <lb/>aux autres pour les attirer à une
+                     autre religion.</p>
+                  <p><lb/>5<hi rend="sup">o</hi> Que dans tous les lieux protestans de cet état,
+                     toutes <lb/>les charges et offices soient entre les mains des pro<lb break="no"/>testans et
+                     que dans la chatelainie du Landeron les <lb/>charges et offices soient entre les
+                     mains des catho<lb break="no"/>liques romains.</p>
+                  <pb n="3v" facs="AEN_AS_O27_1_3v_4r"/>
+                   <head><lb/>II.</head>
+                  <p><lb/>Que toutes les personnes qui
+                     ne seront pas naturels du <lb/>pais nez sujets de l’état et regnicoles quand
+                     même ils se<lb break="no"/>roient naturalisez ou nez de peres naturalisez avant
+                     leur <lb/>naturalisation soient à l’avenir et à perpétuité <lb/>déclarez
+                     inhabiles à postuler dans cet état aucune char<lb break="no"/>ge ni employ
+                     civil, militaire ou ecclesiastique en quel<lb break="no"/>que maniere ou sous
+                     quelque pretexte que ce soit, <lb/>même les sujets naturels de l’état qui se
+                     seroient domi<lb break="no"/>ciliés et établis hors d’iceluy, ou qui se
+                     seroient liés par <lb/>office de charge à quelque autre prince ou état.
+                     Bien <lb/>entendu que la charge du seigneur gouverneur est <lb/>formellement
+                     exceptée de cet article et qu’il ne préju<lb break="no"/>diciera point aux
+                     droits que la compagnie des <lb/>pasteurs a et a exercée de tout temps
+                     d’appeller des <lb/>ministres de dehors dans le cas de nécessité.</p>
+                  <head><lb/>III.</head>
+                  <p><lb/>Que suivant que cela est espressement contenu dans <lb/>les actes
+                     de franchise tant de la ville et bourgeoisie <lb/>de Neufchatel que de la
+                     bourgeoisie de Vallengin tous <lb/>les sujets de l’état puissent librement
+                     sortir du païs <lb/>pour aller voyager, ou autrement, même servir en <lb/>guerre
+                     moiennant que ce ne soit pas un prince ou <lb/>état avec qui le prince, en tant
+                     que souverain de <lb/>Neufchatel seroit en guerre suivant que cela s’est
+                     <pb n="4r" facs="AEN_AS_O27_1_3v_4r"/> <lb/>pratiqué de toute ancienneté; n’entendant
+                     pas néant<lb break="no"/>moins par là qu’il soit licite a qui que ce soit de
+                     lever <lb/>ou enrôler des soldats dans cet état sans deüe permission. <lb/>Et
+                     qu’en outre et conformement a des arti­cles exprès <lb/>et formels des
+                     franchises tant de la bourgeoisie de <lb/>Neufchâtel que de celle de Vallengin,
+                     cet état ne <lb/>puisse être engagé dans aucune guerre ni les
+                     sujets <lb/>d’icelui obligez d’y marcher que ce ne soit pour la pro<lb break="no"/>pre guerre du prince, c’est a dire pour la deffence <lb/>de
+                     l’état et pour les guerres que le prince pourroit <lb/>avoir en tant que
+                     souverain de Neufchatel et non <lb/>autrement&#160;; en sorte que s’il avoit
+                     guerre pour raison <lb/>de quelque autre état, terres ou seigneuries,
+                     l’état <lb/>de Neufchatel ne soit point obligé d’y entrer mais en ce <lb/>cas
+                     devra demeurer dans la neutralité a moins que <lb/>tout le corps helvétique en
+                     general n’y prit part et <lb/>intérêt.</p>
+                  <head><lb/>IV.</head>
+                  <p><lb/>Qu’il soit pourveu a ce que la justice y soit bien et briè<lb break="no"/>vement administrée, et pour cet effet&#160;:</p>
+                  <p><lb/>1<hi rend="sup">o</hi> Que les états ordinaires, tant de Neufchatel
+                     que <lb/>de Vallengin, soient assemblez tous les ans pour le <lb/>moins une fois
+                     au mois de mai&#160;; et qu’outre cela on ne <lb/>laisse pas de convoquer les
+                     assemblées a l’extraordi<lb break="no"/>naire, pour les clames, decrets et
+                     accessoires ainsi qu’<lb break="no"/>il a été réglé depuis quelques années.</p>
+
+                  <p><pb n="4v" facs="AEN_AS_O27_1_4v_5r"/><lb/>2<hi rend="sup">o</hi> Que le souverain
+                     fasse en sorte que la coutume du <lb/>païs puisse être incessamment reveüe,
+                     éclaircie, corrigée, <lb/>augmentée même où il sera besoin afin qu’on puisse
+                     la <lb/>rediger par écrit, en un corps clair, abrégé et facile, sauf et
+                      <lb/>réservé toutefois les franchises et libertez de tout le corps <lb/>de
+                     l’état.</p>
+                  <p><lb/>3<hi rend="sup">o</hi> Que les demandes des officiers de la seigneurie
+                     soient  <lb/>claires, nettes et précisés en sorte qu’ils soient obligés de
+                      <lb/>declarer s’ils agissent civilement ou criminellement sur <lb/>quoi
+                     cependant on pourra chercher quelque expedient  <lb/>raisonnable pour prévenir
+                     touts inconveniens à <lb/>cet égard.</p>
+                  <head><lb/>V.</head>
+                  <p><lb/>Que dans les brevets des officiers de justice et de l’état <lb/>au
+                     lieu de la clause «&#160;Tant qu’il nous plaira&#160;», on y mettra
+                      <lb/>celle-cy «&#160;Tant qu’ils se comporteront bien&#160;», en sorte
+                     qu’ils <lb/>ne puissent non plus que les notaires être destituez de <lb/>leurs
+                     charges et offices qu’après avoir été plainement <lb/>convaincus de leur
+                     malversation.</p>
+                  <head><lb/>VI.</head> <p><lb/>Que les dispenses de mariage jusques aux cousins <lb/>germains
+                     exclusivement soient entièrement abolies <lb/>comme étant une chose incompatible
+                     avec notre <lb/>reformation.</p>
+                  <pb n="5r" facs="AEN_AS_O27_1_4v_5r"/>
+                  <head><lb/>VII. </head> <p><lb/>Que
+                     les serments des notaires soient a touts égards <lb/>remis sur l’ancien pied et
+                     les innovations qui y <lb/>ont été faites, retranchiez.</p>
+                  <head><lb/>VIII. </head> <p><lb/>Qu’a l’avenir le prince puisse à la vérité faire faire <lb/>des
+                     reconnoissances quant il lui plaira. <lb/>Mais que ce soit a ses dépens sans que
+                     les bour<lb break="no"/>geois et sujets soient obligés de rien payer pour
+                     cela.</p>
+                  <head><lb/>IX.</head> <p><lb/>Enfin et qu’a l’avenir, le souverain d’abord après <lb/>qu’il aura
+                     été reconnu et investi de la souve<lb break="no"/>raineté prete le serment
+                     accoutumé tant à <lb/>la ville de Neufchatel qu’aux autres corps de <lb/>l’état,
+                     soit par lui même s’il est présent, soit <lb/>par procureur, s’il est absent,
+                     ainsi qu’il s’est <lb/>pratiqué de toute ancienneté, a quoi il ajou<lb break="no"/>tera une promesse et assurance generale <lb/>qu’il confirme en
+                     tant que de besoin les loix <lb/>et constitutions fondamentales de l’état
+                     en <lb/>general, y compris les articles cy dessus et tous <lb/>les droits,
+                     franchises et libertez spirituelles et <lb/>temporelles, bonnes anciennes
+                     coutumes, écrites <lb/>et non écrites de chacun des corps et communautez <lb/>qui
+                     composent cet état, comme aussi toutes les
+                     <pb n="5v" facs="AEN_AS_O27_1_5v_6r"/><lb/>concessions perpétuelles, reelles et personnelles de <lb/>quelque nature
+                     qu’elles soient accordées tant aux <lb/>corps et communautez qu’aux particuliers
+                     par tous <lb/>les princes precedens et leurs tuteurs et curateurs <lb/>et
+                     nommément par feu Madame la duchesse <lb/>de Nemours nôtre souveraine
+                     princesse.</p>
+                  <p><lb/>De plus une déclaration, en date du <date when-custom="1707-10-31" calendar="unknown">31&#160;octobre&#160;1707 <lb/></date>dont la teneur aussi s’ensuit mot a
+                     mot&#160;:</p>
+                  <p><lb/>Nous Ernest de Metternich, comte du saint empire, mini<lb break="no"/>stre
+                     d’état, ambassadeur extraordinaire et pléni<lb break="no"/>potentiaire de Sa
+                     Majesté le roi de Prusse <gap reason="missing"/>. Comme <lb/>nous sçavons et sommes pleinement
+                     assurez que l’inten<lb break="no"/>tion de Sadite Majesté, en cas, qu’en
+                     conformité de ses <lb/>justes droits, elle soit investie de la souveraineté
+                     de <lb/>Neufchatel et Vallangin, est, non seulement de la <lb/>conserver et
+                     maintenir dans tout son lustre et dans <lb/>toute sa splendeur, mais encore de
+                     l’augmenter autant <lb/>qu’il sera possible, auquel effet Sadite Majesté est
+                        re<lb break="no"/>solüe de prendre dans la suite toutes les mesures neces<lb break="no"/>saires, et qui pourront être les plus agréables aus états
+                     et <lb/>aux peuples de ce païs. Nous déclarons en attendant <lb/>et suivant le
+                     plein pouvoir que nous avons, que Sa<lb break="no"/>dite Majesté et ses
+                     successeurs garderont toujours entre <pb n="6r" facs="AEN_AS_O27_1_5v_6r"/><lb/>leurs mains cette souveraineté de Neufchatel et <lb/>Vallengin, avec ses
+                     annexes, appartenances et depen<lb break="no"/>dances pour la posseder comme
+                     telle dans toute son  <lb/>indépendance, inalienabilité et
+                     indivisibilité <lb/>sans que Sa dite Majesté ni ses successeurs puissent
+                     jamais <lb/>la donner en appannage à aucun prince cadet ni <lb/>en fief ou
+                     arriéré fief à qui que ce soit ni en quel<lb break="no"/>que maniere que ce
+                     puisse être. En foy de quoy <lb/>nous avons fait expedier la presente
+                     déclaration <lb/>signée de nôtre main et munie de nôtre sceau <lb/>ordinaire à
+                     Neufchatel le <date when-custom="1707-10-31" calendar="unknown">31&#160;octobre&#160;1707</date>. <lb/>Signé Metternich.</p>
+                  <p><gap reason="missing"/><note>Note Favarger 1982&#160;: Suivent
+                     différentes clauses stipulant, entre autres, que lesdits articles sont
+                     compris dans les serments prêtés par Metternich, représentant du roi, aux
+                     communautés de l’État.</note></p>
+                  <pb n="6v" facs="AEN_AS_O27_1_6v_7r"/>
+                  <pb n="7r" facs="AEN_AS_O27_1_6v_7r"/>
+                  <pb n="7v" facs="AEN_AS_O27_1_7v_8r"/>
+                  <pb n="8r" facs="AEN_AS_O27_1_7v_8r"/>
+                  <pb n="8v" facs="AEN_AS_O27_1_8v"/>
+        <!-- AB: la pièce n'est pas à proprement signée, c'est écrit de la même main "Signé Metternich" car on est dans un recueil. Je pense qu'il ne faut donc pas placer la signature entre balises <signed>.
+                    La pièce comporte de magnifiques sceaux.-->
+               </div>
+            </body><back><div><p>Références originales de l'édition Favarger&#160;1982&#160;:</p><p>Original signé et scellé, AEN, O&#160;27, n<hi rend="sup">o</hi>&#160;1.</p>
+               <p>Éd.&#160; Recueil de pièces officielles, I, p.&#160;21-32.</p></div></back></text>
+</TEI>

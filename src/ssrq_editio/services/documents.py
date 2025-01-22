@@ -5,7 +5,12 @@ from ssrq_utils.idno.filter import idno_is_main
 from ssrq_utils.idno.model import IDNO
 
 from ssrq_editio.models.documents import Document
-from ssrq_editio.services.xslt.transformer import XSLTParam, XSLTTransformationError, apply_xslt
+from ssrq_editio.services.xslt.transformer import (
+    XSLTParam,
+    XSLTTransformationError,
+    apply_xslt,
+    apply_xslt_in_parallel,
+)
 
 
 async def extract_infos_from_xml(
@@ -13,11 +18,41 @@ async def extract_infos_from_xml(
     volume_id: int,
     transpiled_schema: Path,
     xslt_script: str = "document_info.xslt",
+    parallel: bool = False,
 ) -> tuple[Document, ...]:
-    result = await apply_xslt(
-        xml_src=xml_src,
-        xslt_script=xslt_script,
-        params=[XSLTParam("schema", transpiled_schema.as_uri())],
+    """Extracts infos from the given TEI-XML sources for a specific volume.
+
+    The information extraction is mainly done by applying an XSLT script, which
+    reuses various logic implemented in the `ssrq-convert` package. The idno related
+    processing is done by the `ssrq-utils` package.
+
+    ToDo: Extract full-text from the XML sources.
+
+    Args:
+        xml_src (tuple[Path, ...]): The XML sources to extract infos from.
+        volume_id (int): The volume id. Corresponds to the primary key of the volume.
+        transpiled_schema (Path): The transpiled schema to use for the extraction.
+        xslt_script (str, optional): The XSLT script to apply. Defaults to "document_info.xslt".
+        parallel (bool, optional): Whether to apply the XSLT script in parallel. Defaults to False.
+
+    Returns:
+        tuple[Document, ...]: The extracted documents.
+
+    Raises:
+        XSLTTransformationError: If the extraction fails for any of the XML sources
+    """
+    result = (
+        await apply_xslt(
+            xml_src=xml_src,
+            xslt_script=xslt_script,
+            params=[XSLTParam("schema", transpiled_schema.as_uri())],
+        )
+        if not parallel
+        else await apply_xslt_in_parallel(
+            xml_src=xml_src,
+            xslt_script=xslt_script,
+            params=[XSLTParam("schema", transpiled_schema.as_uri())],
+        )
     )
 
     if any(item is None for item in result):

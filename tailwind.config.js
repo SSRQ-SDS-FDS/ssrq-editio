@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/ssrq_editio/entrypoints/app/**/*.{html,jinja}'],
+  content: ['./src/ssrq_editio/entrypoints/app/**/*.{html,jinja,xsl}'],
   darkMode: 'media',
   theme: {
     extend: {
