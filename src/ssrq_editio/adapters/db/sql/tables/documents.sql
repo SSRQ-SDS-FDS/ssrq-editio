@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS documents
     orig_place TEXT NULL,
     de_title TEXT NULL,
     fr_title TEXT NULL,
+    entities TEXT NULL,
     FOREIGN KEY (volume_id) REFERENCES volumes (id)
 );
 

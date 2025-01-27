@@ -2,7 +2,7 @@ from aiosqlite import Connection
 
 
 async def store_batches(
-    connection: Connection, batch_size: int, sql_query: str, values: list[tuple]
+    connection: Connection, batch_size: int, sql_query: str, values: list[tuple | dict]
 ):
     """
     Stores a list of values in the database by executing a query in batches. This

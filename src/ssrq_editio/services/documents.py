@@ -15,7 +15,7 @@ from ssrq_editio.services.xslt.transformer import (
 
 async def extract_infos_from_xml(
     xml_src: tuple[Path, ...],
-    volume_id: int,
+    volume_id: str,
     transpiled_schema: Path,
     xslt_script: str = "document_info.xslt",
     parallel: bool = False,
@@ -67,7 +67,7 @@ async def extract_infos_from_xml(
     )
 
 
-def _add_idno_info(document_info: dict, volume_id: int) -> dict:
+def _add_idno_info(document_info: dict, volume_id: str) -> dict:
     """Add additional information to the document info.
 
     Parses the idno and adds the following information:
