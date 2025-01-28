@@ -1,6 +1,6 @@
 @layer components {
   .kanton-card {
-    @apply align-middle border-b border-gray-300 bg-ssrq-greyed-50 rounded-lg hover:shadow max-w-[16rem];
+    @apply align-middle h-auto border-b border-gray-300 bg-ssrq-greyed-50 rounded-lg hover:shadow max-w-[16rem];
   }
 
   .kanton-card.has-docs {

@@ -12,7 +12,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 auto-rows-max gap-3 justify-items-center">
             {% for kanton in data.content.kantons %}
                 {% if kanton.docs > 0 %}
-                    <a href="{{ url_for('kanton', kanton=kanton.short_name) }}">
+                    <a href="{{ url_for('kanton', kanton=kanton.short_name) }}" class="flex">
                         <KantonCard :kanton="kanton" :lang="lang" :request="request" class="kanton-card has-docs" />
                     </a>
                 {% else %}
