@@ -2,6 +2,8 @@ css_dir := "./src/ssrq_editio/entrypoints/app/static/css"
 sql_dir := "./src/ssrq_editio/adapters/db/sql/**/*.sql"
 web_app := "./src/ssrq_editio/entrypoints/app/main.py"
 
+export TAILWINDCSS_VERSION:="v3.4.17" # ToDo: Update to tailwindcss@latest, first check https://github.com/timonweb/pytailwindcss/issues
+
 # Compile the CSS using TailwindCSS, pass "-w" to watch for changes
 css args="":
     uv run tailwindcss -c tailwind.config.js -i {{css_dir}}/src/main.css -o {{css_dir}}/style.css -m {{args}}
