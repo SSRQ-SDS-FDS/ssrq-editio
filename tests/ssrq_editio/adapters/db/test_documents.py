@@ -21,7 +21,7 @@ def documents():
             facs=["bar", "baz"] if d % 2 == 0 else None,
             printed_idno=f"SSRQ SG III/4 {d}",
             volume_id="SG_III_4",
-            orig_place="loc000001",
+            orig_place=["loc000001"],
             de_title="<h3>foo</h3>",
             fr_title=None,
         )

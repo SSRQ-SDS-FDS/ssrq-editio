@@ -111,7 +111,7 @@ async def store_entities(
             await _store_persons(entity, connection, batch_size)
         continue
 
-    # ToDO: Write a query to gather occurrences from the database and execute it here.
+    await _create_occurrences(connection)
 
 
 async def _store_persons(
@@ -264,6 +264,23 @@ async def _store_lemmata(
             for term in terms.entities
         ],
     )
+
+
+async def _create_occurrences(
+    connection: Connection,
+    query: Path = SQL_DATA_DIR / "put_occurrences.sql",
+):
+    """Stores the occurrences-references in the database by
+    matching the entity-ids with the entities listed in the
+    documents table.
+
+    Args:
+        connection (Connection): An aiosqlite Connection
+        query (str): The query to execute. Defaults to "put_occurrences.sql".
+    """
+    sql_query = await load(dir=query.parent, name=query.name)
+    await connection.execute(sql_query)
+    await connection.commit()
 
 
 async def search_lemmata(

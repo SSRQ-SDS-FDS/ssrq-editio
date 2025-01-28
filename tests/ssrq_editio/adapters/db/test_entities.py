@@ -3,6 +3,7 @@ from typing import Any
 import aiosqlite
 import pytest
 
+from ssrq_editio.adapters.db.documents import initialize_document_data
 from ssrq_editio.adapters.db.entities import (
     count_entities,
     delete_entities,
@@ -13,6 +14,7 @@ from ssrq_editio.adapters.db.entities import (
     search_places,
     store_entities,
 )
+from ssrq_editio.models.documents import Document
 from ssrq_editio.models.entities import Entities, EntityTypes, Keywords, Lemmata, Persons, Places
 
 
@@ -61,6 +63,41 @@ async def test_search_places(db_setup, entities, search: str | None, expected: A
             assert expected(places[0].entities) == expected(result.entities)
         case _:
             assert len(result.entities) > 0
+
+
+@pytest.mark.anyio
+async def test_search_places_with_occurrences(
+    db_volume_data,
+    entities,
+):
+    places = tuple([e for e in entities if isinstance(e, Places)])
+    documents = (
+        Document(
+            uuid="d56f1ce8-cec9-49ed-b54b-09f397adc2d8",
+            idno="SSRQ-SG-III_4-63-1",
+            is_main=True,
+            sort_key=63,
+            de_orig_date="1473 April 26 a. S.",
+            en_orig_date="1473 April 26 O.S.",
+            fr_orig_date="1473 avril 26 a. s.",
+            it_orig_date="1473 aprile 26 v. s.",
+            facs=["OGA_Gams_Nr_5_r", "OGA_Gams_Nr_5_v"],
+            printed_idno="SSRQ SG III/4 63",
+            volume_id="SG_III_4",
+            orig_place=["loc000211"],
+            de_title="foo",
+            fr_title=None,
+            entities=["loc000127"],
+        ),
+    )
+    await initialize_document_data(documents, db_volume_data)
+    await store_entities(places, db_volume_data)
+
+    result = await search_places(connection=db_volume_data, search="loc000127")
+
+    assert isinstance(result, Places)
+    assert len(result.entities) == 1
+    assert result.entities[0].occurrences == [documents[0].uuid]
 
 
 @pytest.mark.anyio

@@ -22,7 +22,9 @@ class Entity(BaseModel):
     fr_name: str | None
     it_name: str | None
     lt_name: str | None
-    occurrences: list[str] | None = None
+    occurrences: Annotated[
+        list[str] | None, BeforeValidator(lambda x: x.split(",") if isinstance(x, str) else x)
+    ] = None
 
     def get_name_by_lang(self, lang: Lang) -> str:
         """Retrieve the name of the entity in the specified language.
