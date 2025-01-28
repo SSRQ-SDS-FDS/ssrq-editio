@@ -1,7 +1,9 @@
 from typing import Annotated, Any
 
 from pydantic import BaseModel, BeforeValidator
-from pydantic_core import from_json, to_json
+from pydantic_core import to_json
+
+from ssrq_editio.services.utils import parse_as_list_or_return
 
 
 class Document(BaseModel):
@@ -15,16 +17,19 @@ class Document(BaseModel):
     it_orig_date: str
     facs: Annotated[
         list[str] | None,
-        BeforeValidator(lambda x: x if isinstance(x, list) or x is None else from_json(x)),
+        BeforeValidator(parse_as_list_or_return),
     ]
     printed_idno: str
     volume_id: str
-    orig_place: str | None
+    orig_place: Annotated[
+        list[str] | None,
+        BeforeValidator(parse_as_list_or_return),
+    ] = None
     de_title: str | None = None
     fr_title: str | None = None
     entities: Annotated[
         list[str] | None,
-        BeforeValidator(lambda x: x if isinstance(x, list) or x is None else from_json(x)),
+        BeforeValidator(parse_as_list_or_return),
     ] = None
 
     def model_dump_sqlite(self) -> dict[str, Any]:

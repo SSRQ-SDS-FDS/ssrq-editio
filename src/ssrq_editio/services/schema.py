@@ -2,7 +2,6 @@ from os import getenv
 from pathlib import Path
 
 from ssrq_editio.adapters.file import load, load_via_http, write
-from ssrq_editio.entrypoints.cli.config import TMP_SCHEMA
 from ssrq_editio.services.xslt.config import SCHEMA2TRANSLATIONS_XSL
 from ssrq_editio.services.xslt.transformer import XSLTTransformationError, apply_xslt
 
@@ -11,7 +10,7 @@ SCHEMA_SRC = getenv("SCHEMA_SRC", "https://schema.ssrq-sds-fds.ch/dev/TEI_Schema
 
 async def transpile_schema_to_translations(
     schema_src: str | Path,
-    translations_dst: Path = TMP_SCHEMA,
+    translations_dst: Path,
     xslt_script: Path = SCHEMA2TRANSLATIONS_XSL,
 ) -> Path:
     """A service to create a transpiled version of the SSRQ-XML-Schema.

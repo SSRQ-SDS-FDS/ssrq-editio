@@ -10,6 +10,7 @@ from ssrq_editio.entrypoints.app.config import DB_NAME
 from ssrq_editio.entrypoints.cli.config import VOLUME_CONFIG
 from ssrq_editio.entrypoints.cli.handlers.db import setup, setup_entities
 from ssrq_editio.services.logger import SSRQ_LOGGER
+from ssrq_editio.services.schema import SCHEMA_SRC
 
 app = typer.Typer()
 
@@ -20,9 +21,14 @@ def prepare_db(
     db: str = typer.Argument(DB_NAME, help="The name of the database."),
     config: Path = typer.Argument(VOLUME_CONFIG, help="The path to the volume config."),
     data: Path = typer.Argument(config.VOLUME_SRC, help="The path to the volume data."),
+    schema: str = typer.Option(SCHEMA_SRC, help="The source of the schema."),
 ):
     """Prepare and popluate the database."""
-    asyncio.run(setup(db, clean, config, data))
+    asyncio.run(
+        setup(
+            db, clean, config, data, schema if schema.startswith("http") else Path(schema)
+        )  # Naive check for URL, should be improved
+    )
 
 
 @app.command("fetch-entities")
