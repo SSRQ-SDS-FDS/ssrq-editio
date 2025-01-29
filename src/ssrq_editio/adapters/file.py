@@ -7,11 +7,12 @@ from anyio.to_thread import run_sync
 from httpx import AsyncClient
 
 
-@cachebox.cached(cachebox.Cache(maxsize=256))
+@cachebox.cached(cachebox.TTLCache(0, ttl=43200))
 async def load(dir: Path, name: str | Path) -> str:
     """Load content of a file in an async fashion.
 
     The loaded content is cached to avoid reading the file multiple times.
+    The item will be removed from the cache after 12 hours.
 
     Args:
         dir (Path): Directory where the file is located.

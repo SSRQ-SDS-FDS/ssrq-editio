@@ -23,7 +23,7 @@ RUN uv venv && \
 
 USER ssrq_editio
 
-RUN uv run editio prepare-db --clean && \
+RUN uv run editio prepare-db --clean --no-parallel && \
     uv run just css
 
 EXPOSE $PORT

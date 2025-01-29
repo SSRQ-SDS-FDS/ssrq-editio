@@ -18,7 +18,9 @@ from ssrq_editio.services.schema import transpile_schema_to_translations
 from ssrq_editio.services.volumes import create_search_pattern, fill_volume_info_from_xml
 
 
-async def setup(db: str, clean: bool, config_src: Path, data_src: Path, schema_src: Path | str):
+async def setup(
+    db: str, clean: bool, config_src: Path, data_src: Path, schema_src: Path | str, parallel: bool
+):
     SSRQ_LOGGER.info("Preparing the database.")
 
     if clean and (db_file := Path(db)).exists():
@@ -36,7 +38,7 @@ async def setup(db: str, clean: bool, config_src: Path, data_src: Path, schema_s
         SSRQ_LOGGER.success("Initialized the database with tables and settings.")
 
         await setup_kantons(session)
-        await setup_volumes(session, config_src, data_src, transpiled_schema)
+        await setup_volumes(session, config_src, data_src, transpiled_schema, parallel)
 
         if clean:
             await setup_entities(session)
@@ -48,7 +50,11 @@ async def setup_kantons(connection: Connection):
 
 
 async def setup_volumes(
-    connection: Connection, config_src: Path, data_src: Path, transpiled_schema: Path
+    connection: Connection,
+    config_src: Path,
+    data_src: Path,
+    transpiled_schema: Path,
+    parallel: bool,
 ):
     config = await load_volume_config(config_src)
     SSRQ_LOGGER.success(
@@ -73,18 +79,22 @@ async def setup_volumes(
 
         SSRQ_LOGGER.success(f"Inserted volume data for {volume.key} into the database.")
 
-        await setup_documents(connection, files, volume.key, transpiled_schema)
+        await setup_documents(connection, files, volume.key, transpiled_schema, parallel)
 
 
 async def setup_documents(
-    connection: Connection, files: tuple[Path, ...], volume_id: str, transpiled_schema: Path
+    connection: Connection,
+    files: tuple[Path, ...],
+    volume_id: str,
+    transpiled_schema: Path,
+    parallel: bool,
 ):
     SSRQ_LOGGER.info(
         f"Starting to extract infos from {len(files)} XML-documents for »{volume_id}«."
     )
 
     documents = await extract_infos_from_xml(
-        xml_src=files, volume_id=volume_id, transpiled_schema=transpiled_schema, parallel=True
+        xml_src=files, volume_id=volume_id, transpiled_schema=transpiled_schema, parallel=parallel
     )
 
     await initialize_document_data(documents=documents, connection=connection)

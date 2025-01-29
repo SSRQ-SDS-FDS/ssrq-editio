@@ -22,11 +22,12 @@ def prepare_db(
     config: Path = typer.Argument(VOLUME_CONFIG, help="The path to the volume config."),
     data: Path = typer.Argument(config.VOLUME_SRC, help="The path to the volume data."),
     schema: str = typer.Option(SCHEMA_SRC, help="The source of the schema."),
+    parallel: bool = typer.Option(True, help="Whether to apply the XSLT in parallel."),
 ):
     """Prepare and popluate the database."""
     asyncio.run(
         setup(
-            db, clean, config, data, schema if schema.startswith("http") else Path(schema)
+            db, clean, config, data, schema if schema.startswith("http") else Path(schema), parallel
         )  # Naive check for URL, should be improved
     )
 
