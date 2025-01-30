@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import cachebox
 from aiosqlite import Connection
 
 from ssrq_editio.adapters.db.config import SQL_DATA_DIR
@@ -27,6 +28,7 @@ async def initialize_document_data(
     )
 
 
+@cachebox.cached(cachebox.TTLCache(maxsize=0, ttl=3600))
 async def get_document_infos(
     connection: Connection,
     query: Path = SQL_DATA_DIR / "get_idno.sql",
