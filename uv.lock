@@ -1055,7 +1055,7 @@ requires-dist = [
     { name = "pytailwindcss", specifier = ">=0.2.0" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "saxonche", specifier = ">=12.5.0" },
-    { name = "ssrq-utils", git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git?tag=v0.4.1" },
+    { name = "ssrq-utils", git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git?tag=v0.5.0" },
     { name = "typer", specifier = ">=0.12.5" },
     { name = "uvicorn", specifier = ">=0.31.0" },
 ]
@@ -1076,8 +1076,8 @@ dev = [
 
 [[package]]
 name = "ssrq-utils"
-version = "0.4.1"
-source = { git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git?tag=v0.4.1#bbb7864dc9c64d07d32d4bd58809c4e1f8ae27af" }
+version = "0.5.0"
+source = { git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git?tag=v0.5.0#31a3b5a7089de5cc87020c216fc6d0aac238ef43" }
 dependencies = [
     { name = "cachebox" },
     { name = "maturin" },
