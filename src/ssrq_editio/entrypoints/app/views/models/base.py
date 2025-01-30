@@ -80,9 +80,7 @@ class ViewModel:
                     context,
                     block_name=self.template_partial,
                 )  # type: ignore
-            return self.templates.TemplateResponse(
-                f"pages/{self.page}", cast(dict, await self.create_context())
-            )
+            return self.templates.TemplateResponse(f"pages/{self.page}", context=context)
         except Exception as error:
             return self.error_to_html(error)
 

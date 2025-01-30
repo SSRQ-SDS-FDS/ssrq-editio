@@ -1,7 +1,6 @@
 from pathlib import Path
 
 from pydantic_core import from_json
-from ssrq_utils.idno.filter import idno_is_main
 from ssrq_utils.idno.model import IDNO
 
 from ssrq_editio.models.documents import Document
@@ -93,7 +92,7 @@ def _add_idno_info(document_info: dict, volume_id: str) -> dict:
 
     return {
         **document_info,
-        "is_main": idno_is_main(parsed_idno),
-        "sort_key": next(filter(None, (parsed_idno.case, parsed_idno.doc, 99999))),
+        "is_main": parsed_idno.is_main(),
+        "sort_key": parsed_idno.sort_key,
         "volume_id": volume_id,
     }

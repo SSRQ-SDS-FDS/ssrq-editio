@@ -47,7 +47,9 @@
                 <EntityCard
                   :entity="hit"
                   :entity_type="data.content.entity_type"
+                  :idnos="data.content.idnos"
                   :lang="lang"
+                  :request="request"
                   :translator="translator"
                 />
             {% endfor %}

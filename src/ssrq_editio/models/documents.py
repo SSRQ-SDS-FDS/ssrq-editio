@@ -1,4 +1,4 @@
-from typing import Annotated, Any
+from typing import Annotated, Any, NamedTuple
 
 from pydantic import BaseModel, BeforeValidator
 from pydantic_core import to_json
@@ -10,7 +10,7 @@ class Document(BaseModel):
     uuid: str
     idno: str
     is_main: bool
-    sort_key: int
+    sort_key: float
     de_orig_date: str
     en_orig_date: str
     fr_orig_date: str
@@ -36,3 +36,11 @@ class Document(BaseModel):
         return {
             k: v if not isinstance(v, list) else to_json(v) for k, v in self.model_dump().items()
         }
+
+
+class DocumentInfo(NamedTuple):
+    idno: str
+    printed_idno: str
+    sort_key: float
+    volume: str
+    kanton: str

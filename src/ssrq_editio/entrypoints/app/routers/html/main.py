@@ -84,8 +84,19 @@ async def documents(
     lang: LangDependency,
     connection: DBDependency,
 ):
-    print("this will be shown now! documents...")
     return f"{kanton} {volume}"
+
+
+@html.get("/{kanton}/{volume}/{document}.html", name="document_view_with_html_extension")
+async def document_extension(
+    kanton: KantonName,
+    volume: str,
+    document: str,
+    request: Request,
+):
+    return RedirectResponse(
+        html.url_path_for("document_view", kanton=kanton, volume=volume, document=document)
+    )
 
 
 @html.get("/{kanton}/{volume}/{document}", name="document_view")
@@ -94,7 +105,5 @@ async def document(
     volume: str,
     document: str,
     request: Request,
-    lang: LangDependency,
-    connection: DBDependency,
 ):
-    raise NotImplementedError
+    return f"Page view for {kanton} {volume} {document}"

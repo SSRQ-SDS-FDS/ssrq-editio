@@ -5,3 +5,5 @@ CREATE TABLE IF NOT EXISTS occurrences
     ref TEXT NOT NULL,
     FOREIGN KEY (uuid) REFERENCES documents (uuid)
 );
+
+CREATE INDEX idx_occurrences_ref ON occurrences (ref);

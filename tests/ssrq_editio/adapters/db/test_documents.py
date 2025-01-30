@@ -2,7 +2,7 @@ from uuid import uuid4
 
 import pytest
 
-from ssrq_editio.adapters.db.documents import initialize_document_data
+from ssrq_editio.adapters.db.documents import get_document_infos, initialize_document_data
 from ssrq_editio.models.documents import Document
 
 
@@ -33,3 +33,11 @@ def documents():
 async def test_initialize_document_data(db_volume_data, documents):
     # Smoke test, if query is successful
     await initialize_document_data(documents=documents, connection=db_volume_data)
+
+
+@pytest.mark.anyio
+async def test_get_document_infos(db_volume_data, documents):
+    await initialize_document_data(documents=documents, connection=db_volume_data)
+    result = await get_document_infos(connection=db_volume_data)
+    assert len(result.keys()) == len(documents)
+    assert all(uuid in [d.uuid for d in documents] for uuid in result.keys())

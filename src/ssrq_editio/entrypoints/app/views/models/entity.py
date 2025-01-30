@@ -4,6 +4,7 @@ from aiosqlite import Connection
 from fastapi import Request
 from ssrq_utils.lang.display import Lang
 
+from ssrq_editio.adapters.db.documents import get_document_infos
 from ssrq_editio.entrypoints.app.views.models.base import ViewContext, ViewModel
 from ssrq_editio.models.entities import Entities, Entity, EntityTypes
 from ssrq_editio.services.entities import get_entities
@@ -41,6 +42,7 @@ class EntityViewModel(ViewModel):
 
     async def create_context(self) -> ViewContext:
         search_result = await self._get_entities()
+        document_idnos = await get_document_infos(self.connection)
         return ViewContext(
             request=self.request,
             lang=self.lang,
@@ -51,6 +53,7 @@ class EntityViewModel(ViewModel):
                     "current_page": self.current_page,
                     "entities": search_result[1][0] if search_result else None,
                     "entity_type": self.entity_type.value,
+                    "idnos": document_idnos,
                     "pages": search_result[1][1] if search_result else None,
                     "total": search_result[0] if search_result else None,
                     "query": self.query,
@@ -60,7 +63,7 @@ class EntityViewModel(ViewModel):
         )
 
     def _get_title(self) -> str:
-        return f"{self.translator.translate(self.lang, "short_title")} · {self.translator.translate(self.lang, self.entity_type.value)}"
+        return f"{self.translator.translate(self.lang, 'short_title')} · {self.translator.translate(self.lang, self.entity_type.value)}"
 
     async def _get_entities(self) -> None | tuple[int, tuple[Sequence[Entity], list[int] | None]]:
         result: Entities = await get_entities(self.connection, self.entity_type, self.query)

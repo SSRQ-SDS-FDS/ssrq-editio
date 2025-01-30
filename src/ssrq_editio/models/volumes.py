@@ -18,7 +18,7 @@ class Volume(BaseModel):
 
     @computed_field
     def machine_name(self) -> str:
-        return self.name.replace(" ", "_")
+        return self.name.replace(" ", "_").replace("/", "_")
 
 
 class Volumes(BaseModel):

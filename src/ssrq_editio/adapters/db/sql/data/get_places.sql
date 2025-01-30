@@ -10,12 +10,15 @@ SELECT
     places.rm_name,
     places.de_place_types,
     places.fr_place_types,
-    (
-        SELECT GROUP_CONCAT(occurrences.uuid, ',')
-        FROM occurrences
-        WHERE occurrences.ref = places.id
-    ) AS occurrences
+    occurrences.occurrences
 FROM places -- noqa: AM04
+LEFT JOIN (
+    SELECT
+        occurrences.ref,
+        GROUP_CONCAT(occurrences.uuid, ',') AS occurrences
+    FROM occurrences
+    GROUP BY occurrences.ref
+) AS occurrences ON places.id = occurrences.ref
 WHERE
     places.id LIKE '%' || :search || '%'
     OR places.cs_name LIKE '%' || :search || '%'

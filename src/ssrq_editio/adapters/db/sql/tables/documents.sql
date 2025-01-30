@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS documents
     uuid TEXT NOT NULL PRIMARY KEY,
     idno TEXT NOT NULL,
     is_main INTEGER NOT NULL,
-    sort_key INTEGER NOT NULL,
+    sort_key REAL NOT NULL,
     de_orig_date TEXT NOT NULL,
     en_orig_date TEXT NOT NULL,
     fr_orig_date TEXT NOT NULL,

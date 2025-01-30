@@ -1,4 +1,5 @@
 /* Import components */
+@import "./components/accordion.css";
 @import "./components/cover.css";
 @import "./components/breadcrumbs.css";
 @import "./components/footer.css";

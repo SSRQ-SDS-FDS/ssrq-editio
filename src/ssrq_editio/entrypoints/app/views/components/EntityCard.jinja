@@ -1,7 +1,9 @@
 {# def
     entity: Entity,
     entity_type: str,
+    idnos: dict[str, DocumentInfo],
     lang: Lang,
+    request: Request,
     translator: Translator
 #}
 
@@ -26,23 +28,23 @@
             {{ entity.list_languages() | join(', ')}}
         </span>
     </header>
-    <list class="list-none">
+    <ul class="list-none">
         {% if entity_type in ["lemmata", "keywords"] %}
-            <li>
+            <li class="mt-0.5">
                 <span class="font-medium">{{ translator.translate(lang, 'normalized-spelling') }}:</span> {{ entity.get_name_by_lang(lang) }}
             </li>
-            <li>
+            <li class="my-0.5 border-t-2 border-ssrq-greyed-50">
                 <span class="font-medium">{{ translator.translate(lang, 'definition') }}:</span> {{ entity.get_definition_by_lang(lang) }}
             </li>
         {% elif entity_type == "places" %}
-            <li>
+            <li class="mt-0.5">
                 <span class="font-medium">{{ translator.translate(lang, 'standard_name') }}:</span> {{ entity.get_name_by_lang(lang) }}
             </li>
-            <li>
+            <li class="my-0.5 border-t-2 border-ssrq-greyed-50">
                 <span class="font-medium">{{ translator.translate(lang, 'place_type') }}:</span> {{ entity.get_place_type_by_lang(lang) }}
             </li>
         {% elif entity_type == "persons" %}
-            <li>
+            <li class="mt-0.5">
                 <span class="font-medium">{{ translator.translate(lang, 'standard_name') }}:</span> {{ entity.get_name_by_lang(lang) }}
             </li>
             <!--
@@ -50,14 +52,48 @@
                 <span class="font-medium">{{ translator.translate(lang, 'sex') }}:</span> {{ entity.sex }}
             </li>
             -->
-            <li>
+            <li class="my-0.5 border-t-2 border-ssrq-greyed-50">
                 <span class="font-medium">{{ translator.translate(lang, 'birth_or_first_mention') }}:</span> {{ entity.birth or entity.first_mention or '–' }}
             </li>
-            <li>
+            <li class="my-0.5 border-t-2 border-ssrq-greyed-50">
                 <span class="font-medium">{{ translator.translate(lang, 'death_or_last_mention') }}:</span> {{ entity.death or entity.last_mention or '–' }}
             </li>
         {% endif %}
-        <li><span class="font-medium">{{ translator.translate(lang, 'occurrences') }}:</span> ToDo ...</li>
-        <li><span class="font-medium">{{ translator.translate(lang, 'permalink') }}:</span> <a class="text-ssrq-primary" target="_blank" href="{{permalink}}">{{ permalink }}</a></li>
-    </list>
+        <li class="my-0.5 border-t-2 border-ssrq-greyed-50">
+            {% if entity.occurrences is not none %}
+
+
+            <details class="accordion">
+                <summary><span class="font-medium">{{ translator.translate(lang, 'occurrences') }}:</span></summary>
+                <div class="px-4 py-2">
+                    <ol class="list-none">
+                        {% for kanton, volumes in group_and_sort_idnos(entity.occurrences, idnos) | dictsort %}
+                        <li>
+                            <span class="underline">{{ kanton }}</span>
+                            <ol class="ml-2">
+                                {% for volume, docs in volumes | dictsort %}
+                                    <li>
+                                        {% for doc in docs  %}
+                                            <!-- ToDo: Find a more generic approach for creating links, we also need to consider UUID only IDNOs -->
+                                            <a
+                                            class="text-ssrq-primary"
+
+                                            href="{{ url_for('document_view', kanton=doc.kanton, volume=doc.volume | replace(' ', '_') | replace('/', '_'), document=doc.idno.split('-')[3:] | join('-') )}}">{{ doc.printed_idno }}</a>{% if not loop.last %},{% endif %}
+                                        {% endfor %}
+                                    </li>
+                                {% endfor %}
+                            </ol>
+                        </li>
+                        {% endfor %}
+                    </ol>
+                </div>
+            </details>
+            {% else %}
+            <span class="font-medium">{{ translator.translate(lang, 'occurrences') }}:</span> {{ translator.translate(lang, 'no-occurrences') }}
+            {% endif %}
+        </li>
+        <li class="mb-0.5 border-t-2 border-ssrq-greyed-50">
+            <span class="font-medium">{{ translator.translate(lang, 'permalink') }}:</span> <a class="text-ssrq-primary" target="_blank" href="{{permalink}}">{{ permalink }}</a>
+        </li>
+    </ul>
 </article>
