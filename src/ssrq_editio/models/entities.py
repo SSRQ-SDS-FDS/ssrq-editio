@@ -65,6 +65,8 @@ class Entities(BaseModel):
 
 class Family(Entity):
     rm_name: str | None
+    first_mention: str | None
+    last_mention: str | None
     # ToDo: locations
 
 

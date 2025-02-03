@@ -13,6 +13,7 @@ TABLES = (
     TABLE_DIR / "kanton_images.sql",
     TABLE_DIR / "volumes.sql",
     TABLE_DIR / "editors.sql",
+    TABLE_DIR / "families.sql",
     TABLE_DIR / "keywords.sql",
     TABLE_DIR / "lemmata.sql",
     TABLE_DIR / "persons.sql",

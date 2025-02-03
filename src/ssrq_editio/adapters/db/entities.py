@@ -11,6 +11,8 @@ from ssrq_editio.models.entities import (
     Entities,
     Entity,
     EntityTypes,
+    Families,
+    Family,
     Keyword,
     Keywords,
     Lemma,
@@ -27,6 +29,7 @@ __all__ = [
     "search_lemmata",
     "search_persons",
     "search_places",
+    "search_families",
     "store_entities",
 ]
 
@@ -109,6 +112,8 @@ async def store_entities(
             await _store_lemmata(entity, connection, batch_size)
         elif isinstance(entity, Persons):
             await _store_persons(entity, connection, batch_size)
+        elif isinstance(entity, Families):
+            await _store_families(entity, connection, batch_size)
         continue
 
     await _create_occurrences(connection)
@@ -153,6 +158,41 @@ async def _store_persons(
                 person.death,
             )
             for person in persons.entities
+        ],
+    )
+
+
+async def _store_families(
+    families: Families,
+    connection: Connection,
+    batch_size: int,
+    query: Path = SQL_DATA_DIR / "put_family.sql",
+):
+    """Stores persons in the database.
+
+    Args:
+        families (Families): A Families object
+        connection (Connection): An aiosqlite Connection
+        batch_size (int): The size of the batch
+        query (str): The query to execute. Defaults to "put_family.sql".
+    """
+    sql_query = await load(dir=query.parent, name=query.name)
+    await store_batches(
+        connection,
+        batch_size,
+        sql_query,
+        [
+            (
+                person.id,
+                person.de_name,
+                person.fr_name,
+                person.it_name,
+                person.lt_name,
+                person.rm_name,
+                person.first_mention,
+                person.last_mention,
+            )
+            for person in families.entities
         ],
     )
 
@@ -333,6 +373,31 @@ async def search_keywords(
             await _search_entities(
                 connection, Keyword, await load(dir=query.parent, name=query.name), search
             )
+        )
+    )
+
+
+async def search_families(
+    connection: Connection,
+    query: Path = SQL_DATA_DIR / "get_families.sql",
+    search: str | None = None,
+) -> Families:
+    """Searches for families in the database.
+
+    If no query-string is provided, all places are returned, because
+    the query is executed with an empty string.
+
+    Args:
+        connection (Connection): An aiosqlite Connection
+        query (Path): The query to execute. Defaults to "get_families.sql".
+        search (str | None): A query-string. Defaults to None.
+
+    Returns:
+        Families: A Families object
+    """
+    return Families(
+        entities=await _search_entities(
+            connection, Family, await load(dir=query.parent, name=query.name), search
         )
     )
 

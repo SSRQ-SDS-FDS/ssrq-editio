@@ -3,6 +3,7 @@ import re
 from aiosqlite import Connection
 
 from ssrq_editio.adapters.db.entities import (
+    search_families,
     search_keywords,
     search_lemmata,
     search_persons,
@@ -27,6 +28,8 @@ async def get_entities(
         Entities: The entities.
     """
     match entity_type:
+        case EntityTypes.FAMILIES:
+            return await search_families(connection, search=query)
         case EntityTypes.LEMMATA:
             return await search_lemmata(connection, search=query)
         case EntityTypes.KEYWORDS:

@@ -177,6 +177,8 @@ async def get_families(client: AsyncClient, url: str) -> Families:
                 it_name=keyword.xpath("./standard_name[@lang='ita']/text()").get(),
                 lt_name=keyword.xpath("./standard_name[@lang='lat']/text()").get(),
                 rm_name=keyword.xpath("./standard_name[@lang='roh']/text()").get(),
+                first_mention=keyword.xpath("./first_mention/text()").get(),
+                last_mention=keyword.xpath("./last_mention/text()").get(),
             )
             for keyword in tree.xpath(".//family")
         ]

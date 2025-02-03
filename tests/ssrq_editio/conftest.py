@@ -5,7 +5,13 @@ import httpx
 import pytest
 from ssrq_utils.i18n.translator import Translator
 
-from ssrq_editio.adapters.entities import get_keywords, get_lemmata, get_persons, get_places
+from ssrq_editio.adapters.entities import (
+    get_families,
+    get_keywords,
+    get_lemmata,
+    get_persons,
+    get_places,
+)
 from ssrq_editio.entrypoints.app.config import TRANSLATION_SOURCE
 
 my_test_client = httpx.Client(
@@ -50,9 +56,11 @@ async def entities(httpx_client: httpx.AsyncClient):
     keywords = await get_keywords(httpx_client, "http://testserver/keywords.xml")
     lemmata = await get_lemmata(httpx_client, "http://testserver/lemmata.xml")
     persons = await get_persons(httpx_client, "http://testserver/persons.xml")
+    families = await get_families(httpx_client, "http://testserver/families.xml")
     return (
         places,
         keywords,
         lemmata,
         persons,
+        families,
     )

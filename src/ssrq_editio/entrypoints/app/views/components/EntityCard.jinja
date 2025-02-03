@@ -46,23 +46,24 @@
         {% elif entity_type == "persons" %}
             <li class="mt-0.5">
                 <span class="font-medium">{{ translator.translate(lang, 'standard_name') }}:</span> {{ entity.get_name_by_lang(lang) }}
-            </li>
-            <!--
-            <li>
-                <span class="font-medium">{{ translator.translate(lang, 'sex') }}:</span> {{ entity.sex }}
-            </li>
-            -->
             <li class="my-0.5 border-t-2 border-ssrq-greyed-50">
                 <span class="font-medium">{{ translator.translate(lang, 'birth_or_first_mention') }}:</span> {{ entity.birth or entity.first_mention or '–' }}
             </li>
             <li class="my-0.5 border-t-2 border-ssrq-greyed-50">
                 <span class="font-medium">{{ translator.translate(lang, 'death_or_last_mention') }}:</span> {{ entity.death or entity.last_mention or '–' }}
             </li>
+        {% elif entity_type == "families" %}
+            <li class="mt-0.5">
+                <span class="font-medium">{{ translator.translate(lang, 'standard_name') }}:</span> {{ entity.get_name_by_lang(lang) }}
+            <li class="my-0.5 border-t-2 border-ssrq-greyed-50">
+                <span class="font-medium">{{ translator.translate(lang, 'first_mention') }}:</span> {{ entity.first_mention or '–' }}
+            </li>
+            <li class="my-0.5 border-t-2 border-ssrq-greyed-50">
+                <span class="font-medium">{{ translator.translate(lang, 'last_mention') }}:</span> {{entity.last_mention or '–' }}
+            </li>
         {% endif %}
         <li class="my-0.5 border-t-2 border-ssrq-greyed-50">
             {% if entity.occurrences is not none %}
-
-
             <details class="accordion">
                 <summary><span class="font-medium">{{ translator.translate(lang, 'occurrences') }}:</span></summary>
                 <div class="px-4 py-2">

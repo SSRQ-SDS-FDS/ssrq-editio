@@ -63,6 +63,7 @@ async def test_entity_list(app_client: AsyncClient, entity_type: EntityTypes):
         ("persons"),
         ("keywords"),
         ("lemmata"),
+        ("families"),
         # ToDO Add the missing entity types
     ],
 )
@@ -82,6 +83,7 @@ async def test_entity_count(app_client: AsyncClient, entity_type: str):
         ("persons"),
         ("keywords"),
         ("lemmata"),
+        ("families"),
         # ToDO Add the missing entity types
     ],
 )
@@ -99,6 +101,7 @@ async def test_entity_ids(app_client: AsyncClient, entity_type: str):
     [
         ("places", "loc000157", "Bern"),
         ("persons", "per018128", "Meier, Heinrich"),
+        ("families", "org000860", "Dettling"),
         # ToDO Add the missing entity types
     ],
 )

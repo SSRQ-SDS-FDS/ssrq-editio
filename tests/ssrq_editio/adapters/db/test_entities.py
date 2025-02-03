@@ -8,6 +8,7 @@ from ssrq_editio.adapters.db.entities import (
     count_entities,
     delete_entities,
     list_entity_ids,
+    search_families,
     search_keywords,
     search_lemmata,
     search_persons,
@@ -15,7 +16,15 @@ from ssrq_editio.adapters.db.entities import (
     store_entities,
 )
 from ssrq_editio.models.documents import Document
-from ssrq_editio.models.entities import Entities, EntityTypes, Keywords, Lemmata, Persons, Places
+from ssrq_editio.models.entities import (
+    Entities,
+    EntityTypes,
+    Families,
+    Keywords,
+    Lemmata,
+    Persons,
+    Places,
+)
 
 
 @pytest.mark.anyio
@@ -29,12 +38,13 @@ async def test_store_entities(db_setup: aiosqlite.Connection, entities: tuple[En
 
 @pytest.mark.anyio
 async def test_delete_entities(db_setup: aiosqlite.Connection, entities: tuple[Entities, ...]):
-    """Smoke test to store entities in the database."""
+    """Test if entities are deleted."""
     await delete_entities(connection=db_setup)
     assert await list_entity_ids(connection=db_setup, table=EntityTypes.PLACES) == []
     assert await list_entity_ids(connection=db_setup, table=EntityTypes.PERSONS) == []
     assert await list_entity_ids(connection=db_setup, table=EntityTypes.LEMMATA) == []
     assert await list_entity_ids(connection=db_setup, table=EntityTypes.KEYWORDS) == []
+    assert await list_entity_ids(connection=db_setup, table=EntityTypes.FAMILIES) == []
 
 
 @pytest.mark.anyio
@@ -178,6 +188,33 @@ async def test_search_persons(db_setup, entities, search: str | None, expected: 
             assert len(result.entities) == 0
         case _ if callable(expected):
             assert expected(persons[0].entities) == expected(result.entities)
+        case _:
+            assert len(result.entities) > 0
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize(
+    ("search", "expected"),
+    [
+        (None, len),
+        ("foo bar", None),
+        ("org000195", "Vasön, von"),
+        ("Meier", []),
+    ],
+)
+async def test_search_families(db_setup, entities, search: str | None, expected: Any):
+    families = tuple([e for e in entities if isinstance(e, Families)])
+    await store_entities(families, db_setup)
+    result = await search_families(connection=db_setup, search=search)
+    assert isinstance(result, Families)
+
+    match expected:
+        case str():
+            assert len(result.entities) == 1
+        case None:
+            assert len(result.entities) == 0
+        case _ if callable(expected):
+            assert expected(families[0].entities) == expected(result.entities)
         case _:
             assert len(result.entities) > 0
 
