@@ -9,7 +9,7 @@ from ssrq_editio.adapters.db.kantons import list_kantons_abbreviations
 from ssrq_editio.adapters.db.volumes import list_volumes_with_editors
 from ssrq_editio.entrypoints.app.shared.dependencies import DBDependency
 from ssrq_editio.entrypoints.cli.config import VOLUME_SRC
-from ssrq_editio.models.entities import EntityTypes, Keyword, Lemma, Person, Place
+from ssrq_editio.models.entities import EntityTypes, Family, Keyword, Lemma, Person, Place
 from ssrq_editio.models.kantons import KantonName
 from ssrq_editio.models.volumes import Volumes
 from ssrq_editio.services.entities import ENTITY_ID_PATTERN, get_entities, validate_entity_id
@@ -66,7 +66,7 @@ async def entities() -> list[EntityTypes]:
 @version_one.get("/entities/{entity}", name="entity_list")
 async def entity_list(
     connection: DBDependency, entity: EntityTypes, query: str | None = None
-) -> Sequence[Keyword | Lemma | Person | Place]:
+) -> Sequence[Family | Keyword | Lemma | Person | Place]:
     """Returns a list of all entities for a specific entity type. The list is not paginated.
 
     Can be filtered by a query string, which is used to search for entities.
@@ -80,7 +80,7 @@ async def entity_list(
                 detail=f"No entities of type  »{entity.value}« found for query »{query}«.",
             )
 
-        return cast(Sequence[Keyword | Lemma | Person | Place], result.entities)
+        return cast(Sequence[Family | Keyword | Lemma | Person | Place], result.entities)
     except NotImplementedError:
         raise HTTPException(
             status_code=501, detail=f"At the moment this endpoint does not support »{entity}«."
