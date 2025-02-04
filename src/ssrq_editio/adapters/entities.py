@@ -205,17 +205,17 @@ async def get_orgs(client: AsyncClient, url: str) -> Organizations:
     return Organizations(
         entities=[
             Organization(
-                id=cast(str, keyword.xpath("./@id").get()),
+                id=cast(str, org.xpath("./@id").get()),
                 occurrences=None,
-                de_name=keyword.xpath("./standard_name[@lang='deu']/text()").get(),
-                fr_name=keyword.xpath("./standard_name[@lang='fra']/text()").get(),
-                it_name=keyword.xpath("./standard_name[@lang='ita']/text()").get(),
-                lt_name=keyword.xpath("./standard_name[@lang='lat']/text()").get(),
-                rm_name=keyword.xpath("./standard_name[@lang='roh']/text()").get(),
-                de_type=cast(str, keyword.xpath(".//definition[@lang='deu']/text()").get()),
-                fr_type=cast(str, keyword.xpath(".//definition[@lang='deu']/text()").get()),
+                de_name=org.xpath("./standard_name[@lang='deu']/text()").get(),
+                fr_name=org.xpath("./standard_name[@lang='fra']/text()").get(),
+                it_name=org.xpath("./standard_name[@lang='ita']/text()").get(),
+                lt_name=org.xpath("./standard_name[@lang='lat']/text()").get(),
+                rm_name=org.xpath("./standard_name[@lang='roh']/text()").get(),
+                de_types=[ot.get() for ot in org.xpath("./type/definition[@lang='deu']/text()")],
+                fr_types=[ot.get() for ot in org.xpath("./type/definition[@lang='fra']/text()")],
             )
-            for keyword in tree.xpath(".//organisation")
+            for org in tree.xpath(".//organisation")
         ]
     )
 

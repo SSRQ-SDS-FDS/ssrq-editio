@@ -2,9 +2,10 @@ from enum import Enum
 from typing import Annotated, Sequence
 
 from pydantic import BaseModel, BeforeValidator
-from pydantic_core import from_json
 from ssrq_utils.lang.display import Lang
 from ssrq_utils.uca import uca_simple_sort
+
+from ssrq_editio.services.utils import parse_as_list_or_return
 
 
 class EntityTypes(Enum):
@@ -150,9 +151,16 @@ class Lemmata(Entities):
 
 class Organization(Entity):
     rm_name: str | None
-    de_type: str
-    fr_type: str
+    de_types: Annotated[list[str], BeforeValidator(parse_as_list_or_return)]
+    fr_types: Annotated[list[str], BeforeValidator(parse_as_list_or_return)]
     # ToDo: locations
+
+    def get_types_by_lang(self, lang: Lang) -> list[str]:
+        match lang:
+            case Lang.FR:
+                return self.fr_types
+            case _:
+                return self.de_types
 
 
 class Organizations(Entities):
@@ -208,12 +216,8 @@ class Place(Entity):
     nl_name: str | None
     pl_name: str | None
     rm_name: str | None
-    de_place_types: Annotated[
-        list[str], BeforeValidator(lambda x: x if isinstance(x, list) else from_json(x))
-    ]
-    fr_place_types: Annotated[
-        list[str], BeforeValidator(lambda x: x if isinstance(x, list) else from_json(x))
-    ]
+    de_place_types: Annotated[list[str], BeforeValidator(parse_as_list_or_return)]
+    fr_place_types: Annotated[list[str], BeforeValidator(parse_as_list_or_return)]
 
     def get_name_by_lang(self, lang: Lang) -> str:
         name = getattr(self, f"{lang.value}_name", None)

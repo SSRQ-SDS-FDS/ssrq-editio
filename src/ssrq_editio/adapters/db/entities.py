@@ -17,6 +17,8 @@ from ssrq_editio.models.entities import (
     Keywords,
     Lemma,
     Lemmata,
+    Organization,
+    Organizations,
     Person,
     Persons,
     Place,
@@ -27,6 +29,7 @@ __all__ = [
     "count_entities",
     "search_keywords",
     "search_lemmata",
+    "search_organizations",
     "search_persons",
     "search_places",
     "search_families",
@@ -114,6 +117,8 @@ async def store_entities(
             await _store_persons(entity, connection, batch_size)
         elif isinstance(entity, Families):
             await _store_families(entity, connection, batch_size)
+        elif isinstance(entity, Organizations):
+            await _store_orgs(entity, connection, batch_size)
         continue
 
     await _create_occurrences(connection)
@@ -193,6 +198,41 @@ async def _store_families(
                 person.last_mention,
             )
             for person in families.entities
+        ],
+    )
+
+
+async def _store_orgs(
+    orgs: Organizations,
+    connection: Connection,
+    batch_size: int,
+    query: Path = SQL_DATA_DIR / "put_organization.sql",
+):
+    """Stores orgs in the database.
+
+    Args:
+        orgs (Organizations): A Organizations object
+        connection (Connection): An aiosqlite Connection
+        batch_size (int): The size of the batch
+        query (str): The query to execute. Defaults to "put_organization.sql".
+    """
+    sql_query = await load(dir=query.parent, name=query.name)
+    await store_batches(
+        connection,
+        batch_size,
+        sql_query,
+        [
+            (
+                org.id,
+                org.de_name,
+                org.fr_name,
+                org.it_name,
+                org.lt_name,
+                org.rm_name,
+                json.dumps(org.de_types, ensure_ascii=False),
+                json.dumps(org.fr_types, ensure_ascii=False),
+            )
+            for org in orgs.entities
         ],
     )
 
@@ -345,6 +385,33 @@ async def search_lemmata(
         entities=list(
             await _search_entities(
                 connection, Lemma, await load(dir=query.parent, name=query.name), search
+            ),
+        )
+    )
+
+
+async def search_organizations(
+    connection: Connection,
+    query: Path = SQL_DATA_DIR / "get_organizations.sql",
+    search: str | None = None,
+) -> Organizations:
+    """Searches for organizations in the database.
+
+    If no query-string is provided, all lemmata are returned, because
+    the query is executed with an empty string.
+
+    Args:
+        connection (Connection): An aiosqlite Connection
+        query (Path): The query to execute. Defaults to "get_terms.sql".
+        search (str | None): A query-string. Defaults to None.
+
+    Returns:
+        Organizations: A Organizations object
+    """
+    return Organizations(
+        entities=list(
+            await _search_entities(
+                connection, Organization, await load(dir=query.parent, name=query.name), search
             ),
         )
     )

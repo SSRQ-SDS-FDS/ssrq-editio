@@ -16,6 +16,7 @@ TABLES = (
     TABLE_DIR / "families.sql",
     TABLE_DIR / "keywords.sql",
     TABLE_DIR / "lemmata.sql",
+    TABLE_DIR / "organizations.sql",
     TABLE_DIR / "persons.sql",
     TABLE_DIR / "places.sql",
     # TABLE_DIR / "persons_places.sql",

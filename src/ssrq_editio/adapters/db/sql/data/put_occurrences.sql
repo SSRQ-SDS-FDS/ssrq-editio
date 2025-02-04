@@ -21,5 +21,16 @@ SELECT
     d.uuid,
     l.id
 FROM documents AS d, lemmata AS l, json_each(d.entities) AS je
-WHERE d.entities IS NOT NULL AND je.value = l.id;
--- ToDO: add support for orgs and families
+WHERE d.entities IS NOT NULL AND je.value = l.id
+UNION ALL
+SELECT
+    d.uuid,
+    f.id
+FROM documents AS d, families AS f, json_each(d.entities) AS je
+WHERE d.entities IS NOT NULL AND je.value = f.id
+UNION ALL
+SELECT
+    d.uuid,
+    o.id
+FROM documents AS d, organizations AS o, json_each(d.entities) AS je
+WHERE d.entities IS NOT NULL AND je.value = o.id;

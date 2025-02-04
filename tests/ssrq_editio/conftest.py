@@ -9,6 +9,7 @@ from ssrq_editio.adapters.entities import (
     get_families,
     get_keywords,
     get_lemmata,
+    get_orgs,
     get_persons,
     get_places,
 )
@@ -57,10 +58,5 @@ async def entities(httpx_client: httpx.AsyncClient):
     lemmata = await get_lemmata(httpx_client, "http://testserver/lemmata.xml")
     persons = await get_persons(httpx_client, "http://testserver/persons.xml")
     families = await get_families(httpx_client, "http://testserver/families.xml")
-    return (
-        places,
-        keywords,
-        lemmata,
-        persons,
-        families,
-    )
+    orgs = await get_orgs(httpx_client, "http://testserver/orgs.xml")
+    return (places, keywords, lemmata, persons, families, orgs)

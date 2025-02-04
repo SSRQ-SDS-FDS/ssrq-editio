@@ -11,6 +11,7 @@ from ssrq_editio.adapters.db.entities import (
     search_families,
     search_keywords,
     search_lemmata,
+    search_organizations,
     search_persons,
     search_places,
     store_entities,
@@ -22,6 +23,7 @@ from ssrq_editio.models.entities import (
     Families,
     Keywords,
     Lemmata,
+    Organizations,
     Persons,
     Places,
 )
@@ -71,6 +73,34 @@ async def test_search_places(db_setup, entities, search: str | None, expected: A
             assert len(result.entities) == 0
         case _ if callable(expected):
             assert expected(places[0].entities) == expected(result.entities)
+        case _:
+            assert len(result.entities) > 0
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize(
+    ("search", "expected"),
+    [
+        (None, len),
+        ("foo bar", None),
+        ("org006252", "St. Martin auf dem Zürichberg"),
+        ("Zürich", []),
+    ],
+)
+async def test_search_organizations(db_setup, entities, search: str | None, expected: Any):
+    orgs = tuple([e for e in entities if isinstance(e, Organizations)])
+    await store_entities(orgs, db_setup)
+    result = await search_organizations(connection=db_setup, search=search)
+
+    assert isinstance(result, Organizations)
+
+    match expected:
+        case str():
+            assert len(result.entities) == 1
+        case None:
+            assert len(result.entities) == 0
+        case _ if callable(expected):
+            assert expected(orgs[0].entities) == expected(result.entities)
         case _:
             assert len(result.entities) > 0
 

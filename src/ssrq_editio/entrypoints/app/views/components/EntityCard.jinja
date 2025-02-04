@@ -58,6 +58,13 @@
             <li class="mt-0.5">
                 <span class="font-medium">{{ translator.translate(lang, 'standard_name') }}:</span> {{ entity.get_name_by_lang(lang) }}
             </li>
+        {% elif entity_type == "organizations" %}
+            <li class="mt-0.5">
+                <span class="font-medium">{{ translator.translate(lang, 'standard_name') }}:</span> {{ entity.get_name_by_lang(lang) }}
+            </li>
+            <li class="mt-0.5">
+                <span class="font-medium">{{ translator.translate(lang, 'org_type') }}:</span> {{ entity.get_types_by_lang(lang) | join(', ') }}
+            </li>
         {% endif %}
         <li class="my-0.5 border-t-2 border-ssrq-greyed-50">
             {% if entity.occurrences is not none %}

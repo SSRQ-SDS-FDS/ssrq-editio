@@ -6,6 +6,7 @@ from ssrq_editio.adapters.db.entities import (
     search_families,
     search_keywords,
     search_lemmata,
+    search_organizations,
     search_persons,
     search_places,
 )
@@ -38,6 +39,8 @@ async def get_entities(
             return await search_places(connection, search=query)
         case EntityTypes.PERSONS:
             return await search_persons(connection, search=query)
+        case EntityTypes.ORGANIZATIONS:
+            return await search_organizations(connection, search=query)
         case _:
             raise NotImplementedError
 
