@@ -29,6 +29,7 @@
         </span>
     </header>
     <ul class="list-none">
+        <!-- ToDo: Simplify HTML Template to avoid code duplication -->
         {% if entity_type in ["lemmata", "keywords"] %}
             <li class="mt-0.5">
                 <span class="font-medium">{{ translator.translate(lang, 'normalized-spelling') }}:</span> {{ entity.get_name_by_lang(lang) }}
@@ -46,6 +47,7 @@
         {% elif entity_type == "persons" %}
             <li class="mt-0.5">
                 <span class="font-medium">{{ translator.translate(lang, 'standard_name') }}:</span> {{ entity.get_name_by_lang(lang) }}
+            </li>
             <li class="my-0.5 border-t-2 border-ssrq-greyed-50">
                 <span class="font-medium">{{ translator.translate(lang, 'birth_or_first_mention') }}:</span> {{ entity.birth or entity.first_mention or '–' }}
             </li>
@@ -55,11 +57,6 @@
         {% elif entity_type == "families" %}
             <li class="mt-0.5">
                 <span class="font-medium">{{ translator.translate(lang, 'standard_name') }}:</span> {{ entity.get_name_by_lang(lang) }}
-            <li class="my-0.5 border-t-2 border-ssrq-greyed-50">
-                <span class="font-medium">{{ translator.translate(lang, 'first_mention') }}:</span> {{ entity.first_mention or '–' }}
-            </li>
-            <li class="my-0.5 border-t-2 border-ssrq-greyed-50">
-                <span class="font-medium">{{ translator.translate(lang, 'last_mention') }}:</span> {{entity.last_mention or '–' }}
             </li>
         {% endif %}
         <li class="my-0.5 border-t-2 border-ssrq-greyed-50">

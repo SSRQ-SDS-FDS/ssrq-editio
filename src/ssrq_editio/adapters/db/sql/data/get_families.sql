@@ -17,14 +17,9 @@ LEFT JOIN (
     GROUP BY occurrences.ref
 ) AS occurrences ON f.id = occurrences.ref
 WHERE
-    :search = ''
-    OR f.id LIKE '%' || :search || '%'
-
-UNION
-
-SELECT -- noqa
-    f.*,
-    NULL AS occurrences
-FROM families AS f
-INNER JOIN families_fts AS fts ON f.id = fts.id
-WHERE :search <> '' AND families_fts MATCH :search; -- noqa
+    f.id LIKE '%' || :search || '%'
+    OR f.de_name LIKE '%' || :search || '%'
+    OR f.fr_name LIKE '%' || :search || '%'
+    OR f.it_name LIKE '%' || :search || '%'
+    OR f.lt_name LIKE '%' || :search || '%'
+    OR f.rm_name LIKE '%' || :search || '%'
