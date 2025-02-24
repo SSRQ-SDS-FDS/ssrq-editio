@@ -20,8 +20,7 @@ The digital scholarly edition is an Python based project. Originally it was base
 
 You need to install the following software:
 
-1. Python (3.12 or higher) together with [`uv`](https://github.com/astral-sh/uv)
-2. [Docker](https://www.docker.com)
+Python (3.11 or 3.12) together with [`uv`](https://github.com/astral-sh/uv)
 
 As well as [Git](https://git-scm.com) (of course...)
 
@@ -30,20 +29,32 @@ From a birds-eye view, the application mainly relies on the following technologi
 - [FastAPI](https://fastapi.tiangolo.com) used for the backend
 - [TailwindCSS](https://tailwindcss.com) for the styling
 - [htmx](https://htmx.org) and [Alpine.js](https://alpinejs.dev) for interactivity in the frontend
-- [MongoDB](https://www.mongodb.com) as the database
+- [SQLite](https://sqlite.org) as the database
 - [Saxon's XSLT 3.0 processor](https://www.saxonica.com/welcome/welcome.xml) to process the TEI-XML files
 
 To get started with the development environment, you first need to install the required Python packages. They are list in the `pyproject.toml` file and can be installed in the following way:
 
 ```sh
-uv sync
+uv sync --all-extras --dev
 ```
 
 From here on you can use the `just` command (in an activated virtual environment) to executes various tasks. To see a list of all available tasks, run `just help`.
 
 #### Populating the database
 
-To be done.
+The application uses a SQLite database. The database gets populated with information extracted from the TEI-XML files, which are stored as Git-Submodules in `src/ssrq_editio/data`. You can find a small JSON-configuration in the root of this repository, which contains a list of volumes to be used / processed.
+
+To populate the database, you can run the following command (in an activated virtual environment):
+
+```sh
+editio prepare-db --clean
+```
+
+After the database has been populated, you can start the development server by running:
+
+```sh
+just dev
+```
 
 #### Branches
 
