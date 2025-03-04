@@ -16,7 +16,7 @@ ENTITY_ID_PATTERN = re.compile(r"^(key|lem|loc|per|org)(\d{6})$")
 
 
 async def get_entities(
-    connection: Connection, entity_type: EntityTypes, query: str | None = None
+        connection: Connection, entity_type: EntityTypes, query: str | None = None, queries: list[dict[str, str | int]] | None = None
 ) -> Entities:
     """A simple service to retrieve entities from the database. Uses the defined
     db adapters to retrieve the entities based on the entity type and query.
