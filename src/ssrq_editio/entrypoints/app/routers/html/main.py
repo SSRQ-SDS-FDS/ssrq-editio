@@ -53,10 +53,12 @@ async def list_entities(
     connection: DBDependency,
     entity_type: EntityTypes,
     query: str | None = None,
-    queries: list[dict[str, str | int]] | None = None,
+    #queries: list[dict[str, str | int]] | None = [ {"column": "Ortstyp", "value": "test" }],
+    queries: str = "[]",
     page: int = 1,
     per_page: int = 25,
 ):
+    print(queries)
     return await EntityViewModel(
         request, lang, connection, entity_type, query, queries, page, per_page
     ).to_html()

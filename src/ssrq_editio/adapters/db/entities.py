@@ -495,7 +495,7 @@ async def search_persons(
 
 
 async def search_places(
-    connection: Connection, query: Path = SQL_DATA_DIR / "get_places.sql", search: str | None = None
+        connection: Connection, query: Path = SQL_DATA_DIR / "get_places.sql", search: str | None = None, search_2: str | None = None
 ) -> Places:
     """Searches for places in the database.
 
@@ -510,14 +510,32 @@ async def search_places(
     Returns:
         Places: A Places object
     """
-    return Places(
-        entities=await _search_entities(
-            connection, Place, await load(dir=query.parent, name=query.name), search
+    print("search_2:", search_2)
+    if search_2 != None:
+        return Places(
+            entities=await _search_entities_2(
+                connection, Place, await load(dir=query.parent, name=query.name), search
+            )
         )
-    )
+    else:
+        return Places(
+            entities=await _search_entities(
+                connection, Place, await load(dir=query.parent, name=query.name), search
+            )
+        )
 
 
 async def _search_entities(
+    connection: Connection,
+    entity_type: Type[T],
+    sql_query: str,
+    search: str | None = None,
+) -> list[T]:
+    async with connection.cursor() as cursor:
+        await cursor.execute(sql_query, {"search": search or ""})
+        data = await cursor.fetchall()
+        return [entity_type(**item) for item in data]
+async def _search_entities_2(
     connection: Connection,
     entity_type: Type[T],
     sql_query: str,

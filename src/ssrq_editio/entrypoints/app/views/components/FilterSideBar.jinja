@@ -1,3 +1,9 @@
+{# def
+    endpoint: URL,
+    hx_indicator: str | None = None,
+    hx_target: str | None = None,
+    queries: list[dict[str, str | int]] | None = None
+#}
 <style>
 .search_box{
     display: flex;
@@ -64,62 +70,37 @@
 }
 
 </style>
-<script>
-    function addWithEnter(e){ if(e.keyCode===13){addElement()} }
-    function addElement(){
-        const defaultElement = document.querySelector(".default_item");
-        const newElement = defaultElement.cloneNode(true);
-        newElement.classList.remove("default_item");
-        const addItemElement = document.getElementById("searchBoxAddItem").parentNode;
-        addItemElement.before(newElement);
-        newElement.querySelector(":first-child").focus();
-    }
-    function removeElement(e){
-        const removeEl = e.target.parentNode;
-        if(removeEl.classList.contains("default_item")===false){
-            removeEl.remove();
-        }else{
-            for(const el of removeEl.querySelectorAll("select, input[type='text']")){
-                el.value = "";
-            }
-        }
-    }
-    function removeAllElements(){
-    const searchBoxEl = document.querySelector(".search_box");
-    for(const el of searchBoxEl.querySelectorAll(".search_item")){
-        if(el.classList.contains("default_item")){
-            for(const elChildren of el.querySelectorAll("select, input[type='text']")){
-                elChildren.value = "";
-            }
-        }else{
-            el.remove();
-        }
-    }
-    }
-</script>
-<div class="grid grid-rows-[1fr_auto] h-screen">
+<div class="h-screen" x-data="{ queries: {{ queries }} }">
     <div class="search_box">
-        <div class="search_item default_item">
-            <select>
-                <option>ID</option>
-                <option>Standardname</option>
-                <option>Ortstyp</option>
-                <option>Vorkommen</option>
-            </select>
-            <select>
-                <option value="0">=</option>
-                <option value="1">!=</option>
-                <option value="2">&lt;</option>
-                <option value="3">&gt;</option>
-                <option value="4">Regex</option>
-            </select>
-            <input type="text" placeholder="Suchbegriff..." onkeyup="addWithEnter(event)" />
-            <input type="button" onClick="removeElement(event)" value="x" />
-        </div>
+        <template x-for="(query, index) in queries" :key="index">
+            <div class="search_item">
+                <select x-model="query.column"> 
+                    <option value="ID">ID</option>
+                    <option value="Standardname">Standardname</option>
+                    <option value="Ortstyp">Ortstyp</option>
+                    <option value="Vorkommen">Vorkommen</option>
+                </select>
+                <span style="padding:10px 0px">=</span>
+                <input type="text" placeholder="Suchbegriff..." x-model="query.value" />
+                <input type="button" @click="queries.splice(index, 1)" value="x" />
+            </div>
+        </template>
         <div style="display: flex; gap: 2px;">
-            <div id="searchBoxAddItem" onclick="addElement()">+</div>
-            <input id="removeAllElements" type="button" onClick="removeAllElements()" value="leeren" />
+            <div id="searchBoxAddItem" @click="queries.push({ column: '', value: '' })">+</div>
+            <input id="removeAllElements" type="button" @click="queries = []" value="leeren" />
         </div>
     </div>
-    <div style="text-align: right; margin-top: 0.5rem; font-size: 110%;"><input id="searchButton" type="button" value="suchen" /></div>
+    <div style="text-align: right; margin-top: 0.5rem; font-size: 110%;">
+        <form
+            hx-get="{{ endpoint }}""
+            hx-indicator="{{ hx_indicator }}"
+            hx-target="{{ hx_target }}"
+            hx-push-url="true"
+            hx-trigger="submit"
+            hx-swap="outerHTML"
+        >
+            <input type="hidden" name="queries" :value="JSON.stringify(queries)">
+            <input id="searchButton" type="submit" value="suchen" />
+        </form>
+    </div>
 </div>

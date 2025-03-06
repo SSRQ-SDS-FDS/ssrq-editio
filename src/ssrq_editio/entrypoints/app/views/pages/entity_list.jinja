@@ -14,25 +14,16 @@
   :parts="[(translator.translate(lang, data.content.entity_type), None)]"
 />
 
-<script>
-/*
-    window.addEventListener("scroll", ()=>{
-        const sideBar = document.getElementById("filterSidebar");
-        if(window.scrollY > 150){
-            sideBar.classList.add("fixed", "inset-y-0");
-        }else{
-            sideBar.classList.remove("fixed", "inset-y-0");
-        }
-    });
-*/
-</script>
-<!--
 <div class="w-screen">
     <aside id="filterSidebar" class="fixed inset-y-0 bg-white p-6 shadow-md z-50" style="width: 550px;">
-        <FilterSideBar />
+        <FilterSideBar
+            :endpoint="url_for('entity_view', entity_type = data.content.entity_type)"
+            :hx_indicator="'#loading-overlay'"
+            :hx_target="'#entities'"
+            :queries="data.content.queries"
+        />
     </aside>
 </div>
--->
 
 <section class="flex w-full max-w-5xl lg:px-12 sm:px-4 items-center justify-start mx-auto">
     <SimpleSearchForm
