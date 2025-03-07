@@ -53,7 +53,6 @@ async def list_entities(
     connection: DBDependency,
     entity_type: EntityTypes,
     query: str | None = None,
-    #queries: list[dict[str, str | int]] | None = [ {"column": "Ortstyp", "value": "test" }],
     queries: str = "[]",
     page: int = 1,
     per_page: int = 25,

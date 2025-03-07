@@ -510,11 +510,10 @@ async def search_places(
     Returns:
         Places: A Places object
     """
-    print("search_2:", search_2)
     if search_2 != None:
         return Places(
             entities=await _search_entities_2(
-                connection, Place, await load(dir=query.parent, name=query.name), search
+                connection, Place, await load(dir=query.parent, name="get_places_2.sql"), search_2
             )
         )
     else:
@@ -541,7 +540,33 @@ async def _search_entities_2(
     sql_query: str,
     search: str | None = None,
 ) -> list[T]:
+    # display - db map
+    field_column_map = {
+        "ID": ["places.id"],
+        "Standardname": ["places.cs_name", "places.de_name", "places.fr_name", "places.it_name", "places.lt_name", "places.nl_name", "places.pl_name", "places.rm_name"],
+        "Ortstyp": ["places.de_place_types", "places.fr_place_types"],
+        "Vorkommen": ["occurrences.printed_idno"]
+    }
+    # SELECT
+    column_list = ["places.id", "places.cs_name", "places.de_name", "places.fr_name", "places.it_name", "places.lt_name", "places.nl_name", "places.pl_name", "places.rm_name", "places.de_place_types", "places.fr_place_types", "occurrences.occurrences"]
+
+    # WHERE
+    where_list = []
+    vals = []
+    for item in json.loads(search):
+        or_columns = []
+        for column in field_column_map[item["field"]]:
+            or_columns.append(f"{column} LIKE ?")
+            vals.append(f"%{item['value']}%")
+        where_list.append(f"({' OR '.join(or_columns)})")
+    where_str = ""
+    if len(where_list) > 0:
+        where_str = f" WHERE {' AND '.join(where_list)}"
+
+    sql_str = f"SELECT {','.join(column_list)} FROM places LEFT JOIN ( SELECT occurrences.ref, GROUP_CONCAT(occurrences.uuid, ',') AS occurrences, (SELECT GROUP_CONCAT(documents.printed_idno) FROM documents WHERE documents.uuid = occurrences.uuid) AS printed_idno FROM occurrences GROUP BY occurrences.ref) AS occurrences ON places.id = occurrences.ref{where_str}"
+    print(vals)
+    print(sql_str)
     async with connection.cursor() as cursor:
-        await cursor.execute(sql_query, {"search": search or ""})
+        await cursor.execute(sql_str, vals)
         data = await cursor.fetchall()
         return [entity_type(**item) for item in data]

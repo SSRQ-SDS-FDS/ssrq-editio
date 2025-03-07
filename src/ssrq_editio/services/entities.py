@@ -36,9 +36,9 @@ async def get_entities(
         case EntityTypes.KEYWORDS:
             return await search_keywords(connection, search=query)
         case EntityTypes.PLACES:
-            return await search_places(connection, search=query)
+            return await search_places(connection, search=query, search_2=queries)
         case EntityTypes.PERSONS:
-            return await search_persons(connection, search=query, search_2=queries)
+            return await search_persons(connection, search=query)
         case EntityTypes.ORGANIZATIONS:
             return await search_organizations(connection, search=query)
         case _:

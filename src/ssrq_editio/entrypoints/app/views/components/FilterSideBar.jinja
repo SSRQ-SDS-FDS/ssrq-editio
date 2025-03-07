@@ -74,7 +74,7 @@
     <div class="search_box">
         <template x-for="(query, index) in queries" :key="index">
             <div class="search_item">
-                <select x-model="query.column"> 
+                <select x-model="query.field"> 
                     <option value="ID">ID</option>
                     <option value="Standardname">Standardname</option>
                     <option value="Ortstyp">Ortstyp</option>
@@ -86,7 +86,7 @@
             </div>
         </template>
         <div style="display: flex; gap: 2px;">
-            <div id="searchBoxAddItem" @click="queries.push({ column: '', value: '' })">+</div>
+            <div id="searchBoxAddItem" @click="queries.push({ field: '', value: '' })">+</div>
             <input id="removeAllElements" type="button" @click="queries = []" value="leeren" />
         </div>
     </div>
