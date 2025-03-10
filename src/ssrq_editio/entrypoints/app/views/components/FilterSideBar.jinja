@@ -2,105 +2,42 @@
     endpoint: URL,
     hx_indicator: str | None = None,
     hx_target: str | None = None,
-    queries: list[dict[str, str | int]] | None = None
+    queries: str | None = None
 #}
-<style>
-.search_box{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    width: 100%;
-    border: 2px solid rgb(150 26 23);
-    border-radius: 7px;
-    padding: 1rem 2rem;
-}
-.search_box > .search_item {
-    display: flex;
-    gap: 0.2rem;
-    border-radius: 2rem;
-    box-shadow: 0px 3px 5px lightgray;
-    overflow: hidden;
-}
-.search_box > .search_item > input, select {
-    border: none;
-    font-size: 80%;
-}
-.search_box > .search_item >  input:focus, select:focus {
-    box-shadow: none;
-    outline: none;
-    color: rgb(150 26 23);
-}
-.search_box > .search_item > input[type="text"] {
-    width: 150px;
-}
-.search_box > .search_item > input[type="button"] {
-    font-weight: bold;
-    background-color: lightgray;
-    color: rgb(150 26 23);
-    padding: 0 12px;
-}
-.search_box > div:last-child{
-    margin-left: auto;
-}
-#searchBoxAddItem{
-    font-size: 25px;
-    font-weight: bold;
-    border-radius: 20px;
-    padding: 1px 13px;
-    cursor: pointer;
-    background-color: rgb(150 26 23);
-    color: white;
-}
-#removeAllElements{
-    border-radius: 22px;
-    font-weight: bold;
-    border: 2px solid rgb(150 26 23);
-    color: rgb(150 26 23);
-    background-color: white;
-    padding: 1px 10px;
-    cursor: pointer;
-}
-#searchButton{
-    border-radius: 22px;
-    border: 2px solid rgb(150 26 23);
-    color: rgb(150 26 23);
-    background-color: white;
-    padding: 1px 10px;
-    cursor: pointer;
-}
+<form
+    hx-get="{{ endpoint }}"
+    hx-indicator="{{ hx_indicator }}"
+    hx-target="{{ hx_target }}"
+    hx-push-url="true"
+    hx-trigger="submit"
+    hx-swap="outerHTML"
+    x-data="{ queries: {{ queries }} }"
+    class="flex flex-col gap-4 p-6 max-w-3xl mx-auto border-2 border-red-700 rounded-xl shadow-lg bg-white">
 
-</style>
-<div class="h-screen" x-data="{ queries: {{ queries }} }">
-    <div class="search_box">
+    <!-- search fields -->
+    <div class="flex flex-wrap gap-x-3 gap-y-2">
         <template x-for="(query, index) in queries" :key="index">
-            <div class="search_item">
-                <select x-model="query.field"> 
-                    <option value="ID">ID</option>
+            <div class="flex items-center gap-2 bg-gray-100 p-2 rounded shadow-md border border-gray-300">
+                <select x-model="query.field" class="border-none text-sm bg-transparent focus:outline-none"> 
+                    <option value="ID" class="text-gray-600">ID</option>
                     <option value="Standardname">Standardname</option>
                     <option value="Ortstyp">Ortstyp</option>
                     <option value="Vorkommen">Vorkommen</option>
                 </select>
-                <span style="padding:10px 0px">=</span>
-                <input type="text" placeholder="Suchbegriff..." x-model="query.value" />
-                <input type="button" @click="queries.splice(index, 1)" value="x" />
+                <span class="text-gray-500">=</span>
+                <input type="text" placeholder="Suchbegriff..." x-model="query.value" class="border-none text-sm bg-transparent focus:outline-none focus-visible:ring-0 w-32" />
+                <input type="button" @click="queries.splice(index, 1)" value="x" class="text-red-600 font-bold bg-gray-300 px-2 rounded-full hover:bg-gray-400 transition" />
             </div>
         </template>
-        <div style="display: flex; gap: 2px;">
-            <div id="searchBoxAddItem" @click="queries.push({ field: '', value: '' })">+</div>
-            <input id="removeAllElements" type="button" @click="queries = []" value="leeren" />
+        <!-- control: add, remove all -->
+        <div class="flex gap-3">
+            <input type="button" @click="queries.push({ field: '', value: '' })" value="+" class="text-white bg-red-700 rounded-full px-4 py-1 text-lg font-bold shadow-md hover:bg-red-800 transition">
+            <input type="button" @click="queries = []" value="leeren" class="text-red-700 border-2 border-red-700 bg-white rounded-full px-4 py-1 font-bold shadow-md hover:bg-red-50 transition" />
         </div>
     </div>
-    <div style="text-align: right; margin-top: 0.5rem; font-size: 110%;">
-        <form
-            hx-get="{{ endpoint }}""
-            hx-indicator="{{ hx_indicator }}"
-            hx-target="{{ hx_target }}"
-            hx-push-url="true"
-            hx-trigger="submit"
-            hx-swap="outerHTML"
-        >
-            <input type="hidden" name="queries" :value="JSON.stringify(queries)">
-            <input id="searchButton" type="submit" value="suchen" />
-        </form>
-    </div>
+    <input type="hidden" name="queries" :value="JSON.stringify(queries)">
+</form>
+<!-- search button -->
+<div class="" style="text-align: right">
+    <input type="submit" value="suchen" class="ml-auto text-red-700 border-2 border-red-700 bg-white rounded-md px-2 py-2 font-bold shadow-md hover:bg-red-50 transition" />
 </div>

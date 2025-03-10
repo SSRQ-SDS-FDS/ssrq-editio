@@ -541,14 +541,14 @@ async def _search_entities_2(
     search: str | None = None,
 ) -> list[T]:
     # display - db map
-    field_column_map = {
-        "ID": ["places.id"],
-        "Standardname": ["places.cs_name", "places.de_name", "places.fr_name", "places.it_name", "places.lt_name", "places.nl_name", "places.pl_name", "places.rm_name"],
-        "Ortstyp": ["places.de_place_types", "places.fr_place_types"],
-        "Vorkommen": ["occurrences.printed_idno"]
+    field_column_map: list[dict[str, str]] = {
+        "ID": ["id"],
+        "Standardname": ["cs_name", "de_name", "fr_name", "it_name", "lt_name", "nl_name", "pl_name", "rm_name"],
+        "Ortstyp": ["de_place_types", "fr_place_types"],
+        "Vorkommen": ["printed_idno"]
     }
     # SELECT
-    column_list = ["places.id", "places.cs_name", "places.de_name", "places.fr_name", "places.it_name", "places.lt_name", "places.nl_name", "places.pl_name", "places.rm_name", "places.de_place_types", "places.fr_place_types", "occurrences.occurrences"]
+    column_list: list[str] = ["id", "cs_name", "de_name", "fr_name", "it_name", "lt_name", "nl_name", "pl_name", "rm_name", "de_place_types", "fr_place_types", "occurrences"]
 
     # WHERE
     where_list = []
@@ -563,9 +563,9 @@ async def _search_entities_2(
     if len(where_list) > 0:
         where_str = f" WHERE {' AND '.join(where_list)}"
 
-    sql_str = f"SELECT {','.join(column_list)} FROM places LEFT JOIN ( SELECT occurrences.ref, GROUP_CONCAT(occurrences.uuid, ',') AS occurrences, (SELECT GROUP_CONCAT(documents.printed_idno) FROM documents WHERE documents.uuid = occurrences.uuid) AS printed_idno FROM occurrences GROUP BY occurrences.ref) AS occurrences ON places.id = occurrences.ref{where_str}"
-    print(vals)
-    print(sql_str)
+    sql_str = f"SELECT {','.join(column_list)} FROM places_view{where_str}"
+    #print(vals)
+    #print(sql_str)
     async with connection.cursor() as cursor:
         await cursor.execute(sql_str, vals)
         data = await cursor.fetchall()
