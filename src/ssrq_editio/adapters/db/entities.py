@@ -513,7 +513,7 @@ async def search_places(
     if search_2 != None:
         return Places(
             entities=await _search_entities_2(
-                connection, Place, await load(dir=query.parent, name="get_places_2.sql"), search_2
+                connection, Place, await load(dir=query.parent, name=query.name), search_2
             )
         )
     else:
