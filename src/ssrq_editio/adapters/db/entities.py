@@ -367,6 +367,7 @@ async def search_lemmata(
     connection: Connection,
     query: Path = SQL_DATA_DIR / "get_lemmata.sql",
     search: str | None = None,
+    occurrence: str | None = None,
 ) -> Lemmata:
     """Searches for lemmata in the database.
 
@@ -384,7 +385,7 @@ async def search_lemmata(
     return Lemmata(
         entities=list(
             await _search_entities(
-                connection, Lemma, await load(dir=query.parent, name=query.name), search
+                connection, Lemma, await load(dir=query.parent, name=query.name), search, occurrence
             ),
         )
     )
@@ -394,6 +395,7 @@ async def search_organizations(
     connection: Connection,
     query: Path = SQL_DATA_DIR / "get_organizations.sql",
     search: str | None = None,
+    occurrence: str | None = None,
 ) -> Organizations:
     """Searches for organizations in the database.
 
@@ -411,7 +413,11 @@ async def search_organizations(
     return Organizations(
         entities=list(
             await _search_entities(
-                connection, Organization, await load(dir=query.parent, name=query.name), search
+                connection,
+                Organization,
+                await load(dir=query.parent, name=query.name),
+                search,
+                occurrence,
             ),
         )
     )
@@ -421,6 +427,7 @@ async def search_keywords(
     connection: Connection,
     query: Path = SQL_DATA_DIR / "get_keywords.sql",
     search: str | None = None,
+    occurrence: str | None = None,
 ) -> Keywords:
     """Searches for keywords in the database.
 
@@ -438,7 +445,11 @@ async def search_keywords(
     return Keywords(
         entities=list(
             await _search_entities(
-                connection, Keyword, await load(dir=query.parent, name=query.name), search
+                connection,
+                Keyword,
+                await load(dir=query.parent, name=query.name),
+                search,
+                occurrence,
             )
         )
     )
@@ -448,6 +459,7 @@ async def search_families(
     connection: Connection,
     query: Path = SQL_DATA_DIR / "get_families.sql",
     search: str | None = None,
+    occurrence: str | None = None,
 ) -> Families:
     """Searches for families in the database.
 
@@ -464,7 +476,7 @@ async def search_families(
     """
     return Families(
         entities=await _search_entities(
-            connection, Family, await load(dir=query.parent, name=query.name), search
+            connection, Family, await load(dir=query.parent, name=query.name), search, occurrence
         )
     )
 
@@ -473,6 +485,7 @@ async def search_persons(
     connection: Connection,
     query: Path = SQL_DATA_DIR / "get_persons.sql",
     search: str | None = None,
+    occurrence: str | None = None,
 ) -> Persons:
     """Searches for persons in the database.
 
@@ -489,13 +502,16 @@ async def search_persons(
     """
     return Persons(
         entities=await _search_entities(
-            connection, Person, await load(dir=query.parent, name=query.name), search
+            connection, Person, await load(dir=query.parent, name=query.name), search, occurrence
         )
     )
 
 
 async def search_places(
-    connection: Connection, query: Path = SQL_DATA_DIR / "get_places.sql", search: str | None = None
+    connection: Connection,
+    query: Path = SQL_DATA_DIR / "get_places.sql",
+    search: str | None = None,
+    occurrence: str | None = None,
 ) -> Places:
     """Searches for places in the database.
 
@@ -512,7 +528,7 @@ async def search_places(
     """
     return Places(
         entities=await _search_entities(
-            connection, Place, await load(dir=query.parent, name=query.name), search
+            connection, Place, await load(dir=query.parent, name=query.name), search, occurrence
         )
     )
 
@@ -522,8 +538,9 @@ async def _search_entities(
     entity_type: Type[T],
     sql_query: str,
     search: str | None = None,
+    occurrence: str | None = None,
 ) -> list[T]:
     async with connection.cursor() as cursor:
-        await cursor.execute(sql_query, {"search": search or ""})
+        await cursor.execute(sql_query, {"search": search or "", "occurrence": occurrence or ""})
         data = await cursor.fetchall()
         return [entity_type(**item) for item in data]

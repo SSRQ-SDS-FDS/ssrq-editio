@@ -53,11 +53,12 @@ async def list_entities(
     connection: DBDependency,
     entity_type: EntityTypes,
     query: str | None = None,
+    occurrence: str | None = None,
     page: int = 1,
     per_page: int = 25,
 ):
     return await EntityViewModel(
-        request, lang, connection, entity_type, query, page, per_page
+        request, lang, connection, entity_type, query, occurrence, page, per_page
     ).to_html()
 
 

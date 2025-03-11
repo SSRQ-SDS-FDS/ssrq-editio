@@ -1,9 +1,11 @@
 {# def
     endpoint: URL,
-    placeholder: str,
+    placeholder_id_name: str,
+    placeholder_occurrence: str,
     lang: Lang,
     translator: Translator,
     query: str | None,
+    occurrence: str | None,
     hx: bool = False,
     hx_indicator: str | None = None,
     hx_params: str | None = None,
@@ -14,22 +16,40 @@
   class="my-2 text-sm"
 >
     <label
-      for="quickSearchForm"
+      for="entityIdOrNameSearch"
       class="block mb-2 text-xs text-ssrq-greyed-700"
     >
         {{ translator.translate(lang,'filter-hits') }}
     </label>
     <div
-      class="flex item-center"
+      class="flex gap-2"
     >
         <input
-          id="quickSearchForm"
+          id="entityIdOrNameSearch"
           type="text"
           autocomplete="off"
           name="query"
           class="px-4 py-1 min-w-[16rem] text-sm text-ssrq-greyed-800 bg-white border rounded-md focus:border-ssrq-primary focus:border-[0.025rem] focus:outline-none focus:ring focus:ring-ssrq-primary focus:ring-opacity-40"
-          placeholder="{{ translator.translate(lang, placeholder) }}"
+          placeholder="{{ translator.translate(lang, placeholder_id_name) }}"
           {% if query %}value="{{ query }}"{% endif %}
+          {% if hx %}
+           hx-get="{{ endpoint }}"
+           hx-indicator="{{ hx_indicator }}"
+           hx-params="{{ hx_params }}"
+           hx-target="{{ hx_target }}"
+           hx-push-url="true"
+           hx-trigger="input changed delay:500ms, submit"
+           hx-swap="outerHTML"
+          {% endif %}
+        />
+        <input
+          id="entityOccurrenceSearch"
+          type="text"
+          autocomplete="off"
+          name="occurrence"
+          class="px-4 py-1 min-w-[16rem] text-sm text-ssrq-greyed-800 bg-white border rounded-md focus:border-ssrq-primary focus:border-[0.025rem] focus:outline-none focus:ring focus:ring-ssrq-primary focus:ring-opacity-40"
+          placeholder="{{ translator.translate(lang, placeholder_occurrence) }}"
+          {% if occurrence %}value="{{ occurrence }}"{% endif %}
           {% if hx %}
            hx-get="{{ endpoint }}"
            hx-indicator="{{ hx_indicator }}"
@@ -42,7 +62,8 @@
         />
         <a
           href="{{ endpoint }}"
-          class="px-4 py-2 text-sm font-medium text-white transition-colors duration-300 transform bg-ssrq-primary rounded-md ml-1 hover:shadow-sm focus:outline-none focus:shadow-sm"
+          tabindex="0"
+          class="px-4 py-2 text-sm font-medium text-white transition-colors duration-300 transform bg-ssrq-primary rounded-md hover:shadow-sm focus:outline-none focus:shadow-sm focus:ring focus:ring-ssrq-primary focus:ring-opacity-40 ml-[-0.25rem]"
         >
             <svg
               xmlns="http://www.w3.org/2000/svg"
