@@ -18,6 +18,7 @@ class EntityViewModel(ViewModel):
     connection: Connection
     entity_type: EntityTypes
     query: str | None
+    occurrence: str | None
     current_page: int
     per_page: int
 
@@ -28,6 +29,7 @@ class EntityViewModel(ViewModel):
         connection: Connection,
         entity_type: EntityTypes,
         query: str | None,
+        occurrence: str | None,
         page: int,
         per_page: int,
     ):
@@ -37,6 +39,7 @@ class EntityViewModel(ViewModel):
         self.connection = connection
         self.entity_type = entity_type
         self.query = query
+        self.occurrence = occurrence
         self.current_page = page
         self.per_page = per_page
 
@@ -54,6 +57,7 @@ class EntityViewModel(ViewModel):
                     "entities": search_result[1][0] if search_result else None,
                     "entity_type": self.entity_type.value,
                     "idnos": document_idnos,
+                    "ocurrence": self.occurrence,
                     "pages": search_result[1][1] if search_result else None,
                     "total": search_result[0] if search_result else None,
                     "query": self.query,
@@ -66,7 +70,9 @@ class EntityViewModel(ViewModel):
         return f"{self.translator.translate(self.lang, 'short_title')} · {self.translator.translate(self.lang, self.entity_type.value)}"
 
     async def _get_entities(self) -> None | tuple[int, tuple[Sequence[Entity], list[int] | None]]:
-        result: Entities = await get_entities(self.connection, self.entity_type, self.query)
+        result: Entities = await get_entities(
+            self.connection, self.entity_type, self.query, self.occurrence
+        )
 
         total_hits = len(result.entities)
         if total_hits == 0:

@@ -20,13 +20,23 @@ FROM persons AS p
 LEFT JOIN (
     SELECT
         occurrences.ref,
-        GROUP_CONCAT(occurrences.uuid, ',') AS occurrences
+        GROUP_CONCAT(occurrences.uuid, ',') AS occurrences,
+        (
+            SELECT GROUP_CONCAT(documents.printed_idno)
+            FROM documents
+            WHERE documents.uuid = occurrences.uuid
+        ) AS printed_idno
     FROM occurrences
     GROUP BY occurrences.ref
 ) AS occurrences ON p.id = occurrences.ref
 WHERE
-    :search = ''
-    OR p.id LIKE '%' || :search || '%'
+    (
+        :search = ''
+        OR p.id LIKE '%' || :search || '%'
+    ) AND (
+        :occurrence IS ''
+        OR occurrences.printed_idno LIKE '%' || :occurrence || '%'
+    )
 
 UNION
 

@@ -15,17 +15,27 @@ FROM places -- noqa: AM04
 LEFT JOIN (
     SELECT
         occurrences.ref,
-        GROUP_CONCAT(occurrences.uuid, ',') AS occurrences
+        GROUP_CONCAT(occurrences.uuid, ',') AS occurrences,
+        (
+            SELECT GROUP_CONCAT(documents.printed_idno)
+            FROM documents
+            WHERE documents.uuid = occurrences.uuid
+        ) AS printed_idno
     FROM occurrences
     GROUP BY occurrences.ref
 ) AS occurrences ON places.id = occurrences.ref
 WHERE
-    places.id LIKE '%' || :search || '%'
-    OR places.cs_name LIKE '%' || :search || '%'
-    OR places.de_name LIKE '%' || :search || '%'
-    OR places.fr_name LIKE '%' || :search || '%'
-    OR places.it_name LIKE '%' || :search || '%'
-    OR places.lt_name LIKE '%' || :search || '%'
-    OR places.nl_name LIKE '%' || :search || '%'
-    OR places.pl_name LIKE '%' || :search || '%'
-    OR places.rm_name LIKE '%' || :search || '%'
+    (
+        places.id LIKE '%' || :search || '%'
+        OR places.cs_name LIKE '%' || :search || '%'
+        OR places.de_name LIKE '%' || :search || '%'
+        OR places.fr_name LIKE '%' || :search || '%'
+        OR places.it_name LIKE '%' || :search || '%'
+        OR places.lt_name LIKE '%' || :search || '%'
+        OR places.nl_name LIKE '%' || :search || '%'
+        OR places.pl_name LIKE '%' || :search || '%'
+        OR places.rm_name LIKE '%' || :search || '%'
+    ) AND (
+        :occurrence IS ''
+        OR occurrences.printed_idno LIKE '%' || :occurrence || '%'
+    )

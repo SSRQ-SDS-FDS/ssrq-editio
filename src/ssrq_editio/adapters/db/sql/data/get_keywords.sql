@@ -12,13 +12,23 @@ FROM keywords
 LEFT JOIN (
     SELECT
         occurrences.ref,
-        GROUP_CONCAT(occurrences.uuid, ',') AS occurrences
+        GROUP_CONCAT(occurrences.uuid, ',') AS occurrences,
+        (
+            SELECT GROUP_CONCAT(documents.printed_idno)
+            FROM documents
+            WHERE documents.uuid = occurrences.uuid
+        ) AS printed_idno
     FROM occurrences
     GROUP BY occurrences.ref
 ) AS occurrences ON keywords.id = occurrences.ref
 WHERE
-    keywords.id LIKE '%' || :search || '%'
-    OR keywords.de_name LIKE '%' || :search || '%'
-    OR keywords.fr_name LIKE '%' || :search || '%'
-    OR keywords.it_name LIKE '%' || :search || '%'
-    OR keywords.lt_name LIKE '%' || :search || '%'
+    (
+        keywords.id LIKE '%' || :search || '%'
+        OR keywords.de_name LIKE '%' || :search || '%'
+        OR keywords.fr_name LIKE '%' || :search || '%'
+        OR keywords.it_name LIKE '%' || :search || '%'
+        OR keywords.lt_name LIKE '%' || :search || '%'
+    ) AND (
+        :occurrence IS ''
+        OR occurrences.printed_idno LIKE '%' || :occurrence || '%'
+    )

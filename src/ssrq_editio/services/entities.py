@@ -16,7 +16,10 @@ ENTITY_ID_PATTERN = re.compile(r"^(key|lem|loc|per|org)(\d{6})$")
 
 
 async def get_entities(
-    connection: Connection, entity_type: EntityTypes, query: str | None = None
+    connection: Connection,
+    entity_type: EntityTypes,
+    query: str | None = None,
+    occurrence: str | None = None,
 ) -> Entities:
     """A simple service to retrieve entities from the database. Uses the defined
     db adapters to retrieve the entities based on the entity type and query.
@@ -30,17 +33,17 @@ async def get_entities(
     """
     match entity_type:
         case EntityTypes.FAMILIES:
-            return await search_families(connection, search=query)
+            return await search_families(connection, search=query, occurrence=occurrence)
         case EntityTypes.LEMMATA:
-            return await search_lemmata(connection, search=query)
+            return await search_lemmata(connection, search=query, occurrence=occurrence)
         case EntityTypes.KEYWORDS:
-            return await search_keywords(connection, search=query)
+            return await search_keywords(connection, search=query, occurrence=occurrence)
         case EntityTypes.PLACES:
-            return await search_places(connection, search=query)
+            return await search_places(connection, search=query, occurrence=occurrence)
         case EntityTypes.PERSONS:
-            return await search_persons(connection, search=query)
+            return await search_persons(connection, search=query, occurrence=occurrence)
         case EntityTypes.ORGANIZATIONS:
-            return await search_organizations(connection, search=query)
+            return await search_organizations(connection, search=query, occurrence=occurrence)
         case _:
             raise NotImplementedError
 
