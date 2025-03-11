@@ -15,7 +15,7 @@
 />
 
 <div class="w-screen">
-    <aside id="filterSidebar" class="fixed inset-y-0 bg-white p-6 shadow-md z-50" style="width: 550px;">
+    <aside id="filterSidebar" class="fixed inset-y-0 bg-white p-6 shadow-md z-50">
         <FilterSideBar
             :endpoint="url_for('entity_view', entity_type = data.content.entity_type)"
             :hx_indicator="'#loading-overlay'"

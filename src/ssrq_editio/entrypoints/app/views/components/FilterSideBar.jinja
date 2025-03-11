@@ -4,40 +4,48 @@
     hx_target: str | None = None,
     queries: str | None = None
 #}
-<form
-    hx-get="{{ endpoint }}"
-    hx-indicator="{{ hx_indicator }}"
-    hx-target="{{ hx_target }}"
-    hx-push-url="true"
-    hx-trigger="submit"
-    hx-swap="outerHTML"
-    x-data="{ queries: {{ queries }} }"
-    class="flex flex-col gap-4 p-6 max-w-3xl mx-auto border-2 border-red-700 rounded-xl shadow-lg bg-white">
-
-    <!-- search fields -->
-    <div class="flex flex-wrap gap-x-3 gap-y-2">
-        <template x-for="(query, index) in queries" :key="index">
-            <div class="flex items-center gap-2 bg-gray-100 p-2 rounded shadow-md border border-gray-300">
-                <select x-model="query.field" class="border-none text-sm bg-transparent focus:outline-none"> 
-                    <option value="ID" class="text-gray-600">ID</option>
-                    <option value="Standardname">Standardname</option>
-                    <option value="Ortstyp">Ortstyp</option>
-                    <option value="Vorkommen">Vorkommen</option>
-                </select>
-                <span class="text-gray-500">=</span>
-                <input type="text" placeholder="Suchbegriff..." x-model="query.value" class="border-none text-sm bg-transparent focus:outline-none focus-visible:ring-0 w-32" />
-                <input type="button" @click="queries.splice(index, 1)" value="x" class="text-red-600 font-bold bg-gray-300 px-2 rounded-full hover:bg-gray-400 transition" />
-            </div>
-        </template>
-        <!-- control: add, remove all -->
-        <div class="flex gap-3">
-            <input type="button" @click="queries.push({ field: '', value: '' })" value="+" class="text-white bg-red-700 rounded-full px-4 py-1 text-lg font-bold shadow-md hover:bg-red-800 transition">
-            <input type="button" @click="queries = []" value="leeren" class="text-red-700 border-2 border-red-700 bg-white rounded-full px-4 py-1 font-bold shadow-md hover:bg-red-50 transition" />
-        </div>
+<div x-data="{ openFilterSidebar: false, queries: {{ queries }} }">
+    <div class="text-right">
+        <input class="text-right" type="button" value="Filter" @click="openFilterSidebar = !openFilterSidebar" />
     </div>
-    <input type="hidden" name="queries" :value="JSON.stringify(queries)">
-</form>
-<!-- search button -->
-<div class="" style="text-align: right">
-    <input type="submit" value="suchen" class="ml-auto text-red-700 border-2 border-red-700 bg-white rounded-md px-2 py-2 font-bold shadow-md hover:bg-red-50 transition" />
+    <form
+        id="filterSidebarContent"
+        hx-get="{{ endpoint }}"
+        hx-indicator="{{ hx_indicator }}"
+        hx-target="{{ hx_target }}"
+        hx-push-url="true"
+        hx-trigger="submit"
+        hx-swap="outerHTML"
+        x-show="openFilterSidebar"
+        x-transition
+        class="flex flex-col gap-4 mx-auto w-96">
+
+        <!-- search fields -->
+        <div class="flex flex-wrap justify-center gap-y-3 shadow-lg rounded-lg px-2 py-6">
+            <template x-for="(query, index) in queries" :key="index">
+                <div class="flex items-center gap-2 rounded shadow-md border overflow-hidden">
+                    <select x-model="query.field" class="border-none text-sm m-2 bg-transparent focus:outline-none"> 
+                        <option value="ID" class="text-ssrq-greyed-800">ID</option>
+                        <option value="Standardname">Standardname</option>
+                        <option value="Ortstyp">Ortstyp</option>
+                        <option value="Vorkommen">Vorkommen</option>
+                    </select>
+                    <span class="text-ssrq-greyed-800">=</span>
+                    <input type="text" placeholder="Suchbegriff..." x-model="query.value" class="border-none text-sm bg-transparent focus:outline-none focus-visible:ring-0 w-32" />
+                    <button @click="queries.splice(index, 1)" class="text-white h-full font-bold bg-ssrq-primary py-1 px-2 hover:bg-red-600 transition"><span class="fa-solid fa-trash" /></button>
+                </div>
+            </template>
+            <!-- control: add, remove all -->
+            <div class="flex gap-2">
+                <input type="button" @click="queries.push({ field: '', value: '' })" value="+" class="text-white bg-red-700 rounded-full px-4 py-1 text-lg font-bold shadow-md hover:bg-red-800 transition">
+                <input type="button" @click="queries = []" value="leeren" class="text-red-700 border-2 border-red-700 bg-white rounded-full px-4 py-1 font-bold shadow-md hover:bg-red-50 transition" />
+            </div>
+        </div>
+
+        <!-- search button -->
+        <div class="text-right">
+            <input type="hidden" name="queries" :value="JSON.stringify(queries)">
+            <input type="submit" value="suchen" class="ml-auto text-red-700 border-2 border-red-700 bg-white rounded-md px-2 py-2 font-bold shadow-md hover:bg-red-50 transition" />
+        </div>
+    </form>
 </div>
