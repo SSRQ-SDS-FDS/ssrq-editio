@@ -5,7 +5,6 @@ from fastapi.responses import StreamingResponse
 from ssrq_utils.lang.display import Lang
 
 from ssrq_editio.adapters.db.entities import count_entities, list_entity_ids
-from ssrq_editio.adapters.db.kantons import list_kantons_abbreviations
 from ssrq_editio.adapters.db.volumes import list_volumes_with_editors
 from ssrq_editio.entrypoints.app.shared.dependencies import DBDependency
 from ssrq_editio.entrypoints.cli.config import VOLUME_SRC
@@ -21,6 +20,7 @@ from ssrq_editio.models.entities import (
 from ssrq_editio.models.kantons import KantonName
 from ssrq_editio.models.volumes import Volumes
 from ssrq_editio.services.entities import ENTITY_ID_PATTERN, get_entities, validate_entity_id
+from ssrq_editio.services.kantons import list_kanton_abbreviations
 from ssrq_editio.services.volumes import stream_volume_pdf
 
 version_one = APIRouter(prefix="/v1", tags=["v1"])
@@ -35,7 +35,7 @@ def info() -> dict[str, str]:
 @version_one.get("/kantons")
 async def kantons(connection: DBDependency) -> list[str]:
     """Returns a list of all kantons (cantons) in abbreviated form."""
-    return await list_kantons_abbreviations(connection)
+    return await list_kanton_abbreviations(connection)
 
 
 @version_one.get("/kantons/{kanton}")

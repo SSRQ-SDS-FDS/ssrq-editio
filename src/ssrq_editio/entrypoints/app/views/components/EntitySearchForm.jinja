@@ -6,6 +6,7 @@
     translator: Translator,
     query: str | None,
     occurrence: str | None,
+    volumes: list[str] | None,
     hx: bool = False,
     hx_indicator: str | None = None,
     hx_params: str | None = None,
@@ -42,8 +43,16 @@
            hx-swap="outerHTML"
           {% endif %}
         />
+        {% if volumes is not none %}
+            <datalist id="occurrences_list">
+                {% for volume in volumes %}
+                    <option value="{{ volume }}" />
+                {% endfor %}
+            </datalist>
+        {% endif %}
         <input
           id="entityOccurrenceSearch"
+          list="occurrences_list"
           type="text"
           autocomplete="off"
           name="occurrence"

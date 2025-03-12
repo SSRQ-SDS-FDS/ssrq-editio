@@ -68,31 +68,32 @@
         {% endif %}
         <li class="my-0.5 border-t-2 border-ssrq-greyed-50">
             {% if entity.occurrences is not none %}
-            <details class="accordion">
-                <summary><span class="font-medium">{{ translator.translate(lang, 'occurrences') }}:</span></summary>
-                <div class="px-4 py-2">
+            <Accordion>
+                <AccordionHeader>
+                    <span class="font-medium">{{ translator.translate(lang, 'occurrences') }}:</span>
+                </AccordionHeader>
+                <AccordionBody class="px-4 py-2">
                     <ol class="list-none">
                         {% for kanton, volumes in group_and_sort_idnos(entity.occurrences, idnos) | dictsort %}
                         <li>
                             <span class="underline">{{ kanton }}</span>
                             <ol class="ml-2">
                                 {% for volume, docs in volumes | dictsort %}
-                                    <li>
-                                        {% for doc in docs  %}
-                                            <!-- ToDo: Find a more generic approach for creating links, we also need to consider UUID only IDNOs -->
-                                            <a
-                                            class="text-ssrq-primary"
-
-                                            href="{{ url_for('document_view', kanton=doc.kanton, volume=doc.volume | replace(' ', '_') | replace('/', '_'), document=doc.idno.split('-')[3:] | join('-') )}}">{{ doc.printed_idno }}</a>{% if not loop.last %},{% endif %}
-                                        {% endfor %}
-                                    </li>
+                                <li>
+                                    {% for doc in docs %}
+                                    <!-- ToDo: Find a more generic approach for creating links, we also need to consider UUID only IDNOs -->
+                                    <a class="text-ssrq-primary"
+                                        href="{{ url_for('document_view', kanton=doc.kanton, volume=doc.volume | replace(' ', '_') | replace('/', '_'), document=doc.idno.split('-')[3:] | join('-') )}}">{{
+                                        doc.printed_idno }}</a>{% if not loop.last %},{% endif %}
+                                    {% endfor %}
+                                </li>
                                 {% endfor %}
                             </ol>
                         </li>
                         {% endfor %}
                     </ol>
-                </div>
-            </details>
+                </AccordionBody>
+            </Accordion>
             {% else %}
             <span class="font-medium">{{ translator.translate(lang, 'occurrences') }}:</span> {{ translator.translate(lang, 'no-occurrences') }}
             {% endif %}

@@ -1,9 +1,11 @@
 from pathlib import Path
 from typing import AsyncGenerator
 
+import cachebox
 from aiosqlite import Connection
 from pydantic_core import from_json
 
+from ssrq_editio.adapters.db.kantons import list_kantons
 from ssrq_editio.adapters.db.volumes import list_volumes_with_editors
 from ssrq_editio.adapters.file import stream
 from ssrq_editio.models.kantons import KantonName
@@ -82,3 +84,25 @@ async def stream_volume_pdf(
     )
 
     return stream(volume_path)
+
+
+@cachebox.cached(cache=cachebox.LRUCache(maxsize=24))
+async def list_all_volumes(
+    connection: Connection,
+) -> list[str] | None:
+    """Lists all volumes based on the kantons and volumes in the database.
+
+    Args:
+        connection (aiosqlite.Connection): SQLite connection.
+        kanton_short_names (list[str]): List of kanton short names.
+
+    Returns:
+        list[str] | None: List of volumes or None.
+    """
+    volumes = [
+        f"{kanton.short_name} {volume.name}"
+        for kanton in (await list_kantons(connection)).kantons
+        if kanton.docs > 0
+        for volume in (await list_volumes_with_editors(connection, kanton.short_name) or [])
+    ]
+    return sorted(volumes) if volumes else None
