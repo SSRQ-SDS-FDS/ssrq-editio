@@ -10,6 +10,7 @@ from ssrq_editio.models.entities import Entities, Entity, EntityTypes
 from ssrq_editio.services.entities import get_entities
 from ssrq_editio.services.paginate import create_pages
 from ssrq_editio.services.sort import sort_entities_by_name
+from ssrq_editio.services.volumes import list_all_volumes
 
 
 class EntityViewModel(ViewModel):
@@ -46,6 +47,7 @@ class EntityViewModel(ViewModel):
     async def create_context(self) -> ViewContext:
         search_result = await self._get_entities()
         document_idnos = await get_document_infos(self.connection)
+        volumes = await list_all_volumes(self.connection)
         return ViewContext(
             request=self.request,
             lang=self.lang,
@@ -57,10 +59,11 @@ class EntityViewModel(ViewModel):
                     "entities": search_result[1][0] if search_result else None,
                     "entity_type": self.entity_type.value,
                     "idnos": document_idnos,
-                    "ocurrence": self.occurrence,
+                    "occurrence": self.occurrence,
                     "pages": search_result[1][1] if search_result else None,
                     "total": search_result[0] if search_result else None,
                     "query": self.query,
+                    "volumes": volumes,
                 },
             },
             translator=self.translator,

@@ -48,5 +48,17 @@ module.exports = {
       serif: ['Lexia Fontes', 'Georgia', 'Times New Roman', 'serif'],
     },
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [
+    require('@tailwindcss/forms'),
+    ({ addVariant }) => {
+      // add webkit details marker support to the marker variant
+      // this can be removed when webkit fully implements marker
+      addVariant('marker', [
+        '&::marker',
+        '& *::marker',
+        '&::-webkit-details-marker',
+        '& *::-webkit-details-marker',
+      ]);
+    },
+  ],
 };
