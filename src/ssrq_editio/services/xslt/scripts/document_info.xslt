@@ -40,8 +40,12 @@
     </xsl:template>
     
     <xsl:template match="tei:head">
+        <xsl:param name="translations" as="map(xs:string, map(*))" tunnel="yes"/>
         <xsl:variable name="head">
-            <xsl:apply-templates select="." mode="html"/>
+            <xsl:apply-templates select="." mode="html">
+                <xsl:with-param name="lang" as="xs:string" select="'de'" tunnel="yes"/>
+                <xsl:with-param name="translations" as="map(xs:string, map(*))" select="$translations"/>
+            </xsl:apply-templates>
         </xsl:variable>
         <xsl:map-entry
             key="(./@xml:lang, ./ancestor::tei:TEI/@xml:lang)[1] || '_title'"
@@ -72,12 +76,13 @@
         <xsl:param name="translations" as="map(xs:string, map(*))" tunnel="yes"/>
         <xsl:variable name="context" as="element(tei:origDate)" select="."/>
         <xsl:for-each select="$supported-languages">
-            <xsl:map-entry key=". || '_orig_date'">
+            <xsl:variable name="rendered-date">
                 <xsl:apply-templates select="$context" mode="html">
                     <xsl:with-param name="lang" as="xs:string" select="." tunnel="yes"/>
                     <xsl:with-param name="translations" as="map(xs:string, map(*))" select="$translations"/>
                 </xsl:apply-templates>
-            </xsl:map-entry>
+            </xsl:variable>
+            <xsl:map-entry key=". || '_orig_date'" select="$rendered-date => serialize() => normalize-space()"/>
         </xsl:for-each>
     </xsl:template>
     
