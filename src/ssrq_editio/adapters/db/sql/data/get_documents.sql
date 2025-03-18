@@ -1,4 +1,5 @@
-SELECT
+-- ToDo: Improve the query by fixing all linter errors and warnings
+SELECT -- noqa: disable=all
     docs.uuid,
     docs.idno,
     docs.is_main,
@@ -8,12 +9,13 @@ SELECT
     docs.fr_orig_date,
     docs.it_orig_date,
     CASE
-        WHEN :facs = 1 THEN
-            CASE
-                WHEN docs.facs IS NOT NULL THEN docs.facs
-                WHEN sub_docs_facs.facs IS NOT NULL THEN '[]' -- just a placeholder, the actual value is not important
-                ELSE NULL
-            END
+        WHEN :facs = 1
+            THEN
+                CASE
+                    WHEN docs.facs IS NOT NULL THEN docs.facs
+                    -- just a placeholder, the actual value is not important
+                    WHEN sub_docs_facs.facs IS NOT NULL THEN '[]'
+                END
         ELSE docs.facs
     END AS facs,
     docs.printed_idno,
@@ -28,15 +30,21 @@ SELECT
         WHERE
             sub_docs.volume_id = docs.volume_id
             AND sub_docs.is_main = 0
-            AND CAST(sub_docs.sort_key AS INT) = CAST(docs.sort_key AS INT)
+            AND cast(sub_docs.sort_key AS INT) = cast(docs.sort_key AS INT)
         ORDER BY sub_docs.sort_key ASC
     ) AS sub_documents
 FROM documents AS docs
 LEFT JOIN (
-    SELECT volume_id, sort_key, facs
+    SELECT
+        volume_id,
+        sort_key,
+        facs
     FROM documents
     WHERE is_main = 0 AND facs IS NOT NULL
-) AS sub_docs_facs ON sub_docs_facs.volume_id = docs.volume_id AND CAST(sub_docs_facs.sort_key AS INT) = CAST(docs.sort_key AS INT)
+) AS sub_docs_facs
+    ON
+        sub_docs_facs.volume_id = docs.volume_id
+        AND cast(sub_docs_facs.sort_key AS INT) = cast(docs.sort_key AS INT)
 WHERE
     (
         docs.volume_id = :volume_id
@@ -49,6 +57,9 @@ WHERE
         )
     )
     AND (
-        :facs IS NULL OR :facs != 1 OR docs.facs IS NOT NULL OR sub_docs_facs.facs IS NOT NULL
+        :facs IS NULL
+        OR :facs != 1
+        OR docs.facs IS NOT NULL
+        OR sub_docs_facs.facs IS NOT NULL
     )
 ORDER BY docs.sort_key ASC;

@@ -20,6 +20,7 @@
     "funding": "Finanzielle Unterstützung",
     "id-or-name": "ID oder Name",
     "occurrence": "Vorkommen",
+    "has-facs": "Faksimile vorhanden",
     "index": "Register",
     "index-of-families": "Register aller Familien",
     "index-of-lemmata": "Register aller Lemmata",
@@ -55,7 +56,10 @@
     "tech": "Technische Umsetzung",
     "terms": "Schlagworte",
     "title": "Sammlung Schweizerischer Rechtsquellen online",
-    "volumes": "Editionseinheiten"
+    "view-article": "Stück anzeigen",
+    "volume": "Editionseinheit",
+    "volumes": "Editionseinheiten",
+    "xml-download": "TEI-XML Dokument"
   },
   "en": {
     "about": "About the Edition",
@@ -76,6 +80,7 @@
     "found": "hits found",
     "found-single": "hit found",
     "funding": "Funding",
+    "has-facs": "Facsimile available",
     "id-or-name": "ID or Name",
     "occurrence": "Occurrence",
     "index": "Index",
@@ -113,7 +118,10 @@
     "tech": "Technical Implementation",
     "terms": "Keywords",
     "title": "Collection of Swiss Law Sources online",
-    "volumes": "Volumes"
+    "view-article": "View document",
+    "volume": "Volume",
+    "volumes": "Volumes",
+    "xml-download": "TEI-XML Document"
   },
   "fr": {
     "about": "À propos de l'édition",
@@ -136,6 +144,7 @@
     "funding": "Support financier",
     "id-or-name": "ID ou nom",
     "occurrence": "Occurrence",
+    "has-facs": "Fac-similé disponible",
     "index": "Index",
     "index-of-families": "Index de toutes les familles",
     "index-of-lemmata": "Index de tous les lemmes",
@@ -171,7 +180,10 @@
     "tech": "Mise en œuvre technique",
     "terms": "Termes",
     "title": "Les sources du droit suisse online",
-    "volumes": "Unités éditoriales"
+    "view-article": "Voir le article",
+    "volume": "Unité éditorial",
+    "volumes": "Unités éditoriales",
+    "xml-download": "Document TEI-XML"
   },
   "it": {
     "about": "Informazioni sull'edizione",
@@ -192,6 +204,7 @@
     "found": "risultati trovati",
     "found-single": "risultato trovato",
     "funding": "Finanziamenti",
+    "has-facs": "Facsimile disponibile",
     "id-or-name": "ID o nome",
     "occurrence": "Occorrenza",
     "index": "Indice",
@@ -229,6 +242,9 @@
     "tech": "Realizzazione tecnica",
     "terms": "Parole chiave",
     "title": "Collana Fonti del diritto svizzero online",
-    "volumes": "Unità editoriali"
+    "view-article": "Visualizza articolo",
+    "volume": "Unità editoriale",
+    "volumes": "Unità editoriali",
+    "xml-download": "Documento TEI-XML"
   }
 }

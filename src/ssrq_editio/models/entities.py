@@ -63,6 +63,17 @@ class Entity(BaseModel):
 class Entities(BaseModel):
     entities: Sequence[Entity]
 
+    def get_by_id(self, entity_id: str) -> Entity | None:
+        """Retrieve an entity by its ID.
+
+        Args:
+            entity_id (str): The
+
+        Returns:
+            Entity | None: The entity or None if not found.
+        """
+        return next((entity for entity in self.entities if entity.id == entity_id), None)
+
 
 class Family(Entity):
     rm_name: str | None

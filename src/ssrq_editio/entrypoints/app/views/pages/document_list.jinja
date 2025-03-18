@@ -1,0 +1,63 @@
+{% extends "layouts/page.jinja" %}
+{% block content %}
+<Banner :request="request">
+    <h1 class="title-1">
+        {{ translator.translate(lang, 'canton') }} {{ data.content.kanton }}
+    </h1>
+    <h2 class="title-2">
+        {{ translator.translate(lang, 'volume') }} {{ data.content.volume.name }}
+    </h2>
+</Banner>
+
+<Breadcrumbs
+  :request="request"
+  :parts="[(data.content.kanton, url_for('kanton', kanton=data.content.kanton)), (data.content.volume.name, None)]"
+/>
+<!--
+<section class="flex w-full max-w-5xl lg:px-12 sm:px-4 items-center justify-start mx-auto">
+    foo
+</section>
+-->
+
+{% block documents %}
+
+<section class="documents relative" id="documents">
+    <Loader :lang="lang" :translator="translator" />
+    {% if data.content.documents %}
+        <Pagination
+          class="top"
+          :current_page="data.content.current_page"
+          :pages="data.content.pages"
+          :request="request"
+        >
+            <HitCounter
+              :lang="lang"
+              :request="request"
+              :translator="translator"
+              :total="data.content.total"
+            />
+        </Pagination>
+        {% for document in data.content.documents %}
+            <DocumentCard
+              :document="document"
+              :lang="lang"
+              :request="request"
+              :translator="translator"
+            />
+        {% endfor %}
+        <Pagination
+          class="bottom"
+          :current_page="data.content.current_page"
+          :pages="data.content.pages"
+          :request="request"
+        />
+    {% else %}
+        <NoHits :lang="lang" :translator="translator" />
+    {% endif %}
+
+</section>
+
+{% endblock %}
+
+
+{% endblock %}
