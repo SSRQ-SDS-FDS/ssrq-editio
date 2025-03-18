@@ -1,9 +1,15 @@
 from pathlib import Path
+from typing import Sequence, cast
 
+from aiosqlite import Connection
 from pydantic_core import from_json
 from ssrq_utils.idno.model import IDNO
+from ssrq_utils.lang.display import Lang
+from ssrq_utils.uca import uca_simple_sort
 
 from ssrq_editio.models.documents import Document
+from ssrq_editio.models.entities import EntityTypes, Places
+from ssrq_editio.services.entities import get_entities
 from ssrq_editio.services.xslt.transformer import (
     XSLTParam,
     XSLTTransformationError,
@@ -63,6 +69,46 @@ async def extract_infos_from_xml(
             lambda doc: Document.model_validate(_add_idno_info(from_json(doc), volume_id)),
             filter(None, result),
         )
+    )
+
+
+async def resolve_orig_places_for_documents(
+    documents: Sequence[Document], connection: Connection, lang: Lang
+) -> tuple[tuple[Document, Sequence[str] | None], ...]:
+    """A service function to resolve the original places for the given documents.
+
+    The resolved places will be sorted by their name (in the given language).
+
+    ToDo: We should measure the performance here (maybe it could be good idea, if
+    the get_entities function is cachable).
+
+    Args:
+        documents (Sequence[Document]): The documents to resolve the original places for.
+        connection (Connection): The SQLite connection.
+        lang (Lang): The language to sort the places by.
+
+    Returns:
+        tuple[tuple[Document, Sequence[str] | None], ...]: A tuple of document-place tuples.
+    """
+    places = cast(Places, await get_entities(connection, EntityTypes.PLACES))
+
+    if len(places.entities) == 0:
+        raise ValueError("No places found in the database for resolving.")
+
+    return tuple(
+        (
+            document,
+            uca_simple_sort(
+                [
+                    place.get_name_by_lang(lang)
+                    for orig_place in document.orig_place
+                    if (place := places.get_by_id(orig_place))
+                ]
+            )
+            if document.orig_place
+            else None,
+        )
+        for document in documents
     )
 
 

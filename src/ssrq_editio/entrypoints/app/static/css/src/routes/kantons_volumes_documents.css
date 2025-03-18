@@ -57,10 +57,17 @@
     @apply text-sm;
   }
 
+  .documents .document-info footer a,
   .volume footer a {
-    @apply text-blue-600 hover:underline cursor-pointer;
+    @apply text-ssrq-primary hover:underline cursor-pointer;
   }
 
+  .documents .document-info footer a:not(:last-child),
+  .volume footer a:not(:last-child) {
+    @apply border-r border-gray-300 pr-2;
+  }
+
+  .documents .document-info footer a:not(:first-child),
   .volume footer a:not(:first-child) {
     @apply ml-2;
   }
@@ -72,11 +79,7 @@
 
   .documents .document-info,
   .entities .entity-info {
-    @apply w-full px-8 py-4 bg-white rounded-lg shadow-md my-2 flex-1 hover:shadow hover:bg-blue-50;
-  }
-
-  .entities .entity-info {
-    @apply hover:bg-white;
+    @apply w-full px-8 py-4 bg-white rounded-lg shadow-md my-2 flex-1 hover:shadow;
   }
 
   .documents .document-info header,
@@ -99,11 +102,13 @@
     @apply inline-flex items-center;
   }
 
-  .documents #loading-overlay, .entities #loading-overlay {
+  .documents #loading-overlay,
+  .entities #loading-overlay {
     display: none;
   }
 
-  .documents #loading-overlay.htmx-request, .entities #loading-overlay.htmx-request {
+  .documents #loading-overlay.htmx-request,
+  .entities #loading-overlay.htmx-request {
     display: block;
   }
 }

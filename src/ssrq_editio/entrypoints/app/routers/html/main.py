@@ -6,6 +6,7 @@ from ssrq_editio.entrypoints.app.shared.dependencies import DBDependency, LangDe
 from ssrq_editio.entrypoints.app.views.models.entity import EntityViewModel
 from ssrq_editio.entrypoints.app.views.models.index import IndexViewModel
 from ssrq_editio.entrypoints.app.views.models.kanton import KantonViewModel
+from ssrq_editio.entrypoints.app.views.models.volume import VolumeViewModel
 from ssrq_editio.models.entities import EntityTypes
 from ssrq_editio.models.kantons import KantonName
 
@@ -79,13 +80,19 @@ async def volume_pdf(
 
 @html.get("/{kanton}/{volume}", name="document_list")
 async def documents(
-    kanton: KantonName,
-    volume: str,
     request: Request,
     lang: LangDependency,
     connection: DBDependency,
-):
-    return f"{kanton} {volume}"
+    kanton: KantonName,
+    volume: str,
+    query: str | None = None,
+    facs: bool = False,
+    page: int = 1,
+    per_page: int = 25,
+) -> HTMLResponse:
+    return await VolumeViewModel(
+        request, lang, connection, kanton, volume, query, facs, page, per_page
+    ).to_html()
 
 
 @html.get("/{kanton}/{volume}/{document}.html", name="document_view_with_html_extension")

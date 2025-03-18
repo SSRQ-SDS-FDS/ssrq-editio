@@ -4,7 +4,7 @@ import cachebox
 from aiosqlite import Connection
 
 from ssrq_editio.adapters.db.config import SQL_DATA_DIR
-from ssrq_editio.adapters.db.shared import store_batches
+from ssrq_editio.adapters.db.shared import replace_wildcard, store_batches
 from ssrq_editio.adapters.file import load
 from ssrq_editio.models.documents import Document, DocumentInfo
 
@@ -52,7 +52,7 @@ async def get_documents(
     async with connection.cursor() as cursor:
         await cursor.execute(
             await load(dir=query.parent, name=query.name),
-            {"facs": facs, "volume_id": volume_id, "search": search or ""},
+            {"facs": facs, "volume_id": volume_id, "search": replace_wildcard(search)},
         )
         data = await cursor.fetchall()
         return [Document(**item) for item in data]

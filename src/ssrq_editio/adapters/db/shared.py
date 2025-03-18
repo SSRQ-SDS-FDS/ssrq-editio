@@ -18,3 +18,18 @@ async def store_batches(
         for i in range(0, len(values), batch_size):
             await cursor.executemany(sql_query, values[i : i + batch_size])
             await connection.commit()
+
+
+def replace_wildcard(query: str | None) -> str:
+    """A simple function to replace the wildcard character '*' with '%',
+    which is used in the database for LIKE queries.
+
+    Args:
+        query (str | None): The query string
+
+    Returns:
+        str: The query string with '%' instead of '*' or an empty string if None
+    """
+    if query:
+        query.replace("*", "%")
+    return ""
