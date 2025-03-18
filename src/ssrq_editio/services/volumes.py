@@ -106,3 +106,30 @@ async def list_all_volumes(
         for volume in (await list_volumes_with_editors(connection, kanton.short_name) or [])
     ]
     return sorted(volumes) if volumes else None
+
+
+async def get_volume_info(connection: Connection, kanton_short_name: str, volume_machine_name: str):
+    """Get volume information based on kanton and volume machine name.
+
+    Args:
+        connection (Connection): SQLite connection.
+        kanton_short_name (str): Kanton short name.
+        volume_machine_name (str): Volume machine name.
+
+    Returns:
+        Volume: Volume object.
+
+    Raises:
+        ValueError: If volume or kanton is not found.
+    """
+    volumes = await list_volumes_with_editors(connection, kanton_short_name)
+
+    if volumes is None:
+        raise ValueError(f"Could not find any volumes for {kanton_short_name}")
+
+    volume = next((v for v in volumes if v.machine_name == volume_machine_name), None)
+
+    if volume is None:
+        raise ValueError(f"Could not find volume {volume_machine_name} for {kanton_short_name}")
+
+    return volume

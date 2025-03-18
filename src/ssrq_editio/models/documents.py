@@ -1,6 +1,6 @@
-from typing import Annotated, Any, NamedTuple
+from typing import Annotated, Any, NamedTuple, Self
 
-from pydantic import BaseModel, BeforeValidator
+from pydantic import BaseModel, BeforeValidator, model_validator
 from pydantic_core import to_json
 
 from ssrq_editio.services.utils import parse_as_list_or_return
@@ -31,6 +31,16 @@ class Document(BaseModel):
         list[str] | None,
         BeforeValidator(parse_as_list_or_return),
     ] = None
+    sub_documents: Annotated[
+        list[str] | None,
+        BeforeValidator(parse_as_list_or_return),
+    ] = None
+
+    @model_validator(mode="after")
+    def check_mutually_exclusive_fields(self) -> Self:
+        if not self.is_main and self.sub_documents:
+            raise ValueError("Subdocuments are only allowed for main documents.")
+        return self
 
     def model_dump_sqlite(self) -> dict[str, Any]:
         return {

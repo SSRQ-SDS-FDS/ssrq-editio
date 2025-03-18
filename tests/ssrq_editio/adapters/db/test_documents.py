@@ -2,7 +2,11 @@ from uuid import uuid4
 
 import pytest
 
-from ssrq_editio.adapters.db.documents import get_document_infos, initialize_document_data
+from ssrq_editio.adapters.db.documents import (
+    get_document_infos,
+    get_documents,
+    initialize_document_data,
+)
 from ssrq_editio.models.documents import Document
 
 
@@ -41,3 +45,16 @@ async def test_get_document_infos(db_volume_data, documents):
     result = await get_document_infos(connection=db_volume_data)
     assert len(result.keys()) == len(documents)
     assert all(uuid in [d.uuid for d in documents] for uuid in result.keys())
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize(
+    ("search", "facs", "expected"),
+    [(None, False, 149), ("III_4-1-1", False, 1), ("", True, 74)],
+)
+async def test_get_documents(db_volume_data, documents, search, facs, expected):
+    await initialize_document_data(documents=documents, connection=db_volume_data)
+    search_result = await get_documents(
+        connection=db_volume_data, volume_id="SG_III_4", search=search, facs=facs
+    )
+    assert len(search_result) == expected
