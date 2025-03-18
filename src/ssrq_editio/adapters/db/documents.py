@@ -28,6 +28,36 @@ async def initialize_document_data(
     )
 
 
+async def get_documents(
+    connection: Connection,
+    volume_id: str,
+    query: Path = SQL_DATA_DIR / "get_documents.sql",
+    search: str | None = None,
+    facs: bool = False,
+) -> list[Document]:
+    """Retrieve a list of documents per volume.
+
+    Only includes main documents, not the subdocuments.
+
+    Args:
+        connection (Connection): An aiosqlite Connection
+        volume_id (str): The volume ID
+        query (Path): The path to the query file
+        search (str): A search parameter for the idno or title
+        facs (bool): Parameter to filter for documents with facsimiles
+
+    Returns:
+        list[Document]: A list of Document objects
+    """
+    async with connection.cursor() as cursor:
+        await cursor.execute(
+            await load(dir=query.parent, name=query.name),
+            {"facs": facs, "volume_id": volume_id, "search": search or ""},
+        )
+        data = await cursor.fetchall()
+        return [Document(**item) for item in data]
+
+
 @cachebox.cached(cachebox.TTLCache(maxsize=0, ttl=3600))
 async def get_document_infos(
     connection: Connection,

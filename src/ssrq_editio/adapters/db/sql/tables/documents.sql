@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS documents
     it_orig_date TEXT NOT NULL,
     facs TEXT NULL,
     printed_idno TEXT NULL,
-    volume_id INTEGER NOT NULL,
+    volume_id TEXT NOT NULL,
     orig_place TEXT NULL,
     de_title TEXT NULL,
     fr_title TEXT NULL,
