@@ -10,3 +10,6 @@
 [submodule "src/ssrq_editio/entrypoints/app/static/fonts/Lexia"]
 	path = src/ssrq_editio/entrypoints/app/static/fonts/Lexia
 	url = https://github.com/SSRQ-SDS-FDS/ssrq-lexia.git
+[submodule "src/ssrq_editio/data/FR_I_2_8"]
+	path = src/ssrq_editio/data/FR_I_2_8
+	url = https://github.com/SSRQ-SDS-FDS/FR_I_2_8.git
