@@ -1,0 +1,64 @@
+{# def
+endpoint: URL,
+facs: bool,
+lang: Lang,
+translator: Translator,
+query: str | None,
+hx_indicator: str | None = None,
+hx_params: str | None = None,
+hx_target: str | None = None
+#}
+
+<form
+  class="my-2 text-sm w-full flex flex-col gap-4 items-center"
+>
+    <div class="w-3/4">
+        <label for="entityIdOrNameSearch" class="block mb-2 text-xs text-ssrq-greyed-700">
+            {{ translator.translate(lang,'filter-hits') }}
+        </label>
+        <div class="flex gap-2">
+            <input
+              id="documentIdOrTitleSearch"
+              type="text"
+              autocomplete="off"
+              name="query"
+              class="px-4 py-2 min-w-[16rem] w-full text-sm text-ssrq-greyed-800 bg-white border rounded-md focus:border-ssrq-primary focus:border-[0.025rem] focus:outline-none focus:ring focus:ring-ssrq-primary focus:ring-opacity-40"
+              placeholder="{{ translator.translate(lang, 'idno-or-title') }}"
+              {% if query %}value="{{ query }}"{% endif %}
+              hx-get="{{ endpoint }}"
+              hx-indicator="{{ hx_indicator }}"
+              hx-params="{{ hx_params }}"
+              hx-target="{{ hx_target }}"
+              hx-push-url="true"
+              hx-trigger="input changed delay:500ms, submit"
+              hx-swap="outerHTML"
+            />
+            <FormReset
+                :endpoint="endpoint"
+                :icon_size="'w-5 h-5'"
+            />
+        </div>
+    </div>
+    <div class="block">
+        <label class="inline-flex items-center">
+            <input
+              type="checkbox"
+              name="facs"
+              class="rounded border-gray-300 text-ssrq-primary shadow-sm focus:border-ssrq-primary focus:ring focus:ring-offset-0 focus:ring-ssrq-primary focus:ring-opacity-50"
+              {% if facs %}
+                checked=""
+              {% endif %}
+              hx-get="{{ endpoint }}"
+              hx-indicator="{{ hx_indicator }}"
+              hx-params="{{ hx_params }}"
+              hx-target="{{ hx_target }}"
+              hx-push-url="true"
+              hx-trigger="change delay:500ms, submit"
+              hx-swap="outerHTML"
+            >
+            <span class="ml-2">
+                {{ translator.translate(lang, 'has-facs') }}
+            </span>
+        </label>
+    </div>
+</form>
