@@ -31,5 +31,5 @@ def replace_wildcard(query: str | None) -> str:
         str: The query string with '%' instead of '*' or an empty string if None
     """
     if query:
-        query.replace("*", "%")
+        return query.replace("*", "%")
     return ""
