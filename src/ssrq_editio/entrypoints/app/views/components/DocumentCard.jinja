@@ -10,7 +10,7 @@
 
 <article class="document-info">
     <header>
-        <span>
+        <span title="{{ translator.translate(lang, 'ssrq-idno') }}">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
@@ -25,7 +25,7 @@
             </svg>
             {{ doc.printed_idno }}
         </span>
-        <span>
+        <span title="{{ translator.translate(lang, 'orig-date') }}">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -43,7 +43,7 @@
             {{ doc[lang.value + '_orig_date'] | safe }}
         </span>
         {% if doc.orig_place is not none and orig_places | length > 0 %}
-            <span>
+            <span title="{{ translator.translate(lang, 'orig-place') }}">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -67,7 +67,7 @@
             </span>
         {% endif %}
         {% if doc.facs is not none %}
-            <span>
+            <span title="{{ translator.translate(lang, 'has-facs') }}">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -82,7 +82,6 @@
                         d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25                                            6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
                     />
                 </svg>
-                {{ translator.translate(lang, 'has-facs') }}
             </span>
 
         {% endif %}
@@ -98,7 +97,8 @@
         {#  ToDo: Use a better solution here (supporting uuids etc.) ... #}
         {% set idno_parts = doc.idno.split('-') %}
         <a
-            href="{{ url_for('document_view', kanton=idno_parts[1], volume=idno_parts[2] | replace(' ', '_') | replace('/', '_'), document=idno_parts[3:] | join('-') ).include_query_params(lang=lang.value) }}">
+            href="{{ url_for('document_view', kanton=idno_parts[1], volume=idno_parts[2] | replace(' ', '_') | replace('/', '_'), document=idno_parts[3:] | join('-') ).include_query_params(lang=lang.value) }}"
+        >
             {{ translator.translate(lang, 'view-article') }}
         </a>
         {# ToDo: Insert the correct link here #}

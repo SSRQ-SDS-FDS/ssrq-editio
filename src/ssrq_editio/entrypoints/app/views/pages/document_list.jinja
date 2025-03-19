@@ -13,11 +13,21 @@
   :request="request"
   :parts="[(data.content.kanton, url_for('kanton', kanton=data.content.kanton)), (data.content.volume.name, None)]"
 />
-<!--
+
+
 <section class="flex w-full max-w-5xl lg:px-12 sm:px-4 items-center justify-start mx-auto">
-    foo
+    <DocumentSearchForm
+        :endpoint="url_for('document_list', kanton=data.content.kanton, volume=data.content.volume.machine_name).include_query_params(lang=lang.value)"
+        :facs="data.content.facs"
+        :lang="lang"
+        :translator="translator"
+        :query="data.content.query"
+        :hx_indicator="'#loading-overlay'"
+        :hx_params="'not per-page,page lang'"
+        :hx_target="'#documents'"
+    />
 </section>
--->
+
 
 {% block documents %}
 

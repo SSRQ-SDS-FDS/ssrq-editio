@@ -40,7 +40,7 @@ class VolumeViewModel(ViewModel):
     ):
         super().__init__(request, lang)
         self.page = "document_list.jinja"
-        # self.template_partial = "entities"
+        self.template_partial = "documents"
         self.connection = connection
         self.kanton = kanton
         self.volume = volume
