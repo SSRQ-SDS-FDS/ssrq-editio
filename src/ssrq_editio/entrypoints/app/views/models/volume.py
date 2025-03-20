@@ -55,7 +55,6 @@ class VolumeViewModel(ViewModel):
         return f"{self.kanton.value}_{self.volume}"
 
     async def create_context(self) -> ViewContext:
-        # search_result = await self._get_entities()
         if self.volume_info is None:
             self.volume_info = await get_volume_info(self.connection, self.kanton, self.volume)
 

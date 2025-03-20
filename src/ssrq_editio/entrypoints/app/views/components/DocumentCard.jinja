@@ -101,9 +101,11 @@
         >
             {{ translator.translate(lang, 'view-article') }}
         </a>
-        {# ToDo: Insert the correct link here #}
         <a
-            href="{{ url_for('document_view', kanton=idno_parts[1], volume=idno_parts[2] | replace(' ', '_') | replace('/', '_'), document=idno_parts[3:] | join('-') ).include_query_params(lang=lang.value) }}">
+            href="{{ url_for('api_v1_document_xml', id=doc.uuid) }}"
+            target="_blank"
+            download="{{ doc.uuid }}.xml"
+            >
             {{ translator.translate(lang, 'xml-download') }}
         </a>
 

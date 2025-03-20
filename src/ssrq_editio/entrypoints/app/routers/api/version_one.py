@@ -1,7 +1,7 @@
 from typing import Sequence, cast
 
 from fastapi import APIRouter, HTTPException
-from fastapi.responses import StreamingResponse
+from fastapi.responses import Response, StreamingResponse
 from ssrq_utils.lang.display import Lang
 
 from ssrq_editio.adapters.db.entities import count_entities, list_entity_ids
@@ -19,6 +19,7 @@ from ssrq_editio.models.entities import (
 )
 from ssrq_editio.models.kantons import KantonName
 from ssrq_editio.models.volumes import Volumes
+from ssrq_editio.services.documents import find_and_load_xml_source
 from ssrq_editio.services.entities import ENTITY_ID_PATTERN, get_entities, validate_entity_id
 from ssrq_editio.services.kantons import list_kanton_abbreviations
 from ssrq_editio.services.volumes import stream_volume_pdf
@@ -48,7 +49,7 @@ async def volumes(connection: DBDependency, kanton: KantonName) -> Volumes:
 
 
 @version_one.get(
-    "/kantons/{kanton}}/{volume}.pdf", name="api_v1_volume_pdf", response_class=StreamingResponse
+    "/kantons/{kanton}/{volume}.pdf", name="api_v1_volume_pdf", response_class=StreamingResponse
 )
 async def volume_pdf(
     kanton: KantonName,
@@ -60,6 +61,17 @@ async def volume_pdf(
         return StreamingResponse(
             await stream_volume_pdf(kanton, volume, connection, VOLUME_SRC),
             media_type="application/pdf",
+        )
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+
+@version_one.get("/documents/{id}/xml", name="api_v1_document_xml")
+async def xml_source(id: str, connection: DBDependency):
+    """Returns the XML source of a specific document."""
+    try:
+        return Response(
+            content=await find_and_load_xml_source(connection, id), media_type="application/xml"
         )
     except Exception as e:
         raise HTTPException(status_code=404, detail=str(e))

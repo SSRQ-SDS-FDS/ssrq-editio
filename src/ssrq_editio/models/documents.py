@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Annotated, Any, NamedTuple, Self
 
 from pydantic import BaseModel, BeforeValidator, model_validator
@@ -35,6 +36,7 @@ class Document(BaseModel):
         list[str] | None,
         BeforeValidator(parse_as_list_or_return),
     ] = None
+    source: Path | None = None
 
     @model_validator(mode="after")
     def check_mutually_exclusive_fields(self) -> Self:
@@ -44,7 +46,12 @@ class Document(BaseModel):
 
     def model_dump_sqlite(self) -> dict[str, Any]:
         return {
-            k: v if not isinstance(v, list) else to_json(v) for k, v in self.model_dump().items()
+            k: str(v.absolute())
+            if isinstance(v, Path)
+            else to_json(v)
+            if isinstance(v, list)
+            else v
+            for k, v in self.model_dump().items()
         }
 
 

@@ -13,7 +13,8 @@ INSERT OR REPLACE INTO documents (
     orig_place,
     de_title,
     fr_title,
-    entities
+    entities,
+    source
 ) VALUES (
     :uuid,
     :idno,
@@ -35,7 +36,8 @@ INSERT OR REPLACE INTO documents (
     CASE
         WHEN
             typeof(:entities) = 'text' AND :entities IS NOT NULL
-            THEN json(:facs)
+            THEN json(:entities)
         ELSE :entities
-    END
+    END,
+    :source
 );

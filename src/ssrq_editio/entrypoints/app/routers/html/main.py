@@ -96,14 +96,24 @@ async def documents(
 
 
 @html.get("/{kanton}/{volume}/{document}.html", name="document_view_with_html_extension")
-async def document_extension(
+async def deprecated_document_html_view(
     kanton: KantonName,
     volume: str,
     document: str,
-    request: Request,
 ):
     return RedirectResponse(
         html.url_path_for("document_view", kanton=kanton, volume=volume, document=document)
+    )
+
+
+@html.get("/{kanton}/{volume}/{document}.xml", name="document_view_with_xml_extension")
+async def deprecated_document_xml_view(
+    kanton: KantonName,
+    volume: str,
+    document: str,
+):
+    return RedirectResponse(
+        api.url_path_for("api_v1_document_xml", id=f"{kanton.value}-{volume}-{document}")
     )
 
 
