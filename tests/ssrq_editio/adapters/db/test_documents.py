@@ -3,6 +3,7 @@ from uuid import uuid4
 import pytest
 
 from ssrq_editio.adapters.db.documents import (
+    get_document,
     get_document_infos,
     get_documents,
     initialize_document_data,
@@ -58,3 +59,13 @@ async def test_get_documents(db_volume_data, documents, search, facs, expected):
         connection=db_volume_data, volume_id="SG_III_4", search=search, facs=facs
     )
     assert len(search_result) == expected
+
+
+@pytest.mark.anyio
+async def test_get_document(db_volume_data, documents):
+    await initialize_document_data(documents=documents, connection=db_volume_data)
+    for doc in documents:
+        result = await get_document(connection=db_volume_data, document_id=doc.idno)
+        assert result == doc
+        result = await get_document(connection=db_volume_data, document_id=doc.uuid)
+        assert result == doc

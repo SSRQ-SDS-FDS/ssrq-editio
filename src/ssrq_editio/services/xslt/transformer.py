@@ -17,6 +17,11 @@ class XSLTTransformationError(ValueError):
         super().__init__(message)
 
 
+class XSLTResult(NamedTuple):
+    src: str | Path
+    value: str | None
+
+
 class XSLTParam(NamedTuple):
     name: str
     value: str | int | bool
@@ -27,7 +32,7 @@ async def apply_xslt_in_parallel(
     xslt_script: str,
     params: list[XSLTParam] = [],
     xslt_src_dir: Path = XSLT_SRC_DIR,
-) -> list[str | None]:
+) -> list[XSLTResult]:
     """Applies an XSLT script to the given XML source in parallel.
 
     If a source is provided as a Path object, the file_loader function
@@ -67,7 +72,7 @@ async def apply_xslt(
     params: list[XSLTParam] = [],
     xslt_src_dir: Path = XSLT_SRC_DIR,
     file_loader: Callable[[Path, str | Path], Awaitable[str]] = load,
-) -> list[str | None]:
+) -> list[XSLTResult]:
     """Applies an XSLT script to the given XML source.
 
     If a source is provided as a Path object, the file_loader function
@@ -90,12 +95,15 @@ async def apply_xslt(
         xslt_exec = xslt_proc.compile_stylesheet(stylesheet_file=str(xslt_src_dir / xslt_script))
 
         return [
-            xslt_exec.transform_to_string(
-                xdm_node=saxon_proc.parse_xml(
-                    xml_text=src
-                    if isinstance(src, str)
-                    else await file_loader(src.parent, src.name)
-                )
+            XSLTResult(
+                value=xslt_exec.transform_to_string(
+                    xdm_node=saxon_proc.parse_xml(
+                        xml_text=src
+                        if isinstance(src, str)
+                        else await file_loader(src.parent, src.name)
+                    )
+                ),
+                src=src,
             )
             for src in xml_src
         ]

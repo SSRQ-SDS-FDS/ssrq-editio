@@ -4,7 +4,7 @@ import cachebox
 from aiosqlite import Connection
 
 from ssrq_editio.adapters.db.config import SQL_DATA_DIR
-from ssrq_editio.adapters.db.shared import load_and_execute_query, replace_wildcard, store_batches
+from ssrq_editio.adapters.db.shared import replace_wildcard, store_batches
 from ssrq_editio.adapters.file import load
 from ssrq_editio.models.documents import Document, DocumentInfo
 
@@ -19,6 +19,7 @@ async def initialize_document_data(
     batch_size: int = 256,
     query: Path = SQL_DATA_DIR / "put_document.sql",
 ):
+    print(documents[1].model_dump_sqlite())
     sql_query = await load(dir=query.parent, name=query.name)
     await store_batches(
         connection,
@@ -26,6 +27,34 @@ async def initialize_document_data(
         sql_query,
         [doc.model_dump_sqlite() for doc in documents],
     )
+
+
+async def get_document(
+    connection: Connection,
+    document_id: str,
+    query: Path = SQL_DATA_DIR / "get_document.sql",
+):
+    """Retrieve a document by its ID.
+
+    Args:
+        connection (Connection): An aiosqlite Connection
+        document_id (str): The document ID
+        query (Path): The path to the query file
+
+    Returns:
+        Document: A Document object
+    """
+    async with connection.cursor() as cursor:
+        await cursor.execute(
+            await load(dir=query.parent, name=query.name),
+            {"idno": document_id},
+        )
+        data = await cursor.fetchone()
+
+        if data is None:
+            raise ValueError(f"Document with ID {document_id} not found.")
+
+        return Document(**data)
 
 
 async def get_documents(

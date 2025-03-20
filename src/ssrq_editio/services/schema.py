@@ -39,11 +39,11 @@ async def transpile_schema_to_translations(
         (odd,), xslt_src_dir=xslt_script.parent.absolute(), xslt_script=xslt_script.name
     )
 
-    if result[0] is None:
+    if result[0].value is None:
         raise XSLTTransformationError(
             f"Failed to convert schema to translations; src: {schema_src}, xslt: {xslt_script}"
         )
 
-    await write(translations_dst.parent, translations_dst.name, result[0])
+    await write(translations_dst.parent, translations_dst.name, result[0].value)
 
     return translations_dst

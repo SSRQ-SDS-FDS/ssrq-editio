@@ -44,10 +44,10 @@ async def fill_volume_info_from_xml(
     """
     result = await apply_xslt((xml_src,), xslt_script)
 
-    if result[0] is None:
+    if result[0].value is None:
         raise ValueError(f"Could not update volume info for {volume.key}, XSLT failed.")
 
-    return volume.model_copy(update=from_json(result[0]))
+    return volume.model_copy(update=from_json(result[0].value))
 
 
 async def stream_volume_pdf(

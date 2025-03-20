@@ -7,6 +7,8 @@ from ssrq_utils.idno.model import IDNO
 from ssrq_utils.lang.display import Lang
 from ssrq_utils.uca import uca_simple_sort
 
+from ssrq_editio.adapters.db.documents import get_document
+from ssrq_editio.adapters.file import load
 from ssrq_editio.models.documents import Document
 from ssrq_editio.models.entities import EntityTypes, Places
 from ssrq_editio.services.entities import get_entities
@@ -50,7 +52,9 @@ async def extract_infos_from_xml(
         await apply_xslt(
             xml_src=xml_src,
             xslt_script=xslt_script,
-            params=[XSLTParam("schema", transpiled_schema.as_uri())],
+            params=[
+                XSLTParam("schema", transpiled_schema.as_uri()),
+            ],
         )
         if not parallel
         else await apply_xslt_in_parallel(
@@ -65,11 +69,28 @@ async def extract_infos_from_xml(
         raise XSLTTransformationError(f"Could not extract infos from: {', '.join(failed_items)}")
 
     return tuple(
-        map(
-            lambda doc: Document.model_validate(_add_idno_info(from_json(doc), volume_id)),
-            filter(None, result),
-        )
+        Document.model_validate(_add_idno_info(from_json(doc.value), volume_id, doc.src))
+        for doc in result
+        if doc.value is not None
     )
+
+
+async def find_and_load_xml_source(connection: Connection, doc_id: str):
+    """Fetches information about a document from the database and loads the XML source.
+
+    Args:
+        connection (Connection): The SQLite connection.
+        doc_id (str): The document ID.
+
+    Returns:
+        str: The loaded XML source.
+    """
+    doc_info = await get_document(connection, doc_id)
+
+    if doc_info.source is None:
+        raise ValueError(f"No source found for document with ID {doc_id}.")
+
+    return await load(doc_info.source.parent, doc_info.source.name)
 
 
 async def resolve_orig_places_for_documents(
@@ -112,7 +133,7 @@ async def resolve_orig_places_for_documents(
     )
 
 
-def _add_idno_info(document_info: dict, volume_id: str) -> dict:
+def _add_idno_info(document_info: dict, volume_id: str, source: Path | str) -> dict:
     """Add additional information to the document info.
 
     Parses the idno and adds the following information:
@@ -141,4 +162,5 @@ def _add_idno_info(document_info: dict, volume_id: str) -> dict:
         "is_main": parsed_idno.is_main(),
         "sort_key": parsed_idno.sort_key,
         "volume_id": volume_id,
+        "source": source,
     }
