@@ -5,6 +5,7 @@ from fastapi import Request
 from ssrq_utils.lang.display import Lang
 
 from ssrq_editio.adapters.db.documents import get_documents
+from ssrq_editio.adapters.db.volumes import check_facsimiles
 from ssrq_editio.entrypoints.app.views.models.base import ViewContext, ViewModel
 from ssrq_editio.models.documents import Document
 from ssrq_editio.models.kantons import KantonName
@@ -49,10 +50,20 @@ class VolumeViewModel(ViewModel):
         self.current_page = page
         self.per_page = per_page
 
+    @property
+    def volume_id(self) -> str:
+        return f"{self.kanton.value}_{self.volume}"
+
     async def create_context(self) -> ViewContext:
         # search_result = await self._get_entities()
         if self.volume_info is None:
             self.volume_info = await get_volume_info(self.connection, self.kanton, self.volume)
+
+        show_facs = await check_facsimiles(self.connection, self.volume_id)
+
+        if show_facs is False and self.facs:
+            # Handles the edge case when a url was manually entered
+            self.facs = False
 
         search_result = await self._get_documents()
 
@@ -64,10 +75,11 @@ class VolumeViewModel(ViewModel):
                 "page_description": self._get_description(),
                 "content": {
                     "current_page": self.current_page,
-                    "facs": self.facs,
                     "documents": search_result[1][0] if search_result else None,
+                    "facs": self.facs,
                     "kanton": self.kanton.value,
                     "pages": search_result[1][1] if search_result else None,
+                    "show_facs": show_facs,
                     "query": self.query,
                     "total": search_result[0] if search_result else None,
                     "volume": self.volume_info,
@@ -88,7 +100,7 @@ class VolumeViewModel(ViewModel):
     ):
         result = await get_documents(
             connection=self.connection,
-            volume_id=f"{self.kanton.value}_{self.volume}",
+            volume_id=self.volume_id,
             search=self.query,
             facs=self.facs,
         )
