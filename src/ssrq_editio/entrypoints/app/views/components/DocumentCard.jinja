@@ -87,10 +87,12 @@
         {% endif %}
     </header>
 
-    {% if lang.value == 'fr' %}
+    {% if lang.value == 'fr' and doc.fr_title is not none %}
         {{ doc.fr_title | safe }}
-    {% else %}
+    {% elif lang.value == 'de' and doc.de_title is not none %}
         {{ doc.de_title | safe }}
+    {% else %}
+        {{ doc.de_title | default(doc.fr_title, true) | safe }}
     {% endif %}
 
     <footer class="mt-4 flex">
