@@ -4,7 +4,7 @@ import cachebox
 from aiosqlite import Connection
 
 from ssrq_editio.adapters.db.config import SQL_DATA_DIR
-from ssrq_editio.adapters.db.shared import replace_wildcard, store_batches
+from ssrq_editio.adapters.db.shared import load_and_execute_query, replace_wildcard, store_batches
 from ssrq_editio.adapters.file import load
 from ssrq_editio.models.documents import Document, DocumentInfo
 

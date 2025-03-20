@@ -1,4 +1,25 @@
-from aiosqlite import Connection
+from pathlib import Path
+from typing import Iterable
+
+from aiosqlite import Connection, Row
+
+from ssrq_editio.adapters.file import load
+
+
+async def load_and_execute_query(connection: Connection, query: Path, **kwargs) -> Iterable[Row]:
+    """A simple function to load a query from a file and execute it
+
+    Args:
+        connection (Connection): An aiosqlite Connection
+        query (Path): The path to the query file
+        **kwargs: The parameters to pass to the query
+
+    Returns:
+        Iterable[Row]: The result of the query
+    """
+    sql_query = await load(dir=query.parent, name=query.name)
+
+    return await connection.execute_fetchall(sql_query, kwargs)
 
 
 async def store_batches(

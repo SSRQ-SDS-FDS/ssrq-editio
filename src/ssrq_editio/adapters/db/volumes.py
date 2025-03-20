@@ -3,6 +3,7 @@ from pathlib import Path
 import aiosqlite
 
 from ssrq_editio.adapters.db.config import SQL_DATA_DIR
+from ssrq_editio.adapters.db.shared import load_and_execute_query
 from ssrq_editio.adapters.file import load
 from ssrq_editio.models.volumes import Volume
 
@@ -67,3 +68,24 @@ async def list_volumes_with_editors(
             return None
 
         return [Volume(**volume) for volume in data]
+
+
+async def check_facsimiles(
+    connection: aiosqlite.Connection,
+    volume_id: str,
+    query: Path = SQL_DATA_DIR / "get_documents_facs_info.sql",
+) -> bool:
+    """Checks if a set of documents contains facsimiles.
+
+    Args:
+        connection (Connection): An aiosqlite Connection
+        volume_id (str): The volume ID
+        query (Path): The path to the query file
+
+    Returns:
+        bool: True if the documents contain facsimiles, False otherwise
+    """
+    for x in await load_and_execute_query(connection, query, volume_id=volume_id):
+        return bool(*x)
+
+    return False
