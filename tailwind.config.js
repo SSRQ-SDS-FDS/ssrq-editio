@@ -5,7 +5,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'ssrq-primary': '#961A17' /* angepasst an Farbwert im PNG-Logo */,
+        'ssrq-primary':
+          '#A50500' /* angepasst an mittleren Farbwert im PNG-Logo */,
         'ssrq-secondary': '#e1e1de',
         'ssrq-alt': {
           50: '#f5f5f3',
