@@ -18,6 +18,8 @@
 <section class="flex w-full max-w-5xl lg:px-12 sm:px-4 items-center justify-start mx-auto">
     <DocumentSearchForm
         :endpoint="url_for('document_list', kanton=data.content.kanton, volume=data.content.volume.machine_name).include_query_params(lang=lang.value)"
+        :document_type="data.content.document_type"
+        :document_types="data.content.document_types"
         :facs="data.content.facs"
         :facs_filter="data.content.show_facs"
         :lang="lang"

@@ -24,6 +24,7 @@ SELECT -- noqa: disable=all
     docs.de_title,
     docs.fr_title,
     docs.entities,
+    docs.type,
     (
         SELECT json_group_array(sub_docs.idno)
         FROM documents AS sub_docs
@@ -61,5 +62,9 @@ WHERE
         OR :facs != 1
         OR docs.facs IS NOT NULL
         OR sub_docs_facs.facs IS NOT NULL
+    )
+    AND (
+        :type IS NULL
+        OR docs.type = :type
     )
 ORDER BY docs.sort_key ASC;

@@ -1,4 +1,10 @@
-from pydantic_core import from_json
+from enum import Enum
+from pathlib import Path
+from typing import TypeVar
+
+from pydantic_core import from_json, to_json
+
+T = TypeVar("T")
 
 
 def create_permalink(id: str, base: str = "https://p.ssrq-sds-fds.ch/") -> str:
@@ -33,3 +39,15 @@ def parse_as_list_or_return(value: list | str | None) -> list | None:
         list | None: The parsed value.
     """
     return value if isinstance(value, list) or value is None else from_json(value)
+
+
+def serialize_value(value: T) -> str | bytes | T:
+    match value:
+        case Path():
+            return str(value.absolute())
+        case list():
+            return to_json(value)
+        case Enum():
+            return value.value
+        case _:
+            return value

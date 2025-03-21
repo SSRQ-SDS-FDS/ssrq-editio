@@ -14,7 +14,8 @@ INSERT OR REPLACE INTO documents (
     de_title,
     fr_title,
     entities,
-    source
+    source,
+    type
 ) VALUES (
     :uuid,
     :idno,
@@ -39,5 +40,6 @@ INSERT OR REPLACE INTO documents (
             THEN json(:entities)
         ELSE :entities
     END,
-    :source
+    :source,
+    :type
 );

@@ -7,6 +7,7 @@ from ssrq_editio.entrypoints.app.views.models.entity import EntityViewModel
 from ssrq_editio.entrypoints.app.views.models.index import IndexViewModel
 from ssrq_editio.entrypoints.app.views.models.kanton import KantonViewModel
 from ssrq_editio.entrypoints.app.views.models.volume import VolumeViewModel
+from ssrq_editio.models.documents import DocumentType
 from ssrq_editio.models.entities import EntityTypes
 from ssrq_editio.models.kantons import KantonName
 
@@ -87,11 +88,21 @@ async def documents(
     volume: str,
     query: str | None = None,
     facs: bool = False,
+    doc_type: None | DocumentType = None,
     page: int = 1,
     per_page: int = 25,
 ) -> HTMLResponse:
     return await VolumeViewModel(
-        request, lang, connection, kanton, volume, query, facs, page, per_page
+        request,
+        lang,
+        connection,
+        kanton,
+        volume,
+        query,
+        facs,
+        doc_type,
+        page,
+        per_page,
     ).to_html()
 
 

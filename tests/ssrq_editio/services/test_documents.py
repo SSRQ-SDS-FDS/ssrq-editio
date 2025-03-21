@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from ssrq_editio.models.documents import Document
+from ssrq_editio.models.documents import Document, DocumentType
 from ssrq_editio.services.documents import extract_infos_from_xml
 
 
@@ -141,6 +141,7 @@ from ssrq_editio.services.documents import extract_infos_from_xml
                     "org000581",
                     "key000273",
                 ],
+                type=DocumentType.transcript,
             ),
         ),
         (
@@ -202,6 +203,7 @@ from ssrq_editio.services.documents import extract_infos_from_xml
                     "org001197",
                     "key000431",
                 ],
+                type=DocumentType.transcript,
             ),
         ),
         (
@@ -247,6 +249,7 @@ from ssrq_editio.services.documents import extract_infos_from_xml
                     "key000086",
                     "key000847",
                 ],
+                type=DocumentType.transcript,
             ),
         ),
     ],

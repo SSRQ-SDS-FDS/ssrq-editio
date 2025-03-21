@@ -6,7 +6,7 @@ from aiosqlite import Connection
 from ssrq_editio.adapters.db.config import SQL_DATA_DIR
 from ssrq_editio.adapters.db.shared import replace_wildcard, store_batches
 from ssrq_editio.adapters.file import load
-from ssrq_editio.models.documents import Document, DocumentInfo
+from ssrq_editio.models.documents import Document, DocumentInfo, DocumentType
 
 __all__ = [
     "initialize_document_data",
@@ -62,6 +62,7 @@ async def get_documents(
     query: Path = SQL_DATA_DIR / "get_documents.sql",
     search: str | None = None,
     facs: bool = False,
+    doc_type: DocumentType | None = None,
 ) -> list[Document]:
     """Retrieve a list of documents per volume.
 
@@ -80,7 +81,12 @@ async def get_documents(
     async with connection.cursor() as cursor:
         await cursor.execute(
             await load(dir=query.parent, name=query.name),
-            {"facs": facs, "volume_id": volume_id, "search": replace_wildcard(search)},
+            {
+                "facs": facs,
+                "volume_id": volume_id,
+                "search": replace_wildcard(search),
+                "type": doc_type.value if doc_type else None,
+            },
         )
         data = await cursor.fetchall()
         return [Document(**item) for item in data]
