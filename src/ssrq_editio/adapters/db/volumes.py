@@ -5,7 +5,7 @@ import aiosqlite
 from ssrq_editio.adapters.db.config import SQL_DATA_DIR
 from ssrq_editio.adapters.db.shared import load_and_execute_query
 from ssrq_editio.adapters.file import load
-from ssrq_editio.models.volumes import Volume
+from ssrq_editio.models.volumes import Volume, VolumeMeta
 
 
 async def initialize_volume_with_editors(
@@ -70,12 +70,12 @@ async def list_volumes_with_editors(
         return [Volume(**volume) for volume in data]
 
 
-async def check_facsimiles(
+async def retrieve_volume_metadata(
     connection: aiosqlite.Connection,
     volume_id: str,
-    query: Path = SQL_DATA_DIR / "get_documents_facs_info.sql",
-) -> bool:
-    """Checks if a set of documents contains facsimiles.
+    query: Path = SQL_DATA_DIR / "get_volume_meta.sql",
+) -> VolumeMeta:
+    """Retrieve metadata for a volume.
 
     Args:
         connection (Connection): An aiosqlite Connection
@@ -83,9 +83,11 @@ async def check_facsimiles(
         query (Path): The path to the query file
 
     Returns:
-        bool: True if the documents contain facsimiles, False otherwise
+        VolumeMeta: The metadata for a given volume
     """
-    for x in await load_and_execute_query(connection, query, volume_id=volume_id):
-        return bool(*x)
+    result = await load_and_execute_query(connection, query, volume_id=volume_id)
 
-    return False
+    if not result:
+        raise ValueError(f"Volume {volume_id} not found.")
+
+    return VolumeMeta(**result[0])  # type: ignore

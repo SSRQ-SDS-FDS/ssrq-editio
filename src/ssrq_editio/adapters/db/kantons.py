@@ -31,5 +31,3 @@ async def list_kantons(
         await cursor.execute(query)
         data = await cursor.fetchall()
         return Kantons(kantons=tuple(Kanton(**kanton) for kanton in data))
-
-

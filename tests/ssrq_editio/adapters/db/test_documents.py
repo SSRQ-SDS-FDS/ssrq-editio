@@ -8,7 +8,7 @@ from ssrq_editio.adapters.db.documents import (
     get_documents,
     initialize_document_data,
 )
-from ssrq_editio.models.documents import Document
+from ssrq_editio.models.documents import Document, DocumentType
 
 
 @pytest.fixture
@@ -29,6 +29,7 @@ def documents():
             orig_place=["loc000001"],
             de_title="<h3>foo</h3>",
             fr_title=None,
+            type=DocumentType.transcript,
         )
         for d in range(1, 150)
     )

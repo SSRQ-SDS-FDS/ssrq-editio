@@ -1,11 +1,41 @@
+from uuid import uuid4
+
 import pytest
 
+from ssrq_editio.adapters.db.documents import initialize_document_data
 from ssrq_editio.adapters.db.volumes import (
     initialize_volume_data,
     initialize_volume_with_editors,
     list_volumes_with_editors,
+    retrieve_volume_metadata,
 )
-from ssrq_editio.models.volumes import Volume
+from ssrq_editio.models.documents import Document, DocumentType
+from ssrq_editio.models.volumes import Volume, VolumeMeta
+
+
+@pytest.fixture
+def documents():
+    return tuple(
+        Document(  # noqa: F821
+            uuid=str(uuid4()),
+            idno=f"SSRQ-SG-III_4-{d}-1",
+            is_main=True,
+            sort_key=d,
+            de_orig_date="foo",
+            en_orig_date="foo",
+            fr_orig_date="foo",
+            it_orig_date="foo",
+            facs=["bar", "baz"] if d % 2 == 0 else None,
+            printed_idno=f"foo {d}",
+            volume_id="foo",
+            orig_place=["loc000001"],
+            de_title="<h3>foo</h3>",
+            fr_title=None,
+            type=DocumentType.transcript,
+        )
+        for d in range(1, 150)
+    )
+
 
 TEST_VOLUME = Volume(
     key="foo",
@@ -45,3 +75,12 @@ async def test_list_volumes_with_editors_for_unknown_kanton(db_kanton_data):
     await initialize_volume_with_editors(db_kanton_data, TEST_VOLUME)
     volumes = await list_volumes_with_editors(db_kanton_data, "FOO")
     assert volumes is None
+
+
+@pytest.mark.anyio
+async def test_retrieve_volume_meta(db_kanton_data, documents):
+    await initialize_volume_with_editors(db_kanton_data, TEST_VOLUME)
+    await initialize_document_data(documents, db_kanton_data)
+    result = await retrieve_volume_metadata(db_kanton_data, "foo")
+    assert result is not None
+    assert isinstance(result, VolumeMeta)

@@ -1,10 +1,16 @@
+from enum import Enum
 from pathlib import Path
 from typing import Annotated, Any, NamedTuple, Self
 
 from pydantic import BaseModel, BeforeValidator, model_validator
-from pydantic_core import to_json
 
-from ssrq_editio.services.utils import parse_as_list_or_return
+from ssrq_editio.services.utils import parse_as_list_or_return, serialize_value
+
+
+class DocumentType(Enum):
+    collection = "collection"
+    summary = "summary"
+    transcript = "transcript"
 
 
 class Document(BaseModel):
@@ -37,6 +43,9 @@ class Document(BaseModel):
         BeforeValidator(parse_as_list_or_return),
     ] = None
     source: Path | None = None
+    type: Annotated[
+        DocumentType, BeforeValidator : lambda x: DocumentType(x) if isinstance(x, str) else x
+    ]
 
     @model_validator(mode="after")
     def check_mutually_exclusive_fields(self) -> Self:
@@ -45,14 +54,7 @@ class Document(BaseModel):
         return self
 
     def model_dump_sqlite(self) -> dict[str, Any]:
-        return {
-            k: str(v.absolute())
-            if isinstance(v, Path)
-            else to_json(v)
-            if isinstance(v, list)
-            else v
-            for k, v in self.model_dump().items()
-        }
+        return {k: serialize_value(v) for k, v in self.model_dump().items()}
 
 
 class DocumentInfo(NamedTuple):
