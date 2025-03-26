@@ -196,6 +196,7 @@ async def _store_families(
                 person.rm_name,
                 person.first_mention,
                 person.last_mention,
+                person.location,
             )
             for person in families.entities
         ],

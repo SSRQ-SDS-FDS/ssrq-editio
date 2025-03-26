@@ -6,7 +6,8 @@ INSERT OR REPLACE INTO families (
     lt_name,
     rm_name,
     first_mention,
-    last_mention
+    last_mention,
+    location
 ) VALUES (
-    ?, ?, ?, ?, ?, ?, ?, ?
+    ?, ?, ?, ?, ?, ?, ?, ?, ?
 );

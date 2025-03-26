@@ -7,6 +7,7 @@ SELECT
     f.rm_name,
     f.first_mention,
     f.last_mention,
+    f.location,
     occurrences.occurrences
 FROM families AS f
 LEFT JOIN (
