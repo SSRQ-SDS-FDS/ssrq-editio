@@ -79,7 +79,10 @@ class Family(Entity):
     rm_name: str | None
     first_mention: str | None
     last_mention: str | None
-    # ToDo: locations
+    location: Annotated[
+        list[str] | None,
+        BeforeValidator(parse_as_list_or_return),
+    ] = None
 
 
 class Families(Entities):

@@ -7,5 +7,6 @@ CREATE TABLE IF NOT EXISTS families
     lt_name TEXT NULL,
     rm_name TEXT NULL,
     first_mention TEXT NULL,
-    last_mention TEXT NULL
+    last_mention TEXT NULL,
+    location TEXT NULL
 );
