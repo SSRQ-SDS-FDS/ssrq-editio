@@ -15,7 +15,7 @@
 />
 <section class="flex w-full max-w-5xl lg:px-12 sm:px-4 items-center justify-start mx-auto">
     <EntitySearchForm
-      :endpoint="url_for('entity_view', entity_type = data.content.entity_type)"
+      :endpoint="url_for('entity_view', entity_type = data.content.entity_type).include_query_params(lang=lang.value)"
       :placeholder_id_name="'id-or-name'"
       :placeholder_occurrence="'occurrence'"
       :lang="lang"
@@ -23,7 +23,6 @@
       :query="data.content.query"
       :occurrence="data.content.occurrence"
       :volumes="data.content.volumes"
-      :hx="True"
       :hx_indicator="'#loading-overlay'"
       :hx_params="'not per-page,page lang'"
       :hx_target="'#entities'"

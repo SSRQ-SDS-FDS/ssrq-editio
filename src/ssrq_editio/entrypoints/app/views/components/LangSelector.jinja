@@ -19,7 +19,10 @@
         </i>
         <span class="pl-0.75">{{ lang.value | upper }}</span>
     </summary>
-    <ul class="origin-top-right absolute right-0 w-auto rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+    <ul
+      class="origin-top-right absolute right-0 w-auto rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+      x-data="langSwitch"
+    >
         <LangListItems :lang="lang" :request="request" />
     </ul>
 </details>

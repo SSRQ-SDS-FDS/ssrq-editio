@@ -6,7 +6,11 @@
     {% if language != lang.value %}
         <li>
             <a href="{{ request.url.include_query_params(lang=language) }}"
-               class="block px-4 py-2 text-sm hover:text-ssrq-primary">{{ language | upper }}</a>
+               class="block px-4 py-2 text-sm hover:text-ssrq-primary"
+               x-on:click.prevent="updateLanguage"
+               >
+                {{ language | upper }}
+            </a>
         </li>
     {% endif %}
 {% endfor %}

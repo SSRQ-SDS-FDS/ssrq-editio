@@ -7,70 +7,61 @@
     query: str | None,
     occurrence: str | None,
     volumes: list[str] | None,
-    hx: bool = False,
     hx_indicator: str | None = None,
     hx_params: str | None = None,
     hx_target: str | None = None
 #}
 
 <form
-  class="my-2 text-sm"
+  class="my-2 text-sm w-full flex justify-center"
+  hx-get="{{ endpoint }}"
+  hx-indicator="{{ hx_indicator }}"
+  hx-params="{{ hx_params }}"
+  hx-target="{{ hx_target }}"
+  hx-push-url="true"
+  hx-trigger="input changed delay:500ms from:#entityIdOrNameSearch,input changed delay:500ms from:#entityOccurrenceSearch"
+  hx-swap="outerHTML"
 >
-    <label
-      for="entityIdOrNameSearch"
-      class="block mb-2 text-xs text-ssrq-greyed-700"
-    >
-        {{ translator.translate(lang,'filter-hits') }}
-    </label>
-    <div
-      class="flex gap-2"
-    >
-        <input
-          id="entityIdOrNameSearch"
-          type="text"
-          autocomplete="off"
-          name="query"
-          class="px-4 py-1 min-w-[16rem] text-sm text-ssrq-greyed-800 bg-white border rounded-md focus:border-ssrq-primary focus:border-[0.025rem] focus:outline-none focus:ring focus:ring-ssrq-primary focus:ring-opacity-40"
-          placeholder="{{ translator.translate(lang, placeholder_id_name) }}"
-          {% if query %}value="{{ query }}"{% endif %}
-          {% if hx %}
-           hx-get="{{ endpoint }}"
-           hx-indicator="{{ hx_indicator }}"
-           hx-params="{{ hx_params }}"
-           hx-target="{{ hx_target }}"
-           hx-push-url="true"
-           hx-trigger="input changed delay:500ms, submit"
-           hx-swap="outerHTML"
-          {% endif %}
-        />
-        {% if volumes is not none %}
-            <datalist id="occurrences_list">
-                {% for volume in volumes %}
-                    <option value="{{ volume }}" />
-                {% endfor %}
-            </datalist>
-        {% endif %}
-        <input
-          id="entityOccurrenceSearch"
-          list="occurrences_list"
-          type="text"
-          autocomplete="off"
-          name="occurrence"
-          class="px-4 py-1 min-w-[16rem] text-sm text-ssrq-greyed-800 bg-white border rounded-md focus:border-ssrq-primary focus:border-[0.025rem] focus:outline-none focus:ring focus:ring-ssrq-primary focus:ring-opacity-40"
-          placeholder="{{ translator.translate(lang, placeholder_occurrence) }}"
-          {% if occurrence %}value="{{ occurrence }}"{% endif %}
-          {% if hx %}
-           hx-get="{{ endpoint }}"
-           hx-indicator="{{ hx_indicator }}"
-           hx-params="{{ hx_params }}"
-           hx-target="{{ hx_target }}"
-           hx-push-url="true"
-           hx-trigger="input changed delay:500ms, submit"
-           hx-swap="outerHTML"
-          {% endif %}
-        />
-        <FormReset
-          endpoint="{{ endpoint }}"
-        />
+    <div>
+        <label
+          for="entityIdOrNameSearch"
+          class="block mb-2 text-xs text-ssrq-greyed-700"
+        >
+            {{ translator.translate(lang,'filter-hits') }}
+        </label>
+        <div
+          class="flex gap-2"
+        >
+            <input
+              id="entityIdOrNameSearch"
+              type="text"
+              autocomplete="off"
+              name="query"
+              class="px-4 py-2 min-w-[16rem] text-sm text-ssrq-greyed-800 bg-white border rounded-md focus:border-ssrq-primary focus:border-[0.025rem] focus:outline-none focus:ring focus:ring-ssrq-primary focus:ring-opacity-40"
+              placeholder="{{ translator.translate(lang, placeholder_id_name) }}"
+              {% if query %}value="{{ query }}"{% endif %}
+            />
+            {% if volumes is not none %}
+                <datalist id="occurrences_list">
+                    {% for volume in volumes %}
+                        <option value="{{ volume }}" />
+                    {% endfor %}
+                </datalist>
+            {% endif %}
+            <input
+              id="entityOccurrenceSearch"
+              list="occurrences_list"
+              type="text"
+              autocomplete="off"
+              name="occurrence"
+              class="px-4 py-2 min-w-[16rem] text-sm text-ssrq-greyed-800 bg-white border rounded-md focus:border-ssrq-primary focus:border-[0.025rem] focus:outline-none focus:ring focus:ring-ssrq-primary focus:ring-opacity-40"
+              placeholder="{{ translator.translate(lang, placeholder_occurrence) }}"
+              {% if occurrence %}value="{{ occurrence }}"{% endif %}
+            />
+            <FormReset
+              :endpoint="endpoint"
+              :icon_size="'w-5 h-5'"
+            />
+        </div>
     </div>
 </form>
