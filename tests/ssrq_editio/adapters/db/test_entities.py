@@ -16,7 +16,7 @@ from ssrq_editio.adapters.db.entities import (
     search_places,
     store_entities,
 )
-from ssrq_editio.models.documents import Document
+from ssrq_editio.models.documents import Document, DocumentType
 from ssrq_editio.models.entities import (
     Entities,
     EntityTypes,
@@ -128,6 +128,7 @@ async def test_search_places_with_occurrences(
             de_title="foo",
             fr_title=None,
             entities=["loc000127"],
+            type=DocumentType.transcript,  # noqa: F821
         ),
     )
     await initialize_document_data(documents, db_volume_data)

@@ -21,7 +21,8 @@ INSERT INTO documents (
     facs,
     printed_idno,
     volume_id,
-    orig_place)
+    orig_place,
+    type)
 SELECT
     printf('uuid-%03d', x),
     printf('idno-%03d', x),
@@ -34,7 +35,8 @@ SELECT
     0,
     printf('printed_idno-%03d', x),
     CASE WHEN x <= 15 THEN 1 ELSE 2 END,
-    NULL
+    NULL,
+    'transcript'
 FROM cnt;
 """
 
