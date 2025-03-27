@@ -11,17 +11,17 @@ translator: Translator
     ]
 %}
 {% set index_routes = [
-    ('lemmata', url_for('entity_view', entity_type = 'lemmata')),
-    ('terms', url_for('entity_view', entity_type = 'keywords')),
-    ('places', url_for('entity_view', entity_type = 'places')),
-    ('persons', url_for('entity_view', entity_type = 'persons')),
-    ('families', url_for('entity_view', entity_type = 'families')),
-    ('organizations', url_for('entity_view', entity_type = 'organizations')),
+    ('lemmata', url_for('entity_view', entity_type = 'lemmata').include_query_params(lang=lang.value)),
+    ('terms', url_for('entity_view', entity_type = 'keywords').include_query_params(lang=lang.value)),
+    ('places', url_for('entity_view', entity_type = 'places').include_query_params(lang=lang.value)),
+    ('persons', url_for('entity_view', entity_type = 'persons').include_query_params(lang=lang.value)),
+    ('families', url_for('entity_view', entity_type = 'families').include_query_params(lang=lang.value)),
+    ('organizations', url_for('entity_view', entity_type = 'organizations').include_query_params(lang=lang.value)),
 ]%}
 <header x-data="{ open: false }">
     <nav class="bg-ssrq-secondary z-30 fixed shadow h-16 w-full sm:px-4 lg:px-12 py-1 flex items-center border-t-4 border-t-ssrq-primary">
         <div class="flex justify-between sm:flex-grow-1 w-full lg:w-auto">
-            <a href="{{ url_for('index') }}">
+            <a href="{{ url_for('index').include_query_params(lang=lang.value) }}">
                 <img src="{{ url_for('static', path='images/ssrq-logo.png') }}"
                      class="w-auto max-h-12 pb-1.5"
                      alt="SSRQ · SDS · FDS Logo" />
