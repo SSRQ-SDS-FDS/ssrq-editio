@@ -56,6 +56,11 @@ After the database has been populated, you can start the development server by r
 just dev
 ```
 
+To install pre-commit hooks, run the following command in an active virtual environment:
+```sh
+pre-commit install
+```
+
 #### Branches
 
 The `main` branch reflects the actual production state. The `dev` branch is used for development and testing. All other branches are feature branches and should should at first be merged into `dev` and then deleted. A new version will be created on the `dev` branch and merged into `main` for deployment.
