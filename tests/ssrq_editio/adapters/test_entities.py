@@ -9,7 +9,15 @@ from ssrq_editio.adapters.entities import (
     get_persons,
     get_places,
 )
-from ssrq_editio.models.entities import Families, Keywords, Lemmata, Organizations, Persons, Places
+from ssrq_editio.models.entities import (
+    Families,
+    Family,
+    Keywords,
+    Lemmata,
+    Organizations,
+    Persons,
+    Places,
+)
 
 
 @pytest.mark.anyio
@@ -52,6 +60,10 @@ async def test_get_families(httpx_client: httpx.AsyncClient):
     assert result is not None
     assert isinstance(result, Families)
     assert any(persons.de_name is not None for persons in result.entities)
+    entity = result.get_by_id("org000861")
+    assert entity is not None
+    assert isinstance(entity, Family)
+    assert entity.location == ["loc000088"]
 
 
 @pytest.mark.anyio
