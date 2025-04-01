@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS persons
     first_mention TEXT NULL,
     last_mention TEXT NULL,
     birth TEXT NULL,
-    death TEXT NULL
+    death TEXT NULL,
+    location TEXT NULL
 );
 
 CREATE VIRTUAL TABLE IF NOT EXISTS persons_fts USING fts5( -- noqa: PRS

@@ -170,18 +170,18 @@ async def get_families(client: AsyncClient, url: str) -> Families:
     return Families(
         entities=[
             Family(
-                id=cast(str, keyword.xpath("./@id").get()),
+                id=cast(str, family.xpath("./@id").get()),
                 occurrences=None,
-                de_name=keyword.xpath("./standard_name[@lang='deu']/text()").get(),
-                fr_name=keyword.xpath("./standard_name[@lang='fra']/text()").get(),
-                it_name=keyword.xpath("./standard_name[@lang='ita']/text()").get(),
-                lt_name=keyword.xpath("./standard_name[@lang='lat']/text()").get(),
-                rm_name=keyword.xpath("./standard_name[@lang='roh']/text()").get(),
-                first_mention=keyword.xpath("./first_mention/text()").get(),
-                last_mention=keyword.xpath("./last_mention/text()").get(),
-                location=keyword.xpath("./location/text()").getall(),
+                de_name=family.xpath("./standard_name[@lang='deu']/text()").get(),
+                fr_name=family.xpath("./standard_name[@lang='fra']/text()").get(),
+                it_name=family.xpath("./standard_name[@lang='ita']/text()").get(),
+                lt_name=family.xpath("./standard_name[@lang='lat']/text()").get(),
+                rm_name=family.xpath("./standard_name[@lang='roh']/text()").get(),
+                first_mention=family.xpath("./first_mention/text()").get(),
+                last_mention=family.xpath("./last_mention/text()").get(),
+                location=family.xpath("./location/text()").getall(),
             )
-            for keyword in tree.xpath(".//family")
+            for family in tree.xpath(".//family")
         ]
     )
 
@@ -215,6 +215,7 @@ async def get_orgs(client: AsyncClient, url: str) -> Organizations:
                 rm_name=org.xpath("./standard_name[@lang='roh']/text()").get(),
                 de_types=[ot.get() for ot in org.xpath("./type/definition[@lang='deu']/text()")],
                 fr_types=[ot.get() for ot in org.xpath("./type/definition[@lang='fra']/text()")],
+                location=org.xpath("./location/text()").getall(),
             )
             for org in tree.xpath(".//organisation")
         ]
@@ -276,6 +277,7 @@ async def get_persons(client: AsyncClient, url: str) -> Persons:
                 last_mention=person.xpath("./last_mention/text()").get(),
                 birth=person.xpath("./birth/text()").get(),
                 death=person.xpath("./death/text()").get(),
+                location=person.xpath("./location/text()").getall(),
             )
         )
 

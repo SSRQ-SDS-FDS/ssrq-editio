@@ -6,7 +6,8 @@ INSERT OR REPLACE INTO organizations (
     lt_name,
     rm_name,
     de_types,
-    fr_types
+    fr_types,
+    location
 ) VALUES (
-    ?, ?, ?, ?, ?, ?, json(?), json(?)
+    ?, ?, ?, ?, ?, ?, json(?), json(?), json(?)
 );

@@ -167,7 +167,10 @@ class Organization(Entity):
     rm_name: str | None
     de_types: Annotated[list[str], BeforeValidator(parse_as_list_or_return)]
     fr_types: Annotated[list[str], BeforeValidator(parse_as_list_or_return)]
-    # ToDo: locations
+    location: Annotated[
+        list[str] | None,
+        BeforeValidator(parse_as_list_or_return),
+    ] = None
 
     def get_types_by_lang(self, lang: Lang) -> list[str]:
         match lang:
@@ -193,7 +196,11 @@ class Person(Entity):
     last_mention: str | None
     birth: str | None
     death: str | None
-    # ToDo occupations / locations !
+    location: Annotated[
+        list[str] | None,
+        BeforeValidator(parse_as_list_or_return),
+    ] = None
+    # ToDo occupations
 
     def get_name_by_lang(self, lang: Lang) -> str:
         name = getattr(self, f"{lang.value}_name", None)
