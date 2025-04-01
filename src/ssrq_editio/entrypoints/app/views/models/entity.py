@@ -1,5 +1,3 @@
-from typing import Sequence
-
 from aiosqlite import Connection
 from fastapi import Request
 from ssrq_utils.lang.display import Lang
@@ -72,7 +70,14 @@ class EntityViewModel(ViewModel):
     def _get_title(self) -> str:
         return f"{self.translator.translate(self.lang, 'short_title')} · {self.translator.translate(self.lang, self.entity_type.value)}"
 
-    async def _get_entities(self) -> None | tuple[int, tuple[Sequence[Entity], list[int] | None]]:
+    async def _get_entities(
+        self,
+    ) -> (
+        None
+        | tuple[
+            int, tuple[tuple[tuple[Entity, list[dict[str, str]] | None], ...], list[int] | None]
+        ]
+    ):
         result: Entities = await get_entities(
             self.connection, self.entity_type, self.query, self.occurrence
         )
@@ -86,9 +91,7 @@ class EntityViewModel(ViewModel):
             self.current_page,
             self.per_page,
         )
-        if self.entity_type == EntityTypes.FAMILIES:
-            return total_hits, await resolve_places_for_entities(
-                paged_entities, self.connection, self.lang
-            )
-        else:
-            return total_hits, paged_entities
+        return total_hits, (
+            await resolve_places_for_entities(paged_entities[0], self.connection, self.lang),
+            paged_entities[1],
+        )

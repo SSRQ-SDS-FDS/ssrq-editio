@@ -1,18 +1,23 @@
 from typing import cast
+
 import pytest
 from ssrq_utils.lang.display import Lang
 
-from ssrq_editio.entrypoints.app.shared.dependencies import db_connection
-from ssrq_editio.models.entities import Entities, EntityTypes, Family
+from ssrq_editio.models.entities import EntityTypes, Family
 from ssrq_editio.services.entities import get_entities, resolve_places_for_entities
-from ssrq_editio.services.paginate import create_pages
-from ssrq_editio.services.sort import sort_entities_by_name
 
 
 @pytest.mark.anyio
 @pytest.mark.parametrize(
     "family_id,expected_location_ids,expected_location_names",
-    [("org009447", ["loc000140"], ["Elsass"])],
+    [
+        ("org009447", ["loc000140"], [{"name": "Elsass", "id": "loc000140"}]),
+        (
+            "org009410",
+            ["loc000088", "loc001060"],
+            [{"name": "Freiburg", "id": "loc001060"}, {"name": "Luzern", "id": "loc000088"}],
+        ),
+    ],
 )
 async def test_resolve_places_for_entities(
     db_with_entities,
@@ -20,14 +25,6 @@ async def test_resolve_places_for_entities(
     expected_location_ids: list[str],
     expected_location_names: list[str],
 ):
-    """test_values = [
-        {"id": "org009447", "location": ["loc000140"], "resolved": ["Elsass"]},
-        {
-            "id": "org009410",
-            "location": ["loc000088", "loc001060"],
-            "resolved": ["Freiburg", "Luzern"],
-        },
-    ]"""
     families = await get_entities(
         db_with_entities,
         EntityTypes.FAMILIES,
@@ -37,4 +34,4 @@ async def test_resolve_places_for_entities(
     assert family is not None
     assert family.location == expected_location_ids  # type: ignore
     resolved_entities = await resolve_places_for_entities((family,), db_with_entities, Lang.DE)
-    assert resolved_entities[0].location == expected_location_names  # type: ignore
+    assert resolved_entities[0][1] == expected_location_names  # type: ignore

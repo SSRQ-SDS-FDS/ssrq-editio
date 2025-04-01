@@ -48,7 +48,8 @@
         </Pagination>
             {% for hit in data.content.entities %}
                 <EntityCard
-                  :entity="hit"
+                  :entity="hit[0]"
+                  :resolved_location="hit[1]"
                   :entity_type="data.content.entity_type"
                   :idnos="data.content.idnos"
                   :lang="lang"
