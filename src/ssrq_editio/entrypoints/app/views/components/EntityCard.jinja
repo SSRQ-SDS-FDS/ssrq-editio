@@ -28,6 +28,32 @@
             </svg>
             {{ entity.list_languages() | join(', ')}}
         </span>
+        {% if resolved_location is not none and resolved_location | length > 0 %}
+            <span title="{{ translator.translate(lang, 'location') }}">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-3.5 h-3.5 mr-0.5 md:mr-1"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+                    />
+                </svg>
+                {% for loc in resolved_location %}
+                <a class="text-ssrq-primary" target="_blank" href="https://p.ssrq-sds-fds.ch/{{loc["id"]}}">{{ loc["name"] }}</a>
+                {% endfor %}
+            </span>
+        {% endif %}
     </header>
     <ul class="list-none">
         <!-- ToDo: Simplify HTML Template to avoid code duplication -->
@@ -58,16 +84,6 @@
         {% elif entity_type == "families" %}
             <li class="mt-0.5">
                 <span class="font-medium">{{ translator.translate(lang, 'standard_name') }}:</span> {{ entity.get_name_by_lang(lang) }}
-            </li>
-            <li class="my-0.5 border-t-2 border-ssrq-greyed-50">
-                    <span class="font-medium">{{ translator.translate(lang, 'location') }}:</span>
-                    {% if resolved_location %}
-                        {% for loc in resolved_location %}
-                        <a class="text-ssrq-primary" target="_blank" href="https://p.ssrq-sds-fds.ch/{{loc["id"]}}">{{ loc["name"] }}</a>
-                        {% endfor %}
-                    {% else %}
-                        Keine Angabe
-                    {% endif %}
             </li>
         {% elif entity_type == "organizations" %}
             <li class="mt-0.5">
