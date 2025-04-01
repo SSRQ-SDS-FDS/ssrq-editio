@@ -1,5 +1,6 @@
 {# def
     entity: Entity,
+    resolved_location: list[str],
     entity_type: str,
     idnos: dict[str, DocumentInfo],
     lang: Lang,
@@ -59,7 +60,14 @@
                 <span class="font-medium">{{ translator.translate(lang, 'standard_name') }}:</span> {{ entity.get_name_by_lang(lang) }}
             </li>
             <li class="my-0.5 border-t-2 border-ssrq-greyed-50">
-                    <span class="font-medium">{{ translator.translate(lang, 'location') }}:</span> {{ entity.location | join(', ') }}
+                    <span class="font-medium">{{ translator.translate(lang, 'location') }}:</span>
+                    {% if resolved_location %}
+                        {% for loc in resolved_location %}
+                        <a class="text-ssrq-primary" target="_blank" href="https://p.ssrq-sds-fds.ch/{{loc["id"]}}">{{ loc["name"] }}</a>
+                        {% endfor %}
+                    {% else %}
+                        Keine Angabe
+                    {% endif %}
             </li>
         {% elif entity_type == "organizations" %}
             <li class="mt-0.5">
