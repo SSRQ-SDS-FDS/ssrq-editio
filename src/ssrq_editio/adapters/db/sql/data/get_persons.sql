@@ -15,6 +15,7 @@ SELECT
     p.last_mention,
     p.birth,
     p.death,
+    p.location,
     occurrences.occurrences
 FROM persons AS p
 LEFT JOIN (

@@ -14,7 +14,9 @@ from ssrq_editio.models.entities import (
     Family,
     Keywords,
     Lemmata,
+    Organization,
     Organizations,
+    Person,
     Persons,
     Places,
 )
@@ -55,6 +57,17 @@ async def test_get_persons(httpx_client: httpx.AsyncClient):
 
 
 @pytest.mark.anyio
+async def test_location_for_specific_person(httpx_client: httpx.AsyncClient):
+    result = await get_persons(httpx_client, "http://testserver/persons.xml")
+    assert result is not None
+    assert isinstance(result, Persons)
+    entity = result.get_by_id("per031589")
+    assert entity is not None
+    assert isinstance(entity, Person)
+    assert entity.location == ["loc006402"]
+
+
+@pytest.mark.anyio
 async def test_get_families(httpx_client: httpx.AsyncClient):
     result = await get_families(httpx_client, "http://testserver/families.xml")
     assert result is not None
@@ -78,4 +91,15 @@ async def test_get_orgs(httpx_client: httpx.AsyncClient):
     result = await get_orgs(httpx_client, "http://testserver/orgs.xml")
     assert result is not None
     assert isinstance(result, Organizations)
-    assert any(persons.de_name is not None for persons in result.entities)
+    assert any(org.de_name is not None for org in result.entities)
+
+
+@pytest.mark.anyio
+async def test_location_for_specific_organization(httpx_client: httpx.AsyncClient):
+    result = await get_orgs(httpx_client, "http://testserver/orgs.xml")
+    assert result is not None
+    assert isinstance(result, Organizations)
+    entity = result.get_by_id("org010650")
+    assert entity is not None
+    assert isinstance(entity, Organization)
+    assert entity.location == ["loc001538"]

@@ -7,6 +7,7 @@ SELECT
     org.rm_name,
     org.de_types,
     org.fr_types,
+    org.location,
     occurrences.occurrences
 FROM organizations AS org
 LEFT JOIN (

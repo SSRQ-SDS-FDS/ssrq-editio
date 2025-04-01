@@ -1,5 +1,5 @@
 import re
-from typing import Sequence, cast
+from typing import Sequence, Union, cast
 
 from aiosqlite import Connection
 from ssrq_utils.lang.display import Lang
@@ -88,13 +88,14 @@ async def resolve_places_for_entities(
     Returns:
         tuple[tuple[Entity, Sequence[str] | None], ...]: A tuple of entities paired with their resolved and localized place names.
     """
+    TypedEntities = Union[Family, Person, Organization]
     allowed_types = (Family, Person, Organization)
     if all(isinstance(entity, allowed_types) for entity in entities):
         places = cast(Places, await get_entities(connection, EntityTypes.PLACES))
         if len(places.entities) == 0:
             raise ValueError("No places found in the database for resolving.")
         resolved_entities = []
-        typed_entities = cast(Sequence[Family], entities)
+        typed_entities = cast(Sequence[TypedEntities], entities)
         for entity in typed_entities:
             resolved_location = {
                 place.get_name_by_lang(lang): location

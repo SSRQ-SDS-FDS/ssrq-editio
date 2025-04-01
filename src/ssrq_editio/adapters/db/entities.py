@@ -161,6 +161,7 @@ async def _store_persons(
                 person.last_mention,
                 person.birth,
                 person.death,
+                json.dumps(person.location),
             )
             for person in persons.entities
         ],
@@ -173,7 +174,7 @@ async def _store_families(
     batch_size: int,
     query: Path = SQL_DATA_DIR / "put_family.sql",
 ):
-    """Stores persons in the database.
+    """Stores families in the database.
 
     Args:
         families (Families): A Families object
@@ -188,17 +189,17 @@ async def _store_families(
         sql_query,
         [
             (
-                person.id,
-                person.de_name,
-                person.fr_name,
-                person.it_name,
-                person.lt_name,
-                person.rm_name,
-                person.first_mention,
-                person.last_mention,
-                json.dumps(person.location),
+                family.id,
+                family.de_name,
+                family.fr_name,
+                family.it_name,
+                family.lt_name,
+                family.rm_name,
+                family.first_mention,
+                family.last_mention,
+                json.dumps(family.location),
             )
-            for person in families.entities
+            for family in families.entities
         ],
     )
 
@@ -232,6 +233,7 @@ async def _store_orgs(
                 org.rm_name,
                 json.dumps(org.de_types, ensure_ascii=False),
                 json.dumps(org.fr_types, ensure_ascii=False),
+                json.dumps(org.location),
             )
             for org in orgs.entities
         ],

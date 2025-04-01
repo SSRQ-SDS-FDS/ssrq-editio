@@ -9,5 +9,6 @@ CREATE TABLE IF NOT EXISTS organizations
     lt_name TEXT NULL,
     rm_name TEXT NULL,
     de_types TEXT NOT NULL,
-    fr_types TEXT NOT NULL
+    fr_types TEXT NOT NULL,
+    location TEXT NULL
 );
