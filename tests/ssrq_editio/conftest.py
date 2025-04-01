@@ -1,10 +1,13 @@
 from http import HTTPStatus
 from pathlib import Path
+from typing import AsyncGenerator
 
+import aiosqlite
 import httpx
 import pytest
 from ssrq_utils.i18n.translator import Translator
 
+from ssrq_editio.adapters.db.connection import db_session
 from ssrq_editio.adapters.entities import (
     get_families,
     get_keywords,
@@ -60,3 +63,16 @@ async def entities(httpx_client: httpx.AsyncClient):
     families = await get_families(httpx_client, "http://testserver/families.xml")
     orgs = await get_orgs(httpx_client, "http://testserver/orgs.xml")
     return (places, keywords, lemmata, persons, families, orgs)
+
+
+@pytest.fixture(scope="function")
+async def db_connection() -> AsyncGenerator[aiosqlite.Connection, None]:
+    """This fixtures creates a tmp new database file and yields a connection.
+
+    We don't use a memory based DB here, because we want to mimic the real
+    behavior of the application. The fixture will remove the database file
+    after the test has run. To avoid race conditions, we use a lock to ensure
+    that only one test can access the database file at a time.
+    """
+    async for connection in db_session("test.sqlite", True):
+        yield connection

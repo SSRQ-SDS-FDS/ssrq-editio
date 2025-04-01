@@ -59,7 +59,14 @@ async def test_get_families(httpx_client: httpx.AsyncClient):
     result = await get_families(httpx_client, "http://testserver/families.xml")
     assert result is not None
     assert isinstance(result, Families)
-    assert any(persons.de_name is not None for persons in result.entities)
+    assert any(family.de_name is not None for family in result.entities)
+
+
+@pytest.mark.anyio
+async def test_location_for_specific_family(httpx_client: httpx.AsyncClient):
+    result = await get_families(httpx_client, "http://testserver/families.xml")
+    assert result is not None
+    assert isinstance(result, Families)
     entity = result.get_by_id("org000861")
     assert entity is not None
     assert isinstance(entity, Family)
