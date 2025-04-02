@@ -33,10 +33,13 @@ class VolumeMeta(BaseModel):
     )
     first_year: int | None = Field(
         ...,
-        description="The earliest year a document was created.",
+        description="The earliest year a document was created. Normalized in the Gregorian calendar.",
     )
     has_facs: bool
-    last_year: int | None = Field(..., description="The latest year a document was created.")
+    last_year: int | None = Field(
+        ...,
+        description="The latest year a document was created. Normalized in the Gregorian calendar.",
+    )
 
     @model_validator(mode="after")
     def compare_first_and_last_year(self):
