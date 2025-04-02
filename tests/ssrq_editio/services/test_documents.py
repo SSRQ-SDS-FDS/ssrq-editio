@@ -142,6 +142,8 @@ from ssrq_editio.services.documents import extract_infos_from_xml
                     "key000273",
                 ],
                 type=DocumentType.transcript,
+                start_year_of_creation=1473,
+                end_year_of_creation=None,
             ),
         ),
         (
@@ -204,6 +206,8 @@ from ssrq_editio.services.documents import extract_infos_from_xml
                     "key000431",
                 ],
                 type=DocumentType.transcript,
+                start_year_of_creation=1775,
+                end_year_of_creation=None,
             ),
         ),
         (
@@ -250,6 +254,8 @@ from ssrq_editio.services.documents import extract_infos_from_xml
                     "key000847",
                 ],
                 type=DocumentType.transcript,
+                start_year_of_creation=1708,
+                end_year_of_creation=None,
             ),
         ),
     ],
