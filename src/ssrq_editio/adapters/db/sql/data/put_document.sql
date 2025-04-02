@@ -15,7 +15,9 @@ INSERT OR REPLACE INTO documents (
     fr_title,
     entities,
     source,
-    type
+    type,
+    start_year_of_creation,
+    end_year_of_creation
 ) VALUES (
     :uuid,
     :idno,
@@ -41,5 +43,7 @@ INSERT OR REPLACE INTO documents (
         ELSE :entities
     END,
     :source,
-    :type
+    :type,
+    :start_year_of_creation,
+    :end_year_of_creation
 );

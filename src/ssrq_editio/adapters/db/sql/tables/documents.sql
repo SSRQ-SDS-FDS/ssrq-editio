@@ -17,6 +17,8 @@ CREATE TABLE IF NOT EXISTS documents
     entities TEXT NULL,
     source TEXT NULL,
     type TEXT NOT NULL,
+    start_year_of_creation INTEGER NULL,
+    end_year_of_creation INTEGER NULL,
     FOREIGN KEY (volume_id) REFERENCES volumes (id)
 );
 

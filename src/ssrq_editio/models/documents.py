@@ -14,38 +14,40 @@ class DocumentType(Enum):
 
 
 class Document(BaseModel):
-    uuid: str
-    idno: str
-    is_main: bool
-    sort_key: float
     de_orig_date: str
-    en_orig_date: str
-    fr_orig_date: str
-    it_orig_date: str
-    facs: Annotated[
-        list[str] | None,
-        BeforeValidator(parse_as_list_or_return),
-    ]
-    printed_idno: str
-    volume_id: str
-    orig_place: Annotated[
-        list[str] | None,
-        BeforeValidator(parse_as_list_or_return),
-    ] = None
     de_title: str | None = None
-    fr_title: str | None = None
+    en_orig_date: str
     entities: Annotated[
         list[str] | None,
         BeforeValidator(parse_as_list_or_return),
     ] = None
+    facs: Annotated[
+        list[str] | None,
+        BeforeValidator(parse_as_list_or_return),
+    ]
+    fr_orig_date: str
+    fr_title: str | None = None
+    idno: str
+    is_main: bool
+    it_orig_date: str
+    orig_place: Annotated[
+        list[str] | None,
+        BeforeValidator(parse_as_list_or_return),
+    ] = None
+    printed_idno: str
+    sort_key: float
+    source: Path | None = None
     sub_documents: Annotated[
         list[str] | None,
         BeforeValidator(parse_as_list_or_return),
     ] = None
-    source: Path | None = None
     type: Annotated[
         DocumentType, BeforeValidator : lambda x: DocumentType(x) if isinstance(x, str) else x
     ]
+    uuid: str
+    volume_id: str
+    start_year_of_creation: int | None = None
+    end_year_of_creation: int | None = None
 
     @model_validator(mode="after")
     def check_mutually_exclusive_fields(self) -> Self:
