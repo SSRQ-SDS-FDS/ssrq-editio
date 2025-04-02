@@ -1,3 +1,4 @@
+from random import randint
 from uuid import uuid4
 
 import pytest
@@ -32,6 +33,8 @@ def documents():
             de_title="<h3>foo</h3>",
             fr_title=None,
             type=DocumentType.transcript,
+            start_year_of_creation=randint(900, 1780),
+            end_year_of_creation=randint(900, 1780) if d % 2 == 0 else None,
         )
         for d in range(1, 150)
     )
@@ -84,3 +87,10 @@ async def test_retrieve_volume_meta(db_kanton_data, documents):
     result = await retrieve_volume_metadata(db_kanton_data, "foo")
     assert result is not None
     assert isinstance(result, VolumeMeta)
+    assert (
+        min(d.start_year_of_creation for d in documents if d.start_year_of_creation)
+        == result.first_year
+    )
+    assert (
+        max(d.end_year_of_creation for d in documents if d.end_year_of_creation) == result.last_year
+    )
