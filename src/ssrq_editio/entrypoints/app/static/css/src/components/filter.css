@@ -1,0 +1,11 @@
+.filter-card.horizontal {
+    @apply flex flex-col gap-4 items-center px-8 py-4 bg-white rounded-lg shadow-md my-2 flex-1 hover:shadow;
+}
+
+.filter-card.horizontal .filter-section {
+    @apply w-3/4 px-2 py-4;
+}
+
+.filter-card.horizontal .filter-section:not(:last-child) {
+    @apply border-b border-ssrq-greyed-200;
+}

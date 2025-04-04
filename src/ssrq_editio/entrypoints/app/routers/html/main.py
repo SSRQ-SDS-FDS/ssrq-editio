@@ -91,6 +91,8 @@ async def documents(
     doc_type: None | DocumentType = None,
     page: int = 1,
     per_page: int = 25,
+    range_start: int | None = None,
+    range_end: int | None = None,
 ) -> HTMLResponse:
     return await VolumeViewModel(
         request,
@@ -103,6 +105,8 @@ async def documents(
         doc_type,
         page,
         per_page,
+        range_start,
+        range_end,
     ).to_html()
 
 

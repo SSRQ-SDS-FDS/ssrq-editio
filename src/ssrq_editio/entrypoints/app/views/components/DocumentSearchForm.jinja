@@ -1,91 +1,111 @@
 {# def
-endpoint: URL,
-document_type: DocumentType | None,
-document_types: list[DocumentType],
-facs: bool,
-facs_filter: bool,
-lang: Lang,
-translator: Translator,
-query: str | None,
-hx_indicator: str | None = None,
-hx_params: str | None = None,
-hx_target: str | None = None
+    endpoint: URL,
+    document_type: DocumentType | None,
+    document_types: list[DocumentType],
+    facs: bool,
+    facs_filter: bool,
+    lang: Lang,
+    translator: Translator,
+    query: str | None,
+    first_year: int | None,
+    last_year: int | None,
+    range_start: int | None,
+    range_end: int | None,
+    hx_indicator: str | None = None,
+    hx_params: str | None = None,
+    hx_target: str | None = None
 #}
 
 <form
-  class="my-2 text-sm w-full flex flex-col gap-4 items-center"
+  class="text-sm w-full filter-card horizontal"
   hx-get="{{ endpoint }}"
   hx-indicator="{{ hx_indicator }}"
   hx-params="{{ hx_params }}"
   hx-target="{{ hx_target }}"
   hx-push-url="true"
   hx-swap="outerHTML"
-  hx-trigger="input changed delay:500ms from:#documentIdOrTitleSearch,change from:#docTypeSelect,change from:#facsFilter"
+  hx-trigger="input changed delay:500ms from:#documentIdOrTitleSearch,change from:#docTypeSelect,change from:#facsFilter,date-range-changed delay:500ms from:body"
 >
-    <div class="w-3/4">
-        <label for="entityIdOrNameSearch" class="block mb-2 text-xs text-ssrq-greyed-700">
-            {{ translator.translate(lang,'filter-hits') }}
-        </label>
-        <div class="flex gap-2">
-            <input
-              id="documentIdOrTitleSearch"
-              type="text"
-              autocomplete="off"
-              name="query"
-              class="px-4 py-2 min-w-[16rem] w-full text-sm text-ssrq-greyed-800 bg-white border rounded-md focus:border-ssrq-primary focus:border-[0.025rem] focus:outline-none focus:ring focus:ring-ssrq-primary focus:ring-opacity-40"
-              placeholder="{{ translator.translate(lang, 'idno-or-title') }}"
-              {% if query %}
-                value="{{ query }}"
-              {% endif %}
-            />
-            <FormReset
-                :endpoint="endpoint"
-                :icon_size="'w-5 h-5'"
-            />
+        <div class="filter-section">
+            <h3 class="title-3 mb-2">
+                {{ translator.translate(lang,'filter-hits') }}
+            </h3>
+            <div class="flex gap-2 rounded-b-lg">
+                <input
+                id="documentIdOrTitleSearch"
+                type="text"
+                autocomplete="off"
+                name="query"
+                class="px-4 py-2 min-w-[16rem] w-full text-sm text-ssrq-greyed-800 bg-white border rounded-md focus:border-ssrq-primary focus:border-[0.025rem] focus:outline-none focus:ring focus:ring-ssrq-primary focus:ring-opacity-40"
+                placeholder="{{ translator.translate(lang, 'idno-or-title') }}"
+                {% if query %}
+                    value="{{ query }}"
+                {% endif %}
+                />
+                <FormReset
+                    :endpoint="endpoint"
+                    :icon_size="'w-5 h-5'"
+                />
+            </div>
         </div>
-    </div>
-    <div class="w-3/4 flex items-center justify-center gap-4">
-        <label class="w-1/3">
-            <select
-              name="doc_type"
-              id="docTypeSelect"
-              class="block py-1.5 px-0 w-full text-sm text-ssrq-greyed-800 bg-white border-0 border-b-2 border-ssrq-greyed-300 appearance-none dark:text-ssrq-greyed-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-ssrq-primary peer"
-            >
-                <option
-                    {% if document_type is none %} selected {% endif %}
-                    value=""
-                >
-                    {{ translator.translate(lang, 'doc_type') }}
-                </option>
-                {% for doc_type in document_types %}
-                    <option
-                        value="{{ doc_type.value }}"
-                        {% if doc_type == document_type %} selected {% endif %}
-                    >
-                        {{ translator.translate(lang, doc_type.value) }}
-                {% endfor %}
-            </select>
-        </label>
-        {#
-            This will ensure that we never show the facs filter, when the page is loaded initially, when there are no facs in this
-            volume
-        #}
-        {% if facs_filter %}
-        <label class="inline-flex items-center w-1/3">
-            <input
-              type="checkbox"
-              name="facs"
-              value="true"
-              id="facsFilter"
-              class="rounded border-gray-300 text-ssrq-primary shadow-sm focus:border-ssrq-primary focus:ring focus:ring-offset-0 focus:ring-ssrq-primary focus:ring-opacity-50"
-              {% if facs %}
-                checked=""
-              {% endif %}
-            >
-            <span class="ml-2">
-                {{ translator.translate(lang, 'has-facs') }}
-            </span>
-        </label>
+
+        {% if first_year is not none and last_year is not none %}
+            <div class="filter-section">
+                <DateSlider
+                :first_year="first_year"
+                :last_year="last_year"
+                :range_start="range_start"
+                :range_end="range_end"
+                :lang="lang"
+                :translator="translator"
+                />
+            </div>
         {% endif %}
+
+        <div class="filter-section flex items-center gap-4">
+            <label class="w-1/3">
+                <select
+                name="doc_type"
+                id="docTypeSelect"
+                class="block py-1.5 px-0 w-full text-sm text-ssrq-greyed-800 bg-white border-0 border-b-2 border-ssrq-greyed-300 appearance-none dark:text-ssrq-greyed-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-ssrq-primary peer"
+                >
+                    <option
+                        {% if document_type is none %} selected {% endif %}
+                        value=""
+                    >
+                        {{ translator.translate(lang, 'doc_type') }}
+                    </option>
+                    {% for doc_type in document_types %}
+                        <option
+                            value="{{ doc_type.value }}"
+                            {% if doc_type == document_type %} selected {% endif %}
+                        >
+                            {{ translator.translate(lang, doc_type.value) }}
+                    {% endfor %}
+                </select>
+            </label>
+            {#
+                This will ensure that we never show the facs filter,
+                when the page is loaded initially, when there are no facs in this
+                volume
+            #}
+            {% if facs_filter %}
+            <label class="inline-flex items-center w-1/3">
+                <input
+                type="checkbox"
+                name="facs"
+                value="true"
+                id="facsFilter"
+                class="rounded border-gray-300 text-ssrq-primary shadow-sm focus:border-ssrq-primary focus:ring focus:ring-offset-0 focus:ring-ssrq-primary focus:ring-opacity-50"
+                {% if facs %}
+                    checked=""
+                {% endif %}
+                >
+                <span class="ml-2">
+                    {{ translator.translate(lang, 'has-facs') }}
+                </span>
+            </label>
+            {% endif %}
+        </div>
     </div>
 </form>
