@@ -50,7 +50,11 @@
                     />
                 </svg>
                 {% for loc in resolved_location %}
-                <a class="text-ssrq-primary" target="_blank" href="https://p.ssrq-sds-fds.ch/{{loc["id"]}}">{{ loc["name"] }}</a>
+                    <a
+                    target="_blank"
+                    href="{{ loc.id | permalink }} ">
+                        {% if loop.index > 1%} {{', ' }}{% endif %}{{ loc.name }}
+                    </a>
                 {% endfor %}
             </span>
         {% endif %}
