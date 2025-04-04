@@ -22,6 +22,10 @@
         :document_types="data.content.document_types"
         :facs="data.content.facs"
         :facs_filter="data.content.show_facs"
+        :first_year="data.content.first_year"
+        :last_year="data.content.last_year"
+        :range_start="data.content.range_start"
+        :range_end="data.content.range_end"
         :lang="lang"
         :translator="translator"
         :query="data.content.query"
@@ -30,7 +34,6 @@
         :hx_target="'#documents'"
     />
 </section>
-
 
 {% block documents %}
 

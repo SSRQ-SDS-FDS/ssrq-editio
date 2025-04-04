@@ -25,6 +25,8 @@ SELECT -- noqa: disable=all
     docs.fr_title,
     docs.entities,
     docs.type,
+    docs.start_year_of_creation,
+    docs.end_year_of_creation,
     (
         SELECT json_group_array(sub_docs.idno)
         FROM documents AS sub_docs
@@ -66,5 +68,18 @@ WHERE
     AND (
         :type IS NULL
         OR docs.type = :type
+    )
+    AND (
+        (
+            :range_start IS NULL
+            OR (docs.start_year_of_creation IS NOT NULL AND docs.start_year_of_creation >= :range_start)
+            OR (docs.end_year_of_creation IS NOT NULL AND docs.end_year_of_creation >= :range_start)
+        )
+        AND
+        (
+            :range_end IS NULL
+            OR (docs.start_year_of_creation IS NOT NULL AND docs.start_year_of_creation <= :range_end)
+            OR (docs.end_year_of_creation IS NOT NULL AND docs.end_year_of_creation <= :range_end)
+        )
     )
 ORDER BY docs.sort_key ASC;

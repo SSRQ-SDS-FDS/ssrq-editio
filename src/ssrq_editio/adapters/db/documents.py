@@ -63,6 +63,8 @@ async def get_documents(
     search: str | None = None,
     facs: bool = False,
     doc_type: DocumentType | None = None,
+    range_start: int | None = None,
+    range_end: int | None = None,
 ) -> list[Document]:
     """Retrieve a list of documents per volume.
 
@@ -86,6 +88,8 @@ async def get_documents(
                 "volume_id": volume_id,
                 "search": replace_wildcard(search),
                 "type": doc_type.value if doc_type else None,
+                "range_start": range_start,
+                "range_end": range_end,
             },
         )
         data = await cursor.fetchall()
