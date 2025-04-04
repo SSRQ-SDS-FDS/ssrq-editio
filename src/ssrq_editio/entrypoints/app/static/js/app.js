@@ -4,10 +4,12 @@ import 'https://unpkg.com/htmx.org@2.0.0/dist/htmx.min.js';
 
 // Internal imports
 import langSwitch from './components/langSwitch.js';
+import dateRange from './components/dateRangeSlider.js';
 import topButtonScrollHandler from './components/toTop.js';
 import { removeEmptyParameters } from './utils/eventHelpers.js';
 
 // Global setup of event listeners
+Alpine.data('dateRangeSlider', dateRange);
 Alpine.data('langSwitch', langSwitch);
 Alpine.data('topButtonScrollHandler', topButtonScrollHandler);
 document.addEventListener('htmx:configRequest', removeEmptyParameters);

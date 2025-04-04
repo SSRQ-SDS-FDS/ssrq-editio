@@ -1,0 +1,84 @@
+{# def
+    event_name: str = 'date-range-changed',
+    first_year: int,
+    last_year: int,
+    range_start: int,
+    range_end: int,
+    lang: Lang,
+    translator: Translator
+#}
+
+<div class="max-w-fit">
+    <span class="my-1 text-xs text-ssrq-greyed-700">
+        {{ translator.translate(lang, 'period') }}
+    </span>
+    <div
+      class="flex items-center justify-between"
+      x-data="dateRangeSlider({{range_start}}, {{range_end}},{{first_year}}, {{last_year}}, '{{event_name}}')"
+      x-init="init()"
+    >
+        <div class="relative max-w-xl min-w-[16rem] mr-8">
+            <input
+              class="absolute pointer-events-none appearance-none z-20 h-1 w-full opacity-0 cursor-pointer"
+              type="range"
+              step="5"
+              x-bind:min="minYear"
+              x-bind:max="maxYear"
+              x-on:input="mintrigger"
+              x-model="selectedMinYear"
+            >
+            <input
+              class="absolute pointer-events-none appearance-none z-20 h-1 w-full opacity-0 cursor-pointer"
+              type="range"
+              step="5"
+              x-bind:min="minYear"
+              x-bind:max="maxYear"
+              x-on:input="maxtrigger"
+              x-model="selectedMaxYear"
+            >
+
+            <div
+              class="relative z-10 h-1">
+              <div
+              class="absolute z-10 left-0 right-0 bottom-0 top-0 rounded-md bg-gray-200"></div>
+              <div
+              class="absolute z-20 top-0 bottom-0 rounded-md bg-ssrq-primary"
+              x-bind:style="'right:'+maxthumb+'%; left:'+minthumb+'%'"></div>
+              <div
+              class="absolute z-30 w-4 h-4 top-0 left-0 bg-ssrq-primary rounded-full -mt-[0.4rem] -ml-1"
+              x-bind:style="'left: '+minthumb+'%'"></div>
+              <div
+              class="absolute z-30 w-4 h-4 top-0 right-0 bg-ssrq-primary rounded-full -mt-[0.4rem] -mr-3"
+              x-bind:style="'right: '+maxthumb+'%'"></div>
+              </div
+            >
+        </div>
+        <div class="flex justify-between items-center gap-2">
+            <span>von</span>
+              <div>
+              <input
+              type="number"
+              class="arrow-hide px-4 py-2 text-sm border border-gray-200 rounded w-20 text-center rounded-md focus:border-ssrq-primary focus:border-[0.025rem] focus:outline-none focus:ring focus:ring-ssrq-primary focus:ring-opacity-40"
+              name="range_start"
+              x-on:input="mintrigger"
+              x-model="selectedMinYear"
+              x-bind:class="(selectedMinYear >= selectedMaxYear || selectedMinYear < minYear) && 'text-red-500'">
+              </div>
+              <span>bis</span>
+              <div>
+              <input
+              type="number"
+              maxlength="4"
+              class="arrow-hide px-4 py-2 text-sm border border-gray-200 rounded w-20 text-center rounded-md focus:border-ssrq-primary focus:border-[0.025rem] focus:outline-none focus:ring focus:ring-ssrq-primary focus:ring-opacity-40"
+              id="lastYearFilter"
+              name="range_end"
+              x-on:input="maxtrigger"
+              x-model="selectedMaxYear"
+              x-bind:class="(selectedMaxYear <= selectedMinYear || selectedMaxYear > maxYear) && 'text-red-500'">
+              </div
+            >
+        </div>
+
+    </div>
+
+</div>
