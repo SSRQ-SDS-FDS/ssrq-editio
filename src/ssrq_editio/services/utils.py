@@ -1,6 +1,22 @@
 from pydantic_core import from_json
 
 
+def create_permalink(id: str, base: str = "https://p.ssrq-sds-fds.ch/") -> str:
+    """Create a permalink from an id.
+
+    ToDo: Refactor to extract the main ID from
+    entitiy IDs.
+
+    Args:
+        id (str): The ID to create a permalink for.
+        base (str, optional): The base URL. Defaults to "https://p.ssrq-sds-fds.ch/".
+
+    Returns:
+        str: The permalink.
+    """
+    return f"{base}{id}"
+
+
 def normalize(text: str | None):
     if text is None:
         return None

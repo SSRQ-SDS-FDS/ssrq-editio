@@ -47,15 +47,27 @@
             />
         </Pagination>
             {% for hit in data.content.entities %}
+                {% if data.content.entity_type in ("families", "persons", "organizations") %}
                 <EntityCard
-                  :entity="hit[0]"
-                  :resolved_location="hit[1]"
-                  :entity_type="data.content.entity_type"
-                  :idnos="data.content.idnos"
-                  :lang="lang"
-                  :request="request"
-                  :translator="translator"
+                    :entity="hit[0]"
+                    :resolved_location="hit[1]"
+                    :entity_type="data.content.entity_type"
+                    :idnos="data.content.idnos"
+                    :lang="lang"
+                    :request="request"
+                    :translator="translator"
                 />
+                {% else %}
+                <EntityCard
+                    :entity="hit"
+                    :resolved_location="None"
+                    :entity_type="data.content.entity_type"
+                    :idnos="data.content.idnos"
+                    :lang="lang"
+                    :request="request"
+                    :translator="translator"
+                />
+                {% endif %}
             {% endfor %}
         <Pagination
           class="bottom"
