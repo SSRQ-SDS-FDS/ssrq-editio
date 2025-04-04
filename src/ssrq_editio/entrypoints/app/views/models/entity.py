@@ -89,6 +89,7 @@ class EntityViewModel(ViewModel):
         )
 
         total_hits = len(result.entities)
+
         if total_hits == 0:
             return None
 
@@ -98,8 +99,8 @@ class EntityViewModel(ViewModel):
             self.per_page,
         )
 
-        match paged_entities[0][0]:
-            case Person() | Organization() | Family():
+        match self.entity_type:
+            case EntityTypes.FAMILIES | EntityTypes.PERSONS | EntityTypes.ORGANIZATIONS:
                 return (
                     total_hits,
                     (
