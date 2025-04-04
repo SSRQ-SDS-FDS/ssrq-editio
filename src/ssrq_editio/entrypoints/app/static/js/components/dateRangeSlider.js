@@ -5,7 +5,8 @@ const dateRange = function (
   max = 1798,
   eventName = 'date-range-changed',
   startParamName = 'range_start',
-  endParamName = 'range_end'
+  endParamName = 'range_end',
+  htmxContainerId = null
 ) {
   return {
     selectedMinYear: selectedMinYear,
@@ -20,8 +21,20 @@ const dateRange = function (
       this.init_done = false;
       this.mintrigger();
       this.maxtrigger();
+
+      if (htmxContainerId !== null) {
+        const container = document.querySelector(`#${htmxContainerId}`);
+        if (container !== null) {
+          container.addEventListener('htmx:afterSettle', () => {
+            this.updateURL();
+          });
+        }
+      }
+
+      this.updateURL();
       this.init_done = true;
     },
+
     mintrigger() {
       this.selectedMinYear = this.selectedMinYear;
 
@@ -59,16 +72,6 @@ const dateRange = function (
           range_end: this.selectedMaxYear,
         });
       }
-
-      /* Remove the URL parameters after the user has selected the full range,
-      uses a timeout to allow the event to be dispatched first
-      and handled by HTMX
-
-      ToDo: This is a bit of a hack, maybe listen to events by htmx instead?
-      */
-      setTimeout(() => {
-        this.updateURL();
-      }, 750);
     },
     updateURL() {
       if (
