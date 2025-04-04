@@ -1,9 +1,9 @@
 import re
-from typing import Sequence, Union, cast
+from typing import Sequence, cast
 
 from aiosqlite import Connection
 from ssrq_utils.lang.display import Lang
-from ssrq_utils.uca import uca_simple_sort
+from ssrq_utils.uca import uca_complex_sort
 
 from ssrq_editio.adapters.db.entities import (
     search_families,
@@ -72,8 +72,8 @@ def validate_entity_id(entity_id: str) -> bool:
 
 
 async def resolve_places_for_entities(
-    entities: Sequence[Entity], connection: Connection, lang: Lang
-) -> tuple[tuple[Entity, list[dict[str, str]] | None], ...]:
+    entities: Sequence[Person | Family | Organization], connection: Connection, lang: Lang
+) -> tuple[tuple[Entity, Sequence[dict[str, str]] | None], ...]:
     """A service function to resolve and replace place IDs in the 'location' property of each entity with localized place names.
 
     The resolved names are sorted alphabetically in the specified language.
@@ -81,37 +81,32 @@ async def resolve_places_for_entities(
     ToDo: Potential performance issue. Compare with `resolve_orig_places_for_documents`.
 
     Args:
-        paged_entities (tuple[Sequence[Entity], list[int]]: The entities whose place IDs should be resolved and replaced.
+        entities (Sequence[Person | Family | Organization]): The entities to resolve the places for.
         connection (Connection): The SQLite connection.
         lang (Lang): The language to sort the places by.
 
     Returns:
-        tuple[tuple[Entity, Sequence[str] | None], ...]: A tuple of entities paired with their resolved and localized place names.
+        tuple[tuple[Entity, Sequence[dict[str, str]] | None], ...]: A tuple of entity-place tuples.
     """
-    TypedEntities = Union[Family, Person, Organization]
-    allowed_types = (Family, Person, Organization)
-    if all(isinstance(entity, allowed_types) for entity in entities):
-        places = cast(Places, await get_entities(connection, EntityTypes.PLACES))
-        if len(places.entities) == 0:
-            raise ValueError("No places found in the database for resolving.")
-        resolved_entities = []
-        typed_entities = cast(Sequence[TypedEntities], entities)
-        for entity in typed_entities:
-            resolved_location = {
-                place.get_name_by_lang(lang): location
-                for location in entity.location or []
-                if (place := places.get_by_id(location))
-            }
-            sorted_location = uca_simple_sort(list(resolved_location.keys()))
-            resolved_entities.append(
-                (
-                    entity,
-                    [
-                        {"id": resolved_location[location], "name": location}
-                        for location in sorted_location
-                    ],
-                )
+    places = cast(Places, await get_entities(connection, EntityTypes.PLACES))
+
+    if len(places.entities) == 0:
+        raise ValueError("No places found in the database for resolving.")
+
+    return tuple(
+        (
+            entity,
+            uca_complex_sort(
+                [
+                    {"id": location, "name": place.get_name_by_lang(lang)}
+                    for location in entity.location
+                    if (place := places.get_by_id(location))
+                ],
+                "get",
+                ("name",),
             )
-        return tuple(resolved_entities)
-    else:
-        return tuple((entity, None) for entity in entities)
+            if entity.location
+            else None,
+        )
+        for entity in entities
+    )
