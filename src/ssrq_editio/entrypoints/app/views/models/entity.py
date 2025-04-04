@@ -1,10 +1,12 @@
+from typing import Sequence, cast
+
 from aiosqlite import Connection
 from fastapi import Request
 from ssrq_utils.lang.display import Lang
 
 from ssrq_editio.adapters.db.documents import get_document_infos
 from ssrq_editio.entrypoints.app.views.models.base import ViewContext, ViewModel
-from ssrq_editio.models.entities import Entities, Entity, EntityTypes
+from ssrq_editio.models.entities import Entities, Entity, EntityTypes, Family, Organization, Person
 from ssrq_editio.services.entities import get_entities, resolve_places_for_entities
 from ssrq_editio.services.paginate import create_pages
 from ssrq_editio.services.sort import sort_entities_by_name
@@ -75,7 +77,11 @@ class EntityViewModel(ViewModel):
     ) -> (
         None
         | tuple[
-            int, tuple[tuple[tuple[Entity, list[dict[str, str]] | None], ...], list[int] | None]
+            int,
+            tuple[
+                tuple[tuple[Entity, Sequence[dict[str, str]] | None], ...] | Sequence[Entity],
+                list[int] | None,
+            ],
         ]
     ):
         result: Entities = await get_entities(
@@ -91,7 +97,22 @@ class EntityViewModel(ViewModel):
             self.current_page,
             self.per_page,
         )
-        return total_hits, (
-            await resolve_places_for_entities(paged_entities[0], self.connection, self.lang),
-            paged_entities[1],
-        )
+
+        match paged_entities[0][0]:
+            case Person() | Organization() | Family():
+                return (
+                    total_hits,
+                    (
+                        await resolve_places_for_entities(
+                            cast(Sequence[Person | Organization | Family], paged_entities[0]),
+                            self.connection,
+                            self.lang,
+                        ),
+                        paged_entities[1],
+                    ),
+                )
+            case _:
+                return total_hits, (
+                    paged_entities[0],
+                    paged_entities[1],
+                )
