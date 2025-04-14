@@ -1,21 +1,11 @@
 {% extends "layouts/page.jinja" %}
 {% block content %}
-<Banner :request="request">
-    <h1 class="title-1">
-        {{ translator.translate(lang, 'canton') }} {{ data.content.kanton }}
-    </h1>
-    <h2 class="title-2">
-        {{ translator.translate(lang, 'volume') }} {{ data.content.volume.name }}
-    </h2>
-</Banner>
 
 <Breadcrumbs
   :request="request"
   :parts="[(data.content.kanton, url_for('kanton', kanton=data.content.kanton)), (data.content.volume.name, None), (data.content.document, None) ]"
 />
-
-
-<section class="w-full max-w-5xl mx-auto flex justify-between mt-4 mb-2">
+<section class="w-full max-w-7xl mx-auto flex justify-between mt-6 mb-4">
     <h1 class="title-1">{{ data.content.title }}</h1>
     <div class="flex gap-2 items-center justify-end text-ssrq-greyed-500">
         <svg aria-hidden="true"
@@ -34,15 +24,14 @@
     </div>
 </section>
 
-<section class="flex w-full max-w-5xl items-stretch justify-center mx-auto gap-2 mb-2">
-    <div class="w-1/2 flex">
+<section class="md:flex w-full max-w-[1680px] items-stretch justify-center mx-auto gap-4 mb-4 px-4">
+    <div class="md:w-1/2 flex mx-2 md:mx-0 mb-6 md:mb-0">
         <Tabs :data="data.content.left_col" />
     </div>
-    <div class="w-1/2 flex items-stretch">
+    <div class="md:w-1/2 flex items-stretch mx-2 md:mx-0">
         <Tabs :data="data.content.right_col" />
     </div>
 </section>
-
 
 
 {% endblock %}
