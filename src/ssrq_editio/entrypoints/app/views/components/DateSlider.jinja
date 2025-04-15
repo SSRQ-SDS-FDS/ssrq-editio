@@ -10,7 +10,7 @@
 #}
 
 <div class="max-w-fit">
-    <span class="my-1 text-xs text-ssrq-greyed-700">
+    <span class="my-1 text-xs text-ssrq-greyed-700 ml-2">
         {{ translator.translate(lang, 'period') }}
     </span>
     <div
@@ -18,7 +18,7 @@
       x-data="dateRangeSlider({{range_start}}, {{range_end}},{{first_year}}, {{last_year}}, '{{event_name}}', 'range_start', 'range_end', '{{container_id}}')"
       x-init="init()"
     >
-        <div class="relative max-w-xl min-w-[16rem] mr-8">
+        <div class="relative max-w-xl min-w-[16rem] mr-6">
             <input
               class="absolute pointer-events-none appearance-none z-20 h-1 w-full opacity-0 cursor-pointer"
               type="range"
@@ -39,7 +39,7 @@
             >
 
             <div
-              class="relative z-10 h-1">
+              class="relative z-10 h-1 ml-[8px] mr-[16px]">
               <div
               class="absolute z-10 left-0 right-0 bottom-0 top-0 rounded-md bg-gray-200"></div>
               <div
