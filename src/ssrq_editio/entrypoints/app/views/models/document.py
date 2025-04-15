@@ -96,8 +96,10 @@ description_dummy = {
 }
 digital_dummy = {
     "tab": "Digitalisat",
-    "template": "DocumentTranscriptionCard.jinja",
-    "context": {"title": "", "document": "Digitalisat..."},
+    "template": "DocumentPicture.jinja",
+    "context": {
+        "title_sources": "https://facsimiles.ssrq-sds-fds.ch/iiif/2/StAZH_B_III_2__353.ptif/info.json"
+    },
 }
 regest_dummy = {
     "tab": "Regest",

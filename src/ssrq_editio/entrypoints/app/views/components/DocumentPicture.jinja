@@ -1,0 +1,13 @@
+{# def
+    context: str,
+#}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js"></script>
+<div id="openseadragon1" style="width: 100%; height: 600px;"></div>
+<script>
+  OpenSeadragon({
+    id: "openseadragon1",
+    prefixUrl: "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/images/",
+    tileSources: "{{ context.title_sources }}"
+  });
+</script>
