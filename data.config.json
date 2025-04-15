@@ -8,12 +8,36 @@
     "literature": null
   },
   {
+    "key": "NE_3",
+    "kanton": "NE",
+    "name": "3",
+    "prefix": "SDS",
+    "pdf": "TeX/SDS-NE-3.pdf",
+    "literature": null
+  },
+  {
+    "key": "NE_4",
+    "kanton": "NE",
+    "name": "4",
+    "prefix": "SDS",
+    "pdf": "TeX/SDS-NE-4.pdf",
+    "literature": null
+  },
+  {
     "key": "SG_III_4",
     "kanton": "SG",
     "name": "III/4",
     "prefix": "SSRQ",
     "pdf": "TeX/SSRQ-SG-III-4.pdf",
     "literature": null
+  },
+  {
+    "key": "VD_D_1",
+    "kanton": "VD",
+    "name": "D 1",
+    "prefix": "SDS",
+    "pdf": null,
+    "literature": "https://www.zotero.org/groups/5048222/ssrq/collections/JKFJK5W5"
   },
   {
     "key": "VD_D_2",
