@@ -13,3 +13,12 @@
 [submodule "src/ssrq_editio/data/FR_I_2_8"]
 	path = src/ssrq_editio/data/FR_I_2_8
 	url = https://github.com/SSRQ-SDS-FDS/FR_I_2_8.git
+[submodule "src/ssrq_editio/data/NE_4"]
+	path = src/ssrq_editio/data/NE_4
+	url = https://github.com/SSRQ-SDS-FDS/NE_4.git
+[submodule "src/ssrq_editio/data/NE_3"]
+	path = src/ssrq_editio/data/NE_3
+	url = https://github.com/SSRQ-SDS-FDS/NE_3.git
+[submodule "src/ssrq_editio/data/VD_D_1"]
+	path = src/ssrq_editio/data/VD_D_1
+	url = https://github.com/SSRQ-SDS-FDS/VD_D_1.git
