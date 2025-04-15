@@ -73,7 +73,7 @@ class DocumentViewModel(ViewModel):
 
 # https://editio.ssrq-online.ch/ZH/NF_I_1_3/2-1.html?odd=ssrq.odd
 transcription_dummy = {
-    "tab": "Transkription",
+    "tab": "transcript",
     "template": "DocumentTranscriptionCard.jinja",
     "context": {
         "title": "Der eid, den die swerren soͤllend, so zuͦ unsern secklern<br />genomen werden",
@@ -81,7 +81,7 @@ transcription_dummy = {
     },
 }
 edition_dummy = {
-    "tab": "Editionstext",
+    "tab": "edition_text",
     "template": "DocumentTranscriptionCard.jinja",
     "context": {
         "title": "Der eid, den die swerren soͤllend, so zuͦ unsern secklern genomen werden",
@@ -89,32 +89,32 @@ edition_dummy = {
     },
 }
 tei_dummy = {
-    "tab": "TEI-XML",
+    "tab": "tei_xml",
     "template": "DocumentTranscriptionCard.jinja",
     "context": {"title": "", "document": "TEI-XML..."},
 }
 description_dummy = {
-    "tab": "Beschreibung",
-    "template": "DOcumentTranscriptionCard.jinja",
+    "tab": "description",
+    "template": "DocumentTranscriptionCard.jinja",
     "context": {
         "title": "",
         "document": "Signatur: StAZH B II 4, Teil II, fol. 19v, Eintrag 1<br />Originaldatierung: ca. 1447 – 1450 (Datierung aufgrund der Schreiberhand)<br />Überlieferung: Eintrag<br />Beschreibstoff: Papier<br />Format B × H (cm): 30.5 × 40.0<br />Sprache: Deutsch<br />Edition<br /><br />Zürcher Stadtbücher, Bd. 3/2, S. 188, Nr. 89",
     },
 }
 digital_dummy = {
-    "tab": "Digitalisat",
+    "tab": "digital_copy",
     "template": "DocumentPicture.jinja",
     "context": {
         "title_sources": "https://facsimiles.ssrq-sds-fds.ch/iiif/2/StAZH_B_III_2__353.ptif/info.json"
     },
 }
 regest_dummy = {
-    "tab": "Regest",
+    "tab": "summary",
     "template": "DocumentTranscriptionCard.jinja",
     "context": {"title": "", "document": "Regest..."},
 }
 comment_dummy = {
-    "tab": "Kommentar",
+    "tab": "comment",
     "template": "DocumentTranscriptionCard.jinja",
     "context": {"title": "", "document": "Kommentar..."},
 }

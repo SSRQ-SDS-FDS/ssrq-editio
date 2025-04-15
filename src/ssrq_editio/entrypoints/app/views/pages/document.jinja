@@ -79,10 +79,18 @@
 
 <section class="md:flex w-full max-w-[1680px] mx-auto items-stretch justify-center gap-4 mb-4 px-4">
     <div class="md:w-1/2 flex mb-6 md:mb-0">
-        <Tabs :data="data.content.left_col" />
+        <Tabs
+            :data="data.content.left_col"
+            :translator="translator"
+            :lang="lang"
+        />
     </div>
     <div class="md:w-1/2 flex items-stretch">
-        <Tabs :data="data.content.right_col" />
+        <Tabs
+            :data="data.content.right_col"
+            :translator="translator"
+            :lang="lang"
+        />
     </div>
 </section>
 

@@ -6,7 +6,7 @@
     document_prev: str | None,
     document_next: str | None,
 #}
-<div class="flex justify-between text-ssrq-greyed-500">
+<div class="flex justify-between text-ssrq-greyed-600">
     <a
         href="{{ url_for('document_list', kanton=volume.kanton, volume=volume.machine_name).include_query_params(lang=lang.value) }}"
         class="flex items-center gap-2 hover:text-ssrq-primary"
@@ -19,7 +19,7 @@
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="m9 9-4-4 4-4" />
         </svg>
-        <span>zurück zum Band</span>
+        <span>{{ translator.translate(lang, 'back_to_volume') }}</span>
     </a>
     <div class="flex gap-2">
         {% if document_prev %}
@@ -33,7 +33,7 @@
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="m5 9-4-4 4-4" />
                 </svg>
-                <span>vorheriges Stück</span>
+                <span>{{ translator.translate(lang, 'previous_piece') }}</span>
             </a>
         {% endif %}
         {% if document_next %}
@@ -41,7 +41,7 @@
                 href="{{ url_for('document_view', kanton=volume.kanton, volume=volume.machine_name, document=document_next).include_query_params(lang=lang.value) }}"
                 class="flex items-center gap-2 hover:text-ssrq-primary"
             >
-                <span>nächstes Stück</span>
+                <span>{{ translator.translate(lang, 'next_piece') }}</span>
                 <svg aria-hidden="true"
                     class="h-3"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
