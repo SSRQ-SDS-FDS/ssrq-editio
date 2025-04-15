@@ -1,37 +1,28 @@
 {% extends "layouts/page.jinja" %}
 {% block content %}
 
-<Breadcrumbs
-  :request="request"
-  :parts="[(data.content.kanton, url_for('kanton', kanton=data.content.kanton)), (data.content.volume.name, None), (data.content.document, None) ]"
-/>
-<section class="w-full max-w-7xl mx-auto flex justify-between mt-6 mb-4">
-    <h1 class="title-1">{{ data.content.title }}</h1>
-    <div class="flex gap-2 items-center justify-end text-ssrq-greyed-500">
-        <svg aria-hidden="true"
-            class="hover:text-ssrq-primary h-3 cursor-pointer"
-            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="m5 9-4-4 4-4" />
-        </svg>
-        2 / 4
-        <svg aria-hidden="true"
-            class="hover:text-ssrq-primary h-3 cursor-pointer"
-            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="m1 9 4-4-4-4" />
-        </svg>
-    </div>
+<section class="w-full max-w-[1680px] mx-auto px-4 my-4">
+    <DocumentNavigation
+        :lang="lang"
+        :request="request"
+        :translator="translator"
+        :volume="data.content.volume"
+        :document_prev="data.content.document_prev"
+        :document_next="data.content.document_next"
+    />
 </section>
 
-<section class="md:flex w-full max-w-[1680px] items-stretch justify-center mx-auto gap-4 mb-4 px-4">
-    <div class="md:w-1/2 flex mx-2 md:mx-0 mb-6 md:mb-0">
+<section class="w-full max-w-[1680px] mx-auto my-4 px-4">
+    <h1 class="title-1">{{ data.content.title }}</h1>
+</section>
+
+<section class="md:flex w-full max-w-[1680px] mx-auto items-stretch justify-center gap-4 mb-4 px-4">
+    <div class="md:w-1/2 flex mb-6 md:mb-0">
         <Tabs :data="data.content.left_col" />
     </div>
-    <div class="md:w-1/2 flex items-stretch mx-2 md:mx-0">
+    <div class="md:w-1/2 flex items-stretch">
         <Tabs :data="data.content.right_col" />
     </div>
 </section>
-
 
 {% endblock %}

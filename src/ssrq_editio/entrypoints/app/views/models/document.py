@@ -44,6 +44,8 @@ class DocumentViewModel(ViewModel):
                     "volume": self.volume_info,
                     "document": self.document,
                     "title": "Eid der Säckelmeister der Stadt Zürich",
+                    "document_prev": "prev",
+                    "document_next": "next",
                     "left_col": [
                         transcription_dummy,
                         edition_dummy,

@@ -1,24 +1,28 @@
 {# def
     data: list[tuple[str, str]],
 #}
-<div class="flex flex-col w-full flex-1" x-data="{active_tab: '{{ data[0]["tab"] }}'}">
-    <nav class="flex mb-2 border-ssrq-primary border-b-2 pb-[2px]">
+<div class="flex flex-col w-full flex-1" x-data="{ active_tab: '{{ data[0]["tab"] }}' }">
+    <nav class="flex mb-2 border-b-2 border-ssrq-primary">
         {% for d in data %}
-            <div>
-                <span
-                    class="cursor-pointer text-ssrq-greyed-500 rounded-t-lg px-4 py-1"
-                    x-on:click="active_tab='{{ d["tab"] }}'"
-                    x-bind:class="active_tab=='{{ d["tab"] }}' ? 'bg-ssrq-primary text-white' : 'text-ssrq-greyed-500 hover:text-ssrq-primary'"
-                >
-                    {{ d["tab"] }}
-                </span>
-            </div>
+            <button
+                type="button"
+                class="select-none cursor-pointer text-ssrq-greyed-500 rounded-t-lg px-4 py-1 focus:outline-none"
+                x-on:click="active_tab='{{ d['tab'] }}'"
+                x-bind:class="active_tab === '{{ d['tab'] }}' ? 'bg-ssrq-primary text-white' : 'hover:text-ssrq-primary'"
+            >
+                {{ d["tab"] }}
+            </button>
         {% endfor %}
     </nav>
+
     {% for d in data %}
-        <div id="col_left" class="flex-1 rounded-lg shadow-md p-4" x-show="active_tab=='{{ d["tab"] }}'" x-cloak>
-        {% set context = d["context"] %}
-        {% include d["template"] with context %}
+        <div
+            class="flex-1 rounded-lg shadow-md p-4"
+            x-show="active_tab === '{{ d['tab'] }}'"
+            x-cloak
+        >
+            {% set context = d["context"] %}
+            {% include d["template"] with context %}
         </div>
     {% endfor %}
 </div>
