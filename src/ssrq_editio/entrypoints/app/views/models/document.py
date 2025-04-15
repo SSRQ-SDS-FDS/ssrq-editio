@@ -43,6 +43,11 @@ class DocumentViewModel(ViewModel):
                     "kanton": self.kanton.value,
                     "volume": self.volume_info,
                     "document": self.document,
+                    "document_info": {
+                        "printed_idno": "SSRQ SG III/4 1",
+                        "de_orig_date": "1050 Juli 12 a. S.",
+                    },
+                    "orig_places": ["Nattheim"],
                     "title": "Eid der Säckelmeister der Stadt Zürich",
                     "document_prev": "prev",
                     "document_next": "next",
