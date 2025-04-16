@@ -61,6 +61,7 @@ class DocumentViewModel(ViewModel):
                         digital_dummy,
                         regest_dummy,
                         comment_dummy,
+                        entities_dummy,
                     ],
                 },
             },
@@ -117,4 +118,9 @@ comment_dummy = {
     "tab": "comment",
     "template": "DocumentTranscriptionCard.jinja",
     "context": {"title": "", "document": "Kommentar..."},
+}
+entities_dummy = {
+    "tab": "entities",
+    "template": "DocumentTranscriptionCard.jinja",
+    "context": {"title": "", "document": "Entitäten..."},
 }
