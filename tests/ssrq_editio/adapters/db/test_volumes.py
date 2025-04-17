@@ -64,12 +64,33 @@ async def test_initialize_volume_data(db_kanton_data):
 @pytest.mark.anyio
 async def test_list_volumes_with_editors(db_kanton_data):
     """Test if all inserted volumes can be listed with their editors."""
-    await initialize_volume_with_editors(db_kanton_data, TEST_VOLUME)
+    test_volumes = [
+        Volume(
+            key=f"foo{i}",
+            name=f"foo_{1}",
+            kanton="ZH",
+            title="foo",
+            pdf="foo.pdf",
+            literature="foo",
+            editors=["foo Editor", f"{i}"],
+            prefix="SSRQ",
+        )
+        for i in range(3)
+    ]
+    for volume in test_volumes:
+        await initialize_volume_with_editors(db_kanton_data, volume)
     volumes = await list_volumes_with_editors(db_kanton_data, "ZH")
     assert volumes is not None
-    assert len(volumes) == 1
-    assert volumes[0].editors == ["foo Editor"]
-    assert isinstance(volumes[0], Volume)
+    assert len(volumes) == len(test_volumes)
+    for i, volume in enumerate(volumes):
+        assert isinstance(volume, Volume)
+        assert volume.key == test_volumes[i].key
+        assert volume.name == test_volumes[i].name
+        assert volume.kanton == test_volumes[i].kanton
+        assert volume.title == test_volumes[i].title
+        assert volume.pdf == test_volumes[i].pdf
+        assert volume.literature == test_volumes[i].literature
+        assert all(editor in test_volumes[i].editors for editor in volume.editors)
 
 
 @pytest.mark.anyio
