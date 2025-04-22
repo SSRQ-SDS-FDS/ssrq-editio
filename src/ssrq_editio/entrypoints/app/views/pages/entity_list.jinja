@@ -1,18 +1,20 @@
 {% extends "layouts/page.jinja" %}
 {% block content %}
-<Banner :request="request">
-    <h1
-      class="title-1 flex items-center">
-      {{translator.translate(lang, 'index-of-' + data.content.entity_type)}}
-      <a href="{{ url_for('info_edition' )}}#{{ data.content.entity_type }}" class="icon link-button">
-        <InfoButton />
-        </a>
-    </h1>
-</Banner>
 <Breadcrumbs
+  class="mt-3"
   :request="request"
-  :parts="[(translator.translate(lang, data.content.entity_type), None)]"
+  :parts="[(translator.translate(lang, 'index'), url_for('entities')), (translator.translate(lang, data.content.entity_type), None)]"
 />
+
+<SlimBanner :request="request">
+    <h1 class="title-1 flex items-center">
+        {{translator.translate(lang, 'index-of-' + data.content.entity_type)}}
+        {# <a href="{{ url_for('info_edition' )}}#{{ data.content.entity_type }}" class="icon link-button">
+            <InfoButton />
+        </a> #}
+    </h1>
+</SlimBanner>
+
 <section class="flex w-full max-w-5xl lg:px-12 sm:px-4 items-center justify-start mx-auto">
     <EntitySearchForm
       :endpoint="url_for('entity_view', entity_type = data.content.entity_type).include_query_params(lang=lang.value)"
