@@ -3,7 +3,9 @@
     parts: list[tuple[str, URL | None]]
 #}
 
-<nav class="breadcrumbs" aria-label="Breadcrumb">
+{% do attrs.add_class("breadcrumbs") %}
+
+<nav {{ attrs.render() }} aria-label="Breadcrumb">
   <ol>
     <li>
       <a href="{{ url_for('index') }}">
