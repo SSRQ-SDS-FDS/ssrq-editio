@@ -13,7 +13,7 @@
 #}
 
 <form
-  class="my-2 text-sm w-full flex justify-center"
+  class="text-sm w-full filter-card horizontal"
   hx-get="{{ endpoint }}"
   hx-indicator="{{ hx_indicator }}"
   hx-params="{{ hx_params }}"
@@ -22,13 +22,10 @@
   hx-trigger="input changed delay:500ms from:#entityIdOrNameSearch,input changed delay:500ms from:#entityOccurrenceSearch"
   hx-swap="outerHTML"
 >
-    <div>
-        <label
-          for="entityIdOrNameSearch"
-          class="block mb-2 text-xs text-ssrq-greyed-700"
-        >
+    <div class="filter-section">
+        <h3 class="title-3 mb-2">
             {{ translator.translate(lang,'filter-hits') }}
-        </label>
+        </h3>
         <div
           class="flex gap-2"
         >
