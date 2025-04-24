@@ -2,6 +2,7 @@
     description: str = "Editio",
     favicon: str,
     stylesheets: list[str],
+    scripts: list[str],
     title: str
 #}
 <head>
@@ -11,4 +12,5 @@
     <meta name="description" content="{{ description }}" />
     <link rel="shortcut icon" href="{{ favicon }}" />
     {% for stylesheet in stylesheets %}<link rel="stylesheet" type="text/css" href="{{ stylesheet }}"/>{% endfor %}
+    {% for script in scripts %}<script src="{{ script }}" defer></script>{% endfor %}
 </head>

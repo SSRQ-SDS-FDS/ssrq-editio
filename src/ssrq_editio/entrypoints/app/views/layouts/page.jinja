@@ -2,6 +2,7 @@
     <Head :description="{{ data.page_description }}"
           :favicon="{{ url_for('static', path='images/favicon-ssrq-32.png') }}"
           :stylesheets="{{ [url_for('static', path='fonts/font.css') , url_for('static', path='css/style.css')] }}"
+          :scripts="{{ [url_for('static', path='js/dist/app.js')] }}"
           :title="{{ data.page_title }}" />
     <body id="body" class="flex flex-col min-h-screen">
         <Navbar :lang="lang" :request="request" :translator="translator" />
@@ -12,6 +13,5 @@
                 :request="{{ request }}"
                 :translator="{{ translator }}">
         </Footer>
-        <script src="{{ url_for('static', path='js/app.js') }}" type="module"></script>
     </body>
 </html>
