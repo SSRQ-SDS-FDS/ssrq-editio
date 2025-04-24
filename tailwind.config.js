@@ -51,6 +51,7 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
     ({ addVariant }) => {
       // add webkit details marker support to the marker variant
       // this can be removed when webkit fully implements marker

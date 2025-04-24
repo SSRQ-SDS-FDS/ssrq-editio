@@ -1,6 +1,6 @@
 // External imports
-import 'https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js';
-import 'https://unpkg.com/htmx.org@2.0.0/dist/htmx.min.js';
+import Alpine from 'alpinejs';
+import 'htmx.org';
 
 // Internal imports
 import langSwitch from './components/langSwitch.js';
@@ -13,3 +13,5 @@ Alpine.data('dateRangeSlider', dateRange);
 Alpine.data('langSwitch', langSwitch);
 Alpine.data('topButtonScrollHandler', topButtonScrollHandler);
 document.addEventListener('htmx:configRequest', removeEmptyParameters);
+// Start Alpine.js
+Alpine.start();

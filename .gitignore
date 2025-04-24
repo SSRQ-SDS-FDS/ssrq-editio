@@ -345,6 +345,11 @@ coverage.xml
 *.cover
 .hypothesis/
 
+# node related files and folders
+node_modules/
+npm-debug.log
+.parcel-cache/
+
 # Ignore SQLite database files
 *.sqlite3
 *.sqlite
