@@ -1,7 +1,7 @@
 css_build_command := "npx tailwindcss -c tailwind.config.js -i " + css_dir + "/src/main.css -o " + css_dir + "/style.css"
 css_dir := "./src/ssrq_editio/entrypoints/app/static/css"
 js_build_command := "npx parcel build --dist-dir " + js_output_dir
-js_output_dir := "src/ssrq_editio/entrypoints/app/static/js/dist"
+js_output_dir := "./src/ssrq_editio/entrypoints/app/static/js/dist"
 sql_dir := "./src/ssrq_editio/adapters/db/sql/**/*.sql"
 web_app := "./src/ssrq_editio/entrypoints/app/main.py"
 
