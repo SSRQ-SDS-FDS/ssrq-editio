@@ -30,7 +30,8 @@ CREATE VIRTUAL TABLE IF NOT EXISTS persons_fts USING fts5( -- noqa: PRS
     fr_surname,
     it_surname,
     lt_surname,
-    rm_surname
+    rm_surname,
+    tokenize = 'trigram'
 );
 
 CREATE TRIGGER IF NOT EXISTS persons_ai AFTER INSERT ON persons BEGIN
