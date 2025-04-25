@@ -62,7 +62,7 @@ After the database has been populated, you can start the development server by r
 just dev
 ```
 
-This command will start bundle the frontend assets, start the FastAPI-server and watch the `src` folder for any changes. Hot-Module-Replacement (HMR) is not suppoted, so you need to refresh the page in your browser to see any changes.
+This command will start bundle the frontend assets, start the FastAPI-server and watch the `src` folder for any changes. Hot-Module-Replacement (HMR) is not supported, so you need to refresh the page in your browser to see any changes.
 
 ### Common tasks
 
