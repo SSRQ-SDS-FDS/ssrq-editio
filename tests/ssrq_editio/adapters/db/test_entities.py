@@ -2,6 +2,7 @@ from typing import Any
 
 import aiosqlite
 import pytest
+from ssrq_utils.lang.display import Lang
 
 from ssrq_editio.adapters.db.documents import initialize_document_data
 from ssrq_editio.adapters.db.entities import (
@@ -202,6 +203,7 @@ async def test_search_lemmata(db_setup, entities, search: str | None, expected: 
         (None, len),
         ("foo bar", None),
         ("per007472", "Salis, von, Peter"),
+        # ("per007472", ""), # fails now
         ("Meier", []),
     ],
 )
@@ -215,6 +217,7 @@ async def test_search_persons(db_setup, entities, search: str | None, expected: 
     match expected:
         case str():
             assert len(result.entities) == 1
+            assert result.entities[0].get_name_by_lang(Lang.DE) == expected
         case None:
             assert len(result.entities) == 0
         case _ if callable(expected):
