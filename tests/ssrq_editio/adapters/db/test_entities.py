@@ -200,11 +200,13 @@ async def test_search_lemmata(db_setup, entities, search: str | None, expected: 
 @pytest.mark.parametrize(
     ("search", "expected"),
     [
-        (None, len),
+        (None, len),  # should this have its own test?
         ("foo bar", None),
         ("per007472", "Salis, von, Peter"),
         # ("per007472", ""), # fails now
-        ("Meier", []),
+        # ("Meier", []), # should fail - why test it?
+        ("Meier", "Meier, Heinrich"),
+        ("mei", "Meier, Heinrich"),
     ],
 )
 async def test_search_persons(db_setup, entities, search: str | None, expected: Any):
