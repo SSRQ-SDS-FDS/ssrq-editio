@@ -1,0 +1,97 @@
+{% extends "layouts/page.jinja" %}
+{% block content %}
+
+{% set doc = data.content.document_info %}
+{% set orig_places = data.content.orig_places %}
+
+<section class="w-full max-w-[1680px] mx-auto px-4 my-4">
+    <DocumentNavigation
+        :lang="lang"
+        :request="request"
+        :translator="translator"
+        :volume="data.content.volume"
+        :document_prev="data.content.document_prev"
+        :document_next="data.content.document_next"
+    />
+</section>
+
+<section class="w-full max-w-[1680px] mx-auto mt-4 mb-6 px-4">
+    <h1 class="title-1">{{ data.content.title }}</h1>
+    <header class="flex text-ssrq-greyed-600 text-sm items-center gap-2">
+        <span title="{{ translator.translate(lang, 'ssrq-idno') }}" class="flex items-center">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                class="w-3.5 h-3.5 mr-0.5 md:mr-1"
+            >
+                <path
+                    fill-rule="evenodd"
+                    d="M4.5 2A1.5 1.5 0 003 3.5v13A1.5 1.5 0 004.5 18h11a1.5 1.5 0 001.5-1.5V7.621a1.5 1.5 0 00-.44-1.06l-4.12-4.122A1.5 1.5 0                                    0011.378 2H4.5zm2.25 8.5a.75.75 0 000 1.5h6.5a.75.75 0 000-1.5h-6.5zm0 3a.75.75 0 000 1.5h6.5a.75.75 0 000-1.5h-6.5z"
+                    clip-rule="evenodd"
+                />
+            </svg>
+            {{ doc.printed_idno }}
+        </span>
+        <span title="{{ translator.translate(lang, 'orig-date') }}" class="flex items-center">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-3.5 h-3.5 mr-0.5 md:mr-1"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
+                />
+            </svg>
+            {{ doc[lang.value + '_orig_date'] | safe }}
+        </span>
+        {% if doc.orig_place is not none and orig_places | length > 0 %}
+            <span title="{{ translator.translate(lang, 'orig-place') }}" class="flex items-center">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-3.5 h-3.5 mr-0.5 md:mr-1"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+                    />
+                </svg>
+                {{ orig_places | join(', ') }}
+            </span>
+        {% endif %}
+    </header>
+</section>
+
+<section class="md:flex w-full max-w-[1680px] mx-auto items-stretch justify-center gap-4 mb-4 px-4 md:min-h-[70vh] md:max-h-[80vh]">
+    <div class="md:w-1/2 flex mb-6 md:mb-0">
+        <Tabs
+            :data="data.content.left_col"
+            :translator="translator"
+            :lang="lang"
+        />
+    </div>
+    <div class="md:w-1/2 flex items-stretch">
+        <Tabs
+            :data="data.content.right_col"
+            :translator="translator"
+            :lang="lang"
+        />
+    </div>
+</section>
+
+{% endblock %}

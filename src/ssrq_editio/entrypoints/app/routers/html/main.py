@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 
 from ssrq_editio.entrypoints.app.routers.api import api
 from ssrq_editio.entrypoints.app.shared.dependencies import DBDependency, LangDependency
+from ssrq_editio.entrypoints.app.views.models.document import DocumentViewModel
 from ssrq_editio.entrypoints.app.views.models.entity import EntityViewModel
 from ssrq_editio.entrypoints.app.views.models.index import IndexViewModel
 from ssrq_editio.entrypoints.app.views.models.kanton import KantonViewModel
@@ -138,5 +139,16 @@ async def document(
     volume: str,
     document: str,
     request: Request,
+    lang: LangDependency,
+    connection: DBDependency,
 ):
-    return f"Page view for {kanton} {volume} {document}"
+    # return f"Page view for {kanton} {volume} {document}"
+    return await DocumentViewModel(request, lang, connection, kanton, volume, document).to_html()
+
+
+"""
+    return await EntityViewModel(
+        request, lang, connection, entity_type, query, occurrence, page, per_page
+    ).to_html()
+
+"""

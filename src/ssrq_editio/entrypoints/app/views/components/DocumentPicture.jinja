@@ -1,0 +1,23 @@
+{# def
+    context: str,
+#}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js"></script>
+<div id="img-container" class="w-full h-full rounded-md overflow-hidden shadow-md min-h-[60vh]"></div>
+<script>
+  OpenSeadragon({
+    id: "img-container",
+    prefixUrl: "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/images/",
+    tileSources: "{{ context.title_sources }}",
+    preserveViewport: true,
+    //sequenceMode: true,
+    showZoomControl: true,
+    showHomeControl: true,
+    showFullPageControl: true,
+    //showNavigator: true,
+    autoHideControls: false,
+    visibilityRatio: 1,
+    minZoomLevel: 1,
+    defaultZoomLevel: 1,
+  });
+</script>

@@ -1,0 +1,54 @@
+{# def
+    lang: Lang,
+    request: Request,
+    translator: Translator,
+    volume: Volume,
+    document_prev: str | None,
+    document_next: str | None,
+#}
+<div class="flex justify-between text-ssrq-greyed-600">
+    <a
+        href="{{ url_for('document_list', kanton=volume.kanton, volume=volume.machine_name).include_query_params(lang=lang.value) }}"
+        class="flex items-center gap-2 hover:text-ssrq-primary"
+    >
+        <svg aria-hidden="true"
+            class="h-3 mt-[2px]"
+            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 10">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m5 9-4-4 4-4" />
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m9 9-4-4 4-4" />
+        </svg>
+        <span>{{ translator.translate(lang, 'back_to_volume') }}</span>
+    </a>
+    <div class="flex gap-2">
+        {% if document_prev %}
+            <a
+                href="{{ url_for('document_view', kanton=volume.kanton, volume=volume.machine_name, document=document_prev).include_query_params(lang=lang.value) }}"
+                class="flex items-center gap-2 hover:text-ssrq-primary {{ 'border-r-2 pr-2' if document_next else '' }}"
+            >
+                <svg aria-hidden="true"
+                    class="h-3 mt-[2px]"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m5 9-4-4 4-4" />
+                </svg>
+                <span>{{ translator.translate(lang, 'previous_piece') }}</span>
+            </a>
+        {% endif %}
+        {% if document_next %}
+            <a
+                href="{{ url_for('document_view', kanton=volume.kanton, volume=volume.machine_name, document=document_next).include_query_params(lang=lang.value) }}"
+                class="flex items-center gap-2 hover:text-ssrq-primary"
+            >
+                <span>{{ translator.translate(lang, 'next_piece') }}</span>
+                <svg aria-hidden="true"
+                    class="h-3 mt-[2px]"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 9 4-4-4-4" />
+                </svg>
+            </a>
+        {% endif %}
+    </div>
+</div>

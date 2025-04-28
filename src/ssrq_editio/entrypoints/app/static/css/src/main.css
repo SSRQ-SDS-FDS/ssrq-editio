@@ -17,6 +17,7 @@
 @import "./utilities/icon.css";
 @import "./utilities/layout.css";
 @import "./utilities/text.css";
+@import "./utilities/cloak.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
