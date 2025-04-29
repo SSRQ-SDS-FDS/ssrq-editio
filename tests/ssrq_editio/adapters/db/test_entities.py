@@ -197,57 +197,66 @@ async def test_search_lemmata(db_setup, entities, search: str | None, expected: 
 
 @pytest.mark.anyio
 @pytest.mark.parametrize(
-    ("search", "expected"),
+    ("search", "expected_results"),
     [
-        (None, len),
+        (None, None),
         ("foo bar", None),
-        ("per007472", "Salis, von, Peter"),
-        ("Meier", []),
+        ("per007472", ["Peter"]),
+        ("Meier", ["Heinrich"]),
+        ("Meie", None),
+        ("Meie*", ["Heinrich"]),
     ],
 )
-async def test_search_persons(db_setup, entities, search: str | None, expected: Any):
+async def test_search_persons(db_setup, entities, search: str | None, expected_results: Any):
     persons = tuple([e for e in entities if isinstance(e, Persons)])
     await store_entities(persons, db_setup)
     result = await search_persons(connection=db_setup, search=search)
 
     assert isinstance(result, Persons)
 
-    match expected:
-        case str():
-            assert len(result.entities) == 1
+    match search:
         case None:
+            assert len(persons[0].entities) == len(result.entities)
+        case _ if expected_results is None:
             assert len(result.entities) == 0
-        case _ if callable(expected):
-            assert expected(persons[0].entities) == expected(result.entities)
         case _:
-            assert len(result.entities) > 0
+            assert len(result.entities) == len(expected_results)
+            for i, expected_result in enumerate(expected_results):
+                assert result.entities[i].de_name == expected_result
+            # assert all(result.entities[i].de_name == expected_result for i, expected_result in enumerate(expected_results))
 
 
 @pytest.mark.anyio
 @pytest.mark.parametrize(
-    ("search", "expected"),
+    ("search", "expected_results"),
     [
-        (None, len),
+        (None, None),
         ("foo bar", None),
-        ("org000195", "Vasön, von"),
-        ("Meier", []),
+        ("org000195", ["Vasön, von"]),
+        ("Meier", ["Altstätten, von", "Meier", "Meier"]),
+        ("Mei", None),
+        ("Meie*", ["Altstätten, von", "Meier", "Meienberg", "Meier"]),
     ],
 )
-async def test_search_families(db_setup, entities, search: str | None, expected: Any):
+async def test_search_families(
+    db_setup, entities, search: str | None, expected_results: list[str] | None
+):
     families = tuple([e for e in entities if isinstance(e, Families)])
     await store_entities(families, db_setup)
     result = await search_families(connection=db_setup, search=search)
     assert isinstance(result, Families)
 
-    match expected:
-        case str():
-            assert len(result.entities) == 1
+    match search:
         case None:
+            assert len(families[0].entities) == len(result.entities)
+        case _ if expected_results is None:
             assert len(result.entities) == 0
-        case _ if callable(expected):
-            assert expected(families[0].entities) == expected(result.entities)
         case _:
-            assert len(result.entities) > 0
+            assert len(result.entities) == len(expected_results)
+            assert all(
+                result.entities[i].de_name == expected_result
+                for i, expected_result in enumerate(expected_results)
+            )
 
 
 @pytest.mark.anyio
