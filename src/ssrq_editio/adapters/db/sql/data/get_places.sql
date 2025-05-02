@@ -26,16 +26,18 @@ LEFT JOIN (
 ) AS occurrences ON places.id = occurrences.ref
 WHERE
     (
-        places.id LIKE '%' || :search || '%'
-        OR places.cs_name LIKE '%' || :search || '%'
-        OR places.de_name LIKE '%' || :search || '%'
-        OR places.fr_name LIKE '%' || :search || '%'
-        OR places.it_name LIKE '%' || :search || '%'
-        OR places.lt_name LIKE '%' || :search || '%'
-        OR places.nl_name LIKE '%' || :search || '%'
-        OR places.pl_name LIKE '%' || :search || '%'
-        OR places.rm_name LIKE '%' || :search || '%'
+        :search = ''
+        OR places.id LIKE '%' || :search || '%'
     ) AND (
         :occurrence IS ''
         OR occurrences.printed_idno LIKE '%' || :occurrence || '%'
     )
+
+UNION
+
+SELECT -- noqa
+    p.*,
+    NULL AS occurrences
+FROM places AS p
+INNER JOIN places_fts AS fts ON p.id = fts.id
+WHERE :search <> '' AND places_fts MATCH :search; -- noqa

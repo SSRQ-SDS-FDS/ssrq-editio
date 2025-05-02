@@ -1,5 +1,3 @@
-from typing import Any
-
 import aiosqlite
 import pytest
 
@@ -51,30 +49,48 @@ async def test_delete_entities(db_setup: aiosqlite.Connection, entities: tuple[E
 
 @pytest.mark.anyio
 @pytest.mark.parametrize(
-    ("search", "expected"),
+    ("search", "expected_results"),
     [
-        (None, len),
+        (None, None),
         ("foo bar", None),
-        ("loc000127", "Zürichsee"),
-        ("Zürich", []),
+        ("loc000127", ["Zürichsee"]),
+        (
+            "Zürich",
+            [
+                "Zürich",
+                "Zürich",
+                "Zürich Rathaus",
+                "Affoltern bei Zürich",
+                "Barfüsserkirche Zürich",
+                "Zürich Heiliggeistspital",
+                "Zürich Spital",
+            ],
+        ),
+        ("Affolt*", ["Affoltern bei Zürich", "Affoltern am Albis", "Affoltern"]),
     ],
 )
-async def test_search_places(db_setup, entities, search: str | None, expected: Any):
+async def test_search_places(
+    db_setup, entities, search: str | None, expected_results: list[str] | None
+):
     places = tuple([e for e in entities if isinstance(e, Places)])
     await store_entities(places, db_setup)
     result = await search_places(connection=db_setup, search=search)
 
     assert isinstance(result, Places)
 
-    match expected:
-        case str():
-            assert len(result.entities) == 1
+    match search:
         case None:
+            assert len(places[0].entities) == len(result.entities)
+        case _ if expected_results is None:
             assert len(result.entities) == 0
-        case _ if callable(expected):
-            assert expected(places[0].entities) == expected(result.entities)
         case _:
-            assert len(result.entities) > 0
+            assert len(result.entities) == len(expected_results)
+            for i, expected_result in enumerate(expected_results):
+                assert result.entities[i].de_name == expected_result
+            # assert all(
+            #     result.entities[i].de_name == expected_result
+            #     for i, expected_result in enumerate(expected_results)
+            # )
 
 
 @pytest.mark.anyio
@@ -180,7 +196,7 @@ async def test_search_places_with_occurrences(
 @pytest.mark.parametrize(
     ("search", "expected_results"),
     [
-        (None, len),
+        (None, None),
         ("key000129", ["Wein"]),
         ("Wa", []),
         ("Weinb*", ["Weinberg"]),
@@ -212,7 +228,7 @@ async def test_search_keywords(
 @pytest.mark.parametrize(
     ("search", "expected_results"),
     [
-        (None, len),
+        (None, None),
         ("lem008330", ["roter wein"]),
         (
             "krieg",
