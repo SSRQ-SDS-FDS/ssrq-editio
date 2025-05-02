@@ -24,13 +24,18 @@ LEFT JOIN (
 ) AS occurrences ON lemmata.id = occurrences.ref
 WHERE
     (
-        lemmata.id LIKE '%' || :search || '%'
-        OR lemmata.de_name LIKE '%' || :search || '%'
-        OR lemmata.fr_name LIKE '%' || :search || '%'
-        OR lemmata.it_name LIKE '%' || :search || '%'
-        OR lemmata.lt_name LIKE '%' || :search || '%'
-        OR lemmata.rm_name LIKE '%' || :search || '%'
+        :search = ''
+        OR lemmata.id LIKE '%' || :search || '%'
     ) AND (
         :occurrence IS ''
         OR occurrences.printed_idno LIKE '%' || :occurrence || '%'
     )
+
+UNION
+
+SELECT -- noqa
+    k.*,
+    NULL AS occurrences
+FROM lemmata AS k
+INNER JOIN lemmata_fts AS fts ON k.id = fts.id
+WHERE :search <> '' AND lemmata_fts MATCH :search; -- noqa

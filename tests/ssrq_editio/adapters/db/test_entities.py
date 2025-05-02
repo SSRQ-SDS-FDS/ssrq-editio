@@ -134,9 +134,10 @@ async def test_search_organizations(
             assert len(result.entities) == 0
         case _:
             assert len(result.entities) == len(expected_results)
-            for i, expected_result in enumerate(expected_results):
-                assert result.entities[i].de_name == expected_result
-            # assert all(result.entities[i].de_name == expected_result for i, expected_result in enumerate(expected_results))
+            assert all(
+                result.entities[i].de_name == expected_result
+                for i, expected_result in enumerate(expected_results)
+            )
 
 
 @pytest.mark.anyio
@@ -209,29 +210,45 @@ async def test_search_keywords(
 
 @pytest.mark.anyio
 @pytest.mark.parametrize(
-    ("search", "expected"),
+    ("search", "expected_results"),
     [
         (None, len),
-        ("lem008330", "roter Wein"),
-        ("krieg", []),
+        ("lem008330", ["roter wein"]),
+        (
+            "krieg",
+            [
+                "krieg",
+                "Burgundischer krieg",
+                "krieg",
+                "billiger krieg",
+                "St. Galler krieg",
+                "krieg",
+                "in (den) krieg laufen",
+            ],
+        ),
+        ("burgundisch*", ["Burgundischer krieg"]),
     ],
 )
-async def test_search_lemmata(db_setup, entities, search: str | None, expected: Any):
+async def test_search_lemmata(
+    db_setup, entities, search: str | None, expected_results: list[str] | None
+):
     lemmata = tuple([e for e in entities if isinstance(e, Lemmata)])
     await store_entities(lemmata, db_setup)
     result = await search_lemmata(connection=db_setup, search=search)
 
     assert isinstance(result, Lemmata)
 
-    match expected:
-        case str():
-            assert len(result.entities) == 1
+    match search:
         case None:
+            assert len(lemmata[0].entities) == len(result.entities)
+        case _ if expected_results is None:
             assert len(result.entities) == 0
-        case _ if callable(expected):
-            assert expected(lemmata[0].entities) == expected(result.entities)
         case _:
-            assert len(result.entities) > 0
+            assert len(result.entities) == len(expected_results)
+            assert all(
+                result.entities[i].de_name == expected_result
+                for i, expected_result in enumerate(expected_results)
+            )
 
 
 @pytest.mark.anyio
