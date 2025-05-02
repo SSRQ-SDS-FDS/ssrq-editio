@@ -9,3 +9,29 @@ CREATE TABLE IF NOT EXISTS keywords
     fr_definition TEXT NULL,
     it_definition TEXT NULL
 );
+
+CREATE VIRTUAL TABLE IF NOT EXISTS keywords_fts USING fts5( -- noqa: PRS
+    id UNINDEXED,
+    de_name,
+    fr_name,
+    it_name,
+    lt_name
+);
+
+CREATE TRIGGER IF NOT EXISTS keywords_ai AFTER INSERT ON keywords BEGIN
+    INSERT INTO keywords_fts (
+        rowid,
+        id,
+        de_name,
+        fr_name,
+        it_name,
+        lt_name
+    ) VALUES (
+        new.rowid,
+        new.id,
+        new.de_name,
+        new.fr_name,
+        new.it_name,
+        new.lt_name
+    );
+END;

@@ -23,12 +23,18 @@ LEFT JOIN (
 ) AS occurrences ON keywords.id = occurrences.ref
 WHERE
     (
-        keywords.id LIKE '%' || :search || '%'
-        OR keywords.de_name LIKE '%' || :search || '%'
-        OR keywords.fr_name LIKE '%' || :search || '%'
-        OR keywords.it_name LIKE '%' || :search || '%'
-        OR keywords.lt_name LIKE '%' || :search || '%'
+        :search = ''
+        OR keywords.id LIKE '%' || :search || '%'
     ) AND (
         :occurrence IS ''
         OR occurrences.printed_idno LIKE '%' || :occurrence || '%'
     )
+
+UNION
+
+SELECT -- noqa
+    k.*,
+    NULL AS occurrences
+FROM keywords AS k
+INNER JOIN keywords_fts AS fts ON k.id = fts.id
+WHERE :search <> '' AND keywords_fts MATCH :search; -- noqa
