@@ -12,3 +12,41 @@ CREATE TABLE IF NOT EXISTS places
     de_place_types TEXT NOT NULL,
     fr_place_types TEXT NOT NULL
 );
+
+CREATE VIRTUAL TABLE IF NOT EXISTS persons_fts USING fts5( -- noqa: PRS
+    id UNINDEXED,
+    cs_name,
+    de_name,
+    fr_name,
+    it_name,
+    lt_name,
+    nl_name,
+    pl_name,
+    rm_name
+);
+
+CREATE TRIGGER IF NOT EXISTS persons_ai AFTER INSERT ON persons BEGIN
+    INSERT INTO persons_fts (
+        rowid,
+        id,
+        cs_name,
+        de_name,
+        fr_name,
+        it_name,
+        lt_name,
+        nl_name,
+        pl_name,
+        rm_name
+    ) VALUES (
+        new.rowid,
+        new.id,
+        cs_name,
+        de_name,
+        fr_name,
+        it_name,
+        lt_name,
+        nl_name,
+        pl_name,
+        rm_name
+    );
+END;
