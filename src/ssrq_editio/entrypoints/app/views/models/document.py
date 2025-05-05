@@ -1,10 +1,15 @@
+from typing import Sequence
+
 from aiosqlite import Connection
 from fastapi import Request
 from ssrq_utils.lang.display import Lang
 
+from ssrq_editio.adapters.db.documents import get_document
 from ssrq_editio.entrypoints.app.views.models.base import ViewContext, ViewModel
+from ssrq_editio.models.documents import Document
 from ssrq_editio.models.kantons import KantonName
 from ssrq_editio.models.volumes import Volume
+from ssrq_editio.services.documents import resolve_orig_places_for_documents
 from ssrq_editio.services.volumes import get_volume_info
 
 
@@ -33,6 +38,10 @@ class DocumentViewModel(ViewModel):
     async def create_context(self) -> ViewContext:
         if self.volume_info is None:
             self.volume_info = await get_volume_info(self.connection, self.kanton, self.volume)
+        doc, orig_places = await self._get_document()
+        print("*" * 20)
+        print(doc)
+        print("*" * 20)
         return ViewContext(
             request=self.request,
             lang=self.lang,
@@ -42,15 +51,10 @@ class DocumentViewModel(ViewModel):
                 "content": {
                     "kanton": self.kanton.value,
                     "volume": self.volume_info,
-                    "document": self.document,
-                    "document_info": {
-                        "printed_idno": "SSRQ SG III/4 1",
-                        "de_orig_date": "1050 Juli 12 a. S.",
-                    },
-                    "orig_places": ["Nattheim"],
-                    "title": "Eid der Säckelmeister der Stadt Zürich",
-                    "document_prev": "prev",
-                    "document_next": "next",
+                    "doc": doc,
+                    "previous_document": self._get_document_id(doc.previous_document),
+                    "next_document": self._get_document_id(doc.next_document),
+                    "orig_places": orig_places,
                     "left_col": [
                         transcription_dummy,
                         edition_dummy,
@@ -68,8 +72,23 @@ class DocumentViewModel(ViewModel):
             translator=self.translator,
         )
 
+    def _get_document_id(self, idno: str | None) -> str | None:
+        return (
+            idno[idno.find("-") + 1 + len(self.kanton) + 1 + len(self.volume) + 1 :]
+            if idno is not None
+            else None
+        )
+
     def _get_title(self) -> str:
         return f"{self.translator.translate(self.lang, 'short_title')} · {self.kanton.value} {self.volume_info.name if self.volume_info else self.volume}"
+
+    async def _get_document(self) -> tuple[Document, Sequence[str] | None]:
+        result = await get_document(
+            self.connection, f"SSRQ-{self.kanton}-{self.volume}-{self.document}"
+        )
+        return list(await resolve_orig_places_for_documents([result], self.connection, self.lang))[
+            0
+        ]
 
 
 # https://editio.ssrq-online.ch/ZH/NF_I_1_3/2-1.html?odd=ssrq.odd

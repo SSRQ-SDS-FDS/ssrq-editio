@@ -52,7 +52,8 @@ async def get_document(
 
         if data is None:
             raise ValueError(f"Document with ID {document_id} not found.")
-
+        for cell in data:
+            print(cell)
         return Document(**data)
 
 

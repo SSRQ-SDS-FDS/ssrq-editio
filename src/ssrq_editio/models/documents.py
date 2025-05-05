@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Annotated, Any, NamedTuple, Self
 
 from pydantic import BaseModel, BeforeValidator, model_validator
+from ssrq_utils.lang.display import Lang
 
 from ssrq_editio.services.utils import parse_as_list_or_return, serialize_value
 
@@ -48,6 +49,8 @@ class Document(BaseModel):
     volume_id: str
     start_year_of_creation: int | None = None
     end_year_of_creation: int | None = None
+    previous_document: str | None = None
+    next_document: str | None = None
 
     @model_validator(mode="after")
     def check_mutually_exclusive_fields(self) -> Self:
@@ -57,6 +60,13 @@ class Document(BaseModel):
 
     def model_dump_sqlite(self) -> dict[str, Any]:
         return {k: serialize_value(v) for k, v in self.model_dump().items()}
+
+    def get_title_by_lang(self, lang: Lang) -> str:
+        if lang == Lang.FR and self.fr_title:
+            return self.fr_title
+        elif lang == Lang.DE and self.de_title:
+            return self.de_title
+        return self.de_title or self.fr_title or ""
 
 
 class DocumentInfo(NamedTuple):

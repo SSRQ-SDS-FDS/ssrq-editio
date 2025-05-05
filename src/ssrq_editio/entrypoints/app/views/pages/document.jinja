@@ -1,7 +1,7 @@
 {% extends "layouts/page.jinja" %}
 {% block content %}
 
-{% set doc = data.content.document_info %}
+{% set doc = data.content.doc%}
 {% set orig_places = data.content.orig_places %}
 
 <section class="w-full max-w-[1680px] mx-auto px-4 my-4">
@@ -10,13 +10,14 @@
         :request="request"
         :translator="translator"
         :volume="data.content.volume"
-        :document_prev="data.content.document_prev"
-        :document_next="data.content.document_next"
+        :doc="data.content.doc"
+        :previous_document="data.content.previous_document"
+        :next_document="data.content.next_document"
     />
 </section>
 
 <section class="w-full max-w-[1680px] mx-auto mt-4 mb-6 px-4">
-    <h1 class="title-1">{{ data.content.title }}</h1>
+    <h1 class="title-1">{{ data.content.doc.get_title_by_lang(lang) }}</h1>
     <header class="flex text-ssrq-greyed-600 text-sm items-center gap-2">
         <span title="{{ translator.translate(lang, 'ssrq-idno') }}" class="flex items-center">
             <svg
