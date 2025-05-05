@@ -24,13 +24,18 @@ LEFT JOIN (
 ) AS occurrences ON f.id = occurrences.ref
 WHERE
     (
-        f.id LIKE '%' || :search || '%'
-        OR f.de_name LIKE '%' || :search || '%'
-        OR f.fr_name LIKE '%' || :search || '%'
-        OR f.it_name LIKE '%' || :search || '%'
-        OR f.lt_name LIKE '%' || :search || '%'
-        OR f.rm_name LIKE '%' || :search || '%'
+        :search = ''
+        OR f.id LIKE '%' || :search || '%'
     ) AND (
         :occurrence IS ''
         OR occurrences.printed_idno LIKE '%' || :occurrence || '%'
     )
+
+UNION
+
+SELECT -- noqa
+    f.*,
+    NULL AS occurrences
+FROM families AS f
+INNER JOIN families_fts AS fts ON f.id = fts.id
+WHERE :search <> '' AND families_fts MATCH :search; -- noqa
