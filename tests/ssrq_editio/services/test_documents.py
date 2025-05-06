@@ -25,7 +25,7 @@ from ssrq_editio.services.documents import extract_infos_from_xml
                 printed_idno="SSRQ SG III/4 63",
                 volume_id="foo",
                 orig_place=["loc000211"],
-                de_title="<h3>Stiftungsbrief einer Frühmesspfründe am Altar der Heiligen Drei Könige und des heiligen Jodok in der Pfarrkirche Gams von Andreas Roll von Bonstetten, Herr von Hohensax-Gams</h3>",
+                de_title="Stiftungsbrief einer Frühmesspfründe am Altar der Heiligen Drei Könige und des heiligen Jodok in der Pfarrkirche Gams von Andreas Roll von Bonstetten, Herr von Hohensax-Gams",
                 fr_title=None,
                 entities=[
                     "per004609",
@@ -161,7 +161,7 @@ from ssrq_editio.services.documents import extract_infos_from_xml
                 printed_idno="SSRQ SG III/4 245",
                 volume_id="foo",
                 orig_place=["loc001073", "loc000731"],
-                de_title="<h3>Zolltarif und Zollbegünstigung von Schwyz und Glarus für Gams</h3>",
+                de_title="Zolltarif und Zollbegünstigung von Schwyz und Glarus für Gams",
                 fr_title=None,
                 entities=[
                     "per004894",
@@ -244,7 +244,7 @@ from ssrq_editio.services.documents import extract_infos_from_xml
                 volume_id="foo",
                 orig_place=["loc016171"],
                 de_title=None,
-                fr_title="""<h3>Articles généraux (points de franchises) octroyées par Frédéric 1<sup class="tei-hi">er</sup>, roi de Prusse à tout l'État</h3>""",
+                fr_title="""Articles généraux (points de franchises) octroyées par Frédéric 1<sup class="tei-hi">er</sup>, roi de Prusse à tout l'État""",
                 entities=[
                     "key000658",
                     "key000273",
