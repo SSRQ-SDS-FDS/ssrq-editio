@@ -20,7 +20,8 @@ def create_years():
 @pytest.fixture
 def documents():
     documents = []
-    for d in range(1, 150):
+    max_range = 150
+    for d in range(1, max_range):
         years = create_years() if d % 2 == 0 else (None, None)
         documents.append(
             Document(
@@ -41,6 +42,8 @@ def documents():
                 type=DocumentType.transcript,
                 start_year_of_creation=years[0],
                 end_year_of_creation=years[1],
+                previous_document=f"SSRQ-SG-III_4-{d - 1}-1" if d > 1 else None,
+                next_document=f"SSRQ-SG-III_4-{d + 1}-1" if d < max_range - 1 else None,
             )
         )
     return tuple(documents)
