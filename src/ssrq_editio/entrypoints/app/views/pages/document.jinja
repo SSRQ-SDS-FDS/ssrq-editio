@@ -17,7 +17,7 @@
 </section>
 
 <section class="w-full max-w-[1680px] mx-auto mt-4 mb-6 px-4">
-    <h1 class="title-1">{{ data.content.doc.get_title_by_lang(lang) }}</h1>
+    <h1 class="title-1">{{ data.content.doc.get_title_by_lang(lang) | safe }}</h1>
     <header class="flex text-ssrq-greyed-600 text-sm items-center gap-2">
         <span title="{{ translator.translate(lang, 'ssrq-idno') }}" class="flex items-center">
             <svg

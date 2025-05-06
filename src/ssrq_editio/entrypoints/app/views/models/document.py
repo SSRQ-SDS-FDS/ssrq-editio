@@ -39,9 +39,6 @@ class DocumentViewModel(ViewModel):
         if self.volume_info is None:
             self.volume_info = await get_volume_info(self.connection, self.kanton, self.volume)
         doc, orig_places = await self._get_document()
-        print("*" * 20)
-        print(doc)
-        print("*" * 20)
         return ViewContext(
             request=self.request,
             lang=self.lang,
@@ -83,9 +80,7 @@ class DocumentViewModel(ViewModel):
         return f"{self.translator.translate(self.lang, 'short_title')} · {self.kanton.value} {self.volume_info.name if self.volume_info else self.volume}"
 
     async def _get_document(self) -> tuple[Document, Sequence[str] | None]:
-        result = await get_document(
-            self.connection, f"SSRQ-{self.kanton}-{self.volume}-{self.document}"
-        )
+        result = await get_document(self.connection, f"{self.kanton}-{self.volume}-{self.document}")
         return list(await resolve_orig_places_for_documents([result], self.connection, self.lang))[
             0
         ]
