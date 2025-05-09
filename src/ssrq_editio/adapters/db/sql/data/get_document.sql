@@ -1,8 +1,12 @@
 WITH documents_in_volume AS (
     SELECT
         *,
-        LAG(idno) OVER (ORDER BY sort_key) AS previous_document,
-        LEAD(idno) OVER (ORDER BY sort_key) AS next_document
+        LAG(idno) OVER (
+            ORDER BY sort_key
+        ) AS previous_document,
+        LEAD(idno) OVER (
+            ORDER BY sort_key
+        ) AS next_document
     FROM documents
     WHERE
         volume_id = (
