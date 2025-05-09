@@ -38,4 +38,4 @@ class KantonViewModel(ViewModel):
         )
 
     def _get_title(self) -> str:
-        return f"{self.translator.translate(self.lang, "short_title")} · {self.kanton}"
+        return f"{self.translator.translate(self.lang, 'short_title')} · {self.kanton}"
