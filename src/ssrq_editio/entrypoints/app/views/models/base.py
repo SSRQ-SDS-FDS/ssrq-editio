@@ -53,8 +53,9 @@ class ViewModel:
 
     def error_to_html(self, error: Exception) -> HTMLResponse:
         return self.templates.TemplateResponse(
-            "pages/error.jinja",
-            {
+            request=self.request,
+            name="pages/error.jinja",
+            context={
                 "data": {},
                 "error": str(error),
                 "lang": self.lang,
@@ -76,11 +77,14 @@ class ViewModel:
             # we will return the partial template instead of the full page.
             if self._is_htmx_request() and self.template_partial:
                 return self.templates.TemplateResponse(
-                    page_template,
-                    context,
+                    request=self.request,
+                    name=page_template,
+                    context=context,
                     block_name=self.template_partial,
                 )  # type: ignore
-            return self.templates.TemplateResponse(f"pages/{self.page}", context=context)
+            return self.templates.TemplateResponse(
+                request=self.request, name=f"pages/{self.page}", context=context
+            )
         except Exception as error:
             return self.error_to_html(error)
 
