@@ -1,9 +1,22 @@
 from pathlib import Path
 
 import pytest
+from saxonche import PyXdmNode, PyXsltExecutable
 
+from ssrq_editio.adapters.file import load
 from ssrq_editio.models.documents import Document, DocumentType
-from ssrq_editio.services.documents import extract_infos_from_xml
+from ssrq_editio.services.documents import (
+    DocumentTransformer,
+    extract_infos_from_xml,
+)
+
+
+@pytest.fixture
+async def document_transformer(transpiled_schema: Path) -> DocumentTransformer:
+    """Fixture to create a DocumentTransformer instance."""
+    return DocumentTransformer(
+        transpiled_schema=await load(transpiled_schema.parent, transpiled_schema.name)
+    )
 
 
 @pytest.mark.anyio
@@ -269,3 +282,29 @@ async def test_extract_infos_from_xml(
 
     result[0].source = None
     assert result[0] == document
+
+
+@pytest.mark.anyio
+async def test_create_document_transformer(document_transformer: DocumentTransformer):
+    """Smoke test for DocumentTransformer creation."""
+    assert isinstance(document_transformer, DocumentTransformer)
+
+
+@pytest.mark.anyio
+async def test_document_transformer_saxon_processor(document_transformer: DocumentTransformer):
+    # the saxon processor should be created automatically
+    # a second call to _create_saxon_processor should return None
+    assert hasattr(document_transformer, "saxon_processor")
+    assert document_transformer._create_saxon_processor() is None
+
+
+@pytest.mark.anyio
+async def test_document_transformer_has_schema_node(document_transformer: DocumentTransformer):
+    assert hasattr(document_transformer, "transpiled_schema")
+    assert isinstance(document_transformer.transpiled_schema, PyXdmNode)
+
+
+@pytest.mark.anyio
+async def test_document_transformer_can_prepare_xslt(document_transformer: DocumentTransformer):
+    await document_transformer._prepare_xslt(document_transformer.xslt_src)
+    assert isinstance(document_transformer.compiled_xslt, PyXsltExecutable)
