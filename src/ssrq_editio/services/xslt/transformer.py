@@ -4,7 +4,7 @@ from multiprocessing import cpu_count
 from pathlib import Path
 from typing import Awaitable, Callable, NamedTuple
 
-from saxonche import PySaxonProcessor, PyXslt30Processor
+from saxonche import PySaxonProcessor, PyXdmItem, PyXslt30Processor, PyXsltExecutable
 
 from ssrq_editio.adapters.file import load
 from ssrq_editio.services.xslt.config import XSLT_SRC_DIR
@@ -24,7 +24,7 @@ class XSLTResult(NamedTuple):
 
 class XSLTParam(NamedTuple):
     name: str
-    value: str | int | bool
+    value: str | int | bool | PyXdmItem
 
 
 async def apply_xslt_in_parallel(
@@ -109,6 +109,70 @@ async def apply_xslt(
         ]
 
 
+async def apply_precompiled_xslt(
+    xml_src: str | Path,
+    saxon_proc: PySaxonProcessor,
+    xslt_exec: PyXsltExecutable,
+    params: list[XSLTParam] = [],
+    file_loader: Callable[[Path, str | Path], Awaitable[str]] = load,
+) -> XSLTResult:
+    """Applies a precompiled XSLT script to the given XML source.
+
+    If a source is provided as a Path object, the file_loader function
+    will be used to load the file. Otherwise, the source is assumed to be
+    a string.
+
+    Args:
+        xml_src (str | Path): The XML source to transform.
+        saxon_proc (PySaxonProcessor): The Saxon processor instance.
+        xslt_exec (PyXsltExecutable): The precompiled XSLT executable.
+
+    Returns:
+        str: The transformed XML.
+    """
+    _apply_params(saxon_proc, xslt_exec, params)
+    return XSLTResult(
+        value=xslt_exec.transform_to_string(
+            xdm_node=saxon_proc.parse_xml(
+                xml_text=xml_src
+                if isinstance(xml_src, str)
+                else await file_loader(xml_src.parent, xml_src.name)
+            )
+        ),
+        src=xml_src,
+    )
+
+
+async def compile_xslt(
+    xslt_script: str,
+    saxon_proc: PySaxonProcessor,
+    params: list[XSLTParam] = [],
+    xslt_src_dir: Path = XSLT_SRC_DIR,
+    file_loader: Callable[[Path, str | Path], Awaitable[str]] = load,
+) -> PyXsltExecutable:
+    """Compiles an XSLT script.
+
+    Asynchronously loads the XSLT script from the given directory and
+    compiles it using the provided Saxon processor. Given parameters are
+    applied to the processor.
+
+    Args:
+        xslt_script (str): The XSLT script to compile.
+        saxon_proc (PySaxonProcessor): The Saxon processor instance.
+        params (list[XSLTParam], optional): A list of parameters to pass to the XSLT
+        xslt_src_dir (Path, optional): The directory where the XSLT scripts are stored.
+        file_loader (Callable[[Path, str | Path], Awaitable[str]], optional): The function to load the XSLT script.
+
+    Returns:
+        PyXsltExecutable: The compiled XSLT executable.
+    """
+    xslt_src = await file_loader(xslt_src_dir, xslt_script)
+    xslt_proc = saxon_proc.new_xslt30_processor()
+    xslt_proc.set_cwd(str(xslt_src_dir.absolute()))  # type: ignore
+    _apply_params(saxon_proc, xslt_proc, params)
+    return xslt_proc.compile_stylesheet(stylesheet_text=xslt_src)
+
+
 def _apply_xslt(
     xml_src: tuple[str | Path, ...],
     xslt_script: str,
@@ -135,15 +199,19 @@ def _apply_xslt(
 
 
 def _apply_params(
-    saxon_proc: PySaxonProcessor, xslt_proc: PyXslt30Processor, params: list[XSLTParam]
+    saxon_proc: PySaxonProcessor,
+    xslt_proc: PyXslt30Processor | PyXsltExecutable,
+    params: list[XSLTParam],
 ):
     for param in params:
         match param.value:
             case str():
-                xslt_proc.set_parameter(param.name, saxon_proc.make_string_value(param.value))
+                xslt_proc.set_parameter(param.name, saxon_proc.make_string_value(param.value))  # type: ignore
             case int():
-                xslt_proc.set_parameter(param.name, saxon_proc.make_integer_value(param.value))
+                xslt_proc.set_parameter(param.name, saxon_proc.make_integer_value(param.value))  # type: ignore
             case bool():
-                xslt_proc.set_parameter(param.name, saxon_proc.make_boolean_value(param.value))
+                xslt_proc.set_parameter(param.name, saxon_proc.make_boolean_value(param.value))  # type: ignore
+            case PyXdmItem():
+                xslt_proc.set_parameter(param.name, param.value)  # type: ignore
             case _:
                 raise ValueError(f"Unsupported parameter type: {type(param)}")

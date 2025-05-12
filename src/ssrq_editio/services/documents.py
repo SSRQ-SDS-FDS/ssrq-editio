@@ -1,8 +1,10 @@
+import threading
 from pathlib import Path
-from typing import Sequence, cast
+from typing import Self, Sequence, cast
 
 from aiosqlite import Connection
 from pydantic_core import from_json
+from saxonche import PySaxonProcessor, PyXdmNode, PyXsltExecutable
 from ssrq_utils.idno.model import IDNO
 from ssrq_utils.lang.display import Lang
 from ssrq_utils.uca import uca_simple_sort
@@ -17,14 +19,117 @@ from ssrq_editio.services.xslt.transformer import (
     XSLTTransformationError,
     apply_xslt,
     apply_xslt_in_parallel,
+    compile_xslt,
 )
+
+DOCUMENT_INFO_XSLT = "document_info.xslt"
+DOCUMENT_VIEW_XSLT = "document_view.xslt"
+
+
+class DocumentTransformer:
+    """Implemented as a singletion this class is reponsible for trasnforming
+    the TEI-XML documents into their HTML representation.
+
+    It makes use of the XSLT-services defined in `ssrq_editio.services.xslt.transformer`.
+    Data and information snippets, which are shared between transformations, are
+    stored inside this object. This is done to avoid reloading and speed up the
+    overall processing time."""
+
+    _instance: None | Self = None
+    _lock: threading.Lock = threading.Lock()
+    compiled_xslt: PyXsltExecutable
+    ready_to_use: bool = False
+    saxon_processor: PySaxonProcessor
+    transpiled_schema: PyXdmNode
+    xslt_src: str
+
+    async def __call__(self):
+        pass
+
+    def __new__(cls, transpiled_schema: str, xslt_script: str = DOCUMENT_VIEW_XSLT) -> Self:
+        """Creates a new instance of the DocumentTransformer class.
+
+        Singleton pattern: If an instance already exists, it will be returned
+        instead of creating a new one. Thread-safe. May not be used in
+        multi-process environments.
+
+        Args:
+            transpiled_schema (str): The transpiled schema to use for the transformation.
+            xslt_script (str, optional): The XSLT script to use for the transformation. Defaults to DOCUMENT_VIEW_XSLT.
+
+        Returns:
+            Self: The instance of the DocumentTransformer class.
+        """
+        if cls._instance is None:
+            with cls._lock:
+                cls._instance = super().__new__(cls)
+                cls._instance.setup(xslt_script, transpiled_schema)
+        return cls._instance
+
+    def setup(
+        self,
+        xslt_script: str,
+        transpiled_schema: str,
+    ):
+        self.xslt_script = xslt_script
+        self._create_saxon_processor()
+        self._get_schema_node(transpiled_schema)
+        self.xslt_src = xslt_script
+
+    async def ensure_xslt_is_prepared(self) -> None:
+        """Ensures that the XSLT is compiled and ready to use."""
+        if self.ready_to_use:
+            return
+        await self._prepare_xslt(self.xslt_src)
+        self.ready_to_use = True
+
+    def _create_saxon_processor(self) -> None | PySaxonProcessor:
+        """Creates a Saxon processor without using
+        a context manager. The Saxon processor object
+        will live as long as the DocumentTransformer object
+        does.
+
+        Returns the Saxon processor object, when it's created,
+        returns None if the processor already exists.
+
+        Returns:
+            None | PySaxonProcessor: The Saxon processor object.
+
+        """
+        if hasattr(self, "saxon_processor") and self.saxon_processor:
+            return None
+        self.saxon_processor = PySaxonProcessor(license=False)
+        return self.saxon_processor
+
+    async def _prepare_xslt(self, xslt_script: str):
+        self.compiled_xslt = await compile_xslt(
+            xslt_script=xslt_script,
+            saxon_proc=self.saxon_processor,
+            params=[XSLTParam("schema", self.transpiled_schema)],
+        )
+
+    def _get_schema_node(self, transpiled_schema: str):
+        """Parses the transpiled schema and extract the TEI root element,
+        which will be stored in the class as PyXdmNode.
+        """
+        xpath_processor = self.saxon_processor.new_xpath_processor()
+        xpath_processor.set_context(
+            xdm_item=self.saxon_processor.parse_xml(xml_text=transpiled_schema)
+        )
+        xpath_processor.declare_namespace(prefix="tei", uri="http://www.tei-c.org/ns/1.0")
+        tei_root = xpath_processor.evaluate_single("/tei:TEI")
+
+        if tei_root is None or not tei_root.is_node:
+            raise ValueError("Could not find TEI root element in the transpiled schema.")
+
+        self.transpiled_schema = tei_root.get_node_value()
 
 
 async def extract_infos_from_xml(
     xml_src: tuple[Path, ...],
     volume_id: str,
     transpiled_schema: Path,
-    xslt_script: str = "document_info.xslt",
+    xslt_script: str = DOCUMENT_INFO_XSLT,
     parallel: bool = False,
 ) -> tuple[Document, ...]:
     """Extracts infos from the given TEI-XML sources for a specific volume.
