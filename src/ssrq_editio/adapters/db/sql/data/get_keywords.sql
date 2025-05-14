@@ -28,6 +28,9 @@ WHERE
     ) AND (
         :occurrence IS ''
         OR occurrences.printed_idno LIKE '%' || :occurrence || '%'
+    ) AND (
+        :id_json = ''
+        OR keywords.id IN (SELECT ijt.value FROM JSON_EACH(:id_json) AS ijt)
     )
 
 UNION

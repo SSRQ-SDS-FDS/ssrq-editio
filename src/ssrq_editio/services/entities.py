@@ -31,6 +31,7 @@ async def get_entities(
     entity_type: EntityTypes,
     query: str | None = None,
     occurrence: str | None = None,
+    id_json: list[str] | None = None,
 ) -> Entities:
     """A simple service to retrieve entities from the database. Uses the defined
     db adapters to retrieve the entities based on the entity type and query.
@@ -44,17 +45,29 @@ async def get_entities(
     """
     match entity_type:
         case EntityTypes.FAMILIES:
-            return await search_families(connection, search=query, occurrence=occurrence)
+            return await search_families(
+                connection, search=query, occurrence=occurrence, id_json=id_json
+            )
         case EntityTypes.LEMMATA:
-            return await search_lemmata(connection, search=query, occurrence=occurrence)
+            return await search_lemmata(
+                connection, search=query, occurrence=occurrence, id_json=id_json
+            )
         case EntityTypes.KEYWORDS:
-            return await search_keywords(connection, search=query, occurrence=occurrence)
+            return await search_keywords(
+                connection, search=query, occurrence=occurrence, id_json=id_json
+            )
         case EntityTypes.PLACES:
-            return await search_places(connection, search=query, occurrence=occurrence)
+            return await search_places(
+                connection, search=query, occurrence=occurrence, id_json=id_json
+            )
         case EntityTypes.PERSONS:
-            return await search_persons(connection, search=query, occurrence=occurrence)
+            return await search_persons(
+                connection, search=query, occurrence=occurrence, id_json=id_json
+            )
         case EntityTypes.ORGANIZATIONS:
-            return await search_organizations(connection, search=query, occurrence=occurrence)
+            return await search_organizations(
+                connection, search=query, occurrence=occurrence, id_json=id_json
+            )
         case _:
             raise NotImplementedError
 
@@ -110,3 +123,41 @@ async def resolve_places_for_entities(
         )
         for entity in entities
     )
+
+
+async def get_entities_by_ids(
+    connection: Connection,
+    id_list: list[str],
+) -> dict["str", Entities]:
+    """A service to retrieve entities from the database by their IDs. Uses the defined
+    db adapters to retrieve the entities based on the entity type and query.
+
+    Args:
+        connection (Connection): The database connection.
+        id_list (list(str)): List of IDs
+
+    Returns:
+        A dict (keys: "loc", "per", "key", "lem", "org", "fam") of the entities.
+    """
+    entity_type_map: dict = {
+        "loc": EntityTypes.PLACES,
+        "per": EntityTypes.PERSONS,
+        "key": EntityTypes.KEYWORDS,
+        "lem": EntityTypes.LEMMATA,
+        "org": EntityTypes.ORGANIZATIONS,
+    }
+    entity_id_by_group: dict = {}
+    for item in sorted(id_list):
+        entity_id_by_group.setdefault(item[:3], []).append(item)
+    found_entities = {}
+    for key in entity_id_by_group:
+        result = await get_entities(
+            connection, entity_type_map[key], id_json=entity_id_by_group[key]
+        )
+        found_entities[key] = result
+        if key == "org":
+            result_for_families = await get_entities(
+                connection, EntityTypes.FAMILIES, id_json=entity_id_by_group[key]
+            )
+            found_entities["fam"] = result_for_families
+    return found_entities

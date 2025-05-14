@@ -1,0 +1,54 @@
+{# def
+    context: str,
+#}
+
+<div class="{% if 19 < context.entities_count %}columns-2{% endif %}">
+    {% if "loc" in context.entities %}
+        <h3 class="title-3">{{ translator.translate(lang, 'places') }}</h3>
+        <ul class="mb-4 ml-2">
+        {% for e in context.entities.loc %}
+            <li><a class="text-ssrq-primary" target="_blank" href="https://p.ssrq-sds-fds.ch/{{ e.id }}">{{ e.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% if "per" in context.entities %}
+        <h3 class="title-3">{{ translator.translate(lang, 'persons') }}</h3>
+        <ul class="mb-4 ml-2">
+        {% for e in context.entities.per %}
+            <li><a class="text-ssrq-primary" target="_blank" href="https://p.ssrq-sds-fds.ch/{{ e.id }}">{{ e.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% if "fam" in context.entities %}
+        <h3 class="title-3">{{ translator.translate(lang, 'families') }}</h3>
+        <ul class="mb-4 ml-2">
+        {% for e in context.entities.fam %}
+            <li><a class="text-ssrq-primary" target="_blank" href="https://p.ssrq-sds-fds.ch/{{ e.id }}">{{ e.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% if "org" in context.entities %}
+        <h3 class="title-3">{{ translator.translate(lang, 'organizations') }}</h3>
+        <ul class="mb-4 ml-2">
+        {% for e in context.entities.org %}
+            <li><a class="text-ssrq-primary" target="_blank" href="https://p.ssrq-sds-fds.ch/{{ e.id }}">{{ e.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% if "key" in context.entities %}
+        <h3 class="title-3">{{ translator.translate(lang, 'keywords') }}</h3>
+        <ul class="mb-4 ml-2">
+        {% for e in context.entities.key %}
+            <li><a class="text-ssrq-primary" target="_blank" href="https://p.ssrq-sds-fds.ch/{{ e.id }}">{{ e.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% if "lem" in context.entities %}
+        <h3 class="title-3">{{ translator.translate(lang, 'lemmata') }}</h3>
+        <ul class="mb-4 ml-2">
+        {% for e in context.entities.lem %}
+            <li><a class="text-ssrq-primary" target="_blank" href="https://p.ssrq-sds-fds.ch/{{ e.id }}">{{ e.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+</div>
