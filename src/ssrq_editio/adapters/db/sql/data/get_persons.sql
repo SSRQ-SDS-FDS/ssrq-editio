@@ -35,8 +35,11 @@ WHERE
         :search = ''
         OR p.id LIKE '%' || :search || '%'
     ) AND (
-        :occurrence IS ''
+        :occurrence = ''
         OR occurrences.printed_idno LIKE '%' || :occurrence || '%'
+    ) AND (
+        :id_json = ''
+        OR p.id IN (SELECT ijt.value FROM JSON_EACH(:id_json) AS ijt)
     )
 
 UNION

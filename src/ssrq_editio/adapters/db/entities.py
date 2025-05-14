@@ -371,6 +371,7 @@ async def search_lemmata(
     query: Path = SQL_DATA_DIR / "get_lemmata.sql",
     search: str | None = None,
     occurrence: str | None = None,
+    id_json: list[str] | None = None,
 ) -> Lemmata:
     """Searches for lemmata in the database.
 
@@ -388,7 +389,12 @@ async def search_lemmata(
     return Lemmata(
         entities=list(
             await _search_entities(
-                connection, Lemma, await load(dir=query.parent, name=query.name), search, occurrence
+                connection,
+                Lemma,
+                await load(dir=query.parent, name=query.name),
+                search,
+                occurrence,
+                id_json,
             ),
         )
     )
@@ -399,6 +405,7 @@ async def search_organizations(
     query: Path = SQL_DATA_DIR / "get_organizations.sql",
     search: str | None = None,
     occurrence: str | None = None,
+    id_json: list[str] | None = None,
 ) -> Organizations:
     """Searches for organizations in the database.
 
@@ -421,6 +428,7 @@ async def search_organizations(
                 await load(dir=query.parent, name=query.name),
                 search,
                 occurrence,
+                id_json,
             ),
         )
     )
@@ -431,6 +439,7 @@ async def search_keywords(
     query: Path = SQL_DATA_DIR / "get_keywords.sql",
     search: str | None = None,
     occurrence: str | None = None,
+    id_json: list[str] | None = None,
 ) -> Keywords:
     """Searches for keywords in the database.
 
@@ -453,6 +462,7 @@ async def search_keywords(
                 await load(dir=query.parent, name=query.name),
                 search,
                 occurrence,
+                id_json,
             )
         )
     )
@@ -463,6 +473,7 @@ async def search_families(
     query: Path = SQL_DATA_DIR / "get_families.sql",
     search: str | None = None,
     occurrence: str | None = None,
+    id_json: list[str] | None = None,
 ) -> Families:
     """Searches for families in the database.
 
@@ -479,7 +490,12 @@ async def search_families(
     """
     return Families(
         entities=await _search_entities(
-            connection, Family, await load(dir=query.parent, name=query.name), search, occurrence
+            connection,
+            Family,
+            await load(dir=query.parent, name=query.name),
+            search,
+            occurrence,
+            id_json,
         )
     )
 
@@ -489,6 +505,7 @@ async def search_persons(
     query: Path = SQL_DATA_DIR / "get_persons.sql",
     search: str | None = None,
     occurrence: str | None = None,
+    id_json: list[str] | None = None,
 ) -> Persons:
     """Searches for persons in the database.
 
@@ -505,7 +522,12 @@ async def search_persons(
     """
     return Persons(
         entities=await _search_entities(
-            connection, Person, await load(dir=query.parent, name=query.name), search, occurrence
+            connection,
+            Person,
+            await load(dir=query.parent, name=query.name),
+            search,
+            occurrence,
+            id_json,
         )
     )
 
@@ -515,6 +537,7 @@ async def search_places(
     query: Path = SQL_DATA_DIR / "get_places.sql",
     search: str | None = None,
     occurrence: str | None = None,
+    id_json: list[str] | None = None,
 ) -> Places:
     """Searches for places in the database.
 
@@ -531,7 +554,12 @@ async def search_places(
     """
     return Places(
         entities=await _search_entities(
-            connection, Place, await load(dir=query.parent, name=query.name), search, occurrence
+            connection,
+            Place,
+            await load(dir=query.parent, name=query.name),
+            search,
+            occurrence,
+            id_json,
         )
     )
 
@@ -542,8 +570,16 @@ async def _search_entities(
     sql_query: str,
     search: str | None = None,
     occurrence: str | None = None,
+    id_json: list[str] | None = None,
 ) -> list[T]:
     async with connection.cursor() as cursor:
-        await cursor.execute(sql_query, {"search": search or "", "occurrence": occurrence or ""})
+        await cursor.execute(
+            sql_query,
+            {
+                "search": search or "",
+                "occurrence": occurrence or "",
+                "id_json": json.dumps(id_json) if id_json else "",
+            },
+        )
         data = await cursor.fetchall()
         return [entity_type(**item) for item in data]
