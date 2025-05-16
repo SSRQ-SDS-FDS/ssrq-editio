@@ -1,10 +1,11 @@
 from pathlib import Path
 
 import pytest
-from saxonche import PyXdmNode, PyXsltExecutable
+from saxonche import PyXdmMap, PyXdmNode, PyXsltExecutable
+from ssrq_utils.lang.display import Lang
 
 from ssrq_editio.adapters.file import load
-from ssrq_editio.models.documents import Document, DocumentType
+from ssrq_editio.models.documents import Document, DocumentDisplay, DocumentType
 from ssrq_editio.services.documents import (
     DocumentTransformer,
     extract_infos_from_xml,
@@ -306,5 +307,21 @@ async def test_document_transformer_has_schema_node(document_transformer: Docume
 
 @pytest.mark.anyio
 async def test_document_transformer_can_prepare_xslt(document_transformer: DocumentTransformer):
-    await document_transformer._prepare_xslt(document_transformer.xslt_src)
+    document_transformer._prepare_xslt(document_transformer.xslt_src)
     assert isinstance(document_transformer.compiled_xslt, PyXsltExecutable)
+
+
+@pytest.mark.anyio
+async def test_document_transformer_can_prepare_i18n_map(document_transformer: DocumentTransformer):
+    document_transformer._prepare_i18n_map()
+    assert isinstance(document_transformer.translations, PyXdmMap)
+
+
+@pytest.mark.anyio
+async def test_document_transformer_returns_expected_display_object(
+    document_transformer: DocumentTransformer, example_path: Path
+):
+    result = document_transformer(
+        output_lang=Lang.DE, xml_src=(example_path / "SDS-NE-1-143-1.xml").read_text()
+    )
+    assert isinstance(result, DocumentDisplay)

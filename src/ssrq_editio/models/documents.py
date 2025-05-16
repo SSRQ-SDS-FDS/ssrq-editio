@@ -1,6 +1,6 @@
 from enum import Enum
 from pathlib import Path
-from typing import Annotated, Any, Self
+from typing import Annotated, Any, Self, Sequence
 
 from pydantic import BaseModel, BeforeValidator, model_validator
 from ssrq_utils.lang.display import Lang
@@ -52,6 +52,11 @@ class DocumentRelations(BaseModel):
     ] = None
 
 
+class DocumentSummary(BaseModel):
+    content: str
+    lang: str
+
+
 class DocumentTitle(BaseModel):
     de_title: str | None = None
     fr_title: str | None = None
@@ -94,3 +99,29 @@ class Document(DocumentDate, DocumentIdentification, DocumentRelations, Document
 
     def model_dump_sqlite(self) -> dict[str, Any]:
         return {k: serialize_value(v) for k, v in self.model_dump().items()}
+
+
+class DocumentDisplay(BaseModel):
+    """A model representing the infos to be displayed in the UI. The fields
+    contain the rendered infos, transformed by XSLT."""
+
+    comment: str | None
+    description: str | None = None  # ToDo: Needs concrete modelling!
+    normalized_transcript: str | None
+    summary: Sequence[DocumentSummary] | None
+    transcript: str
+    type: Annotated[
+        DocumentType, BeforeValidator : lambda x: DocumentType(x) if isinstance(x, str) else x
+    ]
+
+    @model_validator(mode="after")
+    def check_mutually_exclusive_fields(self) -> Self:
+        match self.type:
+            case DocumentType.collection | DocumentType.summary if (
+                self.normalized_transcript is not None
+            ):
+                raise ValueError(
+                    "A normalized transcript is only allowed for documents of type transcript."
+                )
+            case _:
+                return self

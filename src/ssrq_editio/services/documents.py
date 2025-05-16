@@ -4,19 +4,20 @@ from typing import Self, Sequence, cast
 
 from aiosqlite import Connection
 from pydantic_core import from_json
-from saxonche import PySaxonProcessor, PyXdmNode, PyXsltExecutable
+from saxonche import PySaxonProcessor, PyXdmMap, PyXdmNode, PyXdmValue, PyXsltExecutable
 from ssrq_utils.idno.model import IDNO
 from ssrq_utils.lang.display import Lang
 from ssrq_utils.uca import uca_simple_sort
 
 from ssrq_editio.adapters.db.documents import get_document
 from ssrq_editio.adapters.file import load
-from ssrq_editio.models.documents import Document
+from ssrq_editio.models.documents import Document, DocumentDisplay
 from ssrq_editio.models.entities import EntityTypes, Places
 from ssrq_editio.services.entities import get_entities
 from ssrq_editio.services.xslt.transformer import (
     XSLTParam,
     XSLTTransformationError,
+    apply_precompiled_xslt,
     apply_xslt,
     apply_xslt_in_parallel,
     compile_xslt,
@@ -24,6 +25,14 @@ from ssrq_editio.services.xslt.transformer import (
 
 DOCUMENT_INFO_XSLT = "document_info.xslt"
 DOCUMENT_VIEW_XSLT = "document_view.xslt"
+
+
+class DocumentTransformerError(ValueError):
+    """Custom error class for document transformation errors."""
+
+    def __init__(self, message: str):
+        super().__init__(message)
+        self.message = message
 
 
 class DocumentTransformer:
@@ -38,13 +47,44 @@ class DocumentTransformer:
     _instance: None | Self = None
     _lock: threading.Lock = threading.Lock()
     compiled_xslt: PyXsltExecutable
-    ready_to_use: bool = False
     saxon_processor: PySaxonProcessor
+    translations: PyXdmMap
     transpiled_schema: PyXdmNode
     xslt_src: str
 
-    async def __call__(self):
-        pass
+    def __call__(self, xml_src: str, output_lang: Lang):
+        """Applies the (compiled) XSLT to the given XML source.
+
+        The XML source is expected to be a string. The XML file
+        should be read externally and passed to this function / method.
+
+        Args:
+            xml_src (str): The XML source to transform.
+
+        Returns:
+            str: The transformed XML. ToDo: Will change to be
+            the document view object."""
+        try:
+            result = apply_precompiled_xslt(
+                xml_src,
+                self.saxon_processor,
+                self.compiled_xslt,
+                params=[
+                    XSLTParam("lang", output_lang.value),
+                    XSLTParam("translations", self.translations),
+                ],
+            )
+
+            if result.value is None:
+                raise DocumentTransformerError(f"No result for transforming: {xml_src}.")
+
+            return DocumentDisplay.model_validate_json(result.value)
+        except DocumentTransformerError as e:
+            raise e
+        except Exception as e:
+            raise DocumentTransformerError(
+                f"Could not transform the XML source: {xml_src}. Error: {e}"
+            ) from e
 
     def __new__(cls, transpiled_schema: str, xslt_script: str = DOCUMENT_VIEW_XSLT) -> Self:
         """Creates a new instance of the DocumentTransformer class.
@@ -75,13 +115,8 @@ class DocumentTransformer:
         self._create_saxon_processor()
         self._get_schema_node(transpiled_schema)
         self.xslt_src = xslt_script
-
-    async def ensure_xslt_is_prepared(self) -> None:
-        """Ensures that the XSLT is compiled and ready to use."""
-        if self.ready_to_use:
-            return
-        await self._prepare_xslt(self.xslt_src)
-        self.ready_to_use = True
+        self._prepare_xslt(xslt_script)
+        self._prepare_i18n_map()
 
     def _create_saxon_processor(self) -> None | PySaxonProcessor:
         """Creates a Saxon processor without using
@@ -101,13 +136,6 @@ class DocumentTransformer:
         self.saxon_processor = PySaxonProcessor(license=False)
         return self.saxon_processor
 
-    async def _prepare_xslt(self, xslt_script: str):
-        self.compiled_xslt = await compile_xslt(
-            xslt_script=xslt_script,
-            saxon_proc=self.saxon_processor,
-            params=[XSLTParam("schema", self.transpiled_schema)],
-        )
-
     def _get_schema_node(self, transpiled_schema: str):
         """Parses the transpiled schema and extract the TEI root element,
         which will be stored in the class as PyXdmNode.
@@ -123,6 +151,23 @@ class DocumentTransformer:
             raise ValueError("Could not find TEI root element in the transpiled schema.")
 
         self.transpiled_schema = tei_root.get_node_value()
+
+    def _prepare_i18n_map(self):
+        result = self.compiled_xslt.call_function_returning_value(  # type: ignore
+            "{http://ssrq-sds-fds.ch/xsl/tei2pub/functions/i18n}create-translation-map",
+            [self.transpiled_schema],
+        )
+
+        if not isinstance(result, PyXdmValue):
+            raise ValueError("Could not create the i18n map. The result is not a PyXdmValue.")
+
+        self.translations = result.head  # type: ignore
+
+    def _prepare_xslt(self, xslt_script: str):
+        self.compiled_xslt = compile_xslt(
+            xslt_script=xslt_script,
+            saxon_proc=self.saxon_processor,
+        )
 
 
 async def extract_infos_from_xml(

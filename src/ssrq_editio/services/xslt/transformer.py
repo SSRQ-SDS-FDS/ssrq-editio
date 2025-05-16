@@ -109,12 +109,11 @@ async def apply_xslt(
         ]
 
 
-async def apply_precompiled_xslt(
-    xml_src: str | Path,
+def apply_precompiled_xslt(
+    xml_src: str,
     saxon_proc: PySaxonProcessor,
     xslt_exec: PyXsltExecutable,
     params: list[XSLTParam] = [],
-    file_loader: Callable[[Path, str | Path], Awaitable[str]] = load,
 ) -> XSLTResult:
     """Applies a precompiled XSLT script to the given XML source.
 
@@ -132,23 +131,16 @@ async def apply_precompiled_xslt(
     """
     _apply_params(saxon_proc, xslt_exec, params)
     return XSLTResult(
-        value=xslt_exec.transform_to_string(
-            xdm_node=saxon_proc.parse_xml(
-                xml_text=xml_src
-                if isinstance(xml_src, str)
-                else await file_loader(xml_src.parent, xml_src.name)
-            )
-        ),
+        value=xslt_exec.transform_to_string(xdm_node=saxon_proc.parse_xml(xml_text=xml_src)),
         src=xml_src,
     )
 
 
-async def compile_xslt(
+def compile_xslt(
     xslt_script: str,
     saxon_proc: PySaxonProcessor,
     params: list[XSLTParam] = [],
     xslt_src_dir: Path = XSLT_SRC_DIR,
-    file_loader: Callable[[Path, str | Path], Awaitable[str]] = load,
 ) -> PyXsltExecutable:
     """Compiles an XSLT script.
 
@@ -161,16 +153,13 @@ async def compile_xslt(
         saxon_proc (PySaxonProcessor): The Saxon processor instance.
         params (list[XSLTParam], optional): A list of parameters to pass to the XSLT
         xslt_src_dir (Path, optional): The directory where the XSLT scripts are stored.
-        file_loader (Callable[[Path, str | Path], Awaitable[str]], optional): The function to load the XSLT script.
 
     Returns:
         PyXsltExecutable: The compiled XSLT executable.
     """
-    xslt_src = await file_loader(xslt_src_dir, xslt_script)
     xslt_proc = saxon_proc.new_xslt30_processor()
-    xslt_proc.set_cwd(str(xslt_src_dir.absolute()))  # type: ignore
     _apply_params(saxon_proc, xslt_proc, params)
-    return xslt_proc.compile_stylesheet(stylesheet_text=xslt_src)
+    return xslt_proc.compile_stylesheet(stylesheet_file=str(xslt_src_dir / xslt_script))
 
 
 def _apply_xslt(
