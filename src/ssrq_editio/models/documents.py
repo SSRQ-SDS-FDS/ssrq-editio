@@ -1,11 +1,69 @@
 from enum import Enum
 from pathlib import Path
-from typing import Annotated, Any, NamedTuple, Self
+from typing import Annotated, Any, Self
 
 from pydantic import BaseModel, BeforeValidator, model_validator
 from ssrq_utils.lang.display import Lang
 
 from ssrq_editio.services.utils import parse_as_list_or_return, serialize_value
+
+
+class DocumentDate(BaseModel):
+    de_orig_date: str
+    en_orig_date: str
+    fr_orig_date: str
+    it_orig_date: str
+    start_year_of_creation: int | None = None
+    end_year_of_creation: int | None = None
+
+
+class DocumentIdentification(BaseModel):
+    idno: str
+    is_main: bool
+    printed_idno: str
+    sort_key: float
+    volume_id: str
+    uuid: str
+
+
+class DocumentIdentificationDisplay(BaseModel):
+    """A class which holds basic information about a document.
+
+    Intended to be used for displaying the information in the UI.
+    """
+
+    idno: str
+    kanton: str
+    printed_idno: str
+    sort_key: float
+    volume: str
+
+
+class DocumentRelations(BaseModel):
+    entities: Annotated[
+        list[str] | None,
+        BeforeValidator(parse_as_list_or_return),
+    ] = None
+    previous_document: str | None = None
+    next_document: str | None = None
+    sub_documents: Annotated[
+        list[str] | None,
+        BeforeValidator(parse_as_list_or_return),
+    ] = None
+
+
+class DocumentTitle(BaseModel):
+    de_title: str | None = None
+    fr_title: str | None = None
+
+    def get_title_by_lang(self, lang: Lang) -> str:
+        match (lang, self.de_title, self.fr_title):
+            case (Lang.DE, str(), _):
+                return self.de_title
+            case (Lang.FR, _, str()):
+                return self.fr_title
+            case _:
+                return self.de_title or self.fr_title or ""
 
 
 class DocumentType(Enum):
@@ -14,43 +72,19 @@ class DocumentType(Enum):
     transcript = "transcript"
 
 
-class Document(BaseModel):
-    de_orig_date: str
-    de_title: str | None = None
-    en_orig_date: str
-    entities: Annotated[
-        list[str] | None,
-        BeforeValidator(parse_as_list_or_return),
-    ] = None
+class Document(DocumentDate, DocumentIdentification, DocumentRelations, DocumentTitle):
     facs: Annotated[
         list[str] | None,
         BeforeValidator(parse_as_list_or_return),
     ]
-    fr_orig_date: str
-    fr_title: str | None = None
-    idno: str
-    is_main: bool
-    it_orig_date: str
     orig_place: Annotated[
         list[str] | None,
         BeforeValidator(parse_as_list_or_return),
     ] = None
-    printed_idno: str
-    sort_key: float
     source: Path | None = None
-    sub_documents: Annotated[
-        list[str] | None,
-        BeforeValidator(parse_as_list_or_return),
-    ] = None
     type: Annotated[
         DocumentType, BeforeValidator : lambda x: DocumentType(x) if isinstance(x, str) else x
     ]
-    uuid: str
-    volume_id: str
-    start_year_of_creation: int | None = None
-    end_year_of_creation: int | None = None
-    previous_document: str | None = None
-    next_document: str | None = None
 
     @model_validator(mode="after")
     def check_mutually_exclusive_fields(self) -> Self:
@@ -60,18 +94,3 @@ class Document(BaseModel):
 
     def model_dump_sqlite(self) -> dict[str, Any]:
         return {k: serialize_value(v) for k, v in self.model_dump().items()}
-
-    def get_title_by_lang(self, lang: Lang) -> str:
-        if lang == Lang.FR and self.fr_title:
-            return self.fr_title
-        elif lang == Lang.DE and self.de_title:
-            return self.de_title
-        return self.de_title or self.fr_title or ""
-
-
-class DocumentInfo(NamedTuple):
-    idno: str
-    printed_idno: str
-    sort_key: float
-    volume: str
-    kanton: str

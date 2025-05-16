@@ -1,11 +1,13 @@
 from collections import defaultdict
 
-from ssrq_editio.models.documents import DocumentInfo
+from ssrq_editio.models.documents import DocumentIdentificationDisplay
 
 
-def group_and_sort_idnos(occurrenes: list[str], idnos: dict[str, DocumentInfo]):
+def group_and_sort_idnos(occurrenes: list[str], idnos: dict[str, DocumentIdentificationDisplay]):
     mapped_occurrences = {idno: idnos[idno] for idno in occurrenes}
-    result: dict[str, dict[str, list[DocumentInfo]]] = defaultdict(lambda: defaultdict(list))
+    result: dict[str, dict[str, list[DocumentIdentificationDisplay]]] = defaultdict(
+        lambda: defaultdict(list)
+    )
 
     for d in mapped_occurrences.values():
         result[d.kanton][d.volume].append(d)

@@ -6,7 +6,7 @@ from aiosqlite import Connection
 from ssrq_editio.adapters.db.config import SQL_DATA_DIR
 from ssrq_editio.adapters.db.shared import replace_wildcard, store_batches
 from ssrq_editio.adapters.file import load
-from ssrq_editio.models.documents import Document, DocumentInfo, DocumentType
+from ssrq_editio.models.documents import Document, DocumentIdentificationDisplay, DocumentType
 
 __all__ = [
     "initialize_document_data",
@@ -101,7 +101,7 @@ async def get_documents(
 async def get_document_infos(
     connection: Connection,
     query: Path = SQL_DATA_DIR / "get_idno.sql",
-) -> dict[str, DocumentInfo]:
+) -> dict[str, DocumentIdentificationDisplay]:
     """Retrieve the document infos from the database.
 
     Args:
@@ -115,7 +115,7 @@ async def get_document_infos(
     result = await connection.execute_fetchall(sql_query)
 
     return {
-        uuid: DocumentInfo(
+        uuid: DocumentIdentificationDisplay(
             idno=idno, printed_idno=printed_idno, volume=volume, kanton=kanton, sort_key=sort_key
         )
         for uuid, idno, sort_key, printed_idno, volume, kanton in result
