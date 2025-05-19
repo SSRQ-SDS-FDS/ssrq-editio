@@ -1,30 +1,16 @@
 {# def
-    data: list[tuple[str, str]],
-    translator: Translator,
-    lang: Lang,
+    active_tab: str | None = None
 #}
-<div class="flex flex-col w-full flex-1" x-data="{ active_tab: '{{ data[0]["tab"] }}' }">
-    <nav class="flex mb-2 border-b-2 border-ssrq-primary">
-        {% for d in data %}
-            <button
-                type="button"
-                class="select-none cursor-pointer text-ssrq-greyed-600 rounded-t-lg px-4 py-1 focus:outline-none"
-                x-on:click="active_tab='{{ d['tab'] }}'"
-                x-bind:class="active_tab === '{{ d['tab'] }}' ? 'bg-ssrq-primary text-white' : 'hover:text-ssrq-primary'"
-            >
-                {{ translator.translate(lang, d["tab"]) }}
-            </button>
-        {% endfor %}
-    </nav>
 
-    {% for d in data %}
-        <div
-            class="flex-1 rounded-lg shadow-md p-4 overflow-scroll"
-            x-show="active_tab === '{{ d['tab'] }}'"
-            x-cloak
-        >
-            {% set context = d["context"] %}
-            {% include d["template"] with context %}
-        </div>
-    {% endfor %}
+
+<div
+  class="flex flex-col w-full flex-1"
+  x-data="tabs()"
+  {% if active_tab is not none %}
+    x-init="init('{{ active_tab }}')"
+  {% else %}
+    x-init="init()"
+  {% endif %}
+>
+    {{ content }}
 </div>
