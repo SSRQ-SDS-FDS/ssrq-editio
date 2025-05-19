@@ -2,7 +2,11 @@ from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from ssrq_editio.entrypoints.app.routers.api import api
-from ssrq_editio.entrypoints.app.shared.dependencies import DBDependency, LangDependency
+from ssrq_editio.entrypoints.app.shared.dependencies import (
+    DBDependency,
+    LangDependency,
+    TransformerDependency,
+)
 from ssrq_editio.entrypoints.app.views.models.document import DocumentViewModel
 from ssrq_editio.entrypoints.app.views.models.entity import EntityViewModel
 from ssrq_editio.entrypoints.app.views.models.index import IndexViewModel
@@ -141,14 +145,8 @@ async def document(
     request: Request,
     lang: LangDependency,
     connection: DBDependency,
+    transformer: TransformerDependency,
 ):
-    # return f"Page view for {kanton} {volume} {document}"
-    return await DocumentViewModel(request, lang, connection, kanton, volume, document).to_html()
-
-
-"""
-    return await EntityViewModel(
-        request, lang, connection, entity_type, query, occurrence, page, per_page
+    return await DocumentViewModel(
+        request, lang, connection, kanton, volume, document, transformer
     ).to_html()
-
-"""
