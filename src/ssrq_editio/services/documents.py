@@ -13,6 +13,7 @@ from ssrq_editio.adapters.db.documents import get_document
 from ssrq_editio.adapters.file import load
 from ssrq_editio.models.documents import Document, DocumentDisplay
 from ssrq_editio.models.entities import EntityTypes, Places
+from ssrq_editio.models.volumes import Volume
 from ssrq_editio.services.entities import get_entities
 from ssrq_editio.services.xslt.transformer import (
     XSLTParam,
@@ -168,6 +169,19 @@ class DocumentTransformer:
             xslt_script=xslt_script,
             saxon_proc=self.saxon_processor,
         )
+
+
+def create_idno_from_volume_and_doc_number(volume: Volume, doc_number: str) -> str:
+    """Creates an idno from the given volume and a document number.
+
+    Args:
+        volume (Volume): The volume object.
+        doc_number (str): The document number.
+
+    Returns:
+        str: The idno in the format "prefix-kanton-machine_name-doc_number".
+    """
+    return "-".join((volume.prefix, volume.kanton, cast(str, volume.machine_name), doc_number))
 
 
 async def extract_infos_from_xml(
