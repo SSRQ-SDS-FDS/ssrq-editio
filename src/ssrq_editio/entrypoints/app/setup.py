@@ -1,5 +1,6 @@
 import importlib.metadata
 from pathlib import Path
+from typing import Sequence
 
 import jinjax
 from fastapi import APIRouter, FastAPI
@@ -9,14 +10,14 @@ from jinja2_fragments.fastapi import Jinja2Blocks
 from markdown import markdown  # type: ignore
 from ssrq_utils.i18n.text import normalize_punctuation_marks
 
-from ssrq_editio.entrypoints.app.config import ASSET_DIR, COMPONENT_DIR, TEMPLATE_DIR
+from ssrq_editio.entrypoints.app.config import ASSET_DIR, COMPONENT_DIR, ICON_DIR, TEMPLATE_DIR
 from ssrq_editio.services.occurrences import group_and_sort_idnos
 from ssrq_editio.services.utils import create_permalink
 
 
 def app_factory(
     template_dir: Path,
-    component_dir: Path,
+    component_dir: Sequence[Path],
     asset_dir: Path,
 ) -> tuple[FastAPI, Jinja2Templates]:
     """A factory function to create a FastAPI app and setup
@@ -49,7 +50,8 @@ def app_factory(
     # Add JinjaX extension, which allows us to us Component-based templates
     templates.env.add_extension(jinjax.JinjaX)
     catalog = jinjax.Catalog(jinja_env=templates.env)
-    catalog.add_folder(component_dir)
+    for directory in component_dir:
+        catalog.add_folder(directory)
 
     return app, templates
 
@@ -59,4 +61,4 @@ def setup_routers(app: FastAPI, routers: tuple[APIRouter, ...]) -> None:
         app.include_router(router)
 
 
-app, templates = app_factory(TEMPLATE_DIR, COMPONENT_DIR, ASSET_DIR)
+app, templates = app_factory(TEMPLATE_DIR, (COMPONENT_DIR, ICON_DIR), ASSET_DIR)
