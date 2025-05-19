@@ -1,0 +1,11 @@
+{# def
+    label: str
+#}
+<button
+  type="button"
+  class="select-none cursor-pointer text-ssrq-greyed-600 rounded-t-lg px-4 py-1 focus:outline-none"
+  x-on:click="switchTab('{{ label }}')"
+  x-bind:class="activeTab === '{{ label }}' ? 'bg-ssrq-primary text-white' : 'hover:text-ssrq-primary'"
+>
+    {{ content }}
+</button>

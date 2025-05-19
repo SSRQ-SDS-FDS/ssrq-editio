@@ -1,0 +1,15 @@
+{# def
+    label: str
+#}
+
+{% do attrs.add_class("flex-1", "rounded-lg", "shadow-md", "p-4", "overflow-scroll") %}
+
+<template
+  aria-label="{{ label }}"
+  x-if="activeTab === '{{ label }}'"
+  x-cloak
+>
+    <div aria-label="tab-{{ label }}" {{ attrs.render() }}>
+        {{ content }}
+    </div>
+</template>
