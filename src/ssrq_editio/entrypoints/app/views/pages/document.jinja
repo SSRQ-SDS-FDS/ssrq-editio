@@ -2,96 +2,144 @@
 {% block content %}
 
 {% set doc = data.content.doc%}
-{% set orig_places = data.content.orig_places %}
+{% set doc_content = data.content.rendered_doc %}
 
 <section class="w-full max-w-[1680px] mx-auto px-4 my-4">
     <DocumentNavigation
-        :lang="lang"
-        :request="request"
-        :translator="translator"
-        :volume="data.content.volume"
-        :doc="data.content.doc"
-        :previous_document="data.content.previous_document"
-        :next_document="data.content.next_document"
+      :lang="lang"
+      :request="request"
+      :translator="translator"
+      :volume="data.content.volume"
+      :doc="data.content.doc"
     />
 </section>
 
 <section class="w-full max-w-[1680px] mx-auto mt-4 mb-6 px-4">
-    <h1 class="title-1">{{ data.content.doc.get_title_by_lang(lang) | safe }}</h1>
+    <h1 class="title-1">{{ doc.get_title_by_lang(lang) | safe }}</h1>
     <header class="flex text-ssrq-greyed-600 text-sm items-center gap-2">
         <span title="{{ translator.translate(lang, 'ssrq-idno') }}" class="flex items-center">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                class="w-3.5 h-3.5 mr-0.5 md:mr-1"
-            >
-                <path
-                    fill-rule="evenodd"
-                    d="M4.5 2A1.5 1.5 0 003 3.5v13A1.5 1.5 0 004.5 18h11a1.5 1.5 0 001.5-1.5V7.621a1.5 1.5 0 00-.44-1.06l-4.12-4.122A1.5 1.5 0                                    0011.378 2H4.5zm2.25 8.5a.75.75 0 000 1.5h6.5a.75.75 0 000-1.5h-6.5zm0 3a.75.75 0 000 1.5h6.5a.75.75 0 000-1.5h-6.5z"
-                    clip-rule="evenodd"
-                />
-            </svg>
+            <DocumentIcon class="w-3.5 h-3.5 mr-0.5 md:mr-1" />
             {{ doc.printed_idno }}
         </span>
         <span title="{{ translator.translate(lang, 'orig-date') }}" class="flex items-center">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="w-3.5 h-3.5 mr-0.5 md:mr-1"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
-                />
-            </svg>
+            <CalendarIcon class="w-3.5 h-3.5 mr-0.5 md:mr-1"/>
             {{ doc[lang.value + '_orig_date'] | safe }}
         </span>
-        {% if doc.orig_place is not none and orig_places | length > 0 %}
-            <span title="{{ translator.translate(lang, 'orig-place') }}" class="flex items-center">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-3.5 h-3.5 mr-0.5 md:mr-1"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-                    />
-                </svg>
-                {{ orig_places | join(', ') }}
-            </span>
+        {% if doc.orig_place is not none and doc.orig_places | length > 0 %}
+        <span title="{{ translator.translate(lang, 'orig-place') }}" class="flex items-center">
+            <PlaceIcon class="w-3.5 h-3.5 mr-0.5 md:mr-1"/>
+            {{ orig_places | join(', ') }}
+        </span>
         {% endif %}
     </header>
-</section>
+    <div
+        class="md:flex w-full max-w-[1680px] mx-auto items-stretch justify-center gap-4 my-8 md:min-h-[70vh] md:max-h-[80vh]">
+        <div class="md:w-1/2 flex mb-6 md:mb-0">
+            <Tabs>
+                <TabHeader>
+                    <TabControl :label="'transcript'">
+                        {{ translator.translate(lang, doc.type.value) }}
+                    </TabControl>
 
-<section class="md:flex w-full max-w-[1680px] mx-auto items-stretch justify-center gap-4 mb-4 px-4 md:min-h-[70vh] md:max-h-[80vh]">
-    <div class="md:w-1/2 flex mb-6 md:mb-0">
-        <Tabs
-            :data="data.content.left_col"
-            :translator="translator"
-            :lang="lang"
-        />
-    </div>
-    <div class="md:w-1/2 flex items-stretch">
-        <Tabs
-            :data="data.content.right_col"
-            :translator="translator"
-            :lang="lang"
-        />
+                    {% if doc.type.value == 'transcript' %}
+                        <TabControl :label="'normalized'">
+                            {{ translator.translate(lang, 'edition_text') }}
+                        </TabControl>
+                    {% endif %}
+
+                    <TabControl :label="'tei_xml'">
+                        {{ translator.translate(lang, 'tei_xml') }}
+                    </TabControl>
+                </TabHeader>
+
+                <Tab :label="'transcript'">
+                    <HTMLCard :html_content="doc_content.transcript"/>
+                </Tab>
+
+                {% if doc.type.value == 'transcript' %}
+                    <Tab :label="'normalized'">
+                        <HTMLCard :html_content="doc_content.normalized_transcript" />
+                    </Tab>
+                {% endif %}
+
+                <Tab :label="'tei_xml'">
+                    <p class="mb-4">{{ translator.translate(lang, 'download') | safe }}</p>
+                    <a
+                      href="{{ url_for('api_v1_document_xml', id=doc.uuid) }}"
+                      target="_blank"
+                      class="text-ssrq-primary hover:text-ssrq-primary hover:underline flex items-center"
+                      download="{{ doc.uuid }}.xml"
+                    >
+                        <DownloadIcon class="w-5 h-5 mr-1"/> {{ translator.translate(lang, 'xml-download') }}
+                    </a>
+                </Tab>
+            </Tabs>
+        </div>
+        <div class="md:w-1/2 flex mb-6 md:mb-0">
+            <Tabs>
+                <TabHeader>
+                    <TabControl :label="'description'">
+                        {{ translator.translate(lang, 'description') }}
+                    </TabControl>
+
+                    {% if doc.type.value == 'transcript' and doc.facs is not none %}
+                        <TabControl :label="'digital_copy'">
+                            {{ translator.translate(lang, 'digital_copy') }}
+                        </TabControl>
+                    {% endif %}
+
+                    {% if doc_content.summary is not none %}
+                        <TabControl :label="'summary'">
+                            {{ translator.translate(lang, 'summary') }}
+                        </TabControl>
+                    {% endif %}
+
+                    {% if doc_content.comment is not none %}
+                        <TabControl :label="'comment'">
+                            {{ translator.translate(lang, 'comment') }}
+                        </TabControl>
+                    {% endif %}
+
+                    {% if doc.entities is not none %}
+                        <TabControl :label="'entities'">
+                            {{ translator.translate(lang, 'entities') }}
+                        </TabControl>
+                    {% endif %}
+                </TabHeader>
+
+                <Tab :label="'description'">
+                    <p>Description goes here!</p>
+                </Tab>
+
+                {% if doc.type.value == 'transcript' and doc.facs is not none %}
+                    <Tab :label="'digital_copy'">
+                        {# ToDo: The Image Component is just a dummy at the moment! #}
+                        <DocumentPicture/>
+                    </Tab>
+                {% endif %}
+
+                {% if doc_content.summary is not none %}
+                    <Tab :label="'summary'">
+                        {% for summary in doc_content.summary %}
+                            {# ToDo: Maybe filter by language? #}
+                            <HTMLCard :html_content="summary" />
+                        {% endfor %}
+                    </Tab>
+                {% endif %}
+
+                {% if doc_content.comment is not none %}
+                    <Tab :label="'comment'">
+                        <HTMLCard :html_content="doc_content.comment"/>
+                    </Tab>
+                {% endif %}
+
+                {% if doc.entities is not none %}
+                    <Tab :label="'entities'">
+                        <HTMLCard :html_content="'liste hier'"/>
+                    </Tab>
+                {% endif %}
+            </Tabs>
+        </div>
     </div>
 </section>
 
