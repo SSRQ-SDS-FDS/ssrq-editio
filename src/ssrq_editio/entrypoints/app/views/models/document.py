@@ -5,8 +5,9 @@ from fastapi import Request
 from ssrq_utils.lang.display import Lang
 
 from ssrq_editio.adapters.db.documents import get_document
+from ssrq_editio.adapters.file import load
 from ssrq_editio.entrypoints.app.views.models.base import ViewContext, ViewModel
-from ssrq_editio.models.documents import Document
+from ssrq_editio.models.documents import Document, DocumentDisplay
 from ssrq_editio.models.kantons import KantonName
 from ssrq_editio.models.volumes import Volume
 from ssrq_editio.services.documents import (
@@ -62,18 +63,7 @@ class DocumentViewModel(ViewModel):
                     "volume": self.volume_info,
                     "doc": self.document_info,
                     "orig_places": self.orig_places,
-                    "left_col": [
-                        transcription_dummy,
-                        edition_dummy,
-                        tei_dummy,
-                    ],
-                    "right_col": [
-                        description_dummy,
-                        digital_dummy,
-                        regest_dummy,
-                        comment_dummy,
-                        entities_dummy,
-                    ],
+                    "rendered_doc": await self._transform_document(),
                 },
             },
             translator=self.translator,
@@ -98,56 +88,10 @@ class DocumentViewModel(ViewModel):
 
         self.orig_places = orig_places
 
-
-# https://editio.ssrq-online.ch/ZH/NF_I_1_3/2-1.html?odd=ssrq.odd
-transcription_dummy = {
-    "tab": "transcript",
-    "template": "DocumentTranscriptionCard.jinja",
-    "context": {
-        "title": "Der eid, den die swerren soͤllend, so zuͦ unsern secklern<br />genomen werden",
-        "document": "Item welich zuͦ b secklern genomen werdent, soͤllend swerren, c–der statt schulden<br /> und zinß–c, die in dz d seckelampt und dar zuͦ dienend und gehoͤrend und inen<br /> ingeschrift geben werdent, inzeziechend zuͦ unser gemeinen statt handen und<br /> die zinß und anders, so uff dem seckelampt statt und inen bevolhen wirt<br /> usszegebend, da von und dar uss ze bezallend und ze gebend, so verr das mag<br /> gelangen. Und ob u̍tzit fu̍rschusse, dz zuͦ gemeiner statt handen ze behaltend<br /> und in gemeiner statt nutz ze bekerend und dar inn unser gemeinen statt<br /> nutz unnd ere fuͤrdren und schaden wenden, so verr sy kunnend oder mugend,<br /> e f–und jerlich von irem innemen und ussgeben<br /> rechnung geben, als das von alter herr komen ist, alles getruwlich und ungefaͧrlich.–f g<br />",
-    },
-}
-edition_dummy = {
-    "tab": "edition_text",
-    "template": "DocumentTranscriptionCard.jinja",
-    "context": {
-        "title": "Der eid, den die swerren soͤllend, so zuͦ unsern secklern genomen werden",
-        "document": "Item welich zuͦ b secklern genomen werdent, soͤllend swerren, c–der statt schulden und zinß–c, die in dz d seckelampt und dar zuͦ dienend und gehoͤrend und inen ingeschrift geben werdent, inzeziechend zuͦ unser gemeinen statt handen und die zinß und anders, so uff dem seckelampt statt und inen bevolhen wirt usszegebend, da von und dar uss ze bezallend und ze gebend, so verr das mag gelangen.<br />Und ob u̍tzit fu̍rschusse, dz zuͦ gemeiner statt handen ze behaltend und in gemeiner statt nutz ze bekerend und dar inn unser gemeinen statt nutz unnd ere fuͤrdren und schaden wenden, so verr sy kunnend oder mugend, e f–und jerlich von irem innemen und ussgeben rechnung geben, als das von alter herr komen ist, alles getruwlich und ungefaͧrlich.–f g",
-    },
-}
-tei_dummy = {
-    "tab": "tei_xml",
-    "template": "DocumentTranscriptionCard.jinja",
-    "context": {"title": "", "document": "TEI-XML..."},
-}
-description_dummy = {
-    "tab": "description",
-    "template": "DocumentTranscriptionCard.jinja",
-    "context": {
-        "title": "",
-        "document": "Signatur: StAZH B II 4, Teil II, fol. 19v, Eintrag 1<br />Originaldatierung: ca. 1447 – 1450 (Datierung aufgrund der Schreiberhand)<br />Überlieferung: Eintrag<br />Beschreibstoff: Papier<br />Format B × H (cm): 30.5 × 40.0<br />Sprache: Deutsch<br />Edition<br /><br />Zürcher Stadtbücher, Bd. 3/2, S. 188, Nr. 89",
-    },
-}
-digital_dummy = {
-    "tab": "digital_copy",
-    "template": "DocumentPicture.jinja",
-    "context": {
-        "title_sources": "https://facsimiles.ssrq-sds-fds.ch/iiif/2/StAZH_B_III_2__353.ptif/info.json"
-    },
-}
-regest_dummy = {
-    "tab": "summary",
-    "template": "DocumentTranscriptionCard.jinja",
-    "context": {"title": "", "document": "Regest..."},
-}
-comment_dummy = {
-    "tab": "comment",
-    "template": "DocumentTranscriptionCard.jinja",
-    "context": {"title": "", "document": "Kommentar..."},
-}
-entities_dummy = {
-    "tab": "entities",
-    "template": "DocumentTranscriptionCard.jinja",
-    "context": {"title": "", "document": "Entitäten..."},
-}
+    async def _transform_document(self) -> DocumentDisplay:
+        if self.document_info.source is None:
+            raise ValueError(
+                f"Can't create HTML-View for {self.document_info.uuid}, no source file provided."
+            )
+        source = await load(self.document_info.source.parent, self.document_info.source.name)
+        return self.transformer(xml_src=source, output_lang=self.lang)

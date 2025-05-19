@@ -4,8 +4,6 @@
     translator: Translator,
     volume: Volume,
     doc: Document,
-    previous_document: str | None,
-    next_document: str | None,
 #}
 <div class="flex justify-between text-ssrq-greyed-600">
     <a
@@ -23,10 +21,12 @@
         <span>{{ translator.translate(lang, 'back_to_volume') }}</span>
     </a>
     <div class="flex gap-2">
-        {% if previous_document %}
+        {% if doc.previous_document %}
+            {# ToDo: Use a better solution here (supporting uuids etc.) ... #}
+            {% set idno_parts = doc.previous_document.split('-') %}
             <a
-                href="{{ url_for('document_view', kanton=volume.kanton, volume=volume.machine_name, document=previous_document).include_query_params(lang=lang.value) }}"
-                class="flex items-center gap-2 hover:text-ssrq-primary {{ 'border-r-2 pr-2' if next_document else '' }}"
+                href="{{ url_for('document_view', kanton=idno_parts[1], volume=idno_parts[2] | replace(' ', '_') | replace('/', '_'), document=idno_parts[3:] | join('-') ).include_query_params(lang=lang.value) }}"
+                class="flex items-center gap-2 hover:text-ssrq-primary {{ 'border-r-2 pr-2' if doc.next_document else '' }}"
             >
                 <svg aria-hidden="true"
                     class="h-3 mt-[2px]"
@@ -37,9 +37,11 @@
                 <span>{{ translator.translate(lang, 'previous_piece') }}</span>
             </a>
         {% endif %}
-        {% if next_document %}
+        {% if doc.next_document %}
+            {# ToDo: Use a better solution here (supporting uuids etc.) ... #}
+            {% set idno_parts = doc.next_document.split('-') %}
             <a
-                href="{{ url_for('document_view', kanton=volume.kanton, volume=volume.machine_name, document=next_document).include_query_params(lang=lang.value) }}"
+                href="{{ url_for('document_view', kanton=idno_parts[1], volume=idno_parts[2] | replace(' ', '_') | replace('/', '_'), document=idno_parts[3:] | join('-') ).include_query_params(lang=lang.value) }}"
                 class="flex items-center gap-2 hover:text-ssrq-primary"
             >
                 <span>{{ translator.translate(lang, 'next_piece') }}</span>
