@@ -35,7 +35,7 @@
                     </xsl:when>
                     <xsl:otherwise>
                         <!-- A collection or summary never have a normalized transcript! -->
-                        <xsl:value-of select="()"/>
+                        <xsl:sequence select="()"/>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:map-entry>
