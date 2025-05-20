@@ -16,7 +16,7 @@ css args="":
 
 # Build CSS / JS and start the development server – files in src will be watched
 dev:
-	uv run watchfiles "sh -c 'pkill -f \"fastapi dev {{web_app}}\" || true; sleep 1; {{css_build_command}} && {{js_build_command}} --no-optimize && fastapi dev {{web_app}} --no-reload'" src
+	uv run watchfiles "sh -c 'pkill -f \"fastapi dev {{web_app}}\" || true; sleep 1; {{css_build_command}} && {{js_build_command}} --no-optimize && fastapi dev {{web_app}} --no-reload'" src --ignore-paths {{js_output_dir}},{{css_dir}}/style.css
 
 # Format the code
 fmt:
