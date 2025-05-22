@@ -1,4 +1,6 @@
+import asyncio
 import re
+from itertools import groupby, starmap
 from typing import Sequence, cast
 
 from aiosqlite import Connection
@@ -31,7 +33,7 @@ async def get_entities(
     entity_type: EntityTypes,
     query: str | None = None,
     occurrence: str | None = None,
-    id_json: list[str] | None = None,
+    ids: list[str] | None = None,
 ) -> Entities:
     """A simple service to retrieve entities from the database. Uses the defined
     db adapters to retrieve the entities based on the entity type and query.
@@ -39,34 +41,31 @@ async def get_entities(
     Args:
         connection (Connection): The database connection.
         entity_type (EntityTypes): The entity type to retrieve.
+        query (str | None): The search query.
+        occurrence (str | None): The occurrence to search for.
+        ids (list[str] | None): The list of IDs to search for.
 
     Returns:
         Entities: The entities.
     """
     match entity_type:
         case EntityTypes.FAMILIES:
-            return await search_families(
-                connection, search=query, occurrence=occurrence, id_json=id_json
-            )
+            return await search_families(connection, search=query, occurrence=occurrence, ids=ids)
         case EntityTypes.LEMMATA:
             return await search_lemmata(
-                connection, search=query, occurrence=occurrence, id_json=id_json
+                connection, search=query, occurrence=occurrence, id_json=ids
             )
         case EntityTypes.KEYWORDS:
             return await search_keywords(
-                connection, search=query, occurrence=occurrence, id_json=id_json
+                connection, search=query, occurrence=occurrence, id_json=ids
             )
         case EntityTypes.PLACES:
-            return await search_places(
-                connection, search=query, occurrence=occurrence, id_json=id_json
-            )
+            return await search_places(connection, search=query, occurrence=occurrence, ids=ids)
         case EntityTypes.PERSONS:
-            return await search_persons(
-                connection, search=query, occurrence=occurrence, id_json=id_json
-            )
+            return await search_persons(connection, search=query, occurrence=occurrence, ids=ids)
         case EntityTypes.ORGANIZATIONS:
             return await search_organizations(
-                connection, search=query, occurrence=occurrence, id_json=id_json
+                connection, search=query, occurrence=occurrence, id_json=ids
             )
         case _:
             raise NotImplementedError
@@ -127,37 +126,55 @@ async def resolve_places_for_entities(
 
 async def get_entities_by_ids(
     connection: Connection,
-    id_list: list[str],
-) -> dict["str", Entities]:
+    ids: list[str],
+) -> dict[EntityTypes, Entities] | None:
     """A service to retrieve entities from the database by their IDs. Uses the defined
     db adapters to retrieve the entities based on the entity type and query.
 
     Args:
         connection (Connection): The database connection.
-        id_list (list(str)): List of IDs
+        ids (list(str)): List of IDs
 
     Returns:
-        A dict (keys: "loc", "per", "key", "lem", "org", "fam") of the entities.
+        dict[EntityTypes, Entities]: The entities.
     """
-    entity_type_map: dict = {
-        "loc": EntityTypes.PLACES,
-        "per": EntityTypes.PERSONS,
-        "key": EntityTypes.KEYWORDS,
-        "lem": EntityTypes.LEMMATA,
-        "org": EntityTypes.ORGANIZATIONS,
-    }
-    entity_id_by_group: dict = {}
-    for item in sorted(id_list):
-        entity_id_by_group.setdefault(item[:3], []).append(item)
-    found_entities = {}
-    for key in entity_id_by_group:
-        result = await get_entities(
-            connection, entity_type_map[key], id_json=entity_id_by_group[key]
-        )
-        found_entities[key] = result
-        if key == "org":
-            result_for_families = await get_entities(
-                connection, EntityTypes.FAMILIES, id_json=entity_id_by_group[key]
+    ids_grouped_by_type = groupby(
+        ((map_to_entity_type(id), id) for id in sorted(ids)), key=lambda x: x[0]
+    )
+    tasks = []
+    for k, v in ids_grouped_by_type:
+        current_ids: list[str] = list(starmap(lambda _, v: v, v))
+        for t in k:
+            tasks.append(
+                asyncio.create_task(
+                    get_entities(
+                        connection=connection, entity_type=t, ids=cast(list[str], current_ids)
+                    )
+                )
             )
-            found_entities["fam"] = result_for_families
-    return found_entities
+
+    results: list[Entities] = await asyncio.gather(*tasks)
+
+    if len(results) == 0:
+        return None
+
+    return {cast(EntityTypes, e.entity_type): e for e in results if len(e.entities) > 0}
+
+
+def map_to_entity_type(entity_id: str) -> tuple[EntityTypes, ...]:
+    match entity_id[:3]:
+        case "key":
+            return (EntityTypes.KEYWORDS,)
+        case "lem":
+            return (EntityTypes.LEMMATA,)
+        case "loc":
+            return (EntityTypes.PLACES,)
+        case "per":
+            return (EntityTypes.PERSONS,)
+        case "org":
+            return (
+                EntityTypes.ORGANIZATIONS,
+                EntityTypes.FAMILIES,
+            )
+        case _:
+            raise ValueError(f"Unknown entity ID prefix: {entity_id[:3]}")

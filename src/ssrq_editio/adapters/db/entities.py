@@ -1,8 +1,8 @@
-import json
 from pathlib import Path
 from typing import Type, TypeVar
 
 from aiosqlite import Connection
+from pydantic_core import to_json
 
 from ssrq_editio.adapters.db.config import SQL_DATA_DIR
 from ssrq_editio.adapters.db.shared import store_batches
@@ -161,7 +161,7 @@ async def _store_persons(
                 person.last_mention,
                 person.birth,
                 person.death,
-                json.dumps(person.location),
+                to_json(person.location),
             )
             for person in persons.entities
         ],
@@ -197,7 +197,7 @@ async def _store_families(
                 family.rm_name,
                 family.first_mention,
                 family.last_mention,
-                json.dumps(family.location),
+                to_json(family.location),
             )
             for family in families.entities
         ],
@@ -231,9 +231,9 @@ async def _store_orgs(
                 org.it_name,
                 org.lt_name,
                 org.rm_name,
-                json.dumps(org.de_types, ensure_ascii=False),
-                json.dumps(org.fr_types, ensure_ascii=False),
-                json.dumps(org.location),
+                to_json(org.de_types),
+                to_json(org.fr_types),
+                to_json(org.location),
             )
             for org in orgs.entities
         ],
@@ -270,8 +270,8 @@ async def _store_places(
                 place.nl_name,
                 place.pl_name,
                 place.rm_name,
-                json.dumps(place.de_place_types),
-                json.dumps(place.fr_place_types),
+                to_json(place.de_place_types),
+                to_json(place.fr_place_types),
             )
             for place in places.entities
         ],
@@ -473,7 +473,7 @@ async def search_families(
     query: Path = SQL_DATA_DIR / "get_families.sql",
     search: str | None = None,
     occurrence: str | None = None,
-    id_json: list[str] | None = None,
+    ids: list[str] | None = None,
 ) -> Families:
     """Searches for families in the database.
 
@@ -495,7 +495,7 @@ async def search_families(
             await load(dir=query.parent, name=query.name),
             search,
             occurrence,
-            id_json,
+            ids,
         )
     )
 
@@ -505,7 +505,7 @@ async def search_persons(
     query: Path = SQL_DATA_DIR / "get_persons.sql",
     search: str | None = None,
     occurrence: str | None = None,
-    id_json: list[str] | None = None,
+    ids: list[str] | None = None,
 ) -> Persons:
     """Searches for persons in the database.
 
@@ -527,7 +527,7 @@ async def search_persons(
             await load(dir=query.parent, name=query.name),
             search,
             occurrence,
-            id_json,
+            ids,
         )
     )
 
@@ -537,7 +537,7 @@ async def search_places(
     query: Path = SQL_DATA_DIR / "get_places.sql",
     search: str | None = None,
     occurrence: str | None = None,
-    id_json: list[str] | None = None,
+    ids: list[str] | None = None,
 ) -> Places:
     """Searches for places in the database.
 
@@ -559,7 +559,7 @@ async def search_places(
             await load(dir=query.parent, name=query.name),
             search,
             occurrence,
-            id_json,
+            ids,
         )
     )
 
@@ -570,7 +570,7 @@ async def _search_entities(
     sql_query: str,
     search: str | None = None,
     occurrence: str | None = None,
-    id_json: list[str] | None = None,
+    ids: list[str] | None = None,
 ) -> list[T]:
     async with connection.cursor() as cursor:
         await cursor.execute(
@@ -578,7 +578,7 @@ async def _search_entities(
             {
                 "search": search or "",
                 "occurrence": occurrence or "",
-                "id_json": json.dumps(id_json) if id_json else "",
+                "ids": to_json(ids) if ids else "",
             },
         )
         data = await cursor.fetchall()

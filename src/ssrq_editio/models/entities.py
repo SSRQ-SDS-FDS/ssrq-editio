@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Annotated, Sequence
 
-from pydantic import BaseModel, BeforeValidator
+from pydantic import BaseModel, BeforeValidator, computed_field
 from ssrq_utils.lang.display import Lang
 from ssrq_utils.uca import uca_simple_sort
 
@@ -63,6 +63,10 @@ class Entity(BaseModel):
 class Entities(BaseModel):
     entities: Sequence[Entity]
 
+    @computed_field
+    def entity_type(self) -> EntityTypes:
+        raise NotImplementedError("Subclasses must implement this method.")
+
     def get_by_id(self, entity_id: str) -> Entity | None:
         """Retrieve an entity by its ID.
 
@@ -87,6 +91,10 @@ class Family(Entity):
 
 class Families(Entities):
     entities: Sequence[Family]
+
+    @computed_field
+    def entity_type(self) -> EntityTypes:
+        return EntityTypes.FAMILIES
 
 
 class Keyword(Entity):
@@ -116,6 +124,10 @@ class Keyword(Entity):
 
 class Keywords(Entities):
     entities: Sequence[Keyword]
+
+    @computed_field
+    def entity_type(self) -> EntityTypes:
+        return EntityTypes.KEYWORDS
 
 
 class Lemma(Entity):
@@ -162,6 +174,10 @@ class Lemma(Entity):
 class Lemmata(Entities):
     entities: Sequence[Lemma]
 
+    @computed_field
+    def entity_type(self) -> EntityTypes:
+        return EntityTypes.LEMMATA
+
 
 class Organization(Entity):
     rm_name: str | None
@@ -182,6 +198,10 @@ class Organization(Entity):
 
 class Organizations(Entities):
     entities: Sequence[Organization]
+
+    @computed_field
+    def entity_type(self) -> EntityTypes:
+        return EntityTypes.ORGANIZATIONS
 
 
 class Person(Entity):
@@ -231,6 +251,10 @@ class Person(Entity):
 class Persons(Entities):
     entities: Sequence[Person]
 
+    @computed_field
+    def entity_type(self) -> EntityTypes:
+        return EntityTypes.PERSONS
+
 
 class Place(Entity):
     cs_name: str | None
@@ -274,3 +298,7 @@ class Place(Entity):
 
 class Places(Entities):
     entities: Sequence[Place]
+
+    @computed_field
+    def entity_type(self) -> EntityTypes:
+        return EntityTypes.PLACES

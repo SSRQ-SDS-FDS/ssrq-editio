@@ -1,0 +1,32 @@
+{# def
+    document: Document,
+    entities: dict[EntityTypes, Entities],
+    lang: Lang,
+    request: Request,
+    translator: Translator
+#}
+
+{% set entity_order = {
+    'PLACES': 1,
+    'PERSONS': 2,
+    'FAMILIES': 3,
+    'ORGANIZATIONS': 4,
+    'KEYWORDS': 5,
+    'LEMMATA': 6
+} %}
+{% set sorted_entity_types = entities.keys()|sort(attribute='name', reverse=false) %}
+
+<div {% if 19 < document.entities | length  %}class='md:columns-2'{% endif %}>
+    {% for entity_type in sorted_entity_types %}
+        <h3 class="title-3">{{ translator.translate(lang, entity_type.name|lower) }}</h3>
+        <ul class="mb-4 ml-2">
+            {% for entity in entities[entity_type].entities %}
+            <li>
+                <a class="text-ssrq-primary" href="{{ url_for('entity_view', entity_type=entity_type.value).include_query_params(lang=lang.value, query=entity.id) }}">
+                    {{ entity.get_name_by_lang(lang) }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</div>
