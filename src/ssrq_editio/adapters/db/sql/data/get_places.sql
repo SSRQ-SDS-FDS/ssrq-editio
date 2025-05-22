@@ -32,8 +32,8 @@ WHERE
         :occurrence IS ''
         OR occurrences.printed_idno LIKE '%' || :occurrence || '%'
     ) AND (
-        :id_json = ''
-        OR places.id IN (SELECT ijt.value FROM JSON_EACH(:id_json) AS ijt)
+        :ids = ''
+        OR places.id IN (SELECT ijt.value FROM JSON_EACH(:ids) AS ijt)
     )
 
 UNION

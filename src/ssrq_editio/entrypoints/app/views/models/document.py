@@ -15,6 +15,7 @@ from ssrq_editio.services.documents import (
     create_idno_from_volume_and_doc_number,
     resolve_orig_places_for_documents,
 )
+from ssrq_editio.services.entities import get_entities_by_ids
 from ssrq_editio.services.volumes import get_volume_info
 
 
@@ -59,6 +60,9 @@ class DocumentViewModel(ViewModel):
                 "page_title": self._get_title(),
                 "page_description": self._get_description(),
                 "content": {
+                    "index": await get_entities_by_ids(self.connection, self.document_info.entities)
+                    if self.document_info.entities
+                    else None,
                     "kanton": self.kanton.value,
                     "volume": self.volume_info,
                     "doc": self.document_info,

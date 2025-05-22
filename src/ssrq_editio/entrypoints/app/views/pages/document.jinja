@@ -100,7 +100,7 @@
                         </TabControl>
                     {% endif %}
 
-                    {% if doc.entities is not none %}
+                    {% if doc.entities is not none and data.content.index is not none%}
                         <TabControl :label="'entities'">
                             {{ translator.translate(lang, 'entities') }}
                         </TabControl>
@@ -133,9 +133,15 @@
                     </Tab>
                 {% endif %}
 
-                {% if doc.entities is not none %}
+                {% if doc.entities is not none and data.content.index is not none %}
                     <Tab :label="'entities'">
-                        <HTMLCard :html_content="'liste hier'"/>
+                        <DocumentEntities
+                          :translator="translator"
+                          :document="doc"
+                          :entities="data.content.index"
+                          :request="request"
+                          :lang="lang"
+                        />
                     </Tab>
                 {% endif %}
             </Tabs>
