@@ -41,12 +41,22 @@ def parse_as_list_or_return(value: list | str | None) -> list | None:
     return value if isinstance(value, list) or value is None else from_json(value)
 
 
-def serialize_value(value: T) -> str | bytes | T:
+def serialize_value(value: T) -> str | T:
+    """Serialize a value to a string.
+
+    If a value is a Sequence like a list it will be serialized to a JSON string.
+
+    Args:
+        value (T): The value to serialize.
+
+    Returns:
+        str | T: The serialized value.
+    """
     match value:
         case Path():
             return str(value.absolute())
-        case list():
-            return to_json(value)
+        case list() | dict() | tuple() | set():
+            return to_json(value).decode("utf-8")
         case Enum():
             return value.value
         case _:
