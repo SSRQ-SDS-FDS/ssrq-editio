@@ -2,7 +2,6 @@ from pathlib import Path
 from typing import Type, TypeVar
 
 from aiosqlite import Connection
-from pydantic_core import to_json
 
 from ssrq_editio.adapters.db.config import SQL_DATA_DIR
 from ssrq_editio.adapters.db.shared import store_batches
@@ -24,6 +23,7 @@ from ssrq_editio.models.entities import (
     Place,
     Places,
 )
+from ssrq_editio.services.utils import serialize_value
 
 __all__ = [
     "count_entities",
@@ -161,7 +161,7 @@ async def _store_persons(
                 person.last_mention,
                 person.birth,
                 person.death,
-                to_json(person.location),
+                serialize_value(person.location),
             )
             for person in persons.entities
         ],
@@ -197,7 +197,7 @@ async def _store_families(
                 family.rm_name,
                 family.first_mention,
                 family.last_mention,
-                to_json(family.location),
+                serialize_value(family.location),
             )
             for family in families.entities
         ],
@@ -231,9 +231,9 @@ async def _store_orgs(
                 org.it_name,
                 org.lt_name,
                 org.rm_name,
-                to_json(org.de_types),
-                to_json(org.fr_types),
-                to_json(org.location),
+                serialize_value(org.de_types),
+                serialize_value(org.fr_types),
+                serialize_value(org.location),
             )
             for org in orgs.entities
         ],
@@ -270,8 +270,8 @@ async def _store_places(
                 place.nl_name,
                 place.pl_name,
                 place.rm_name,
-                to_json(place.de_place_types),
-                to_json(place.fr_place_types),
+                serialize_value(place.de_place_types),
+                serialize_value(place.fr_place_types),
             )
             for place in places.entities
         ],
@@ -578,7 +578,7 @@ async def _search_entities(
             {
                 "search": search or "",
                 "occurrence": occurrence or "",
-                "ids": to_json(ids) if ids else "",
+                "ids": serialize_value(ids) if ids else "",
             },
         )
         data = await cursor.fetchall()
