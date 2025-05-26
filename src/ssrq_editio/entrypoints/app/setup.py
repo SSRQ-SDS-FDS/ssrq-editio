@@ -11,6 +11,7 @@ from markdown import markdown  # type: ignore
 from ssrq_utils.i18n.text import normalize_punctuation_marks
 
 from ssrq_editio.entrypoints.app.config import ASSET_DIR, COMPONENT_DIR, ICON_DIR, TEMPLATE_DIR
+from ssrq_editio.entrypoints.app.views.utils import render_template_string
 from ssrq_editio.services.occurrences import group_and_sort_idnos
 from ssrq_editio.services.utils import create_permalink
 
@@ -46,6 +47,7 @@ def app_factory(
     templates.env.globals.update(group_and_sort_idnos=group_and_sort_idnos)
     templates.env.filters.update(markdown=markdown)
     templates.env.filters.update(permalink=create_permalink)
+    templates.env.filters.update(render_template_string=render_template_string)
 
     # Add JinjaX extension, which allows us to us Component-based templates
     templates.env.add_extension(jinjax.JinjaX)
