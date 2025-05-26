@@ -325,3 +325,6 @@ async def test_document_transformer_returns_expected_display_object(
         output_lang=Lang.DE, xml_src=(example_path / "SDS-NE-1-143-1.xml").read_text()
     )
     assert isinstance(result, DocumentDisplay)
+    assert result.summary is None
+    assert result.type == DocumentType.transcript
+    assert isinstance(result.comment, str)
