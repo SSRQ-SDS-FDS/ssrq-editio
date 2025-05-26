@@ -122,7 +122,7 @@
                     <Tab :label="'summary'">
                         {% for summary in doc_content.summary %}
                             {# ToDo: Maybe filter by language? #}
-                            <HTMLCard :html_content="summary" />
+                            <HTMLCard :html_content="summary.content" :template="true" />
                         {% endfor %}
                     </Tab>
                 {% endif %}
