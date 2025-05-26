@@ -2,6 +2,7 @@
 <xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:cutils="http://ssrq-sds-fds.ch/xsl/tei2pub/functions/cutils"
                 xmlns:date="http://ssrq-sds-fds.ch/xsl/tei2pub/functions/date"
+                xmlns:html="http://ssrq-sds-fds.ch/xsl/tei2pub/html"
                 xmlns:i18n="http://ssrq-sds-fds.ch/xsl/tei2pub/functions/i18n"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -40,12 +41,32 @@
                 </xsl:choose>
             </xsl:map-entry>
             <!-- ToDo: Implement conrect rendering here -->
-            <xsl:map-entry select="()" key="'summary'"/>
+            <!-- ToDo: Maybe only process summaries with language = $lang or using a default -->
+            <xsl:map-entry key="'summary'">
+                <xsl:if test=".//tei:summary">
+                    <xsl:variable name="result" as="map(*)+" >
+                        <xsl:apply-templates select=".//tei:summary">
+                            <xsl:with-param name="lang" as="xs:string" tunnel="yes" select="$lang"/>
+                            <xsl:with-param name="translations" as="map(xs:string, map(*))" tunnel="yes" select="$translations"/>
+                        </xsl:apply-templates>
+                    </xsl:variable>
+                    <xsl:sequence select="cutils:seq-to-array($result)"/>
+                </xsl:if>
+            </xsl:map-entry>
             <!-- ToDo: Implement conrect rendering here -->
             <xsl:map-entry key="'transcript'" select="'Quellennahes Transkript'"/>
             <xsl:map-entry key="'type'" select="$type"/>
         </xsl:map>
         
+    </xsl:template>
+    
+    <xsl:template match="tei:summary">
+        <xsl:param name="lang" as="xs:string" tunnel="yes"/>
+        <xsl:param name="translations" as="map(xs:string, map(*))" tunnel="yes"/>
+        <xsl:map>
+            <xsl:map-entry select="html:process-self(., $lang, $translations)" key="'content'"/>
+            <xsl:map-entry select="./@xml:lang/data(.)" key="'lang'"/>
+        </xsl:map>
     </xsl:template>
     
 </xsl:stylesheet>
