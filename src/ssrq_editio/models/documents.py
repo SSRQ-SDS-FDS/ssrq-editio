@@ -1,6 +1,6 @@
 from enum import Enum
 from pathlib import Path
-from typing import Annotated, Any, Self, Sequence
+from typing import Annotated, Any, Self
 
 from pydantic import BaseModel, BeforeValidator, model_validator
 from ssrq_utils.lang.display import Lang
@@ -108,7 +108,7 @@ class DocumentDisplay(BaseModel):
     comment: str | None
     description: str | None = None  # ToDo: Needs concrete modelling!
     normalized_transcript: str | None
-    summary: Sequence[DocumentSummary] | None
+    summary: DocumentSummary | None
     transcript: str
     type: Annotated[
         DocumentType, BeforeValidator : lambda x: DocumentType(x) if isinstance(x, str) else x

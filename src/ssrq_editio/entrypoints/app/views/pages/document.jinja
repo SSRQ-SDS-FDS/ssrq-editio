@@ -120,10 +120,7 @@
 
                 {% if doc_content.summary is not none %}
                     <Tab :label="'summary'">
-                        {% for summary in doc_content.summary %}
-                            {# ToDo: Maybe filter by language? #}
-                            <HTMLCard :html_content="summary.content" :template="true" />
-                        {% endfor %}
+                        <HTMLCard :html_content="doc_content.summary.content" :template="true" />
                     </Tab>
                 {% endif %}
 
