@@ -26,12 +26,12 @@
     <xsl:template match="/">
         <xsl:variable name="type" as="xs:string" select=".//tei:text/@type"/>
         <xsl:map>
-            <!-- ToDo: Implement conrect rendering here -->
+            <!-- ToDo: Implement correct rendering here -->
             <xsl:map-entry key="'comment'" select="'Kommentar'"/>
             <xsl:map-entry key="'normalized_transcript'">
                 <xsl:choose>
                     <xsl:when test="$type = 'transcript'">
-                        <!-- ToDo: Implement conrect rendering here -->
+                        <!-- ToDo: Implement correct rendering here -->
                         <xsl:value-of select="'Normalisiertes Transkript'"/>
                     </xsl:when>
                     <xsl:otherwise>
@@ -40,18 +40,12 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:map-entry>
-            <!-- ToDo: Implement conrect rendering here -->
-            <!-- ToDo: Maybe only process summaries with language = $lang or using a default -->
+            <!-- ToDo: Implement correct rendering here -->
             <xsl:map-entry key="'summary'">
-                <xsl:if test=".//tei:summary">
-                    <xsl:variable name="result" as="map(*)+" >
-                        <xsl:apply-templates select=".//tei:summary">
-                            <xsl:with-param name="lang" as="xs:string" tunnel="yes" select="$lang"/>
-                            <xsl:with-param name="translations" as="map(xs:string, map(*))" tunnel="yes" select="$translations"/>
-                        </xsl:apply-templates>
-                    </xsl:variable>
-                    <xsl:sequence select="cutils:seq-to-array($result)"/>
-                </xsl:if>
+                <xsl:apply-templates select="(.//tei:summary[@xml:lang = $lang], .//tei:summary)[1]">
+                    <xsl:with-param name="lang" as="xs:string" tunnel="yes" select="$lang" />
+                    <xsl:with-param name="translations" as="map(xs:string, map(*))" tunnel="yes" select="$translations"/>
+                </xsl:apply-templates>
             </xsl:map-entry>
             <!-- ToDo: Implement conrect rendering here -->
             <xsl:map-entry key="'transcript'" select="'Quellennahes Transkript'"/>
