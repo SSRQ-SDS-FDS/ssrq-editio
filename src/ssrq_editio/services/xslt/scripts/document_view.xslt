@@ -26,8 +26,12 @@
     <xsl:template match="/">
         <xsl:variable name="type" as="xs:string" select=".//tei:text/@type"/>
         <xsl:map>
-            <!-- ToDo: Implement correct rendering here -->
-            <xsl:map-entry key="'comment'" select="'Kommentar'"/>
+            <xsl:map-entry key="'comment'">
+                <xsl:apply-templates select=".//tei:back">
+                    <xsl:with-param name="lang" as="xs:string" tunnel="yes" select="$lang" />
+                    <xsl:with-param name="translations" as="map(xs:string, map(*))" tunnel="yes" select="$translations"/>
+                </xsl:apply-templates>
+            </xsl:map-entry>
             <xsl:map-entry key="'normalized_transcript'">
                 <xsl:choose>
                     <xsl:when test="$type = 'transcript'">
@@ -63,4 +67,14 @@
         </xsl:map>
     </xsl:template>
     
+    <xsl:template match="tei:back">
+        <xsl:param name="lang" as="xs:string" tunnel="yes"/>
+        <xsl:param name="translations" as="map(xs:string, map(*))" tunnel="yes"/>
+        <xsl:map>
+            <!--<xsl:map-entry select="serialize(html:process-self(., $lang, $translations), map{'method':'html'})" key="'content'"/>-->
+            <xsl:map-entry select="html:process-self(., $lang, $translations)" key="'content'"/>
+            <xsl:map-entry select="./@xml:lang/data(.)" key="'lang'"/> <!-- korrekt? -->
+            <xsl:map-entry select="count(./tei:div)" key="'count'" />
+        </xsl:map>
+    </xsl:template>
 </xsl:stylesheet>
