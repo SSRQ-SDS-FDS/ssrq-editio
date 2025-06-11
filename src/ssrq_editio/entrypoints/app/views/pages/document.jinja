@@ -96,7 +96,7 @@
 
                     {% if doc_content.comment is not none %}
                         <TabControl :label="'comment'">
-                            {{ translator.translate(lang, 'comment') }}
+                            {{ translator.translate(lang, 'comment') }} {% if doc_content.comment.count > 1 %} ({{ doc_content.comment.count}}){% endif %}
                         </TabControl>
                     {% endif %}
 
@@ -126,7 +126,7 @@
 
                 {% if doc_content.comment is not none %}
                     <Tab :label="'comment'">
-                        <HTMLCard :html_content="doc_content.comment"/>
+                        <HTMLCard :html_content="doc_content.comment.content"/>
                     </Tab>
                 {% endif %}
 

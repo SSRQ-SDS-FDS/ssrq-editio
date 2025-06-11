@@ -57,6 +57,12 @@ class DocumentSummary(BaseModel):
     lang: str
 
 
+class DocumentComment(BaseModel):
+    content: str
+    count: int
+    lang: str | None
+
+
 class DocumentTitle(BaseModel):
     de_title: str | None = None
     fr_title: str | None = None
@@ -105,7 +111,7 @@ class DocumentDisplay(BaseModel):
     """A model representing the infos to be displayed in the UI. The fields
     contain the rendered infos, transformed by XSLT."""
 
-    comment: str | None
+    comment: DocumentComment | None
     description: str | None = None  # ToDo: Needs concrete modelling!
     normalized_transcript: str | None
     summary: DocumentSummary | None
