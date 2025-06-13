@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  safelist: ['list-decimal'],
   content: ['./src/ssrq_editio/entrypoints/app/**/*.{html,jinja,xsl,json}'],
   darkMode: 'media',
   theme: {

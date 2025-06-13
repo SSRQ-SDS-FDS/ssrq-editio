@@ -1,0 +1,8 @@
+/*@layer utilities {*/
+ol.tei-back{
+    @apply list-decimal pl-4;
+}
+.tei-a{
+    @apply text-ssrq-primary;
+}
+/*}*/
