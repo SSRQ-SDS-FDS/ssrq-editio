@@ -59,7 +59,6 @@ class DocumentSummary(BaseModel):
 
 class DocumentComment(BaseModel):
     content: str
-    count: int
     lang: str | None
 
 

@@ -71,10 +71,8 @@
         <xsl:param name="lang" as="xs:string" tunnel="yes"/>
         <xsl:param name="translations" as="map(xs:string, map(*))" tunnel="yes"/>
         <xsl:map>
-            <!--<xsl:map-entry select="serialize(html:process-self(., $lang, $translations), map{'method':'html'})" key="'content'"/>-->
             <xsl:map-entry select="html:process-self(., $lang, $translations)" key="'content'"/>
             <xsl:map-entry select="./@xml:lang/data(.)" key="'lang'"/> <!-- korrekt? -->
-            <xsl:map-entry select="count(./tei:div)" key="'count'" />
         </xsl:map>
     </xsl:template>
 </xsl:stylesheet>
