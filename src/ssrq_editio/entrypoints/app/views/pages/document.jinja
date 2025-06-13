@@ -96,7 +96,7 @@
 
                     {% if doc_content.comment is not none %}
                         <TabControl :label="'comment'">
-                            {{ translator.translate(lang, 'comment') }} {% if doc_content.comment.count > 1 %} ({{ doc_content.comment.count}}){% endif %}
+                            {{ translator.translate(lang, 'comment') }}
                         </TabControl>
                     {% endif %}
 
