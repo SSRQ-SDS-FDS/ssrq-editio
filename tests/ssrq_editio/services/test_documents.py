@@ -5,7 +5,7 @@ from saxonche import PyXdmMap, PyXdmNode, PyXsltExecutable
 from ssrq_utils.lang.display import Lang
 
 from ssrq_editio.adapters.file import load
-from ssrq_editio.models.documents import Document, DocumentDisplay, DocumentType
+from ssrq_editio.models.documents import Document, DocumentComment, DocumentDisplay, DocumentType
 from ssrq_editio.services.documents import (
     DocumentTransformer,
     extract_infos_from_xml,
@@ -327,4 +327,4 @@ async def test_document_transformer_returns_expected_display_object(
     assert isinstance(result, DocumentDisplay)
     assert result.summary is None
     assert result.type == DocumentType.transcript
-    assert isinstance(result.comment, str)
+    assert isinstance(result.comment, DocumentComment)
