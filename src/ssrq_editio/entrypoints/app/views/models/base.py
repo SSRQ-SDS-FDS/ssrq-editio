@@ -29,6 +29,8 @@ class ViewContext(TypedDict):
 
 
 class ViewModel:
+    css: set[str] = {"fonts/font.css", "css/style.css"}
+    js: set[str] = {"js/dist/app.js"}
     lang: Lang
     request: Request
     page: str
@@ -48,8 +50,42 @@ class ViewModel:
         self.lang = lang
         self.translator = Translator(translation_source)
 
+    def add_css(self, name: str):
+        """Add a additional (view specific) CSS file to the model.
+
+        Args:
+            name (str): The name of the CSS file to add.
+
+        Returns:
+            None
+        """
+        self.css.add(name)
+
+    def add_js(self, name: str):
+        """Add a additional (view specific) JS file to the model.
+
+        Args:
+            name (str): The name of the JS file to add.
+
+        Returns:
+            None
+        """
+        self.js.add(name)
+
     async def create_context(self) -> ViewContext:
         raise NotImplementedError
+
+    def put_assets_in_context(self, context: dict[str, Any]) -> None:
+        """Put the assets (CSS and JS) into the context.
+
+        Args:
+            context (dict[str, Any]): The context to put the assets in.
+
+        Returns:
+            None
+        """
+        context["css"] = self.css
+        context["js"] = self.js
 
     def error_to_html(self, error: Exception) -> HTMLResponse:
         return self.templates.TemplateResponse(
@@ -71,6 +107,7 @@ class ViewModel:
     async def _to_html(self) -> HTMLResponse:
         try:
             context = cast(dict, await self.create_context())
+            self.put_assets_in_context(context)
             page_template = f"pages/{self.page}"
 
             # If the request is an htmx request and a partial template is set,
