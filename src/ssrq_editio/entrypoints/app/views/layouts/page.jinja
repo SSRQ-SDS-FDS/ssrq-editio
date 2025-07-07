@@ -1,8 +1,9 @@
 <html lang="{{ lang.value }}">
     <Head :description="{{ data.page_description }}"
           :favicon="{{ url_for('static', path='images/favicon-ssrq-32.png') }}"
-          :stylesheets="{{ [url_for('static', path='fonts/font.css') , url_for('static', path='css/style.css')] }}"
-          :scripts="{{ [url_for('static', path='js/dist/app.js')] }}"
+          :request="request"
+          :stylesheets="{{ css | list }}"
+          :scripts="{{ js | list }}"
           :title="{{ data.page_title }}" />
     <body id="body" class="flex flex-col min-h-screen">
         <Navbar :lang="lang" :request="request" :translator="translator" />
