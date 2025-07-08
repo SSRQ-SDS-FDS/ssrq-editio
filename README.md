@@ -91,6 +91,10 @@ The `main` branch reflects the actual production state. The `dev` branch is used
 
 The TEI-XML files are included as git-submodules in the `src/ssrq_editio/data` folder. To add new data submodules, just add a new submodule and extend the configuration found in `data.config.json`.
 
+### Adding additional CSS / JS files
+
+The base `ViewModel` (`src/ssrq_editio/entrypoints/app/views/models/base.py`) defines a set of CSS and JS files which are used by all views of the web application. If you want to add additional CSS or JS files, you can need to call the `add_css` or `add_js` in the specific view model. For building / shipping you need to add these files to the `justfile` and `package.json` as well (see the used files for example).
+
 ## Deployment
 
 To be Done.
