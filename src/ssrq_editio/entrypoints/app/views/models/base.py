@@ -30,7 +30,7 @@ class ViewContext(TypedDict):
 
 class ViewModel:
     css: set[str] = {"fonts/font.css", "css/style.css"}
-    js: set[str] = {"js/dist/app.js"}
+    js: set[str] = {"js/dist/app/app.js"}
     lang: Lang
     request: Request
     page: str

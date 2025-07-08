@@ -48,6 +48,7 @@ class DocumentViewModel(ViewModel):
         self.volume = volume
         self.document = document
         self.transformer = transformer
+        self.add_js("js/dist/facs/facs.js")
 
     async def create_context(self) -> ViewContext:
         await self._get_volume_info()
