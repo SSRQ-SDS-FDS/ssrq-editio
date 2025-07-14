@@ -1,15 +1,41 @@
 @layer components {
-  .popup > summary {
-    @apply list-none cursor-pointer;
+  .popup {
+    @apply inline relative;
   }
+
+  .popup > summary {
+    @apply list-none cursor-pointer pb-[0.5px] border-b-black border-dotted border-b-[1px];
+  }
+
   .popup > summary::-webkit-details-marker,
   .popup > summary::marker {
     @apply hidden;
   }
-  .popup > div.popup-content {
-    @apply absolute bg-white border rounded-md p-4 text-black text-sm;
+
+  .popup .popup-header {
+    @apply flex mb-2 gap-4 z-50;
   }
-  .popup > div.popup-content .popup-close-button {
-    @apply absolute top-0 right-0 p-4 focus:outline-none;
+
+  .popup .popup-header .popup-close-button {
+    @apply hover:text-ssrq-primary w-5 h-5 focus:outline-none ml-auto text-ssrq-greyed-700;
+  }
+
+  .popup > div.popup-body {
+    @apply absolute bg-white border rounded-md p-2 text-black text-sm z-50;
+  }
+
+  .popup > div.popup-body.has-marker {
+    top: calc(100% + 0.5rem);
+  }
+
+  .popup > div.popup-body.has-marker::before {
+    content: '';
+    @apply absolute border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-white top-[-8px] z-50 left-2;
+  }
+
+  .popup > div.popup-body.has-marker::after {
+    content: '';
+    @apply absolute border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-gray-300 top-[-9px] left-2;
+    z-index: -1;
   }
 }
