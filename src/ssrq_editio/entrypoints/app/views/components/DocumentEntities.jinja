@@ -22,9 +22,25 @@
         <ul class="mb-4 ml-2">
             {% for entity in entities[entity_type].entities %}
             <li>
-                <a class="text-ssrq-primary" href="{{ url_for('entity_view', entity_type=entity_type.value).include_query_params(lang=lang.value, query=entity.id) }}">
-                    {{ entity.get_name_by_lang(lang) }}
-                </a>
+                {% set display_name = entity.get_name_by_lang(lang) %}
+                <Popup>
+                    <PopupTrigger>
+                        {{ display_name }}
+                    </PopupTrigger>
+                    <PopupBody class="has-marker">
+                        <PopupHeader />
+                        <PopupContent class="min-w-max max-w-40">
+                            <EntityPreview
+                                :entity="entity"
+                                :entity_type="entity_type.value"
+                                :lang="lang"
+                                :name="display_name"
+                                :request="request"
+                                :translator="translator"
+                            />
+                        </PopupContent>
+                    </PopupBody>
+                </Popup>
             </li>
             {% endfor %}
         </ul>
