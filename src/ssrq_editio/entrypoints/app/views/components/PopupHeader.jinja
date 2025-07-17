@@ -1,8 +1,0 @@
-{% do attrs.add_class("popup-header") %}
-
-<div {{ attrs.render() }} >
-    {{ content }}
-    <button class="popup-close-button" @click="$root.open = false">
-        <CloseIcon/>
-    </button>
-</div>
