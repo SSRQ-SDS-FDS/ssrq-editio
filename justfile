@@ -17,12 +17,12 @@ css args="":
     for pair in {{css_files}}; do
         input_file=$(echo "$pair" | cut -d':' -f1)
         output_file=$(echo "$pair" | cut -d':' -f2)
-        npx tailwindcss -c tailwind.config.js -i "{{css_dir}}/$input_file" -o "{{css_dir}}/$output_file" -m {{args}}
+        npx tailwindcss -c tailwind.config.js -i "{{css_dir}}/$input_file" -o "{{css_dir}}/dist/$output_file" -m {{args}}
     done
 
 # Build CSS / JS and start the development server – files in src will be watched
 dev:
-	uv run watchfiles "sh -c 'pkill -f \"fastapi dev {{web_app}}\" || true; sleep 1; just css && {{js_build_command}} --no-optimize && fastapi dev {{web_app}} --no-reload'" src --ignore-paths {{js_output_dir}},{{css_dir}}/*.css
+	uv run watchfiles "sh -c 'pkill -f \"fastapi dev {{web_app}}\" || true; sleep 1; just css && {{js_build_command}} --no-optimize && fastapi dev {{web_app}} --no-reload'" src --ignore-paths {{js_output_dir}},{{css_dir}}/dist
 
 # Format the code
 fmt:

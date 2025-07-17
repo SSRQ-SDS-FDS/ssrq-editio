@@ -12,16 +12,8 @@
     @apply hidden;
   }
 
-  .popup .popup-header {
-    @apply flex mb-2 gap-4 z-50;
-  }
-
-  .popup .popup-header .popup-close-button {
-    @apply hover:text-ssrq-primary w-5 h-5 focus:outline-none ml-auto text-ssrq-greyed-700;
-  }
-
   .popup > div.popup-body {
-    @apply absolute bg-white border rounded-md p-2 text-black text-sm z-50;
+    @apply absolute bg-white border rounded-md p-4 text-black text-sm z-50 shadow-sm;
   }
 
   .popup > div.popup-body.has-marker {
