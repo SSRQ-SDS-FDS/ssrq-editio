@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-model href="https://schema.ssrq-sds-fds.ch/latest/TEI_Schema.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?><?xml-model href="https://schema.ssrq-sds-fds.ch/latest/TEI_Schema.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?><TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="de">
+	<teiHeader>
+		<fileDesc>
+			<titleStmt><title>IX. Abteilung: Die Rechtsquellen des Kantons Freiburg, Erster Teil: Stadtrechte, Zweite Reihe: Das Recht der Stadt Freiburg,
+					Band 8: Freiburger Hexenprozesse 15.–18. Jahrhundert</title><editor>
+    <persName>Rita Binz-Wohlhauser</persName>
+</editor><editor>
+    <persName>Lionel Dorthe</persName>
+</editor><respStmt><persName>Rita Binz-Wohlhauser</persName><resp>Transkription</resp><resp>XML-Codierung der Transkription</resp></respStmt><respStmt><persName>Lionel Dorthe</persName><resp>Transkription</resp><resp>XML-Codierung der Transkription</resp></respStmt></titleStmt>
+
+			<publicationStmt><publisher>SSRQ-SDS-FDS</publisher>
+				<date type="electronic" when-custom="2019-07-23"/>
+				<date type="print" when-custom="2022-06-10"/>
+			<availability>
+    <licence target="https://creativecommons.org/licenses/by-nc-sa/4.0/">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</licence>
+
+</availability></publicationStmt>
+
+			<seriesStmt>
+				<title>Sammlung Schweizerischer Rechtsquellen</title>
+				<respStmt>
+					<orgName>Rechtsquellenstiftung der Schweizerischen Juristischen Gesellschaft</orgName>
+					<resp>Herausgabe</resp>
+				</respStmt>
+				<idno>SSRQ-FR-I_2_8-83.0-1</idno><idno type="uuid">94abe149-b177-473a-948c-462c69f594d2</idno>
+			</seriesStmt>
+
+			<sourceDesc>
+				<msDesc>
+
+					<head xml:lang="de">Marie Pillet-Clerc, Clauda Pillet – Anweisung, Verhör und Urteil</head>
+					<head xml:lang="fr">Marie Pillet-Clerc, Clauda Pillet – Instruction, interrogatoire et jugement</head>
+					<msContents>
+						<summary xml:lang="de"><p>Die Witwe Marie Pillet-Clerc aus Estavayer-le-Gibloux und ihre Tochter Clauda werden der Hexerei wegen verdächtigt, verhört und freigesprochen.</p></summary><summary xml:lang="fr"><p>La veuve Marie Pillet-Clec, d’Estavayer-le-Gibloux, et sa fille Clauda sont suspectées de sorcellerie. Elles sont interrogées et libérées.</p></summary><msItem>
+							<textLang xml:lang="fr"/>
+							<textLang xml:lang="de"/>
+							
+						</msItem>
+					</msContents>
+					
+					<history>
+						<origin><origDate type="document" from-custom="1629-03-03" to-custom="1629-03-06" calendar="unknown"/></origin>
+					</history>
+					
+				</msDesc>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc><editorialDecl><p><ref target="https://p.ssrq-sds-fds.ch/guidelines/transcription"/></p></editorialDecl></encodingDesc>
+		<profileDesc>
+			<textClass>
+				<keywords>
+					<term ref="key005812"/>
+				</keywords>
+			</textClass>
+		</profileDesc>
+	</teiHeader>
+	<text type="collection"><body><bibl><ref target="urn:ssrq:SSRQ-FR-I_2_8-83.1-1">SSRQ FR I/2/8 83.1-1</ref></bibl><bibl><ref target="urn:ssrq:SSRQ-FR-I_2_8-83.2-1">SSRQ FR I/2/8 83.2-1</ref></bibl><bibl><ref target="urn:ssrq:SSRQ-FR-I_2_8-83.3-1">SSRQ FR I/2/8 83.3-1</ref></bibl><bibl><ref target="urn:ssrq:SSRQ-FR-I_2_8-83.4-1">SSRQ FR I/2/8 83.4-1</ref></bibl><bibl><ref target="urn:ssrq:SSRQ-FR-I_2_8-83.5-1">SSRQ FR I/2/8 83.5-1</ref></bibl></body></text>
+</TEI>
