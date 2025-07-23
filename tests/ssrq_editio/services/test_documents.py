@@ -5,7 +5,13 @@ from saxonche import PyXdmMap, PyXdmNode, PyXsltExecutable
 from ssrq_utils.lang.display import Lang
 
 from ssrq_editio.adapters.file import load
-from ssrq_editio.models.documents import Document, DocumentComment, DocumentDisplay, DocumentType
+from ssrq_editio.models.documents import (
+    Document,
+    DocumentComment,
+    DocumentDisplay,
+    DocumentSummary,
+    DocumentType,
+)
 from ssrq_editio.services.documents import (
     DocumentTransformer,
     extract_infos_from_xml,
@@ -328,3 +334,16 @@ async def test_document_transformer_returns_expected_display_object(
     assert result.summary is None
     assert result.type == DocumentType.transcript
     assert isinstance(result.comment, DocumentComment)
+
+
+@pytest.mark.anyio
+async def test_document_transformer_returns_always_one_summary(
+    document_transformer: DocumentTransformer, example_path: Path
+):
+    for lang in [Lang.DE, Lang.FR, Lang.EN, Lang.IT]:
+        result = document_transformer(
+            output_lang=lang,
+            xml_src=(example_path / "SSRQ-FR-I_2_8-83.0-1.xml").read_text(),
+        )
+        assert isinstance(result, DocumentDisplay)
+        assert isinstance(result.summary, DocumentSummary)
