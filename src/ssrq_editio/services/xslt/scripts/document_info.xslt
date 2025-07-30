@@ -7,16 +7,17 @@
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:tei="http://www.tei-c.org/ns/1.0"
                 exclude-result-prefixes="#all" expand-text="yes" version="3.0">
-
+    
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/core-utils.xsl"/>
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/date.xsl"/>
-
+    <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/text-utils.xsl"/>
+    
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/html.xsl"/>
-
+    
     <xsl:param name="schema" as="xs:string"/>
-
+    
     <xsl:output method="json" encoding="utf-8"/>
-
+    
     <xsl:template match="/">
         <xsl:variable name="idno" as="text()" select="cutils:get-document-idno(./tei:TEI)/text()"/>
         <xsl:map>
@@ -36,11 +37,11 @@
             <xsl:map-entry key="'type'" select=".//tei:text/@type/data(.)"/>
         </xsl:map>
     </xsl:template>
-
+    
     <xsl:template match="tei:msDesc">
         <xsl:apply-templates select="./tei:history/tei:origin|tei:head"/>
     </xsl:template>
-
+    
     <xsl:template match="tei:head">
         <xsl:param name="translations" as="map(xs:string, map(*))" tunnel="yes"/>
         <xsl:variable name="head">
@@ -54,7 +55,7 @@
             select="$head => serialize() => normalize-space()"
             />
     </xsl:template>
-
+    
     <xsl:template match="tei:origin">
         <xsl:if test=".[tei:origPlace]">
             <xsl:variable name="references" as="xs:string+">
@@ -73,7 +74,7 @@
         </xsl:if>
         <xsl:apply-templates select="(tei:origDate[@type = 'content'], tei:origDate[@type = 'document'])[1]"/>
     </xsl:template>
-
+    
     <xsl:template match="tei:origDate">
         <xsl:param name="translations" as="map(xs:string, map(*))" tunnel="yes"/>
         <xsl:call-template name="render-origDate">
@@ -81,7 +82,7 @@
         </xsl:call-template>
         <xsl:call-template name="extract-orig-years"/>
     </xsl:template>
-
+    
     <xsl:template name="render-origDate">
         <xsl:param name="translations" as="map(xs:string, map(*))" tunnel="yes"/>
         <xsl:variable name="context" as="element(tei:origDate)" select="."/>
@@ -95,7 +96,7 @@
             <xsl:map-entry key=". || '_orig_date'" select="$rendered-date => serialize() => normalize-space()"/>
         </xsl:for-each>
     </xsl:template>
-
+    
     <xsl:template name="extract-orig-years">
         <xsl:choose>
             <xsl:when test=".[@when-custom] and date:is-full-date(@when-custom)">
@@ -117,7 +118,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
+    
     <xsl:template name="extract-orig-years-when-custom">
         <xsl:param name="date" as="xs:string"/>
         <xsl:param name="calendar" as="xs:string"/>
@@ -133,15 +134,15 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
+    
     <xsl:template name="extract-orig-years-from-to">
         <xsl:param name="start" as="xs:string"/>
         <xsl:param name="end" as="xs:string"/>
         <xsl:param name="calendar" as="xs:string?"/>
-
+        
         <xsl:variable name="start-is-full-date" select="date:is-full-date($start)"/>
         <xsl:variable name="end-is-full-date" select="date:is-full-date($end)"/>
-
+        
         <xsl:choose>
             <xsl:when test="$start-is-full-date and $end-is-full-date and date:is-old-calendar($calendar)">
                 <xsl:map-entry
@@ -181,8 +182,8 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
-
-
-
+    
+    
+    
+    
 </xsl:stylesheet>

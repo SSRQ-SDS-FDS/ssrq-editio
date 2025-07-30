@@ -6,6 +6,7 @@
     
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/core-utils.xsl"/>
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/date.xsl"/>
+    <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/text-utils.xsl"/>
     
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/html.xsl"/>
     

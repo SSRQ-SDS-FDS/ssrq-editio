@@ -2,12 +2,11 @@ FROM node:23-slim AS builder
 
 WORKDIR /editio
 
-COPY tailwind.config.js package.json package-lock.json /editio/
+COPY justfile tailwind.config.js package.json package-lock.json /editio/
 COPY src /editio/src
 
 RUN npm install && \
-    npx tailwindcss -c tailwind.config.js -i ./src/ssrq_editio/entrypoints/app/static/css/src/main.css -o ./src/ssrq_editio/entrypoints/app/static/css/style.css -m && \
-    npx parcel build --dist-dir ./src/ssrq_editio/entrypoints/app/static/js/dist
+    npx rust-just build
 
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm
 
@@ -32,7 +31,7 @@ RUN uv venv && \
     adduser ssrq_editio && \
     chown -R ssrq_editio:ssrq_editio /editio
 
-COPY --from=builder /editio/src/ssrq_editio/entrypoints/app/static/css/style.css /editio/src/ssrq_editio/entrypoints/app/static/css/style.css
+COPY --from=builder /editio/src/ssrq_editio/entrypoints/app/static/css/dist /editio/src/ssrq_editio/entrypoints/app/static/css/dist
 COPY --from=builder /editio/src/ssrq_editio/entrypoints/app/static/js/dist /editio/src/ssrq_editio/entrypoints/app/static/js/dist
 
 USER ssrq_editio
