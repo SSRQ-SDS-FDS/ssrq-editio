@@ -126,7 +126,16 @@
 
                 {% if doc_content.comment is not none %}
                     <Tab :label="'comment'">
-                        <HTMLCard :html_content="doc_content.comment.content"/>
+                        <HTMLCard
+                          :html_content="doc_content.comment.content"
+                          :template="true"
+                          :additional_data="{
+                            'entities': data.content.index,
+                            'lang': lang,
+                            'translator': translator,
+                            'request': request
+                          }"
+                        />
                     </Tab>
                 {% endif %}
 
@@ -138,6 +147,7 @@
                           :entities="data.content.index"
                           :request="request"
                           :lang="lang"
+                          :translator="translator"
                         />
                     </Tab>
                 {% endif %}

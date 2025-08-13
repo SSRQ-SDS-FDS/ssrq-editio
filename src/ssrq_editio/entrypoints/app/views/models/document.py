@@ -49,6 +49,7 @@ class DocumentViewModel(ViewModel):
         self.document = document
         self.transformer = transformer
         self.add_js("js/dist/facs/facs.js")
+        self.add_css("css/dist/transcript.css")
 
     async def create_context(self) -> ViewContext:
         await self._get_volume_info()
