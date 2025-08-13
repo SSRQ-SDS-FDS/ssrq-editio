@@ -66,10 +66,11 @@
     </li>
     {% endif %}
 </ul>
-
+{# Use an internal link, when we have internal detail views for entities!!! #}
 <a
     class="text-ssrq-primary"
-    href="{{ url_for('entity_view', entity_type=entity_type).include_query_params(query=entity.id, lang=lang.value) }}">
-    {{ translator.translate(lang, 'details') }}
+    target="_blank"
+    href="{{ entity.id | permalink }}">
+    {{ translator.translate(lang, 'database_entry') }}
     <ArrowRightIcon class="w-3 h-3 inline-block ml-1" />
 </a>

@@ -1,8 +1,12 @@
-/*@layer utilities {*/
-ol.tei-back{
-    @apply list-decimal pl-4;
+ol.tei-back {
+  @apply list-decimal pl-4;
 }
-.tei-a{
-    @apply text-ssrq-primary;
+
+.tei-entity-popup {
+    @apply min-w-max max-w-40;
 }
-/*}*/
+
+/* Maybe obsolete ?! */
+.tei-a {
+  @apply text-ssrq-primary;
+}

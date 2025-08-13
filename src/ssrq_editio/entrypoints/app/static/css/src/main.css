@@ -18,7 +18,6 @@
 @import "./utilities/layout.css";
 @import "./utilities/text.css";
 @import "./utilities/cloak.css";
-@import "./utilities/transcript.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
