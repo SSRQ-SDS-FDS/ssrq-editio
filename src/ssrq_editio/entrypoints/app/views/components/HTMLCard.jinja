@@ -1,13 +1,14 @@
 {# A basic component, which takes html as a string and renders the output into a simple container #}
 {# If template is set to true it uses the render_template_string filter, which will render included template expressions #}
 {# def
+    additional_data: dict[str, Any] | None = None,
     html_content: str,
     template: bool = False
 #}
 
 <div>
     {% if template %}
-        {{ html_content | render_template_string }}
+        {{ html_content | render_template_string(additional_data) }}
     {% else %}
         {{ html_content | safe }}
     {% endif %}
