@@ -8,6 +8,14 @@
     "literature": null
   },
   {
+    "key": "NE_1",
+    "kanton": "NE",
+    "name": "1",
+    "prefix": "SDS",
+    "pdf": null,
+    "literature": null
+  },
+  {
     "key": "NE_3",
     "kanton": "NE",
     "name": "3",
@@ -36,7 +44,7 @@
     "kanton": "ZH",
     "name": "NF I/1/3",
     "prefix": "SSRQ",
-    "pdf": null,
+    "pdf": "TeX/SSRQ-ZH-NF_I_1_3.pdf",
     "literature": null
   },
   {
@@ -44,7 +52,7 @@
     "kanton": "ZH",
     "name": "NF I/1/11",
     "prefix": "SSRQ",
-    "pdf": null,
+    "pdf": "TeX/SSRQ-ZH-NF_I_1_11.pdf",
     "literature": null
   },
   {
@@ -52,7 +60,7 @@
     "kanton": "ZH",
     "name": "NF I/2/1",
     "prefix": "SSRQ",
-    "pdf": null,
+    "pdf": "TeX/SSRQ-ZH-NF_I_2_1.pdf",
     "literature": null
   },
   {
@@ -60,7 +68,7 @@
     "kanton": "ZH",
     "name": "NF II/3",
     "prefix": "SSRQ",
-    "pdf": null,
+    "pdf": "TeX/SSRQ-ZH-NF_II_3.pdf",
     "literature": null
   },
   {
@@ -68,7 +76,7 @@
     "kanton": "ZH",
     "name": "NF II/11",
     "prefix": "SSRQ",
-    "pdf": null,
+    "pdf": "TeX/SSRQ-ZH-NF_II_11.pdf",
     "literature": null
   },
   {

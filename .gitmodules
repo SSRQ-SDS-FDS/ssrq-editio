@@ -37,3 +37,6 @@
 [submodule "src/ssrq_editio/data/ZH_NF_II_11"]
 	path = src/ssrq_editio/data/ZH_NF_II_11
 	url = https://github.com/SSRQ-SDS-FDS/ZH_NF_II_11.git
+[submodule "src/ssrq_editio/data/NE_1"]
+	path = src/ssrq_editio/data/NE_1
+	url = https://github.com/SSRQ-SDS-FDS/NE_1.git
