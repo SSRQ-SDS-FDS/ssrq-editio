@@ -4,7 +4,11 @@
   }
 
   .popup > summary {
-    @apply list-none cursor-pointer pb-[0.5px] border-b-black border-dotted border-b-[1px];
+    @apply list-none cursor-pointer;
+  }
+
+  .popup.has-border > summary {
+    @apply pb-[0.5px] border-b-black border-dotted border-b-[1px];
   }
 
   .popup > summary::-webkit-details-marker,
