@@ -111,6 +111,10 @@ class DocumentFulltext(BaseModel):
     text: str
 
 
+class DocumentFulltextResult(Document):
+    ft_match: str
+
+
 class DocumentDisplay(BaseModel):
     """A model representing the infos to be displayed in the UI. The fields
     contain the rendered infos, transformed by XSLT."""

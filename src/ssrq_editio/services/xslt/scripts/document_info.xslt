@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:cutils="http://ssrq-sds-fds.ch/xsl/tei2pub/functions/cutils"
+                xmlns:documents="http://ssrq-sds-fds.ch/xsl/tei2pub/functions/documents"
                 xmlns:date="http://ssrq-sds-fds.ch/xsl/tei2pub/functions/date"
                 xmlns:i18n="http://ssrq-sds-fds.ch/xsl/tei2pub/functions/i18n"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -36,7 +37,7 @@
                     select="i18n:create-translation-map(doc($schema)/tei:TEI)"
                     />
             </xsl:apply-templates>
-            <xsl:map-entry key="'text'" select="'bar'"/>
+            <xsl:map-entry key="'text'" select="documents:extract-ft(./tei:TEI)"/>
             <xsl:map-entry key="'type'" select=".//tei:text/@type/data(.)"/>
         </xsl:map>
     </xsl:template>
@@ -186,6 +187,10 @@
         </xsl:choose>
     </xsl:template>
     
+    <xsl:function name="documents:extract-ft" as="xs:string">
+        <xsl:param name="input" as="element(tei:TEI)"/>
+        <xsl:sequence select="$input/string() => normalize-space()"/>
+    </xsl:function>
     
     
     
