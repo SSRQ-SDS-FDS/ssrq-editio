@@ -1,12 +1,14 @@
-ol.tei-back {
-  @apply list-decimal pl-4;
-}
-
+/* General style */
 .tei-entity-popup {
     @apply min-w-max max-w-40;
 }
 
-/* Maybe obsolete ?! */
-.tei-a {
-  @apply text-ssrq-primary;
+/* Element specific styles */
+
+ol.tei-back {
+  @apply list-decimal pl-4;
+}
+
+.tei-p {
+    @apply my-2;
 }
