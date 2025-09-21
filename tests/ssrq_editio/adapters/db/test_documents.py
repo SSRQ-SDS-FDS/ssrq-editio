@@ -8,8 +8,9 @@ from ssrq_editio.adapters.db.documents import (
     get_document_infos,
     get_documents,
     initialize_document_data,
+    initialize_document_fulltext,
 )
-from ssrq_editio.models.documents import Document, DocumentType
+from ssrq_editio.models.documents import Document, DocumentFulltext, DocumentType
 
 
 def create_years():
@@ -49,10 +50,21 @@ def documents():
     return tuple(documents)
 
 
+@pytest.fixture
+def fulltext(documents):
+    return tuple(DocumentFulltext(uuid=d.uuid, text="foo bar foo") for d in documents)
+
+
 @pytest.mark.anyio
 async def test_initialize_document_data(db_volume_data, documents):
     # Smoke test, if query is successful
     await initialize_document_data(documents=documents, connection=db_volume_data)
+
+
+@pytest.mark.anyio
+async def test_initialize_document_fulltext(db_volume_data, fulltext):
+    # Smoke test, if query is successful
+    await initialize_document_fulltext(documents=fulltext, connection=db_volume_data)
 
 
 @pytest.mark.anyio

@@ -97,7 +97,7 @@ async def setup_documents(
         xml_src=files, volume_id=volume_id, transpiled_schema=transpiled_schema, parallel=parallel
     )
 
-    await initialize_document_data(documents=documents, connection=connection)
+    await initialize_document_data(documents=tuple(d[0] for d in documents), connection=connection)
 
     SSRQ_LOGGER.success(
         f"Extracted and inserted document data for »{volume_id}« into the database."

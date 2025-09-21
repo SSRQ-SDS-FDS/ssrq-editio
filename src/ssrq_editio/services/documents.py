@@ -11,7 +11,7 @@ from ssrq_utils.uca import uca_simple_sort
 
 from ssrq_editio.adapters.db.documents import get_document
 from ssrq_editio.adapters.file import load
-from ssrq_editio.models.documents import Document, DocumentDisplay
+from ssrq_editio.models.documents import Document, DocumentDisplay, DocumentFulltext
 from ssrq_editio.models.entities import EntityTypes, Places
 from ssrq_editio.models.volumes import Volume
 from ssrq_editio.services.entities import get_entities
@@ -190,7 +190,7 @@ async def extract_infos_from_xml(
     transpiled_schema: Path,
     xslt_script: str = DOCUMENT_INFO_XSLT,
     parallel: bool = False,
-) -> tuple[Document, ...]:
+) -> tuple[tuple[Document, DocumentFulltext], ...]:
     """Extracts infos from the given TEI-XML sources for a specific volume.
 
     The information extraction is mainly done by applying an XSLT script, which
@@ -233,7 +233,10 @@ async def extract_infos_from_xml(
         raise XSLTTransformationError(f"Could not extract infos from: {', '.join(failed_items)}")
 
     return tuple(
-        Document.model_validate(_add_idno_info(from_json(doc.value), volume_id, doc.src))
+        (
+            Document.model_validate(_add_idno_info(from_json(doc.value), volume_id, doc.src)),
+            DocumentFulltext.model_validate(from_json(doc.value)),
+        )
         for doc in result
         if doc.value is not None
     )
