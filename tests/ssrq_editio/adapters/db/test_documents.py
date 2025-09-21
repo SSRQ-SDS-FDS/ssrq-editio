@@ -7,6 +7,7 @@ from ssrq_editio.adapters.db.documents import (
     get_document,
     get_document_infos,
     get_documents,
+    get_documents_by_ft,
     initialize_document_data,
     initialize_document_fulltext,
 )
@@ -123,3 +124,13 @@ async def test_get_document(db_volume_data, documents):
         assert result == doc
         result = await get_document(connection=db_volume_data, document_id=doc.uuid)
         assert result == doc
+
+
+@pytest.mark.anyio
+async def test_get_documents_by_fulltext(db_volume_data, documents, fulltext):
+    # Naive test for the simple ft-search
+    await initialize_document_data(documents=documents, connection=db_volume_data)
+    await initialize_document_fulltext(documents=fulltext, connection=db_volume_data)
+    search_result = await get_documents_by_ft(connection=db_volume_data, search="foo")
+    assert len(search_result) == len(documents)
+    assert "<mark>foo</mark>" in search_result[0].ft_match

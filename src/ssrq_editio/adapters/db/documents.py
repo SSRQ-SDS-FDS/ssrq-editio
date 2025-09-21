@@ -9,6 +9,7 @@ from ssrq_editio.adapters.file import load
 from ssrq_editio.models.documents import (
     Document,
     DocumentFulltext,
+    DocumentFulltextResult,
     DocumentIdentificationDisplay,
     DocumentType,
 )
@@ -113,6 +114,32 @@ async def get_documents(
         )
         data = await cursor.fetchall()
         return [Document(**item) for item in data]
+
+
+async def get_documents_by_ft(
+    connection: Connection,
+    query: Path = SQL_DATA_DIR / "get_documents_by_ft.sql",
+    search: str | None = None,
+) -> list[DocumentFulltextResult]:
+    """Retrieve a list of documents by a fulltext search.
+
+    Args:
+        connection (Connection): An aiosqlite Connection
+        query (Path): The path to the query file
+        search (str): A search parameter for the fulltext search
+
+    Returns:
+        list[DocumentFulltextResult]: A list of DocumentFulltextResult objects
+    """
+    async with connection.cursor() as cursor:
+        await cursor.execute(
+            await load(dir=query.parent, name=query.name),
+            {
+                "search_term": search,
+            },
+        )
+        data = await cursor.fetchall()
+        return [DocumentFulltextResult(**item) for item in data]
 
 
 @cachebox.cached(cachebox.TTLCache(maxsize=0, ttl=3600))

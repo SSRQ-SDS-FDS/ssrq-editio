@@ -4,7 +4,7 @@ from aiosqlite import Connection
 
 from ssrq_editio.adapters.data import load_volume_config
 from ssrq_editio.adapters.db.connection import db_session
-from ssrq_editio.adapters.db.documents import initialize_document_data
+from ssrq_editio.adapters.db.documents import initialize_document_data, initialize_document_fulltext
 from ssrq_editio.adapters.db.entities import store_entities
 from ssrq_editio.adapters.db.kantons import initialize_kanton_data
 from ssrq_editio.adapters.db.setup import setup_db
@@ -98,6 +98,9 @@ async def setup_documents(
     )
 
     await initialize_document_data(documents=tuple(d[0] for d in documents), connection=connection)
+    await initialize_document_fulltext(
+        documents=tuple(d[1] for d in documents), connection=connection
+    )
 
     SSRQ_LOGGER.success(
         f"Extracted and inserted document data for »{volume_id}« into the database."
