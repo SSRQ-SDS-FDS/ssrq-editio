@@ -106,6 +106,11 @@ class Document(DocumentDate, DocumentIdentification, DocumentRelations, Document
         return {k: serialize_value(v) for k, v in self.model_dump().items()}
 
 
+class DocumentFulltext(BaseModel):
+    uuid: str
+    text: str
+
+
 class DocumentDisplay(BaseModel):
     """A model representing the infos to be displayed in the UI. The fields
     contain the rendered infos, transformed by XSLT."""

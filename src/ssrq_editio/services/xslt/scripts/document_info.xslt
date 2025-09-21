@@ -36,6 +36,7 @@
                     select="i18n:create-translation-map(doc($schema)/tei:TEI)"
                     />
             </xsl:apply-templates>
+            <xsl:map-entry key="'text'" select="'bar'"/>
             <xsl:map-entry key="'type'" select=".//tei:text/@type/data(.)"/>
         </xsl:map>
     </xsl:template>

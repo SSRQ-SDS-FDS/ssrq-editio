@@ -287,8 +287,8 @@ async def test_extract_infos_from_xml(
         (example_path / xml_name,), "foo", transpiled_schema=transpiled_schema
     )
 
-    result[0].source = None
-    assert result[0] == document
+    result[0][0].source = None
+    assert result[0][0] == document
 
 
 @pytest.mark.anyio
