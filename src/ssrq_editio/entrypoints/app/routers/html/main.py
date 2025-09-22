@@ -11,6 +11,7 @@ from ssrq_editio.entrypoints.app.views.models.document import DocumentViewModel
 from ssrq_editio.entrypoints.app.views.models.entity import EntityViewModel
 from ssrq_editio.entrypoints.app.views.models.index import IndexViewModel
 from ssrq_editio.entrypoints.app.views.models.kanton import KantonViewModel
+from ssrq_editio.entrypoints.app.views.models.search import SearchViewModel
 from ssrq_editio.entrypoints.app.views.models.volume import VolumeViewModel
 from ssrq_editio.models.documents import DocumentType
 from ssrq_editio.models.entities import EntityTypes
@@ -26,18 +27,32 @@ async def index(request: Request, lang: LangDependency, connection: DBDependency
 
 # Routes, which are direct child of the root must be placed before such routes,
 # which use path parametzers
-@html.get("/search", name="search")
-async def search(request: Request, lang: LangDependency, query: str | None):
-    raise NotImplementedError
-
-
-@html.get("/index", name="entities")
 async def entities(request: Request):
     """Redirect all requests to the main index page, to
     the subpage, which lists all keywords."""
     return RedirectResponse(html.url_path_for("entity_view", entity_type="keywords"))
 
 
+@html.get("/search", name="search")
+async def search(
+    request: Request,
+    lang: LangDependency,
+    connection: DBDependency,
+    page: int = 1,
+    per_page: int = 25,
+    query: str | None = None,
+):
+    return await SearchViewModel(
+        request=request,
+        lang=lang,
+        connection=connection,
+        query=query,
+        current_page=page,
+        per_page=per_page,
+    ).to_html()
+
+
+@html.get("/index", name="entities")
 @html.get("/about/digital-edition", name="info_edition")
 async def scholarly_information(request: Request, lang: LangDependency):
     raise NotImplementedError

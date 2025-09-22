@@ -1,0 +1,39 @@
+{# def
+    endpoint: URL,
+    lang: Lang,
+    translator: Translator,
+    query: str | None,
+    hx_indicator: str | None = None,
+    hx_params: str | None = None,
+    hx_target: str | None = None
+#}
+
+<form
+  class="text-sm w-full filter-card horizontal"
+  id="ftSearchForm"
+  hx-get="{{ endpoint }}"
+  hx-indicator="{{ hx_indicator }}"
+  hx-params="{{ hx_params }}"
+  hx-target="{{ hx_target }}"
+  hx-push-url="true"
+  hx-swap="innerHTML"
+  hx-trigger="input changed delay:500ms from:#ftSearch"
+>
+    <div class="filter-section">
+        <div class="flex gap-2 rounded-b-lg">
+            <input
+              id="ftSearch"
+              type="text"
+              autocomplete="off"
+              name="query"
+              class="px-4 py-2 min-w-[16rem] w-full text-sm text-ssrq-greyed-800 bg-white border rounded-md focus:border-ssrq-primary focus:border-[0.025rem] focus:outline-none focus:ring focus:ring-ssrq-primary focus:ring-opacity-40"
+              placeholder="{{ translator.translate(lang, 'search-placeholder') }}"
+              {% if query %} value="{{ query }}" {% endif %}
+            />
+            <FormReset
+              :endpoint="endpoint"
+              :icon_size="'w-5 h-5'"
+            />
+        </div>
+    </div>
+</form>

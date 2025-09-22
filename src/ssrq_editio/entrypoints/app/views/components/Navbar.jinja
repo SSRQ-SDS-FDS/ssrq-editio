@@ -100,18 +100,19 @@ translator: Translator
                 </svg>
             </button>
             <div class="flex flex-col items-start p-4 h-full">
-                <a class="menu-link" href="{app}/search">
-                    <i18n:text key="search">
-                    Suche
-                    </i18n:text>
+                <a
+                  class="menu-link"
+                  href="{{ url_for('search') }}"
+                >
+                    {{ translator.translate(lang, 'search') }}
                 </a>
                 <NavDropdown
-                :items="index_routes"
-                :lang="lang"
-                :main_entry="'index'"
-                :request="request"
-                :translator="translator"
-                class="is-mobile"
+                    :items="index_routes"
+                    :lang="lang"
+                    :main_entry="'index'"
+                    :request="request"
+                    :translator="translator"
+                    class="is-mobile"
                 />
                <NavDropdown
                   :items="about_routes"
