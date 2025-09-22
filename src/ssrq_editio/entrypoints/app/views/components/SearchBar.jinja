@@ -11,10 +11,10 @@
         using a template will prevent flickering
     -->
     <template x-if="searchForm">
-        <form action="{{ url_for("search") }}" method="get" class="pt-[1rem]">
+        <form action="{{ url_for('search') }}" method="get">
             <input type="text"
                    name="query"
-                   class="form-input h-full min-w-[20rem] w-auto max-w-[28rem] py-1 pl-2 pr-2 placeholder-ssrq-greyed-600 bg-transparent border-[0.02rem] border-black focus:outline-none focus:border-gray-600 rounded-sm"
+                   class="h-full min-w-[20rem] w-auto max-w-[28rem] py-1 pl-2 pr-2 placeholder-ssrq-greyed-600 bg-transparent border rounded-sm focus:border-ssrq-primary focus:border-[0.005rem] focus:outline-none focus:ring-2 focus:ring-ssrq-primary focus:ring-opacity-40"
                    placeholder="{{ translator.translate(lang, 'search') }}" />
         </form>
     </template>
