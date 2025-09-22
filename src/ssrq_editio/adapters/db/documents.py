@@ -131,6 +131,9 @@ async def get_documents_by_ft(
     Returns:
         list[DocumentFulltextResult]: A list of DocumentFulltextResult objects
     """
+    if search is None:
+        return []
+
     async with connection.cursor() as cursor:
         await cursor.execute(
             await load(dir=query.parent, name=query.name),
