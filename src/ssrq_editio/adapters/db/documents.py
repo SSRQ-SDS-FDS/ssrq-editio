@@ -13,6 +13,7 @@ from ssrq_editio.models.documents import (
     DocumentIdentificationDisplay,
     DocumentType,
 )
+from ssrq_editio.services.utils import escape_ft_search_query
 
 __all__ = [
     "initialize_document_data",
@@ -131,14 +132,15 @@ async def get_documents_by_ft(
     Returns:
         list[DocumentFulltextResult]: A list of DocumentFulltextResult objects
     """
-    if search is None:
+    if search is None or len(search.strip()) == 0:
+        # Skip DB-query if no search term is provided
         return []
 
     async with connection.cursor() as cursor:
         await cursor.execute(
             await load(dir=query.parent, name=query.name),
             {
-                "search_term": search,
+                "search_term": escape_ft_search_query(search),
             },
         )
         data = await cursor.fetchall()
