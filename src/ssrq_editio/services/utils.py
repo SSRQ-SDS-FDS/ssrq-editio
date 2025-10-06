@@ -1,6 +1,7 @@
 from enum import Enum
 from pathlib import Path
 from typing import TypeVar
+import re
 
 from pydantic_core import from_json, to_json
 
@@ -21,6 +22,18 @@ def create_permalink(id: str, base: str = "https://p.ssrq-sds-fds.ch/") -> str:
         str: The permalink.
     """
     return f"{base}{id}"
+
+
+def escape_ft_search_query(query: str) -> str:
+    """Escape special characters in a full-text search query for SQLite FTS5.
+
+    Args:
+        query (str): The full-text search query.
+
+    Returns:
+        str: The escaped query.
+    """
+    return re.sub(r'[#<>(){}[\]:"\']', lambda match: f'"{match.group()}"', query)
 
 
 def normalize(text: str | None):
