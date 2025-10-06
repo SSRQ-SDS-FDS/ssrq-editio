@@ -1,12 +1,14 @@
 /**
  * Creates an AlpineJS component for synchronizing input values between two elements
  * @param {string} target - CSS selector for the target input element to sync with
+ * @param {boolean} [dispatch=false] - Whether to dispatch an 'input' event on the target element after syncing
  * @returns {Object} AlpineJS component object with init and sync methods
  */
-const inputSync = function (target) {
+const inputSync = function (target, dispatch = false) {
   return {
     /** @type {HTMLInputElement|null} The target input element to sync with */
     syncTarget: null,
+    dispatchEventOnTarget: true,
 
     /**
      * Initialize the component and find the target element
@@ -16,6 +18,7 @@ const inputSync = function (target) {
       const inputTarget = document.querySelector(target);
       if (inputTarget !== null && inputTarget instanceof HTMLInputElement) {
         this.syncTarget = inputTarget;
+        this.dispatchEventOnTarget = dispatch;
       }
     },
 
@@ -26,6 +29,10 @@ const inputSync = function (target) {
     sync() {
       if (this.syncTarget !== null) {
         this.syncTarget.value = this.$el.value;
+
+        if (this.dispatchEventOnTarget) {
+          this.syncTarget.dispatchEvent(new Event('input'));
+        }
       }
     },
   };
