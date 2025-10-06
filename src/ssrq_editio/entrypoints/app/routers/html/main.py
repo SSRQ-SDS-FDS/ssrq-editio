@@ -40,13 +40,13 @@ async def search(
     connection: DBDependency,
     page: int = 1,
     per_page: int = 25,
-    query: str | None = None,
+    fts: str | None = None,
 ):
     return await SearchViewModel(
         request=request,
         lang=lang,
         connection=connection,
-        query=query,
+        query=fts,
         current_page=page,
         per_page=per_page,
     ).to_html()
