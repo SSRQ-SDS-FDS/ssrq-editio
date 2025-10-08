@@ -26,6 +26,7 @@ from ssrq_editio.services.xslt.transformer import (
 
 DOCUMENT_INFO_XSLT = "document_info.xslt"
 DOCUMENT_VIEW_XSLT = "document_view.xslt"
+IIIF_SERVER_URL = "https://facsimiles.ssrq-sds-fds.ch/iiif/2/"
 
 
 class DocumentTransformerError(ValueError):
@@ -331,3 +332,20 @@ def _add_idno_info(document_info: dict, volume_id: str, source: Path | str) -> d
         "volume_id": volume_id,
         "source": source,
     }
+
+
+def build_facs_urls(facs_list: list[str]) -> list[str]:
+    """
+    Builds complete IIIF URLs for a list of facsimile identifiers.
+
+    For each element in `facs_list`, this function constructs a full IIIF URL
+    of the form `<IIIF_SERVER_URL><fac>.ptif/info.json`. These URLs point to
+    the metadata of IIIF-compliant images.
+
+    Args:
+        facs_list (list[str]): A list of facsimile identifiers
+
+    Returns:
+        list[str]: A list of corresponding full IIIF URLs.
+    """
+    return [f"{IIIF_SERVER_URL}{fac}.ptif/info.json" for fac in facs_list]

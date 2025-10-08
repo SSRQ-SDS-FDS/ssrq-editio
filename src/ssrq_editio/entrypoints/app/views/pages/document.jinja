@@ -3,6 +3,7 @@
 
 {% set doc = data.content.doc%}
 {% set doc_content = data.content.rendered_doc %}
+{% set doc_tileSources = data.content.tileSources %}
 
 <section class="w-full max-w-[1680px] mx-auto px-4 my-4">
     <DocumentNavigation
@@ -113,8 +114,7 @@
 
                 {% if doc.type.value == 'transcript' and doc.facs is not none %}
                     <Tab :label="'digital_copy'">
-                        {# ToDo: The Image Component is just a dummy at the moment! #}
-                        <FacsViewer/>
+                        <FacsViewer :tileSources = "{{ doc_tileSources }}" />
                     </Tab>
                 {% endif %}
 
