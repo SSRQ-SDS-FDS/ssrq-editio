@@ -2,7 +2,7 @@
     tileSources: list
 #}
 <div
-  x-init="$dispatch('ssrq:facsviewer', {'tileSources': {{ tileSources }} })"
+  x-init="$dispatch('ssrq:facsviewer', {'tileSources': {{ tileSources | map_facs_to_iiif_urls }} })"
   id="img-container"
   class="w-full h-full rounded-md overflow-hidden shadow-md min-h-[60vh]">
 </div>

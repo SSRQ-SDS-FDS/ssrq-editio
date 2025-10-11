@@ -15,6 +15,7 @@ from ssrq_editio.entrypoints.app.views.utils import (
     create_entity_preview_by_id,
     render_template_string,
 )
+from ssrq_editio.services.documents import map_facs_to_iiif_urls
 from ssrq_editio.services.occurrences import group_and_sort_idnos
 from ssrq_editio.services.utils import create_permalink
 
@@ -52,6 +53,7 @@ def app_factory(
     templates.env.filters.update(markdown=markdown)
     templates.env.filters.update(permalink=create_permalink)
     templates.env.filters.update(render_template_string=render_template_string)
+    templates.env.filters.update(map_facs_to_iiif_urls=map_facs_to_iiif_urls)
 
     # Add JinjaX extension, which allows us to us Component-based templates
     templates.env.add_extension(jinjax.JinjaX)
