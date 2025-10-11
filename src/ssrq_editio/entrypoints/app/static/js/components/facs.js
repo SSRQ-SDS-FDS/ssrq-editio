@@ -3,27 +3,27 @@ import OpenSeadragon from 'openseadragon';
 const createFacsViewer = (tileSources) => {
   /*
     ToDo:
-        - Find Image to display
         - Replace default icons
         - Switch image if needed
   */
   const viewerOptions = {
+    // Element used to place the viewer in
     id: 'img-container',
-    prefixUrl:
-      'https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/images/',
+    // Options to control the loading of images
     tileSources: tileSources,
-    preserveViewport: true,
+    crossOriginPolicy: true,
+    // Viewer options
     sequenceMode: true,
-    showZoomControl: true,
-    showHomeControl: true,
-    showFullPageControl: true,
-    //showNavigator: true,
-    autoHideControls: false,
+    preserveViewport: true,
     visibilityRatio: 1,
     minZoomLevel: 1,
     defaultZoomLevel: 1,
+    autoHideControls: false,
+    // Icon options
+    prefixUrl:
+      'https://cdn.jsdelivr.net/gh/Benomrans/openseadragon-icons@main/images/',
   };
-  const viewer = OpenSeadragon(viewerOptions);
+  return OpenSeadragon(viewerOptions);
 };
 
 document.addEventListener('ssrq:facsviewer', (e) => {

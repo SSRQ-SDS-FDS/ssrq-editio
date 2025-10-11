@@ -12,7 +12,6 @@ from ssrq_editio.models.kantons import KantonName
 from ssrq_editio.models.volumes import Volume
 from ssrq_editio.services.documents import (
     DocumentTransformer,
-    build_facs_urls,
     create_idno_from_volume_and_doc_number,
     resolve_orig_places_for_documents,
 )
@@ -69,7 +68,6 @@ class DocumentViewModel(ViewModel):
                     "kanton": self.kanton.value,
                     "volume": self.volume_info,
                     "doc": self.document_info,
-                    "tileSources": self.tileSources,
                     "orig_places": self.orig_places,
                     "rendered_doc": await self._transform_document(),
                 },
@@ -87,8 +85,6 @@ class DocumentViewModel(ViewModel):
         result = await get_document(
             self.connection, create_idno_from_volume_and_doc_number(self.volume_info, self.document)
         )
-
-        self.tileSources = build_facs_urls(result.facs)
 
         self.document_info = result
 

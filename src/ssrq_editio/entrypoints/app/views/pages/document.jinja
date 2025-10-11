@@ -114,7 +114,7 @@
 
                 {% if doc.type.value == 'transcript' and doc.facs is not none %}
                     <Tab :label="'digital_copy'">
-                        <FacsViewer :tileSources = "{{ doc_tileSources }}" />
+                        <FacsViewer :tileSources = "{{ doc.facs }}" />
                     </Tab>
                 {% endif %}
 

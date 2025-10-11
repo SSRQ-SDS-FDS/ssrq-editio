@@ -334,18 +334,18 @@ def _add_idno_info(document_info: dict, volume_id: str, source: Path | str) -> d
     }
 
 
-def build_facs_urls(facs_list: list[str]) -> list[str]:
+def map_facs_to_iiif_urls(facsimiles: list[str], iiif_base: str = IIIF_SERVER_URL) -> list[str]:
     """
     Builds complete IIIF URLs for a list of facsimile identifiers.
 
-    For each element in `facs_list`, this function constructs a full IIIF URL
+    For each element in `facsimiles`, this function constructs a full IIIF URL
     of the form `<IIIF_SERVER_URL><fac>.ptif/info.json`. These URLs point to
     the metadata of IIIF-compliant images.
 
     Args:
-        facs_list (list[str]): A list of facsimile identifiers
+        facsimiles (list[str]): A list of facsimile identifiers
 
     Returns:
         list[str]: A list of corresponding full IIIF URLs.
     """
-    return [f"{IIIF_SERVER_URL}{fac}.ptif/info.json" for fac in facs_list]
+    return [f"{iiif_base}{facs}.ptif/info.json" for facs in facsimiles]
