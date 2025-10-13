@@ -8,6 +8,7 @@ from ssrq_editio.adapters.db.entities import count_entities, list_entity_ids
 from ssrq_editio.adapters.db.volumes import list_volumes_with_editors
 from ssrq_editio.entrypoints.app.shared.dependencies import DBDependency
 from ssrq_editio.entrypoints.cli.config import VOLUME_SRC
+from ssrq_editio.models.documents import DocumentIdentificationDisplay
 from ssrq_editio.models.entities import (
     EntityTypes,
     Family,
@@ -22,6 +23,7 @@ from ssrq_editio.models.volumes import Volumes
 from ssrq_editio.services.documents import find_and_load_xml_source
 from ssrq_editio.services.entities import ENTITY_ID_PATTERN, get_entities, validate_entity_id
 from ssrq_editio.services.kantons import list_kanton_abbreviations
+from ssrq_editio.services.occurrences import resolve_idnos_to_documents
 from ssrq_editio.services.volumes import stream_volume_pdf
 
 version_one = APIRouter(prefix="/v1", tags=["v1"])
@@ -171,4 +173,37 @@ async def entity_std_name(
         raise HTTPException(
             status_code=501,
             detail=f"At the moment this endpoint does not support »{entity}«.",
+        )
+
+
+@version_one.get("/entities/{entity}/{id}/occurrences", name="entity_occurrences")
+async def entity_occurrences(
+    connection: DBDependency, entity: EntityTypes, id: str
+) -> list[DocumentIdentificationDisplay] | None:
+    """Return all occurrences (document references) associated with a specific entity.
+    The response is a list of `DocumentIdentificationDisplay` objects including volume information."""
+    if not validate_entity_id(id):
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid entity ID »{id}«. ID must match the pattern »{ENTITY_ID_PATTERN.pattern}«.",
+        )
+
+    try:
+        # ToDO: Replace the try / except approach with a more elegant solution.
+        entity_occurrences = (
+            (await get_entities(connection=connection, entity_type=entity, query=id))
+            .entities[0]
+            .occurrences
+        )
+        return (
+            await resolve_idnos_to_documents(connection=connection, occurrences=entity_occurrences)
+            if entity_occurrences
+            else None
+        )
+    except IndexError:
+        raise HTTPException(status_code=404, detail=f"No entity found with ID »{id}«.")
+    except NotImplementedError:
+        raise HTTPException(
+            status_code=501,
+            detail=f"At the moment this endpoint does not support »{entity}« or no entity found with {id}.",
         )
