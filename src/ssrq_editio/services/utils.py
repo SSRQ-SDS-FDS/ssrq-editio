@@ -1,7 +1,7 @@
+import re
 from enum import Enum
 from pathlib import Path
 from typing import TypeVar
-import re
 
 from pydantic_core import from_json, to_json
 

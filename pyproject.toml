@@ -21,8 +21,8 @@ dependencies = [
 [project.scripts]
 editio = "ssrq_editio.entrypoints.cli:app"
 
-[tool.uv]
-dev-dependencies = [
+[dependency-groups]
+dev = [
     "commitizen>=3.31.0",
     "mypy>=1.11.2",
     "pre-commit>=3.8.0",
