@@ -88,9 +88,9 @@ class ViewModel:
         context["js"] = self.js
 
     def error_to_html(self, error: Exception) -> HTMLResponse:
+        # "error": str(error),
         context = {
             "data": {},
-            "error": str(error),
             "lang": self.lang,
             "request": self.request,
             "translator": self.translator,
