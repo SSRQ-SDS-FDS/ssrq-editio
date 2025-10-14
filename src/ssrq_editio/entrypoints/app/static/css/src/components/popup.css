@@ -8,7 +8,7 @@
   }
 
   .popup.has-border > summary {
-    @apply pb-[0.5px] border-b-black border-dotted border-b-[1px];
+    @apply pb-[0.5px] border-b-black border-dotted border-b-[1px] w-fit;
   }
 
   .popup > summary::-webkit-details-marker,
