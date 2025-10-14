@@ -3,9 +3,8 @@
 
 {% set doc = data.content.doc%}
 {% set doc_content = data.content.rendered_doc %}
-{% set doc_tileSources = data.content.tileSources %}
 
-<section class="w-full max-w-[1680px] mx-auto px-4 my-4">
+<section class="w-full max-w-[1760px] mx-auto px-4 my-4">
     <DocumentNavigation
       :lang="lang"
       :request="request"
@@ -15,7 +14,7 @@
     />
 </section>
 
-<section class="w-full max-w-[1680px] mx-auto mt-4 mb-6 px-4">
+<section class="w-full max-w-[1760px] mx-auto mt-4 mb-6 px-4">
     <h1 class="title-1">{{ doc.get_title_by_lang(lang) | safe }}</h1>
     <header class="flex text-ssrq-greyed-600 text-sm items-center gap-2">
         <span title="{{ translator.translate(lang, 'ssrq-idno') }}" class="flex items-center">
@@ -34,7 +33,7 @@
         {% endif %}
     </header>
     <div
-        class="md:flex w-full max-w-[1680px] mx-auto items-stretch justify-center gap-4 my-8 md:min-h-[70vh] md:max-h-[80vh]">
+        class="md:flex w-full max-w-[1760px] mx-auto items-stretch justify-center gap-4 my-8 md:min-h-[70vh] md:max-h-[80vh]">
         <div class="md:w-1/2 flex mb-6 md:mb-0">
             <Tabs>
                 <TabHeader>
