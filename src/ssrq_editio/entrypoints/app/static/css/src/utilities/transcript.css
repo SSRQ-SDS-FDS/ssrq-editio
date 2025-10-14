@@ -3,6 +3,18 @@
     @apply min-w-max max-w-40;
 }
 
+.popup:has(.tei-entity-icon) {
+    @apply inline-block;
+}
+
+.popup:has(.tei-entity-icon) > summary {
+    @apply border-none inline !important;
+}
+
+.tei-entity-icon {
+    @apply w-4 h-4 p-[1px] inline text-ssrq-primary;
+}
+
 /* Element specific styles */
 
 ol.tei-back {
