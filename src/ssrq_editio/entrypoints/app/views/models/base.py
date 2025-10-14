@@ -108,16 +108,18 @@ class ViewModel:
         context["js"] = self.js
 
     def error_to_html(self, error: Exception) -> HTMLResponse:
+        context = {
+            "data": {},
+            "error": str(error),
+            "lang": self.lang,
+            "request": self.request,
+            "translator": self.translator,
+        }
+        self.put_assets_in_context(context)
         return self.templates.TemplateResponse(
             request=self.request,
             name="pages/error.jinja",
-            context={
-                "data": {},
-                "error": str(error),
-                "lang": self.lang,
-                "request": self.request,
-                "translator": self.translator,
-            },
+            context=context,
             status_code=500,
         )
 
