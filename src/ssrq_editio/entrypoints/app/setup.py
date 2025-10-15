@@ -1,6 +1,6 @@
 import importlib.metadata
 from pathlib import Path
-from typing import Sequence
+from typing import Callable, Sequence
 
 import jinjax
 from fastapi import APIRouter, FastAPI
@@ -64,9 +64,12 @@ def app_factory(
     return app, templates
 
 
-def setup_routers(app: FastAPI, routers: tuple[APIRouter, ...]) -> None:
+def setup_routers(
+    app: FastAPI, register_error_handlers: Callable[[FastAPI], None], routers: tuple[APIRouter, ...]
+) -> None:
     for router in routers:
         app.include_router(router)
+    register_error_handlers(app)
 
 
 app, templates = app_factory(TEMPLATE_DIR, (COMPONENT_DIR, ICON_DIR), ASSET_DIR)

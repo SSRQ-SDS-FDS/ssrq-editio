@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Any, TypedDict, cast
 
 import cachebox
-from fastapi import Request
+from fastapi import HTTPException, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from ssrq_utils.i18n.translator import Translator
@@ -37,6 +37,7 @@ class ViewModel:
     template_partial: str | None = None
     translator: Translator
     templates: Jinja2Templates
+    status_code: int
 
     def __init__(
         self,
@@ -49,6 +50,7 @@ class ViewModel:
         self.templates = jinja_templates
         self.lang = lang
         self.translator = Translator(translation_source)
+        self.status_code = 200
 
     def add_css(self, name: str):
         """Add a additional (view specific) CSS file to the model.
@@ -87,22 +89,6 @@ class ViewModel:
         context["css"] = self.css
         context["js"] = self.js
 
-    def error_to_html(self, error: Exception) -> HTMLResponse:
-        # "error": str(error),
-        context = {
-            "data": {},
-            "lang": self.lang,
-            "request": self.request,
-            "translator": self.translator,
-        }
-        self.put_assets_in_context(context)
-        return self.templates.TemplateResponse(
-            request=self.request,
-            name="pages/error.jinja",
-            context=context,
-            status_code=500,
-        )
-
     async def to_html(self) -> HTMLResponse:
         return await serve_html_response(self)
 
@@ -120,12 +106,16 @@ class ViewModel:
                     name=page_template,
                     context=context,
                     block_name=self.template_partial,
+                    status_code=self.status_code,
                 )  # type: ignore
             return self.templates.TemplateResponse(
-                request=self.request, name=f"pages/{self.page}", context=context
+                request=self.request,
+                name=f"pages/{self.page}",
+                context=context,
+                status_code=self.status_code,
             )
         except Exception as error:
-            return self.error_to_html(error)
+            raise HTTPException(status_code=500, detail={"error": str(error), "lang": self.lang})
 
     def _is_htmx_request(self) -> bool:
         return bool(self.request.headers.get("HX-Request"))
