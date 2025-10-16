@@ -20,12 +20,20 @@ const createFacsViewer = (tileSources) => {
     defaultZoomLevel: 1,
     autoHideControls: false,
     // Icon options
-    prefixUrl:
-      'https://cdn.jsdelivr.net/gh/Benomrans/openseadragon-icons@main/images/',
+    zoomInButton:  'viewerZoomIn',
+    zoomOutButton: 'viewerZoomOut',
+    homeButton:    'viewerHome',
+    fullPageButton:'viewerFull',
+    previousButton: 'viewerPrev',
+    nextButton: 'viewerNext'
   };
   return OpenSeadragon(viewerOptions);
 };
 
 document.addEventListener('ssrq:facsviewer', (e) => {
-  createFacsViewer(e.detail.tileSources);
+  const viewer = createFacsViewer(e.detail.tileSources);
+  document.getElementById("viewerCurrentPage").innerHTML = `1|${e.detail.tileSources.length}`;
+  viewer.addHandler("page", function(data){
+    document.getElementById("viewerCurrentPage").innerHTML = `${data.page + 1}|${e.detail.tileSources.length}`;
+  });
 });
