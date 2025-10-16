@@ -3,8 +3,7 @@ import OpenSeadragon from 'openseadragon';
 const createFacsViewer = (tileSources) => {
   /*
     ToDo:
-        - Replace default icons
-        - Switch image if needed
+        - Switch image if needed automatically when changing page
   */
   const viewerOptions = {
     // Element used to place the viewer in
@@ -20,20 +19,31 @@ const createFacsViewer = (tileSources) => {
     defaultZoomLevel: 1,
     autoHideControls: false,
     // Icon options
-    zoomInButton:  'viewerZoomIn',
+    zoomInButton: 'viewerZoomIn',
     zoomOutButton: 'viewerZoomOut',
-    homeButton:    'viewerHome',
-    fullPageButton:'viewerFull',
+    homeButton: 'viewerHome',
+    fullPageButton: 'viewerFull',
     previousButton: 'viewerPrev',
-    nextButton: 'viewerNext'
+    nextButton: 'viewerNext',
   };
   return OpenSeadragon(viewerOptions);
 };
 
+const setupPageCounter = (viewer, containerId, totalPages) => {
+  const container = document.querySelector(containerId);
+
+  if (!container) {
+    console.error(`Container for page counter not found: ${containerId}`);
+    return;
+  }
+
+  container.innerHTML = `1|${totalPages}`;
+  viewer.addHandler('page', function (data) {
+    container.innerHTML = `${data.page + 1}|${totalPages}`;
+  });
+};
+
 document.addEventListener('ssrq:facsviewer', (e) => {
   const viewer = createFacsViewer(e.detail.tileSources);
-  document.getElementById("viewerCurrentPage").innerHTML = `1|${e.detail.tileSources.length}`;
-  viewer.addHandler("page", function(data){
-    document.getElementById("viewerCurrentPage").innerHTML = `${data.page + 1}|${e.detail.tileSources.length}`;
-  });
+  setupPageCounter(viewer, '#viewerCurrentPage', e.detail.tileSources.length);
 });
