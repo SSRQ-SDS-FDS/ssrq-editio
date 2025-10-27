@@ -19,9 +19,7 @@ class ErrorViewModel(ViewModel):
             data={
                 "page_title": self._get_title(),
                 "page_description": self._get_description(),
-                "content": {
-                    "status_code": self.status_code,
-                },
+                "content": {},
             },
             translator=self.translator,
         )
