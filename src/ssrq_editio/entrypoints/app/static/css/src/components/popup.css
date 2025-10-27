@@ -1,6 +1,9 @@
 @layer components {
+  span:has(>.popup){
+      @apply mr-3.5;
+  }
   .popup {
-    @apply inline relative;
+    @apply inline absolute;
   }
 
   .popup > summary {
@@ -17,7 +20,7 @@
   }
 
   .popup > div.popup-body {
-    @apply absolute bg-white border rounded-md p-4 text-black text-sm z-50 shadow-sm;
+    @apply absolute bg-white border rounded-md p-4 text-black text-sm z-50 shadow-sm -left-2;
   }
 
   .popup > div.popup-body.has-marker {
