@@ -33,7 +33,11 @@ def escape_ft_search_query(query: str) -> str:
     Returns:
         str: The escaped query.
     """
-    return re.sub(r'[#<>(){}[\]:"\']', lambda match: f'"{match.group()}"', query)
+    return re.sub(
+        r'[#<>(){}[\]:"\'!?.,]',
+        lambda match: f'"{match.group()}"',
+        re.sub(r"\b(?:AND|OR|NOT)\b", lambda m: m.group().lower(), query),
+    )
 
 
 def normalize(text: str | None):
