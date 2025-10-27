@@ -115,7 +115,7 @@ class ViewModel:
                 status_code=self.status_code,
             )
         except Exception as error:
-            raise HTTPException(status_code=500, detail={"error": str(error), "lang": self.lang})
+            raise HTTPException(status_code=500, detail=str(error))
 
     def _is_htmx_request(self) -> bool:
         return bool(self.request.headers.get("HX-Request"))

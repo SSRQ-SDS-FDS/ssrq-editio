@@ -16,6 +16,7 @@ from ssrq_editio.entrypoints.app.views.utils import (
     render_template_string,
 )
 from ssrq_editio.services.documents import map_facs_to_iiif_urls
+from ssrq_editio.services.monitoring import Monitoring_Settings, setup_error_monitoring
 from ssrq_editio.services.occurrences import group_and_sort_idnos
 from ssrq_editio.services.utils import create_permalink
 
@@ -67,6 +68,8 @@ def app_factory(
 def setup_routers(
     app: FastAPI, register_error_handlers: Callable[[FastAPI], None], routers: tuple[APIRouter, ...]
 ) -> None:
+    monitoring_settings = Monitoring_Settings()
+    setup_error_monitoring(monitoring_settings)
     for router in routers:
         app.include_router(router)
     register_error_handlers(app)
