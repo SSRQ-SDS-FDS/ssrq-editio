@@ -127,3 +127,24 @@ async def test_entity_std_name_with_invalid_id(
 ):
     response = await app_client.get("/api/v1/entities/places/lo123456/name")
     assert response.status_code == codes.BAD_REQUEST
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize(
+    ("entity_type", "entity_id", "expected_idno"),
+    [
+        (EntityTypes.PLACES, "loc000001", "SSRQ-SG-III_4-1-1"),
+        (EntityTypes.PERSONS, "per031589", "SSRQ-SG-III_4-1-1"),
+        (EntityTypes.LEMMATA, "lem000001", "SSRQ-SG-III_4-1-1"),
+        (EntityTypes.KEYWORDS, "key000001", "SSRQ-SG-III_4-1-1"),
+        (EntityTypes.ORGANIZATIONS, "org000001", "SSRQ-SG-III_4-1-1"),
+    ],
+)
+async def test_entity_occurrences(
+    app_client: AsyncClient, entity_type: EntityTypes, entity_id: str, expected_idno: str
+):
+    response = await app_client.get(f"/api/v1/entities/{entity_type.value}/{entity_id}/occurrences")
+    assert response.status_code == codes.OK
+    body = response.json()
+    assert isinstance(body, list)
+    assert any(isinstance(item, dict) and item["idno"] == expected_idno for item in body)
