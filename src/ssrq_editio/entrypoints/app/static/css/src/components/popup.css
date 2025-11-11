@@ -1,40 +1,28 @@
 @layer components {
-  span:has(>.popup){
-      @apply mr-3.5;
-  }
-  .popup {
-    @apply inline absolute;
-  }
+  .popup:popover-open {
+    @apply m-0 mt-1 inset-auto bg-white border rounded-md p-4 text-black text-sm z-50 shadow-sm;
+    overflow: visible;
 
-  .popup > summary {
-    @apply list-none cursor-pointer;
+    /* position of popup */
+    inset-block-start:  anchor(self-end);
+    inset-inline-start: anchor(start);
+    margin-inline-start: -1rem;
+    /*margin-top: 0.3rem;*/
+    position-try-fallbacks: --flip-to-left, flip-inline;
   }
-
-  .popup.has-border > summary {
-    @apply pb-[0.5px] border-b-black border-dotted border-b-[1px] w-fit;
+  /* up arrow */
+  .popup:popover-open::after {
+    content: "";
+    position: absolute;
+    inset-block-start: -8px;
+    inset-inline-start: 1rem;
+    width: 0; height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #e5e7eb;
   }
-
-  .popup > summary::-webkit-details-marker,
-  .popup > summary::marker {
-    @apply hidden;
-  }
-
-  .popup > div.popup-body {
-    @apply absolute bg-white border rounded-md p-4 text-black text-sm z-50 shadow-sm -left-2;
-  }
-
-  .popup > div.popup-body.has-marker {
-    top: calc(100% + 0.5rem);
-  }
-
-  .popup > div.popup-body.has-marker::before {
-    content: '';
-    @apply absolute border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-white top-[-8px] z-50 left-2;
-  }
-
-  .popup > div.popup-body.has-marker::after {
-    content: '';
-    @apply absolute border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-gray-300 top-[-9px] left-2;
-    z-index: -1;
+  /* ToDO: Change position of arrow when popup is flipped to the left */
+  @position-try --custom-left {
+    inset-inline-start: anchor(end);
   }
 }
