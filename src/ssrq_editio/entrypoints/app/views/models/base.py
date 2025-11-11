@@ -123,7 +123,8 @@ class ViewModel:
                 request=self.request, name=f"pages/{self.page}", context=context
             )
         except Exception as error:
-            return self.error_to_html(error)
+            raise error
+            # return self.error_to_html(error)
 
     def _is_htmx_request(self) -> bool:
         return bool(self.request.headers.get("HX-Request"))

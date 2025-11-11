@@ -1,19 +1,3 @@
-{# def
-    mouseevents: bool = False
-#}
-
-{% do attrs.add_class("popup", "has-border") %}
-
-<details
-  x-data="{ isOpen: false }"
-  x-init="isOpen = $el.open"
-  @toggle="isOpen = $el.open"
-  @click.outside="if(isOpen) { $el.open = false; isOpen = false }"
-  {% if mouseevents %}
-        @mouseenter="$el.open = !$el.open"
-        @mouseleave="$el.open = false"
-  {% endif %}
-  {{ attrs.render() }}
->
+<span>
     {{ content }}
-</details>
+</span>
