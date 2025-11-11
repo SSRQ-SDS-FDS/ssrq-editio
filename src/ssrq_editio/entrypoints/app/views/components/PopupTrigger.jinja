@@ -1,3 +1,4 @@
-<summary {{ attrs.render() }}>
-    {{ content }}
-</summary>
+{#def
+    id: str = ""
+#}
+<button  {{ attrs.render() }} popovertarget="popup_{{ id }}">{{ content }}</button>
