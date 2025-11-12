@@ -1,6 +1,7 @@
 {#def
     id: str = ""
 #}
-<div class="popup" id="popup_{{ id }}" popover>
+{% do attrs.add_class("popup-body") %}
+<div  {{ attrs.render() }} id="popup_{{ id }}" popover>
     {{ content }}
 </div>

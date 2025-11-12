@@ -1,3 +1,4 @@
-<span>
+{% do attrs.add_class("popup", "has-border") %}
+<span {{ attrs.render() }}>
     {{ content }}
 </span>

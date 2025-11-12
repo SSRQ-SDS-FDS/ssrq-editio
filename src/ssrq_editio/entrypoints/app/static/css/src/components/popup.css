@@ -1,5 +1,9 @@
 @layer components {
-  .popup:popover-open {
+  .popup.has-border > button {
+    @apply pb-[0.5px] border-b-black border-dotted border-b-[1px] w-fit;
+  }
+
+  .popup-body:popover-open {
     @apply m-0 mt-1 inset-auto bg-white border rounded-md p-4 text-black text-sm z-50 shadow-sm;
     overflow: visible;
 
@@ -11,7 +15,7 @@
     position-try-fallbacks: --flip-to-left, flip-inline;
   }
   /* up arrow */
-  .popup:popover-open::after {
+  .popup-body:popover-open::after {
     content: "";
     position: absolute;
     inset-block-start: -8px;
