@@ -1,0 +1,32 @@
+@layer components {
+    .ssrq-toggle > label {
+        @apply select-none;
+    }
+    .ssrq-toggle > label > input[type='checkbox']{
+        /* hide default checkbox */
+        @apply opacity-0 w-0 h-0;
+    }
+    .ssrq-toggle > label > span.toggle-track {
+        /* style track */
+        @apply relative inline-block w-10 h-5 top-1.5 cursor-pointer inset-0 rounded-xl bg-ssrq-greyed-200 transition;
+    }
+    .ssrq-toggle > label > span.toggle-track::before {
+        /* style handle */
+        content: '';
+        @apply absolute h-4 w-4 top-0.5 left-0.5 bg-ssrq-greyed-800 transition rounded-lg;
+    }
+    .ssrq-toggle > label > input[type='checkbox']:focus ~ span.toggle-track {
+      /* focus on component */
+      @apply shadow;
+    }
+
+    .ssrq-toggle > label > input[type='checkbox']:checked ~ span.toggle-track {
+      /* toggle active: track */
+      @apply bg-ssrq-primary;
+    }
+
+    .ssrq-toggle > label > input[type='checkbox']:checked ~ span.toggle-track::before {
+      /* toggle active: handle */
+      @apply bg-white -left-0.5 translate-x-6;
+    }
+}

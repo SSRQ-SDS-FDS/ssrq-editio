@@ -1,0 +1,12 @@
+{# def
+    checked: bool = False,
+    callback: str,
+#}
+{% do attrs.add_class("ssrq-toggle") %}
+<div {{ attrs.render() }}>
+    <label>
+      <span>{{ content }}</span>
+      <input type="checkbox" autocomplete="off" {{ 'checked' if checked else '' }} @click="{{ callback }}">
+      <span class="toggle-track"></span>
+    </label>
+</div>

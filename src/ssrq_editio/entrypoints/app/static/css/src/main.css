@@ -9,6 +9,7 @@
 @import "./components/popup.css";
 @import "./components/range.css";
 @import "./components/toolbar.css";
+@import "./components/toggle.css";
 @import "./components/to-top.css";
 /* Import components for specific pages */
 @import "./routes/kantons_volumes_documents.css";
