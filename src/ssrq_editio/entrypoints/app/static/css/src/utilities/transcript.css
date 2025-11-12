@@ -3,16 +3,8 @@
   @apply min-w-max sm:max-w-40 md:max-w-80;
 }
 
-.tei-entity-popup ul {
-  @apply sm:max-w-40 md:max-w-80;
-}
-
-.popup:has(.tei-entity-icon) {
-  @apply inline-block;
-}
-
-.popup:has(.tei-entity-icon) > summary {
-  @apply border-none inline !important;
+.popup > button:has(.tei-entity-icon) {
+    @apply border-none !important;
 }
 
 .tei-entity-icon {
