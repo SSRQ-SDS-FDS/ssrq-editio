@@ -26,6 +26,7 @@ ol.tei-back {
 }
 
 /* hide marker for popup */
-.hidden-popup-marker .tei-entity-icon {
+/* maybe use: .hidden-popup-marker .tei-back details {}? */
+.hidden-popup-marker details:has(.tei-entity-icon) {
     @apply hidden;
 }
