@@ -8,7 +8,7 @@ from ssrq_editio.adapters.db.documents import get_document_infos
 from ssrq_editio.entrypoints.app.views.models.base import ViewContext, ViewModel
 from ssrq_editio.models.entities import Entities, Entity, EntityTypes, Family, Organization, Person
 from ssrq_editio.services.entities import get_entities, resolve_places_for_entities
-from ssrq_editio.services.paginate import create_pages
+from ssrq_editio.services.paginate import create_pages, get_valid_page_number
 from ssrq_editio.services.sort import sort_entities_by_name
 from ssrq_editio.services.volumes import list_all_volumes
 
@@ -93,6 +93,9 @@ class EntityViewModel(ViewModel):
         if total_hits == 0:
             return None
 
+        self.current_page = get_valid_page_number(
+            current_page=self.current_page, per_page=self.per_page, total_hits=total_hits
+        )
         paged_entities = create_pages(
             sort_entities_by_name(entities=result.entities, lang=self.lang),
             self.current_page,
