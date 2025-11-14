@@ -7,7 +7,7 @@ from ssrq_utils.lang.display import Lang
 from ssrq_editio.adapters.db.documents import get_documents_by_ft
 from ssrq_editio.entrypoints.app.views.models.base import ViewContext, ViewModel
 from ssrq_editio.models.documents import DocumentFulltextResult
-from ssrq_editio.services.paginate import create_pages
+from ssrq_editio.services.paginate import create_pages, get_valid_page_number
 
 
 class SearchViewModel(ViewModel):
@@ -68,6 +68,9 @@ class SearchViewModel(ViewModel):
         if total_hits == 0:
             return None
 
+        self.current_page = get_valid_page_number(
+            current_page=self.current_page, per_page=self.per_page, total_hits=total_hits
+        )
         paged_results = create_pages(
             items=results,
             current_page=self.current_page,

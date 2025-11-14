@@ -11,7 +11,7 @@ from ssrq_editio.models.documents import Document, DocumentType
 from ssrq_editio.models.kantons import KantonName
 from ssrq_editio.models.volumes import Volume, VolumeMeta
 from ssrq_editio.services.documents import resolve_orig_places_for_documents
-from ssrq_editio.services.paginate import create_pages
+from ssrq_editio.services.paginate import create_pages, get_valid_page_number
 from ssrq_editio.services.volumes import get_volume_info
 
 
@@ -156,6 +156,9 @@ class VolumeViewModel(ViewModel):
         if total_hits == 0:
             return None
 
+        self.current_page = get_valid_page_number(
+            current_page=self.current_page, per_page=self.per_page, total_hits=total_hits
+        )
         paged_documents = create_pages(
             result,
             self.current_page,
