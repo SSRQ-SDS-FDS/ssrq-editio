@@ -8,6 +8,7 @@ from ssrq_editio.services.utils import parse_as_list_or_return
 
 class Volume(BaseModel):
     key: str
+    sort_key: int
     kanton: str
     name: str
     prefix: str

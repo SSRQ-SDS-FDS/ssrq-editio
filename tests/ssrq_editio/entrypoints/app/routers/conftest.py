@@ -21,6 +21,7 @@ from ssrq_editio.models.volumes import Volume
 TEST_VOLUMES = [
     Volume(
         key="SG_III_4",
+        sort_key=1,
         kanton="SG",
         name="III 4",
         prefix="SSRQ",

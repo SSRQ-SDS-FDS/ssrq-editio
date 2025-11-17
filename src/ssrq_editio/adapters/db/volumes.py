@@ -27,6 +27,7 @@ async def initialize_volume_data(
             query,
             parameters=(
                 volume.key,
+                volume.sort_key,
                 volume.name,
                 volume.kanton,
                 volume.title,
