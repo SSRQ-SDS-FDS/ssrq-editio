@@ -42,6 +42,7 @@ def documents():
 
 TEST_VOLUME = Volume(
     key="foo",
+    sort_key=1,
     name="foo",
     kanton="ZH",
     title="foo",
@@ -67,6 +68,7 @@ async def test_list_volumes_with_editors(db_kanton_data):
     test_volumes = [
         Volume(
             key=f"foo{i}",
+            sort_key=i,
             name=f"foo_{1}",
             kanton="ZH",
             title="foo",
@@ -85,6 +87,7 @@ async def test_list_volumes_with_editors(db_kanton_data):
     for i, volume in enumerate(volumes):
         assert isinstance(volume, Volume)
         assert volume.key == test_volumes[i].key
+        assert volume.sort_key == test_volumes[i].sort_key
         assert volume.name == test_volumes[i].name
         assert volume.kanton == test_volumes[i].kanton
         assert volume.title == test_volumes[i].title

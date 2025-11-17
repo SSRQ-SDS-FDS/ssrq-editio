@@ -1,5 +1,6 @@
 SELECT
     v.id AS "key",
+    v.sort_key,
     v.name,
     k.short_name AS kanton,
     v.title,
@@ -20,4 +21,4 @@ WHERE
 GROUP BY
     v.id, v.name, k.short_name, v.title, v.prefix, v.pdf, v.literature
 ORDER BY
-    v.id ASC;
+    v.sort_key ASC;
