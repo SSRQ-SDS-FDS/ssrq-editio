@@ -328,7 +328,7 @@ def _add_idno_info(document_info: dict, volume_id: str, source: Path | str) -> d
     return {
         **document_info,
         "is_main": parsed_idno.is_main(),
-        "sort_key": parsed_idno.sort_key,
+        "sort_key": parsed_idno.normalized_sort_key,
         "volume_id": volume_id,
         "source": source,
     }

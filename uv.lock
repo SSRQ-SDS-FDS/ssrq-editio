@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.11, <3.13"
 
 [[package]]
@@ -1059,7 +1059,7 @@ requires-dist = [
     { name = "markdown", specifier = ">=3.7" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "saxonche", specifier = "<=12.5.0" },
-    { name = "ssrq-utils", git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git?tag=v0.5.0" },
+    { name = "ssrq-utils", git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git" },
     { name = "typer", specifier = ">=0.12.5" },
     { name = "uvicorn", specifier = ">=0.31.0" },
 ]
@@ -1080,8 +1080,8 @@ dev = [
 
 [[package]]
 name = "ssrq-utils"
-version = "0.5.0"
-source = { git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git?tag=v0.5.0#31a3b5a7089de5cc87020c216fc6d0aac238ef43" }
+version = "0.6.0"
+source = { git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git#a662a0e8102f1c7f8325ea1e950db145e3be65a7" }
 dependencies = [
     { name = "cachebox" },
     { name = "maturin" },

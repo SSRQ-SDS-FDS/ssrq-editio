@@ -36,7 +36,7 @@ dev = [
 ]
 
 [tool.uv.sources]
-ssrq-utils = { git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git", tag = "v0.5.0" }
+ssrq-utils = { git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git" }
 
 [tool.mypy]
 files = ["src"]
