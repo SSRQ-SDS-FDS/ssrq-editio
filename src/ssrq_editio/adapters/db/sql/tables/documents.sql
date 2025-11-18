@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS documents
     uuid TEXT NOT NULL PRIMARY KEY,
     idno TEXT NOT NULL,
     is_main INTEGER NOT NULL,
-    sort_key REAL NOT NULL,
+    sort_key TEXT NOT NULL,
     de_orig_date TEXT NOT NULL,
     en_orig_date TEXT NOT NULL,
     fr_orig_date TEXT NOT NULL,
@@ -28,3 +28,4 @@ CREATE VIRTUAL TABLE IF NOT EXISTS documents_fulltext USING fts5( -- noqa: PRS
 );
 
 CREATE INDEX idx_documents_volume_id ON documents (volume_id);
+CREATE INDEX idx_documents_sort_key ON documents (sort_key);
