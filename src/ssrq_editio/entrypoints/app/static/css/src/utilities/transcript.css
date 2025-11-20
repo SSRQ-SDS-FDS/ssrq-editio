@@ -17,8 +17,9 @@
 
 /* Element specific styles */
 
-ol.tei-back {
-  @apply list-decimal pl-4;
+/* numbered paragraphs in back */
+div.tei-back.has-numbered-sections > div {
+  @apply list-item list-decimal ml-4 mb-2;
 }
 
 .tei-p {
