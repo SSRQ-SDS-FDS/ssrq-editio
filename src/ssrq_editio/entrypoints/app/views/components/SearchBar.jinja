@@ -8,6 +8,7 @@
 
 <div class="relative">
     <form action="{{ url_for('search') }}" method="get">
+        <input type="hidden" name="lang" value="{{ lang.value }}" />
         <input type="text"
                 name="fts"
                 id="ftsSearchBar"
