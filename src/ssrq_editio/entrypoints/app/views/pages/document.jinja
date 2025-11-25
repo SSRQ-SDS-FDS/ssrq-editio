@@ -115,7 +115,12 @@
                 </TabHeader>
 
                 <Tab :label="'description'">
-                    <p>Description goes here!</p>
+                    <DocumentDescription
+                      :description="doc_content.description"
+                      :lang="lang"
+                      :request="request"
+                      :translator="translator"
+                    />
                 </Tab>
 
                 {% if doc.type.value == 'transcript' and doc.facs is not none %}

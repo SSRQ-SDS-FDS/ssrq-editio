@@ -4,7 +4,9 @@
     request: Request,
     translator: Translator
 #}
-foo bar
+{% if description.archival_information is not none %}
+    {{ description.archival_information | safe }}
+{% endif %}
 
 {% if description.bibliographic_information is not none %}
     bibl angaben hier !!!
