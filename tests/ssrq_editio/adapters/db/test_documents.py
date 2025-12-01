@@ -31,7 +31,7 @@ def documents():
                 uuid=str(uuid4()),
                 idno=f"SSRQ-SG-III_4-{d}-1",
                 is_main=True,
-                sort_key=IDNO.model_validate_string(f"SSRQ-SG-III_4-{d}-1").sort_key_str,
+                sort_key=IDNO.model_validate_string(f"SSRQ-SG-III_4-{d}-1").normalized_sort_key,
                 de_orig_date="foo",
                 en_orig_date="foo",
                 fr_orig_date="foo",
