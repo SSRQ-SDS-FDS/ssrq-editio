@@ -126,7 +126,9 @@ class DocumentTransformer:
             self.saxon_processor,
             self.compiled_xslt,
             params=[
+                XSLTParam("create-normalized-transcript", False),
                 XSLTParam("lang", output_lang.value),
+                XSLTParam("normalized", False),
                 XSLTParam("translations", self.translations),
             ],
             parsed_xml=parsed_xml,
