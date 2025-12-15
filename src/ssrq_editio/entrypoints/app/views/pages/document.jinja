@@ -31,7 +31,7 @@
             {{ orig_places | join(', ') }}
         </span>
         {% endif %}
-        <Toggle 
+        <Toggle
             :checked="True"
             :callback="'togglePopupMarker()'"
             class="ml-auto"
@@ -60,7 +60,15 @@
                 </TabHeader>
 
                 <Tab :label="'transcript'">
-                    <HTMLCard :html_content="doc_content.transcript"/>
+                    <HTMLCard
+                        :html_content="doc_content.transcript"
+                        :template="true"
+                        :additional_data="{
+                            'entities': data.content.index,
+                            'lang': lang,
+                            'translator': translator,
+                            'request': request
+                          }"/>
                 </Tab>
 
                 {% if doc.type.value == 'transcript' %}
@@ -126,7 +134,15 @@
 
                 {% if doc_content.summary is not none %}
                     <Tab :label="'summary'">
-                        <HTMLCard :html_content="doc_content.summary.content" :template="true" />
+                        <HTMLCard
+                            :html_content="doc_content.summary.content"
+                            :template="true"
+                            :additional_data="{
+                                'entities': data.content.index,
+                                'lang': lang,
+                                'translator': translator,
+                                'request': request
+                        }"/>
                     </Tab>
                 {% endif %}
 

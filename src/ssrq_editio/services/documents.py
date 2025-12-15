@@ -67,20 +67,12 @@ class DocumentTransformer:
             str: The transformed XML. ToDo: Will change to be
             the document view object."""
         try:
-            result = apply_precompiled_xslt(
-                xml_src,
-                self.saxon_processor,
-                self.compiled_xslt,
-                params=[
-                    XSLTParam("lang", output_lang.value),
-                    XSLTParam("translations", self.translations),
-                ],
+            parsed_xml = self.saxon_processor.parse_xml(xml_text=xml_src)
+
+            return DocumentDisplay.model_validate(
+                from_json(self._create_output(xml_src, parsed_xml, output_lang))
+                | from_json(self._create_normalized_transcript(xml_src, parsed_xml, output_lang))
             )
-
-            if result.value is None:
-                raise DocumentTransformerError(f"No result for transforming: {xml_src}.")
-
-            return DocumentDisplay.model_validate_json(result.value)
         except DocumentTransformerError as e:
             raise e
         except Exception as e:
@@ -119,6 +111,62 @@ class DocumentTransformer:
         self.xslt_src = xslt_script
         self._prepare_xslt(xslt_script)
         self._prepare_i18n_map()
+
+    def _create_output(self, xml_src: str, parsed_xml: PyXdmNode, output_lang: Lang) -> str:
+        """Creates the output by applying the compiled XSLT to the given XML source.
+
+        Args:
+            xml_src (str): The XML source to transform.
+
+        Returns:
+            str: The transformed XML.
+        """
+        result = apply_precompiled_xslt(
+            xml_src,
+            self.saxon_processor,
+            self.compiled_xslt,
+            params=[
+                XSLTParam("lang", output_lang.value),
+                XSLTParam("translations", self.translations),
+            ],
+            parsed_xml=parsed_xml,
+        )
+
+        if result.value is None:
+            raise DocumentTransformerError(f"No result for transforming: {xml_src}.")
+
+        return result.value
+
+    def _create_normalized_transcript(
+        self, xml_src: str, parsed_xml: PyXdmNode, output_lang: Lang
+    ) -> str:
+        """Creates the normalized transcript by applying the compiled XSLT to the given XML source.
+
+        Args:
+            xml_src (str): The XML source to transform.
+
+        Returns:
+            str: The transformed XML.
+        """
+        result = apply_precompiled_xslt(
+            xml_src,
+            self.saxon_processor,
+            self.compiled_xslt,
+            params=[
+                XSLTParam("create-normalized-transcript", True),
+                XSLTParam("lang", output_lang.value),
+                XSLTParam("normalized", True),
+                XSLTParam("translations", self.translations),
+            ],
+            parsed_xml=parsed_xml,
+        )
+
+        if result.value is None:
+            raise DocumentTransformerError(
+                f"No result for creating normalized transcript: {xml_src}."
+            )
+
+        return result.value
 
     def _create_saxon_processor(self) -> None | PySaxonProcessor:
         """Creates a Saxon processor without using
