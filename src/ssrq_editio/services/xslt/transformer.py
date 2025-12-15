@@ -4,7 +4,7 @@ from multiprocessing import cpu_count
 from pathlib import Path
 from typing import Awaitable, Callable, NamedTuple
 
-from saxonche import PySaxonProcessor, PyXdmItem, PyXslt30Processor, PyXsltExecutable
+from saxonche import PySaxonProcessor, PyXdmItem, PyXdmNode, PyXslt30Processor, PyXsltExecutable
 
 from ssrq_editio.adapters.file import load
 from ssrq_editio.services.xslt.config import XSLT_SRC_DIR
@@ -114,6 +114,7 @@ def apply_precompiled_xslt(
     saxon_proc: PySaxonProcessor,
     xslt_exec: PyXsltExecutable,
     params: list[XSLTParam] = [],
+    parsed_xml: PyXdmNode | None = None,
 ) -> XSLTResult:
     """Applies a precompiled XSLT script to the given XML source.
 
@@ -131,7 +132,9 @@ def apply_precompiled_xslt(
     """
     _apply_params(saxon_proc, xslt_exec, params)
     return XSLTResult(
-        value=xslt_exec.transform_to_string(xdm_node=saxon_proc.parse_xml(xml_text=xml_src)),
+        value=xslt_exec.transform_to_string(
+            xdm_node=parsed_xml if parsed_xml else saxon_proc.parse_xml(xml_text=xml_src)
+        ),
         src=xml_src,
     )
 
@@ -196,10 +199,10 @@ def _apply_params(
         match param.value:
             case str():
                 xslt_proc.set_parameter(param.name, saxon_proc.make_string_value(param.value))  # type: ignore
-            case int():
-                xslt_proc.set_parameter(param.name, saxon_proc.make_integer_value(param.value))  # type: ignore
             case bool():
                 xslt_proc.set_parameter(param.name, saxon_proc.make_boolean_value(param.value))  # type: ignore
+            case int():
+                xslt_proc.set_parameter(param.name, saxon_proc.make_integer_value(param.value))  # type: ignore
             case PyXdmItem():
                 xslt_proc.set_parameter(param.name, param.value)  # type: ignore
             case _:
