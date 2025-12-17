@@ -1,0 +1,52 @@
+/* info card */
+.ssrq-info-card {
+    @apply shadow-md rounded-lg mb-4 pb-4;
+}
+
+/* title of info card */
+.ssrq-info-card > h3{
+    @apply bg-ssrq-greyed-50 px-4 py-2 flex justify-end items-center mb-4 rounded-t-lg;
+}
+div > .ssrq-info-card:first-child > h3 {
+    @apply bg-ssrq-greyed-800 text-white;
+}
+.ssrq-info-card > h3 > span{
+    @apply mr-2 text-xs;
+}
+.ssrq-info-card > h3 > span:first-child{
+    @apply mr-auto text-base font-medium;
+}
+.ssrq-info-card > h3 > span > svg{ 
+    @apply w-4 h-4 inline;
+}
+
+/* secondary heading of info card */
+.ssrq-info-card h4 {
+    @apply px-4 pt-2 font-medium border-t border-ssrq-greyed-50 mt-4;
+}
+
+/* content of info card*/
+.ssrq-info-card > dl {
+    @apply grid grid-cols-[200px_1fr] mx-4;
+}
+.ssrq-info-card dt {
+    grid-column: 1/2;
+}
+.ssrq-info-card dd {
+    grid-column: 2/3;
+}
+.ssrq-info-card > dl > dd > .tei-p{
+    @apply m-0;
+}
+.ssrq-info-card a { 
+    @apply text-ssrq-primary;
+}
+
+/* seal */
+dl.tei-physDesc{
+    counter-reset: seal;
+}
+dl.tei-physDesc:has(> dd.tei-seal + dd.tei-seal) > dd.tei-seal::before{
+    counter-increment: seal;
+    content: counter(seal) ". ";
+}

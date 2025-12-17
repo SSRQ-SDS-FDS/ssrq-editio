@@ -116,10 +116,16 @@
 
                 <Tab :label="'description'">
                     <DocumentDescription
-                      :description="doc_content.description"
+                      :descriptions="doc_content.descriptions"
                       :lang="lang"
                       :request="request"
                       :translator="translator"
+                      :additional_data="{
+                        'entities': data.content.index,
+                        'lang': lang,
+                        'translator': translator,
+                        'request': request
+                      }"
                     />
                 </Tab>
 

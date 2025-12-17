@@ -1,13 +1,50 @@
 {# def
-    description: DocumentDescription,
+    descriptions: list[DocumentDescription],
     lang: Lang,
     request: Request,
-    translator: Translator
+    translator: Translator,
+    additional_data: dict[str, Any] | None = None
 #}
-{% if description.archival_information is not none %}
-    {{ description.archival_information | safe }}
-{% endif %}
+{% for desc in descriptions %}
+    <div class="ssrq-info-card">
+        <h3>
+            <span>
+                {{desc.heading.witnessNumber}}&nbsp;
+                {% if desc.heading.witnessNumber is none or desc.heading.witnessNumber == "" or desc.heading.witnessNumber == "A" %}
+                    {{ translator.translate(lang, 'base_document') }}
+                {% else %}
+                    {{ translator.translate(lang, 'additional_witness') }}
+                {% endif %}
+            </span>
+            <span>
+                <IdIcon />
+                {{desc.heading.idno}}
+            </span>
+            <span>
+                <LangIcon />
+                {{desc.heading.lang}}
+            </span>
+        </h3>
 
-{% if description.bibliographic_information is not none %}
-    bibl angaben hier !!!
-{% endif %}
+        {% if desc.archival_information is not none %}
+            {{ desc.archival_information | safe }}
+        {% endif %}
+        {% if desc.ms_information is not none %}
+            {{ desc.ms_information | render_template_string(additional_data) }}
+        {% endif %}
+        {% if desc.ms_history is not none %}
+            {{ desc.ms_history | render_template_string(additional_data) }}
+        {% endif %}
+        {% if desc.adminInfo is not none %}
+            {{ desc.adminInfo | safe }}
+        {% endif %}
+        {% if desc.physical_description is not none %}
+            <h4>{{ translator.translate(lang, 'physical_description') }}</h4>
+            {{ desc.physical_description |  render_template_string(additional_data) }}
+        {% endif %}
+        {% if desc.bibliographic_information is not none %}
+            <h4>{{ translator.translate(lang, 'bibliography') }}</h4>
+            {{ desc.bibliographic_information | safe }}
+        {% endif %}
+    </div>
+{% endfor %}

@@ -62,11 +62,20 @@ class DocumentComment(BaseModel):
     lang: str | None
 
 
+class DocumentDescriptionHeading(BaseModel):
+    idno: str | None = None
+    lang: str | None = None
+    witnessNumber: str | None = None
+
+
 class DocumentDescription(BaseModel):
+    heading: DocumentDescriptionHeading
     archival_information: str | None = None
-    bibliographic_information: list[str] | None = (
-        None  # correct type? better the already created HTML instead?!
-    )
+    ms_history: str | None = None
+    adminInfo: str | None = None
+    ms_information: str | None = None
+    physical_description: str | None = None
+    bibliographic_information: str | None = None
 
 
 class DocumentTitle(BaseModel):
@@ -127,7 +136,7 @@ class DocumentDisplay(BaseModel):
     contain the rendered infos, transformed by XSLT."""
 
     comment: DocumentComment | None
-    description: DocumentDescription
+    descriptions: list[DocumentDescription]
     normalized_transcript: str | None
     summary: DocumentSummary | None
     transcript: str
