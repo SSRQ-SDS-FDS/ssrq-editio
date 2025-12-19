@@ -18,9 +18,13 @@ const createFacsViewer = (tileSources) => {
     minZoomLevel: 1,
     defaultZoomLevel: 1,
     autoHideControls: false,
+    showRotationControl: true,
+    rotationIncrement: 90,
     // Icon options
     zoomInButton: 'viewerZoomIn',
     zoomOutButton: 'viewerZoomOut',
+    rotateLeftButton: 'viewerRotateCW',
+    rotateRightButton: 'viewerRotateCCW',
     homeButton: 'viewerHome',
     fullPageButton: 'viewerFull',
     previousButton: 'viewerPrev',
