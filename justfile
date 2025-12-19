@@ -1,5 +1,5 @@
 # CSS input/output pairs: "input_file:output_file"
-css_files := "src/main.css:style.css src/utilities/transcript.css:transcript.css"
+css_files := "src/main.css:style.css src/utilities/transcript.css:transcript.css src/utilities/doc_info.css:doc_info.css"
 css_dir := "./src/ssrq_editio/entrypoints/app/static/css"
 js_build_command := "npx parcel build --dist-dir " + js_output_dir
 js_output_dir := "./src/ssrq_editio/entrypoints/app/static/js/dist"
