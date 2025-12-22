@@ -8,35 +8,29 @@
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:tei="http://www.tei-c.org/ns/1.0"
                 exclude-result-prefixes="#all" expand-text="yes" version="3.0">
-    
+
     <xsl:output method="json" encoding="utf-8"/>
-    
+
     <!-- Utility functions / modules -->
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/core-utils.xsl"/>
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/date.xsl"/>
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/text-utils.xsl"/>
-    
+
     <!-- Templates for rendering -->
     <xsl:include href="./convert/src/ssrq_convert/tei2pub/xsl/html.xsl"/>
-    
-    
-    
+
+
+
     <xsl:param name="lang" as="xs:string"/>
     <xsl:param name="translations" as="map(xs:string, map(*))"/>
-    
+
     <xsl:template match="/">
         <xsl:variable name="type" as="xs:string" select=".//tei:text/@type"/>
-        <xsl:variable name="msDesc" as="element(tei:msDesc)?" select="cutils:get-document-manuscript-description(./tei:TEI)"/>
-        <xsl:variable name="msSecDesc" as="element(tei:msDesc)*" select="cutils:get-secondary-document-manuscript-descriptions(./tei:TEI)"/>
         <xsl:variable name="descriptions" as="map(*)*">
-            <xsl:call-template name="msDocument">
-                <xsl:with-param name="msDesc" as="element(tei:msDesc)?" tunnel="yes" select="$msDesc" />
-            </xsl:call-template>
-            <xsl:for-each select="$msSecDesc">
-                <xsl:call-template name="msDocument">
-                    <xsl:with-param name="msDesc" as="element(tei:msDesc)?" tunnel="yes" select="." />
-                </xsl:call-template>
-            </xsl:for-each>
+            <xsl:apply-templates select="cutils:get-document-manuscript-description(./tei:TEI) | cutils:get-secondary-document-manuscript-descriptions(./tei:TEI)">
+                <xsl:with-param name="lang" as="xs:string" tunnel="yes" select="$lang" />
+                <xsl:with-param name="translations" as="map(xs:string, map(*))" tunnel="yes" select="$translations"/>
+            </xsl:apply-templates>
         </xsl:variable>
         <xsl:map>
             <xsl:map-entry key="'comment'">
@@ -69,9 +63,9 @@
             <xsl:map-entry key="'transcript'" select="'Quellennahes Transkript'"/>
             <xsl:map-entry key="'type'" select="$type"/>
         </xsl:map>
-        
+
     </xsl:template>
-    
+
     <xsl:template match="tei:summary">
         <xsl:param name="lang" as="xs:string" tunnel="yes"/>
         <xsl:param name="translations" as="map(xs:string, map(*))" tunnel="yes"/>
@@ -80,7 +74,7 @@
             <xsl:map-entry select="./@xml:lang/data(.)" key="'lang'"/>
         </xsl:map>
     </xsl:template>
-    
+
     <xsl:template match="tei:back">
         <xsl:param name="lang" as="xs:string" tunnel="yes"/>
         <xsl:param name="translations" as="map(xs:string, map(*))" tunnel="yes"/>
@@ -89,51 +83,45 @@
             <xsl:map-entry select="./@xml:lang/data(.)" key="'lang'"/> <!-- korrekt? -->
         </xsl:map>
     </xsl:template>
-    
-    <xsl:template name="msDocument" as="map(*)">
-        <xsl:param name="msDesc" as="element(tei:msDesc)?" tunnel="yes" />
+
+    <xsl:template match="tei:msDesc">
+        <xsl:param name="lang" as="xs:string" tunnel="yes"/>
+        <xsl:param name="translations" as="map(xs:string, map(*))" tunnel="yes"/>
+        <xsl:variable name="use_lang" as="xs:string"
+            select="(./tei:msIdentifier/*[@xml:lang = $lang]/@xml:lang[1], ./tei:msIdentifier/*/@xml:lang[1])[1]"/>
         <xsl:map>
-            <xsl:map-entry key="'heading'">
-                <xsl:call-template name="msHeading">
-                    <xsl:with-param name="msDesc" as="element(tei:msDesc)?" tunnel="yes" select="$msDesc" />
-                    <xsl:with-param name="lang" as="xs:string" tunnel="yes" select="$lang" />
-                    <xsl:with-param name="translations" as="map(xs:string, map(*))" tunnel="yes" select="$translations"/>
-                </xsl:call-template>
+            <xsl:map-entry key="'admin_info'">
+                <xsl:sequence select="html:process-self(./tei:adminInfo, $lang, $translations)"/>
             </xsl:map-entry>
             <xsl:map-entry key="'archival_information'">
-                <xsl:sequence select="html:process-self($msDesc/tei:msIdentifier, $lang, $translations)"/>
-            </xsl:map-entry>
-            <xsl:map-entry key="'ms_history'">
-                <xsl:sequence select="html:process-self($msDesc/tei:history, $lang, $translations)"/>
-            </xsl:map-entry>
-            <xsl:map-entry key="'admin_info'">
-                <xsl:sequence select="html:process-self($msDesc/tei:adminInfo, $lang, $translations)"/>
-            </xsl:map-entry>
-            <xsl:map-entry key="'ms_information'">
-                <xsl:sequence select="html:process-self($msDesc/tei:msContents/tei:msItem, $lang, $translations)"/>
-            </xsl:map-entry>
-            <xsl:map-entry key="'physical_description'">
-                <xsl:sequence select="html:process-self($msDesc/tei:physDesc, $lang, $translations)"/>
+                <xsl:sequence select="html:process-self(./tei:msIdentifier, $lang, $translations)"/>
             </xsl:map-entry>
             <xsl:map-entry key="'bibliographic_information'">
-                <xsl:sequence select="html:process-self($msDesc/tei:additional, $lang, $translations)"/>
+                <xsl:sequence select="html:process-self(./tei:additional, $lang, $translations)"/>
+            </xsl:map-entry>
+            <xsl:map-entry key="'heading'">
+                <xsl:map>
+                    <xsl:map-entry key="'idno'">
+                        <xsl:value-of select="./tei:msIdentifier/tei:idno[@xml:lang=$use_lang]" />
+                    </xsl:map-entry>
+                    <xsl:map-entry key="'lang'">
+                        <xsl:value-of select="./tei:msContents/tei:msItem/tei:textLang/@xml:lang" />
+                    </xsl:map-entry>
+                    <xsl:map-entry key="'witnessNumber'">
+                        <xsl:value-of select="./../@n" />
+                    </xsl:map-entry>
+                </xsl:map>
+            </xsl:map-entry>
+            <xsl:map-entry key="'ms_history'">
+                <xsl:sequence select="html:process-self(./tei:history, $lang, $translations)"/>
+            </xsl:map-entry>
+            <xsl:map-entry key="'ms_information'">
+                <xsl:sequence select="html:process-self(./tei:msContents/tei:msItem, $lang, $translations)"/>
+            </xsl:map-entry>
+            <xsl:map-entry key="'physical_description'">
+                <xsl:sequence select="html:process-self(./tei:physDesc, $lang, $translations)"/>
             </xsl:map-entry>
         </xsl:map>
     </xsl:template>
-    
-    <xsl:template name="msHeading">
-        <xsl:param name="msDesc" as="element(tei:msDesc)?" tunnel="yes" />
-        <xsl:variable name="use_lang" as="xs:string" select="($msDesc/tei:msIdentifier/*[@xml:lang = $lang]/@xml:lang[1], $msDesc/tei:msIdentifier/*/@xml:lang[1])[1]"/>
-        <xsl:map>
-            <xsl:map-entry key="'idno'">
-                <xsl:value-of select="$msDesc/tei:msIdentifier/tei:idno[@xml:lang=$use_lang]" />
-            </xsl:map-entry>
-            <xsl:map-entry key="'lang'">
-                <xsl:value-of select="$msDesc/tei:msContents/tei:msItem/tei:textLang/@xml:lang" />
-            </xsl:map-entry>
-            <xsl:map-entry key="'witnessNumber'">
-                <xsl:value-of select="$msDesc/../@n" />
-            </xsl:map-entry>
-        </xsl:map>
-    </xsl:template>
+
 </xsl:stylesheet>
