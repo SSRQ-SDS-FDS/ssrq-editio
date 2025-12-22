@@ -2,6 +2,7 @@ from random import randint
 from uuid import uuid4
 
 import pytest
+from ssrq_utils.idno.model import IDNO
 
 from ssrq_editio.adapters.db.documents import (
     get_document,
@@ -30,7 +31,7 @@ def documents():
                 uuid=str(uuid4()),
                 idno=f"SSRQ-SG-III_4-{d}-1",
                 is_main=True,
-                sort_key=d,
+                sort_key=IDNO.model_validate_string(f"SSRQ-SG-III_4-{d}-1").normalized_sort_key,
                 de_orig_date="foo",
                 en_orig_date="foo",
                 fr_orig_date="foo",
@@ -134,3 +135,18 @@ async def test_get_documents_by_fulltext(db_volume_data, documents, fulltext):
     search_result = await get_documents_by_ft(connection=db_volume_data, search="foo")
     assert len(search_result) == len(documents)
     assert "<mark>foo</mark>" in search_result[0].ft_match
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize(
+    ("idno", "expected_sort_key"),
+    [
+        ("SSRQ-SG-III_4-1-1", "00001.00000"),
+        ("SSRQ-SG-III_4-10-1", "00010.00000"),
+        ("SSRQ-SG-III_4-149-1", "00149.00000"),
+    ],
+)
+async def test_sort_key(db_volume_data, documents, idno, expected_sort_key):
+    await initialize_document_data(documents=documents, connection=db_volume_data)
+    result = await get_document(connection=db_volume_data, document_id=idno)
+    assert result.sort_key == expected_sort_key

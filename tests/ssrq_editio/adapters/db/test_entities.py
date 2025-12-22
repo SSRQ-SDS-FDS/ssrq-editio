@@ -1,5 +1,6 @@
 import aiosqlite
 import pytest
+from ssrq_utils.idno.model import IDNO
 
 from ssrq_editio.adapters.db.documents import initialize_document_data
 from ssrq_editio.adapters.db.entities import (
@@ -167,7 +168,7 @@ async def test_search_places_with_occurrences(
             uuid="d56f1ce8-cec9-49ed-b54b-09f397adc2d8",
             idno="SSRQ-SG-III_4-63-1",
             is_main=True,
-            sort_key=63,
+            sort_key=IDNO.model_validate_string("SSRQ-SG-III_4-63-1").normalized_sort_key,
             de_orig_date="1473 April 26 a. S.",
             en_orig_date="1473 April 26 O.S.",
             fr_orig_date="1473 avril 26 a. s.",

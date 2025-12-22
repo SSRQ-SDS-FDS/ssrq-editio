@@ -21,7 +21,7 @@ class DocumentIdentification(BaseModel):
     idno: str
     is_main: bool
     printed_idno: str
-    sort_key: float
+    sort_key: str
     volume_id: str
     uuid: str
 
@@ -35,7 +35,7 @@ class DocumentIdentificationDisplay(BaseModel):
     idno: str
     kanton: str
     printed_idno: str
-    sort_key: float
+    sort_key: str
     volume: str
 
 

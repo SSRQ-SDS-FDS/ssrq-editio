@@ -3,6 +3,7 @@ from typing import AsyncGenerator
 import pytest
 from aiosqlite import Connection
 from httpx import ASGITransport, AsyncClient
+from ssrq_utils.idno.model import IDNO
 
 from ssrq_editio.adapters.db.connection import db_session
 from ssrq_editio.adapters.db.documents import initialize_document_data
@@ -21,6 +22,7 @@ from ssrq_editio.models.volumes import Volume
 TEST_VOLUMES = [
     Volume(
         key="SG_III_4",
+        sort_key=1,
         kanton="SG",
         name="III 4",
         prefix="SSRQ",
@@ -37,7 +39,7 @@ TEST_DOCUMENTS = (
         uuid="d56f1ce8-cec9-49ed-b54b-09f397adc2d8",
         idno="SSRQ-SG-III_4-1-1",
         is_main=True,
-        sort_key=1,
+        sort_key=IDNO.model_validate_string("SSRQ-SG-III_4-1-1").normalized_sort_key,
         de_orig_date='<span class="tei-origDate">1473 April 26 a. S.</span>',
         en_orig_date='<span class="tei-origDate">1473 April 26 O.S.</span>',
         fr_orig_date='<span class="tei-origDate">1473 avril 26 a. s.</span>',

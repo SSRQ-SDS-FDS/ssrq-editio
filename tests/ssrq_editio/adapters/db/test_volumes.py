@@ -2,6 +2,7 @@ from random import randint
 from uuid import uuid4
 
 import pytest
+from ssrq_utils.idno.model import IDNO
 
 from ssrq_editio.adapters.db.documents import initialize_document_data
 from ssrq_editio.adapters.db.volumes import (
@@ -21,7 +22,7 @@ def documents():
             uuid=str(uuid4()),
             idno=f"SSRQ-SG-III_4-{d}-1",
             is_main=True,
-            sort_key=d,
+            sort_key=IDNO.model_validate_string(f"SSRQ-SG-III_4-{d}-1").normalized_sort_key,
             de_orig_date="foo",
             en_orig_date="foo",
             fr_orig_date="foo",
@@ -42,6 +43,7 @@ def documents():
 
 TEST_VOLUME = Volume(
     key="foo",
+    sort_key=1,
     name="foo",
     kanton="ZH",
     title="foo",
@@ -67,6 +69,7 @@ async def test_list_volumes_with_editors(db_kanton_data):
     test_volumes = [
         Volume(
             key=f"foo{i}",
+            sort_key=i,
             name=f"foo_{1}",
             kanton="ZH",
             title="foo",
@@ -85,6 +88,7 @@ async def test_list_volumes_with_editors(db_kanton_data):
     for i, volume in enumerate(volumes):
         assert isinstance(volume, Volume)
         assert volume.key == test_volumes[i].key
+        assert volume.sort_key == test_volumes[i].sort_key
         assert volume.name == test_volumes[i].name
         assert volume.kanton == test_volumes[i].kanton
         assert volume.title == test_volumes[i].title

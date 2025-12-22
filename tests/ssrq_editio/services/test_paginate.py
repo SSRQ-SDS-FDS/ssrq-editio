@@ -1,6 +1,6 @@
 import pytest
 
-from ssrq_editio.services.paginate import calc_pages, create_pages
+from ssrq_editio.services.paginate import calc_pages, create_pages, get_valid_page_number
 
 
 @pytest.mark.parametrize(
@@ -48,4 +48,31 @@ def test_create_pages(
 )
 def test_calc_pages(inputs, expected):
     result = calc_pages(*inputs)
+    assert result == expected
+
+
+@pytest.mark.parametrize(
+    ("current_page", "per_page", "total_hits", "expected"),
+    [
+        (1, 25, 50, 1),
+        (5, 25, 50, 2),
+        (0, 25, 50, 1),
+        (-3, 25, 50, 1),
+        (1, 25, 0, 1),
+        (0, 25, 0, 1),
+        (2, 25, 50, 2),
+        (10, 50, 50, 1),
+        (999, 25, 50, 2),
+        (5, 25, 10, 1),
+        (1, 25, 10, 1),
+        (10, 1, 5, 5),
+        (5, 1, 5, 5),
+        (3, 25, 51, 3),
+        (5, 25, 51, 3),
+    ],
+)
+def test_get_valid_page_number(current_page, per_page, total_hits, expected):
+    result = get_valid_page_number(
+        current_page=current_page, per_page=per_page, total_hits=total_hits
+    )
     assert result == expected

@@ -4,8 +4,8 @@ from ssrq_editio.adapters.db.kantons import initialize_kanton_data, list_kantons
 from ssrq_editio.models.kantons import Kantons
 
 FAKE_VOLUMES_DOCUMENTS = """
-INSERT INTO volumes (id, name, kanton_id, title, prefix) VALUES ("1", "foo", 1, "bar", "SSRQ");
-INSERT INTO volumes (id, name, kanton_id, title, prefix) VALUES ("2", "baz", 2, "foo", "SSRQ");
+INSERT INTO volumes (id, sort_key, name, kanton_id, title, prefix) VALUES ("1", 1, "foo", 1, "bar", "SSRQ");
+INSERT INTO volumes (id, sort_key, name, kanton_id, title, prefix) VALUES ("2", 2, "baz", 2, "foo", "SSRQ");
 
 WITH RECURSIVE
     cnt(x) AS (SELECT 1 UNION ALL SELECT x+1 FROM cnt WHERE x < 30)

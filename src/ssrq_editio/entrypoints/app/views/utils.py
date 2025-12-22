@@ -61,7 +61,10 @@ def create_entity_preview_by_id(
     """
 
     entity, entity_type = next(
-        (e, et) for et in map_to_entity_type(id) if (e := entities[et].get_by_id(id)) is not None
+        (e, et)
+        for et in map_to_entity_type(id)
+        if (entity_store := entities.get(et)) is not None
+        and (e := entity_store.get_by_id(id)) is not None
     )
 
     return component_catalog.render(

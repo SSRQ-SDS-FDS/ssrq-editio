@@ -8,64 +8,77 @@
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:tei="http://www.tei-c.org/ns/1.0"
                 exclude-result-prefixes="#all" expand-text="yes" version="3.0">
-
+    
     <xsl:output method="json" encoding="utf-8"/>
-
+    
     <!-- Utility functions / modules -->
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/core-utils.xsl"/>
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/date.xsl"/>
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/text-utils.xsl"/>
-
+    
     <!-- Templates for rendering -->
     <xsl:include href="./convert/src/ssrq_convert/tei2pub/xsl/html.xsl"/>
-
-
-
+    
+    
+    
+    <xsl:param name="create-normalized-transcript" as="xs:boolean" select="false()"/>
     <xsl:param name="lang" as="xs:string"/>
     <xsl:param name="translations" as="map(xs:string, map(*))"/>
-
+    
     <xsl:template match="/">
         <xsl:variable name="type" as="xs:string" select=".//tei:text/@type"/>
-        <xsl:variable name="descriptions" as="map(*)*">
-            <xsl:apply-templates select="cutils:get-document-manuscript-description(./tei:TEI) | cutils:get-secondary-document-manuscript-descriptions(./tei:TEI)">
-                <xsl:with-param name="lang" as="xs:string" tunnel="yes" select="$lang" />
-                <xsl:with-param name="translations" as="map(xs:string, map(*))" tunnel="yes" select="$translations"/>
-            </xsl:apply-templates>
-        </xsl:variable>
-        <xsl:map>
-            <xsl:map-entry key="'comment'">
-                <xsl:apply-templates select=".//tei:back">
-                    <xsl:with-param name="lang" as="xs:string" tunnel="yes" select="$lang" />
-                    <xsl:with-param name="translations" as="map(xs:string, map(*))" tunnel="yes" select="$translations"/>
-                </xsl:apply-templates>
-            </xsl:map-entry>
-            <xsl:map-entry key="'descriptions'" select="array{$descriptions}" />
-            <xsl:map-entry key="'normalized_transcript'">
-                <xsl:choose>
-                    <xsl:when test="$type = 'transcript'">
-                        <!-- ToDo: Implement correct rendering here -->
-                        <xsl:value-of select="'Normalisiertes Transkript'"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <!-- A collection or summary never have a normalized transcript! -->
-                        <xsl:sequence select="()"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:map-entry>
-            <!-- ToDo: Implement correct rendering here -->
-            <xsl:map-entry key="'summary'">
-                <xsl:apply-templates select="(.//tei:summary[@xml:lang = $lang], .//tei:summary)[1]">
-                    <xsl:with-param name="lang" as="xs:string" tunnel="yes" select="$lang" />
-                    <xsl:with-param name="translations" as="map(xs:string, map(*))" tunnel="yes" select="$translations"/>
-                </xsl:apply-templates>
-            </xsl:map-entry>
-            <!-- ToDo: Implement conrect rendering here -->
-            <xsl:map-entry key="'transcript'" select="'Quellennahes Transkript'"/>
-            <xsl:map-entry key="'type'" select="$type"/>
-        </xsl:map>
-
+        <xsl:choose>
+            <xsl:when test="$create-normalized-transcript">
+                <xsl:map>
+                    <xsl:map-entry key="'normalized_transcript'">
+                        <xsl:choose>
+                            <xsl:when test="$type = 'transcript'">
+                                <!-- ToDo: Implement correct rendering here -->
+                                <xsl:value-of select="'Normalisiertes Transkript'"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <!-- A collection or summary never have a normalized transcript! -->
+                                <xsl:sequence select="()"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:map-entry>
+                </xsl:map>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:map>
+                    <xsl:map-entry key="'comment'">
+                        <xsl:apply-templates select=".//tei:back">
+                            <xsl:with-param name="lang" as="xs:string" tunnel="yes" select="$lang" />
+                            <xsl:with-param name="translations" as="map(xs:string, map(*))" tunnel="yes" select="$translations"/>
+                        </xsl:apply-templates>
+                    </xsl:map-entry>
+                    <xsl:variable name="descriptions" as="map(*)*">
+                        <xsl:apply-templates select="cutils:get-document-manuscript-description(./tei:TEI) | cutils:get-secondary-document-manuscript-descriptions(./tei:TEI)">
+                            <xsl:with-param name="lang" as="xs:string" tunnel="yes" select="$lang" />
+                            <xsl:with-param name="translations" as="map(xs:string, map(*))" tunnel="yes" select="$translations"/>
+                        </xsl:apply-templates>
+                    </xsl:variable>
+                    <xsl:map-entry key="'descriptions'" select="array{$descriptions}" />
+                    <!-- ToDo: Implement correct rendering here -->
+                    <xsl:map-entry key="'summary'">
+                        <xsl:apply-templates select="(.//tei:summary[@xml:lang = $lang], .//tei:summary)[1]">
+                            <xsl:with-param name="lang" as="xs:string" tunnel="yes" select="$lang" />
+                            <xsl:with-param name="translations" as="map(xs:string, map(*))" tunnel="yes" select="$translations"/>
+                        </xsl:apply-templates>
+                    </xsl:map-entry>
+                    <!-- ToDo: Implement conrect rendering here -->
+                    <xsl:map-entry key="'transcript'">
+                        <xsl:apply-templates select=".//tei:body" mode="html">
+                            <xsl:with-param name="lang" as="xs:string" tunnel="yes" select="$lang" />
+                            <xsl:with-param name="translations" as="map(xs:string, map(*))" tunnel="yes" select="$translations"/>
+                        </xsl:apply-templates>
+                    </xsl:map-entry>
+                    <xsl:map-entry key="'type'" select="$type"/>
+                </xsl:map>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
-
+    
     <xsl:template match="tei:summary">
         <xsl:param name="lang" as="xs:string" tunnel="yes"/>
         <xsl:param name="translations" as="map(xs:string, map(*))" tunnel="yes"/>
@@ -74,7 +87,7 @@
             <xsl:map-entry select="./@xml:lang/data(.)" key="'lang'"/>
         </xsl:map>
     </xsl:template>
-
+    
     <xsl:template match="tei:back">
         <xsl:param name="lang" as="xs:string" tunnel="yes"/>
         <xsl:param name="translations" as="map(xs:string, map(*))" tunnel="yes"/>
@@ -83,7 +96,7 @@
             <xsl:map-entry select="./@xml:lang/data(.)" key="'lang'"/> <!-- korrekt? -->
         </xsl:map>
     </xsl:template>
-
+    
     <xsl:template match="tei:msDesc">
         <xsl:param name="lang" as="xs:string" tunnel="yes"/>
         <xsl:param name="translations" as="map(xs:string, map(*))" tunnel="yes"/>
@@ -123,5 +136,5 @@
             </xsl:map-entry>
         </xsl:map>
     </xsl:template>
-
+    
 </xsl:stylesheet>

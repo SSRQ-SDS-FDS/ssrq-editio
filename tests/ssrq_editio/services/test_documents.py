@@ -2,6 +2,7 @@ from pathlib import Path
 
 import pytest
 from saxonche import PyXdmMap, PyXdmNode, PyXsltExecutable
+from ssrq_utils.idno.model import IDNO
 from ssrq_utils.lang.display import Lang
 
 from ssrq_editio.adapters.file import load
@@ -36,7 +37,7 @@ async def document_transformer(transpiled_schema: Path) -> DocumentTransformer:
                 uuid="d56f1ce8-cec9-49ed-b54b-09f397adc2d8",
                 idno="SSRQ-SG-III_4-63-1",
                 is_main=True,
-                sort_key=63,
+                sort_key=IDNO.model_validate_string("SSRQ-SG-III_4-63-1").normalized_sort_key,
                 de_orig_date='<span class="tei-origDate">1473 April 26 a. S.</span>',
                 en_orig_date='<span class="tei-origDate">1473 April 26 O.S.</span>',
                 fr_orig_date='<span class="tei-origDate">1473 avril 26 a. s.</span>',
@@ -172,7 +173,7 @@ async def document_transformer(transpiled_schema: Path) -> DocumentTransformer:
                 uuid="0aa155ad-1ec6-45fc-8a53-772f1d424e54",
                 idno="SSRQ-SG-III_4-245-1",
                 is_main=True,
-                sort_key=245,
+                sort_key=IDNO.model_validate_string("SSRQ-SG-III_4-245-1").normalized_sort_key,
                 de_orig_date='<span class="tei-origDate">1775 Juni 20</span>',
                 en_orig_date='<span class="tei-origDate">1775 June 20</span>',
                 fr_orig_date='<span class="tei-origDate">1775 juin 20</span>',
@@ -236,7 +237,7 @@ async def document_transformer(transpiled_schema: Path) -> DocumentTransformer:
                 uuid="8eb3d575-762e-4876-aa7e-546ae612480b",
                 idno="SDS-NE-1-143-1",
                 is_main=True,
-                sort_key=143,
+                sort_key=IDNO.model_validate_string("SDS-NE-1-143-1").normalized_sort_key,
                 de_orig_date='<span class="tei-origDate">1708 Oktober 1</span>',
                 en_orig_date='<span class="tei-origDate">1708 October 1</span>',
                 fr_orig_date='<span class="tei-origDate">1708 octobre 1</span>',
