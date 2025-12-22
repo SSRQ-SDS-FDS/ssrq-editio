@@ -69,13 +69,13 @@ class DocumentDescriptionHeading(BaseModel):
 
 
 class DocumentDescription(BaseModel):
-    heading: DocumentDescriptionHeading
+    admin_info: str | None = None
     archival_information: str | None = None
+    bibliographic_information: str | None = None
+    heading: DocumentDescriptionHeading
     ms_history: str | None = None
-    adminInfo: str | None = None
     ms_information: str | None = None
     physical_description: str | None = None
-    bibliographic_information: str | None = None
 
 
 class DocumentTitle(BaseModel):

@@ -16,7 +16,7 @@ div > .ssrq-info-card:first-child > h3 {
 .ssrq-info-card > h3 > span:first-child{
     @apply mr-auto text-base font-medium;
 }
-.ssrq-info-card > h3 > span > svg{ 
+.ssrq-info-card > h3 > span > svg{
     @apply w-4 h-4 inline;
 }
 
@@ -38,7 +38,7 @@ div > .ssrq-info-card:first-child > h3 {
 .ssrq-info-card > dl > dd > .tei-p{
     @apply m-0;
 }
-.ssrq-info-card a { 
+.ssrq-info-card a {
     @apply text-ssrq-primary;
 }
 

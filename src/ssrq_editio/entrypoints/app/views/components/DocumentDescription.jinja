@@ -5,6 +5,20 @@
     translator: Translator,
     additional_data: dict[str, Any] | None = None
 #}
+
+{% macro render_section(content, heading=None, render_type='safe') %}
+    {% if content is not none %}
+        {% if heading %}
+            <h4>{{ heading }}</h4>
+        {% endif %}
+        {% if render_type == 'template' %}
+            {{ content | render_template_string(additional_data) }}
+        {% else %}
+            {{ content | safe }}
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+
 {% for desc in descriptions %}
     <div class="ssrq-info-card">
         <h3>
@@ -26,25 +40,11 @@
             </span>
         </h3>
 
-        {% if desc.archival_information is not none %}
-            {{ desc.archival_information | safe }}
-        {% endif %}
-        {% if desc.ms_information is not none %}
-            {{ desc.ms_information | render_template_string(additional_data) }}
-        {% endif %}
-        {% if desc.ms_history is not none %}
-            {{ desc.ms_history | render_template_string(additional_data) }}
-        {% endif %}
-        {% if desc.adminInfo is not none %}
-            {{ desc.adminInfo | safe }}
-        {% endif %}
-        {% if desc.physical_description is not none %}
-            <h4>{{ translator.translate(lang, 'physical_description') }}</h4>
-            {{ desc.physical_description |  render_template_string(additional_data) }}
-        {% endif %}
-        {% if desc.bibliographic_information is not none %}
-            <h4>{{ translator.translate(lang, 'bibliography') }}</h4>
-            {{ desc.bibliographic_information | safe }}
-        {% endif %}
+        {{ render_section(desc.archival_information) }}
+        {{ render_section(desc.ms_information, render_type='template') }}
+        {{ render_section(desc.ms_history, render_type='template') }}
+        {{ render_section(desc.admin_info) }}
+        {{ render_section(desc.physical_description, translator.translate(lang, 'physical_description'), 'template') }}
+        {{ render_section(desc.bibliographic_information, translator.translate(lang, 'bibliography')) }}
     </div>
 {% endfor %}
