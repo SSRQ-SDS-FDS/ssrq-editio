@@ -73,7 +73,14 @@
 
                 {% if doc.type.value == 'transcript' %}
                     <Tab :label="'normalized'">
-                        <HTMLCard :html_content="doc_content.normalized_transcript" />
+                        <HTMLCard :html_content="doc_content.normalized_transcript"
+                                  :template="true"
+                                  :additional_data="{
+                                            'entities': data.content.index,
+                                            'lang': lang,
+                                            'translator': translator,
+                                            'request': request
+                                            }"/>
                     </Tab>
                 {% endif %}
 
