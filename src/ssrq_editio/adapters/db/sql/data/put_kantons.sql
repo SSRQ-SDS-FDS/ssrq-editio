@@ -8,7 +8,7 @@ INSERT INTO kantons (id, short_name, de_title, fr_title, it_title) VALUES
 (5, 'SZ', 'V. Abteilung: Die Rechtsquellen des Kantons Schwyz', NULL, NULL),
 (
     6,
-    'OW/NW',
+    'UW',
     'VI. Abteilung: Die Rechtsquellen des Kantons Unterwalden',
     NULL,
     NULL
