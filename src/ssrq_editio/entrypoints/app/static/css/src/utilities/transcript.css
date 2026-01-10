@@ -22,8 +22,12 @@ div.tei-back.has-numbered-sections > div {
   @apply list-item list-decimal ml-4 mb-2;
 }
 
-.tei-p {
+.tei-p, .tei-seg {
     @apply my-2;
+}
+
+div[aria-label="tab-transcript"] .tei-seg {
+    @apply my-0 inline-block;
 }
 
 /* hide marker for popup */
