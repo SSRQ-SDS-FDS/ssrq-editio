@@ -26,6 +26,12 @@ div.tei-back.has-numbered-sections > div {
     @apply my-2;
 }
 
+/* double margin for tei:div-elements in contrast to tei:p and tei:seg; only applies to transcript and normalized view */
+div[aria-label="tab-transcript"] .tei-div +.tei-div,
+div[aria-label="tab-normalized"] .tei-div +.tei-div {
+    @apply my-4;
+}
+
 div[aria-label="tab-transcript"] .tei-seg {
     @apply my-0 inline;
 }
