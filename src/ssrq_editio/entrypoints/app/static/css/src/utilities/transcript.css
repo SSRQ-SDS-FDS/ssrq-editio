@@ -27,7 +27,11 @@ div.tei-back.has-numbered-sections > div {
 }
 
 div[aria-label="tab-transcript"] .tei-seg {
-    @apply my-0 inline-block;
+    @apply my-0 inline;
+}
+
+div[aria-label="tab-transcript"] .tei-seg + .tei-seg::before{
+    content: " ";
 }
 
 /* hide marker for popup */
