@@ -15,6 +15,30 @@
     @apply w-4 h-4 p-[1px] inline text-ssrq-primary;
 }
 
+/* hide marker for popup */
+/* maybe use: .hidden-popup-marker .tei-back details {}? */
+.hidden-popup-marker details:has(.tei-entity-icon) {
+    @apply hidden;
+}
+
+/* Rules to control the display of each column used
+   in the document view */
+#metadata-col {
+    @apply transition-all duration-500 ease-in-out;
+}
+
+#transcript-col {
+    @apply transition-all duration-500 ease-in-out;
+}
+
+.metadata-hidden #metadata-col {
+    @apply hidden;
+}
+
+.metadata-hidden #transcript-col {
+    @apply w-full;
+}
+
 /* Element specific styles */
 
 /* numbered paragraphs in back */
@@ -38,10 +62,4 @@ div[aria-label="tab-transcript"] .tei-seg {
 
 div[aria-label="tab-transcript"] .tei-seg + .tei-seg::before{
     content: " ";
-}
-
-/* hide marker for popup */
-/* maybe use: .hidden-popup-marker .tei-back details {}? */
-.hidden-popup-marker details:has(.tei-entity-icon) {
-    @apply hidden;
 }
