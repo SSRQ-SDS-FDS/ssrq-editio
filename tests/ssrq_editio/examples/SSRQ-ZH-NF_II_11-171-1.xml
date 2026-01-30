@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-model href="https://schema.ssrq-sds-fds.ch/latest/TEI_Schema.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?><?xml-model href="https://schema.ssrq-sds-fds.ch/latest/TEI_Schema.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?><!--<?xml-stylesheet type="text/css" href="https://www.ssrq-sds-fds.ch/tei/Inhalt_Version_tei-ssrq.css"?>--><TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="de">
+<teiHeader>
+<fileDesc>
+<titleStmt><title>I. Abteilung: Die Rechtsquellen des Kantons Zürich, Neue Folge, Zweiter Teil: Rechte der Landschaft, Band 11: Die Obervogteien um die Stadt Zürich</title><editor>
+    <persName>Ariane Huber Hernández</persName>
+</editor><editor>
+    <persName>Michael Nadig</persName>
+</editor><respStmt><persName>Ariane Huber Hernández</persName><resp>Transkription</resp><resp>XML-Codierung der Transkription</resp><resp>Erstellung Faksimile</resp></respStmt><respStmt><persName>Michael Nadig</persName><resp>Transkription</resp><resp>XML-Codierung der Transkription</resp><resp>Erstellung Faksimile</resp></respStmt></titleStmt>
+<publicationStmt><publisher>SSRQ-SDS-FDS</publisher>
+<date type="electronic" when-custom="2022-06-28"/>
+<date type="print" when-custom="2022-06-28"/>
+    <availability>
+    <licence target="https://creativecommons.org/licenses/by-nc-sa/4.0/">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</licence>
+</availability></publicationStmt>
+<seriesStmt>
+<title>Sammlung Schweizerischer Rechtsquellen</title>
+<respStmt>
+<orgName>Rechtsquellenstiftung der Schweizerischen Juristischen Gesellschaft</orgName>
+<resp>Herausgabe</resp>
+</respStmt>
+<idno>SSRQ-ZH-NF_II_11-171-1</idno><idno type="uuid">fa023acd-a785-416e-bc0e-9f99d04c59aa</idno>
+</seriesStmt>
+<sourceDesc>
+<msDesc><msIdentifier><settlement xml:lang="de" ref="loc000065">Zürich</settlement><repository xml:lang="de">Staatsarchiv Zürich</repository><idno source="https://suche.staatsarchiv.djiktzh.ch/detail.aspx?ID=4534342" xml:lang="de">StAZH B II 936, S. 175-176</idno></msIdentifier><head>Entscheid über die Jurisdiktion der Obervögte der Vier Wachten über ausserhalb der Niederdorfpforte ansässige Zürcher Bürger</head><msContents><summary xml:lang="de"><p>Der Zürcher Rat entscheidet nach Anhörung des Berichts der nach einer Weisung der Obervögte vom Juni 1765 dazu abgeordneten Ratsdelegation, dass sich die Jurisdiktion der Obervögte in den Vogteien um die Stadt bis an die Schlagbäume vor den Stadttoren erstrecke und die Häuser auf dem Glacis der Stadtbefestigung sowie ihre Besitzer Rahn, Ulrich und Vögelin somit den Obervögten unterstehen.</p></summary><msItem><textLang xml:lang="de"/></msItem></msContents><physDesc><objectDesc><supportDesc><support><material type="paper"/></support><extent><dimensions type="leaves"><height unit="cm" quantity="38.5"/><width unit="cm" quantity="12.0"/></dimensions></extent></supportDesc></objectDesc><bindingDesc><p>Eintrag</p></bindingDesc></physDesc><history><origin><origDate type="document" when-custom="1767-05-09" calendar="unknown"/></origin></history></msDesc></sourceDesc>
+</fileDesc>
+<encodingDesc><editorialDecl><p><ref target="https://p.ssrq-sds-fds.ch/guidelines/transcription"/></p></editorialDecl></encodingDesc>
+<profileDesc><textClass><keywords><term ref="key000494">Gerichtsstand</term><term ref="key000305">Grenzen</term><term ref="key000081">Stadtmauer</term><term ref="key000036">Vogtei</term></keywords></textClass></profileDesc></teiHeader>
+<text type="transcript"><body>
+<div><pb n="173"/>
+<head><lb/><date when-custom="1767-05-09" calendar="unknown">Sammstags, den 9. Maii</date>,
+<lb/><choice><abbr>prtbs</abbr><expan>presentibus</expan></choice> herren <orgName ref="org002406">burgermeister
+<lb/><persName ref="per026488">Leu</persName> und beyde räthe</orgName></head>
+    <p><gap reason="irrelevant"/></p>
+<p><pb n="175" facs="StAZH_B_II_936_175"/>
+<lb/>Über die schrifft- und
+<lb/>mundliche berichts-erstat<lb break="no"/>tung
+der herren verord<lb break="no"/>neten,
+was sich bey näherer
+<lb/>und sorgfältiger unter<lb break="no"/>suchung
+der nach dem inn<lb break="no"/>halt
+einer von den herren
+<lb/>obervögten der <placeName ref="loc010140">IV Wachten</placeName>
+<lb/>schon im <date from-custom="1765-06-01" to-custom="1765-06-30" calendar="unknown">junio 1765</date> besche<lb break="no"/>henen
+weisung entstande<lb break="no"/>nen
+streith-frage, unter
+<lb/>was für eine judicatur
+<lb/>diejenigen burgers haüser,
+<lb/>so auf dem glacis der for<lb break="no"/>tifications-werken
+vor der
+<lb/><placeName ref="loc010563">Niederdörffler-pforten</placeName>
+<lb/>stehen, gehörind, des meh<lb break="no"/>reren
+ergeben, haben <abbr>mn<lb break="no"/>gnhherren</abbr>
+nach genugsammer
+<lb/>untersuchung und in reif<lb break="no"/>licher
+erdaurung der sache
+<lb/>eigentlicher beschaffenheit
+<lb/>einhellig befunden und er<lb break="no"/>kennt,
+daß die judicatur der
+<lb/>herren obervögten in den
+<lb/>benachbarten vogteyen um
+<lb/>die stadt herum biß an die
+<lb/>schlagbaüme vor den pfor<lb break="no"/>ten
+der stadt gehe, mithin
+<lb/>die herren <orgName ref="org000972">Rhanen</orgName>, <persName ref="per026473">Ulrich</persName>
+<lb/>und <persName ref="per026474">Vögeli</persName> als besizere und
+<lb/>innhabere der quaestionierlichen
+    <lb/>haüßeren vor der <placeName ref="loc010563">Niederdörff<pb n="176" facs="StAZH_B_II_936_176"/><lb break="no"/>ler
+Pforten</placeName> der judicatur
+<lb/>der herren obervögten
+<lb/>in <placeName ref="loc010140">IV Wachten</placeName>, so wie die
+<lb/>haüßer vor den anderen
+<lb/>stadt-pforten den dasigen
+<lb/>herren obervögten unter<lb break="no"/>worffen
+seyn sollen.
+</p>
+</div>
+</body><back>
+<div>
+<p>Fast zwei Jahre zuvor, am 21. August 1765, war eine Ratsdelegation mit der Untersuchung des Falles betraut worden (<bibl><ref target="urn:ssrq:SSRQ-ZH-NF_II_11-167-1">SSRQ ZH NF II/11 167-1</ref></bibl>). 1775 war zusammen mit der Frage,
+wo im Gebiet der gedeckten Brücke die Grenzen der Jurisdiktion zwischen den Obervögten von <placeName ref="loc009863">Wiedikon</placeName> und jenen von <placeName ref="loc009865">Wollishofen</placeName> verliefen, offenbar auch wieder umstritten, wie weit sich die Jurisdiktion der 
+Obervögte ausserhalb der Stadttore erstreckte (<bibl><ref target="urn:ssrq:SSRQ-ZH-NF_II_11-173-1">SSRQ ZH NF II/11 173-1</ref></bibl>).
+</p>
+</div>
+</back></text>
+</TEI>

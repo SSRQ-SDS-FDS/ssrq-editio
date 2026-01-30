@@ -43,6 +43,7 @@ async def document_transformer(transpiled_schema: Path) -> DocumentTransformer:
                 fr_orig_date='<span class="tei-origDate">1473 avril 26 a. s.</span>',
                 it_orig_date='<span class="tei-origDate">1473 aprile 26 v. s.</span>',
                 facs=["OGA_Gams_Nr_5_r", "OGA_Gams_Nr_5_v"],
+                facs_responsible="Sibylle Malamud",
                 printed_idno="SSRQ SG III/4 63",
                 volume_id="foo",
                 orig_place=["loc000211"],
@@ -179,6 +180,7 @@ async def document_transformer(transpiled_schema: Path) -> DocumentTransformer:
                 fr_orig_date='<span class="tei-origDate">1775 juin 20</span>',
                 it_orig_date='<span class="tei-origDate">1775 giugno 20</span>',
                 facs=["OGA_Gams_Nr_191b_1", "OGA_Gams_Nr_191bv"],
+                facs_responsible="Sibylle Malamud",
                 printed_idno="SSRQ SG III/4 245",
                 volume_id="foo",
                 orig_place=["loc001073", "loc000731"],
@@ -261,6 +263,7 @@ async def document_transformer(transpiled_schema: Path) -> DocumentTransformer:
                     "AEN_AS_O27_1_7v_8r",
                     "AEN_AS_O27_1_8v",
                 ],
+                facs_responsible="Archives de l'État de Neuchâtel (AEN)",
                 printed_idno="SDS NE 1 143",
                 volume_id="foo",
                 orig_place=["loc016171"],
@@ -348,3 +351,12 @@ async def test_document_transformer_returns_always_one_summary(
         )
         assert isinstance(result, DocumentDisplay)
         assert isinstance(result.summary, DocumentSummary)
+
+
+@pytest.mark.anyio
+async def test_extract_facs_responsible_from_xml(example_path: Path, transpiled_schema: Path):
+    """Test extraction of multiple responsible for facsimiles."""
+    result = await extract_infos_from_xml(
+        (example_path / "SSRQ-ZH-NF_II_11-171-1.xml",), "foo", transpiled_schema=transpiled_schema
+    )
+    assert result[0][0].facs_responsible == "Ariane Huber Hernández, Michael Nadig"

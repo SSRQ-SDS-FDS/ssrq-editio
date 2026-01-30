@@ -1,23 +1,27 @@
 {# def
-    tileSources: list
+    tileSources: list,
+    facsResponsible: str,
+    lang: Lang,
+    translator: Translator
 #}
-<div class="w-full h-full rounded-md overflow-hidden shadow-lg min-h-[60vh]">
-    <div class="flex justify-between select-none bg-ssrq-greyed-50 px-2 pt-2 pb-1">
+<div class="facsViewer">
+    <div class="facsViewerMenu">
         <div class="flex gap-2">
-            <ZoomInIcon class="w-6 h-6 inline-block cursor-pointer text-ssrq-greyed-600 hover:text-ssrq-primary" id="viewerZoomIn" />
-            <ZoomOutIcon class="w-6 h-6 inline-block cursor-pointer text-ssrq-greyed-600 hover:text-ssrq-primary" id="viewerZoomOut" />
-            <HomeIcon class="w-6 h-6 inline-block cursor-pointer text-ssrq-greyed-600 hover:text-ssrq-primary" id="viewerHome" />
-            <MaximizeIcon class="w-6 h-6 inline-block cursor-pointer text-ssrq-greyed-600 hover:text-ssrq-primary" id="viewerFull" />
+            <ZoomInIcon id="viewerZoomIn" />
+            <ZoomOutIcon id="viewerZoomOut" />
+            <HomeIcon id="viewerHome" />
+            <MaximizeIcon id="viewerFull" />
         </div>
         <div>
-            <ArrowLeftIcon class="w-6 h-6 inline-block cursor-pointer text-ssrq-greyed-600 hover:text-ssrq-primary" id="viewerPrev" />
+            <ArrowLeftIcon id="viewerPrev" />
             <span id="viewerCurrentPage" class="text-ssrq-greyed-600"></span>
-            <ArrowRightIcon class="w-6 h-6 inline-block cursor-pointer text-ssrq-greyed-600 hover:text-ssrq-primary" id="viewerNext" />
+            <ArrowRightIcon id="viewerNext" />
         </div>
     </div>
     <div
       x-init="$dispatch('ssrq:facsviewer', {'tileSources': {{ tileSources | map_facs_to_iiif_urls }} })"
       id="img-container"
-      class="w-full h-full rounded-b-md overflow-hidden shadow-md min-h-[60vh]">
+      class="w-full h-full">
     </div>
+    <div class="facsViewerFooter">{{ translator.translate(lang, 'facs_responsible') }}: {{ facsResponsible }}</div>
 </div>

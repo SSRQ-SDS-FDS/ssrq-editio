@@ -26,6 +26,7 @@ SELECT
     fr_orig_date,
     it_orig_date,
     facs,
+    facs_responsible,
     printed_idno,
     volume_id,
     orig_place,

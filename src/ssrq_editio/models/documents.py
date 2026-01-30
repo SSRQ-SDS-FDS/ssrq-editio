@@ -103,6 +103,7 @@ class Document(DocumentDate, DocumentIdentification, DocumentRelations, Document
         list[str] | None,
         BeforeValidator(parse_as_list_or_return),
     ]
+    facs_responsible: str | None = None
     orig_place: Annotated[
         list[str] | None,
         BeforeValidator(parse_as_list_or_return),
