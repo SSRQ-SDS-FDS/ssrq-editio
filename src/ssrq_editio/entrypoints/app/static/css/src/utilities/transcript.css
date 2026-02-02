@@ -63,3 +63,18 @@ div[aria-label="tab-transcript"] .tei-seg {
 div[aria-label="tab-transcript"] .tei-seg + .tei-seg::before{
     content: " ";
 }
+
+
+/* list styling */
+div.tei-list > .tei-item {
+    @apply list-item list-none ml-6;
+}
+div.tei-list.rend-bulleted > .tei-item {
+    @apply list-disc;
+}
+div.tei-list.rend-numbered > .tei-item {
+    @apply list-decimal;
+}
+div.tei-list > .tei-head {
+    @apply font-bold;
+}
