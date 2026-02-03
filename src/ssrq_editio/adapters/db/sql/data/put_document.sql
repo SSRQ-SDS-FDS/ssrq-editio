@@ -8,6 +8,7 @@ INSERT OR REPLACE INTO documents (
     fr_orig_date,
     it_orig_date,
     facs,
+    facs_responsible,
     printed_idno,
     volume_id,
     orig_place,
@@ -31,6 +32,7 @@ INSERT OR REPLACE INTO documents (
         WHEN typeof(:facs) = 'text' AND :facs IS NOT NULL THEN json(:facs)
         ELSE :facs
     END,
+    :facs_responsible,
     :printed_idno,
     :volume_id,
     :orig_place,

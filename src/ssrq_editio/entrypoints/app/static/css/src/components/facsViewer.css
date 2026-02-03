@@ -1,0 +1,13 @@
+.facsViewer{
+    @apply w-full h-full rounded-md overflow-hidden shadow-lg min-h-[60vh] grid grid-rows-[2.4rem_auto_1.8rem];
+}
+.facsViewerMenu{
+    @apply flex justify-between select-none bg-ssrq-greyed-50 px-2 pt-2 pb-1;
+}
+
+.facsViewerMenu svg{
+    @apply w-6 h-6 inline-block cursor-pointer text-ssrq-greyed-600 hover:text-ssrq-primary;
+}
+.facsViewerFooter{
+    @apply bg-ssrq-greyed-100 text-sm text-right px-2 py-1 text-ssrq-greyed-600;
+}

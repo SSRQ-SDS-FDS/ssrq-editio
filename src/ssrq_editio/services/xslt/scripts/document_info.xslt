@@ -39,6 +39,12 @@
             </xsl:apply-templates>
             <xsl:map-entry key="'text'" select="documents:extract-ft(./tei:TEI)"/>
             <xsl:map-entry key="'type'" select=".//tei:text/@type/data(.)"/>
+            <xsl:map-entry key="'facs_responsible'" select="string-join(
+                .//tei:respStmt[
+                    tei:resp/text() = ('Erstellung Faksimile', 'Création de fac-similé')
+                ]/(tei:persName, tei:orgName)/normalize-space(),
+                ', '
+            )" />
         </xsl:map>
     </xsl:template>
     
@@ -186,12 +192,11 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
+
     
     <xsl:function name="documents:extract-ft" as="xs:string">
         <xsl:param name="input" as="element(tei:TEI)"/>
         <xsl:sequence select="$input/string() => normalize-space()"/>
     </xsl:function>
-    
-    
     
 </xsl:stylesheet>
