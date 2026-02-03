@@ -15,6 +15,30 @@
     @apply w-4 h-4 p-[1px] inline text-ssrq-primary;
 }
 
+/* hide marker for popup */
+/* maybe use: .hidden-popup-marker .tei-back details {}? */
+.hidden-popup-marker details:has(.tei-entity-icon) {
+    @apply hidden;
+}
+
+/* Rules to control the display of each column used
+   in the document view */
+#metadata-col {
+    @apply transition-all duration-500 ease-in-out;
+}
+
+#transcript-col {
+    @apply transition-all duration-500 ease-in-out;
+}
+
+.metadata-hidden #metadata-col {
+    @apply hidden;
+}
+
+.metadata-hidden #transcript-col {
+    @apply w-full;
+}
+
 /* Element specific styles */
 
 /* numbered paragraphs in back */
@@ -22,12 +46,20 @@ div.tei-back.has-numbered-sections > div {
   @apply list-item list-decimal ml-4 mb-2;
 }
 
-.tei-p {
+.tei-p, .tei-seg {
     @apply my-2;
 }
 
-/* hide marker for popup */
-/* maybe use: .hidden-popup-marker .tei-back details {}? */
-.hidden-popup-marker details:has(.tei-entity-icon) {
-    @apply hidden;
+/* double margin for tei:div-elements in contrast to tei:p and tei:seg; only applies to transcript and normalized view */
+div[aria-label="tab-transcript"] .tei-div +.tei-div,
+div[aria-label="tab-normalized"] .tei-div +.tei-div {
+    @apply my-4;
+}
+
+div[aria-label="tab-transcript"] .tei-seg {
+    @apply my-0 inline;
+}
+
+div[aria-label="tab-transcript"] .tei-seg + .tei-seg::before{
+    content: " ";
 }

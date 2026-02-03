@@ -14,7 +14,10 @@
     />
 </section>
 
-<section class="w-full max-w-[1760px] mx-auto mt-4 mb-6 px-4" x-data="{ togglePopupMarker() {$el.classList.toggle('hidden-popup-marker')} }">
+<section
+    class="w-full max-w-[1760px] mx-auto mt-4 mb-6 px-4"
+    x-data="{ togglePopupMarker() {$el.classList.toggle('hidden-popup-marker')}, toggleMetadata() {$el.classList.toggle('metadata-hidden')} }"
+>
     <h1 class="title-1">{{ doc.get_title_by_lang(lang) | safe }}</h1>
     <header class="flex text-ssrq-greyed-600 text-sm items-center gap-2">
         <span title="{{ translator.translate(lang, 'ssrq-idno') }}" class="flex items-center">
@@ -31,17 +34,24 @@
             {{ orig_places | join(', ') }}
         </span>
         {% endif %}
-        <Toggle
-            :checked="True"
-            :callback="'togglePopupMarker()'"
-            class="ml-auto"
-        >
-        {{ translator.translate(lang, 'toggle-textmarker') }}
-        </Toggle>
+        <div class="ml-auto flex items-center gap-4">
+            <Toggle
+                :checked="True"
+                :callback="'toggleMetadata()'"
+            >
+                {{ translator.translate(lang, 'metadata') }}
+            </Toggle>
+            <Toggle
+                :checked="True"
+                :callback="'togglePopupMarker()'"
+            >
+                {{ translator.translate(lang, 'toggle-textmarker') }}
+            </Toggle>
+        </div>
     </header>
     <div
         class="md:flex w-full max-w-[1760px] mx-auto items-stretch justify-center gap-4 my-8 md:min-h-[70vh] md:max-h-[80vh]">
-        <div class="md:w-1/2 flex mb-6 md:mb-0">
+        <div class="md:w-1/2 flex mb-6 md:mb-0" id="transcript-col">
             <Tabs>
                 <TabHeader>
                     <TabControl :label="'transcript'">
@@ -97,7 +107,17 @@
                 </Tab>
             </Tabs>
         </div>
-        <div class="md:w-1/2 flex mb-6 md:mb-0">
+        <div
+            class="md:w-1/2 flex mb-6 md:mb-0"
+            id="metadata-col"
+            x-show="!$el.closest('section').classList.contains('metadata-hidden')"
+            x-transition:enter="transition ease-out duration-500"
+            x-transition:enter-start="opacity-0 transform -translate-x-full"
+            x-transition:enter-end="opacity-100 transform translate-x-0"
+            x-transition:leave="transition ease-in duration-500"
+            x-transition:leave-start="opacity-100 transform translate-x-0"
+            x-transition:leave-end="opacity-0 transform -translate-x-full"
+        >
             <Tabs>
                 <TabHeader>
                     <TabControl :label="'description'">
