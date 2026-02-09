@@ -10,6 +10,7 @@ def test_create_search_pattern():
         title="bar",
         kanton="baz",
         literature=None,
+        project_page=None,
         pdf=None,
         editors=[],
         prefix="SSRQ",

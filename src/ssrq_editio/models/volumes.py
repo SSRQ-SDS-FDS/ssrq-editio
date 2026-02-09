@@ -1,9 +1,12 @@
 from typing import Annotated
 
 from pydantic import BaseModel, BeforeValidator, Field, computed_field, model_validator
+from ssrq_utils.lang.display import Lang
 
 from ssrq_editio.models.documents import DocumentType
 from ssrq_editio.services.utils import parse_as_list_or_return
+
+PROJECT_PAGE_BASE = "https://ssrq-sds-fds.ch/"
 
 
 class Volume(BaseModel):
@@ -14,6 +17,7 @@ class Volume(BaseModel):
     prefix: str
     pdf: str | None
     literature: str | None
+    project_page: str | None
     title: str = ""
     editors: Annotated[
         list[str], BeforeValidator(lambda x: x.split(",") if isinstance(x, str) else x)
@@ -23,6 +27,20 @@ class Volume(BaseModel):
     @computed_field
     def machine_name(self) -> str:
         return self.name.replace(" ", "_").replace("/", "_")
+
+    def get_project_page_by_lang(self, lang: Lang = Lang.DE) -> str:
+        """Retrieve the url of the project page in the specified language.
+
+        Default language is German.
+
+        Args:
+            lang (Lang): Language enum object.
+
+        Returns:
+            str: URL of project page.
+        """
+        lang_path = f"{lang.value}/" if lang and lang != Lang.DE else ""
+        return f"{PROJECT_PAGE_BASE}{lang_path}{self.project_page}"
 
 
 class VolumeMeta(BaseModel):

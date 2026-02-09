@@ -6,7 +6,8 @@
     "name": "I/2/8",
     "prefix": "SSRQ",
     "pdf": "TeX/SSRQ-FR-I-2-8.pdf",
-    "literature": null
+    "literature": null,
+    "project_page": "blog/2022/06/10/2022-06-10-frhexen/"
   },
   {
     "key": "NE_1",
@@ -15,7 +16,8 @@
     "name": "1",
     "prefix": "SDS",
     "pdf": null,
-    "literature": null
+    "literature": null,
+    "project_page": "blog/2023/12/31/sds-ne-1--les-sources-directes/"
   },
   {
     "key": "NE_3",
@@ -24,7 +26,8 @@
     "name": "3",
     "prefix": "SDS",
     "pdf": "TeX/SDS-NE-3.pdf",
-    "literature": null
+    "literature": null,
+    "project_page": "blog/2022/06/08/2022-06-08-coutume/"
   },
   {
     "key": "NE_4",
@@ -33,7 +36,8 @@
     "name": "4",
     "prefix": "SDS",
     "pdf": "TeX/SDS-NE-4.pdf",
-    "literature": null
+    "literature": null,
+    "project_page": "blog/2022/06/08/2022-06-08-hory/"
   },
   {
     "key": "SG_III_4",
@@ -42,7 +46,8 @@
     "name": "III/4",
     "prefix": "SSRQ",
     "pdf": "TeX/SSRQ-SG-III-4.pdf",
-    "literature": null
+    "literature": null,
+    "project_page": "blog/2020/11/20/2020-11-20-werdenberg/"
   },
   {
     "key": "ZH_NF_I_1_3",
@@ -51,7 +56,8 @@
     "name": "NF I/1/3",
     "prefix": "SSRQ",
     "pdf": "TeX/SSRQ-ZH-NF_I_1_3.pdf",
-    "literature": null
+    "literature": null,
+    "project_page": "blog/2022/06/30/2022-06-30-zh-stadt/"
   },
   {
     "key": "ZH_NF_I_1_11",
@@ -60,7 +66,8 @@
     "name": "NF I/1/11",
     "prefix": "SSRQ",
     "pdf": "TeX/SSRQ-ZH-NF_I_1_11.pdf",
-    "literature": null
+    "literature": null,
+    "project_page": "blog/2022/06/30/2022-06-30-zh-mandate/"
   },
   {
     "key": "ZH_NF_I_2_1",
@@ -69,7 +76,8 @@
     "name": "NF I/2/1",
     "prefix": "SSRQ",
     "pdf": "TeX/SSRQ-ZH-NF_I_2_1.pdf",
-    "literature": null
+    "literature": null,
+    "project_page": "blog/2022/06/30/2022-06-30-zh-winterhur/"
   },
   {
     "key": "ZH_NF_II_3",
@@ -78,7 +86,8 @@
     "name": "NF II/3",
     "prefix": "SSRQ",
     "pdf": "TeX/SSRQ-ZH-NF_II_3.pdf",
-    "literature": null
+    "literature": null,
+    "project_page": "blog/2022/06/30/2022-06-30-greifensee/"
   },
   {
     "key": "ZH_NF_II_11",
@@ -87,7 +96,8 @@
     "name": "NF II/11",
     "prefix": "SSRQ",
     "pdf": "TeX/SSRQ-ZH-NF_II_11.pdf",
-    "literature": null
+    "literature": null,
+    "project_page": "blog/2022/06/30/2022-06-30-zh-obervogteien/"
   },
   {
     "key": "VD_D_1",
@@ -96,7 +106,8 @@
     "name": "D 1",
     "prefix": "SDS",
     "pdf": null,
-    "literature": "https://www.zotero.org/groups/5048222/ssrq/collections/JKFJK5W5"
+    "literature": "https://www.zotero.org/groups/5048222/ssrq/collections/JKFJK5W5",
+    "project_page": "blog/2025/10/27/sds-vd-d-1-et-2--répression-de-la-sorcellerie-en-pays-de-vaud-1438-1536/"
   },
   {
     "key": "VD_D_2",
@@ -105,6 +116,7 @@
     "name": "D 2",
     "prefix": "SDS",
     "pdf": null,
-    "literature": "https://www.zotero.org/groups/5048222/ssrq/collections/JKFJK5W5"
+    "literature": "https://www.zotero.org/groups/5048222/ssrq/collections/JKFJK5W5",
+    "project_page": "blog/2025/10/27/sds-vd-d-1-et-2--répression-de-la-sorcellerie-en-pays-de-vaud-1438-1536/"
   }
 ]

@@ -18,4 +18,9 @@
         {{ translator.translate(lang, 'pdf') }}
     </a>
     {% endif %}
+    {% if volume.project_page%}
+    <a href="{{ volume.get_project_page_by_lang(lang) }}" target="_blank">
+        {{ translator.translate(lang, 'project_page') }}
+    </a>
+    {% endif %}
 </footer>
