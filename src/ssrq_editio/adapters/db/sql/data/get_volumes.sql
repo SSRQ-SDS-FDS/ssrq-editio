@@ -20,6 +20,13 @@ LEFT JOIN
 WHERE
     k.short_name = ?
 GROUP BY
-    v.id, v.name, k.short_name, v.title, v.prefix, v.pdf, v.literature, v.project_page
+    v.id,
+    v.name,
+    k.short_name,
+    v.title,
+    v.prefix,
+    v.pdf,
+    v.literature,
+    v.project_page
 ORDER BY
     v.sort_key ASC;
