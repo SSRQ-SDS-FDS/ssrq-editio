@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS volumes
     prefix TEXT NOT NULL,
     pdf TEXT NULL,
     literature TEXT NULL,
+    project_page TEXT NULL,
     FOREIGN KEY (kanton_id) REFERENCES kantons (id)
 );
 

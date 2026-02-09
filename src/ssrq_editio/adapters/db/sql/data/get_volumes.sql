@@ -7,6 +7,7 @@ SELECT
     v.prefix,
     v.pdf,
     v.literature,
+    v.project_page,
     GROUP_CONCAT(e.name, ',') AS editors
 FROM
     volumes AS v
@@ -19,6 +20,6 @@ LEFT JOIN
 WHERE
     k.short_name = ?
 GROUP BY
-    v.id, v.name, k.short_name, v.title, v.prefix, v.pdf, v.literature
+    v.id, v.name, k.short_name, v.title, v.prefix, v.pdf, v.literature, v.project_page
 ORDER BY
     v.sort_key ASC;

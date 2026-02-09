@@ -18,6 +18,7 @@ TEST_VOLUMES = [
         title="test",
         pdf=None,
         literature=None,
+        project_page=None,
         editors=["Max Mustermann"],
         docs=0,
     )

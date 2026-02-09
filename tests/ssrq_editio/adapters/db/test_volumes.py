@@ -49,6 +49,7 @@ TEST_VOLUME = Volume(
     title="foo",
     pdf="foo.pdf",
     literature="foo",
+    project_page=None,
     editors=["foo Editor"],
     prefix="SSRQ",
 )
@@ -75,6 +76,7 @@ async def test_list_volumes_with_editors(db_kanton_data):
             title="foo",
             pdf="foo.pdf",
             literature="foo",
+            project_page=None,
             editors=["foo Editor", f"{i}"],
             prefix="SSRQ",
         )

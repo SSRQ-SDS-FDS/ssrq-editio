@@ -34,6 +34,7 @@ async def initialize_volume_data(
                 volume.prefix,
                 volume.pdf,
                 volume.literature,
+                volume.project_page,
             ),
         )
         await connection.commit()
