@@ -98,3 +98,8 @@ div.tei-list > .tei-head {
 .tei-body table caption:not(:first-child) {
   display: none;
 }
+
+/* tei:ab */
+.tei-ab{
+    font-size: 80%;
+}
