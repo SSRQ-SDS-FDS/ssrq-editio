@@ -101,5 +101,5 @@ div.tei-list > .tei-head {
 
 /* tei:ab */
 .tei-ab{
-    font-size: 80%;
+    @apply text-sm my-4;
 }
