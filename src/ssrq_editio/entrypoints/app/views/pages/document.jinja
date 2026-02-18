@@ -28,10 +28,10 @@
             <CalendarIcon class="w-3.5 h-3.5 mr-0.5 md:mr-1"/>
             {{ doc[lang.value + '_orig_date'] | safe }}
         </span>
-        {% if doc.orig_place is not none and doc.orig_places | length > 0 %}
+        {% if data.content.orig_places is not none and data.content.orig_places | length > 0 %}
         <span title="{{ translator.translate(lang, 'orig-place') }}" class="flex items-center">
             <PlaceIcon class="w-3.5 h-3.5 mr-0.5 md:mr-1"/>
-            {{ orig_places | join(', ') }}
+            {{ data.content.orig_places | join(', ') }}
         </span>
         {% endif %}
         <div class="ml-auto flex items-center gap-4">

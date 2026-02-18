@@ -27,7 +27,7 @@ div > .ssrq-info-card:first-child > h3 {
 
 /* content of info card*/
 .ssrq-info-card > dl {
-    @apply grid grid-cols-[200px_1fr] mx-4;
+    @apply grid grid-cols-[220px_1fr] mx-4;
 }
 .ssrq-info-card dt {
     grid-column: 1/2;
