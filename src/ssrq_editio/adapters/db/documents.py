@@ -117,6 +117,29 @@ async def get_documents(
         return [Document(**item) for item in data]
 
 
+async def get_sub_documents(
+    connection: Connection,
+    document_id: str,
+    query: Path = SQL_DATA_DIR / "get_sub_documents.sql",
+) -> list[Document]:
+    """Retrieve a list of subdocuments for a given document ID.
+
+    Args:
+        connection (Connection): An aiosqlite Connection
+        document_id (str): The document ID
+        query (Path): The path to the query file
+    Returns:
+        list[Document]: A list of Document objects representing the subdocuments
+    """
+    async with connection.cursor() as cursor:
+        await cursor.execute(
+            await load(dir=query.parent, name=query.name),
+            {"idno": document_id},
+        )
+        data = await cursor.fetchall()
+        return [Document(**item) for item in data]
+
+
 async def get_documents_by_ft(
     connection: Connection,
     query: Path = SQL_DATA_DIR / "get_documents_by_ft.sql",

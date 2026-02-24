@@ -50,6 +50,10 @@ div.tei-back.has-numbered-sections > div {
     @apply my-2;
 }
 
+a.tei-ref.urn-ssrq {
+    @apply text-ssrq-primary;
+}
+
 /* double margin for tei:div-elements in contrast to tei:p and tei:seg; only applies to transcript and normalized view */
 div[aria-label="tab-transcript"] .tei-div +.tei-div,
 div[aria-label="tab-normalized"] .tei-div +.tei-div {

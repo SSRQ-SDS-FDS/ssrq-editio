@@ -14,6 +14,7 @@ from ssrq_editio.entrypoints.app.config import ASSET_DIR, COMPONENT_DIR, ICON_DI
 from ssrq_editio.entrypoints.app.views.utils import (
     create_entity_preview_by_id,
     render_template_string,
+    display_sub_document_info,
 )
 from ssrq_editio.services.documents import map_facs_to_iiif_urls
 from ssrq_editio.services.occurrences import group_and_sort_idnos
@@ -50,6 +51,7 @@ def app_factory(
     templates.env.globals.update(norm_punct=normalize_punctuation_marks)
     templates.env.globals.update(group_and_sort_idnos=group_and_sort_idnos)
     templates.env.globals.update(create_entity_preview_by_id=create_entity_preview_by_id)
+    templates.env.globals.update(display_sub_document_info=display_sub_document_info)
     templates.env.filters.update(markdown=markdown)
     templates.env.filters.update(permalink=create_permalink)
     templates.env.filters.update(render_template_string=render_template_string)

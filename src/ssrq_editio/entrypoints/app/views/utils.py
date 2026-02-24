@@ -1,4 +1,4 @@
-from typing import Any, cast
+from typing import Any, Sequence, cast
 
 from fastapi import Request
 from jinja2 import pass_context
@@ -8,10 +8,11 @@ from markupsafe import Markup
 from ssrq_utils.i18n.translator import Translator
 from ssrq_utils.lang.display import Lang
 
+from ssrq_editio.models.documents import Document
 from ssrq_editio.models.entities import Entities, EntityTypes
 from ssrq_editio.services.entities import map_to_entity_type
 
-__all__ = ["create_entity_preview_by_id", "render_template_string"]
+__all__ = ["create_entity_preview_by_id", "render_template_string", "display_sub_document_info"]
 
 
 @pass_context
@@ -75,4 +76,30 @@ def create_entity_preview_by_id(
         lang=lang,
         translator=translator,
         request=request,
+    )
+
+
+def display_sub_document_info(sub_docs: Sequence[Document] | None, idno: str, lang: Lang) -> str:
+    """
+    Render a string with the title and original date of a sub document,
+    if the given idno matches one of the sub documents.
+
+    Args:
+        sub_docs (Sequence[Document] | None): A list of sub documents to search in.
+        idno (str): The idno of the sub document to find.
+        lang (Lang): The language to use for the title.
+
+    Returns:
+        str: A string with the title and original date of the sub document, or an empty
+    """
+    if sub_docs is None:
+        return ""
+
+    sub_doc = next((doc for doc in sub_docs if doc.idno == idno), None)
+
+    if sub_doc is None:
+        return ""
+
+    return Markup(
+        f"{sub_doc.get_title_by_lang(lang)}, {getattr(sub_doc, f'{lang.value}_orig_date')}"
     )
