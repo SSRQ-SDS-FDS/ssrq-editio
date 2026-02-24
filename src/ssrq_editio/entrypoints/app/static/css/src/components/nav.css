@@ -34,6 +34,10 @@
     @apply my-3 mx-1;
   }
 
+  .version-label {
+      @apply text-sm text-ssrq-primary border border-ssrq-primary rounded-full py-0.5 px-2 mr-6;
+  }
+
   @screen sm {
     .nav-dropdown {
       @apply hidden;
