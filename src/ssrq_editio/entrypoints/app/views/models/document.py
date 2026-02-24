@@ -4,10 +4,10 @@ from aiosqlite import Connection
 from fastapi import Request
 from ssrq_utils.lang.display import Lang
 
-from ssrq_editio.adapters.db.documents import get_document
+from ssrq_editio.adapters.db.documents import get_document, get_sub_documents
 from ssrq_editio.adapters.file import load
 from ssrq_editio.entrypoints.app.views.models.base import ViewContext, ViewModel
-from ssrq_editio.models.documents import Document, DocumentDisplay
+from ssrq_editio.models.documents import Document, DocumentDisplay, DocumentType
 from ssrq_editio.models.kantons import KantonName
 from ssrq_editio.models.volumes import Volume
 from ssrq_editio.services.documents import (
@@ -27,6 +27,7 @@ class DocumentViewModel(ViewModel):
     document_info: Document
     kanton: KantonName
     orig_places: Sequence[str] | None
+    sub_docs: Sequence[Document] | None
     transformer: DocumentTransformer
     volume: str
     volume_info: Volume
@@ -69,6 +70,7 @@ class DocumentViewModel(ViewModel):
                     "kanton": self.kanton.value,
                     "volume": self.volume_info,
                     "doc": self.document_info,
+                    "sub_docs": self.sub_docs,
                     "orig_places": self.orig_places,
                     "rendered_doc": await self._transform_document(),
                 },
@@ -88,6 +90,12 @@ class DocumentViewModel(ViewModel):
         )
 
         self.document_info = result
+
+        match result.type:
+            case DocumentType.collection:
+                self.sub_docs = await get_sub_documents(self.connection, self.document_info.idno)
+            case _:
+                self.sub_docs = None
 
         _, orig_places = (
             await resolve_orig_places_for_documents((result,), self.connection, self.lang)
