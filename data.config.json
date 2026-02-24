@@ -10,6 +10,16 @@
     "project_page": "blog/2022/06/10/2022-06-10-frhexen/"
   },
   {
+    "key": "GE_5",
+    "sort_key": 1,
+    "kanton": "GE",
+    "name": "5",
+    "prefix": "SDS",
+    "pdf": null,
+    "literature": null,
+    "project_page": "projects/volumes/GE_5/"
+  },
+  {
     "key": "NE_1",
     "sort_key": 1,
     "kanton": "NE",
@@ -38,6 +48,16 @@
     "pdf": "TeX/SDS-NE-4.pdf",
     "literature": null,
     "project_page": "blog/2022/06/08/2022-06-08-hory/"
+  },
+  {
+    "key": "SH_II_1",
+    "sort_key": 1,
+    "kanton": "SH",
+    "name": "II/1",
+    "prefix": "SSRQ",
+    "pdf": null,
+    "literature": null,
+    "project_page": "projects/volumes/SH_II_1/"
   },
   {
     "key": "SG_III_4",

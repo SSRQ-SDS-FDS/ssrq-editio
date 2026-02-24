@@ -40,3 +40,9 @@
 [submodule "src/ssrq_editio/data/NE_1"]
 	path = src/ssrq_editio/data/NE_1
 	url = https://github.com/SSRQ-SDS-FDS/NE_1.git
+[submodule "src/ssrq_editio/data/GE_5"]
+	path = src/ssrq_editio/data/GE_5
+	url = https://github.com/SSRQ-SDS-FDS/GE_5.git
+[submodule "src/ssrq_editio/data/SH_II_1"]
+	path = src/ssrq_editio/data/SH_II_1
+	url = https://github.com/SSRQ-SDS-FDS/SH_II_1.git
