@@ -11,10 +11,11 @@ from markdown import markdown  # type: ignore
 from ssrq_utils.i18n.text import normalize_punctuation_marks
 
 from ssrq_editio.entrypoints.app.config import ASSET_DIR, COMPONENT_DIR, ICON_DIR, TEMPLATE_DIR
+from ssrq_editio.entrypoints.app.shared.version import get_display_version
 from ssrq_editio.entrypoints.app.views.utils import (
     create_entity_preview_by_id,
-    render_template_string,
     display_sub_document_info,
+    render_template_string,
 )
 from ssrq_editio.services.documents import map_facs_to_iiif_urls
 from ssrq_editio.services.occurrences import group_and_sort_idnos
@@ -56,6 +57,7 @@ def app_factory(
     templates.env.filters.update(permalink=create_permalink)
     templates.env.filters.update(render_template_string=render_template_string)
     templates.env.filters.update(map_facs_to_iiif_urls=map_facs_to_iiif_urls)
+    templates.env.globals.update(project_version=get_display_version())
 
     # Add JinjaX extension, which allows us to us Component-based templates
     templates.env.add_extension(jinjax.JinjaX)
