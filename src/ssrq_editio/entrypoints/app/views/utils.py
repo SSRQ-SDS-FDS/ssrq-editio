@@ -1,3 +1,4 @@
+import logging
 from typing import Any, Sequence, cast
 
 from fastapi import Request
@@ -60,13 +61,20 @@ def create_entity_preview_by_id(
     Returns:
         str: The rendered HTML string for the entity preview / tooltip.
     """
-
     entity, entity_type = next(
-        (e, et)
-        for et in map_to_entity_type(id)
-        if (entity_store := entities.get(et)) is not None
-        and (e := entity_store.get_by_id(id)) is not None
+        (
+            (e, et)
+            for et in map_to_entity_type(id)
+            if (entity_store := entities.get(et)) is not None
+            and (e := entity_store.get_by_id(id)) is not None
+        ),
+        (None, None),
     )
+    if entity is None or entity_type is None:
+        # Entry not found. Log error and return error message.
+        # ToDo: Improve error logging
+        logging.error("An error occurred while resolving id '%s'.", id)
+        return "Something went wrong. Please contact support."
 
     return component_catalog.render(
         "EntityPreview",
