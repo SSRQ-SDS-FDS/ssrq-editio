@@ -25,6 +25,9 @@
         {% for key, entry in items %}
             <li>
                 <a class="menu-link m-0 p-0"
+                   {% if entry is string and entry.startswith('http') %}
+                    target="_blank"
+                   {% endif %}
                    href="{{ url_for(entry).include_query_params(lang=lang.value) if entry is string and not entry.startswith('http') else entry }}"
                    >
                     {{ translator.translate(lang, key) }}

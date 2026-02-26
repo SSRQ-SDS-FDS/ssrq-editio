@@ -63,11 +63,6 @@ async def partners_and_funding(request: Request, lang: LangDependency):
     raise NotImplementedError
 
 
-@html.get("/about/tech", name="tech")
-async def tech_docs(request: Request, lang: LangDependency):
-    raise NotImplementedError
-
-
 @html.get("/index/{entity_type}", name="entity_view")
 async def list_entities(
     request: Request,
@@ -139,6 +134,15 @@ async def deprecated_document_html_view(
     return RedirectResponse(
         html.url_path_for("document_view", kanton=kanton, volume=volume, document=document)
     )
+
+
+@html.get("/{kanton}/{volume}/{document}.pdf", name="document_view_with_pdf_extension")
+async def deprecated_document_pdf_view(
+    kanton: KantonName,
+    volume: str,
+    document: str,
+):
+    return RedirectResponse(html.url_path_for("kanton", kanton=kanton))
 
 
 @html.get("/{kanton}/{volume}/{document}.xml", name="document_view_with_xml_extension")
