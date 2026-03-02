@@ -115,9 +115,69 @@ async def test_retrieve_volume_meta(db_kanton_data, documents):
     assert result is not None
     assert isinstance(result, VolumeMeta)
     assert (
-        min(d.start_year_of_creation for d in documents if d.start_year_of_creation)
+        min(
+            year
+            for d in documents
+            if (year := (d.start_year_of_creation or d.end_year_of_creation)) is not None
+        )
         == result.first_year
     )
     assert (
-        max(d.end_year_of_creation for d in documents if d.end_year_of_creation) == result.last_year
+        max(
+            year
+            for d in documents
+            if (year := (d.end_year_of_creation or d.start_year_of_creation)) is not None
+        )
+        == result.last_year
     )
+
+
+@pytest.mark.anyio
+async def test_retrieve_volume_meta_uses_start_year_when_end_year_is_none(db_kanton_data):
+    await initialize_volume_with_editors(db_kanton_data, TEST_VOLUME)
+    docs = (
+        Document(
+            uuid=str(uuid4()),
+            idno="SSRQ-SG-III_4-1-1",
+            is_main=True,
+            sort_key=IDNO.model_validate_string("SSRQ-SG-III_4-1-1").normalized_sort_key,
+            de_orig_date="foo",
+            en_orig_date="foo",
+            fr_orig_date="foo",
+            it_orig_date="foo",
+            facs=None,
+            printed_idno="foo 1",
+            volume_id="foo",
+            orig_place=["loc000001"],
+            de_title="<h3>foo</h3>",
+            fr_title=None,
+            type=DocumentType.transcript,
+            start_year_of_creation=1005,
+            end_year_of_creation=1232,
+        ),
+        Document(
+            uuid=str(uuid4()),
+            idno="SSRQ-SG-III_4-2-1",
+            is_main=True,
+            sort_key=IDNO.model_validate_string("SSRQ-SG-III_4-2-1").normalized_sort_key,
+            de_orig_date="foo",
+            en_orig_date="foo",
+            fr_orig_date="foo",
+            it_orig_date="foo",
+            facs=None,
+            printed_idno="foo 2",
+            volume_id="foo",
+            orig_place=["loc000001"],
+            de_title="<h3>foo</h3>",
+            fr_title=None,
+            type=DocumentType.transcript,
+            start_year_of_creation=1456,
+            end_year_of_creation=None,
+        ),
+    )
+    await initialize_document_data(docs, db_kanton_data)
+
+    result = await retrieve_volume_metadata(db_kanton_data, "foo")
+
+    assert result.first_year == 1005
+    assert result.last_year == 1456
