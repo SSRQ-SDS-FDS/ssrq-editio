@@ -6,7 +6,7 @@ const dateRange = function (
   eventName = 'date-range-changed',
   startParamName = 'range_start',
   endParamName = 'range_end',
-  htmxContainerId = null
+  htmxContainerId = null,
 ) {
   return {
     selectedMinYear: selectedMinYear,
@@ -68,7 +68,7 @@ const dateRange = function (
     dispatchDateRangeEvent() {
       if (this.init_done) {
         this.$dispatch(eventName, {
-          range_start: this.selectedMaxYear,
+          range_start: this.selectedMinYear,
           range_end: this.selectedMaxYear,
         });
       }
