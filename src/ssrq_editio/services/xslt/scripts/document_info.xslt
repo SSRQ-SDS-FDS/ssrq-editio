@@ -11,6 +11,7 @@
     
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/core-utils.xsl"/>
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/date.xsl"/>
+    <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/hand.xsl"/>
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/text-utils.xsl"/>
     
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/date.xsl"/>
@@ -40,11 +41,11 @@
             <xsl:map-entry key="'text'" select="documents:extract-ft(./tei:TEI)"/>
             <xsl:map-entry key="'type'" select=".//tei:text/@type/data(.)"/>
             <xsl:map-entry key="'facs_responsible'" select="string-join(
-                .//tei:respStmt[
-                    tei:resp/text() = ('Erstellung Faksimile', 'Création de fac-similé')
-                ]/(tei:persName, tei:orgName)/normalize-space(),
-                ', '
-            )" />
+                    .//tei:respStmt[
+                        tei:resp/text() = ('Erstellung Faksimile', 'Création de fac-similé')
+                    ]/(tei:persName, tei:orgName)/normalize-space(),
+                    ', '
+                )" />
         </xsl:map>
     </xsl:template>
     
@@ -192,7 +193,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
+    
     
     <xsl:function name="documents:extract-ft" as="xs:string">
         <xsl:param name="input" as="element(tei:TEI)"/>
