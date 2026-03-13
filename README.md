@@ -1,4 +1,4 @@
-# Editio or the Digital Scholarly Edition of the Swiss Law Sources
+# Editio or the Digital Scholarly Edition of the Swiss Law Sources [![DOI](https://zenodo.org/badge/693131839.svg)](https://doi.org/10.5281/zenodo.19003278)
 
 This is the main application repository for SLS.
 
