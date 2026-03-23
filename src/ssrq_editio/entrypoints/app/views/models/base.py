@@ -43,7 +43,9 @@ def _load_int_env(name: str, fallback: int, minimum: int) -> int:
 
 VIEW_CACHE_MAXSIZE = _load_int_env("EDITIO_VIEW_CACHE_MAXSIZE", fallback=128, minimum=1)
 VIEW_CACHE_TTL_SECONDS = _load_int_env("EDITIO_VIEW_CACHE_TTL_SECONDS", fallback=900, minimum=1)
-VIEW_RESPONSE_CACHE = cachebox.TTLCache(maxsize=VIEW_CACHE_MAXSIZE, ttl=VIEW_CACHE_TTL_SECONDS)
+VIEW_RESPONSE_CACHE: cachebox.TTLCache = cachebox.TTLCache(
+    maxsize=VIEW_CACHE_MAXSIZE, ttl=VIEW_CACHE_TTL_SECONDS
+)
 
 
 class ViewModel:

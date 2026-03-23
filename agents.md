@@ -317,6 +317,16 @@ uv run pytest --pdb         # Debug mode
 4. Check that all imports are used (`ruff check --select F401`)
 5. Ensure HTML/CSS changes work in frontend
 
+### Mandatory Commit Gate (for Coding Agents)
+
+These rules are mandatory and override any "optional" wording above:
+
+1. **Before every commit**, run `just lint` and then `just test`.
+2. If either command fails, **do not commit**. Fix the issues first and rerun both commands until they pass.
+3. **Before pushing or opening/updating a PR**, run `just lint` and `just test` again.
+4. Never skip these checks, even for "small" changes (docs-only commits are the only exception).
+5. If local execution is blocked by sandbox/permissions, request the required permission and then execute the commands (do not skip).
+
 ### Database Schema Changes
 
 - Add SQL migrations in `src/ssrq_editio/adapters/db/sql/`
