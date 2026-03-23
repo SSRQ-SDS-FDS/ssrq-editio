@@ -6,6 +6,8 @@ from pydantic import SecretStr
 from pydantic_settings import BaseSettings
 from sentry_sdk.integrations.logging import LoggingIntegration
 
+from ssrq_editio.entrypoints.app.shared.version import get_display_version
+
 Env = Literal["development", "staging", "production"]
 
 
@@ -20,7 +22,7 @@ class Monitoring_Settings(BaseSettings):
     """
 
     app_env: Env = "development"
-    release: Optional[str] = None
+    release: Optional[str] = get_display_version()
     sentry_dsn: Optional[SecretStr] = None
 
     model_config = {
