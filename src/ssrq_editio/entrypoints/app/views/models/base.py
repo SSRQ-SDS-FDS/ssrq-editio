@@ -13,22 +13,6 @@ from ssrq_editio.entrypoints.app.config import TRANSLATION_SOURCE
 from ssrq_editio.entrypoints.app.setup import templates as TEMPLATES
 
 
-class ViewCoreData(TypedDict):
-    page_description: str
-    page_title: str
-
-
-class ViewData(ViewCoreData, total=False):
-    content: Any
-
-
-class ViewContext(TypedDict):
-    data: ViewData
-    request: Request
-    lang: Lang
-    translator: Translator
-
-
 def _load_int_env(name: str, fallback: int, minimum: int) -> int:
     value = os.getenv(name)
 
@@ -46,6 +30,22 @@ VIEW_CACHE_TTL_SECONDS = _load_int_env("EDITIO_VIEW_CACHE_TTL_SECONDS", fallback
 VIEW_RESPONSE_CACHE: cachebox.TTLCache = cachebox.TTLCache(
     maxsize=VIEW_CACHE_MAXSIZE, ttl=VIEW_CACHE_TTL_SECONDS
 )
+
+
+class ViewCoreData(TypedDict):
+    page_description: str
+    page_title: str
+
+
+class ViewData(ViewCoreData, total=False):
+    content: Any
+
+
+class ViewContext(TypedDict):
+    data: ViewData
+    request: Request
+    lang: Lang
+    translator: Translator
 
 
 class ViewModel:
