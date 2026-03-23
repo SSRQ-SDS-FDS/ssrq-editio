@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from typing import Any, TypedDict, cast
 
@@ -26,6 +27,23 @@ class ViewContext(TypedDict):
     request: Request
     lang: Lang
     translator: Translator
+
+
+def _load_int_env(name: str, fallback: int, minimum: int) -> int:
+    value = os.getenv(name)
+
+    if value is None:
+        return fallback
+
+    try:
+        return max(int(value), minimum)
+    except ValueError:
+        return fallback
+
+
+VIEW_CACHE_MAXSIZE = _load_int_env("EDITIO_VIEW_CACHE_MAXSIZE", fallback=128, minimum=1)
+VIEW_CACHE_TTL_SECONDS = _load_int_env("EDITIO_VIEW_CACHE_TTL_SECONDS", fallback=900, minimum=1)
+VIEW_RESPONSE_CACHE = cachebox.TTLCache(maxsize=VIEW_CACHE_MAXSIZE, ttl=VIEW_CACHE_TTL_SECONDS)
 
 
 class ViewModel:
@@ -140,7 +158,6 @@ def _calculate_cache_key(args, kwargs) -> str:
     return f"{view.request.url._url}_{view.lang.value}_{view.request.method}_{view.request.headers.get('HX-Request', '')}"
 
 
-@cachebox.cached(cache=cachebox.LRUCache(maxsize=512), key_maker=_calculate_cache_key)
 async def serve_html_response(view: ViewModel) -> HTMLResponse:
     """A helper function to serve the HTML response from the view model.
 
@@ -153,4 +170,20 @@ async def serve_html_response(view: ViewModel) -> HTMLResponse:
     Returns:
         HTMLResponse: The HTML response.
     """
-    return await view._to_html()
+    if view.request.method != "GET":
+        return await view._to_html()
+
+    VIEW_RESPONSE_CACHE.expire()
+    cache_key = _calculate_cache_key((view,), {})
+    cached_html = VIEW_RESPONSE_CACHE.get(cache_key)
+
+    if cached_html is not None:
+        return HTMLResponse(content=cached_html)
+
+    response = await view._to_html()
+
+    # Only cache successful responses to avoid persisting transient errors.
+    if response.status_code == 200:
+        VIEW_RESPONSE_CACHE[cache_key] = response.body
+
+    return response
