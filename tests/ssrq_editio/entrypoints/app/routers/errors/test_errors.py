@@ -24,7 +24,7 @@ async def test_status_code(app_client: AsyncClient, url: str, status_code: int):
         ("/search?fts=!test&lang=en", "Oops! Something went wrong."),
         ("/search?fts=!test&lang=fr", "Oups ! Quelque chose s’est mal passé."),
         ("/search?fts=!test&lang=it", "Ops! Qualcosa è andato storto."),
-        ("/a/b/c?lang=en", "Ups! Da ist wohl etwas schiefgelaufen."),
+        ("/a/b/c?lang=en", "Oops! Something went wrong."),
     ],
 )
 async def test_error_text(app_client: AsyncClient, url: str, error_text: str):
