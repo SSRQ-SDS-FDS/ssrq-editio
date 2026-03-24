@@ -103,3 +103,16 @@ div.tei-list > .tei-head {
 .tei-ab{
     @apply text-sm my-4;
 }
+
+/* styling of textcritical elements */
+.tei-del.inline-content {
+    @apply text-ssrq-greyed-600;
+}
+.tei-choice > .tei-sic,
+.tei-choice > .tei-abbr,
+.tei-choice  > .tei-expan,
+.tei-choice > .tei-corr,
+:not(.popup-content) > .tei-sic,
+:not(.popup-content) > .tei-abbr {
+    @apply text-ssrq-greyed-600;
+}
