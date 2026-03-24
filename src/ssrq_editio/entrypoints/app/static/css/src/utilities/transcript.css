@@ -108,6 +108,9 @@ div.tei-list > .tei-head {
 .tei-del.inline-content {
     @apply text-ssrq-greyed-600;
 }
+.tei-del.inline-content  summary>svg{
+    @apply text-ssrq-greyed-800;
+}
 .tei-choice > .tei-sic,
 .tei-choice > .tei-abbr,
 .tei-choice  > .tei-expan,
