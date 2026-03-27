@@ -77,12 +77,15 @@ div[aria-label='tab-transcript'] .tei-seg + .tei-seg::before {
 div.tei-list > .tei-item {
   @apply list-item list-none ml-6;
 }
+
 div.tei-list.rend-bulleted > .tei-item {
   @apply list-disc;
 }
+
 div.tei-list.rend-numbered > .tei-item {
   @apply list-decimal;
 }
+
 div.tei-list > .tei-head {
   @apply font-bold;
 }
@@ -91,31 +94,36 @@ div.tei-list > .tei-head {
 .tei-body table {
   @apply text-sm border-separate border-spacing-x-4 border-spacing-y-2;
 }
+
 .tei-body table caption {
   @apply font-bold text-base;
 }
+
 /* ToDo: Properly position secondary titles and remove this temporary workaround. Issue #4872 */
 .tei-body table caption:not(:first-child) {
   display: none;
 }
 
 /* tei:ab */
-.tei-ab{
-    @apply text-sm my-4;
+.tei-ab {
+  @apply text-sm my-4;
 }
 
 /* styling of textcritical elements */
 .tei-del.inline-content {
-    @apply text-ssrq-greyed-600;
+  @apply text-ssrq-greyed-600;
 }
-.tei-del.inline-content  summary>svg{
-    @apply text-ssrq-greyed-800;
+
+/* ToDo: Maybe this a workaround? Unclear, why we should do this... */
+.tei-del.inline-content summary > svg {
+  @apply text-ssrq-greyed-800;
 }
+
 .tei-choice > .tei-sic,
 .tei-choice > .tei-abbr,
-.tei-choice  > .tei-expan,
+.tei-choice > .tei-expan,
 .tei-choice > .tei-corr,
 :not(.popup-content) > .tei-sic,
 :not(.popup-content) > .tei-abbr {
-    @apply text-ssrq-greyed-600;
+  @apply text-ssrq-greyed-600;
 }
