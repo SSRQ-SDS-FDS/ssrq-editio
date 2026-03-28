@@ -4,6 +4,8 @@ This is the main application repository for SLS.
 
 The edition can be found online via [https://editio.sls-online.ch](https://editio.sls-online.ch)
 
+For background on the platform launch, see the blog post [Startschuss für neue Forschungsplattform](https://ssrq-sds-fds.ch/blog/2026/02/27/startschuss-f%C3%BCr-neue-forschungsplattformhttpseditiossrq-onlinech/).
+
 ## Overview
 
 The digital scholarly edition is an Python based project. Originally it was based on the [TEIPublisher](https://teipublisher.com). It has been rewritten in Python and uses XSLT to transform the TEI-XML files into HTML. The rewritten application tries to tackle some of the shortcomings of the original project:
