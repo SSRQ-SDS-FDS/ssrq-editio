@@ -1,35 +1,17 @@
-import os
+from functools import cache
 from pathlib import Path
 from typing import Any, TypedDict, cast
 
 import cachebox
-from fastapi import Request
+from fastapi import HTTPException, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from ssrq_utils.i18n.translator import Translator
 from ssrq_utils.lang.display import Lang
 
 from ssrq_editio.entrypoints.app.config import TRANSLATION_SOURCE
+from ssrq_editio.entrypoints.app.settings import get_settings
 from ssrq_editio.entrypoints.app.setup import templates as TEMPLATES
-
-
-def _load_int_env(name: str, fallback: int, minimum: int) -> int:
-    value = os.getenv(name)
-
-    if value is None:
-        return fallback
-
-    try:
-        return max(int(value), minimum)
-    except ValueError:
-        return fallback
-
-
-VIEW_CACHE_MAXSIZE = _load_int_env("EDITIO_VIEW_CACHE_MAXSIZE", fallback=128, minimum=1)
-VIEW_CACHE_TTL_SECONDS = _load_int_env("EDITIO_VIEW_CACHE_TTL_SECONDS", fallback=900, minimum=1)
-VIEW_RESPONSE_CACHE: cachebox.TTLCache = cachebox.TTLCache(
-    maxsize=VIEW_CACHE_MAXSIZE, ttl=VIEW_CACHE_TTL_SECONDS
-)
 
 
 class ViewCoreData(TypedDict):
@@ -57,6 +39,7 @@ class ViewModel:
     template_partial: str | None = None
     translator: Translator
     templates: Jinja2Templates
+    status_code: int
 
     def __init__(
         self,
@@ -69,6 +52,7 @@ class ViewModel:
         self.templates = jinja_templates
         self.lang = lang
         self.translator = Translator(translation_source)
+        self.status_code = 200
 
     def add_css(self, name: str):
         """Add a additional (view specific) CSS file to the model.
@@ -107,20 +91,6 @@ class ViewModel:
         context["css"] = self.css
         context["js"] = self.js
 
-    def error_to_html(self, error: Exception) -> HTMLResponse:
-        return self.templates.TemplateResponse(
-            request=self.request,
-            name="pages/error.jinja",
-            context={
-                "data": {},
-                "error": str(error),
-                "lang": self.lang,
-                "request": self.request,
-                "translator": self.translator,
-            },
-            status_code=500,
-        )
-
     async def to_html(self) -> HTMLResponse:
         return await serve_html_response(self)
 
@@ -138,12 +108,16 @@ class ViewModel:
                     name=page_template,
                     context=context,
                     block_name=self.template_partial,
+                    status_code=self.status_code,
                 )  # type: ignore
             return self.templates.TemplateResponse(
-                request=self.request, name=f"pages/{self.page}", context=context
+                request=self.request,
+                name=f"pages/{self.page}",
+                context=context,
+                status_code=self.status_code,
             )
         except Exception as error:
-            return self.error_to_html(error)
+            raise HTTPException(status_code=500, detail=str(error))
 
     def _is_htmx_request(self) -> bool:
         return bool(self.request.headers.get("HX-Request"))
@@ -158,6 +132,15 @@ class ViewModel:
 def _calculate_cache_key(args, kwargs) -> str:
     view: ViewModel = args[0]
     return f"{view.request.url._url}_{view.lang.value}_{view.request.method}_{view.request.headers.get('HX-Request', '')}"
+
+
+@cache
+def get_view_response_cache() -> cachebox.TTLCache:
+    settings = get_settings()
+    return cachebox.TTLCache(
+        maxsize=settings.editio_view_cache_maxsize,
+        ttl=settings.editio_view_cache_ttl_seconds,
+    )
 
 
 async def serve_html_response(view: ViewModel) -> HTMLResponse:
@@ -175,9 +158,10 @@ async def serve_html_response(view: ViewModel) -> HTMLResponse:
     if view.request.method != "GET":
         return await view._to_html()
 
-    VIEW_RESPONSE_CACHE.expire()
+    view_response_cache = get_view_response_cache()
+    view_response_cache.expire()
     cache_key = _calculate_cache_key((view,), {})
-    cached_html = VIEW_RESPONSE_CACHE.get(cache_key)
+    cached_html = view_response_cache.get(cache_key)
 
     if cached_html is not None:
         return HTMLResponse(content=cached_html)
@@ -186,6 +170,6 @@ async def serve_html_response(view: ViewModel) -> HTMLResponse:
 
     # Only cache successful responses to avoid persisting transient errors.
     if response.status_code == 200:
-        VIEW_RESPONSE_CACHE[cache_key] = response.body
+        view_response_cache[cache_key] = response.body
 
     return response

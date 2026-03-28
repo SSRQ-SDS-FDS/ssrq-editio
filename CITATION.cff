@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: "Politycki"
+    given-names: "Bastian"
+    orcid: "https://orcid.org/0000-0002-6308-2424"
+  - family-names: "Sonder"
+    given-names: "Christian"
+    orcid: "https://orcid.org/0009-0009-5702-7902"
+  - family-names: "Sutter"
+    given-names: "Pascale"
+    orcid: "https://orcid.org/0000-0003-4348-4394"
+  - family-names: "Häberlin"
+    given-names: "Alexander"
+    email: "alexanderchristian.haeberlin@unisg.ch"
+title: "SSRQ-Editio: Digital Scholarly Edition of the Swiss Law Sources"
+version: "1.0.0-alpha4"
+url: "https://github.com/SSRQ-SDS-FDS/ssrq-editio"

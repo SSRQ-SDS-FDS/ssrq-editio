@@ -68,9 +68,29 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Compute image tags
+        id: image_tags
+        run: |
+          IMAGE_REPO="ghcr.io/ssrq-sds-fds/ssrq-editio-app"
+
+          if [ "${GITHUB_REF}" = "refs/heads/dev" ]; then
+            echo "tags=${IMAGE_REPO}:latest" >> "${GITHUB_OUTPUT}"
+            exit 0
+          fi
+
+          TAG_NAME="${GITHUB_REF_NAME}"
+          TAGS="${IMAGE_REPO}:${TAG_NAME}"
+
+          # For release variants like v1.0.0-alpha5, also publish v1.0.0
+          if [[ "${TAG_NAME}" == v*.*.*-* ]]; then
+            CHANNEL_TAG="${TAG_NAME%%-*}"
+            TAGS="${TAGS},${IMAGE_REPO}:${CHANNEL_TAG}"
+          fi
+
+          echo "tags=${TAGS}" >> "${GITHUB_OUTPUT}"
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           push: true
           context: .
-          tags: ${{ github.ref == 'refs/heads/dev' && 'ghcr.io/ssrq-sds-fds/ssrq-editio-app:latest' || format('ghcr.io/ssrq-sds-fds/ssrq-editio-app:{0}', github.ref_name) }}
+          tags: ${{ steps.image_tags.outputs.tags }}

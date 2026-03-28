@@ -4,7 +4,7 @@ from ssrq_utils.lang.display import Lang
 from starlette.requests import Request
 
 from ssrq_editio.entrypoints.app.views.models.base import (
-    VIEW_RESPONSE_CACHE,
+    get_view_response_cache,
     serve_html_response,
 )
 
@@ -40,7 +40,7 @@ def _request(method: str = "GET", path: str = "/dummy") -> Request:
 
 @pytest.fixture(autouse=True)
 def clear_view_cache() -> None:
-    VIEW_RESPONSE_CACHE.clear()
+    get_view_response_cache().clear()
 
 
 @pytest.mark.anyio

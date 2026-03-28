@@ -1,6 +1,6 @@
 import importlib.metadata
 from pathlib import Path
-from typing import Sequence
+from typing import Callable, Sequence
 
 import jinjax
 from fastapi import APIRouter, FastAPI
@@ -11,6 +11,7 @@ from markdown import markdown  # type: ignore
 from ssrq_utils.i18n.text import normalize_punctuation_marks
 
 from ssrq_editio.entrypoints.app.config import ASSET_DIR, COMPONENT_DIR, ICON_DIR, TEMPLATE_DIR
+from ssrq_editio.entrypoints.app.settings import get_settings
 from ssrq_editio.entrypoints.app.shared.version import get_display_version
 from ssrq_editio.entrypoints.app.views.utils import (
     create_entity_preview_by_id,
@@ -18,6 +19,7 @@ from ssrq_editio.entrypoints.app.views.utils import (
     render_template_string,
 )
 from ssrq_editio.services.documents import map_facs_to_iiif_urls
+from ssrq_editio.services.monitoring import setup_error_monitoring
 from ssrq_editio.services.occurrences import group_and_sort_idnos
 from ssrq_editio.services.utils import create_permalink
 
@@ -68,9 +70,13 @@ def app_factory(
     return app, templates
 
 
-def setup_routers(app: FastAPI, routers: tuple[APIRouter, ...]) -> None:
+def setup_routers(
+    app: FastAPI, register_error_handlers: Callable[[FastAPI], None], routers: tuple[APIRouter, ...]
+) -> None:
+    setup_error_monitoring(get_settings())
     for router in routers:
         app.include_router(router)
+    register_error_handlers(app)
 
 
 app, templates = app_factory(TEMPLATE_DIR, (COMPONENT_DIR, ICON_DIR), ASSET_DIR)
