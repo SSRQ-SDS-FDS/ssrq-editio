@@ -110,12 +110,14 @@ div.tei-list > .tei-head {
 }
 
 /* styling of textcritical elements */
-.tei-del.inline-content {
+.tei-del.inline-content,
+.tei-add.inline-content{
   @apply text-ssrq-greyed-600;
 }
 
 /* ToDo: Maybe this a workaround? Unclear, why we should do this... */
-.tei-del.inline-content summary > svg {
+.tei-del.inline-content summary > svg,
+.tei-add.inline-content summary > svg{
   @apply text-ssrq-greyed-800;
 }
 
