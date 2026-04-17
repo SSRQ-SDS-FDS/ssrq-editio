@@ -4,7 +4,10 @@ from pathlib import Path
 from typing import TypeVar
 
 from pydantic_core import from_json, to_json
+from ssrq_utils.lang.display import Lang
 
+PROJECT_PAGE_BASE = "https://ssrq-sds-fds.ch/"
+SCHEMA_PAGE_BASE = "https://schema.ssrq-sds-fds.ch/"
 T = TypeVar("T")
 
 
@@ -52,6 +55,43 @@ def parse_as_list_or_return(value: list | str | None) -> list | None:
         list | None: The parsed value.
     """
     return value if isinstance(value, list) or value is None else from_json(value)
+
+
+def build_project_url(lang: Lang | None = Lang.DE, page_path: str | None = "") -> str:
+    """Build the URL for a project page in the specified language.
+    For the default language (Lang.DE), no language prefix is added.
+
+    Args:
+        lang (Lang): Language enum.
+        page_path (str): Relative path to the page. Leading '/' is optional.
+
+    Returns:
+        str: Fully constructed URL.
+    """
+    lang_path = f"{lang.value}/" if lang and lang != Lang.DE else ""
+    return f"{PROJECT_PAGE_BASE}{lang_path}{page_path.lstrip('/') if page_path else ''}"
+
+
+def build_schema_url(
+    version: str | None = "latest", lang: Lang | None = Lang.DE, page_path: str | None = ""
+) -> str:
+    """Build the URL for a schema page in the specified language.
+    Only French (Lang.FR) uses a language prefix. For all other languages,
+    no prefix is added.
+
+    Args:
+        version (str): Schema version. Default is "latest".
+        lang (Lang): Language enum.
+        page_path (str): Relative path to the page. Leading '/' is optional.
+
+    Returns:
+        str: Fully constructed URL.
+    """
+    lang_path = f"{lang.value}/" if lang and lang == Lang.FR else ""
+    version_path = f"{version}/" if version else "latest/"
+    return (
+        f"{SCHEMA_PAGE_BASE}{version_path}{lang_path}{page_path.lstrip('/') if page_path else ''}"
+    )
 
 
 def serialize_value(value: T) -> str | T:

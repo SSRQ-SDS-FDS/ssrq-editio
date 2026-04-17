@@ -16,6 +16,7 @@ from ssrq_editio.entrypoints.app.views.models.volume import VolumeViewModel
 from ssrq_editio.models.documents import DocumentType
 from ssrq_editio.models.entities import EntityTypes
 from ssrq_editio.models.kantons import KantonName
+from ssrq_editio.services.utils import build_project_url, build_schema_url
 
 html = APIRouter(default_response_class=HTMLResponse, include_in_schema=False)
 
@@ -52,23 +53,40 @@ async def search(
     ).to_html()
 
 
-@html.get("/index", name="entities")
-@html.get("/about/digital-edition", name="info_edition")
+@html.get(
+    "/about/editorial_principles",
+    name="editorial_principles",
+    response_class=RedirectResponse,
+    status_code=302,
+)
+async def editorial_principles(request: Request, lang: LangDependency):
+    return build_schema_url("latest", lang, "")
+
+
+@html.get(
+    "/about/digital-edition", name="info_edition", response_class=RedirectResponse, status_code=302
+)
 async def scholarly_information(request: Request, lang: LangDependency):
-    raise NotImplementedError
+    return build_project_url(lang, "blog/2026/02/27/startschuss-f%C3%BCr-neue-forschungsplattform/")
 
 
-@html.get("/about/partners-and-funding", name="partners_and_funding")
+@html.get(
+    "/about/partners-and-funding",
+    name="partners_and_funding",
+    response_class=RedirectResponse,
+    status_code=302,
+)
 async def partners_and_funding(request: Request, lang: LangDependency):
-    raise NotImplementedError
+    return build_project_url(lang, "projects/cooperations/")
 
 
+@html.get("/index", name="entities")
 @html.get("/index/{entity_type}", name="entity_view")
 async def list_entities(
     request: Request,
     lang: LangDependency,
     connection: DBDependency,
-    entity_type: EntityTypes,
+    entity_type: EntityTypes = EntityTypes.LEMMATA,
     query: str | None = None,
     occurrence: str | None = None,
     page: int = 1,

@@ -4,9 +4,9 @@ request: Request,
 translator: Translator
 #}
 {% set about_routes = [
-    ('partners_and_funding', 'https://ssrq-sds-fds.ch/projects/cooperations/'),
-    ('editorial_principles','https://schema.ssrq-sds-fds.ch/latest/'),
-    ('about', 'https://ssrq-sds-fds.ch/blog/2026/02/27/startschuss-f%C3%BCr-neue-forschungsplattform/'),
+    ('partners_and_funding', url_for('partners_and_funding').include_query_params(lang=lang.value)),
+    ('editorial_principles', url_for('editorial_principles').include_query_params(lang=lang.value)),
+    ('about', url_for('info_edition').include_query_params(lang=lang.value)),
     ('api', 'swagger_ui_html')
     ]
 %}
