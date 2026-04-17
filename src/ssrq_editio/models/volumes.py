@@ -4,9 +4,7 @@ from pydantic import BaseModel, BeforeValidator, Field, computed_field, model_va
 from ssrq_utils.lang.display import Lang
 
 from ssrq_editio.models.documents import DocumentType
-from ssrq_editio.services.utils import parse_as_list_or_return
-
-PROJECT_PAGE_BASE = "https://ssrq-sds-fds.ch/"
+from ssrq_editio.services.utils import build_project_url, parse_as_list_or_return
 
 
 class Volume(BaseModel):
@@ -39,8 +37,7 @@ class Volume(BaseModel):
         Returns:
             str: URL of project page.
         """
-        lang_path = f"{lang.value}/" if lang and lang != Lang.DE else ""
-        return f"{PROJECT_PAGE_BASE}{lang_path}{self.project_page}"
+        return build_project_url(lang, self.project_page)
 
 
 class VolumeMeta(BaseModel):
