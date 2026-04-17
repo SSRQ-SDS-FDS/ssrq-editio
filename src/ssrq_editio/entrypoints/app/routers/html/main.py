@@ -11,6 +11,10 @@ from ssrq_editio.entrypoints.app.views.models.document import DocumentViewModel
 from ssrq_editio.entrypoints.app.views.models.entity import EntityViewModel
 from ssrq_editio.entrypoints.app.views.models.index import IndexViewModel
 from ssrq_editio.entrypoints.app.views.models.kanton import KantonViewModel
+from ssrq_editio.entrypoints.app.views.models.legacy_volume import (
+    LegacyVolumeRedirectViewModel,
+    LegacyVolumeTarget,
+)
 from ssrq_editio.entrypoints.app.views.models.search import SearchViewModel
 from ssrq_editio.entrypoints.app.views.models.volume import VolumeViewModel
 from ssrq_editio.models.documents import DocumentType
@@ -110,6 +114,44 @@ async def volume_pdf(
     volume: str,
 ):
     return RedirectResponse(api.url_path_for("api_v1_volume_pdf", kanton=kanton, volume=volume))
+
+
+@html.get("/{kanton}/{volume}-intro", name="deprecated_volume_intro")
+@html.get("/{kanton}/{volume}-intro.html", name="deprecated_volume_intro_with_html_extension")
+async def deprecated_volume_intro(
+    request: Request,
+    lang: LangDependency,
+    connection: DBDependency,
+    kanton: KantonName,
+    volume: str,
+):
+    return await LegacyVolumeRedirectViewModel(
+        request=request,
+        lang=lang,
+        connection=connection,
+        kanton=kanton,
+        volume=volume,
+        target=LegacyVolumeTarget.INTRO,
+    ).to_response()
+
+
+@html.get("/{kanton}/{volume}-lit", name="deprecated_volume_lit")
+@html.get("/{kanton}/{volume}-lit.html", name="deprecated_volume_lit_with_html_extension")
+async def deprecated_volume_lit(
+    request: Request,
+    lang: LangDependency,
+    connection: DBDependency,
+    kanton: KantonName,
+    volume: str,
+):
+    return await LegacyVolumeRedirectViewModel(
+        request=request,
+        lang=lang,
+        connection=connection,
+        kanton=kanton,
+        volume=volume,
+        target=LegacyVolumeTarget.LIT,
+    ).to_response()
 
 
 @html.get("/{kanton}/{volume}", name="document_list")
