@@ -2,31 +2,56 @@
   .popup.has-border > button {
     @apply pb-[0.5px] border-b-black border-dotted border-b-[1px] w-fit;
   }
-
+    
+  /* reset native popover box and position it relative to its anchor */
   .popup-body:popover-open {
-    @apply m-0 mt-1 inset-auto bg-white border rounded-md p-4 text-black text-sm z-50 shadow-sm;
-    overflow: visible;
+    /* styling of popup */
+    @apply inset-auto m-0 overflow-visible p-0 border-0 bg-transparent;
 
-    /* position of popup */
-    inset-block-start:  anchor(self-end);
-    inset-inline-start: anchor(start);
+    /* anchor and positioning of popup */
+    position: fixed;
+    position-anchor: auto;
+    position-visibility: anchors-visible; /* support in firefox/safari? */
+    position-area: bottom right;
+    inset-inline-start: anchor(left);
+    margin-block-start: 0.5rem;
     margin-inline-start: -1rem;
-    /*margin-top: 0.3rem;*/
-    position-try-fallbacks: --flip-to-left, flip-inline;
+
+    /* fallback placements when the popover would overflow (right/up) */
+    position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+    container-type: anchored;
   }
-  /* up arrow */
-  .popup-body:popover-open::after {
+
+  /* visible styling of popup */
+  .popup-content {
+    @apply relative bg-white border rounded-md p-4 text-black text-sm shadow-sm sm:max-w-40 md:max-w-80;
+  }
+
+  /* default marker position: top-left */
+  .popup-body.has-marker > .popup-content::before {
     content: "";
-    position: absolute;
-    inset-block-start: -8px;
-    inset-inline-start: 1rem;
-    width: 0; height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom: 8px solid #e5e7eb;
+    @apply absolute w-3 h-3 bg-white left-4 -top-1.5 rotate-45 border-0 border-l border-t border-gray-200;
   }
-  /* ToDO: Change position of arrow when popup is flipped to the left */
-  @position-try --custom-left {
-    inset-inline-start: anchor(end);
+  
+  /* @container is used to move the marker when the popup is flipped */
+  /* popup flipped up (block-axis fallback), marker: bottom-left */
+  @container anchored(fallback: flip-block) {
+    .popup-body.has-marker > .popup-content::before {
+      @apply top-auto -bottom-1.5 border-0 border-r border-b;
+    }
+  }
+
+  /* popup flipped left (inline-axis fallback), marker: top-right */
+  @container anchored(fallback: flip-inline) {
+    .popup-body.has-marker > .popup-content::before {
+      @apply left-auto right-4;
+    }
+  }
+  
+  /* popup flipped left and up (block- and inline-axis fallback), marker: bottom-right */
+  @container anchored(fallback: flip-block flip-inline) {
+    .popup-body.has-marker > .popup-content::before {
+      @apply top-auto -bottom-1.5 right-4 left-auto border-0 border-r border-b;
+    }
   }
 }

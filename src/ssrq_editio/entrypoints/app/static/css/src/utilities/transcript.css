@@ -1,6 +1,6 @@
 /* General style */
 .tei-entity-popup {
-  @apply min-w-max sm:max-w-40 md:max-w-80;
+  @apply min-w-40 sm:max-w-40 md:max-w-80;
 }
 
 .popup > button:has(.tei-entity-icon) {
