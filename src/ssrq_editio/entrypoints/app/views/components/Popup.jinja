@@ -1,4 +1,7 @@
 {% do attrs.add_class("popup", "has-border") %}
-<span {{ attrs.render() }}>
+<span {{ attrs.render() }} x-data x-init="
+  $el.querySelector('button').popoverTargetElement = 
+  $el.querySelector('.popup-body');
+">
     {{ content }}
 </span>

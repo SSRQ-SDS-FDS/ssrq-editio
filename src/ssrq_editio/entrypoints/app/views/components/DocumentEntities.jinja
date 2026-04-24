@@ -24,11 +24,11 @@
             <li>
                 {% set display_name = entity.get_name_by_lang(lang) %}
                 <Popup>
-                    <PopupTrigger :id="{{ entity.id }}">
+                    <PopupTrigger>
                         {{ display_name }}
                     </PopupTrigger>
-                    <PopupBody class="has-marker" :id="{{ entity.id }}">
-                        <PopupContent class="min-w-max max-w-40">
+                    <PopupBody class="has-marker">
+                        <PopupContent>
                             <EntityPreview
                                 :entity="entity"
                                 :entity_type="entity_type.value"
