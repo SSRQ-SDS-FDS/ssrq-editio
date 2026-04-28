@@ -8,6 +8,7 @@ import dateRange from './components/dateRangeSlider.js';
 import inputSync from './components/inputSync.js';
 import tabs from './components/tabs.js';
 import topButtonScrollHandler from './components/toTop.js';
+import popup from './components/popup.js';
 import { removeEmptyParameters } from './utils/eventHelpers.js';
 
 // Global setup of event listeners and Alpine-components
@@ -16,6 +17,7 @@ Alpine.data('inputSync', inputSync);
 Alpine.data('langSwitch', langSwitch);
 Alpine.data('tabs', tabs);
 Alpine.data('topButtonScrollHandler', topButtonScrollHandler);
+Alpine.data('popup', popup);
 document.addEventListener('htmx:configRequest', removeEmptyParameters);
 // Start Alpine.js
 Alpine.start();
