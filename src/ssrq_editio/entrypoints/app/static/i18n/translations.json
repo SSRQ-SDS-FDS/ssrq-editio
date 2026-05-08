@@ -241,7 +241,7 @@
     "keywords": "Termes",
     "last_mention": "Dernière mention",
     "language": "Langue",
-    "lemmata": "Lemme",
+    "lemmata": "Lemmes",
     "license": "Licence",
     "literature": "Littérature",
     "loading": "Chargement des résultats ...",
@@ -283,7 +283,7 @@
     "toggle-textmarker": "Annotations",
     "transcript": "Transcription",
     "view-article": "Voir l'article",
-    "volume": "Unité éditorial",
+    "volume": "Unité éditoriale",
     "volumes": "Unités éditoriales",
     "xml-download": "Document TEI-XML"
   },
