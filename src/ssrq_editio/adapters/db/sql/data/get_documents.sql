@@ -44,6 +44,7 @@ LEFT JOIN (
         facs
     FROM documents
     WHERE is_main = 0 AND facs IS NOT NULL
+    GROUP BY volume_id, cast(sort_key AS INT)
 ) AS sub_docs_facs
     ON
         sub_docs_facs.volume_id = docs.volume_id
