@@ -226,3 +226,79 @@ async def test_get_sub_documents(db_volume_data):
 
     result = await get_sub_documents(connection=db_volume_data, document_id=main_idno)
     assert [doc.idno for doc in result] == [sub_1_idno, sub_2_idno]
+
+
+@pytest.mark.anyio
+async def test_get_documents_with_multiple_subdocuments_with_facs(db_volume_data):
+    main_idno = "SSRQ-SG-III_4-2.0-1"
+    main_doc = Document(
+        uuid=str(uuid4()),
+        idno=main_idno,
+        is_main=True,
+        sort_key=IDNO.model_validate_string(main_idno).normalized_sort_key,
+        de_orig_date="main-de",
+        en_orig_date="main-en",
+        fr_orig_date="main-fr",
+        it_orig_date="main-it",
+        facs=None,
+        printed_idno="SSRQ SG III/4 2.0",
+        volume_id="SG_III_4",
+        orig_place=None,
+        de_title="Main title",
+        fr_title=None,
+        type=DocumentType.collection,
+        start_year_of_creation=1200,
+        end_year_of_creation=1250,
+    )
+
+    sub_1_idno = "SSRQ-SG-III_4-2.1-1"
+    sub_2_idno = "SSRQ-SG-III_4-2.2-1"
+    sub_docs = (
+        Document(
+            uuid=str(uuid4()),
+            idno=sub_1_idno,
+            is_main=False,
+            sort_key=IDNO.model_validate_string(sub_1_idno).normalized_sort_key,
+            de_orig_date="sub-de-1",
+            en_orig_date="sub-en-1",
+            fr_orig_date="sub-fr-1",
+            it_orig_date="sub-it-1",
+            facs='["sub_1_facs_001"]',
+            printed_idno="SSRQ SG III/4 2.1",
+            volume_id="SG_III_4",
+            orig_place=None,
+            de_title="Sub title 1",
+            fr_title=None,
+            type=DocumentType.transcript,
+            start_year_of_creation=1201,
+            end_year_of_creation=1249,
+        ),
+        Document(
+            uuid=str(uuid4()),
+            idno=sub_2_idno,
+            is_main=False,
+            sort_key=IDNO.model_validate_string(sub_2_idno).normalized_sort_key,
+            de_orig_date="sub-de-2",
+            en_orig_date="sub-en-2",
+            fr_orig_date="sub-fr-2",
+            it_orig_date="sub-it-2",
+            facs='["sub_2_facs_001"]',
+            printed_idno="SSRQ SG III/4 2.2",
+            volume_id="SG_III_4",
+            orig_place=None,
+            de_title="Sub title 2",
+            fr_title=None,
+            type=DocumentType.transcript,
+            start_year_of_creation=1202,
+            end_year_of_creation=1248,
+        ),
+    )
+
+    await initialize_document_data(
+        documents=(main_doc, *sub_docs),
+        connection=db_volume_data,
+    )
+
+    result = await get_documents(connection=db_volume_data, volume_id="SG_III_4", facs=True)
+    assert [doc.de_title for doc in result] == ["Main title"]
+    assert [doc.facs for doc in result] == [[]]
