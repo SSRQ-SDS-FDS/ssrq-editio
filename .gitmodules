@@ -46,3 +46,6 @@
 [submodule "src/ssrq_editio/data/SH_II_1"]
 	path = src/ssrq_editio/data/SH_II_1
 	url = https://github.com/SSRQ-SDS-FDS/SH_II_1.git
+[submodule "src/ssrq_editio/data/FR_I_2_9"]
+	path = src/ssrq_editio/data/FR_I_2_9
+	url = https://github.com/SSRQ-SDS-FDS/FR_I_2_9.git
