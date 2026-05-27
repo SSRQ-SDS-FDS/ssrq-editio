@@ -37,7 +37,9 @@ async def test_deprecated_lit_redirects_to_pdf_when_literature_missing(
 ):
     await _set_volume_links(app_db_setup, "SG_III_4", literature=None, pdf="TeX/foo.pdf")
 
-    response = await app_client.get(f"/SG/III_4{suffix}", follow_redirects=False, params={"lang": "de"})
+    response = await app_client.get(
+        f"/SG/III_4{suffix}", follow_redirects=False, params={"lang": "de"}
+    )
 
     assert response.status_code == codes.TEMPORARY_REDIRECT
     assert response.headers["location"] == "http://test/SG/III_4.pdf?lang=de"
@@ -67,7 +69,9 @@ async def test_deprecated_intro_redirects_to_pdf_when_available(
         pdf="TeX/foo.pdf",
     )
 
-    response = await app_client.get(f"/SG/III_4{suffix}", follow_redirects=False, params={"lang": "fr"})
+    response = await app_client.get(
+        f"/SG/III_4{suffix}", follow_redirects=False, params={"lang": "fr"}
+    )
 
     assert response.status_code == codes.TEMPORARY_REDIRECT
     assert response.headers["location"] == "http://test/SG/III_4.pdf?lang=fr"
