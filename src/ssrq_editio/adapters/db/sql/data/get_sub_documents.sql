@@ -4,6 +4,7 @@ WITH main_doc AS (
         CAST(sort_key AS INT) AS sort_key_int
     FROM documents
     WHERE idno LIKE '%' || :idno OR uuid = :idno
+    ORDER BY is_main DESC, sort_key ASC, uuid ASC
     LIMIT 1
 )
 
