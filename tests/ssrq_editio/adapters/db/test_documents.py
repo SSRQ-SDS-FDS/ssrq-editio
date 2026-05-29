@@ -302,3 +302,65 @@ async def test_get_documents_with_multiple_subdocuments_with_facs(db_volume_data
     result = await get_documents(connection=db_volume_data, volume_id="SG_III_4", facs=True)
     assert [doc.de_title for doc in result] == ["Main title"]
     assert [doc.facs for doc in result] == [[]]
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize(
+    ("search", "expected"),
+    [
+        ("SDS-NE-4", 1),
+        ("SSRQ-FR-I_2_8", 1),
+        ("SDS-GE-5", 1),
+        ("SSRQ-SH-II_1", 1),
+        ("SSRQ-SG-III_4", 1),
+        ("SSRQ-ZH-NF", 5),
+        ("SDS-VD-D", 2),
+    ],
+)
+async def test_get_documents_with_letters_in_idno(db_volume_data, search, expected):
+    idno_list = [
+        "SDS-NE-4-1.82-1",
+        "SDS-NE-4-1.A.1-1",
+        "SSRQ-FR-I_2_8-109.28-1",
+        "SDS-GE-5-11-1",
+        "SSRQ-SH-II_1-70-1",
+        "SSRQ-SG-III_4-182-1",
+        "SSRQ-ZH-NF_I_1_3-53-1",
+        "SSRQ-ZH-NF_I_1_11-62-1",
+        "SSRQ-ZH-NF_I_2_1-215-1",
+        "SSRQ-ZH-NF_II_3-13-1",
+        "SSRQ-ZH-NF_II_11-135-1",
+        "SDS-VD-D_1-31-1",
+        "SDS-VD-D_2-46-1",
+    ]
+    documents = [
+        Document(
+            uuid=str(uuid4()),
+            idno=idno,
+            is_main=True,
+            sort_key=IDNO.model_validate_string(idno).normalized_sort_key,
+            de_orig_date="foo",
+            en_orig_date="foo",
+            fr_orig_date="foo",
+            it_orig_date="foo",
+            facs=None,
+            printed_idno=idno,
+            volume_id="SG_III_4",
+            orig_place=["loc000001"],
+            de_title="<h3>foo</h3>",
+            fr_title=None,
+            type=DocumentType.transcript,
+            start_year_of_creation=0,
+            end_year_of_creation=1,
+            previous_document=None,
+            next_document=None,
+        )
+        for idno in idno_list
+    ]
+    await initialize_document_data(documents=documents, connection=db_volume_data)
+    search_result = await get_documents(
+        connection=db_volume_data,
+        volume_id="SG_III_4",
+        search=search,
+    )
+    assert len(search_result) == expected

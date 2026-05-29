@@ -53,6 +53,7 @@ WHERE
     (
         docs.volume_id = :volume_id
         AND docs.is_main = 1
+        AND docs.idno NOT GLOB '*-[0-9.]*[A-Za-z][0-9.]*-1'
         AND (
             docs.idno LIKE '%' || :search || '%'
             OR docs.printed_idno LIKE '%' || :search || '%'
