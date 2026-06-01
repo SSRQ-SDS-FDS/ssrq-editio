@@ -4,6 +4,4 @@ SELECT EXISTS(
     WHERE
         docs.volume_id = :volume_id
         AND docs.facs IS NOT NULL
-    ORDER BY docs.sort_key ASC
-    LIMIT 1
 );
