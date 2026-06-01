@@ -3,8 +3,12 @@ WITH main_doc AS (
         volume_id,
         CAST(sort_key AS INT) AS sort_key_int
     FROM documents
-    WHERE idno LIKE '%' || :idno OR uuid = :idno
-    ORDER BY is_main DESC, sort_key ASC, uuid ASC
+    WHERE idno = :idno OR uuid = :idno
+    ORDER BY
+        CASE
+            WHEN uuid = :idno THEN 0
+            ELSE 1
+        END ASC
     LIMIT 1
 )
 
