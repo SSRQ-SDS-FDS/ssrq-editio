@@ -1,11 +1,14 @@
+# syntax=docker/dockerfile:1.7
+
 FROM node:23-slim AS builder
 
 WORKDIR /editio
 
 COPY justfile tailwind.config.js package.json package-lock.json /editio/
-COPY src /editio/src
+COPY src/ssrq_editio/entrypoints/app /editio/src/ssrq_editio/entrypoints/app
 
-RUN npm install && \
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci && \
     npx rust-just build
 
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm
@@ -16,19 +19,25 @@ ENV ALLOWED_HOSTS=*
 
 WORKDIR /editio
 
-COPY data.config.json uv.lock pyproject.toml justfile /editio/
-COPY src /editio/src
-
 RUN apt-get update && \
-    apt-get install -y curl build-essential && \
-    apt-get update && \
+    apt-get install -y --no-install-recommends curl build-essential ca-certificates && \
+    rm -rf /var/lib/apt/lists/* && \
     curl https://sh.rustup.rs -sSf | bash -s -- -y
 
-ENV PATH="/root/.cargo/bin:${PATH}"
+ENV PATH="/editio/.venv/bin:/root/.cargo/bin:${PATH}"
 
-RUN uv venv && \
-    uv sync --all-extras --dev --no-cache && \
-    adduser ssrq_editio && \
+COPY uv.lock pyproject.toml /editio/
+
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv venv && \
+    uv sync --frozen --no-dev --no-install-project
+
+COPY data.config.json /editio/
+COPY src /editio/src
+
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev && \
+    adduser --disabled-password --gecos "" ssrq_editio && \
     chown -R ssrq_editio:ssrq_editio /editio
 
 COPY --from=builder /editio/src/ssrq_editio/entrypoints/app/static/css/dist /editio/src/ssrq_editio/entrypoints/app/static/css/dist
@@ -36,8 +45,8 @@ COPY --from=builder /editio/src/ssrq_editio/entrypoints/app/static/js/dist /edit
 
 USER ssrq_editio
 
-RUN uv run editio prepare-db --clean --no-parallel
+RUN editio prepare-db --clean --no-parallel
 
 EXPOSE $PORT
 
-CMD ["sh", "-c", "uv run uvicorn src.ssrq_editio.entrypoints.app.main:app --host 0.0.0.0 --port $PORT --workers $WORKERS --proxy-headers --forwarded-allow-ips=$ALLOWED_HOSTS"]
+CMD ["sh", "-c", "uvicorn src.ssrq_editio.entrypoints.app.main:app --host 0.0.0.0 --port $PORT --workers $WORKERS --proxy-headers --forwarded-allow-ips=$ALLOWED_HOSTS"]
