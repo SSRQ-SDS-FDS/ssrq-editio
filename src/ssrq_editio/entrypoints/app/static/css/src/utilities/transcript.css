@@ -12,7 +12,7 @@
 }
 
 /* hide marker for popup */
-.hidden-popup-marker .popup>button {
+.hidden-popup-marker .popup>button:has(>svg) {
   @apply hidden;
 }
 
