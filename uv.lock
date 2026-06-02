@@ -499,15 +499,15 @@ wheels = [
 
 [[package]]
 name = "jinjax"
-version = "0.56"
+version = "0.63"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jinja2" },
     { name = "markupsafe" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d7/17/acf2955d5fc12390382d9cb47878022e38616deac332241be9bbc0ef498f/jinjax-0.56.tar.gz", hash = "sha256:5ae0a48815ffde256a85cafa61dbef1b8ca93edd277603b6550fd00f7e8d72c7", size = 28861, upload-time = "2025-05-01T03:20:44.139Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/6c/11/d86874087e96cd56fd59050b9a87beede2fa8ea6e1b16632324ae9d2f828/jinjax-0.63.tar.gz", hash = "sha256:2cab0bb8e336a0a12a46541e407ad002bc70f3408a36d2a560215ac791fee006", size = 31431, upload-time = "2025-12-03T20:07:03.788Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1e/5c/ff376109058d464eacbf2e83887dacafe33399043bde087d4eeb9931753c/jinjax-0.56-py3-none-any.whl", hash = "sha256:056e1bb6cf8fc39c44e46397d43d0baac3f4256231dfa9953b1c1c85225f80cf", size = 19127, upload-time = "2025-05-01T03:20:42.772Z" },
+    { url = "https://files.pythonhosted.org/packages/74/8d/6c52f82511e523e4ef219bcdb2b601991f71995662b5a2e55f85a6ef8adb/jinjax-0.63-py3-none-any.whl", hash = "sha256:74b0c9a6dc360ed4b9d3ef26dd46e280d61f89ce847d0f29dd876f2f062fdd94", size = 20224, upload-time = "2025-12-03T20:07:04.815Z" },
 ]
 
 [[package]]
@@ -1254,7 +1254,7 @@ requires-dist = [
     { name = "cachebox", specifier = ">=4.3.1" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.0" },
     { name = "jinja2-fragments", specifier = ">=1.6.0" },
-    { name = "jinjax", specifier = ">=0.48" },
+    { name = "jinjax", specifier = ">=0.63" },
     { name = "loguru", specifier = ">=0.7.2" },
     { name = "markdown", specifier = ">=3.8.1" },
     { name = "parsel", specifier = ">=1.9.1" },
