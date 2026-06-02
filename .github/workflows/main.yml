@@ -58,8 +58,6 @@ jobs:
           persist-credentials: false
           submodules: 'true'
           token: ${{ secrets.TEI_VOLUMES_PAT }}
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Login to DockerHub
@@ -94,3 +92,5 @@ jobs:
           push: true
           context: .
           tags: ${{ steps.image_tags.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
