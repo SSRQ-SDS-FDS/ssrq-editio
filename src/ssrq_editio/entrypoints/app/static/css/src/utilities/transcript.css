@@ -12,8 +12,7 @@
 }
 
 /* hide marker for popup */
-/* maybe use: .hidden-popup-marker .tei-back details {}? */
-.hidden-popup-marker details:has(.tei-entity-icon) {
+.hidden-popup-marker .popup>button {
   @apply hidden;
 }
 
