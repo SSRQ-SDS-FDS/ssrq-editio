@@ -308,8 +308,8 @@ async def test_get_documents_with_multiple_subdocuments_with_facs(db_volume_data
 @pytest.mark.parametrize(
     ("search", "expected"),
     [
-        ("SDS-NE-4", 1),
-        ("SSRQ-FR-I_2_8", 1),
+        ("SDS-NE-4", 0),
+        ("SSRQ-FR-I_2_8", 0),
         ("SDS-GE-5", 1),
         ("SSRQ-SH-II_1", 1),
         ("SSRQ-SG-III_4", 1),
@@ -337,7 +337,7 @@ async def test_get_documents_with_letters_in_idno(db_volume_data, search, expect
         Document(
             uuid=str(uuid4()),
             idno=idno,
-            is_main=True,
+            is_main=IDNO.model_validate_string(idno).is_main(),
             sort_key=IDNO.model_validate_string(idno).normalized_sort_key,
             de_orig_date="foo",
             en_orig_date="foo",
