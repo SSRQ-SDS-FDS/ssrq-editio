@@ -487,14 +487,14 @@ wheels = [
 
 [[package]]
 name = "jinja2-fragments"
-version = "1.9.0"
+version = "1.12.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jinja2" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/51/ed/00bfcc466e683d64d276ec7469e0abc01d81f1b63d612438084630fca0b7/jinja2_fragments-1.9.0.tar.gz", hash = "sha256:d903fe5781da1c1867f5fa6a53c5b58fabe7bd2a2721618db48ecba2974d2429", size = 17453, upload-time = "2025-04-20T22:46:50.623Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/0b/25/dbe39572f06a259609ba8257e99f341c75d7add8c05f06b8761c359a58f7/jinja2_fragments-1.12.0.tar.gz", hash = "sha256:a24f8faf29be86f309edeb500e6709d93c3068d023b3dd79aefd2b16a4179e68", size = 22392, upload-time = "2026-04-08T02:53:05.302Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e2/05/2a29edac68484f1e1171d257773f73b436a240bd2640ab66d27bfadb69ae/jinja2_fragments-1.9.0-py3-none-any.whl", hash = "sha256:69b91e7e2f325ea7e391e36a9abcc572db967e2bf3afd35f74fcb78fc9f8c6c5", size = 14433, upload-time = "2025-04-20T22:46:48.778Z" },
+    { url = "https://files.pythonhosted.org/packages/30/d7/97b241dea417966ae523b6395b371ba6ec6ec637df0a4ca42f0251bbd4a4/jinja2_fragments-1.12.0-py3-none-any.whl", hash = "sha256:3267924edd358104056e7416507b1e101be5fc9ced771473663ffbec8883d2f3", size = 16620, upload-time = "2026-04-08T02:53:02.711Z" },
 ]
 
 [[package]]
@@ -1253,7 +1253,7 @@ requires-dist = [
     { name = "anyio", specifier = ">=4.6.0" },
     { name = "cachebox", specifier = ">=4.3.1" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.0" },
-    { name = "jinja2-fragments", specifier = ">=1.6.0" },
+    { name = "jinja2-fragments", specifier = ">=1.12.0" },
     { name = "jinjax", specifier = ">=0.48" },
     { name = "loguru", specifier = ">=0.7.2" },
     { name = "markdown", specifier = ">=3.8.1" },
