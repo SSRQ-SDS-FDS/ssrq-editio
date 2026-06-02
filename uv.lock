@@ -1283,8 +1283,8 @@ dev = [
 
 [[package]]
 name = "ssrq-utils"
-version = "0.6.0"
-source = { git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git#a662a0e8102f1c7f8325ea1e950db145e3be65a7" }
+version = "0.7.0"
+source = { git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git#cd594b22c4f2929bc6a42f748fe6a3337bc98a58" }
 dependencies = [
     { name = "cachebox" },
     { name = "maturin" },

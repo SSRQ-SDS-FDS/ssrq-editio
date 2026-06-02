@@ -6,10 +6,6 @@ WITH main_documents AS (
     WHERE
         docs.volume_id = :volume_id
         AND docs.is_main = 1
-        -- Some source XML marks opening documents as main documents.
-        -- Keep them out of the volume list until the source data
-        -- can be corrected.
-        AND docs.idno NOT GLOB '*-[0-9.]*[A-Za-z][0-9.]*-1'
 ),
 
 documents_with_flags AS (
