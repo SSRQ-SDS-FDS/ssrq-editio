@@ -6,7 +6,7 @@
     template: bool = False
 #}
 
-<div>
+<div {{ attrs.render() }}>
     {% if template %}
         {{ html_content | render_template_string(additional_data) }}
     {% else %}
