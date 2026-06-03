@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="de">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title>Erstes Unterstuck zum Freiburger Mantelstuck</title>
+                <editor>
+                    <persName>Rita Binz-Wohlhauser</persName>
+                </editor>
+            </titleStmt>
+            <publicationStmt>
+                <publisher>
+                    <orgName>Rechtsquellenstiftung der Schweizerischen Juristischen Gesellschaft</orgName>
+                </publisher>
+                <date type="electronic" when-custom="2019-07-23"/>
+                <date type="print" when-custom="2022-06-10"/>
+            </publicationStmt>
+            <seriesStmt>
+                <title>Sammlung Schweizerischer Rechtsquellen</title>
+                <respStmt>
+                    <orgName>Rechtsquellenstiftung der Schweizerischen Juristischen Gesellschaft</orgName>
+                    <resp>Herausgabe</resp>
+                </respStmt>
+                <idno>SSRQ-FR-I_2_8-83.1-1</idno>
+                <idno type="uuid">55ab5bf9-e414-47dd-8576-adc1c7f9a831</idno>
+            </seriesStmt>
+            <sourceDesc>
+                <msDesc>
+                    <msIdentifier>
+                        <settlement xml:lang="de" ref="loc000157">Bern</settlement>
+                        <repository xml:lang="de">Staatsarchiv</repository>
+                        <idno xml:lang="de">E2E FR 83.1</idno>
+                    </msIdentifier>
+                    <head>Erstes Unterstuck zum Freiburger Mantelstuck</head>
+                    <msContents>
+                        <summary xml:lang="de">
+                            <p>Erstes reprasentatives Unterstuck fur die E2E-Tests.</p>
+                        </summary>
+                        <msItem>
+                            <textLang xml:lang="de"/>
+                        </msItem>
+                    </msContents>
+                    <history>
+                        <origin>
+                            <origDate type="document" when-custom="1629-03-03" calendar="unknown"/>
+                        </origin>
+                    </history>
+                </msDesc>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <textClass>
+                <keywords>
+                    <term ref="key005812">Hexerei</term>
+                </keywords>
+            </textClass>
+        </profileDesc>
+    </teiHeader>
+    <text type="transcript">
+        <body>
+            <p>
+                <pb facs="E2E_FR_83_1_1"/>
+                <lb/>Erstes Unterstuck mit <term ref="key005812">Hexerei</term> als Suchbegriff.
+            </p>
+        </body>
+    </text>
+</TEI>
