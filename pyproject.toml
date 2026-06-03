@@ -31,6 +31,7 @@ dev = [
     "mypy>=1.11.2",
     "pre-commit>=3.8.0",
     "pytest>=9.0.3",
+    "pytest-playwright>=0.7.2",
     "ruff>=0.6.8",
     "rust-just>=1.36.0",
     "sqlfluff>=4.2.0",
@@ -47,6 +48,11 @@ exclude = ["^src/ssrq_editio/services/xslt/scripts/convert/*$"]
 
 [tool.pytest.ini_options]
 testpaths = "tests"
+addopts = "-m 'not e2e'"
+markers = [
+    "e2e: browser-driven end-to-end tests",
+    "e2e_live_data: optional end-to-end checks against initialized data submodules",
+]
 
 [tool.ruff]
 fix = true

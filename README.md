@@ -72,10 +72,50 @@ We have a number of common tasks that can be executed using the `just` command. 
 
 - `just dev`: starts the development server
 - `just test`: runs the tests
+- `just e2e`: runs the browser-driven end-to-end tests
 - `just lint`: runs the linters
 - `just fmt`: formats the code
 
 Execute `just help` to see a complete list of available tasks.
+
+### Tests
+
+The default test suite is run with:
+
+```sh
+just test
+```
+
+This command runs the linters first and then executes the regular pytest suite. Browser-driven
+end-to-end tests are marked with `e2e` and are excluded from the default pytest run. They are
+executed separately because they start the FastAPI application with Uvicorn, build the frontend
+assets, and drive the application with Playwright.
+
+Before running the E2E tests for the first time, install the Playwright browser binary:
+
+```sh
+just e2e-install
+```
+
+Then run the stable E2E suite:
+
+```sh
+just e2e
+```
+
+The E2E tests use a small curated TEI fixture set and create a temporary SQLite database during
+the test run. The fixture set includes normal transcript documents and a collection document
+(`text type="collection"`) with subdocuments, so the tests cover representative document-list and
+document-view workflows without depending on initialized production data submodules.
+
+There is also an optional live-data check:
+
+```sh
+just e2e-live
+```
+
+This command is intended for local regression checks against initialized data submodules. If the
+expected submodule files are missing, the live-data test is skipped.
 
 ### Committing changes
 
