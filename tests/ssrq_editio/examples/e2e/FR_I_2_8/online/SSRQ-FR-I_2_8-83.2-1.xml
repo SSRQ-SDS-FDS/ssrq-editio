@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="de">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title>Zweites Unterstuck zum Freiburger Mantelstuck</title>
+                <editor>
+                    <persName>Lionel Dorthe</persName>
+                </editor>
+            </titleStmt>
+            <publicationStmt>
+                <publisher>
+                    <orgName>Rechtsquellenstiftung der Schweizerischen Juristischen Gesellschaft</orgName>
+                </publisher>
+                <date type="electronic" when-custom="2019-07-23"/>
+                <date type="print" when-custom="2022-06-10"/>
+            </publicationStmt>
+            <seriesStmt>
+                <title>Sammlung Schweizerischer Rechtsquellen</title>
+                <respStmt>
+                    <orgName>Rechtsquellenstiftung der Schweizerischen Juristischen Gesellschaft</orgName>
+                    <resp>Herausgabe</resp>
+                </respStmt>
+                <idno>SSRQ-FR-I_2_8-83.2-1</idno>
+                <idno type="uuid">b8f3d9da-b7c5-4a25-88ba-5f674340dc6a</idno>
+            </seriesStmt>
+            <sourceDesc>
+                <msDesc>
+                    <msIdentifier>
+                        <settlement xml:lang="de" ref="loc000157">Bern</settlement>
+                        <repository xml:lang="de">Staatsarchiv</repository>
+                        <idno xml:lang="de">E2E FR 83.2</idno>
+                    </msIdentifier>
+                    <head>Zweites Unterstuck zum Freiburger Mantelstuck</head>
+                    <msContents>
+                        <summary xml:lang="de">
+                            <p>Zweites reprasentatives Unterstuck fur die E2E-Tests.</p>
+                        </summary>
+                        <msItem>
+                            <textLang xml:lang="de"/>
+                        </msItem>
+                    </msContents>
+                    <history>
+                        <origin>
+                            <origDate type="document" when-custom="1629-03-04" calendar="unknown"/>
+                        </origin>
+                    </history>
+                </msDesc>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <textClass>
+                <keywords>
+                    <term ref="key005812">Hexerei</term>
+                </keywords>
+            </textClass>
+        </profileDesc>
+    </teiHeader>
+    <text type="transcript">
+        <body>
+            <p>
+                <lb/>Zweites Unterstuck mit einem kontrollierten E2E-Inhalt.
+            </p>
+        </body>
+    </text>
+</TEI>

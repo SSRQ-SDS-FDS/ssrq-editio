@@ -41,6 +41,18 @@ run: build
 test args="": lint
   uv run pytest {{args}}
 
+# Run browser-driven end-to-end tests
+e2e args="": build
+  uv run pytest -o addopts="" tests/ssrq_editio/e2e -m "e2e and not e2e_live_data" {{args}}
+
+# Install browser binaries required by Playwright
+e2e-install:
+  uv run playwright install chromium
+
+# Run optional E2E checks against initialized data submodules
+e2e-live args="": build
+  uv run pytest -o addopts="" tests/ssrq_editio/e2e -m "e2e_live_data" {{args}}
+
 # Shows all recipes using just -l
 help:
 	just -l

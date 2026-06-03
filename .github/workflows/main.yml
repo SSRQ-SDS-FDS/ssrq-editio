@@ -38,10 +38,21 @@ jobs:
         uses: astral-sh/setup-uv@v3
       - name: Set up Python ${{ matrix.python-version }}
         run: uv python install ${{ matrix.python-version }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install Node dependencies
+        run: npm ci
       - name: Install the project
         run: uv sync --all-extras --dev
       - name: Lint and test
         run: uv run just test
+      - name: Install Playwright browser
+        run: uv run just e2e-install
+      - name: Run E2E tests
+        run: uv run just e2e
 
   build:
     needs: test
