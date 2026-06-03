@@ -71,6 +71,7 @@
 
                 <Tab :label="'transcript'">
                     <HTMLCard
+                        class="text-content"
                         :html_content="doc_content.transcript"
                         :template="true"
                         :additional_data="{
@@ -79,14 +80,16 @@
                             'translator': translator,
                             'request': request,
                             'sub_docs': data.content.sub_docs
-                          }"/>
+                            }"/>
                 </Tab>
 
                 {% if doc.type.value == 'transcript' %}
                     <Tab :label="'normalized'">
-                        <HTMLCard :html_content="doc_content.normalized_transcript"
-                                  :template="true"
-                                  :additional_data="{
+                        <HTMLCard
+                                    class="text-content"
+                                    :html_content="doc_content.normalized_transcript"
+                                    :template="true"
+                                    :additional_data="{
                                             'entities': data.content.index,
                                             'lang': lang,
                                             'translator': translator,
