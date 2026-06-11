@@ -6,6 +6,7 @@ SELECT
     v.title,
     v.prefix,
     v.pdf,
+    v.translated_pdf,
     v.literature,
     v.project_page,
     GROUP_CONCAT(e.name, ',') AS editors
@@ -26,6 +27,7 @@ GROUP BY
     v.title,
     v.prefix,
     v.pdf,
+    v.translated_pdf,
     v.literature,
     v.project_page
 ORDER BY

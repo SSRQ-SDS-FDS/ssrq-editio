@@ -14,6 +14,7 @@ class Volume(BaseModel):
     name: str
     prefix: str
     pdf: str | None
+    translated_pdf: str | None = None
     literature: str | None
     project_page: str | None
     title: str = ""
