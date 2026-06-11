@@ -116,6 +116,16 @@ async def volume_pdf(
     return RedirectResponse(api.url_path_for("api_v1_volume_pdf", kanton=kanton, volume=volume))
 
 
+@html.get("/{kanton}/{volume}/translated", name="translated_volume_pdf")
+async def translated_volume_pdf(
+    kanton: KantonName,
+    volume: str,
+):
+    return RedirectResponse(
+        f"{api.url_path_for('api_v1_volume_pdf', kanton=kanton, volume=volume)}/?suffix=-translated"
+    )
+
+
 @html.get("/{kanton}/{volume}-intro", name="deprecated_volume_intro")
 @html.get("/{kanton}/{volume}-intro.html", name="deprecated_volume_intro_with_html_extension")
 async def deprecated_volume_intro(

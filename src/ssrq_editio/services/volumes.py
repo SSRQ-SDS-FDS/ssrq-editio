@@ -51,7 +51,11 @@ async def fill_volume_info_from_xml(
 
 
 async def stream_volume_pdf(
-    kanton: KantonName, volume: str, connection: Connection, data_volume_src: Path
+    kanton: KantonName,
+    volume: str,
+    connection: Connection,
+    data_volume_src: Path,
+    suffix: str | None = None,
 ) -> AsyncGenerator[bytes, None]:
     """Stream the content of a volume PDF.
 
@@ -59,6 +63,8 @@ async def stream_volume_pdf(
         kanton (KantonName): KantonName enum object.
         volume (str): Volume key.
         connection (Connection): SQLite connection.
+        data_volume_src (Path): The source of the current volume
+        suffix (str | None): Optional file suffix
 
     Yields:
         AsyncGenerator[bytes, None]: Bytes of the file.
@@ -80,7 +86,7 @@ async def stream_volume_pdf(
         data_volume_src
         / f"{kanton.value}_{volume_info.machine_name}"
         / "TeX"
-        / f"{volume_info.prefix}-{volume_info.kanton}-{volume_info.machine_name}.pdf"
+        / f"{volume_info.prefix}-{volume_info.kanton}-{volume_info.machine_name}{suffix or ''}.pdf"
     )
 
     return stream(volume_path)

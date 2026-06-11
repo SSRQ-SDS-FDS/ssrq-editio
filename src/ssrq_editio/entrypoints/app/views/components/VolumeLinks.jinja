@@ -18,6 +18,11 @@
         {{ translator.translate(lang, 'pdf') }}
     </a>
     {% endif %}
+    {% if volume.translated_pdf %}
+    <a href="{{ url_for('translated_volume_pdf', kanton=volume.kanton, volume=volume.machine_name).include_query_params(lang=lang.value) }}" target="_blank">
+        {{ translator.translate(lang, 'translation') }}
+    </a>
+    {% endif %}
     {% if volume.project_page%}
     <a href="{{ volume.get_project_page_by_lang(lang) }}" target="_blank">
         {{ translator.translate(lang, 'project_page') }}

@@ -54,14 +54,12 @@ async def volumes(connection: DBDependency, kanton: KantonName) -> Volumes:
     "/kantons/{kanton}/{volume}.pdf", name="api_v1_volume_pdf", response_class=StreamingResponse
 )
 async def volume_pdf(
-    kanton: KantonName,
-    volume: str,
-    connection: DBDependency,
+    kanton: KantonName, volume: str, connection: DBDependency, suffix: str | None = None
 ) -> StreamingResponse:
     """Streams the PDF of a specific volume."""
     try:
         return StreamingResponse(
-            await stream_volume_pdf(kanton, volume, connection, VOLUME_SRC),
+            await stream_volume_pdf(kanton, volume, connection, VOLUME_SRC, suffix=suffix),
             media_type="application/pdf",
         )
     except Exception as e:
