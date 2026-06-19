@@ -233,7 +233,6 @@ async def initialize_static_e2e_database(
 ) -> None:
     await setup_db(connection)
     await initialize_kanton_data(connection)
-    await store_entities(entities, connection)
 
     files_by_volume = copy_static_e2e_sources(example_path, data_root)
     processed_volumes: set[str] = set()
@@ -257,6 +256,8 @@ async def initialize_static_e2e_database(
         await initialize_document_data(documents, connection)
         await initialize_document_fulltext(fulltext, connection)
         processed_volumes.add(source.volume.key)
+
+    await store_entities(entities, connection)
 
 
 def get_live_e2e_sources(data_root: Path) -> tuple[Path, ...]:

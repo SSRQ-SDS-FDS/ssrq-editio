@@ -158,11 +158,24 @@ async def test_search_organizations(
 
 
 @pytest.mark.anyio
-async def test_search_places_with_occurrences(
+@pytest.mark.parametrize(
+    ("search_entities", "entity_id", "text_search"),
+    [
+        (search_places, "loc000127", "Zürichsee"),
+        (search_persons, "per007472", "Peter"),
+        (search_organizations, "org006252", "Zürichberg"),
+        (search_families, "org000195", "Vasön"),
+        (search_keywords, "key000129", "Wein"),
+        (search_lemmata, "lem008330", "roter"),
+    ],
+)
+async def test_text_search_returns_same_occurrences_as_id_search(
     db_volume_data,
     entities,
+    search_entities,
+    entity_id: str,
+    text_search: str,
 ):
-    places = tuple([e for e in entities if isinstance(e, Places)])
     documents = (
         Document(
             uuid="d56f1ce8-cec9-49ed-b54b-09f397adc2d8",
@@ -179,18 +192,23 @@ async def test_search_places_with_occurrences(
             orig_place=["loc000211"],
             de_title="foo",
             fr_title=None,
-            entities=["loc000127"],
+            entities=[entity_id],
             type=DocumentType.transcript,  # noqa: F821
         ),
     )
     await initialize_document_data(documents, db_volume_data)
-    await store_entities(places, db_volume_data)
+    await store_entities(entities, db_volume_data)
 
-    result = await search_places(connection=db_volume_data, search="loc000127")
+    id_result = await search_entities(connection=db_volume_data, search=entity_id)
+    text_result = await search_entities(connection=db_volume_data, search=text_search)
 
-    assert isinstance(result, Places)
-    assert len(result.entities) == 1
-    assert result.entities[0].occurrences == [documents[0].uuid]
+    id_match = id_result.get_by_id(entity_id)
+    text_match = text_result.get_by_id(entity_id)
+
+    assert id_match is not None
+    assert text_match is not None
+    assert id_match.occurrences == [documents[0].uuid]
+    assert text_match.occurrences == id_match.occurrences
 
 
 @pytest.mark.anyio
