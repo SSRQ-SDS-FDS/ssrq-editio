@@ -1,3 +1,13 @@
+WITH entity_occurrences AS (
+    SELECT
+        occurrences.ref,
+        GROUP_CONCAT(occurrences.uuid, ',') AS occurrences,
+        GROUP_CONCAT(documents.printed_idno, ',') AS printed_idno
+    FROM occurrences
+    LEFT JOIN documents ON occurrences.uuid = documents.uuid
+    GROUP BY occurrences.ref
+)
+
 SELECT
     org.id,
     org.de_name,
@@ -10,18 +20,7 @@ SELECT
     org.location,
     occurrences.occurrences
 FROM organizations AS org
-LEFT JOIN (
-    SELECT
-        occurrences.ref,
-        GROUP_CONCAT(occurrences.uuid, ',') AS occurrences,
-        (
-            SELECT GROUP_CONCAT(documents.printed_idno)
-            FROM documents
-            WHERE documents.uuid = occurrences.uuid
-        ) AS printed_idno
-    FROM occurrences
-    GROUP BY occurrences.ref
-) AS occurrences ON org.id = occurrences.ref
+LEFT JOIN entity_occurrences AS occurrences ON org.id = occurrences.ref
 WHERE
     (
         :search = ''
@@ -38,7 +37,8 @@ UNION
 
 SELECT -- noqa
     p.*,
-    NULL AS occurrences
+    occurrences.occurrences
 FROM organizations AS p
 INNER JOIN organizations_fts AS fts ON p.id = fts.id
+LEFT JOIN entity_occurrences AS occurrences ON p.id = occurrences.ref
 WHERE :search <> '' AND organizations_fts MATCH :search; -- noqa
