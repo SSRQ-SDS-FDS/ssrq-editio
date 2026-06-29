@@ -32,6 +32,11 @@ async def index(request: Request, lang: LangDependency, connection: DBDependency
     return await IndexViewModel(request, lang, connection).to_html()
 
 
+@html.get("/favicon.ico", name="favicon")
+async def favicon():
+    return RedirectResponse("/static/images/favicon-ssrq-32.png", status_code=307)
+
+
 # Routes, which are direct child of the root must be placed before such routes,
 # which use path parametzers
 async def entities(request: Request):
