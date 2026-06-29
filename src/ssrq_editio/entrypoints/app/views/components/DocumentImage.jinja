@@ -1,0 +1,13 @@
+{# def
+    src: str,
+    type: str
+#}
+<span {{ attrs.render() }}>
+    <img
+      src="./graphic/{{ src }}"
+      alt="{{ type }}"
+      title="{{ type }}"
+      class="mx-auto h-auto max-w-full rounded-md border border-ssrq-greyed-200 bg-white"
+      loading="lazy"
+    />
+</span>

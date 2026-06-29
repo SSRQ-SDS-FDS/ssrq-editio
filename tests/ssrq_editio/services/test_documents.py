@@ -5,6 +5,9 @@ from saxonche import PyXdmMap, PyXdmNode, PyXsltExecutable
 from ssrq_utils.idno.model import IDNO
 from ssrq_utils.lang.display import Lang
 
+from ssrq_editio.adapters.db.kantons import initialize_kanton_data
+from ssrq_editio.adapters.db.setup import setup_db
+from ssrq_editio.adapters.db.volumes import initialize_volume_with_editors
 from ssrq_editio.adapters.file import load
 from ssrq_editio.models.documents import (
     Document,
@@ -13,10 +16,13 @@ from ssrq_editio.models.documents import (
     DocumentSummary,
     DocumentType,
 )
+from ssrq_editio.models.kantons import KantonName
 from ssrq_editio.services.documents import (
     DocumentTransformer,
     extract_infos_from_xml,
+    resolve_asset_path,
 )
+from tests.ssrq_editio.adapters.db.conftest import TEST_VOLUMES
 
 
 @pytest.fixture
@@ -360,3 +366,36 @@ async def test_extract_facs_responsible_from_xml(example_path: Path, transpiled_
         (example_path / "SSRQ-ZH-NF_II_11-171-1.xml",), "foo", transpiled_schema=transpiled_schema
     )
     assert result[0][0].facs_responsible == "Ariane Huber Hernández, Michael Nadig"
+
+
+@pytest.mark.anyio
+async def test_resolve_asset_path_uses_volume_machine_name(db_connection):
+    await setup_db(db_connection)
+    await initialize_kanton_data(db_connection)
+    await initialize_volume_with_editors(db_connection, TEST_VOLUMES[0])
+
+    result = await resolve_asset_path(
+        KantonName.sg,
+        "III_4",
+        db_connection,
+        Path("/tmp/data"),
+        "WB_HB.svg",
+    )
+
+    assert result == Path("/tmp/data/SG_III_4/online/assets/WB_HB.svg")
+
+
+@pytest.mark.anyio
+async def test_resolve_asset_path_raises_for_missing_volume(db_connection):
+    await setup_db(db_connection)
+    await initialize_kanton_data(db_connection)
+    await initialize_volume_with_editors(db_connection, TEST_VOLUMES[0])
+
+    with pytest.raises(ValueError, match="Could not find volume XX_1 for SG"):
+        await resolve_asset_path(
+            KantonName.sg,
+            "XX_1",
+            db_connection,
+            Path("/tmp/data"),
+            "WB_HB.svg",
+        )

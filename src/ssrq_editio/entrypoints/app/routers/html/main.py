@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi import APIRouter, HTTPException, Request
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 
 from ssrq_editio.entrypoints.app.routers.api import api
 from ssrq_editio.entrypoints.app.shared.dependencies import (
@@ -17,9 +17,11 @@ from ssrq_editio.entrypoints.app.views.models.legacy_volume import (
 )
 from ssrq_editio.entrypoints.app.views.models.search import SearchViewModel
 from ssrq_editio.entrypoints.app.views.models.volume import VolumeViewModel
+from ssrq_editio.entrypoints.cli.config import VOLUME_SRC
 from ssrq_editio.models.documents import DocumentType
 from ssrq_editio.models.entities import EntityTypes
 from ssrq_editio.models.kantons import KantonName
+from ssrq_editio.services.documents import resolve_asset_path
 from ssrq_editio.services.utils import build_project_url, build_schema_url
 
 html = APIRouter(default_response_class=HTMLResponse, include_in_schema=False)
@@ -193,6 +195,20 @@ async def documents(
         range_start,
         range_end,
     ).to_html()
+
+
+@html.get("/{kanton}/{volume}/graphic/{path:path}", name="document_graphic")
+async def volume_graphic(
+    kanton: KantonName,
+    volume: str,
+    path: str,
+    connection: DBDependency,
+):
+    """Serves local graphic assets relative to the current volume context."""
+    try:
+        return FileResponse(await resolve_asset_path(kanton, volume, connection, VOLUME_SRC, path))
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 
 @html.get("/{kanton}/{volume}/{document}.html", name="document_view_with_html_extension")
