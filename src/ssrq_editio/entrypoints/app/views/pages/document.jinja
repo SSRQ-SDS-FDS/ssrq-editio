@@ -16,7 +16,11 @@
 
 <section
     class="w-full max-w-[1760px] mx-auto mt-4 mb-6 px-4"
-    x-data="{ togglePopupMarker() {$el.classList.toggle('hidden-popup-marker')}, toggleMetadata() {$el.classList.toggle('metadata-hidden')} }"
+    x-data
+    :class="{
+        'metadata-hidden': !$store.ssrqDocument.metadataOpen,
+        'hidden-popup-marker': !$store.ssrqDocument.popupMarkerVisible
+    }"
 >
     <h1 class="title-1">{{ doc.get_title_by_lang(lang) | safe }}</h1>
     <header class="flex text-ssrq-greyed-600 text-sm items-center gap-2">
@@ -35,15 +39,15 @@
         </span>
         {% endif %}
         <div class="ml-auto flex items-center gap-4">
-            <Toggle
-                :checked="True"
-                :callback="'toggleMetadata()'"
+            <Toggle class="metadata-toggle"
+                :checked="'$store.ssrqDocument.metadataOpen'"
+                :callback="'$store.ssrqDocument.toggleMetadata()'"
             >
                 {{ translator.translate(lang, 'metadata') }}
             </Toggle>
             <Toggle
-                :checked="True"
-                :callback="'togglePopupMarker()'"
+                :checked="'$store.ssrqDocument.popupMarkerVisible'"
+                :callback="'$store.ssrqDocument.togglePopupMarker()'"
             >
                 {{ translator.translate(lang, 'toggle-textmarker') }}
             </Toggle>
@@ -52,7 +56,7 @@
     <div
         class="md:flex w-full max-w-[1760px] mx-auto items-stretch justify-center gap-4 my-8 md:min-h-[70vh] md:max-h-[80vh]">
         <div class="md:w-1/2 flex mb-6 md:mb-0" id="transcript-col">
-            <Tabs>
+            <Tabs :tab_group="'transcriptCol'">
                 <TabHeader>
                     <TabControl :label="'transcript'">
                         {{ translator.translate(lang, doc.type.value) }}
@@ -122,7 +126,7 @@
             x-transition:leave-start="opacity-100 transform translate-x-0"
             x-transition:leave-end="opacity-0 transform -translate-x-full"
         >
-            <Tabs>
+            <Tabs :tab_group="'metadataCol'">
                 <TabHeader>
                     <TabControl :label="'description'">
                         {{ translator.translate(lang, 'description') }}

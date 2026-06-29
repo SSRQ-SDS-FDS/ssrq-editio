@@ -1,10 +1,13 @@
 const tabs = function () {
   return {
-    activeTab: null,
+    tabGroup: null,
 
-    init(activeTab = null) {
+    setup(activeTab = null, tabGroup = null) {
+      if (!tabGroup) { throw new Error('Missing tab group.') }
+      this.tabGroup = tabGroup;
+
       if (activeTab !== null) {
-        this.activeTab = activeTab;
+        this.$store.ssrqDocument.setActiveTab(this.tabGroup, activeTab);
         return;
       }
       // Set the first tab as default
@@ -12,12 +15,18 @@ const tabs = function () {
       const el = this.$el;
       const firstTab = el.querySelector('template');
       if (firstTab !== null) {
-        this.activeTab = firstTab.ariaLabel;
+        this.$store.ssrqDocument.setActiveTab(this.tabGroup, firstTab.ariaLabel);
       }
     },
 
-    switchTab(tabName) {
-      this.activeTab = tabName;
+    setActiveTab(tabName) {
+      if (!tabName) { throw new Error('Missing tab name.') }
+
+      this.$store.ssrqDocument.setActiveTab(this.tabGroup, tabName);
+    },
+
+    getActiveTab() {
+      return this.$store.ssrqDocument.getActiveTab(this.tabGroup);
     },
   };
 };

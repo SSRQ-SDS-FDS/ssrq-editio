@@ -102,13 +102,15 @@ div.tei-list > .tei-head {
 
 /* styling of textcritical elements */
 .tei-del.inline-content,
-.tei-add.inline-content{
+.tei-add.inline-content,
+.tei-subst.inline-content{
   @apply text-ssrq-greyed-600;
 }
 
 /* ToDo: Maybe this a workaround? Unclear, why we should do this... */
 .tei-del.inline-content summary > svg,
-.tei-add.inline-content summary > svg{
+.tei-add.inline-content summary > svg,
+.tei-subst.inline-content summary > svg{
   @apply text-ssrq-greyed-800;
 }
 
@@ -119,4 +121,9 @@ div.tei-list > .tei-head {
 :not(.popup-content) > .tei-sic,
 :not(.popup-content) > .tei-abbr {
   @apply text-ssrq-greyed-600;
+}
+
+/* Style tei:pb elements as clickable buttons */
+button.tei-pb{
+  @apply text-ssrq-primary;
 }
