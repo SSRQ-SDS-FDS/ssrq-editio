@@ -10,9 +10,11 @@ from ssrq_utils.lang.display import Lang
 from ssrq_utils.uca import uca_simple_sort
 
 from ssrq_editio.adapters.db.documents import get_document
+from ssrq_editio.adapters.db.volumes import list_volumes_with_editors
 from ssrq_editio.adapters.file import load
 from ssrq_editio.models.documents import Document, DocumentDisplay, DocumentFulltext
 from ssrq_editio.models.entities import EntityTypes, Places
+from ssrq_editio.models.kantons import KantonName
 from ssrq_editio.models.volumes import Volume
 from ssrq_editio.services.entities import get_entities
 from ssrq_editio.services.xslt.transformer import (
@@ -24,6 +26,8 @@ from ssrq_editio.services.xslt.transformer import (
     compile_xslt,
 )
 
+DOCUMENT_ASSET_FOLDER = "assets"
+DOCUMENT_ONLINE_FOLDER = "online"
 DOCUMENT_INFO_XSLT = "document_info.xslt"
 DOCUMENT_VIEW_XSLT = "document_view.xslt"
 IIIF_SERVER_URL = "https://facsimiles.ssrq-sds-fds.ch/iiif/2/"
@@ -309,6 +313,47 @@ async def find_and_load_xml_source(connection: Connection, doc_id: str):
         raise ValueError(f"No source found for document with ID {doc_id}.")
 
     return await load(doc_info.source.parent, doc_info.source.name)
+
+
+async def resolve_asset_path(
+    kanton: KantonName,
+    volume: str,
+    connection: Connection,
+    data_volume_src: Path,
+    graphic: str,
+) -> Path:
+    """Resolve a document-local asset path to a file inside the same volume.
+
+    Args:
+        kanton (KantonName): KantonName enum object.
+        volume (str): Volume key.
+        connection (Connection): SQLite connection.
+        data_volume_src (Path): The source of the current volume
+        suffix (str | None): Optional file suffix
+
+    Yields:
+        AsyncGenerator[bytes, None]: Bytes of the file.
+
+    Raises:
+        ValueError: If volume or kanton is not found.
+    """
+    volumes = await list_volumes_with_editors(connection, kanton.value)
+
+    if volumes is None:
+        raise ValueError(f"Could not find any volumes for {kanton.value}")
+
+    volume_info = next((v for v in volumes if v.machine_name == volume), None)
+
+    if volume_info is None:
+        raise ValueError(f"Could not find volume {volume} for {kanton.value}")
+
+    return (
+        data_volume_src
+        / f"{kanton.value}_{volume_info.machine_name}"
+        / DOCUMENT_ONLINE_FOLDER
+        / DOCUMENT_ASSET_FOLDER
+        / graphic
+    )
 
 
 async def resolve_orig_places_for_documents(
