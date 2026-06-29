@@ -7,6 +7,7 @@ import langSwitch from './components/langSwitch.js';
 import createSSRQViewer from './components/facs.js';
 import dateRange from './components/dateRangeSlider.js';
 import inputSync from './components/inputSync.js';
+import initPbSpacing from './components/pbSpacing.js';
 import tabs from './components/tabs.js';
 import topButtonScrollHandler from './components/toTop.js';
 import popup from './components/popup.js';
@@ -17,6 +18,7 @@ import ssrqDocumentStore from './stores/document.js';
 // Global setup of event listeners and Alpine-components
 const ssrqViewer = createSSRQViewer();
 ssrqViewer.init();
+initPbSpacing();
 
 Alpine.store('ssrqDocument', ssrqDocumentStore(ssrqViewer));
 Alpine.data('dateRangeSlider', dateRange);

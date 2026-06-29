@@ -127,3 +127,11 @@ div.tei-list > .tei-head {
 button.tei-pb{
   @apply text-ssrq-primary;
 }
+
+span.tei-pb.tei-pb-needs-space-left {
+  @apply ml-1;
+}
+
+span.tei-pb.tei-pb-needs-space-right {
+  @apply mr-1;
+}

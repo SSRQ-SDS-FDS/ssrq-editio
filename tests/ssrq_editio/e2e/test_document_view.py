@@ -40,7 +40,7 @@ def test_pb_button_opens_facs_tab(page: Page, e2e_base_url: str) -> None:
     facs_panel = page.locator('[aria-label="tab-digital_copy"]')
     expect(facs_panel).to_be_hidden()
 
-    pb_button = page.locator('button.tei-pb[data-facs="OGA_Gams_Nr_5_v"]')
+    pb_button = page.locator('button.tei-pb[data-facs="OGA_Gams_Nr_5_v"]').first
     expect(pb_button).to_be_visible()
 
     pb_button.click()
@@ -61,6 +61,26 @@ def test_pb_button_opens_facs_tab_and_metadata(page: Page, e2e_base_url: str) ->
     page.locator("div.metadata-toggle input").click()
     expect(description_tab).to_be_hidden()
 
-    page.locator('button.tei-pb[data-facs="OGA_Gams_Nr_5_v"]').click()
+    page.locator('button.tei-pb[data-facs="OGA_Gams_Nr_5_v"]').first.click()
     expect(facs_panel).to_be_visible()
     expect(page.locator("#viewerCurrentPage")).to_have_text("2|2")
+
+
+def test_pb_spacing_only_applies_when_whitespace_is_missing(page: Page, e2e_base_url: str) -> None:
+    page.goto(f"{e2e_base_url}/SG/III_4/63-1")
+
+    pb_wrappers = page.locator("span.tei-pb").filter(has=page.locator(":scope > button.tei-pb"))
+    expect(pb_wrappers).to_have_count(2)
+
+    assert pb_wrappers.nth(0).evaluate(
+        "element => element.classList.contains('tei-pb-needs-space-left')"
+    ) is False
+    assert pb_wrappers.nth(0).evaluate(
+        "element => element.classList.contains('tei-pb-needs-space-right')"
+    ) is False
+    assert pb_wrappers.nth(1).evaluate(
+        "element => element.classList.contains('tei-pb-needs-space-left')"
+    ) is True
+    assert pb_wrappers.nth(1).evaluate(
+        "element => element.classList.contains('tei-pb-needs-space-right')"
+    ) is True
