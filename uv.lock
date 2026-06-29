@@ -1326,7 +1326,7 @@ wheels = [
 
 [[package]]
 name = "ssrq-editio"
-version = "1.0.0a10"
+version = "1.0.0a11"
 source = { editable = "." }
 dependencies = [
     { name = "aiosqlite" },
