@@ -6,7 +6,7 @@
 
 <template
   aria-label="{{ label }}"
-  x-if="activeTab === '{{ label }}'"
+  x-if="getActiveTab() === '{{ label }}'"
   x-cloak
 >
     <div aria-label="tab-{{ label }}" {{ attrs.render() }}>

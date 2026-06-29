@@ -124,6 +124,16 @@ class E2EDocumentTransformer:
             descriptions=[],
             normalized_transcript="<p>Normalisierte E2E-Ansicht</p>",
             summary=None,
-            transcript="<p>Transkript E2E-Ansicht</p>",
+            transcript="""<p>Transkript E2E-Ansicht <button class="tei-pb" data-facs="OGA_Gams_Nr_5_v">[fol.&nbsp;1v]</button><span class="has-border popup" x-data="popup" x-init="init()">
+    <button type="button" popovertarget=""><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tei-entity-icon">
+  <circle cx="12" cy="12" r="10"></circle>
+  <line x1="12" y1="16" x2="12" y2="12"></line>
+  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+</svg></button><div class="has-marker popup-body" popover="">
+    <div class="popup-content">
+    Seitenumbruch
+</div>
+</div>
+</span></p>""",
             type=DocumentType.transcript,
         )

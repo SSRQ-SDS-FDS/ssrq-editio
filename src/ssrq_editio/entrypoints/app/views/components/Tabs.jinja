@@ -1,5 +1,6 @@
 {# def
-    active_tab: str | None = None
+    active_tab: str | None = None,
+    tab_group: str
 #}
 
 
@@ -7,9 +8,9 @@
   class="flex flex-col w-full flex-1"
   x-data="tabs()"
   {% if active_tab is not none %}
-    x-init="init('{{ active_tab }}')"
+    x-init="setup('{{ active_tab }}', '{{ tab_group }}')"
   {% else %}
-    x-init="init()"
+    x-init="setup(null, '{{ tab_group }}')"
   {% endif %}
 >
     {{ content }}

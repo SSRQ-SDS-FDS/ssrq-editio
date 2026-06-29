@@ -49,7 +49,6 @@ class DocumentViewModel(ViewModel):
         self.volume = volume
         self.document = document
         self.transformer = transformer
-        self.add_js("js/dist/facs/facs.js")
         self.add_css("css/dist/transcript.css")
         self.add_css("css/dist/doc_info.css")
 
