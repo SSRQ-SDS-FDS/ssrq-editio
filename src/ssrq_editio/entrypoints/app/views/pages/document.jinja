@@ -22,7 +22,11 @@
         'hidden-popup-marker': !$store.ssrqDocument.popupMarkerVisible
     }"
 >
-    <h1 class="title-1">{{ doc.get_title_by_lang(lang) | safe }}</h1>
+    <h1 class="title-1">{{ doc.get_title_by_lang(lang) | render_template_string({
+        'lang': lang,
+        'translator': translator,
+        'request': request,
+    }) }}</h1>
     <header class="flex text-ssrq-greyed-600 text-sm items-center gap-2">
         <span title="{{ translator.translate(lang, 'ssrq-idno') }}" class="flex items-center">
             <DocumentIcon class="w-3.5 h-3.5 mr-0.5 md:mr-1" />

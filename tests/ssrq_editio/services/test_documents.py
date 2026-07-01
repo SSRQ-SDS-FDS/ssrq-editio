@@ -274,7 +274,7 @@ async def document_transformer(transpiled_schema: Path) -> DocumentTransformer:
                 volume_id="foo",
                 orig_place=["loc016171"],
                 de_title=None,
-                fr_title="""Articles généraux (points de franchises) octroyées par Frédéric 1<sup class="tei-hi">er</sup>, roi de Prusse à tout l'État""",
+                fr_title="""Articles généraux (points de franchises) octroyées par Frédéric 1<sup class="tei-hi">er</sup>, roi de Prusse à tout l'État<Popup><PopupTrigger><InfoIcon class="tei-entity-icon"/></PopupTrigger><PopupBody class="has-marker"><PopupContent><span class="tei-note">Note Favarger 1982: Le roi de Prusse avait été investi de la souveraineté de Neuchâtel et Valangin par sentence du Tribunal des Trois-États rendue le 3 novembre 1707, et qui précisait de façon expresse que le roi conserverait les libertés « tant des bourgeois que des autres peuples de cet État », Tribolet, <span class="tei-hi italic">Histoire</span>, p. 18-20.</span></PopupContent></PopupBody></Popup>""",
                 entities=[
                     "key000658",
                     "key000273",
