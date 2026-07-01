@@ -54,4 +54,10 @@
       @apply top-auto -bottom-1.5 right-4 left-auto border-0 border-r border-b;
     }
   }
+
+  /* Hide popups in <tei:head> titles within the document list. */
+  article.document-info popup{
+      display: none;
+  }
+
 }
