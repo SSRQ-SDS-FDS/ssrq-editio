@@ -11,6 +11,11 @@
   @apply w-4 h-4 p-[1px] inline text-ssrq-primary;
 }
 
+/* style popup in document title */
+h1.title-1 .tei-entity-icon {
+  @apply w-6 h-6 p-[1px] inline text-ssrq-primary;
+}
+
 /* hide marker for popup */
 .hidden-popup-marker .popup>button:has(>svg) {
   @apply hidden;
