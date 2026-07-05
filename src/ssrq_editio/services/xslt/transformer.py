@@ -130,9 +130,11 @@ def apply_precompiled_xslt(
     Returns:
         str: The transformed XML.
     """
-    _apply_params(saxon_proc, xslt_exec, params)
+    # SaxonC executables retain dynamic parameters and must not be shared across threads.
+    xslt_exec_clone = xslt_exec.clone()
+    _apply_params(saxon_proc, xslt_exec_clone, params)
     return XSLTResult(
-        value=xslt_exec.transform_to_string(
+        value=xslt_exec_clone.transform_to_string(
             xdm_node=parsed_xml if parsed_xml else saxon_proc.parse_xml(xml_text=xml_src)
         ),
         src=xml_src,
