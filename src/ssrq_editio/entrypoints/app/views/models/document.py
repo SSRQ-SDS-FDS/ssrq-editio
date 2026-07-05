@@ -108,4 +108,4 @@ class DocumentViewModel(ViewModel):
                 f"Can't create HTML-View for {self.document_info.uuid}, no source file provided."
             )
         source = await load(self.document_info.source.parent, self.document_info.source.name)
-        return self.transformer(xml_src=source, output_lang=self.lang)
+        return await self.transformer.transform(xml_src=source, output_lang=self.lang)
