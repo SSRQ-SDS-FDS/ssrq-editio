@@ -14,7 +14,7 @@ dependencies = [
     "parsel>=1.9.1",
     "pydantic-settings>=2.13.1",
     "python-dotenv>=1.2.2",
-    "saxonche<=12.5.0",
+    "saxonche==13.0.0",
     "semver>=3.0.2",
     "sentry-sdk>=2.56.0",
     "ssrq-utils",
@@ -34,8 +34,8 @@ dev = [
     "pytest-playwright>=0.7.2",
     "ruff>=0.6.8",
     "rust-just>=1.36.0",
+    "saxonche-stubs>=1.0.0,<2",
     "sqlfluff>=4.2.0",
-    "saxonche-stubs>=0.7.2",
     "watchfiles>=0.24.0",
 ]
 

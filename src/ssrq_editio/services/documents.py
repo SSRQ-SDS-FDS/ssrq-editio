@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Self, Sequence, cast
 
 from aiosqlite import Connection
+from anyio.to_thread import run_sync
 from pydantic_core import from_json
 from saxonche import PySaxonProcessor, PyXdmMap, PyXdmNode, PyXdmValue, PyXsltExecutable
 from ssrq_utils.idno.model import IDNO
@@ -58,7 +59,7 @@ class DocumentTransformer:
     transpiled_schema: PyXdmNode
     xslt_src: str
 
-    def __call__(self, xml_src: str, output_lang: Lang):
+    def __call__(self, xml_src: str, output_lang: Lang) -> DocumentDisplay:
         """Applies the (compiled) XSLT to the given XML source.
 
         The XML source is expected to be a string. The XML file
@@ -83,6 +84,10 @@ class DocumentTransformer:
             raise DocumentTransformerError(
                 f"Could not transform the XML source: {xml_src}. Error: {e}"
             ) from e
+
+    async def transform(self, xml_src: str, output_lang: Lang) -> DocumentDisplay:
+        """Transform a document without blocking the event loop."""
+        return await run_sync(self, xml_src, output_lang)
 
     def __new__(cls, transpiled_schema: str, xslt_script: str = DOCUMENT_VIEW_XSLT) -> Self:
         """Creates a new instance of the DocumentTransformer class.

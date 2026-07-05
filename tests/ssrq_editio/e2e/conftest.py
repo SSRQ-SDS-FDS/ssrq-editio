@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pytest
 import uvicorn
+from ssrq_utils.lang.display import Lang
 
 from ssrq_editio.adapters.db.connection import db_session
 from ssrq_editio.entrypoints.app.main import app
@@ -103,7 +104,7 @@ def _wait_until_server_accepts_connections(port: int, timeout: float = 15.0) -> 
 
 
 class E2EDocumentTransformer:
-    def __call__(self, xml_src: str, output_lang):
+    async def transform(self, xml_src: str, output_lang: Lang) -> DocumentDisplay:
         if "SSRQ-FR-I_2_8-83.0-1" in xml_src:
             return DocumentDisplay(
                 comment=None,

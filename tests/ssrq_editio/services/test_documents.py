@@ -1,4 +1,6 @@
+import threading
 from pathlib import Path
+from typing import cast
 
 import pytest
 from saxonche import PyXdmMap, PyXdmNode, PyXsltExecutable
@@ -344,6 +346,28 @@ async def test_document_transformer_returns_expected_display_object(
     assert result.summary is None
     assert result.type == DocumentType.transcript
     assert isinstance(result.comment, DocumentComment)
+
+
+@pytest.mark.anyio
+async def test_document_transformer_runs_outside_event_loop(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    transformer = object.__new__(DocumentTransformer)
+    event_loop_thread = threading.get_ident()
+    worker_thread: int | None = None
+    expected = cast(DocumentDisplay, object())
+
+    def transform(self: DocumentTransformer, xml_src: str, output_lang: Lang) -> DocumentDisplay:
+        nonlocal worker_thread
+        worker_thread = threading.get_ident()
+        return expected
+
+    monkeypatch.setattr(DocumentTransformer, "__call__", transform)
+
+    result = await transformer.transform("<TEI/>", Lang.DE)
+
+    assert result is expected
+    assert worker_thread != event_loop_thread
 
 
 @pytest.mark.anyio
