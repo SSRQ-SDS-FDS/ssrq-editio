@@ -16,6 +16,10 @@ h1.title-1 .tei-entity-icon {
   @apply w-6 h-6 p-[1px] inline text-ssrq-primary;
 }
 
+h1.title-1 .popup-content {
+  @apply font-normal;
+}
+
 /* hide marker for popup */
 .hidden-popup-marker .popup>button:has(>svg) {
   @apply hidden;
