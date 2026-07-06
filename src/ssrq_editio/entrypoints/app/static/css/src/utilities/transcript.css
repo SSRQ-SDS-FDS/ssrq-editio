@@ -140,3 +140,14 @@ span.tei-pb.tei-pb-needs-space-left {
 span.tei-pb.tei-pb-needs-space-right {
   @apply mr-1;
 }
+
+/* Style tei:quote  and tei:foreign */
+.tei-quote.fully_inserted{
+    @apply block text-sm my-4 ml-8;
+}
+.tei-foreign.inline-content{
+  @apply text-ssrq-greyed-600;
+}
+.tei-foreign.lang-fr > .tei-foreign.inline-content{
+  @apply italic;
+}
