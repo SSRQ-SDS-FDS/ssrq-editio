@@ -36,7 +36,7 @@ dev = [
     "rust-just>=1.36.0",
     "saxonche-stubs>=1.0.0,<2",
     "sqlfluff>=4.2.0",
-    "watchfiles>=0.24.0",
+    "watchfiles>=1.2.0",
 ]
 
 [tool.uv.sources]
