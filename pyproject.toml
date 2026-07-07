@@ -35,7 +35,7 @@ dev = [
     "ruff>=0.6.8",
     "rust-just>=1.36.0",
     "saxonche-stubs>=1.0.0,<2",
-    "sqlfluff>=4.2.0",
+    "sqlfluff>=4.2.2",
     "watchfiles>=1.2.0",
 ]
 
