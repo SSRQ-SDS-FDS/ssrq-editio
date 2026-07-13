@@ -112,7 +112,8 @@ div.tei-list > .tei-head {
 /* styling of textcritical elements */
 .tei-del.inline-content,
 .tei-add.inline-content,
-.tei-subst.inline-content{
+.tei-subst.inline-content,
+.tei-gap.inline-content,{
   @apply text-ssrq-greyed-600;
 }
 
