@@ -1,3 +1,6 @@
+@config "../../../../../../../tailwind.config.js";
+@import "tailwindcss";
+
 /* Import components */
 @import "./components/accordion.css";
 @import "./components/cover.css";
@@ -20,6 +23,3 @@
 @import "./utilities/layout.css";
 @import "./utilities/text.css";
 @import "./utilities/cloak.css";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;

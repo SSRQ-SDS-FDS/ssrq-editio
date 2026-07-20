@@ -37,7 +37,7 @@
                 type="text"
                 autocomplete="off"
                 name="query"
-                class="px-4 py-2 min-w-[16rem] w-full text-sm text-ssrq-greyed-800 bg-white border rounded-md focus:border-ssrq-primary focus:border-[0.025rem] focus:outline-none focus:ring focus:ring-ssrq-primary focus:ring-opacity-40"
+                class="px-4 py-2 min-w-[16rem] w-full text-sm text-ssrq-greyed-800 bg-white border rounded-md focus:border-ssrq-primary focus:border-[0.025rem] focus:outline-hidden focus:ring-3 focus:ring-ssrq-primary/40"
                 placeholder="{{ translator.translate(lang, 'idno-or-title') }}"
                 {% if query %}
                     value="{{ query }}"
@@ -69,7 +69,7 @@
                 <select
                 name="doc_type"
                 id="docTypeSelect"
-                class="block py-1.5 px-0 w-full text-sm text-ssrq-greyed-800 bg-white border-0 border-b-2 border-ssrq-greyed-300 appearance-none dark:text-ssrq-greyed-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-ssrq-primary peer"
+                class="block py-1.5 px-0 w-full text-sm text-ssrq-greyed-800 bg-white border-0 border-b-2 border-ssrq-greyed-300 appearance-none dark:text-ssrq-greyed-400 dark:border-gray-700 focus:outline-hidden focus:ring-0 focus:border-ssrq-primary peer"
                 >
                     <option
                         {% if document_type is none %} selected {% endif %}
@@ -98,7 +98,7 @@
                 name="facs"
                 value="true"
                 id="facsFilter"
-                class="rounded border-gray-300 text-ssrq-primary shadow-sm focus:border-ssrq-primary focus:ring focus:ring-offset-0 focus:ring-ssrq-primary focus:ring-opacity-50"
+                class="rounded border-gray-300 text-ssrq-primary shadow-sm focus:border-ssrq-primary focus:ring-3 focus:ring-offset-0 focus:ring-ssrq-primary/50"
                 {% if facs %}
                     checked=""
                 {% endif %}
