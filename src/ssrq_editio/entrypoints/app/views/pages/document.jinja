@@ -136,7 +136,7 @@
                         {{ translator.translate(lang, 'description') }}
                     </TabControl>
 
-                    {% if doc.type.value == 'transcript' and doc.facs is not none %}
+                    {% if doc.type.value in ['transcript', 'summary'] and doc.facs is not none %}
                         <TabControl :label="'digital_copy'">
                             {{ translator.translate(lang, 'digital_copy') }}
                         </TabControl>
