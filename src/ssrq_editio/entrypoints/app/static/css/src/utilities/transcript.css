@@ -140,7 +140,7 @@ div.tei-list > .tei-head {
 
 /* Style tei:pb elements as clickable buttons */
 button.tei-pb{
-  @apply text-ssrq-primary;
+  @apply text-ssrq-primary cursor-pointer;
 }
 
 span.tei-pb.tei-pb-needs-space-left {
