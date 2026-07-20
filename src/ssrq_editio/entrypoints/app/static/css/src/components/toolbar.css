@@ -1,6 +1,6 @@
 @layer components {
   .toolbar {
-    @apply w-full bg-ssrq-primary p-4 text-white mb-4 sticky top-16 bg-opacity-95 flex justify-center;
+    @apply w-full bg-ssrq-primary/95 p-4 text-white mb-4 sticky top-16 flex justify-center;
   }
   .toolbar .icon.link-button .description {
     @apply ml-2 hidden md:inline;

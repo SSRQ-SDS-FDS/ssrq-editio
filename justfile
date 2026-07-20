@@ -17,8 +17,9 @@ css args="":
     for pair in {{css_files}}; do
         input_file=$(echo "$pair" | cut -d':' -f1)
         output_file=$(echo "$pair" | cut -d':' -f2)
-        npx tailwindcss -c tailwind.config.js -i "{{css_dir}}/$input_file" -o "{{css_dir}}/dist/$output_file" -m {{args}}
+        npx @tailwindcss/cli -i "{{css_dir}}/$input_file" -o "{{css_dir}}/dist/$output_file" -m {{args}}
     done
+    cp "{{css_dir}}/src/components/popup_anchors.css" "{{css_dir}}/dist/popup_anchors.css"
 
 # Build CSS / JS and start the development server – files in src will be watched
 dev:
