@@ -1,6 +1,6 @@
 @layer components {
   .popup.has-border > button {
-    @apply pb-[0.5px] border-b-black border-dotted border-b-[1px] w-fit;
+    @apply pb-[0.5px] border-b-black border-dotted border-b-[1px] w-fit cursor-pointer;
   }
     
   /* reset native popover box and position it relative to its anchor */
