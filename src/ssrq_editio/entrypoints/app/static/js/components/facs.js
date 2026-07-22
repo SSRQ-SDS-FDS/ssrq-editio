@@ -6,15 +6,17 @@ function createSSRQViewer() {
   let currentPageIndex = 0;
   let nextFacsOnInit = null;
 
-  function init(){
+  function init() {
     document.addEventListener('ssrq:facsviewer', (e) => {
       tileSources = e.detail.tileSources;
-      if(viewer){ viewer.destroy() }
+      if (viewer) {
+        viewer.destroy();
+      }
       viewer = createFacsViewer();
       setupPageCounter('#viewerCurrentPage', e.detail.tileSources.length);
 
       // if facs is changed while viewer is not initalized
-      if(nextFacsOnInit){
+      if (nextFacsOnInit) {
         goToFacs(nextFacsOnInit);
         nextFacsOnInit = null;
       }
@@ -32,8 +34,6 @@ function createSSRQViewer() {
       sequenceMode: true,
       preserveViewport: true,
       visibilityRatio: 1,
-      minZoomLevel: 1,
-      defaultZoomLevel: 1,
       autoHideControls: false,
       showRotationControl: true,
       rotationIncrement: 90,
@@ -47,10 +47,18 @@ function createSSRQViewer() {
       previousButton: 'viewerPrev',
       nextButton: 'viewerNext',
     };
-    return OpenSeadragon(viewerOptions);
+    const facsViewer = OpenSeadragon(viewerOptions);
+    facsViewer.addHandler('open', () => {
+      // Keep the entire IIIF image visible at the lowest zoom level, regardless of its
+      // dimensions relative to the viewer container.
+      const fitZoom = facsViewer.viewport.getHomeZoom();
+      facsViewer.viewport.setMinZoomLevel = fitZoom;
+      facsViewer.viewport.goHome(true);
+    });
+    return facsViewer;
   }
 
-  function setupPageCounter (containerId, totalPages) {
+  function setupPageCounter(containerId, totalPages) {
     const container = document.querySelector(containerId);
 
     if (!container) {
@@ -60,26 +68,30 @@ function createSSRQViewer() {
 
     currentPageIndex = 0;
     container.textContent = `1|${totalPages}`;
-    viewer.addHandler('page', data => {
+    viewer.addHandler('page', (data) => {
       currentPageIndex = data.page;
       container.textContent = `${currentPageIndex + 1}|${totalPages}`;
     });
   }
-  
-  function goToFacs(facsName){
-      if(!viewer || tileSources.length === 0) {
-        nextFacsOnInit = facsName;
-        return;
-      }
 
-      const newPageIndex = indexOfImageByName(facsName);
-      if(newPageIndex > -1 && newPageIndex !== currentPageIndex){
-        viewer.goToPage(newPageIndex);
-      }
+  function goToFacs(facsName) {
+    if (!viewer || tileSources.length === 0) {
+      nextFacsOnInit = facsName;
+      return;
+    }
+
+    const newPageIndex = indexOfImageByName(facsName);
+    if (newPageIndex > -1 && newPageIndex !== currentPageIndex) {
+      viewer.goToPage(newPageIndex);
+    }
   }
   function indexOfImageByName(imgName) {
-    const imgIndex = tileSources.findIndex(item=>item.includes(imgName));
-    if(imgIndex === -1){ console.error(`Couldn't find image with name '${imgName}' in dataset ${tileSources}`)}
+    const imgIndex = tileSources.findIndex((item) => item.includes(imgName));
+    if (imgIndex === -1) {
+      console.error(
+        `Couldn't find image with name '${imgName}' in dataset ${tileSources}`,
+      );
+    }
     return imgIndex;
   }
   return {
