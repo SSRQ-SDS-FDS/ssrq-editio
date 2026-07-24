@@ -48,7 +48,7 @@ e2e args="": build
 
 # Install browser binaries required by Playwright
 e2e-install:
-  uv run playwright install chromium
+  uv run playwright install --with-deps chromium
 
 # Run optional E2E checks against initialized data submodules
 e2e-live args="": build
