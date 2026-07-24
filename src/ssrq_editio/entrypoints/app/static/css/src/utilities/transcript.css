@@ -117,15 +117,17 @@ div.tei-list > .tei-head {
 .tei-add.inline-content,
 .tei-subst.inline-content,
 .tei-gap.inline-content,
-.tei-unclear.inline-content{
+.tei-unclear.inline-content,
+.tei-addSpan.inline-content{
   @apply text-ssrq-greyed-600;
 }
 
 /* ToDo: Maybe this a workaround? Unclear, why we should do this... */
-.tei-del.inline-content summary > svg,
-.tei-add.inline-content summary > svg,
-.tei-subst.inline-content summary > svg,
-.tei-unclear.inline-content summary > svg{
+.tei-del.inline-content button > svg,
+.tei-add.inline-content button > svg,
+.tei-subst.inline-content button > svg,
+.tei-unclear.inline-content button > svg,
+.tei-addSpan.inline-content button > svg{
   @apply text-ssrq-greyed-800;
 }
 
@@ -160,4 +162,9 @@ span.tei-pb.tei-pb-needs-space-right {
 }
 .tei-foreign.lang-fr > .tei-foreign.inline-content{
   @apply italic;
+}
+
+/* style span Elements like addSpan, delSpan, damageSpan */
+.addSpanStart, .addSpanEnd{
+    display: none;
 }
