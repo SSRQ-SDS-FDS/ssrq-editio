@@ -54,6 +54,10 @@ e2e-install:
 e2e-live args="": build
   uv run pytest -o addopts="" tests/ssrq_editio/e2e -m "e2e_live_data" {{args}}
 
+# Run browser-based JavaScript tests
+js args="":
+    uv run pytest -o addopts="" -m "js" {{args}}
+
 # Shows all recipes using just -l
 help:
 	just -l

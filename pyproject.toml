@@ -48,10 +48,12 @@ exclude = ["^src/ssrq_editio/services/xslt/scripts/convert/*$"]
 
 [tool.pytest.ini_options]
 testpaths = "tests"
-addopts = "-m 'not e2e'"
+addopts = "-m 'not e2e and not js'"
 markers = [
     "e2e: browser-driven end-to-end tests",
     "e2e_live_data: optional end-to-end checks against initialized data submodules",
+    "browser: browser-based DOM integration tests using Playwright",
+    "js: browser-based JavaScript tests",
 ]
 
 [tool.ruff]
