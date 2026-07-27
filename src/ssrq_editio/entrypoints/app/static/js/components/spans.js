@@ -151,7 +151,7 @@ function processSpanMarkers() {
 
     const datasetKey = `${spanType.toLowerCase()}Id`;
     const dataAttribute = `data-${spanType.toLowerCase()}-id`;
-    const classNames = ["inline_content", spanType];
+    const classNames = ["inline-content", `tei-${spanType}`];
 
     for (const startMarker of startMarkers) {
       const markerId = startMarker.dataset[datasetKey];

@@ -18,7 +18,7 @@ pytestmark = pytest.mark.js
             """<div>
                 <p>foo</p>
                 <span class="tei-addSpan addSpanStart" data-addspan-id="add1">​</span>
-                <p class="inline_content addSpan">bar</p>
+                <p class="inline-content tei-addSpan">bar</p>
                 <span class="tei-anchor addSpanEnd" data-addspan-id="add1">​</span>
                 <p>baz</p>
             </div>""",
@@ -34,9 +34,9 @@ pytestmark = pytest.mark.js
             </div>""",
             """<div>
                 <p>foo
-                <span class="tei-addSpan addSpanStart" data-addspan-id="add1">​</span><span class="inline_content addSpan">
+                <span class="tei-addSpan addSpanStart" data-addspan-id="add1">​</span><span class="inline-content tei-addSpan">
                 bar</span></p>
-                <p class="inline_content addSpan">baz</p>
+                <p class="inline-content tei-addSpan">baz</p>
                 <span class="tei-anchor addSpanEnd" data-addspan-id="add1">​</span>
                 <p>qux</p>
             </div>""",
@@ -53,8 +53,8 @@ pytestmark = pytest.mark.js
             """<div>
                 <p>foo</p>
                 <span class="tei-addSpan addSpanStart" data-addspan-id="add1">​</span>
-                <p class="inline_content addSpan">bar</p>
-                <p><span class="inline_content addSpan">baz
+                <p class="inline-content tei-addSpan">bar</p>
+                <p><span class="inline-content tei-addSpan">baz
                 </span><span class="tei-anchor addSpanEnd" data-addspan-id="add1">​</span>
                 qux</p>
             </div>""",
@@ -72,9 +72,9 @@ pytestmark = pytest.mark.js
             """<div>
                 <p>foo</p>
                 <span class="tei-addSpan addSpanStart" data-addspan-id="add1">​</span>
-                <p class="inline_content addSpan">bar</p><span class="inline_content addSpan">
+                <p class="inline-content tei-addSpan">bar</p><span class="inline-content tei-addSpan">
                 baz
-                </span><p class="inline_content addSpan">qux</p>
+                </span><p class="inline-content tei-addSpan">qux</p>
                 <span class="tei-anchor addSpanEnd" data-addspan-id="add1">​</span>
                 <p>quux</p>
             </div>""",
@@ -102,7 +102,7 @@ def test_process_span_markers_multiple_calls(page: Page, assert_no_errors) -> No
     expected = """<div>
                 <p>foo</p>
                 <span class="tei-addSpan addSpanStart" data-addspan-id="add1">​</span>
-                <p class="inline_content addSpan">bar</p>
+                <p class="inline-content tei-addSpan">bar</p>
                 <span class="tei-anchor addSpanEnd" data-addspan-id="add1">​</span>
                 <p>baz</p>
             </div>"""
@@ -156,7 +156,7 @@ def test_process_span_markers_missing_end_marker(page: Page, html: str) -> None:
                 <p>baz</p>
             </div>""",
             [
-                "//div[count(*[@class='inline_content addSpan']) = 0]",
+                "//div[count(*[@class='inline-content tei-addSpan']) = 0]",
             ],
         ),
         (
@@ -168,7 +168,7 @@ def test_process_span_markers_missing_end_marker(page: Page, html: str) -> None:
                 <p>baz</p>
             </div>""",
             [
-                "//div[count(*[@class='inline_content addSpan']) = 0]",
+                "//div[count(*[@class='inline-content tei-addSpan']) = 0]",
             ],
         ),
         (
@@ -186,12 +186,12 @@ def test_process_span_markers_missing_end_marker(page: Page, html: str) -> None:
                 <span class="tei-anchor addSpanEnd" data-addspan-id="add3">​</span>
             </div>""",
             [
-                "//div[count(*[@class='inline_content addSpan']) = 3]",
-                "//div/p[1][@class='inline_content addSpan'][text() = 'foo']",
-                "//div/p[2][not(@class='inline_content addSpan')][text() = 'qux']",
-                "//div/p[3][@class='inline_content addSpan'][text() = 'bar']",
-                "//div/p[4][not(@class='inline_content addSpan')][text() = 'quux']",
-                "//div/p[5][@class='inline_content addSpan'][text() = 'baz']",
+                "//div[count(*[@class='inline-content tei-addSpan']) = 3]",
+                "//div/p[1][@class='inline-content tei-addSpan'][text() = 'foo']",
+                "//div/p[2][not(@class='inline-content tei-addSpan')][text() = 'qux']",
+                "//div/p[3][@class='inline-content tei-addSpan'][text() = 'bar']",
+                "//div/p[4][not(@class='inline-content tei-addSpan')][text() = 'quux']",
+                "//div/p[5][@class='inline-content tei-addSpan'][text() = 'baz']",
             ],
         ),
         (
@@ -202,9 +202,9 @@ def test_process_span_markers_missing_end_marker(page: Page, html: str) -> None:
                 <span class="tei-anchor addSpanEnd" data-addspan-id="add1">​</span>
             </div>""",
             [
-                "//div[count(*[@class='inline_content addSpan']) = 2]",
-                "//div/span[@class='inline_content addSpan']/span[not(@class)]",
-                "//div/span[@class='inline_content addSpan'][text() = 'baz']",
+                "//div[count(*[@class='inline-content tei-addSpan']) = 2]",
+                "//div/span[@class='inline-content tei-addSpan']/span[not(@class)]",
+                "//div/span[@class='inline-content tei-addSpan'][text() = 'baz']",
             ],
         ),
         (
@@ -215,9 +215,9 @@ def test_process_span_markers_missing_end_marker(page: Page, html: str) -> None:
                 <span class="tei-anchor addSpanEnd" data-addspan-id="add1">​</span>
             </div>""",
             [
-                "//div[count(*[@class='inline_content addSpan']) = 2]",
-                "//div/span[@class='inline_content addSpan']/span[not(@class)]",
-                "//div/span[@class='inline_content addSpan'][text() = 'baz']",
+                "//div[count(*[@class='inline-content tei-addSpan']) = 2]",
+                "//div/span[@class='inline-content tei-addSpan']/span[not(@class)]",
+                "//div/span[@class='inline-content tei-addSpan'][text() = 'baz']",
             ],
         ),
         (
@@ -229,8 +229,8 @@ def test_process_span_markers_missing_end_marker(page: Page, html: str) -> None:
                 <span class="tei-anchor addSpanEnd" data-addspan-id="add1">​</span>
             </div>""",
             [
-                "//div[count(*[@class='inline_content addSpan']) = 1]",
-                "//div/p[@class='inline_content addSpan']/span[not(@class)]/span[not(@class)][text() = 'baz']",
+                "//div[count(*[@class='inline-content tei-addSpan']) = 1]",
+                "//div/p[@class='inline-content tei-addSpan']/span[not(@class)]/span[not(@class)][text() = 'baz']",
             ],
         ),
     ],

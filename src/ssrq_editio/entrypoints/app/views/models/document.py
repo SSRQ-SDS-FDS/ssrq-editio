@@ -49,6 +49,7 @@ class DocumentViewModel(ViewModel):
         self.volume = volume
         self.document = document
         self.transformer = transformer
+        self.add_js("js/dist/spans/spans.js")
         self.add_css("css/dist/transcript.css")
         self.add_css("css/dist/popup.css")
         self.add_css("css/dist/popup_anchors.css")

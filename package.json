@@ -43,8 +43,8 @@
       "source": "src/ssrq_editio/entrypoints/app/static/js/app.js",
       "outputFormat": "global"
     },
-    "facs": {
-      "source": "src/ssrq_editio/entrypoints/app/static/js/components/facs.js",
+    "spans": {
+      "source": "src/ssrq_editio/entrypoints/app/static/js/components/spans.js",
       "outputFormat": "global"
     }
   },
