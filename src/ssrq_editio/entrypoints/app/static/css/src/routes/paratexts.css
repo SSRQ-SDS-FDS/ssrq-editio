@@ -14,7 +14,7 @@
   }
 
   .paratexts #document-wrapper h4.archivelocation {
-    @apply font-normal !important;
+    @apply font-normal!;
   }
 
   .paratexts .biblList ul,
@@ -24,7 +24,7 @@
   }
 
   .paratexts table tbody tr td {
-    @apply border-none !important;
+    @apply border-none!;
   }
 
   .paratexts h1[class^="tei-head"] {

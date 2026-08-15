@@ -37,7 +37,7 @@
   }
 
   .kanton-card_content h3 {
-    @apply title-3 font-medium text-base;
+    @apply text-xl font-normal;
   }
 
   .volume .volume-title {

@@ -1,3 +1,6 @@
+@config "../../../../../../../tailwind.config.js";
+@import "tailwindcss";
+
 /* Import components */
 @import "./components/accordion.css";
 @import "./components/cover.css";
@@ -7,7 +10,6 @@
 @import "./components/footer.css";
 @import "./components/nav.css";
 @import "./components/pagination.css";
-@import "./components/popup.css";
 @import "./components/range.css";
 @import "./components/toolbar.css";
 @import "./components/toggle.css";
@@ -20,6 +22,3 @@
 @import "./utilities/layout.css";
 @import "./utilities/text.css";
 @import "./utilities/cloak.css";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;

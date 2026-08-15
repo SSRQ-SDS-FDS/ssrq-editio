@@ -3,7 +3,7 @@
 #}
 <button
   type="button"
-  class="select-none cursor-pointer text-ssrq-greyed-600 rounded-t-lg px-4 py-1 focus:outline-none"
+  class="select-none cursor-pointer text-ssrq-greyed-600 rounded-t-lg px-4 py-1 focus:outline-hidden"
   x-on:click="setActiveTab('{{ label }}')"
   x-bind:class="getActiveTab() === '{{ label }}' ? 'bg-ssrq-primary text-white' : 'hover:text-ssrq-primary'"
 >

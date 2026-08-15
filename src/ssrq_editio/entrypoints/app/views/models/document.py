@@ -50,6 +50,8 @@ class DocumentViewModel(ViewModel):
         self.document = document
         self.transformer = transformer
         self.add_css("css/dist/transcript.css")
+        self.add_css("css/dist/popup.css")
+        self.add_css("css/dist/popup_anchors.css")
         self.add_css("css/dist/doc_info.css")
 
     async def create_context(self) -> ViewContext:

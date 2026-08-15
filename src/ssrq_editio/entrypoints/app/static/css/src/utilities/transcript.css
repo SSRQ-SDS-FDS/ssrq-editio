@@ -1,10 +1,13 @@
 /* General style */
+@config "../../../../../../../../tailwind.config.js";
+@import "tailwindcss";
+
 .tei-entity-popup {
   @apply min-w-40 sm:max-w-40 md:max-w-80;
 }
 
 .popup > button:has(.tei-entity-icon) {
-    @apply border-none !important;
+    @apply border-none!;
 }
 
 .tei-entity-icon {
@@ -115,7 +118,8 @@ div.tei-list > .tei-head {
 .tei-subst.inline-content,
 .tei-gap.inline-content,
 .tei-unclear.inline-content,
-.tei-supplied.inline-content
+.tei-supplied.inline-content,
+.tei-app.inline-content
 {
   @apply text-ssrq-greyed-600;
 }
@@ -125,7 +129,9 @@ div.tei-list > .tei-head {
 .tei-add.inline-content summary > svg,
 .tei-subst.inline-content summary > svg,
 .tei-unclear.inline-content summary > svg,
-.tei-supplied.inline-content summary > svg{
+.tei-supplied.inline-content summary > svg,
+.tei-app.inline-content summary > svg{
+{
   @apply text-ssrq-greyed-800;
 }
 
@@ -140,7 +146,7 @@ div.tei-list > .tei-head {
 
 /* Style tei:pb elements as clickable buttons */
 button.tei-pb{
-  @apply text-ssrq-primary;
+  @apply text-ssrq-primary cursor-pointer;
 }
 
 span.tei-pb.tei-pb-needs-space-left {
