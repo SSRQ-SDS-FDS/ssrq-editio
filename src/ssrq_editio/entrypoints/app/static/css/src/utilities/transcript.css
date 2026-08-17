@@ -130,7 +130,7 @@ div.tei-list > .tei-head {
 .tei-subst.inline-content summary > svg,
 .tei-unclear.inline-content summary > svg,
 .tei-supplied.inline-content summary > svg,
-.tei-app.inline-content summary > svg{
+.tei-app.inline-content summary > svg
 {
   @apply text-ssrq-greyed-800;
 }
