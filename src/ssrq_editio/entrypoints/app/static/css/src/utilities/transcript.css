@@ -120,7 +120,8 @@ div.tei-list > .tei-head {
 .tei-unclear.inline-content,
 .tei-app.inline-content,
 .tei-space.inline-content,
-.tei-supplied.inline-content
+.tei-supplied.inline-content,
+.tei-damage.inline-content
 {
   @apply text-ssrq-greyed-600;
 }
@@ -131,7 +132,8 @@ div.tei-list > .tei-head {
 .tei-subst.inline-content button > svg,
 .tei-unclear.inline-content button > svg,
 .tei-app.inline-content button > svg,
-.tei-supplied.inline-content button > svg
+.tei-supplied.inline-content button > svg,
+.tei-damage.inline-content button > svg
 {
   @apply text-ssrq-greyed-800;
 }
