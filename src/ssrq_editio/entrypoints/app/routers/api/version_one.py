@@ -19,11 +19,13 @@ from ssrq_editio.models.entities import (
     Place,
 )
 from ssrq_editio.models.kantons import KantonName
+from ssrq_editio.models.search import DocumentSearchResponse
 from ssrq_editio.models.volumes import Volumes
 from ssrq_editio.services.documents import find_and_load_xml_source
 from ssrq_editio.services.entities import ENTITY_ID_PATTERN, get_entities, validate_entity_id
 from ssrq_editio.services.kantons import list_kanton_abbreviations
 from ssrq_editio.services.occurrences import resolve_idnos_to_documents
+from ssrq_editio.services.search import search_documents
 from ssrq_editio.services.volumes import stream_volume_pdf
 
 version_one = APIRouter(prefix="/v1", tags=["v1"])
@@ -39,6 +41,15 @@ def info() -> dict[str, str]:
 async def kantons(connection: DBDependency) -> list[str]:
     """Returns a list of all kantons (cantons) in abbreviated form."""
     return await list_kanton_abbreviations(connection)
+
+
+@version_one.get("/search", name="document_search")
+async def document_search(
+    connection: DBDependency,
+    query: str | None = None,
+) -> DocumentSearchResponse:
+    """Search documents using the full-text search used by the web UI."""
+    return await search_documents(connection, query)
 
 
 @version_one.get("/kantons/{kanton}")

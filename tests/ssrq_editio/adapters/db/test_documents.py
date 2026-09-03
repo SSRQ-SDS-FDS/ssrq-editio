@@ -128,9 +128,7 @@ async def test_get_documents_returns_keywords(db_volume_data, documents):
     assert any(document.keywords is None for document in result)
     assert any(document.keywords is not None for document in result)
     assert all(
-        document.keywords == ["key000001"]
-        for document in result
-        if document.keywords is not None
+        document.keywords == ["key000001"] for document in result if document.keywords is not None
     )
 
 
