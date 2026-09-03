@@ -108,6 +108,10 @@ class Document(DocumentDate, DocumentIdentification, DocumentRelations, Document
         list[str] | None,
         BeforeValidator(parse_as_list_or_return),
     ] = None
+    keywords: Annotated[
+        list[str] | None,
+        BeforeValidator(parse_as_list_or_return),
+    ] = None
     source: Path | None = None
     type: Annotated[
         DocumentType, BeforeValidator : lambda x: DocumentType(x) if isinstance(x, str) else x
