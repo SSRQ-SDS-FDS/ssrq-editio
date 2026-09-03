@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS documents
     printed_idno TEXT NULL,
     volume_id TEXT NOT NULL,
     orig_place TEXT NULL,
+    keywords TEXT NULL,
     de_title TEXT NULL,
     fr_title TEXT NULL,
     entities TEXT NULL,
