@@ -11,6 +11,7 @@ from markdown import markdown  # type: ignore
 from ssrq_utils.i18n.text import normalize_punctuation_marks
 
 from ssrq_editio.entrypoints.app.config import ASSET_DIR, COMPONENT_DIR, ICON_DIR, TEMPLATE_DIR
+from ssrq_editio.entrypoints.app.routers.api.version_one import mcp_app
 from ssrq_editio.entrypoints.app.settings import get_settings
 from ssrq_editio.entrypoints.app.shared.version import get_display_version
 from ssrq_editio.entrypoints.app.views.utils import (
@@ -43,6 +44,17 @@ def app_factory(
     app = FastAPI(
         docs_url="/api",
         redoc_url=None,
+        openapi_tags=[
+            {
+                "name": "MCP",
+                "description": "Model Context Protocol interface for exploring the edition – versioned in the same way as the main API.",
+            },
+            {
+                "name": "v1",
+                "description": "The first version of the public API.",
+            },
+        ],
+        lifespan=mcp_app.lifespan,
         version=importlib.metadata.version("ssrq_editio"),
         summary="API of the digital scholarly edition published by the Law Sources Foundation of the Swiss Lawyers Society",
         title="SSRQ · SDS · FDS / Editio API",
