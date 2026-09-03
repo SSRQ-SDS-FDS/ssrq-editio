@@ -57,4 +57,3 @@ async def test_mcp_endpoint_supports_initialization_and_tool_discovery(
     assert response.status_code == 200
     message = json.loads(response.text.split("data: ", maxsplit=1)[1])
     assert message == {"jsonrpc": "2.0", "id": 2, "result": {"tools": []}}
-¡

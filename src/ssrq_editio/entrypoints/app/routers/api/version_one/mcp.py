@@ -2,11 +2,14 @@
 
 from fastmcp import FastMCP
 
+MCP_CACHE_TTL_SECONDS = 180 * 60
+
 mcp: FastMCP = FastMCP(
     name="SSRQ · SDS · FDS / Editio",
     instructions=(
         "Use this server to explore the digital scholarly edition of the Swiss Law Sources."
     ),
+    cache_ttl=MCP_CACHE_TTL_SECONDS,
 )
 
 # The ASGI application is created once and mounted into the existing FastAPI application.
