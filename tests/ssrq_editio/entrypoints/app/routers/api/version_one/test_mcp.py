@@ -5,6 +5,7 @@ import pytest
 from httpx import ASGITransport, AsyncClient
 
 from ssrq_editio.entrypoints.app.main import app
+from ssrq_editio.entrypoints.app.routers.api.version_one import mcp as mcp_server
 
 
 @pytest.fixture
@@ -18,8 +19,15 @@ async def mcp_client() -> AsyncGenerator[AsyncClient, None]:
 @pytest.mark.anyio
 async def test_mcp_endpoint_supports_initialization_and_tool_discovery(
     mcp_client: AsyncClient,
+    app_db_setup,
+    monkeypatch: pytest.MonkeyPatch,
 ):
     """The mounted MCP transport accepts the handshake and exposes the tool registry."""
+    async def test_db_session():
+        yield app_db_setup
+
+    monkeypatch.setattr(mcp_server, "db_connection", test_db_session)
+
     initialize_request = {
         "jsonrpc": "2.0",
         "id": 1,
@@ -56,4 +64,30 @@ async def test_mcp_endpoint_supports_initialization_and_tool_discovery(
 
     assert response.status_code == 200
     message = json.loads(response.text.split("data: ", maxsplit=1)[1])
-    assert message == {"jsonrpc": "2.0", "id": 2, "result": {"tools": []}}
+    assert [tool["name"] for tool in message["result"]["tools"]] == ["search_documents"]
+
+    response = await mcp_client.post(
+        "/api/v1/mcp/",
+        json={
+            "jsonrpc": "2.0",
+            "id": 3,
+            "method": "tools/call",
+            "params": {"name": "search_documents", "arguments": {"query": "foo"}},
+        },
+        headers=headers,
+    )
+
+    assert response.status_code == 200
+    message = json.loads(response.text.split("data: ", maxsplit=1)[1])
+    assert message["result"]["structuredContent"]["total"] == 1
+
+
+@pytest.mark.anyio
+async def test_mcp_endpoint_is_documented_in_openapi(app_client: AsyncClient):
+    """The mounted MCP transport is visible in the application's API documentation."""
+    response = await app_client.get("/openapi.json")
+
+    assert response.status_code == 200
+    schema = response.json()
+    assert "MCP" in [tag["name"] for tag in schema["tags"]]
+    assert schema["paths"]["/api/v1/mcp/"]["post"]["tags"] == ["MCP"]

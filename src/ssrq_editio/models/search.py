@@ -1,6 +1,6 @@
 from functools import cached_property
 
-from pydantic import BaseModel, computed_field
+from pydantic import BaseModel, Field, computed_field
 
 
 class DocumentSearchHit(BaseModel):
@@ -10,7 +10,13 @@ class DocumentSearchHit(BaseModel):
     idno: str
     printed_idno: str
     ft_match: str
-    keywords: list[str] | None = None
+    keywords: list[str] | None = Field(
+        default=None,
+        description=(
+            "Editor-assigned semantic keywords as entity IDs. Resolve them through the "
+            "entity interface; the field may be absent when no keywords were assigned."
+        ),
+    )
 
 
 class DocumentSearchResponse(BaseModel):

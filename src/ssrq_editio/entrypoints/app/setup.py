@@ -1,9 +1,10 @@
 import importlib.metadata
 from pathlib import Path
-from typing import Callable, Sequence
+from typing import Any, Callable, Sequence
 
 import jinjax
 from fastapi import APIRouter, FastAPI
+from fastapi.openapi.utils import get_openapi
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from jinja2_fragments.fastapi import Jinja2Blocks
@@ -59,6 +60,32 @@ def app_factory(
         summary="API of the digital scholarly edition published by the Law Sources Foundation of the Swiss Lawyers Society",
         title="SSRQ · SDS · FDS / Editio API",
     )
+
+    def openapi_with_mcp() -> dict[str, Any]:
+        """Add the mounted MCP transport to the OpenAPI documentation."""
+        if app.openapi_schema:
+            return app.openapi_schema
+
+        openapi_schema = get_openapi(
+            title=app.title,
+            version=app.version,
+            summary=app.summary,
+            routes=app.routes,
+            tags=app.openapi_tags,
+        )
+        openapi_schema["paths"]["/api/v1/mcp/"] = {
+            "post": {
+                "tags": ["MCP"],
+                "summary": "MCP Streamable HTTP transport",
+                "description": "MCP clients use this endpoint for JSON-RPC communication.",
+                "operationId": "mcp_transport",
+                "responses": {"200": {"description": "MCP JSON-RPC response."}},
+            }
+        }
+        app.openapi_schema = openapi_schema
+        return openapi_schema
+
+    app.openapi = openapi_with_mcp  # type: ignore[method-assign]
     app.mount("/static", StaticFiles(directory=asset_dir), name="static")
     templates = Jinja2Blocks(directory=template_dir)
 
