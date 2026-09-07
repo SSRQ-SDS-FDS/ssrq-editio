@@ -64,7 +64,10 @@ async def test_mcp_endpoint_supports_initialization_and_tool_discovery(
 
     assert response.status_code == 200
     message = json.loads(response.text.split("data: ", maxsplit=1)[1])
-    assert [tool["name"] for tool in message["result"]["tools"]] == ["search_documents"]
+    assert [tool["name"] for tool in message["result"]["tools"]] == [
+        "search_documents",
+        "resolve_entity",
+    ]
 
     response = await mcp_client.post(
         "/api/v1/mcp/",
@@ -80,6 +83,27 @@ async def test_mcp_endpoint_supports_initialization_and_tool_discovery(
     assert response.status_code == 200
     message = json.loads(response.text.split("data: ", maxsplit=1)[1])
     assert message["result"]["structuredContent"]["total"] == 1
+
+    response = await mcp_client.post(
+        "/api/v1/mcp/",
+        json={
+            "jsonrpc": "2.0",
+            "id": 4,
+            "method": "tools/call",
+            "params": {
+                "name": "resolve_entity",
+                "arguments": {"entity_type": "keywords", "entity_id": "key000001"},
+            },
+        },
+        headers=headers,
+    )
+
+    assert response.status_code == 200
+    message = json.loads(response.text.split("data: ", maxsplit=1)[1])
+    resolved_entity = message["result"]["structuredContent"]["result"]
+    assert resolved_entity["id"] == "key000001"
+    assert resolved_entity["de_name"] == "Abt"
+    assert resolved_entity["de_definition"]
 
 
 @pytest.mark.anyio

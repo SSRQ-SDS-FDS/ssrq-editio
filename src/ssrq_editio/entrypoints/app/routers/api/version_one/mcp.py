@@ -1,9 +1,14 @@
 """MCP server configuration for the SSRQ/Editio application."""
 
+from typing import Annotated, cast
+
 from fastmcp import FastMCP
+from pydantic import Field
 
 from ssrq_editio.entrypoints.app.shared.dependencies import db_connection
+from ssrq_editio.models.entities import EntityTypes, Keyword, Lemma, Person, Place
 from ssrq_editio.models.search import DocumentSearchResponse
+from ssrq_editio.services.entities import get_entities
 from ssrq_editio.services.search import search_documents as search_documents_service
 
 MCP_CACHE_TTL_SECONDS = 180 * 60
@@ -35,6 +40,63 @@ async def search_documents(query: str) -> DocumentSearchResponse:
     """
     async for connection in db_connection():
         return await search_documents_service(connection=connection, query=query)
+
+    raise RuntimeError("The database session did not yield a connection.")
+
+
+@mcp.tool
+async def resolve_entity(
+    entity_type: Annotated[
+        EntityTypes,
+        Field(
+            description=(
+                "Entity collection. For IDs beginning with org, choose either "
+                "organizations or families as appropriate."
+            )
+        ),
+    ],
+    entity_id: Annotated[
+        str,
+        Field(
+            description=(
+                "SSRQ entity ID consisting of a type prefix and six digits: "
+                "key=keywords, lem=lemmata, loc=places, per=persons, and "
+                "org=organizations or families. Examples: key000001 or loc000157."
+            )
+        ),
+    ],
+) -> Keyword | Lemma | Person | Place:
+    """Resolve an editor-assigned entity ID to its semantic labels.
+
+    Entity IDs can occur in document keywords and in inline TEI markup. The
+    returned entity is the same model exposed by the REST API. Entity IDs use a
+    prefix followed by six digits and map to entity types as follows:
+
+    * ``key`` → ``keywords``
+    * ``lem`` → ``lemmata``
+    * ``loc`` → ``places``
+    * ``per`` → ``persons``
+    * ``org`` → ``organizations`` or ``families``
+
+    ``org`` IDs share one identifier namespace for organizations and families,
+    so the exact entity type must be supplied explicitly. An unknown or
+    type-mismatched ID results in a tool error.
+
+    Args:
+        entity_type: The entity collection containing the ID.
+        entity_id: The SSRQ entity ID, for example ``key000001``.
+
+    Returns:
+        The resolved entity with its editor-maintained names and metadata.
+    """
+    async for connection in db_connection():
+        entities = await get_entities(connection, entity_type, query=entity_id)
+        if len(entities.entities) == 0:
+            raise ValueError(
+                f"No entity found with ID »{entity_id}« in »{entity_type.value}«."
+            )
+
+        return cast(Keyword | Lemma | Person | Place, entities.entities[0])
 
     raise RuntimeError("The database session did not yield a connection.")
 
