@@ -12,7 +12,7 @@ dependencies = [
     "loguru>=0.7.2",
     "markdown>=3.8.1",
     "parsel>=1.9.1",
-    "pydantic-settings>=2.13.1",
+    "pydantic-settings>=2.14.2",
     "python-dotenv>=1.2.2",
     "saxonche==13.0.0",
     "semver>=3.0.2",
