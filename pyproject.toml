@@ -28,7 +28,7 @@ editio = "ssrq_editio.entrypoints.cli:app"
 [dependency-groups]
 dev = [
     "commitizen>=3.31.0",
-    "mypy>=1.11.2",
+    "mypy>=2.3.0",
     "pre-commit>=3.8.0",
     "pytest>=9.0.3",
     "pytest-playwright>=0.7.2",
