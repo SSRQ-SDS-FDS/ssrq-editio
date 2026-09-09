@@ -170,3 +170,7 @@ span.tei-pb.tei-pb-needs-space-right {
 .addSpanStart, .addSpanEnd{
     display: none;
 }
+
+::highlight(tei-additions) {
+    color: var(--color-ssrq-greyed-600);
+}

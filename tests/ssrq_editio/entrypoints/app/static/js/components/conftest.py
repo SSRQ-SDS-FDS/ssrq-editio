@@ -1,9 +1,9 @@
 import pytest
-from playwright.sync_api import Page
+from playwright.async_api import Page
 
 
 @pytest.fixture
-def assert_no_errors(page: Page):
+async def assert_no_errors(page: Page):
     page_errors = []
     console_errors = []
 
