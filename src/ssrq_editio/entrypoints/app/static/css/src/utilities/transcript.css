@@ -172,5 +172,5 @@ span.tei-pb.tei-pb-needs-space-right {
 }
 
 ::highlight(tei-additions) {
-    color: var(--color-ssrq-greyed-600);
+    @apply text-ssrq-greyed-600;
 }
