@@ -14,14 +14,16 @@
   @apply w-4 h-4 p-[1px] inline text-ssrq-primary;
 }
 
+/* styling of popup content */
+.popup-content {
+  @apply font-normal;
+}
+
 /* style popup in document title */
 h1.title-1 .tei-entity-icon {
   @apply w-6 h-6 p-[1px] inline text-ssrq-primary;
 }
 
-h1.title-1 .popup-content {
-  @apply font-normal;
-}
 
 /* hide marker for popup */
 .hidden-popup-marker .popup>button:has(>svg) {
@@ -47,6 +49,19 @@ h1.title-1 .popup-content {
 }
 
 /* Element specific styles */
+
+/* headings */
+h1.tei-head{
+    @apply text-lg font-semibold;
+}
+h2.tei-head{
+    @apply text-base font-semibold;
+}
+h3.tei-head{
+    @apply text-base font-medium;
+    text-decoration: underline;
+}
+
 
 /* numbered paragraphs in back */
 div.tei-back.has-numbered-sections > div {
@@ -98,14 +113,14 @@ div.tei-list > .tei-head {
   @apply text-sm border-separate border-spacing-x-4 border-spacing-y-2;
 }
 
-.tei-body table caption {
-  @apply font-bold text-base;
-}
+/* .tei-body table caption { */
+/*   @apply font-bold text-base; */
+/* } */
 
 /* ToDo: Properly position secondary titles and remove this temporary workaround. Issue #4872 */
-.tei-body table caption:not(:first-child) {
-  display: none;
-}
+/* .tei-body table caption:not(:first-child) { */
+/*   display: none; */
+/* } */
 
 /* tei:ab */
 .tei-ab {
