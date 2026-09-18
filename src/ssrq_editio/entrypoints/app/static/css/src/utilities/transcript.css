@@ -58,9 +58,10 @@ h2.tei-head{
     @apply text-base font-semibold;
 }
 h3.tei-head{
-    @apply text-base font-medium;
-    text-decoration: underline;
+    @apply text-base font-medium underline;
 }
+
+
 
 
 /* numbered paragraphs in back */
