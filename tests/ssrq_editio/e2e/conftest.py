@@ -50,7 +50,7 @@ def e2e_transpiled_schema(tmp_path_factory: pytest.TempPathFactory, example_path
     return asyncio.run(create_e2e_transpiled_schema(example_path, workspace))
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="session", autouse=True)
 def e2e_base_url(e2e_database: Path, e2e_transpiled_schema: Path) -> Generator[str, None, None]:
     get_view_response_cache().clear()
 
