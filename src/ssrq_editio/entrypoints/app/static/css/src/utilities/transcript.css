@@ -114,15 +114,6 @@ div.tei-list > .tei-head {
   @apply text-sm border-separate border-spacing-x-4 border-spacing-y-2;
 }
 
-/* .tei-body table caption { */
-/*   @apply font-bold text-base; */
-/* } */
-
-/* ToDo: Properly position secondary titles and remove this temporary workaround. Issue #4872 */
-/* .tei-body table caption:not(:first-child) { */
-/*   display: none; */
-/* } */
-
 /* tei:ab */
 .tei-ab {
   @apply text-sm my-4;
