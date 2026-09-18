@@ -34,4 +34,4 @@ function processSpanMarkers(root = document) {
   CSS.highlights.set("tei-additions", highlight);
 }
 
-document.addEventListener("DOMContentLoaded", () => processSpanMarkers(), { once: true });
+export default processSpanMarkers;
