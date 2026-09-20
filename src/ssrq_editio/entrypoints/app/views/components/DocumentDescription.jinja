@@ -24,7 +24,7 @@
         <h3>
             <span>
                 {{desc.heading.witnessNumber}}&nbsp;
-                {% if desc.heading.witnessNumber is none or desc.heading.witnessNumber == "" or desc.heading.witnessNumber == "A" %}
+                {% if loop.first %}
                     {{ translator.translate(lang, 'base_document') }}
                 {% else %}
                     {{ translator.translate(lang, 'additional_witness') }}
