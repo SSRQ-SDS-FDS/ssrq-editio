@@ -77,6 +77,12 @@
                         </xsl:apply-templates>
                     </xsl:map-entry>
                     <xsl:map-entry key="'type'" select="$type"/>
+                    <xsl:map-entry key="'facs_idno'">
+                        <xsl:apply-templates select="(.//tei:msDesc/tei:msIdentifier/tei:idno)[1]" mode="html-facs-viewer">
+                            <xsl:with-param name="lang" as="xs:string" tunnel="yes" select="$lang" />
+                            <xsl:with-param name="translations" as="map(xs:string, map(*))" tunnel="yes" select="$translations"/>
+                        </xsl:apply-templates>
+                    </xsl:map-entry>
                 </xsl:map>
             </xsl:otherwise>
         </xsl:choose>

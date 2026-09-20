@@ -9,5 +9,5 @@
     @apply w-6 h-6 inline-block cursor-pointer text-ssrq-greyed-600 hover:text-ssrq-primary;
 }
 .facsViewerFooter{
-    @apply bg-ssrq-greyed-100 text-sm text-right px-2 py-1 text-ssrq-greyed-600;
+    @apply flex justify-between bg-ssrq-greyed-100 text-sm text-right px-2 py-1 text-ssrq-greyed-600;
 }

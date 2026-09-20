@@ -138,6 +138,7 @@ class DocumentDisplay(BaseModel):
 
     comment: DocumentComment | None
     descriptions: list[DocumentDescription]
+    facs_idno: str | None
     normalized_transcript: str | None
     summary: DocumentSummary | None
     transcript: str
