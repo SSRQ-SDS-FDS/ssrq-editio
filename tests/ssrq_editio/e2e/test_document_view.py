@@ -72,15 +72,27 @@ def test_pb_spacing_only_applies_when_whitespace_is_missing(page: Page, e2e_base
     pb_wrappers = page.locator("span.tei-pb").filter(has=page.locator(":scope > button.tei-pb"))
     expect(pb_wrappers).to_have_count(2)
 
-    assert pb_wrappers.nth(0).evaluate(
-        "element => element.classList.contains('tei-pb-needs-space-left')"
-    ) is False
-    assert pb_wrappers.nth(0).evaluate(
-        "element => element.classList.contains('tei-pb-needs-space-right')"
-    ) is False
-    assert pb_wrappers.nth(1).evaluate(
-        "element => element.classList.contains('tei-pb-needs-space-left')"
-    ) is True
-    assert pb_wrappers.nth(1).evaluate(
-        "element => element.classList.contains('tei-pb-needs-space-right')"
-    ) is True
+    assert (
+        pb_wrappers.nth(0).evaluate(
+            "element => element.classList.contains('tei-pb-needs-space-left')"
+        )
+        is False
+    )
+    assert (
+        pb_wrappers.nth(0).evaluate(
+            "element => element.classList.contains('tei-pb-needs-space-right')"
+        )
+        is False
+    )
+    assert (
+        pb_wrappers.nth(1).evaluate(
+            "element => element.classList.contains('tei-pb-needs-space-left')"
+        )
+        is True
+    )
+    assert (
+        pb_wrappers.nth(1).evaluate(
+            "element => element.classList.contains('tei-pb-needs-space-right')"
+        )
+        is True
+    )
