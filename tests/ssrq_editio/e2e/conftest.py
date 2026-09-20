@@ -118,6 +118,7 @@ class E2EDocumentTransformer:
                     "sub_docs, 'SSRQ-FR-I_2_8-83.2-1', lang) }}</p>"
                 ),
                 type=DocumentType.collection,
+                facs_idno="foo",
             )
 
         return DocumentDisplay(
@@ -147,4 +148,5 @@ class E2EDocumentTransformer:
 </div>
 </span></span>bar</p>""",
             type=DocumentType.transcript,
+            facs_idno="foo",
         )
