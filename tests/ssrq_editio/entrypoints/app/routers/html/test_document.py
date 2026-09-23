@@ -95,3 +95,7 @@ async def test_retro_document_hides_metadata_column_and_toggles(
         doc.css("#transcript-col iframe::attr(src)").get()
         == "http://test/api/v1/kantons/ZG/1_1.pdf#page=81"
     )
+    assert (
+        doc.css("#transcript-col button::attr(data-document-start)").get()
+        == "http://test/api/v1/kantons/ZG/1_1.pdf#page=81"
+    )
