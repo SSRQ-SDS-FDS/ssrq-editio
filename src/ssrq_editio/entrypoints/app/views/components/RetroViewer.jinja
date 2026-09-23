@@ -1,0 +1,11 @@
+{# def
+    endpoint: URL,
+    page: str | None,
+#}
+<div class="w-full h-[70vh] rounded-lg shadow-md overflow-hidden">
+    <iframe
+        class="w-full h-full"
+        src="{{ endpoint }}{% if page is not none %}#page={{ page }}{% endif %}"
+        title="Retrodigitalisat"
+    ></iframe>
+</div>

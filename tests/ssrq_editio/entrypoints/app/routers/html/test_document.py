@@ -90,3 +90,8 @@ async def test_retro_document_hides_metadata_column_and_toggles(
     assert not doc.css(".metadata-toggle")
     assert "toggle-textmarker" not in response.text
     assert "md:w-full" in doc.css("#transcript-col::attr(class)").get()
+    assert not doc.css('[aria-label="tab-transcript"]')
+    assert (
+        doc.css("#transcript-col iframe::attr(src)").get()
+        == "http://test/api/v1/kantons/ZG/1_1.pdf#page=81"
+    )
