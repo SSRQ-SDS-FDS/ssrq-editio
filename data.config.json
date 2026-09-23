@@ -90,6 +90,16 @@
     "project_page": "blog/2020/11/20/2020-11-20-werdenberg/"
   },
   {
+    "key": "ZG_1_1",
+    "sort_key": 1,
+    "kanton": "ZG",
+    "name": "1/1",
+    "prefix": "SSRQ",
+    "pdf": "book/ZG_1.1.pdf",
+    "literature": null,
+    "project_page": "/digital/retro/"
+  },
+  {
     "key": "ZH_NF_I_1_3",
     "sort_key": 1,
     "kanton": "ZH",
