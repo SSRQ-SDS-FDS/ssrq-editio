@@ -66,7 +66,11 @@
                 {{ orig_places | join(', ') }}
             </span>
         {% endif %}
-        {% if doc.facs is not none %}
+        {% if doc.type.value == 'retro' %}
+            <span class="retro-badge">
+                {{ translator.translate(lang, 'retro') }}
+            </span>
+        {% elif doc.facs is not none %}
             <span title="{{ translator.translate(lang, 'has-facs') }}">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
