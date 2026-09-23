@@ -3,6 +3,7 @@
 
 {% set doc = data.content.doc%}
 {% set doc_content = data.content.rendered_doc %}
+{% set is_retro = doc.type.value == 'retro' %}
 
 <section class="w-full max-w-[1760px] mx-auto px-4 my-4">
     <DocumentNavigation
@@ -42,24 +43,26 @@
             {{ data.content.orig_places | join(', ') }}
         </span>
         {% endif %}
-        <div class="ml-auto flex items-center gap-4">
-            <Toggle class="metadata-toggle"
-                :checked="'$store.ssrqDocument.metadataOpen'"
-                :callback="'$store.ssrqDocument.toggleMetadata()'"
-            >
-                {{ translator.translate(lang, 'metadata') }}
-            </Toggle>
-            <Toggle
-                :checked="'$store.ssrqDocument.popupMarkerVisible'"
-                :callback="'$store.ssrqDocument.togglePopupMarker()'"
-            >
-                {{ translator.translate(lang, 'toggle-textmarker') }}
-            </Toggle>
-        </div>
+        {% if not is_retro %}
+            <div class="ml-auto flex items-center gap-4">
+                <Toggle class="metadata-toggle"
+                    :checked="'$store.ssrqDocument.metadataOpen'"
+                    :callback="'$store.ssrqDocument.toggleMetadata()'"
+                >
+                    {{ translator.translate(lang, 'metadata') }}
+                </Toggle>
+                <Toggle
+                    :checked="'$store.ssrqDocument.popupMarkerVisible'"
+                    :callback="'$store.ssrqDocument.togglePopupMarker()'"
+                >
+                    {{ translator.translate(lang, 'toggle-textmarker') }}
+                </Toggle>
+            </div>
+        {% endif %}
     </header>
     <div
         class="md:flex w-full max-w-[1760px] mx-auto items-stretch justify-center gap-4 my-8 md:min-h-[70vh] md:max-h-[80vh]">
-        <div class="md:w-1/2 flex mb-6 md:mb-0" id="transcript-col">
+        <div class="{{ 'md:w-full' if is_retro else 'md:w-1/2' }} flex mb-6 md:mb-0" id="transcript-col">
             <Tabs :tab_group="'transcriptCol'">
                 <TabHeader>
                     <TabControl :label="'transcript'">
@@ -119,6 +122,7 @@
                 </Tab>
             </Tabs>
         </div>
+        {% if not is_retro %}
         <div
             class="md:w-1/2 flex mb-6 md:mb-0"
             id="metadata-col"
@@ -230,6 +234,7 @@
                 {% endif %}
             </Tabs>
         </div>
+        {% endif %}
     </div>
 </section>
 
