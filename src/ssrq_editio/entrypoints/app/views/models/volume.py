@@ -98,8 +98,10 @@ class VolumeViewModel(ViewModel):
 
         vol_meta = await retrieve_volume_metadata(self.connection, self.volume_id)
 
-        if vol_meta.has_facs is False and self.facs:
-            # Handles the edge case when a url was manually entered
+        show_facs = vol_meta.has_facs and not self._is_retro_volume(vol_meta)
+
+        if not show_facs and self.facs:
+            # Handles the edge case when a URL was manually entered.
             self.facs = False
 
         search_result = await self._get_documents(vol_meta)
@@ -122,7 +124,7 @@ class VolumeViewModel(ViewModel):
                     "pages": search_result[1][1] if search_result else None,
                     "range_start": self.range_start or vol_meta.first_year,
                     "range_end": self.range_end or vol_meta.last_year,
-                    "show_facs": vol_meta.has_facs,
+                    "show_facs": show_facs,
                     "query": self.query,
                     "total": search_result[0] if search_result else None,
                     "volume": self.volume_info,
@@ -134,6 +136,9 @@ class VolumeViewModel(ViewModel):
     @override
     def _get_title(self) -> str:
         return f"{self.translator.translate(self.lang, 'short_title')} · {self.kanton.value} {self.volume_info.name if self.volume_info else self.volume}"
+
+    def _is_retro_volume(self, meta: VolumeMeta) -> bool:
+        return all(d_type == DocumentType.retro for d_type in meta.document_types)
 
     async def _get_documents(
         self, vol_meta: VolumeMeta

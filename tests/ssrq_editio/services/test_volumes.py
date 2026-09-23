@@ -53,9 +53,7 @@ async def volume_with_pdfs(db_connection):
 
 
 @pytest.mark.anyio
-async def test_stream_volume_pdf_uses_configured_original_pdf(
-    tmp_path: Path, volume_with_pdfs
-):
+async def test_stream_volume_pdf_uses_configured_original_pdf(tmp_path: Path, volume_with_pdfs):
     connection, volume = volume_with_pdfs
     pdf_path = tmp_path / volume.key / "book" / "original.pdf"
     pdf_path.parent.mkdir(parents=True)
@@ -67,9 +65,7 @@ async def test_stream_volume_pdf_uses_configured_original_pdf(
 
 
 @pytest.mark.anyio
-async def test_stream_volume_pdf_uses_configured_translated_pdf(
-    tmp_path: Path, volume_with_pdfs
-):
+async def test_stream_volume_pdf_uses_configured_translated_pdf(tmp_path: Path, volume_with_pdfs):
     connection, volume = volume_with_pdfs
     pdf_path = tmp_path / volume.key / "book" / "translation.pdf"
     pdf_path.parent.mkdir(parents=True)
