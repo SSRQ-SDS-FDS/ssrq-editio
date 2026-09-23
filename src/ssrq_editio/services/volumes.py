@@ -64,7 +64,8 @@ async def stream_volume_pdf(
         volume (str): Volume key.
         connection (Connection): SQLite connection.
         data_volume_src (Path): The source of the current volume
-        suffix (str | None): Optional file suffix
+        suffix (str | None): ``-translated`` selects the configured translated PDF.
+            Omit it to select the configured original PDF.
 
     Yields:
         AsyncGenerator[bytes, None]: Bytes of the file.
@@ -82,12 +83,16 @@ async def stream_volume_pdf(
     if volume_info is None:
         raise ValueError(f"Could not find volume {volume} for {kanton.value}")
 
-    volume_path = (
-        data_volume_src
-        / f"{kanton.value}_{volume_info.machine_name}"
-        / "TeX"
-        / f"{volume_info.prefix}-{volume_info.kanton}-{volume_info.machine_name}{suffix or ''}.pdf"
-    )
+    # Assign PDF name based on suffix parameter.
+    match volume_info.pdf, suffix, volume_info.translated_pdf:
+        case str() as pdf_name, None, _:
+            pass
+        case _, "-translated", str() as pdf_name:
+            pass
+        case _:
+            raise ValueError(f"Unknown name for volume {volume}")
+
+    volume_path = data_volume_src / f"{kanton.value}_{volume_info.machine_name}" / pdf_name
 
     return stream(volume_path)
 

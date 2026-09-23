@@ -94,6 +94,7 @@ class DocumentTitle(BaseModel):
 
 class DocumentType(Enum):
     collection = "collection"
+    retro = "retro"
     summary = "summary"
     transcript = "transcript"
 
