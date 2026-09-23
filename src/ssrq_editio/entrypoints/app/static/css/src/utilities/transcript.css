@@ -172,10 +172,10 @@ span.tei-pb.tei-pb-needs-space-right {
 }
 
 /* style span Elements like addSpan, delSpan, damageSpan */
-.addSpanStart, .addSpanEnd{
+.addSpanStart, .addSpanEnd, .delSpanStart, .delSpanEnd{
     display: none;
 }
 
-::highlight(tei-additions) {
+::highlight(tei-spans) {
     @apply text-ssrq-greyed-600;
 }

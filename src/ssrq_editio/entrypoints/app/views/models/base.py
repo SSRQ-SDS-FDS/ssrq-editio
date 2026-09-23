@@ -35,7 +35,7 @@ class ViewModel:
         "fonts/font.css",
         "css/dist/style.css",
     }
-    js: set[str] = {"js/dist/app.js"}
+    js: set[str] = {"js/dist/app/app.js"}
     lang: Lang
     request: Request
     page: str
