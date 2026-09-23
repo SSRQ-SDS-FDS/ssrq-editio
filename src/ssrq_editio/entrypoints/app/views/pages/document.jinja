@@ -68,6 +68,8 @@
                 <RetroViewer
                     :endpoint="url_for('api_v1_volume_pdf', kanton=volume.kanton, volume=volume.machine_name)"
                     :page="doc.facs[0] if doc.facs else none"
+                    :lang="lang"
+                    :translator="translator"
                 />
             {% else %}
             <Tabs :tab_group="'transcriptCol'">

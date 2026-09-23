@@ -1,11 +1,27 @@
 {# def
     endpoint: URL,
     page: str | None,
+    lang: Lang,
+    translator: Translator,
 #}
-<div class="w-full h-[70vh] rounded-lg shadow-md overflow-hidden">
-    <iframe
-        class="w-full h-full"
-        src="{{ endpoint }}{% if page is not none %}#page={{ page }}{% endif %}"
-        title="Retrodigitalisat"
-    ></iframe>
+{% set document_start = endpoint ~ ('#page=' ~ page if page is not none else '') %}
+<div class="w-full" x-data>
+    <div class="flex justify-end mb-2">
+        <button
+            type="button"
+            class="shrink-0 whitespace-nowrap px-4 py-1.5 text-sm font-medium text-white transition-colors duration-300 bg-ssrq-primary rounded-md hover:shadow-sm focus:outline-hidden focus:shadow-sm focus:ring-3 focus:ring-ssrq-primary/40"
+            data-document-start="{{ document_start }}"
+            x-on:click="$refs.retroDocumentPdf.src = `${$el.dataset.documentStart}${$el.dataset.documentStart.includes('#') ? '&' : '?'}ssrq-reset=${Date.now()}`"
+        >
+            {{ translator.translate(lang, 'back_to_article_start') }}
+        </button>
+    </div>
+    <div class="h-[70vh] rounded-lg shadow-md overflow-hidden">
+        <iframe
+            class="w-full h-full"
+            x-ref="retroDocumentPdf"
+            src="{{ document_start }}"
+            title="{{ translator.translate(lang, 'retro') }}"
+        ></iframe>
+    </div>
 </div>
