@@ -1,35 +1,34 @@
-import semver
+from packaging.version import InvalidVersion, Version
 
 from ssrq_editio import __version__
 
 _PRE_RELEASE_MAP: dict[str, str] = {
-    "alpha": "Alpha",
-    "beta": "Beta",
+    "a": "Alpha",
+    "b": "Beta",
     "rc": "RC",
 }
 
 
 def get_display_version(version: str | None = None) -> str:
-    """Converts a raw version string into a more human-friendly format.
+    """Convert a package version into a human-friendly format.
 
     Args:
-        version (str | None): The raw version string.
-        If None, it defaults to the package version.
+        version (str | None): The raw package version. If omitted, the installed
+            package version is used.
 
     Returns:
-        str: The human-friendly version string."""
+        The human-friendly version string.
+    """
     raw = version or __version__
 
     try:
-        parsed = semver.VersionInfo.parse(raw)
-    except ValueError:
+        parsed = Version(raw)
+    except InvalidVersion:
         return raw
 
-    if not parsed.prerelease:
-        return str(parsed.finalize_version())
+    release = ".".join(str(part) for part in parsed.release)
+    if parsed.pre is None:
+        return release
 
-    pre_key, *rest = parsed.prerelease.split(".", 1)
-    label = _PRE_RELEASE_MAP.get(pre_key, pre_key.upper())
-    if rest:
-        return f"{parsed.finalize_version()} {label} {rest[0]}"
-    return f"{parsed.finalize_version()} {label}"
+    pre_key, pre_number = parsed.pre
+    return f"{release} {_PRE_RELEASE_MAP[pre_key]} {pre_number}"
