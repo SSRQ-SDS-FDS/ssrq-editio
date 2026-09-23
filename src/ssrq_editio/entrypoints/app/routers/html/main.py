@@ -33,6 +33,7 @@ async def index(request: Request, lang: LangDependency, connection: DBDependency
 
 
 @html.get("/favicon.ico", name="favicon")
+@html.get("/apple-touch-icon.png", name="apple_touch_icon")
 async def favicon():
     return RedirectResponse("/static/images/favicon-ssrq-32.png", status_code=307)
 
