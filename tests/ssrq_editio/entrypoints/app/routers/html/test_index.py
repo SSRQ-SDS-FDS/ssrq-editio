@@ -88,7 +88,14 @@ async def test_index_html_has_kanton_cards(app_client: AsyncClient):
 
 
 @pytest.mark.anyio
-async def test_favicon_route_redirects_to_static_asset(app_client: AsyncClient):
-    response = await app_client.get("/favicon.ico", follow_redirects=False)
+@pytest.mark.parametrize(
+    "path",
+    [
+        "/favicon.ico",
+        "/apple-touch-icon.png",
+    ],
+)
+async def test_icon_routes_redirect_to_static_asset(app_client: AsyncClient, path: str):
+    response = await app_client.get(path, follow_redirects=False)
     assert response.status_code == codes.TEMPORARY_REDIRECT
     assert response.headers["location"] == "/static/images/favicon-ssrq-32.png"
