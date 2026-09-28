@@ -109,8 +109,6 @@
     <xsl:template match="tei:msDesc">
         <xsl:param name="lang" as="xs:string" tunnel="yes"/>
         <xsl:param name="translations" as="map(xs:string, map(*))" tunnel="yes"/>
-        <xsl:variable name="use_lang" as="xs:string"
-            select="(./tei:msIdentifier/*[@xml:lang = $lang]/@xml:lang[1], ./tei:msIdentifier/*/@xml:lang[1])[1]"/>
         <xsl:map>
             <xsl:map-entry key="'admin_info'">
                 <xsl:sequence select="html:process-self(./tei:adminInfo, $lang, $translations)"/>
@@ -123,15 +121,7 @@
             </xsl:map-entry>
             <xsl:map-entry key="'heading'">
                 <xsl:map>
-                    <xsl:map-entry key="'idno'">
-                        <xsl:value-of select="./tei:msIdentifier/tei:idno[@xml:lang=$use_lang]" />
-                    </xsl:map-entry>
-                    <xsl:map-entry key="'lang'">
-                        <xsl:value-of select="./tei:msContents/tei:msItem/tei:textLang/@xml:lang" />
-                    </xsl:map-entry>
-                    <xsl:map-entry key="'witnessNumber'">
-                        <xsl:value-of select="./../@n" />
-                    </xsl:map-entry>
+                    <xsl:map-entry key="'witnessNumber'" select="./../@n" />
                 </xsl:map>
             </xsl:map-entry>
             <xsl:map-entry key="'ms_history'">

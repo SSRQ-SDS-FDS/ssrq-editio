@@ -63,8 +63,8 @@ class DocumentComment(BaseModel):
 
 
 class DocumentDescriptionHeading(BaseModel):
-    idno: str | None = None
-    lang: str | None = None
+    # idno: str | None = None
+    # lang: str | None = None
     witnessNumber: str | None = None
 
 
