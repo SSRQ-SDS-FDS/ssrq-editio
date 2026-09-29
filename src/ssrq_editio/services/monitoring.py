@@ -37,3 +37,5 @@ def setup_error_monitoring(cfg: AppSettings) -> None:
             ),
         ],
     )
+
+SSRQ_SERVER_LOG = logging.getLogger("uvicorn.error")

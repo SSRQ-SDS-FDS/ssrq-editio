@@ -1,3 +1,4 @@
+import logging
 from asyncio import gather, get_running_loop, run
 from concurrent.futures import ProcessPoolExecutor
 from multiprocessing import cpu_count
@@ -7,6 +8,7 @@ from typing import Awaitable, Callable, NamedTuple
 from saxonche import PySaxonProcessor, PyXdmItem, PyXdmNode, PyXslt30Processor, PyXsltExecutable
 
 from ssrq_editio.adapters.file import load
+from ssrq_editio.services.monitoring import SSRQ_SERVER_LOG
 from ssrq_editio.services.xslt.config import XSLT_SRC_DIR
 
 
@@ -133,12 +135,23 @@ def apply_precompiled_xslt(
     # SaxonC executables retain dynamic parameters and must not be shared across threads.
     xslt_exec_clone = xslt_exec.clone()
     _apply_params(saxon_proc, xslt_exec_clone, params)
-    return XSLTResult(
+    xslt_exec_clone.set_save_xsl_message(True)
+    try:
         value=xslt_exec_clone.transform_to_string(
             xdm_node=parsed_xml if parsed_xml else saxon_proc.parse_xml(xml_text=xml_src)
-        ),
-        src=xml_src,
-    )
+        )
+    finally:
+        messages = xslt_exec_clone.get_xsl_messages()
+        if messages is not None:
+            for index in range(messages.size):
+                item = messages.item_at(index)
+                if item is None:
+                    continue
+                message = item.string_value
+                SSRQ_SERVER_LOG.log(
+                    logging.ERROR if message.startswith("[ERROR]") else logging.WARNING,
+                    message)
+    return XSLTResult(value=value, src=xml_src)
 
 
 def compile_xslt(

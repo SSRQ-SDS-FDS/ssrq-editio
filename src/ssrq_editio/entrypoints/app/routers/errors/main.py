@@ -6,9 +6,9 @@ from fastapi.responses import JSONResponse
 
 from ssrq_editio.entrypoints.app.shared.dependencies import get_lang
 from ssrq_editio.entrypoints.app.views.models.error import ErrorViewModel
+from ssrq_editio.services.monitoring import SSRQ_SERVER_LOG
 
 API_PREFIX = "/api"
-ssrq_server_log = logging.getLogger("uvicorn.error")
 
 
 def register_error_handlers(app: FastAPI) -> None:
@@ -19,7 +19,7 @@ def register_error_handlers(app: FastAPI) -> None:
             x_lang=request.headers.get("x-lang"), lang=request.query_params.get("lang")
         )
         level = logging.ERROR if exc.status_code >= 500 else logging.WARNING
-        ssrq_server_log.log(
+        SSRQ_SERVER_LOG.log(
             level,
             "HTTP Error",
             extra={
@@ -49,7 +49,7 @@ def register_error_handlers(app: FastAPI) -> None:
         lang = await get_lang(
             x_lang=request.headers.get("x-lang"), lang=request.query_params.get("lang")
         )
-        ssrq_server_log.warning(
+        SSRQ_SERVER_LOG.warning(
             "Validation Error",
             extra={
                 "path": request.url.path,
@@ -74,7 +74,7 @@ def register_error_handlers(app: FastAPI) -> None:
         lang = await get_lang(
             x_lang=request.headers.get("x-lang"), lang=request.query_params.get("lang")
         )
-        ssrq_server_log.error(
+        SSRQ_SERVER_LOG.error(
             "Internal Server Error",
             extra={
                 "path": request.url.path,
