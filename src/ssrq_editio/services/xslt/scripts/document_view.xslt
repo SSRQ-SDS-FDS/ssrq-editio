@@ -4,6 +4,7 @@
                 xmlns:date="http://ssrq-sds-fds.ch/xsl/tei2pub/functions/date"
                 xmlns:html="http://ssrq-sds-fds.ch/xsl/tei2pub/html"
                 xmlns:i18n="http://ssrq-sds-fds.ch/xsl/tei2pub/functions/i18n"
+                xmlns:time="http://ssrq-sds-fds.ch/xsl/tei2pub/functions/time"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:tei="http://www.tei-c.org/ns/1.0"
@@ -15,6 +16,7 @@
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/core-utils.xsl"/>
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/date.xsl"/>
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/text-utils.xsl"/>
+    <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/time.xsl"/>
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/hand.xsl"/>
 
     <!-- Templates for rendering -->
