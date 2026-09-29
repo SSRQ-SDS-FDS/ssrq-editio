@@ -3,6 +3,7 @@ function processSpanMarkers(root = document) {
   const spanMarkerTypes = [
     "add",
     "del",
+    "damage",
   ];
   if (!globalThis.CSS?.highlights || !globalThis.Highlight) return;
   const highlight = new Highlight();
