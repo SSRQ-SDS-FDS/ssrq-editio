@@ -25,6 +25,7 @@ def load_and_process(page: Page, html: str) -> None:
     [
         """<div><p>foo</p><span class="addSpanStart" data-addspan-id="add1">​</span><p>bar</p><p>baz</p><span class="addSpanEnd" data-addspan-id="add1">​</span><p>qux</p></div>""",
         """<div><p>foo</p><span class="delSpanStart" data-delspan-id="del1">​</span><p>bar</p><p>baz</p><span class="delSpanEnd" data-delspan-id="del1">​</span><p>qux</p></div>""",
+        """<div><p>foo</p><span class="damageSpanStart" data-damagespan-id="damage1">​</span><p>bar</p><p>baz</p><span class="damageSpanEnd" data-damagespan-id="damage1">​</span><p>qux</p></div>""",
     ],
 )
 def test_process_span_markers_registers_ranges(page: Page, html: str) -> None:
@@ -43,6 +44,7 @@ def test_process_span_markers_registers_ranges(page: Page, html: str) -> None:
     [
         """<div><span class="addSpanStart" data-addspan-id="add1">​</span><p>foo</p><span class="addSpanEnd" data-addspan-id="add1">​</span><p>between</p><span class="addSpanStart" data-addspan-id="add2">​</span><p>bar</p><span class="addSpanEnd" data-addspan-id="add2">​</span></div>""",
         """<div><span class="delSpanStart" data-delspan-id="del1">​</span><p>foo</p><span class="delSpanEnd" data-delspan-id="del1">​</span><p>between</p><span class="delSpanStart" data-delspan-id="del2">​</span><p>bar</p><span class="delSpanEnd" data-delspan-id="del2">​</span></div>""",
+        """<div><span class="damageSpanStart" data-damagespan-id="damage1">​</span><p>foo</p><span class="damageSpanEnd" data-damagespan-id="damage1">​</span><p>between</p><span class="damageSpanStart" data-damagespan-id="damage2">​</span><p>bar</p><span class="damageSpanEnd" data-damagespan-id="damage2">​</span></div>""",
     ],
 )
 def test_process_span_markers_registers_multiple_ranges(page: Page, html: str) -> None:
@@ -58,6 +60,7 @@ def test_process_span_markers_registers_multiple_ranges(page: Page, html: str) -
     [
         """<div><span class="addSpanStart" data-addspan-id="add1">​</span><p>foo</p><span class="addSpanEnd" data-addspan-id="add1">​</span></div>""",
         """<div><span class="delSpanStart" data-delspan-id="del1">​</span><p>foo</p><span class="delSpanEnd" data-delspan-id="del1">​</span></div>""",
+        """<div><span class="damageSpanStart" data-damagespan-id="damage1">​</span><p>foo</p><span class="damageSpanEnd" data-damagespan-id="damage1">​</span></div>""",
     ],
 )
 def test_process_span_markers_is_idempotent(page: Page, html: str) -> None:
@@ -79,6 +82,10 @@ def test_process_span_markers_is_idempotent(page: Page, html: str) -> None:
         (
             """<div><span class="delSpanStart" data-delspan-id="del1">​</span><p>foo</p></div>""",
             """No closing marker found for delSpan ID "del1".""",
+        ),
+        (
+            """<div><span class="damageSpanStart" data-damagespan-id="damage1">​</span><p>foo</p></div>""",
+            """No closing marker found for damageSpan ID "damage1".""",
         ),
     ],
 )
