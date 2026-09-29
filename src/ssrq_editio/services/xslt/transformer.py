@@ -1,6 +1,6 @@
+import logging
 from asyncio import gather, get_running_loop, run
 from concurrent.futures import ProcessPoolExecutor
-import logging
 from multiprocessing import cpu_count
 from pathlib import Path
 from typing import Awaitable, Callable, NamedTuple
@@ -8,8 +8,8 @@ from typing import Awaitable, Callable, NamedTuple
 from saxonche import PySaxonProcessor, PyXdmItem, PyXdmNode, PyXslt30Processor, PyXsltExecutable
 
 from ssrq_editio.adapters.file import load
-from ssrq_editio.services.xslt.config import XSLT_SRC_DIR
 from ssrq_editio.services.monitoring import SSRQ_SERVER_LOG
+from ssrq_editio.services.xslt.config import XSLT_SRC_DIR
 
 
 class XSLTTransformationError(ValueError):
@@ -144,8 +144,13 @@ def apply_precompiled_xslt(
         messages = xslt_exec_clone.get_xsl_messages()
         if messages is not None:
             for index in range(messages.size):
-                message = messages.item_at(index).string_value
-                SSRQ_SERVER_LOG.log(logging.ERROR if message.startswith("[ERROR]") else logging.WARNING, message)
+                item = messages.item_at(index)
+                if item is None:
+                    continue
+                message = item.string_value
+                SSRQ_SERVER_LOG.log(
+                    logging.ERROR if message.startswith("[ERROR]") else logging.WARNING,
+                    message)
     return XSLTResult(value=value, src=xml_src)
 
 
