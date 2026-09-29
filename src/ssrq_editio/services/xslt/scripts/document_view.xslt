@@ -109,7 +109,7 @@
     <xsl:template match="tei:msDesc">
         <xsl:param name="lang" as="xs:string" tunnel="yes"/>
         <xsl:param name="translations" as="map(xs:string, map(*))" tunnel="yes"/>
-        <xsl:variable name="use_lang" as="xs:string"
+        <xsl:variable name="use_lang" as="xs:string?"
             select="(./tei:msIdentifier/*[@xml:lang = $lang]/@xml:lang[1], ./tei:msIdentifier/*/@xml:lang[1])[1]"/>
         <xsl:map>
             <xsl:map-entry key="'admin_info'">
