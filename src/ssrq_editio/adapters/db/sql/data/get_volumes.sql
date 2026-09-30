@@ -9,15 +9,17 @@ SELECT
     v.translated_pdf,
     v.literature,
     v.project_page,
-    GROUP_CONCAT(e.name, ',') AS editors
+    (
+        SELECT GROUP_CONCAT(e.name, ',')
+        FROM
+            editors AS e
+        WHERE e.volume_id = v.id
+    ) AS editors
 FROM
     volumes AS v
 INNER JOIN
     kantons AS k
     ON v.kanton_id = k.id
-LEFT JOIN
-    editors AS e
-    ON v.id = e.volume_id
 WHERE
     k.short_name = ?
 GROUP BY

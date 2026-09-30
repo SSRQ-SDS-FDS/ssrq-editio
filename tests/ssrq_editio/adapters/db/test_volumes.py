@@ -181,3 +181,34 @@ async def test_retrieve_volume_meta_uses_start_year_when_end_year_is_none(db_kan
 
     assert result.first_year == 1005
     assert result.last_year == 1456
+
+
+@pytest.mark.anyio
+async def test_list_volumes_with_editors_order(db_kanton_data):
+    """Test if the order of editors is preserved."""
+    expected_editors = [
+        "Zoe Editor",
+        "Anna Editor",
+        "Max Editor",
+    ]
+
+    volume = Volume(
+        key="foo",
+        sort_key=1,
+        name="foo",
+        kanton="ZH",
+        title="foo",
+        pdf=None,
+        literature=None,
+        project_page=None,
+        editors=expected_editors,
+        prefix="SSRQ",
+    )
+
+    await initialize_volume_with_editors(db_kanton_data, volume)
+
+    volumes = await list_volumes_with_editors(db_kanton_data, "ZH")
+
+    assert volumes is not None
+    assert len(volumes) == 1
+    assert volumes[0].editors == expected_editors
