@@ -1,6 +1,7 @@
 SELECT
     v.id AS "key",
     v.sort_key,
+    v.volume_type,
     v.name,
     k.short_name AS kanton,
     v.title,
@@ -27,6 +28,7 @@ GROUP BY
     v.name,
     k.short_name,
     v.title,
+    v.volume_type,
     v.prefix,
     v.pdf,
     v.translated_pdf,

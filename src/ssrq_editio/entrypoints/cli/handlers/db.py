@@ -3,7 +3,7 @@ from time import perf_counter
 
 from aiosqlite import Connection
 
-from ssrq_editio.adapters.data import load_volume_config
+from ssrq_editio.adapters.data import load_register_volume_config, load_volume_config
 from ssrq_editio.adapters.db.connection import db_session
 from ssrq_editio.adapters.db.documents import initialize_document_data, initialize_document_fulltext
 from ssrq_editio.adapters.db.entities import store_entities
@@ -13,6 +13,7 @@ from ssrq_editio.adapters.db.volumes import initialize_volume_with_editors
 from ssrq_editio.adapters.entities import fetch_entities
 from ssrq_editio.adapters.file import list_dir_content
 from ssrq_editio.entrypoints.cli.config import TMP_SCHEMA
+from ssrq_editio.models.volumes import Volume, VolumeType
 from ssrq_editio.services.documents import extract_infos_from_xml
 from ssrq_editio.services.logger import SSRQ_LOGGER
 from ssrq_editio.services.schema import transpile_schema_to_translations
@@ -82,6 +83,10 @@ async def setup_volumes(
 
     for volume in config.volumes:
         SSRQ_LOGGER.info(f"Processing volume: {volume.key}")
+        if volume.volume_type is VolumeType.REGISTER:
+            await setup_register_volume(connection, volume, data_src)
+            continue
+
         files = await list_dir_content(data_src, create_search_pattern(volume))
 
         if not files:
@@ -101,6 +106,23 @@ async def setup_volumes(
         await setup_documents(
             connection, files, volume.key, transpiled_schema, parallel, profile=profile
         )
+
+
+async def setup_register_volume(
+    connection: Connection, volume: Volume, data_src: Path, config: str = "volume.json"
+) -> None:
+    """Insert a PDF-only register volume without looking for TEI documents."""
+    metadata_path = data_src / volume.key / config
+    metadata = await load_register_volume_config(metadata_path)
+
+    if metadata.canton != volume.kanton or metadata.volume != volume.name.replace("/", "."):
+        raise ValueError(f"Register metadata in {metadata_path} does not match {volume.key}")
+    if volume.pdf is None or not (data_src / volume.key / volume.pdf).is_file():
+        raise FileNotFoundError(f"Configured PDF for register volume {volume.key} was not found")
+
+    volume = volume.model_copy(update={"title": metadata.title, "editors": metadata.editors})
+    await initialize_volume_with_editors(connection, volume)
+    SSRQ_LOGGER.success(f"Inserted register volume data for {volume.key} into the database.")
 
 
 async def setup_documents(

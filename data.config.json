@@ -100,6 +100,17 @@
     "project_page": "/digital/retro/"
   },
   {
+    "key": "ZG_1_3",
+    "sort_key": 2,
+    "volume_type": "register",
+    "kanton": "ZG",
+    "name": "1/3",
+    "prefix": "SSRQ",
+    "pdf": "book/ZG_1.3.pdf",
+    "literature": null,
+    "project_page": "/digital/retro/"
+  },
+  {
     "key": "ZH_NF_I_1_3",
     "sort_key": 1,
     "kanton": "ZH",
