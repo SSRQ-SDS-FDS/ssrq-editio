@@ -1,6 +1,8 @@
+import re
 import threading
 from pathlib import Path
 from typing import cast
+from xml.etree import ElementTree
 
 import pytest
 from saxonche import PyXdmMap, PyXdmNode, PyXsltExecutable
@@ -19,6 +21,7 @@ from ssrq_editio.models.documents import (
     DocumentType,
 )
 from ssrq_editio.models.kantons import KantonName
+from ssrq_editio.services import documents as documents_service
 from ssrq_editio.services.documents import (
     DocumentTransformer,
     extract_infos_from_xml,
@@ -301,6 +304,49 @@ async def test_extract_infos_from_xml(
 
     result[0][0].source = None
     assert result[0][0] == document
+
+
+@pytest.mark.anyio
+async def test_extract_infos_reuses_translation_map_for_multiple_documents(
+    example_path: Path, transpiled_schema: Path, monkeypatch: pytest.MonkeyPatch
+):
+    original = documents_service._prepare_document_info_params
+    call_count = 0
+
+    def count_calls(*args, **kwargs):
+        nonlocal call_count
+        call_count += 1
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(documents_service, "_prepare_document_info_params", count_calls)
+    xml_sources = (
+        example_path / "SSRQ-SG-III_4-63-1.xml",
+        example_path / "SSRQ-SG-III_4-245-1.xml",
+    )
+
+    result = await extract_infos_from_xml(xml_sources, "foo", transpiled_schema)
+
+    assert len(result) == 2
+    assert call_count == 1
+    for source, (_, fulltext) in zip(xml_sources, result, strict=True):
+        source_text = "".join(ElementTree.parse(source).getroot().itertext())
+        expected_text = re.sub(r"[\t\r\n ]+", " ", source_text).strip(" \t\r\n")
+        assert fulltext.text == expected_text
+
+
+@pytest.mark.anyio
+async def test_extract_infos_in_parallel_uses_document_info_initializer(
+    example_path: Path, transpiled_schema: Path
+):
+    xml_sources = (
+        example_path / "SSRQ-SG-III_4-63-1.xml",
+        example_path / "SSRQ-SG-III_4-245-1.xml",
+    )
+
+    sequential = await extract_infos_from_xml(xml_sources, "foo", transpiled_schema)
+    parallel = await extract_infos_from_xml(xml_sources, "foo", transpiled_schema, parallel=True)
+
+    assert parallel == sequential
 
 
 @pytest.mark.anyio

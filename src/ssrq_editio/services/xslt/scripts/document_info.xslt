@@ -21,7 +21,7 @@
 
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/html.xsl"/>
 
-    <xsl:param name="schema" as="xs:string"/>
+    <xsl:param name="translations" as="map(xs:string, map(*))"/>
 
     <xsl:output method="json" encoding="utf-8"/>
 
@@ -34,12 +34,7 @@
             <xsl:map-entry key="'facs'" select=".//tei:pb/@facs/data() => cutils:seq-to-array()"/>
             <xsl:map-entry key="'entities'" select="cutils:list-entity-references(./tei:TEI) => cutils:seq-to-array()"/>
             <xsl:apply-templates select="(.//tei:msDesc)[1]">
-                <xsl:with-param
-                    name="translations"
-                    as="map(xs:string, map(*))"
-                    tunnel="yes"
-                    select="i18n:create-translation-map(doc($schema)/tei:TEI)"
-                    />
+                <xsl:with-param name="translations" select="$translations" tunnel="yes"/>
             </xsl:apply-templates>
             <xsl:map-entry key="'text'" select="documents:extract-ft(./tei:TEI)"/>
             <xsl:map-entry key="'type'" select=".//tei:text/@type/data(.)"/>
