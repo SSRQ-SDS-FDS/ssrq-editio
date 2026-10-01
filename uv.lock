@@ -1434,7 +1434,7 @@ requires-dist = [
     { name = "python-dotenv", specifier = ">=1.2.2" },
     { name = "saxonche", specifier = "==13.0.0" },
     { name = "sentry-sdk", specifier = ">=2.56.0" },
-    { name = "ssrq-utils", git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git" },
+    { name = "ssrq-utils", git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git?tag=v0.8.1" },
     { name = "typer", specifier = ">=0.12.5" },
     { name = "uvicorn", specifier = ">=0.31.0" },
 ]
@@ -1455,8 +1455,8 @@ dev = [
 
 [[package]]
 name = "ssrq-utils"
-version = "0.7.0"
-source = { git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git#cd594b22c4f2929bc6a42f748fe6a3337bc98a58" }
+version = "0.8.1"
+source = { git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git?tag=v0.8.1#84d4aa1e6d0e52d6fb084ed2ec89b257e817afc5" }
 dependencies = [
     { name = "cachebox" },
     { name = "maturin" },
