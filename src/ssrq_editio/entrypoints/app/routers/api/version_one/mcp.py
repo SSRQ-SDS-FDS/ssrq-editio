@@ -5,7 +5,9 @@ from typing import Annotated, cast
 from fastmcp import FastMCP
 from pydantic import Field
 
+from ssrq_editio.adapters.db.documents import get_document as get_document_from_db
 from ssrq_editio.entrypoints.app.shared.dependencies import db_connection
+from ssrq_editio.models.documents import DocumentMCPResponse
 from ssrq_editio.models.entities import EntityTypes, Keyword, Lemma, Person, Place
 from ssrq_editio.models.search import DocumentSearchResponse
 from ssrq_editio.services.entities import get_entities
@@ -97,6 +99,30 @@ async def resolve_entity(
             )
 
         return cast(Keyword | Lemma | Person | Place, entities.entities[0])
+
+    raise RuntimeError("The database session did not yield a connection.")
+
+
+@mcp.tool
+async def get_document(document_id: str) -> DocumentMCPResponse:
+    """Retrieve the structured metadata for one document in the edition.
+
+    Use the document ``idno`` returned by ``search_documents``. The response
+    is the public SSRQ document model and includes identification data, title,
+    dates, document type, keywords, entity references, relationships, and
+    available facsimile information. Internal database and filesystem fields
+    are deliberately excluded. For example, a search result with
+    ``idno`` ``SSRQ-SG-III_4-1-1`` can be passed unchanged as ``document_id``.
+
+    Args:
+        document_id: The document's SSRQ ``idno``.
+
+    Returns:
+        The structured document metadata.
+    """
+    async for connection in db_connection():
+        document = await get_document_from_db(connection, document_id)
+        return DocumentMCPResponse.model_validate(document.model_dump())
 
     raise RuntimeError("The database session did not yield a connection.")
 

@@ -67,6 +67,7 @@ async def test_mcp_endpoint_supports_initialization_and_tool_discovery(
     assert [tool["name"] for tool in message["result"]["tools"]] == [
         "search_documents",
         "resolve_entity",
+        "get_document",
     ]
 
     response = await mcp_client.post(
@@ -104,6 +105,32 @@ async def test_mcp_endpoint_supports_initialization_and_tool_discovery(
     assert resolved_entity["id"] == "key000001"
     assert resolved_entity["de_name"] == "Abt"
     assert resolved_entity["de_definition"]
+
+    response = await mcp_client.post(
+        "/api/v1/mcp/",
+        json={
+            "jsonrpc": "2.0",
+            "id": 5,
+            "method": "tools/call",
+            "params": {
+                "name": "get_document",
+                "arguments": {"document_id": "SSRQ-SG-III_4-1-1"},
+            },
+        },
+        headers=headers,
+    )
+
+    assert response.status_code == 200
+    message = json.loads(response.text.split("data: ", maxsplit=1)[1])
+    document = message["result"]["structuredContent"]
+    assert document["idno"] == "SSRQ-SG-III_4-1-1"
+    assert document["printed_idno"] == "SSRQ SG III/4 1/1"
+    assert document["keywords"]
+    assert "source" not in document
+    assert "uuid" not in document
+    assert "volume_id" not in document
+    assert "is_main" not in document
+    assert "sort_key" not in document
 
 
 @pytest.mark.anyio
