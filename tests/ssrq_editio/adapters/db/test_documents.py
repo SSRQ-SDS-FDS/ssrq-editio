@@ -41,6 +41,7 @@ def documents():
                 printed_idno=f"SSRQ SG III/4 {d}",
                 volume_id="SG_III_4",
                 orig_place=["loc000001"],
+                keywords=["key000001"] if d % 2 == 0 else None,
                 de_title="<h3>foo</h3>",
                 fr_title=None,
                 type=DocumentType.transcript,
@@ -116,6 +117,19 @@ async def test_get_documents(db_volume_data, documents, search, facs, expected):
         connection=db_volume_data, volume_id="SG_III_4", search=search, facs=facs
     )
     assert len(search_result) == expected
+
+
+@pytest.mark.anyio
+async def test_get_documents_returns_keywords(db_volume_data, documents):
+    await initialize_document_data(documents=documents, connection=db_volume_data)
+
+    result = await get_documents(connection=db_volume_data, volume_id="SG_III_4")
+
+    assert any(document.keywords is None for document in result)
+    assert any(document.keywords is not None for document in result)
+    assert all(
+        document.keywords == ["key000001"] for document in result if document.keywords is not None
+    )
 
 
 @pytest.mark.anyio

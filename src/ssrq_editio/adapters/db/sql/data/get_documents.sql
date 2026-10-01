@@ -47,6 +47,7 @@ SELECT -- noqa: disable=all
     docs.printed_idno,
     docs.volume_id,
     docs.orig_place,
+    docs.keywords,
     docs.de_title,
     docs.fr_title,
     docs.entities,

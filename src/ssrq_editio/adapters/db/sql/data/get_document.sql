@@ -30,6 +30,7 @@ SELECT
     printed_idno,
     volume_id,
     orig_place,
+    keywords,
     de_title,
     fr_title,
     entities,
