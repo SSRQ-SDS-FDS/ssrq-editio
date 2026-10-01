@@ -1,4 +1,5 @@
 from pathlib import Path
+from time import perf_counter
 
 from aiosqlite import Connection
 
@@ -19,15 +20,24 @@ from ssrq_editio.services.volumes import create_search_pattern, fill_volume_info
 
 
 async def setup(
-    db: str, clean: bool, config_src: Path, data_src: Path, schema_src: Path | str, parallel: bool
+    db: str,
+    clean: bool,
+    config_src: Path,
+    data_src: Path,
+    schema_src: Path | str,
+    parallel: bool,
+    profile: bool = False,
 ):
     SSRQ_LOGGER.info("Preparing the database.")
+    setup_start = perf_counter()
 
     if clean and (db_file := Path(db)).exists():
         db_file.unlink()
         SSRQ_LOGGER.success(f"Removed the existing database file: {db}")
 
+    schema_start = perf_counter()
     transpiled_schema = await transpile_schema_to_translations(schema_src, TMP_SCHEMA)
+    schema_seconds = perf_counter() - schema_start
 
     SSRQ_LOGGER.success("Transpiled the schema to translations.")
 
@@ -38,10 +48,18 @@ async def setup(
         SSRQ_LOGGER.success("Initialized the database with tables and settings.")
 
         await setup_kantons(session)
-        await setup_volumes(session, config_src, data_src, transpiled_schema, parallel)
+        await setup_volumes(
+            session, config_src, data_src, transpiled_schema, parallel, profile=profile
+        )
 
         if clean:
             await setup_entities(session)
+
+    if profile:
+        SSRQ_LOGGER.info(
+            f"Database preparation profile: schema_transpilation={schema_seconds:.3f}s "
+            f"total={perf_counter() - setup_start:.3f}s"
+        )
 
 
 async def setup_kantons(connection: Connection):
@@ -55,6 +73,7 @@ async def setup_volumes(
     data_src: Path,
     transpiled_schema: Path,
     parallel: bool,
+    profile: bool = False,
 ):
     config = await load_volume_config(config_src)
     SSRQ_LOGGER.success(
@@ -79,7 +98,9 @@ async def setup_volumes(
 
         SSRQ_LOGGER.success(f"Inserted volume data for {volume.key} into the database.")
 
-        await setup_documents(connection, files, volume.key, transpiled_schema, parallel)
+        await setup_documents(
+            connection, files, volume.key, transpiled_schema, parallel, profile=profile
+        )
 
 
 async def setup_documents(
@@ -88,19 +109,41 @@ async def setup_documents(
     volume_id: str,
     transpiled_schema: Path,
     parallel: bool,
+    profile: bool = False,
 ):
     SSRQ_LOGGER.info(
         f"Starting to extract infos from {len(files)} XML-documents for »{volume_id}«."
     )
 
+    extraction_start = perf_counter()
     documents = await extract_infos_from_xml(
-        xml_src=files, volume_id=volume_id, transpiled_schema=transpiled_schema, parallel=parallel
+        xml_src=files,
+        volume_id=volume_id,
+        transpiled_schema=transpiled_schema,
+        parallel=parallel,
     )
+    extraction_seconds = perf_counter() - extraction_start
 
+    if profile:
+        SSRQ_LOGGER.info(
+            f"Document extraction profile for {volume_id}: documents={len(documents)} "
+            f"extraction_and_validation={extraction_seconds:.3f}s"
+        )
+
+    database_start = perf_counter()
     await initialize_document_data(documents=tuple(d[0] for d in documents), connection=connection)
+    document_data_seconds = perf_counter() - database_start
+    fulltext_start = perf_counter()
     await initialize_document_fulltext(
         documents=tuple(d[1] for d in documents), connection=connection
     )
+    fulltext_seconds = perf_counter() - fulltext_start
+
+    if profile:
+        SSRQ_LOGGER.info(
+            f"Database write profile for {volume_id}: documents={len(documents)} "
+            f"document_data={document_data_seconds:.3f}s fulltext={fulltext_seconds:.3f}s"
+        )
 
     SSRQ_LOGGER.success(
         f"Extracted and inserted document data for »{volume_id}« into the database."

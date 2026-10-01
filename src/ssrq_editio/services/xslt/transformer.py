@@ -4,7 +4,13 @@ from multiprocessing import cpu_count
 from pathlib import Path
 from typing import Awaitable, Callable, NamedTuple
 
-from saxonche import PySaxonProcessor, PyXdmItem, PyXdmNode, PyXslt30Processor, PyXsltExecutable
+from saxonche import (
+    PySaxonProcessor,
+    PyXdmItem,
+    PyXdmNode,
+    PyXslt30Processor,
+    PyXsltExecutable,
+)
 
 from ssrq_editio.adapters.file import load
 from ssrq_editio.services.xslt.config import XSLT_SRC_DIR
@@ -27,11 +33,15 @@ class XSLTParam(NamedTuple):
     value: str | int | bool | PyXdmItem
 
 
+XSLTInitializer = Callable[[PySaxonProcessor, PyXsltExecutable], list[XSLTParam]]
+
+
 async def apply_xslt_in_parallel(
     xml_src: tuple[str | Path, ...],
     xslt_script: str,
     params: list[XSLTParam] = [],
     xslt_src_dir: Path = XSLT_SRC_DIR,
+    initializer: XSLTInitializer | None = None,
 ) -> list[XSLTResult]:
     """Applies an XSLT script to the given XML source in parallel.
 
@@ -44,6 +54,7 @@ async def apply_xslt_in_parallel(
         xslt_script (str): The XSLT script to apply.
         params (list[XSLTParam], optional): A list of parameters to pass to the XSLT
         xslt_src_dir (Path, optional): The directory where the XSLT scripts are stored.
+        initializer (XSLTInitializer, optional): Prepare per-worker XSLT parameters after compilation.
 
     Returns:
         str: The transformed XML.
@@ -58,7 +69,7 @@ async def apply_xslt_in_parallel(
             loop.run_in_executor(
                 pool,
                 _apply_xslt,
-                *(batch, xslt_script, params, xslt_src_dir),
+                *(batch, xslt_script, params, xslt_src_dir, initializer),
             )
             for batch in batches
         ]
@@ -72,6 +83,7 @@ async def apply_xslt(
     params: list[XSLTParam] = [],
     xslt_src_dir: Path = XSLT_SRC_DIR,
     file_loader: Callable[[Path, str | Path], Awaitable[str]] = load,
+    initializer: XSLTInitializer | None = None,
 ) -> list[XSLTResult]:
     """Applies an XSLT script to the given XML source.
 
@@ -85,6 +97,7 @@ async def apply_xslt(
         params (list[XSLTParam], optional): A list of parameters to pass to the XSLT
         xslt_src_dir (Path, optional): The directory where the XSLT scripts are stored.
         file_loader (Callable[[Path, str | Path], Awaitable[str]], optional): The function to load the XSLT script.
+        initializer (XSLTInitializer, optional): Prepare per-worker XSLT parameters after compilation.
 
     Returns:
         str: The transformed XML.
@@ -93,20 +106,14 @@ async def apply_xslt(
         xslt_proc = saxon_proc.new_xslt30_processor()
         _apply_params(saxon_proc, xslt_proc, params)
         xslt_exec = xslt_proc.compile_stylesheet(stylesheet_file=str(xslt_src_dir / xslt_script))
+        worker_params = initializer(saxon_proc, xslt_exec) if initializer else []
 
-        return [
-            XSLTResult(
-                value=xslt_exec.transform_to_string(
-                    xdm_node=saxon_proc.parse_xml(
-                        xml_text=src
-                        if isinstance(src, str)
-                        else await file_loader(src.parent, src.name)
-                    )
-                ),
-                src=src,
-            )
-            for src in xml_src
-        ]
+        results = []
+        for src in xml_src:
+            xml_text = await file_loader(src.parent, src.name) if isinstance(src, Path) else src
+            results.append(_transform_xml(src, saxon_proc, xslt_exec, xml_text, worker_params))
+
+        return results
 
 
 def apply_precompiled_xslt(
@@ -172,6 +179,7 @@ def _apply_xslt(
     xslt_script: str,
     params: list[XSLTParam] = [],
     xslt_src_dir: Path = XSLT_SRC_DIR,
+    initializer: XSLTInitializer | None = None,
 ):
     """Applies an XSLT script to the given XML source (internal sync version).
 
@@ -189,7 +197,32 @@ def _apply_xslt(
     Returns:
         str: The transformed XML.
     """
-    return run(apply_xslt(xml_src, xslt_script, params, xslt_src_dir))
+    return run(
+        apply_xslt(
+            xml_src,
+            xslt_script,
+            params,
+            xslt_src_dir,
+            initializer=initializer,
+        )
+    )
+
+
+def _transform_xml(
+    source: str | Path,
+    saxon_proc: PySaxonProcessor,
+    xslt_exec: PyXsltExecutable,
+    xml_text: str,
+    params: list[XSLTParam],
+) -> XSLTResult:
+    executable = xslt_exec.clone() if params else xslt_exec
+    if params:
+        _apply_params(saxon_proc, executable, params)
+
+    return XSLTResult(
+        value=executable.transform_to_string(xdm_node=saxon_proc.parse_xml(xml_text=xml_text)),
+        src=source,
+    )
 
 
 def _apply_params(

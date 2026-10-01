@@ -1,4 +1,5 @@
 import threading
+from functools import partial
 from pathlib import Path
 from typing import Self, Sequence, cast
 
@@ -272,19 +273,18 @@ async def extract_infos_from_xml(
     Raises:
         XSLTTransformationError: If the extraction fails for any of the XML sources
     """
+    initializer = partial(_prepare_document_info_params, schema_path=transpiled_schema)
     result = (
         await apply_xslt(
             xml_src=xml_src,
             xslt_script=xslt_script,
-            params=[
-                XSLTParam("schema", transpiled_schema.as_uri()),
-            ],
+            initializer=initializer,
         )
         if not parallel
         else await apply_xslt_in_parallel(
             xml_src=xml_src,
             xslt_script=xslt_script,
-            params=[XSLTParam("schema", transpiled_schema.as_uri())],
+            initializer=initializer,
         )
     )
 
@@ -449,3 +449,27 @@ def map_facs_to_iiif_urls(facsimiles: list[str], iiif_base: str = IIIF_SERVER_UR
         list[str]: A list of corresponding full IIIF URLs.
     """
     return [f"{iiif_base}{facs}.ptif/info.json" for facs in facsimiles]
+
+
+def _prepare_document_info_params(
+    saxon_proc: PySaxonProcessor,
+    xslt_exec: PyXsltExecutable,
+    schema_path: Path,
+) -> list[XSLTParam]:
+    schema_doc = saxon_proc.parse_xml(xml_file_name=str(schema_path.resolve()))
+    xpath_proc = saxon_proc.new_xpath_processor()
+    xpath_proc.declare_namespace(prefix="tei", uri="http://www.tei-c.org/ns/1.0")
+    xpath_proc.set_context(xdm_item=schema_doc)
+    schema_node = xpath_proc.evaluate_single("/tei:TEI")
+
+    if schema_node is None or not schema_node.is_node:
+        raise ValueError(f"Could not find TEI root element in schema: {schema_path}")
+
+    result = xslt_exec.call_function_returning_value(
+        "{http://ssrq-sds-fds.ch/xsl/tei2pub/functions/i18n}create-translation-map",
+        [schema_node],
+    )
+    if not isinstance(result, PyXdmValue) or not isinstance(result.head, PyXdmMap):
+        raise ValueError("Could not create the document-info translation map.")
+
+    return [XSLTParam("translations", result.head)]
