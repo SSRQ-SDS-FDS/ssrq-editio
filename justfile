@@ -14,11 +14,18 @@ build args="": css
 # Compile all CSS files using TailwindCSS, pass "-w" to watch for changes
 css args="":
     #!/usr/bin/env sh
+    pids=""
     for pair in {{css_files}}; do
-        input_file=$(echo "$pair" | cut -d':' -f1)
-        output_file=$(echo "$pair" | cut -d':' -f2)
-        npx @tailwindcss/cli -i "{{css_dir}}/$input_file" -o "{{css_dir}}/dist/$output_file" -m {{args}}
+        input_file=${pair%%:*}
+        output_file=${pair#*:}
+        npx @tailwindcss/cli -i "{{css_dir}}/$input_file" -o "{{css_dir}}/dist/$output_file" -m {{args}} &
+        pids="$pids $!"
     done
+    status=0
+    for pid in $pids; do
+        wait "$pid" || status=1
+    done
+    [ "$status" -eq 0 ] || exit "$status"
     cp "{{css_dir}}/src/components/popup_anchors.css" "{{css_dir}}/dist/popup_anchors.css"
 
 # Build CSS / JS and start the development server – files in src will be watched
