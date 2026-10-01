@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS volumes
 (
     id TEXT NOT NULL PRIMARY KEY,
     sort_key INTEGER NOT NULL,
+    volume_type TEXT NOT NULL DEFAULT 'tei',
     name TEXT NOT NULL,
     kanton_id INTEGER NOT NULL,
     title TEXT NOT NULL,

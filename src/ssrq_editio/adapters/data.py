@@ -1,9 +1,15 @@
 from pathlib import Path
 
 from pydantic_core import from_json
+from ssrq_utils.retro.model import RegisterVolume
 
 from ssrq_editio.adapters.file import load
 from ssrq_editio.models.volumes import Volume, Volumes
+
+
+async def load_register_volume_config(path: Path) -> RegisterVolume:
+    """Load PDF-only register-volume metadata from a volume repository."""
+    return RegisterVolume.model_validate_json(await load(dir=path.parent, name=path.name))
 
 
 async def load_volume_config(config_src: Path) -> Volumes:

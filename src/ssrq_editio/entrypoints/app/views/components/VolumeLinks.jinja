@@ -5,9 +5,11 @@
     volume: Volume
 #}
 <footer class="mt-4 flex">
-    <a href="{{ url_for('document_list', kanton=volume.kanton, volume=volume.machine_name).include_query_params(lang=lang.value) }}">
-        {{ translator.translate(lang, 'articles') }}
-    </a>
+    {% if not volume.is_register %}
+        <a href="{{ url_for('document_list', kanton=volume.kanton, volume=volume.machine_name).include_query_params(lang=lang.value) }}">
+            {{ translator.translate(lang, 'articles') }}
+        </a>
+    {% endif %}
     {% if volume.literature %}
     <a href="{{ volume.literature }}" target="_blank">
         {{ translator.translate(lang, 'literature') }}

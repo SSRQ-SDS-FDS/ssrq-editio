@@ -12,7 +12,7 @@ from ssrq_editio.adapters.db.volumes import (
     retrieve_volume_metadata,
 )
 from ssrq_editio.models.documents import Document, DocumentType
-from ssrq_editio.models.volumes import Volume, VolumeMeta
+from ssrq_editio.models.volumes import Volume, VolumeMeta, VolumeType
 
 
 @pytest.fixture
@@ -79,6 +79,7 @@ async def test_list_volumes_with_editors(db_kanton_data):
             project_page=None,
             editors=["foo Editor", f"{i}"],
             prefix="SSRQ",
+            volume_type=VolumeType.REGISTER if i == 1 else VolumeType.TEI,
         )
         for i in range(3)
     ]
@@ -94,6 +95,7 @@ async def test_list_volumes_with_editors(db_kanton_data):
         assert volume.name == test_volumes[i].name
         assert volume.kanton == test_volumes[i].kanton
         assert volume.title == test_volumes[i].title
+        assert volume.volume_type == test_volumes[i].volume_type
         assert volume.pdf == test_volumes[i].pdf
         assert volume.literature == test_volumes[i].literature
         assert all(editor in test_volumes[i].editors for editor in volume.editors)

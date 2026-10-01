@@ -1,6 +1,7 @@
 INSERT INTO volumes (
     id,
     sort_key,
+    volume_type,
     name,
     kanton_id,
     title,
@@ -11,6 +12,7 @@ INSERT INTO volumes (
     project_page
 ) VALUES
 (
+    ?,
     ?,
     ?,
     ?,
