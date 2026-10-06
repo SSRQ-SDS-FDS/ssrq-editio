@@ -14,6 +14,7 @@ async def test_volume_page_lists_test_volumes(app_client: AsyncClient):
     doc = Selector(text=response.text)
     cards = doc.css(".volume").getall()
     assert len(cards) == 1
+    assert doc.css(".collaborateurs").get() is None
 
 
 @pytest.mark.anyio
@@ -48,3 +49,44 @@ async def test_register_volume_card_links_to_pdf_without_article_list(
     response = await app_client.get("/ZG/1_3", follow_redirects=False)
     assert response.status_code == codes.TEMPORARY_REDIRECT
     assert response.headers["location"].endswith("/ZG/1_3.pdf")
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize(
+    "lang, phrase",
+    [
+        ("de", "unter Mitarbeit von"),
+        ("fr", "avec la collaboration de"),
+        ("en", "with contributions from"),
+        ("it", "con la collaborazione di"),
+    ],
+)
+async def test_volume_card_shows_collaborateurs(app_client, app_db_setup, lang, phrase):
+    volume = Volume(
+        key="ZH_collaboration",
+        sort_key=1,
+        kanton="ZH",
+        name="Collaboration",
+        prefix="SSRQ",
+        title="Bandtitel",
+        pdf=None,
+        literature=None,
+        project_page=None,
+        editors=["Eva Editor"],
+        collaborateurs=["Zoe Mitarbeit", "Anna Mitarbeit"],
+    )
+    # The router fixtures share a database across tests.
+    await app_db_setup.execute("DELETE FROM collaborateurs WHERE volume_id = ?", (volume.key,))
+    await app_db_setup.execute("DELETE FROM editors WHERE volume_id = ?", (volume.key,))
+    await app_db_setup.execute("DELETE FROM volumes WHERE id = ?", (volume.key,))
+    await initialize_volume_with_editors(app_db_setup, volume)
+
+    response = await app_client.get(f"/ZH?lang={lang}")
+
+    assert response.status_code == codes.OK
+    doc = Selector(text=response.text)
+    line = doc.css(".volume .collaborateurs")
+    assert " ".join(line.xpath("string(.)").get().split()) == (
+        f"{phrase} Anna Mitarbeit, Zoe Mitarbeit"
+    )
+    assert "Eva Editor" in line.xpath("preceding-sibling::p[1]").get()

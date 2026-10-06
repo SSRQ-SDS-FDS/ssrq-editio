@@ -95,7 +95,7 @@ async def setup_volumes(
 
         SSRQ_LOGGER.success(f"Found {len(files)} documents for volume: {volume.key}")
 
-        volume = await fill_volume_info_from_xml(files[0], volume)
+        volume = await fill_volume_info_from_xml(tuple(files), volume)
 
         SSRQ_LOGGER.info("Filled volume info from XML.")
 

@@ -26,13 +26,13 @@ def create_search_pattern(volume: Volume, content_folder: str = "online") -> str
 
 
 async def fill_volume_info_from_xml(
-    xml_src: Path, volume: Volume, xslt_script: str = "volume_info.xslt"
+    xml_src: Path | tuple[Path, ...], volume: Volume, xslt_script: str = "volume_info.xslt"
 ):
     """This function fills the volume object with dynamic
-    information, which is extracted from a TEI-XML file.
+    information extracted from the main TEI-XML files of a volume.
 
     Args:
-        xml_src (Path): Path to the TEI-XML file.
+        xml_src: One TEI-XML file or all main files of the volume.
         volume (Volume): Volume object.
         xslt_script (str, optional): XSLT script to use. Defaults to "volume_info.xslt".
 
@@ -42,12 +42,19 @@ async def fill_volume_info_from_xml(
     Raises:
         ValueError: If XSLT transformation failed / returned None.
     """
-    result = await apply_xslt((xml_src,), xslt_script)
-
-    if result[0].value is None:
+    sources = (xml_src,) if isinstance(xml_src, Path) else xml_src
+    if not sources:
+        raise ValueError(f"Could not update volume info for {volume.key}, no XML files.")
+    results = await apply_xslt(sources, xslt_script)
+    if any(result.value is None for result in results):
         raise ValueError(f"Could not update volume info for {volume.key}, XSLT failed.")
 
-    return volume.model_copy(update=from_json(result[0].value))
+    metadata = [from_json(result.value) for result in results if result.value is not None]
+    editors = {name for item in metadata for name in item["editors"]}
+    collaborateurs = {name for item in metadata for name in item["collaborateurs"]} - editors
+    return volume.model_copy(
+        update={**metadata[0], "collaborateurs": sorted(collaborateurs, key=str.casefold)}
+    )
 
 
 async def stream_volume_pdf(

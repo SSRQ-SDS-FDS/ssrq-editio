@@ -16,9 +16,18 @@
     <xsl:output method="json" encoding="utf-8"/>
 
     <xsl:template match="/">
-        <xsl:variable name="editors" as="text()+">
+        <xsl:variable name="editors" as="text()*">
             <xsl:apply-templates select=".//tei:teiHeader//tei:editor"/>
         </xsl:variable>
+        <!-- Only people with at least one substantive responsibility are contributors.
+             Editors are excluded across all documents by the Python aggregation. -->
+        <xsl:variable name="collaborateurs" as="xs:string*" select="
+            .//tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:respStmt[
+                tei:resp[normalize-space(.) ne '' and not(normalize-space(.) = (
+                    'Qualitätskontrolle', 'Erstellung Faksimile',
+                    'Contrôle de qualité', 'Création de fac-similé'
+                ))]
+            ]/tei:persName/normalize-space(.)[. ne '']"/>
         <xsl:map>
             <xsl:map-entry key="'title'">
                 <xsl:variable name="result" as="element(h3)" >
@@ -27,6 +36,7 @@
                 <xsl:sequence select="$result => serialize() => normalize-space()"/>
             </xsl:map-entry>
             <xsl:map-entry key="'editors'" select="array{$editors}"/>
+            <xsl:map-entry key="'collaborateurs'" select="array{distinct-values($collaborateurs)}"/>
         </xsl:map>
     </xsl:template>
 
