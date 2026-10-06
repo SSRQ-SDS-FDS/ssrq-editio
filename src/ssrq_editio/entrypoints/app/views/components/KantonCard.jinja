@@ -20,7 +20,7 @@
                 <CounterBadge :count="kanton.docs" />
             </div>
             <h3>
-                {{ (kanton | attr(lang.value ~ '_title') or kanton.de_title) | safe }}
+                {{ kanton | attr(lang.value ~ '_title') | default(kanton.de_title, true) | safe }}
             </h3>
         </div>
     </div>
