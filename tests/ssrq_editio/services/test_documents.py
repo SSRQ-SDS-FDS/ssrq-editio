@@ -58,6 +58,7 @@ async def document_transformer(transpiled_schema: Path) -> DocumentTransformer:
                 printed_idno="SSRQ SG III/4 63",
                 volume_id="foo",
                 orig_place=["loc000211"],
+                keywords=["key000192", "key000621", "key000193"],
                 de_title="Stiftungsbrief einer Frühmesspfründe am Altar der Heiligen Drei Könige und des heiligen Jodok in der Pfarrkirche Gams von Andreas Roll von Bonstetten, Herr von Hohensax-Gams",
                 fr_title=None,
                 entities=[
@@ -195,6 +196,18 @@ async def document_transformer(transpiled_schema: Path) -> DocumentTransformer:
                 printed_idno="SSRQ SG III/4 245",
                 volume_id="foo",
                 orig_place=["loc001073", "loc000731"],
+                keywords=[
+                    "key000199",
+                    "key000690",
+                    "key004581",
+                    "key000831",
+                    "key000692",
+                    "key004584",
+                    "key004591",
+                    "key000791",
+                    "key001114",
+                    "key000882",
+                ],
                 de_title="Zolltarif und Zollbegünstigung von Schwyz und Glarus für Gams",
                 fr_title=None,
                 entities=[
@@ -278,6 +291,14 @@ async def document_transformer(transpiled_schema: Path) -> DocumentTransformer:
                 printed_idno="SDS NE 1 143",
                 volume_id="foo",
                 orig_place=["loc016171"],
+                keywords=[
+                    "key000658",
+                    "key000273",
+                    "key005297",
+                    "key004136",
+                    "key000086",
+                    "key000847",
+                ],
                 de_title=None,
                 fr_title="""Articles généraux (points de franchises) octroyées par Frédéric 1<sup class="tei-hi">er</sup>, roi de Prusse à tout l'État<Popup><PopupTrigger><InfoIcon class="tei-entity-icon"/></PopupTrigger><PopupBody class="has-marker"><PopupContent><span class="tei-note">Note Favarger 1982: Le roi de Prusse avait été investi de la souveraineté de Neuchâtel et Valangin par sentence du Tribunal des Trois-États rendue le 3 novembre 1707, et qui précisait de façon expresse que le roi conserverait les libertés « tant des bourgeois que des autres peuples de cet État », Tribolet, <span class="tei-hi italic">Histoire</span>, p. 18-20.</span></PopupContent></PopupBody></Popup>""",
                 entities=[
@@ -436,6 +457,20 @@ async def test_extract_facs_responsible_from_xml(example_path: Path, transpiled_
         (example_path / "SSRQ-ZH-NF_II_11-171-1.xml",), "foo", transpiled_schema=transpiled_schema
     )
     assert result[0][0].facs_responsible == "Ariane Huber Hernández, Michael Nadig"
+
+
+@pytest.mark.anyio
+async def test_extract_keywords_from_xml(example_path: Path, transpiled_schema: Path):
+    result = await extract_infos_from_xml(
+        (example_path / "SSRQ-ZH-NF_II_11-171-1.xml",), "foo", transpiled_schema=transpiled_schema
+    )
+
+    assert result[0][0].keywords == [
+        "key000494",
+        "key000305",
+        "key000081",
+        "key000036",
+    ]
 
 
 @pytest.mark.anyio

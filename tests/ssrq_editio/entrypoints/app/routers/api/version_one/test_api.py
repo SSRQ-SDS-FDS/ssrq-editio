@@ -20,6 +20,37 @@ async def test_kantons(app_client: AsyncClient):
 
 
 @pytest.mark.anyio
+async def test_document_search(app_client: AsyncClient):
+    response = await app_client.get("/api/v1/search", params={"query": "foo"})
+
+    assert response.status_code == codes.OK
+    body = response.json()
+    assert body["query"] == "foo"
+    assert body["total"] == 1
+    assert body["results"] == [
+        {
+            "uuid": "d56f1ce8-cec9-49ed-b54b-09f397adc2d8",
+            "idno": "SSRQ-SG-III_4-1-1",
+            "printed_idno": "SSRQ SG III/4 1/1",
+            "ft_match": "<mark>foo</mark> bar <mark>foo</mark>",
+            "keywords": ["key000001"],
+        }
+    ]
+
+
+@pytest.mark.anyio
+async def test_document_search_without_query(app_client: AsyncClient):
+    response = await app_client.get("/api/v1/search")
+
+    assert response.status_code == codes.OK
+    assert response.json() == {
+        "query": "",
+        "total": 0,
+        "results": [],
+    }
+
+
+@pytest.mark.anyio
 async def test_entities(app_client: AsyncClient):
     response = await app_client.get("/api/v1/entities")
     assert response.status_code == codes.OK

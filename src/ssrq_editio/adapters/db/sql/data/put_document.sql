@@ -12,6 +12,7 @@ INSERT OR REPLACE INTO documents (
     printed_idno,
     volume_id,
     orig_place,
+    keywords,
     de_title,
     fr_title,
     entities,
@@ -36,6 +37,12 @@ INSERT OR REPLACE INTO documents (
     :printed_idno,
     :volume_id,
     :orig_place,
+    CASE
+        WHEN
+            typeof(:keywords) = 'text' AND :keywords IS NOT NULL
+            THEN json(:keywords)
+        ELSE :keywords
+    END,
     :de_title,
     :fr_title,
     CASE

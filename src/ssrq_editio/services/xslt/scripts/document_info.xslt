@@ -33,6 +33,7 @@
             <xsl:map-entry key="'printed_idno'" select="cutils:print-idno($idno)"/>
             <xsl:map-entry key="'facs'" select=".//tei:pb/@facs/data() => cutils:seq-to-array()"/>
             <xsl:map-entry key="'entities'" select="cutils:list-entity-references(./tei:TEI) => cutils:seq-to-array()"/>
+            <xsl:map-entry key="'keywords'" select=".//tei:teiHeader/tei:profileDesc/tei:textClass/tei:keywords/tei:term/@ref/data() => cutils:seq-to-array()"/>
             <xsl:apply-templates select="(.//tei:msDesc)[1]">
                 <xsl:with-param name="translations" select="$translations" tunnel="yes"/>
             </xsl:apply-templates>

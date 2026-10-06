@@ -109,6 +109,10 @@ class Document(DocumentDate, DocumentIdentification, DocumentRelations, Document
         list[str] | None,
         BeforeValidator(parse_as_list_or_return),
     ] = None
+    keywords: Annotated[
+        list[str] | None,
+        BeforeValidator(parse_as_list_or_return),
+    ] = None
     source: Path | None = None
     type: Annotated[
         DocumentType, BeforeValidator : lambda x: DocumentType(x) if isinstance(x, str) else x
@@ -122,6 +126,35 @@ class Document(DocumentDate, DocumentIdentification, DocumentRelations, Document
 
     def model_dump_sqlite(self) -> dict[str, Any]:
         return {k: serialize_value(v) for k, v in self.model_dump().items()}
+
+
+class DocumentMCPResponse(DocumentDate, DocumentRelations, DocumentTitle):
+    """Public document metadata exposed through the MCP interface.
+
+    This model intentionally contains only information useful for exploring
+    the edition. Internal database and filesystem fields such as ``uuid``,
+    ``volume_id``, ``is_main``, ``sort_key`` and ``source`` are not part of
+    the public MCP response.
+    """
+
+    idno: str
+    printed_idno: str
+    facs: Annotated[
+        list[str] | None,
+        BeforeValidator(parse_as_list_or_return),
+    ]
+    facs_responsible: str | None = None
+    orig_place: Annotated[
+        list[str] | None,
+        BeforeValidator(parse_as_list_or_return),
+    ] = None
+    keywords: Annotated[
+        list[str] | None,
+        BeforeValidator(parse_as_list_or_return),
+    ] = None
+    type: Annotated[
+        DocumentType, BeforeValidator : lambda x: DocumentType(x) if isinstance(x, str) else x
+    ]
 
 
 class DocumentFulltext(BaseModel):
