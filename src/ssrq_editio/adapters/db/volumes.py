@@ -67,7 +67,7 @@ async def initialize_collaborateurs(
         query = await load(SQL_DATA_DIR, collaborateur_query)
         await cursor.executemany(
             query,
-            [(name, volume.key) for name in sorted(set(volume.collaborateurs), key=str.casefold)],
+            [(name, volume.key) for name in dict.fromkeys(volume.collaborateurs)],
         )
     await connection.commit()
 
