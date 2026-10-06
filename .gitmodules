@@ -58,3 +58,6 @@
 [submodule "src/ssrq_editio/data/ZG_1_3"]
 	path = src/ssrq_editio/data/ZG_1_3
 	url = https://github.com/SSRQ-SDS-FDS/ZG_1_3.git
+[submodule "src/ssrq_editio/data/ZG_1_2"]
+	path = src/ssrq_editio/data/ZG_1_2
+	url = https://github.com/SSRQ-SDS-FDS/ZG_1_2.git
