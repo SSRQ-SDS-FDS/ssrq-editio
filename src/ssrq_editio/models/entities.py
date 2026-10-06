@@ -222,16 +222,21 @@ class Person(Entity):
     ] = None
     # ToDo occupations
 
-    def get_name_by_lang(self, lang: Lang) -> str:
+    def get_name_by_lang(self, lang: Lang, *, surname_first: bool = True) -> str:
+        def format_name(name: str, surname: str | None) -> str:
+            if not surname:
+                return name
+            return f"{surname}, {name}" if surname_first else f"{name} {surname}"
+
         name = getattr(self, f"{lang.value}_name", None)
         surname = getattr(self, f"{lang.value}_surname", None)
 
         if name and surname:
-            return f"{surname}, {name}"
+            return format_name(name, surname)
 
         return next(
             (
-                f"{sname}, {nname}" if sname else nname
+                format_name(nname, sname)
                 for nname, sname in zip(
                     (self.de_name, self.fr_name, self.it_name, self.lt_name, self.rm_name),
                     (
