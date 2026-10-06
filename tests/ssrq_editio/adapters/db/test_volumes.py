@@ -214,3 +214,22 @@ async def test_list_volumes_with_editors_order(db_kanton_data):
     assert volumes is not None
     assert len(volumes) == 1
     assert volumes[0].editors == expected_editors
+
+
+@pytest.mark.anyio
+async def test_collaborateurs_roundtrip_and_volume_assignment(db_kanton_data):
+    volume = TEST_VOLUME.model_copy(
+        update={
+            "collaborateurs": ["Zoe Mitarbeit", "Anna, Mitarbeit", "Zoe Mitarbeit", "bob Mitarbeit"]
+        }
+    )
+    other = TEST_VOLUME.model_copy(update={"key": "other", "sort_key": 2})
+    await initialize_volume_with_editors(db_kanton_data, volume)
+    await initialize_volume_with_editors(db_kanton_data, other)
+
+    volumes = await list_volumes_with_editors(db_kanton_data, "ZH")
+
+    assert volumes is not None
+    assert volumes[0].collaborateurs == ["Anna, Mitarbeit", "bob Mitarbeit", "Zoe Mitarbeit"]
+    assert volumes[0].editors == TEST_VOLUME.editors
+    assert volumes[1].collaborateurs == []

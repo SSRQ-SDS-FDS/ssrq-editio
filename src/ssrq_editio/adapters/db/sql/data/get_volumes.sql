@@ -15,7 +15,13 @@ SELECT
         FROM
             editors AS e
         WHERE e.volume_id = v.id
-    ) AS editors
+    ) AS editors,
+    (
+        SELECT JSON_GROUP_ARRAY(co.name)
+        FROM
+            collaborateurs AS co
+        WHERE co.volume_id = v.id
+    ) AS collaborateurs
 FROM
     volumes AS v
 INNER JOIN

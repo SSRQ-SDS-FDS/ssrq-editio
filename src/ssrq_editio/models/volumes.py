@@ -28,6 +28,10 @@ class Volume(BaseModel):
     editors: Annotated[
         list[str], BeforeValidator(lambda x: x.split(",") if isinstance(x, str) else x)
     ] = []
+    collaborateurs: Annotated[
+        list[str],
+        BeforeValidator(lambda x: sorted(parse_as_list_or_return(x) or [], key=str.casefold)),
+    ] = []
     docs: int = 0
 
     @computed_field
