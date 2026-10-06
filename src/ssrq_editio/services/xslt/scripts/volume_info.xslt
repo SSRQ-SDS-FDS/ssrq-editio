@@ -13,19 +13,22 @@
 
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/html.xsl"/>
 
+    <xsl:param name="excluded-collaborateur-roles" as="xs:string+" select="(
+            'Qualitätskontrolle', 'Erstellung Faksimile',
+            'Contrôle de qualité', 'Création de fac-similé'
+        )"/>
+
     <xsl:output method="json" encoding="utf-8"/>
 
     <xsl:template match="/">
         <xsl:variable name="editors" as="xs:string+"
-                      select=".//tei:teiHeader//tei:editor/normalize-space(.)"/>
+            select=".//tei:teiHeader//tei:editor/normalize-space(.)"/>
         <!-- Only people with at least one substantive responsibility are contributors.
              Editors are excluded across all documents by the Python aggregation. -->
         <xsl:variable name="collaborateurs" as="xs:string*" select="
             .//tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:respStmt[
-                tei:resp[normalize-space(.) ne '' and not(normalize-space(.) = (
-                    'Qualitätskontrolle', 'Erstellung Faksimile',
-                    'Contrôle de qualité', 'Création de fac-similé'
-                ))]
+                tei:resp[normalize-space(.) ne ''
+                    and not(normalize-space(.) = $excluded-collaborateur-roles)]
             ]/tei:persName/normalize-space(.)[. ne '']"/>
         <xsl:map>
             <xsl:map-entry key="'title'">
