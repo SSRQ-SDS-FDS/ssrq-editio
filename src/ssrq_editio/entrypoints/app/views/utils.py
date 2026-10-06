@@ -10,10 +10,15 @@ from ssrq_utils.i18n.translator import Translator
 from ssrq_utils.lang.display import Lang
 
 from ssrq_editio.models.documents import Document
-from ssrq_editio.models.entities import Entities, EntityTypes
+from ssrq_editio.models.entities import Entities, EntityTypes, Person
 from ssrq_editio.services.entities import map_to_entity_type
 
-__all__ = ["create_entity_preview_by_id", "render_template_string", "display_sub_document_info"]
+__all__ = [
+    "create_entity_preview_by_id",
+    "render_template_string",
+    "display_sub_document_info",
+    "resolve_entity_name",
+]
 
 
 @pass_context
@@ -110,4 +115,54 @@ def display_sub_document_info(sub_docs: Sequence[Document] | None, idno: str, la
 
     return Markup(
         f"{sub_doc.get_title_by_lang(lang)}, {getattr(sub_doc, f'{lang.value}_orig_date')}"
+    )
+
+
+def resolve_entity_name(
+    component_catalog: Catalog,
+    id: str,
+    lang: Lang,
+    entities: dict[EntityTypes, Entities],
+    request: Request,
+) -> str:
+    """Resolve an entity by ID and render its name using the EntityName component.
+
+    Use the requested language with fallback to an available language.
+    Format person names with the given name before the surname.
+    Log an error if the entity cannot be found.
+
+    Args:
+        component_catalog (Catalog): Catalog used to render the component.
+        id (str): ID of the entity to resolve.
+        lang (Lang): Preferred language for the entity's name.
+        entities (dict[EntityTypes, Entities]): Entity stores keyed by type.
+        request (Request): The FastAPI request object. Passed by document view as property additional-data.
+
+    Returns:
+        str: Rendered EntityName component, or an error message if the entity
+            cannot be found.
+    """
+    entity, entity_type = next(
+        (
+            (e, et)
+            for et in map_to_entity_type(id)
+            if (entity_store := entities.get(et)) is not None
+            and (e := entity_store.get_by_id(id)) is not None
+        ),
+        (None, None),
+    )
+    if entity is None or entity_type is None:
+        # Entry not found. Log error and return error message.
+        # ToDo: Improve error logging
+        logging.error("An error occurred while resolving id '%s'.", id)
+        return "Something went wrong. Please contact support."
+
+    return component_catalog.render(
+        "EntityName",
+        name=(
+            entity.get_name_by_lang(lang, surname_first=False)
+            if isinstance(entity, Person)
+            else entity.get_name_by_lang(lang)
+        ),
+        request=request,
     )
