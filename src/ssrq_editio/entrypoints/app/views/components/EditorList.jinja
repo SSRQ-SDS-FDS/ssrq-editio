@@ -1,10 +1,12 @@
 {# def
     editors: list[str],
     lang: Lang,
-    translator: Translator
+    translator: Translator,
+    prefix_key: str = "by"
 #}
-<p>
-    {{ translator.translate(lang, 'by')}}
+{% if editors %}
+<p {{ attrs.render() }}>
+    {{ translator.translate(lang, prefix_key)}}
     {% if editors|length == 1 %}
         {{ editors[0] }}
     {% elif editors|length == 2 %}
@@ -13,3 +15,4 @@
         {{ editors[:-1] | join(', ') }} {{ translator.translate(lang, 'and')}} {{ editors[-1] }}
     {% endif %}
 </p>
+{% endif %}

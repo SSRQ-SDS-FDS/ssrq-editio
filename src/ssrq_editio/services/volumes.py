@@ -52,8 +52,8 @@ async def fill_volume_info_from_xml(
     metadata = [from_json(result.value) for result in results if result.value is not None]
     editors = {name for item in metadata for name in item["editors"]}
     collaborateurs = {name for item in metadata for name in item["collaborateurs"]} - editors
-    return volume.model_copy(
-        update={**metadata[0], "collaborateurs": sorted(collaborateurs, key=str.casefold)}
+    return Volume.model_validate(
+        {**volume.model_dump(), **metadata[0], "collaborateurs": list(collaborateurs)}
     )
 
 
