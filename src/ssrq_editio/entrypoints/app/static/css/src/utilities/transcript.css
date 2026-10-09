@@ -125,7 +125,10 @@ div.tei-list > .tei-head {
 .tei-subst.inline-content,
 .tei-gap.inline-content,
 .tei-unclear.inline-content,
-.tei-app.inline-content
+.tei-app.inline-content,
+.tei-space.inline-content,
+.tei-supplied.inline-content,
+.tei-damage.inline-content
 {
   @apply text-ssrq-greyed-600;
 }
@@ -135,7 +138,9 @@ div.tei-list > .tei-head {
 .tei-add.inline-content button > svg,
 .tei-subst.inline-content button > svg,
 .tei-unclear.inline-content button > svg,
-.tei-app.inline-content button > svg
+.tei-app.inline-content button > svg,
+.tei-supplied.inline-content button > svg,
+.tei-damage.inline-content button > svg
 {
   @apply text-ssrq-greyed-800;
 }
@@ -174,10 +179,10 @@ span.tei-pb.tei-pb-needs-space-right {
 }
 
 /* style span Elements like addSpan, delSpan, damageSpan */
-.addSpanStart, .addSpanEnd{
+.addSpanStart, .addSpanEnd, .delSpanStart, .delSpanEnd{
     display: none;
 }
 
-::highlight(tei-additions) {
-    color: var(--color-ssrq-greyed-600);
+::highlight(tei-spans) {
+    @apply text-ssrq-greyed-600;
 }

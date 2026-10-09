@@ -1,6 +1,8 @@
+import re
 import threading
 from pathlib import Path
 from typing import cast
+from xml.etree import ElementTree
 
 import pytest
 from saxonche import PyXdmMap, PyXdmNode, PyXsltExecutable
@@ -19,6 +21,7 @@ from ssrq_editio.models.documents import (
     DocumentType,
 )
 from ssrq_editio.models.kantons import KantonName
+from ssrq_editio.services import documents as documents_service
 from ssrq_editio.services.documents import (
     DocumentTransformer,
     extract_infos_from_xml,
@@ -55,6 +58,7 @@ async def document_transformer(transpiled_schema: Path) -> DocumentTransformer:
                 printed_idno="SSRQ SG III/4 63",
                 volume_id="foo",
                 orig_place=["loc000211"],
+                keywords=["key000192", "key000621", "key000193"],
                 de_title="Stiftungsbrief einer Frühmesspfründe am Altar der Heiligen Drei Könige und des heiligen Jodok in der Pfarrkirche Gams von Andreas Roll von Bonstetten, Herr von Hohensax-Gams",
                 fr_title=None,
                 entities=[
@@ -192,6 +196,18 @@ async def document_transformer(transpiled_schema: Path) -> DocumentTransformer:
                 printed_idno="SSRQ SG III/4 245",
                 volume_id="foo",
                 orig_place=["loc001073", "loc000731"],
+                keywords=[
+                    "key000199",
+                    "key000690",
+                    "key004581",
+                    "key000831",
+                    "key000692",
+                    "key004584",
+                    "key004591",
+                    "key000791",
+                    "key001114",
+                    "key000882",
+                ],
                 de_title="Zolltarif und Zollbegünstigung von Schwyz und Glarus für Gams",
                 fr_title=None,
                 entities=[
@@ -275,6 +291,14 @@ async def document_transformer(transpiled_schema: Path) -> DocumentTransformer:
                 printed_idno="SDS NE 1 143",
                 volume_id="foo",
                 orig_place=["loc016171"],
+                keywords=[
+                    "key000658",
+                    "key000273",
+                    "key005297",
+                    "key004136",
+                    "key000086",
+                    "key000847",
+                ],
                 de_title=None,
                 fr_title="""Articles généraux (points de franchises) octroyées par Frédéric 1<sup class="tei-hi">er</sup>, roi de Prusse à tout l'État<Popup><PopupTrigger><InfoIcon class="tei-entity-icon"/></PopupTrigger><PopupBody class="has-marker"><PopupContent><span class="tei-note">Note Favarger 1982: Le roi de Prusse avait été investi de la souveraineté de Neuchâtel et Valangin par sentence du Tribunal des Trois-États rendue le 3 novembre 1707, et qui précisait de façon expresse que le roi conserverait les libertés « tant des bourgeois que des autres peuples de cet État », Tribolet, <span class="tei-hi italic">Histoire</span>, p. 18-20.</span></PopupContent></PopupBody></Popup>""",
                 entities=[
@@ -301,6 +325,49 @@ async def test_extract_infos_from_xml(
 
     result[0][0].source = None
     assert result[0][0] == document
+
+
+@pytest.mark.anyio
+async def test_extract_infos_reuses_translation_map_for_multiple_documents(
+    example_path: Path, transpiled_schema: Path, monkeypatch: pytest.MonkeyPatch
+):
+    original = documents_service._prepare_document_info_params
+    call_count = 0
+
+    def count_calls(*args, **kwargs):
+        nonlocal call_count
+        call_count += 1
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(documents_service, "_prepare_document_info_params", count_calls)
+    xml_sources = (
+        example_path / "SSRQ-SG-III_4-63-1.xml",
+        example_path / "SSRQ-SG-III_4-245-1.xml",
+    )
+
+    result = await extract_infos_from_xml(xml_sources, "foo", transpiled_schema)
+
+    assert len(result) == 2
+    assert call_count == 1
+    for source, (_, fulltext) in zip(xml_sources, result, strict=True):
+        source_text = "".join(ElementTree.parse(source).getroot().itertext())
+        expected_text = re.sub(r"[\t\r\n ]+", " ", source_text).strip(" \t\r\n")
+        assert fulltext.text == expected_text
+
+
+@pytest.mark.anyio
+async def test_extract_infos_in_parallel_uses_document_info_initializer(
+    example_path: Path, transpiled_schema: Path
+):
+    xml_sources = (
+        example_path / "SSRQ-SG-III_4-63-1.xml",
+        example_path / "SSRQ-SG-III_4-245-1.xml",
+    )
+
+    sequential = await extract_infos_from_xml(xml_sources, "foo", transpiled_schema)
+    parallel = await extract_infos_from_xml(xml_sources, "foo", transpiled_schema, parallel=True)
+
+    assert parallel == sequential
 
 
 @pytest.mark.anyio
@@ -393,6 +460,20 @@ async def test_extract_facs_responsible_from_xml(example_path: Path, transpiled_
 
 
 @pytest.mark.anyio
+async def test_extract_keywords_from_xml(example_path: Path, transpiled_schema: Path):
+    result = await extract_infos_from_xml(
+        (example_path / "SSRQ-ZH-NF_II_11-171-1.xml",), "foo", transpiled_schema=transpiled_schema
+    )
+
+    assert result[0][0].keywords == [
+        "key000494",
+        "key000305",
+        "key000081",
+        "key000036",
+    ]
+
+
+@pytest.mark.anyio
 async def test_resolve_asset_path_uses_volume_machine_name(db_connection):
     await setup_db(db_connection)
     await initialize_kanton_data(db_connection)
@@ -423,3 +504,23 @@ async def test_resolve_asset_path_raises_for_missing_volume(db_connection):
             Path("/tmp/data"),
             "WB_HB.svg",
         )
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize("lang", [Lang.DE, Lang.FR])
+@pytest.mark.parametrize("has_witness_numbers", [True, False])
+async def test_document_transformer_serializes_witness_numbers(
+    document_transformer: DocumentTransformer,
+    example_path: Path,
+    lang: Lang,
+    has_witness_numbers: bool,
+):
+    xml_src = (example_path / "SSRQ-SG-III_4-245-1.xml").read_text()
+    if not has_witness_numbers:
+        xml_src = re.sub(r'(<witness\b[^>]*?) n="[^"]*"', r"\1", xml_src)
+
+    result = document_transformer(output_lang=lang, xml_src=xml_src)
+
+    assert [description.heading.witnessNumber for description in result.descriptions] == (
+        ["A", "B", "C"] if has_witness_numbers else [None, None, None]
+    )

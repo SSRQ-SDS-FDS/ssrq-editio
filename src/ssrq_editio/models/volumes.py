@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Annotated
 
 from pydantic import BaseModel, BeforeValidator, Field, computed_field, model_validator
@@ -5,6 +6,11 @@ from ssrq_utils.lang.display import Lang
 
 from ssrq_editio.models.documents import DocumentType
 from ssrq_editio.services.utils import build_project_url, parse_as_list_or_return
+
+
+class VolumeType(str, Enum):
+    TEI = "tei"
+    REGISTER = "register"
 
 
 class Volume(BaseModel):
@@ -17,15 +23,24 @@ class Volume(BaseModel):
     translated_pdf: str | None = None
     literature: str | None
     project_page: str | None
+    volume_type: VolumeType = VolumeType.TEI
     title: str = ""
     editors: Annotated[
         list[str], BeforeValidator(lambda x: x.split(",") if isinstance(x, str) else x)
+    ] = []
+    collaborateurs: Annotated[
+        list[str],
+        BeforeValidator(lambda x: sorted(parse_as_list_or_return(x) or [], key=str.casefold)),
     ] = []
     docs: int = 0
 
     @computed_field
     def machine_name(self) -> str:
         return self.name.replace(" ", "_").replace("/", "_")
+
+    @property
+    def is_register(self) -> bool:
+        return self.volume_type is VolumeType.REGISTER
 
     def get_project_page_by_lang(self, lang: Lang = Lang.DE) -> str:
         """Retrieve the url of the project page in the specified language.

@@ -5,6 +5,7 @@
                 xmlns:date="http://ssrq-sds-fds.ch/xsl/tei2pub/functions/date"
                 xmlns:hand="http://ssrq-sds-fds.ch/xsl/tei2pub/functions/hand"
                 xmlns:i18n="http://ssrq-sds-fds.ch/xsl/tei2pub/functions/i18n"
+                xmlns:time="http://ssrq-sds-fds.ch/xsl/tei2pub/functions/time"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:tei="http://www.tei-c.org/ns/1.0"
@@ -16,10 +17,11 @@
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/text-utils.xsl"/>
 
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/date.xsl"/>
+    <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/time.xsl"/>
 
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/html.xsl"/>
 
-    <xsl:param name="schema" as="xs:string"/>
+    <xsl:param name="translations" as="map(xs:string, map(*))"/>
 
     <xsl:output method="json" encoding="utf-8"/>
 
@@ -31,13 +33,9 @@
             <xsl:map-entry key="'printed_idno'" select="cutils:print-idno($idno)"/>
             <xsl:map-entry key="'facs'" select=".//tei:pb/@facs/data() => cutils:seq-to-array()"/>
             <xsl:map-entry key="'entities'" select="cutils:list-entity-references(./tei:TEI) => cutils:seq-to-array()"/>
+            <xsl:map-entry key="'keywords'" select=".//tei:teiHeader/tei:profileDesc/tei:textClass/tei:keywords/tei:term/@ref/data() => cutils:seq-to-array()"/>
             <xsl:apply-templates select="(.//tei:msDesc)[1]">
-                <xsl:with-param
-                    name="translations"
-                    as="map(xs:string, map(*))"
-                    tunnel="yes"
-                    select="i18n:create-translation-map(doc($schema)/tei:TEI)"
-                    />
+                <xsl:with-param name="translations" select="$translations" tunnel="yes"/>
             </xsl:apply-templates>
             <xsl:map-entry key="'text'" select="documents:extract-ft(./tei:TEI)"/>
             <xsl:map-entry key="'type'" select=".//tei:text/@type/data(.)"/>

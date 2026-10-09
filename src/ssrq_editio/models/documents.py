@@ -63,8 +63,8 @@ class DocumentComment(BaseModel):
 
 
 class DocumentDescriptionHeading(BaseModel):
-    idno: str | None = None
-    lang: str | None = None
+    # idno: str | None = None
+    # lang: str | None = None
     witnessNumber: str | None = None
 
 
@@ -94,6 +94,7 @@ class DocumentTitle(BaseModel):
 
 class DocumentType(Enum):
     collection = "collection"
+    retro = "retro"
     summary = "summary"
     transcript = "transcript"
 
@@ -105,6 +106,10 @@ class Document(DocumentDate, DocumentIdentification, DocumentRelations, Document
     ]
     facs_responsible: str | None = None
     orig_place: Annotated[
+        list[str] | None,
+        BeforeValidator(parse_as_list_or_return),
+    ] = None
+    keywords: Annotated[
         list[str] | None,
         BeforeValidator(parse_as_list_or_return),
     ] = None
@@ -123,6 +128,35 @@ class Document(DocumentDate, DocumentIdentification, DocumentRelations, Document
         return {k: serialize_value(v) for k, v in self.model_dump().items()}
 
 
+class DocumentMCPResponse(DocumentDate, DocumentRelations, DocumentTitle):
+    """Public document metadata exposed through the MCP interface.
+
+    This model intentionally contains only information useful for exploring
+    the edition. Internal database and filesystem fields such as ``uuid``,
+    ``volume_id``, ``is_main``, ``sort_key`` and ``source`` are not part of
+    the public MCP response.
+    """
+
+    idno: str
+    printed_idno: str
+    facs: Annotated[
+        list[str] | None,
+        BeforeValidator(parse_as_list_or_return),
+    ]
+    facs_responsible: str | None = None
+    orig_place: Annotated[
+        list[str] | None,
+        BeforeValidator(parse_as_list_or_return),
+    ] = None
+    keywords: Annotated[
+        list[str] | None,
+        BeforeValidator(parse_as_list_or_return),
+    ] = None
+    type: Annotated[
+        DocumentType, BeforeValidator : lambda x: DocumentType(x) if isinstance(x, str) else x
+    ]
+
+
 class DocumentFulltext(BaseModel):
     uuid: str
     text: str
@@ -138,6 +172,7 @@ class DocumentDisplay(BaseModel):
 
     comment: DocumentComment | None
     descriptions: list[DocumentDescription]
+    facs_idno: str | None
     normalized_transcript: str | None
     summary: DocumentSummary | None
     transcript: str

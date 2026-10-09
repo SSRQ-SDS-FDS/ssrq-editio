@@ -12,7 +12,7 @@ from ssrq_editio.adapters.db.volumes import (
     retrieve_volume_metadata,
 )
 from ssrq_editio.models.documents import Document, DocumentType
-from ssrq_editio.models.volumes import Volume, VolumeMeta
+from ssrq_editio.models.volumes import Volume, VolumeMeta, VolumeType
 
 
 @pytest.fixture
@@ -79,6 +79,7 @@ async def test_list_volumes_with_editors(db_kanton_data):
             project_page=None,
             editors=["foo Editor", f"{i}"],
             prefix="SSRQ",
+            volume_type=VolumeType.REGISTER if i == 1 else VolumeType.TEI,
         )
         for i in range(3)
     ]
@@ -94,6 +95,7 @@ async def test_list_volumes_with_editors(db_kanton_data):
         assert volume.name == test_volumes[i].name
         assert volume.kanton == test_volumes[i].kanton
         assert volume.title == test_volumes[i].title
+        assert volume.volume_type == test_volumes[i].volume_type
         assert volume.pdf == test_volumes[i].pdf
         assert volume.literature == test_volumes[i].literature
         assert all(editor in test_volumes[i].editors for editor in volume.editors)
@@ -181,3 +183,53 @@ async def test_retrieve_volume_meta_uses_start_year_when_end_year_is_none(db_kan
 
     assert result.first_year == 1005
     assert result.last_year == 1456
+
+
+@pytest.mark.anyio
+async def test_list_volumes_with_editors_order(db_kanton_data):
+    """Test if the order of editors is preserved."""
+    expected_editors = [
+        "Zoe Editor",
+        "Anna Editor",
+        "Max Editor",
+    ]
+
+    volume = Volume(
+        key="foo",
+        sort_key=1,
+        name="foo",
+        kanton="ZH",
+        title="foo",
+        pdf=None,
+        literature=None,
+        project_page=None,
+        editors=expected_editors,
+        prefix="SSRQ",
+    )
+
+    await initialize_volume_with_editors(db_kanton_data, volume)
+
+    volumes = await list_volumes_with_editors(db_kanton_data, "ZH")
+
+    assert volumes is not None
+    assert len(volumes) == 1
+    assert volumes[0].editors == expected_editors
+
+
+@pytest.mark.anyio
+async def test_collaborateurs_roundtrip_and_volume_assignment(db_kanton_data):
+    volume = TEST_VOLUME.model_copy(
+        update={
+            "collaborateurs": ["Zoe Mitarbeit", "Anna, Mitarbeit", "Zoe Mitarbeit", "bob Mitarbeit"]
+        }
+    )
+    other = TEST_VOLUME.model_copy(update={"key": "other", "sort_key": 2})
+    await initialize_volume_with_editors(db_kanton_data, volume)
+    await initialize_volume_with_editors(db_kanton_data, other)
+
+    volumes = await list_volumes_with_editors(db_kanton_data, "ZH")
+
+    assert volumes is not None
+    assert volumes[0].collaborateurs == ["Anna, Mitarbeit", "bob Mitarbeit", "Zoe Mitarbeit"]
+    assert volumes[0].editors == TEST_VOLUME.editors
+    assert volumes[1].collaborateurs == []

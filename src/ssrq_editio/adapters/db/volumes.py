@@ -14,6 +14,7 @@ async def initialize_volume_with_editors(
 ):
     await initialize_volume_data(connection, volume)
     await initialize_editors(connection, volume)
+    await initialize_collaborateurs(connection, volume)
 
 
 async def initialize_volume_data(
@@ -28,6 +29,7 @@ async def initialize_volume_data(
             parameters=(
                 volume.key,
                 volume.sort_key,
+                volume.volume_type.value,
                 volume.name,
                 volume.kanton,
                 volume.title,
@@ -54,6 +56,20 @@ async def initialize_editors(
                 parameters=(editor, volume.key),
             )
             await connection.commit()
+
+
+async def initialize_collaborateurs(
+    connection: aiosqlite.Connection,
+    volume: Volume,
+    collaborateur_query: Path = SQL_DATA_DIR / "put_collaborateur.sql",
+):
+    async with connection.cursor() as cursor:
+        query = await load(SQL_DATA_DIR, collaborateur_query)
+        await cursor.executemany(
+            query,
+            [(name, volume.key) for name in dict.fromkeys(volume.collaborateurs)],
+        )
+    await connection.commit()
 
 
 async def list_volumes_with_editors(

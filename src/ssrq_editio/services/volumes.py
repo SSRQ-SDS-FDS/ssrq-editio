@@ -26,13 +26,13 @@ def create_search_pattern(volume: Volume, content_folder: str = "online") -> str
 
 
 async def fill_volume_info_from_xml(
-    xml_src: Path, volume: Volume, xslt_script: str = "volume_info.xslt"
+    xml_src: Path | tuple[Path, ...], volume: Volume, xslt_script: str = "volume_info.xslt"
 ):
     """This function fills the volume object with dynamic
-    information, which is extracted from a TEI-XML file.
+    information extracted from the main TEI-XML files of a volume.
 
     Args:
-        xml_src (Path): Path to the TEI-XML file.
+        xml_src: One TEI-XML file or all main files of the volume.
         volume (Volume): Volume object.
         xslt_script (str, optional): XSLT script to use. Defaults to "volume_info.xslt".
 
@@ -42,12 +42,19 @@ async def fill_volume_info_from_xml(
     Raises:
         ValueError: If XSLT transformation failed / returned None.
     """
-    result = await apply_xslt((xml_src,), xslt_script)
-
-    if result[0].value is None:
+    sources = (xml_src,) if isinstance(xml_src, Path) else xml_src
+    if not sources:
+        raise ValueError(f"Could not update volume info for {volume.key}, no XML files.")
+    results = await apply_xslt(sources, xslt_script)
+    if any(result.value is None for result in results):
         raise ValueError(f"Could not update volume info for {volume.key}, XSLT failed.")
 
-    return volume.model_copy(update=from_json(result[0].value))
+    metadata = [from_json(result.value) for result in results if result.value is not None]
+    editors = {name for item in metadata for name in item["editors"]}
+    collaborateurs = {name for item in metadata for name in item["collaborateurs"]} - editors
+    return Volume.model_validate(
+        {**volume.model_dump(), **metadata[0], "collaborateurs": list(collaborateurs)}
+    )
 
 
 async def stream_volume_pdf(
@@ -64,7 +71,8 @@ async def stream_volume_pdf(
         volume (str): Volume key.
         connection (Connection): SQLite connection.
         data_volume_src (Path): The source of the current volume
-        suffix (str | None): Optional file suffix
+        suffix (str | None): ``-translated`` selects the configured translated PDF.
+            Omit it to select the configured original PDF.
 
     Yields:
         AsyncGenerator[bytes, None]: Bytes of the file.
@@ -82,12 +90,16 @@ async def stream_volume_pdf(
     if volume_info is None:
         raise ValueError(f"Could not find volume {volume} for {kanton.value}")
 
-    volume_path = (
-        data_volume_src
-        / f"{kanton.value}_{volume_info.machine_name}"
-        / "TeX"
-        / f"{volume_info.prefix}-{volume_info.kanton}-{volume_info.machine_name}{suffix or ''}.pdf"
-    )
+    # Assign PDF name based on suffix parameter.
+    match volume_info.pdf, suffix, volume_info.translated_pdf:
+        case str() as pdf_name, None, _:
+            pass
+        case _, "-translated", str() as pdf_name:
+            pass
+        case _:
+            raise ValueError(f"Unknown name for volume {volume}")
+
+    volume_path = data_volume_src / f"{kanton.value}_{volume_info.machine_name}" / pdf_name
 
     return stream(volume_path)
 

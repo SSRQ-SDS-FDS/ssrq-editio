@@ -23,8 +23,10 @@
     <div class="ssrq-info-card">
         <h3>
             <span>
-                {{desc.heading.witnessNumber}}&nbsp;
-                {% if desc.heading.witnessNumber is none or desc.heading.witnessNumber == "" or desc.heading.witnessNumber == "A" %}
+                {% if desc.heading.witnessNumber %}
+                    {{ desc.heading.witnessNumber }}&nbsp;
+                {% endif %}
+                {% if loop.first %}
                     {{ translator.translate(lang, 'base_document') }}
                 {% else %}
                     {{ translator.translate(lang, 'additional_witness') }}

@@ -36,7 +36,6 @@
   .footnotes .note-wrap {
     @apply text-[80%] mr-[0.1rem] align-super cursor-pointer;
   }
-  .text-content a,
   .footnotes a {
     @apply text-blue-600 hover:underline cursor-pointer;
   }

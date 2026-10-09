@@ -1,6 +1,7 @@
 {# def
     tileSources: list,
     facsResponsible: str,
+    facsIdno: str,
     lang: Lang,
     translator: Translator
 #}
@@ -25,5 +26,8 @@
       id="img-container"
       class="w-full h-full">
     </div>
-    <div class="facsViewerFooter">{{ translator.translate(lang, 'facs_responsible') }}: {{ facsResponsible }}</div>
+    <div class="facsViewerFooter">
+        <span>{{ facsIdno if facsIdno | safe }}</span>
+        <span>{{ translator.translate(lang, 'facs_responsible') }}: {{ facsResponsible }}</span>
+    </div>
 </div>

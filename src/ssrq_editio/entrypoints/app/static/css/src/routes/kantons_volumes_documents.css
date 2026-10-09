@@ -87,6 +87,14 @@
     @apply mb-2;
   }
 
+  .documents .document-info header {
+    @apply flex items-center;
+  }
+
+  .documents .document-info header .retro-badge {
+    @apply ml-auto rounded bg-red-700 px-2 py-0.5 text-xs font-medium text-white;
+  }
+
   .documents .document-info header span:not(:last-child),
   .entities .entity-info header span:not(:last-child) {
     @apply mr-2;

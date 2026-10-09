@@ -42,10 +42,6 @@
     "app": {
       "source": "src/ssrq_editio/entrypoints/app/static/js/app.js",
       "outputFormat": "global"
-    },
-    "spans": {
-      "source": "src/ssrq_editio/entrypoints/app/static/js/components/spans.js",
-      "outputFormat": "global"
     }
   },
   "browserslist": "> 0.5%, last 2 versions, not dead"

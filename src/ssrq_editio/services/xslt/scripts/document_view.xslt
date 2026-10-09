@@ -4,6 +4,7 @@
                 xmlns:date="http://ssrq-sds-fds.ch/xsl/tei2pub/functions/date"
                 xmlns:html="http://ssrq-sds-fds.ch/xsl/tei2pub/html"
                 xmlns:i18n="http://ssrq-sds-fds.ch/xsl/tei2pub/functions/i18n"
+                xmlns:time="http://ssrq-sds-fds.ch/xsl/tei2pub/functions/time"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:tei="http://www.tei-c.org/ns/1.0"
@@ -15,6 +16,7 @@
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/core-utils.xsl"/>
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/date.xsl"/>
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/text-utils.xsl"/>
+    <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/time.xsl"/>
     <xsl:import href="./convert/src/ssrq_convert/tei2pub/xsl/functions/hand.xsl"/>
 
     <!-- Templates for rendering -->
@@ -77,6 +79,12 @@
                         </xsl:apply-templates>
                     </xsl:map-entry>
                     <xsl:map-entry key="'type'" select="$type"/>
+                    <xsl:map-entry key="'facs_idno'">
+                        <xsl:apply-templates select="(.//tei:msDesc/tei:msIdentifier/tei:idno)[1]" mode="html-facs-viewer">
+                            <xsl:with-param name="lang" as="xs:string" tunnel="yes" select="$lang" />
+                            <xsl:with-param name="translations" as="map(xs:string, map(*))" tunnel="yes" select="$translations"/>
+                        </xsl:apply-templates>
+                    </xsl:map-entry>
                 </xsl:map>
             </xsl:otherwise>
         </xsl:choose>
@@ -103,8 +111,6 @@
     <xsl:template match="tei:msDesc">
         <xsl:param name="lang" as="xs:string" tunnel="yes"/>
         <xsl:param name="translations" as="map(xs:string, map(*))" tunnel="yes"/>
-        <xsl:variable name="use_lang" as="xs:string"
-            select="(./tei:msIdentifier/*[@xml:lang = $lang]/@xml:lang[1], ./tei:msIdentifier/*/@xml:lang[1])[1]"/>
         <xsl:map>
             <xsl:map-entry key="'admin_info'">
                 <xsl:sequence select="html:process-self(./tei:adminInfo, $lang, $translations)"/>
@@ -117,15 +123,7 @@
             </xsl:map-entry>
             <xsl:map-entry key="'heading'">
                 <xsl:map>
-                    <xsl:map-entry key="'idno'">
-                        <xsl:value-of select="./tei:msIdentifier/tei:idno[@xml:lang=$use_lang]" />
-                    </xsl:map-entry>
-                    <xsl:map-entry key="'lang'">
-                        <xsl:value-of select="./tei:msContents/tei:msItem/tei:textLang/@xml:lang" />
-                    </xsl:map-entry>
-                    <xsl:map-entry key="'witnessNumber'">
-                        <xsl:value-of select="./../@n" />
-                    </xsl:map-entry>
+                    <xsl:map-entry key="'witnessNumber'" select="./../@n/data(.)" />
                 </xsl:map>
             </xsl:map-entry>
             <xsl:map-entry key="'ms_history'">

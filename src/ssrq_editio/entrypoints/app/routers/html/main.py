@@ -23,6 +23,7 @@ from ssrq_editio.models.entities import EntityTypes
 from ssrq_editio.models.kantons import KantonName
 from ssrq_editio.services.documents import resolve_asset_path
 from ssrq_editio.services.utils import build_project_url, build_schema_url
+from ssrq_editio.services.volumes import get_volume_info
 
 html = APIRouter(default_response_class=HTMLResponse, include_in_schema=False)
 
@@ -33,6 +34,7 @@ async def index(request: Request, lang: LangDependency, connection: DBDependency
 
 
 @html.get("/favicon.ico", name="favicon")
+@html.get("/apple-touch-icon.png", name="apple_touch_icon")
 async def favicon():
     return RedirectResponse("/static/images/favicon-ssrq-32.png", status_code=307)
 
@@ -171,7 +173,7 @@ async def deprecated_volume_lit(
     ).to_response()
 
 
-@html.get("/{kanton}/{volume}", name="document_list")
+@html.get("/{kanton}/{volume}", name="document_list", response_model=None)
 async def documents(
     request: Request,
     lang: LangDependency,
@@ -185,7 +187,14 @@ async def documents(
     per_page: int = 25,
     range_start: int | None = None,
     range_end: int | None = None,
-) -> HTMLResponse:
+) -> HTMLResponse | RedirectResponse:
+    volume_info = await get_volume_info(connection, str(kanton), volume)
+
+    if volume_info.is_register:
+        return RedirectResponse(
+            html.url_path_for("volume_pdf", kanton=kanton, volume=volume_info.machine_name)
+        )
+
     return await VolumeViewModel(
         request,
         lang,

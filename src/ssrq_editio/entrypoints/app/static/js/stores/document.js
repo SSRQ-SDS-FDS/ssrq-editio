@@ -3,6 +3,8 @@ const ssrqDocumentStore = (facsViewer) => ({
     transcriptCol: null,
     metadataCol: null,
   },
+  // 'tabName': [listOfCallbacks]
+  tabActivationCallbacks: {},
   metadataOpen: true,
   popupMarkerVisible: true,
   
@@ -39,6 +41,24 @@ const ssrqDocumentStore = (facsViewer) => ({
   setActiveTab(tabGroup, tabName){
     this.activeTabs[tabGroup] = tabName;
 
+  },
+
+  runTabActivationCallbacks(tabName){
+    for(const callback of this.tabActivationCallbacks[tabName] ?? []){
+      try {
+        callback();
+      } catch (error) {
+        console.error(`Failed to run callback for tab "${tabName}"`, error);
+      }
+    }
+  },
+
+  registerTabActivationCallback(tabName, callback){
+    if(typeof callback !== 'function'){
+      throw new TypeError('Tab callback must be a function.');
+    }
+    this.tabActivationCallbacks[tabName] ??= [];
+    this.tabActivationCallbacks[tabName].push(callback);
   },
 });
 

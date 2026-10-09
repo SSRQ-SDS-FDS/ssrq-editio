@@ -17,5 +17,6 @@
         {{ norm_punct(volume.title, lang) | safe }}
     </div>
     <EditorList :editors="volume.editors" :lang="lang" :translator="translator" />
+    <EditorList :editors="volume.collaborateurs" :lang="lang" :translator="translator" prefix_key="with_collaboration_of" class="collaborateurs" />
     <VolumeLinks :lang="lang" :request="request" :translator="translator" :volume="volume" />
 </article>

@@ -1,21 +1,22 @@
 [project]
 name = "ssrq-editio"
-version = "1.0.0-beta2"
+version = "1.0.0"
 requires-python = ">=3.11,<3.13"
 dependencies = [
     "aiosqlite>=0.20.0",
     "anyio>=4.6.0",
     "cachebox>=4.3.1",
     "fastapi[standard]>=0.139.0",
+    "fastmcp>=4,<5",
     "jinja2-fragments>=1.6.0",
     "jinjax>=0.48",
     "loguru>=0.7.2",
     "markdown>=3.8.1",
     "parsel>=1.9.1",
-    "pydantic-settings>=2.13.1",
+    "pydantic-settings>=2.14.2",
     "python-dotenv>=1.2.2",
     "saxonche==13.0.0",
-    "semver>=3.0.2",
+    "packaging>=25.0",
     "sentry-sdk>=2.56.0",
     "ssrq-utils",
     "typer>=0.12.5",
@@ -28,11 +29,11 @@ editio = "ssrq_editio.entrypoints.cli:app"
 [dependency-groups]
 dev = [
     "commitizen>=3.31.0",
-    "mypy>=1.11.2",
+    "mypy>=2.3.0",
     "pre-commit>=3.8.0",
-    "pytest>=9.0.3",
+    "pytest>=9.1.1",
     "pytest-playwright>=0.7.2",
-    "ruff>=0.6.8",
+    "ruff>=0.15.22",
     "rust-just>=1.36.0",
     "saxonche-stubs>=1.0.0,<2",
     "sqlfluff>=4.2.2",
@@ -40,7 +41,7 @@ dev = [
 ]
 
 [tool.uv.sources]
-ssrq-utils = { git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git" }
+ssrq-utils = { git = "https://github.com/SSRQ-SDS-FDS/ssrq-utils.git", tag = "v0.9.0" }
 
 [tool.mypy]
 files = ["src"]

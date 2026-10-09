@@ -28,6 +28,10 @@ const tabs = function () {
     getActiveTab() {
       return this.$store.ssrqDocument.getActiveTab(this.tabGroup);
     },
+    runTabActivationCallbacks(tabName) {
+      if (!tabName) { throw new Error('Missing tab name.') }
+      this.$store.ssrqDocument.runTabActivationCallbacks(this.tabGroup, tabName);
+    },
   };
 };
 

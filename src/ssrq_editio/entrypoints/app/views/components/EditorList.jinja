@@ -1,15 +1,18 @@
 {# def
     editors: list[str],
     lang: Lang,
-    translator: Translator
+    translator: Translator,
+    prefix_key: str = "by"
 #}
-<p>
-    {{ translator.translate(lang, 'by')}}
+{% if editors %}
+<p {{ attrs.render() }}>
+    {% set prefix = translator.translate_before(lang, prefix_key, editors[0]) %}
     {% if editors|length == 1 %}
-        {{ editors[0] }}
+        {{ prefix }}{{ editors[0] }}
     {% elif editors|length == 2 %}
-        {{ editors[0] }} {{ translator.translate(lang, 'and')}} {{ editors[1] }}
+        {{ prefix }}{{ editors[0] }} {{ translator.translate(lang, 'and')}} {{ editors[1] }}
     {% else %}
-        {{ editors[:-1] | join(', ') }} {{ translator.translate(lang, 'and')}} {{ editors[-1] }}
+        {{ prefix }}{{ editors[:-1] | join(', ') }} {{ translator.translate(lang, 'and')}} {{ editors[-1] }}
     {% endif %}
 </p>
+{% endif %}

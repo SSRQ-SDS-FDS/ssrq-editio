@@ -6,7 +6,7 @@ from httpx import ASGITransport, AsyncClient
 from ssrq_utils.idno.model import IDNO
 
 from ssrq_editio.adapters.db.connection import db_session
-from ssrq_editio.adapters.db.documents import initialize_document_data
+from ssrq_editio.adapters.db.documents import initialize_document_data, initialize_document_fulltext
 from ssrq_editio.adapters.db.entities import store_entities
 from ssrq_editio.adapters.db.kantons import initialize_kanton_data
 from ssrq_editio.adapters.db.setup import setup_db
@@ -15,6 +15,7 @@ from ssrq_editio.entrypoints.app.main import app
 from ssrq_editio.entrypoints.app.shared.dependencies import db_connection
 from ssrq_editio.models.documents import (
     Document,
+    DocumentFulltext,
     DocumentType,
 )
 from ssrq_editio.models.volumes import Volume
@@ -58,6 +59,7 @@ TEST_DOCUMENTS = (
             "lem000001",
             "org000001",
         ],
+        keywords=["key000001"],
         type=DocumentType.transcript,
         start_year_of_creation=1473,
         end_year_of_creation=None,
@@ -77,6 +79,12 @@ async def app_db_setup(app_db_connection, entities) -> AsyncGenerator[Connection
     await initialize_kanton_data(app_db_connection)
     await initialize_volume_with_editors(app_db_connection, TEST_VOLUMES[0])
     await initialize_document_data(TEST_DOCUMENTS, app_db_connection)
+    await initialize_document_fulltext(
+        tuple(
+            DocumentFulltext(uuid=document.uuid, text="foo bar foo") for document in TEST_DOCUMENTS
+        ),
+        app_db_connection,
+    )
     await store_entities(entities, app_db_connection)
     yield app_db_connection
 

@@ -51,6 +51,8 @@ jobs:
         run: uv run just test
       - name: Install Playwright browser
         run: uv run just e2e-install
+      - name: Run JavaScript tests
+        run: uv run just js
       - name: Run E2E tests
         run: uv run just e2e
 
