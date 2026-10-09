@@ -55,10 +55,10 @@ async def test_register_volume_card_links_to_pdf_without_article_list(
 @pytest.mark.parametrize(
     "lang, phrase, conjunction",
     [
-        ("de", "unter Mitarbeit von", "und"),
-        ("fr", "avec la collaboration de", "et"),
-        ("en", "with contributions from", "and"),
-        ("it", "con la collaborazione di", "e"),
+        ("de", "unter Mitarbeit von ", "und"),
+        ("fr", "avec la collaboration d’", "et"),
+        ("en", "with contributions from ", "and"),
+        ("it", "con la collaborazione di ", "e"),
     ],
 )
 async def test_volume_card_shows_collaborateurs(
@@ -89,6 +89,6 @@ async def test_volume_card_shows_collaborateurs(
     doc = Selector(text=response.text)
     line = doc.css(".volume .collaborateurs")
     assert " ".join(line.xpath("string(.)").get().split()) == (
-        f"{phrase} Anna Mitarbeit {conjunction} Zoe Mitarbeit"
+        f"{phrase}Anna Mitarbeit {conjunction} Zoe Mitarbeit"
     )
     assert "Eva Editor" in line.xpath("preceding-sibling::p[1]").get()
