@@ -504,3 +504,23 @@ async def test_resolve_asset_path_raises_for_missing_volume(db_connection):
             Path("/tmp/data"),
             "WB_HB.svg",
         )
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize("lang", [Lang.DE, Lang.FR])
+@pytest.mark.parametrize("has_witness_numbers", [True, False])
+async def test_document_transformer_serializes_witness_numbers(
+    document_transformer: DocumentTransformer,
+    example_path: Path,
+    lang: Lang,
+    has_witness_numbers: bool,
+):
+    xml_src = (example_path / "SSRQ-SG-III_4-245-1.xml").read_text()
+    if not has_witness_numbers:
+        xml_src = re.sub(r'(<witness\b[^>]*?) n="[^"]*"', r"\1", xml_src)
+
+    result = document_transformer(output_lang=lang, xml_src=xml_src)
+
+    assert [description.heading.witnessNumber for description in result.descriptions] == (
+        ["A", "B", "C"] if has_witness_numbers else [None, None, None]
+    )

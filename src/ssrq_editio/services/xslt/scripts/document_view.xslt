@@ -123,7 +123,7 @@
             </xsl:map-entry>
             <xsl:map-entry key="'heading'">
                 <xsl:map>
-                    <xsl:map-entry key="'witnessNumber'" select="./../@n" />
+                    <xsl:map-entry key="'witnessNumber'" select="./../@n/data(.)" />
                 </xsl:map>
             </xsl:map-entry>
             <xsl:map-entry key="'ms_history'">
