@@ -1,7 +1,8 @@
 {# def
     kanton: Kanton,
     lang: Lang,
-    request: Request
+    request: Request,
+    translator: Translator
 
 #}
 <div {{ attrs.render() }}>
@@ -17,7 +18,10 @@
         <div class="kanton-card_content">
             <div class="kanton-card_content-heading">
                 <h4>{{ kanton.short_name.replace('-', '/') }}</h4>
-                <CounterBadge :count="kanton.docs" />
+                <CounterBadge
+                    :count="kanton.docs"
+                    :tooltip="translator.translate(lang, 'articles') ~ ' ' ~ translator.translate(lang, 'canton') ~ ' ' ~ kanton.short_name.replace('-', '/')"
+                />
             </div>
             <h3>
                 {{ kanton | attr(lang.value ~ '_title') | default(kanton.de_title, true) | safe }}
