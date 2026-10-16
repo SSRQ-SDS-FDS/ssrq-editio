@@ -13,10 +13,10 @@
             {% for kanton in data.content.kantons %}
                 {% if kanton.docs > 0 %}
                     <a href="{{ url_for('kanton', kanton=kanton.short_name).include_query_params(lang=lang.value) }}" class="flex">
-                        <KantonCard :kanton="kanton" :lang="lang" :request="request" class="kanton-card has-docs" />
+                        <KantonCard :kanton="kanton" :lang="lang" :request="request" :translator="translator" class="kanton-card has-docs" />
                     </a>
                 {% else %}
-                    <KantonCard :kanton="kanton" :lang="lang" :request="request" class="kanton-card inactive" />
+                    <KantonCard :kanton="kanton" :lang="lang" :request="request" :translator="translator" class="kanton-card inactive" />
                 {% endif %}
             {% endfor %}
         </div>

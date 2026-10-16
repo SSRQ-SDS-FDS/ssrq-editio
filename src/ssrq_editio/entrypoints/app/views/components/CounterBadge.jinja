@@ -1,8 +1,10 @@
 {# def
-    count: int
+    count: int,
+    tooltip: str | None = None
+
 #}
 {% if count > 0 %}
-    <span>
+    <span {% if tooltip %} title="{{ count ~ ' ' ~ tooltip }}" {% endif %}>
         <svg xmlns="http://www.w3.org/2000/svg"
              viewBox="0 0 20 20"
              fill="currentColor"
