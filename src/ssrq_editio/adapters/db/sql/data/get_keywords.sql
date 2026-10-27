@@ -35,7 +35,7 @@ WHERE
 UNION
 
 SELECT -- noqa
-    k.*,
+    k.*, -- noqa: AM04
     occurrences.occurrences
 FROM keywords AS k
 INNER JOIN keywords_fts AS fts ON k.id = fts.id

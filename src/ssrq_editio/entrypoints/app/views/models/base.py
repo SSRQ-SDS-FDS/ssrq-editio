@@ -141,8 +141,8 @@ def _calculate_cache_key(args, kwargs) -> str:
 def get_view_response_cache() -> cachebox.TTLCache:
     settings = get_settings()
     return cachebox.TTLCache(
-        maxsize=settings.editio_view_cache_maxsize,
-        ttl=settings.editio_view_cache_ttl_seconds,
+        settings.editio_view_cache_maxsize,
+        settings.editio_view_cache_ttl_seconds,
     )
 
 

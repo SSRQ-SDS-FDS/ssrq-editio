@@ -38,7 +38,7 @@ WHERE
 UNION
 
 SELECT -- noqa
-    p.*,
+    p.*, -- noqa: AM04
     occurrences.occurrences
 FROM places AS p
 INNER JOIN places_fts AS fts ON p.id = fts.id

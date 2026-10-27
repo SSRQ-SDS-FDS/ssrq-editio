@@ -13,7 +13,7 @@ WITH main_doc AS (
 )
 
 SELECT -- noqa
-    *
+    * -- noqa: AM04
 FROM documents
 WHERE
     is_main = 0

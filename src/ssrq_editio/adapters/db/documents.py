@@ -170,7 +170,7 @@ async def get_documents_by_ft(
         return [DocumentFulltextResult(**item) for item in data]
 
 
-@cachebox.cached(cachebox.TTLCache(maxsize=0, ttl=3600))
+@cachebox.cached(cachebox.TTLCache(0, 3600))
 async def get_document_infos(
     connection: Connection,
     query: Path = SQL_DATA_DIR / "get_idno.sql",
