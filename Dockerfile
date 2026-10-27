@@ -20,7 +20,11 @@ ENV ALLOWED_HOSTS=*
 WORKDIR /editio
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl build-essential ca-certificates && \
+   apt-get install -y --no-install-recommends \
+      curl build-essential ca-certificates libbrotli1 && \
+    dpkg --compare-versions \
+      "$(dpkg-query -W -f='${Version}' libbrotli1)" \
+      ge '1.1.0-2+deb13u1' && \
     rm -rf /var/lib/apt/lists/* && \
     curl https://sh.rustup.rs -sSf | bash -s -- -y
 
