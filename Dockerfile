@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 
-FROM node:23-slim AS builder
+FROM node:24-slim AS builder
 
 WORKDIR /editio
 
@@ -11,7 +11,7 @@ RUN --mount=type=cache,target=/root/.npm \
     npm ci && \
     npx rust-just build
 
-FROM ghcr.io/astral-sh/uv:python3.12-bookworm
+FROM ghcr.io/astral-sh/uv:python3.14-trixie
 
 ENV WORKERS=2
 ENV PORT=8000
