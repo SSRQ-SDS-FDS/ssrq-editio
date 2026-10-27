@@ -7,7 +7,7 @@ from anyio.to_thread import run_sync
 from httpx import AsyncClient
 
 
-@cachebox.cached(cachebox.TTLCache(0, ttl=43200))
+@cachebox.cached(cachebox.TTLCache(0, 43200))
 async def load(dir: Path, name: str | Path) -> str:
     """Load content of a file in an async fashion.
 

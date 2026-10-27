@@ -36,7 +36,7 @@ WHERE
 UNION
 
 SELECT -- noqa
-    f.*,
+    f.*, -- noqa: AM04
     occurrences.occurrences
 FROM families AS f
 INNER JOIN families_fts AS fts ON f.id = fts.id

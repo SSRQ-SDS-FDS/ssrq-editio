@@ -36,7 +36,7 @@ WHERE
 UNION
 
 SELECT -- noqa
-    k.*,
+    k.*, -- noqa: AM04
     occurrences.occurrences
 FROM lemmata AS k
 INNER JOIN lemmata_fts AS fts ON k.id = fts.id

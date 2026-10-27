@@ -1,5 +1,5 @@
 SELECT -- noqa
-    d.*,
+    d.*, -- noqa: AM04
     snippet(fts.documents_fulltext, 1, '<mark>', '</mark>', '...', 64)
         AS ft_match
 FROM documents_fulltext AS fts
