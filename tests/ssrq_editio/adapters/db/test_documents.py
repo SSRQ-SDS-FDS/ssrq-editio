@@ -5,6 +5,7 @@ import pytest
 from ssrq_utils.idno.model import IDNO
 
 from ssrq_editio.adapters.db.documents import (
+    get_all_documents,
     get_document,
     get_document_infos,
     get_documents,
@@ -130,6 +131,38 @@ async def test_get_documents_returns_keywords(db_volume_data, documents):
     assert all(
         document.keywords == ["key000001"] for document in result if document.keywords is not None
     )
+
+
+@pytest.mark.anyio
+async def test_get_all_documents_includes_subdocuments_in_document_order(db_volume_data, documents):
+    subdocument_id = "SSRQ-SG-III_4-2.1-1"
+    subdocument = documents[1].model_copy(
+        update={
+            "uuid": str(uuid4()),
+            "idno": subdocument_id,
+            "is_main": False,
+            "sort_key": IDNO.model_validate_string(subdocument_id).normalized_sort_key,
+        }
+    )
+    await initialize_document_data(
+        documents=(documents[9], subdocument, documents[1], documents[0]),
+        connection=db_volume_data,
+    )
+
+    result = await get_all_documents(connection=db_volume_data)
+
+    assert [document.idno for document in result] == [
+        documents[0].idno,
+        documents[1].idno,
+        subdocument_id,
+        documents[9].idno,
+    ]
+    assert not result[2].is_main
+
+
+@pytest.mark.anyio
+async def test_get_all_documents_returns_empty_list(db_volume_data):
+    assert await get_all_documents(connection=db_volume_data) == []
 
 
 @pytest.mark.anyio
