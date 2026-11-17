@@ -1,23 +1,30 @@
+from typing import Sequence
+
 from aiosqlite import Connection
 
-from ssrq_editio.adapters.db.documents import get_documents_by_ft
-from ssrq_editio.models.documents import DocumentFulltextResult
+from ssrq_editio.adapters.db.documents import get_all_documents, get_documents_by_ft
+from ssrq_editio.models.documents import Document
 from ssrq_editio.models.search import DocumentSearchHit, DocumentSearchResponse
 
 
 async def find_documents(
     connection: Connection,
     query: str | None,
-) -> list[DocumentFulltextResult]:
-    """Search for complete documents and their full-text snippets (for display).
+) -> Sequence[Document]:
+    """Find documents, optionally matching a full-text query.
 
     Args:
         connection: An open SQLite connection.
-        query: The full-text search query. None and empty queries return no results.
+        query: The full-text search query. None, empty or whitespace-only queries return
+            all documents.
 
     Returns:
-        Complete document metadata and snippets, ordered by full-text relevance.
+        All documents ordered by volume and document sort key, or full-text matches with
+        snippets ordered by relevance.
     """
+    if query is None or not query.strip():
+        return await get_all_documents(connection=connection)
+
     return await get_documents_by_ft(connection=connection, search=query)
 
 

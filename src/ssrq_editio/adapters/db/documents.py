@@ -77,6 +77,25 @@ async def get_document(
         return Document(**data)
 
 
+async def get_all_documents(
+    connection: Connection,
+    query: Path = SQL_DATA_DIR / "get_all_documents.sql",
+) -> list[Document]:
+    """Retrieve all main documents and subdocuments across volumes.
+
+    Args:
+        connection: An open SQLite connection.
+        query: The path to the SQL query file.
+
+    Returns:
+        Documents ordered by volume and document sort key.
+    """
+    async with connection.cursor() as cursor:
+        await cursor.execute(await load(dir=query.parent, name=query.name))
+        data = await cursor.fetchall()
+        return [Document(**item) for item in data]
+
+
 async def get_documents(
     connection: Connection,
     volume_id: str,
