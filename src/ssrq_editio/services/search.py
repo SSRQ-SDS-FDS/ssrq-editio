@@ -1,14 +1,31 @@
 from aiosqlite import Connection
 
 from ssrq_editio.adapters.db.documents import get_documents_by_ft
+from ssrq_editio.models.documents import DocumentFulltextResult
 from ssrq_editio.models.search import DocumentSearchHit, DocumentSearchResponse
+
+
+async def find_documents(
+    connection: Connection,
+    query: str | None,
+) -> list[DocumentFulltextResult]:
+    """Search for complete documents and their full-text snippets (for display).
+
+    Args:
+        connection: An open SQLite connection.
+        query: The full-text search query. None and empty queries return no results.
+
+    Returns:
+        Complete document metadata and snippets, ordered by full-text relevance.
+    """
+    return await get_documents_by_ft(connection=connection, search=query)
 
 
 async def search_documents(
     connection: Connection,
     query: str | None,
 ) -> DocumentSearchResponse:
-    """Search documents using the same full-text implementation as the UI.
+    """Search documents using the fulltext-search-adapter.
 
     This service is just a small wrapper, which is used to create a structed DocumentSearchResponse.
 
