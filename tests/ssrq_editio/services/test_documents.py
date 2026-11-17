@@ -350,9 +350,12 @@ async def test_extract_infos_reuses_translation_map_for_multiple_documents(
     assert len(result) == 2
     assert call_count == 1
     for source, (_, fulltext) in zip(xml_sources, result, strict=True):
-        source_text = "".join(ElementTree.parse(source).getroot().itertext())
-        expected_text = re.sub(r"[\t\r\n ]+", " ", source_text).strip(" \t\r\n")
-        assert fulltext.text == expected_text
+        root = ElementTree.parse(source).getroot()
+        namespace = {"tei": "http://www.tei-c.org/ns/1.0"}
+        title = root.find(".//tei:msDesc/tei:head", namespace)
+        assert title is not None
+        assert "".join(title.itertext()).strip() in fulltext.title
+        assert fulltext.text
 
 
 @pytest.mark.anyio

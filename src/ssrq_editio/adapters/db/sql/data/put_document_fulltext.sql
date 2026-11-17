@@ -1,7 +1,13 @@
 INSERT INTO documents_fulltext (
     uuid,
-    text
+    title,
+    summary,
+    text,
+    comment
 ) VALUES (
     :uuid,
-    :text
+    :title,
+    :summary,
+    :text,
+    :comment
 );

@@ -4,12 +4,13 @@ from aiosqlite import Connection
 
 from ssrq_editio.adapters.db.documents import get_all_documents, get_documents_by_ft
 from ssrq_editio.models.documents import Document
-from ssrq_editio.models.search import DocumentSearchHit, DocumentSearchResponse
+from ssrq_editio.models.search import DocumentSearchHit, DocumentSearchResponse, SearchArea
 
 
 async def find_documents(
     connection: Connection,
     query: str | None,
+    areas: tuple[SearchArea, ...] | None = None,
 ) -> Sequence[Document]:
     """Find documents, optionally matching a full-text query.
 
@@ -17,6 +18,7 @@ async def find_documents(
         connection: An open SQLite connection.
         query: The full-text search query. None, empty or whitespace-only queries return
             all documents.
+        areas: Full-text fields to search; None includes all fields.
 
     Returns:
         All documents ordered by volume and document sort key, or full-text matches with
@@ -25,7 +27,7 @@ async def find_documents(
     if query is None or not query.strip():
         return await get_all_documents(connection=connection)
 
-    return await get_documents_by_ft(connection=connection, search=query)
+    return await get_documents_by_ft(connection=connection, search=query, areas=areas)
 
 
 async def search_documents(

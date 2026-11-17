@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Mapping
 
 import cachebox
 from aiosqlite import Connection
@@ -13,6 +14,7 @@ from ssrq_editio.models.documents import (
     DocumentIdentificationDisplay,
     DocumentType,
 )
+from ssrq_editio.models.search import SearchArea
 from ssrq_editio.services.utils import escape_ft_search_query
 
 __all__ = [
@@ -163,6 +165,7 @@ async def get_documents_by_ft(
     connection: Connection,
     query: Path = SQL_DATA_DIR / "get_documents_by_ft.sql",
     search: str | None = None,
+    areas: tuple[SearchArea, ...] | None = None,
 ) -> list[DocumentFulltextResult]:
     """Retrieve a list of documents by a fulltext search.
 
@@ -170,6 +173,7 @@ async def get_documents_by_ft(
         connection (Connection): An aiosqlite Connection
         query (Path): The path to the query file
         search (str): A search parameter for the fulltext search
+        areas: Searchable fields to include, or None for all fields.
 
     Returns:
         list[DocumentFulltextResult]: A list of DocumentFulltextResult objects
@@ -178,15 +182,43 @@ async def get_documents_by_ft(
         # Skip DB-query if no search term is provided
         return []
 
+    selected_areas = areas or tuple(SearchArea)
+
     async with connection.cursor() as cursor:
         await cursor.execute(
             await load(dir=query.parent, name=query.name),
             {
                 "search_term": escape_ft_search_query(search),
+                "search_title": SearchArea.TITLE in selected_areas,
+                "search_summary": SearchArea.SUMMARY in selected_areas,
+                "search_text": SearchArea.TEXT in selected_areas,
+                "search_comment": SearchArea.COMMENT in selected_areas,
             },
         )
         data = await cursor.fetchall()
-        return [DocumentFulltextResult(**item) for item in data]
+        return [
+            DocumentFulltextResult(
+                **(
+                    row
+                    | {"ft_area": match[0], "ft_match": match[1]}
+                    if (match := _find_marked_snippet(row))
+                    else row
+                )
+            )
+            for row in map(dict, data)
+        ]
+
+
+def _find_marked_snippet(row: Mapping[str, str | None]) -> tuple[SearchArea, str] | None:
+    """Return the first marked snippet and its area, in SearchArea order."""
+    matches = filter(
+        lambda area: "<mark>" in (row[f"{area.value}_match"] or ""), SearchArea
+    )
+    area = next(matches, None)
+    if area is None:
+        return None
+
+    return area, row[f"{area.value}_match"] or ""
 
 
 @cachebox.cached(cachebox.TTLCache(0, 3600))
