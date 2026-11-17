@@ -235,7 +235,8 @@ async def test_fulltext_search_combines_areas_with_relevance_and_prefixes(db_vol
     )
     expected = await db_volume_data.execute_fetchall(
         "SELECT uuid, -rank FROM documents_fulltext "
-        "WHERE documents_fulltext MATCH ? ORDER BY rank",
+        "WHERE documents_fulltext MATCH ? "
+        "AND rank MATCH 'bm25(0.0, 1.7, 1.5, 1.2, 0.5)' ORDER BY rank",
         ("{title text} : (gerich*)",),
     )
 
@@ -246,6 +247,24 @@ async def test_fulltext_search_combines_areas_with_relevance_and_prefixes(db_vol
         document for document in result if document.uuid == selected_documents[0].uuid
     )
     assert document_with_multiple_matches.ft_area == SearchArea.TITLE
+
+
+@pytest.mark.anyio
+async def test_fulltext_search_ranks_areas_by_weight(db_volume_data, documents):
+    selected_documents = documents[:4]
+    await initialize_document_data(selected_documents, db_volume_data)
+    await initialize_document_fulltext(
+        tuple(
+            DocumentFulltext(uuid=document.uuid, **({"text": ""} | {area.value: "gericht"}))
+            for document, area in zip(selected_documents, SearchArea)
+        ),
+        db_volume_data,
+    )
+
+    result = await get_documents_by_ft(db_volume_data, search="gericht")
+
+    assert [document.uuid for document in result] == [doc.uuid for doc in selected_documents]
+    assert all(a.ft_score > b.ft_score for a, b in zip(result, result[1:]))
 
 
 @pytest.mark.anyio
