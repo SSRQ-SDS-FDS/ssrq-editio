@@ -23,6 +23,7 @@ async def test_mcp_endpoint_supports_initialization_and_tool_discovery(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """The mounted MCP transport accepts the handshake and exposes the tool registry."""
+
     async def test_db_session():
         yield app_db_setup
 
