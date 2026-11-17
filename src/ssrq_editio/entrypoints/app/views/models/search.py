@@ -62,7 +62,10 @@ class SearchViewModel(ViewModel):
 
     async def _get_documents_by_ft_search(
         self,
-    ) -> None | tuple[int, tuple[tuple[tuple[Document, Sequence[str] | None], ...], list[int] | None]]:
+    ) -> (
+        None
+        | tuple[int, tuple[tuple[tuple[Document, Sequence[str] | None], ...], list[int] | None]]
+    ):
         """Load shared search results and apply pagination for the web presentation."""
         search_results = await find_documents(connection=self.connection, query=self.query)
         total = len(search_results)
