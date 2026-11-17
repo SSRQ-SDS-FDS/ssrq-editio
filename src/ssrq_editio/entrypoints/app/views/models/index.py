@@ -15,6 +15,7 @@ class IndexViewModel(ViewModel):
         super().__init__(request, lang)
         self.page = "index.jinja"
         self.connection = connection
+        self.add_css("css/dist/index.css")
 
     async def create_context(self) -> ViewContext:
         kantons = await list_kantons(self.connection)
@@ -24,7 +25,10 @@ class IndexViewModel(ViewModel):
             data={
                 "page_title": self._get_title(),
                 "page_description": self._get_description(),
-                "content": kantons,
+                "content": {
+                    "kantons": kantons,
+                    "total": sum(kanton.docs for kanton in kantons.kantons),
+                },
             },
             translator=self.translator,
         )

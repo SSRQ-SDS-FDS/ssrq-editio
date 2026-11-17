@@ -1,7 +1,10 @@
 {# def
     request: Request
 #}
-<section class="cover-banner">
+
+{% do attrs.add_class("cover-banner") %}
+
+<section {{ attrs.render() }} >
     <div class="cover-image">
         <img src="{{ url_for('static', path='images/cover_image.jpg') }}"
              class="cover-image"
@@ -9,8 +12,8 @@
     </div>
     <div class="cover-overlay" />
     <div class="cover-content flex items-center justify-center">
-        <div class="container flex flex-col items-center">
-            <div class="w-full max-w-4xl lg:px-12 sm:px-4 page-title">{{ content }}</div>
+        <div class="w-full flex flex-col items-center">
+            <div class="w-full max-w-5xl px-8 sm:px-12 lg:px-20 page-title">{{ content }}</div>
         </div>
     </div>
 </section>

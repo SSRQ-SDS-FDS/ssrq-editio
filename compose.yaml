@@ -1,0 +1,21 @@
+services:
+  web:
+    build:
+      context: .
+      target: development
+      args:
+        SQLITE_VERSION: ${SQLITE_VERSION:-3.46.1}
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      WATCHFILES_FORCE_POLLING: "true"
+    volumes:
+      - .:/editio
+      - python-environment:/editio/.venv
+      - node-dependencies:/editio/node_modules
+    command: >-
+      sh -c "uv sync --frozen --all-extras --dev && npm ci && exec just dev 0.0.0.0"
+
+volumes:
+  python-environment:
+  node-dependencies:
