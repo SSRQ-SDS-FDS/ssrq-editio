@@ -1,0 +1,81 @@
+@reference "../main.css";
+
+@layer theme, base, components, utilities;
+
+.intro-banner {
+    min-height: 32rem;
+}
+
+.intro-banner .page-title {
+    @apply max-w-4xl px-4 sm:px-8 lg:px-12;
+}
+
+.intro-banner .cover-overlay {
+    background: radial-gradient(
+        ellipse at 50% 48%,
+        rgba(250, 248, 243, 0.97) 0%,
+        rgba(250, 248, 243, 0.9) 30%,
+        rgba(250, 248, 243, 0.55) 68%,
+        rgba(250, 248, 243, 0.35) 100%
+    );
+}
+
+.intro-banner img.cover-image {
+    min-width: 0;
+}
+
+@layer components {
+    .intro {
+        @apply mx-auto flex flex-col items-center px-4 py-12 text-center;
+    }
+
+    .intro .label {
+        @apply mb-5 text-xs font-medium tracking-[0.2em] text-ssrq-primary/80;
+    }
+
+    .intro .title {
+        max-width: 24ch;
+        font-size: clamp(2rem, 3.8vw, 3.5rem);
+        line-height: 1.15;
+        letter-spacing: -0.035em;
+        text-wrap: balance;
+        @apply font-medium text-ssrq-greyed-900;
+    }
+
+    .intro .subtitle {
+        @apply mt-6 flex flex-wrap items-baseline justify-center gap-x-2 text-lg text-ssrq-greyed-700;
+    }
+
+    .intro .subtitle span {
+        @apply text-2xl font-semibold tabular-nums text-ssrq-greyed-900;
+    }
+
+    .intro .navigation {
+        @apply mt-8 flex flex-col items-center gap-5;
+    }
+
+    .intro .actions {
+        @apply flex flex-wrap justify-center gap-3;
+    }
+
+    .intro .action {
+        @apply inline-flex min-h-11 min-w-36 cursor-pointer items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium transition-colors;
+    }
+
+    .intro .action.primary {
+        @apply border-transparent bg-ssrq-primary/85 text-white hover:bg-ssrq-primary;
+    }
+
+    .intro .action.secondary {
+        @apply border-ssrq-greyed-900/15 bg-white/60 text-ssrq-greyed-800 hover:border-ssrq-primary/40 hover:bg-white/90 hover:text-ssrq-primary;
+    }
+
+    .intro .api {
+        @apply inline-flex min-h-8 items-center gap-1.5 rounded-sm px-2 text-xs font-medium text-ssrq-greyed-700 transition-colors hover:text-ssrq-primary;
+    }
+
+    .intro .action:focus-visible,
+    .intro .api:focus-visible {
+        @apply outline-2 outline-offset-4 outline-ssrq-primary;
+    }
+}
