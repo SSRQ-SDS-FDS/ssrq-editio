@@ -78,10 +78,10 @@ just dev-container
 Open <http://127.0.0.1:8000>. Source changes are watched inside the container. Stop it with
 `Ctrl+C` or `just dev-container-down`. The project directory, including an existing
 `ssrq_editio.sqlite3`, is mounted into the container; the database is not rebuilt on startup.
-Populate it explicitly with `just db` if needed, after checking out the data submodules.
-To rebuild it from scratch, use `just db --clean`: this deletes the existing database file and
-also fetches entity data from the configured API endpoints. Additional `prepare-db` options can be
-passed to `just db`, for example `just db --clean --no-parallel`.
+After checking out the data submodules, populate the database with `just db`. This rebuilds it from
+scratch: it deletes any existing database file and fetches entity data from the configured API
+endpoints. Additional `prepare-db` options can be passed to `just db`, for example
+`just db --no-parallel`.
 The `.venv` and `node_modules` directories use separate Docker volumes and are synchronized at
 startup. `docker compose down` retains these volumes.
 
@@ -107,7 +107,7 @@ choose a suitable base image or provide the matching library before changing the
 We have a number of common tasks that can be executed using the `just` command. Here are some of the most important ones:
 
 - `just dev`: starts the development server
-- `just db`: populates the database in the development container
+- `just db`: rebuilds the database in the development container
 - `just test`: runs the tests
 - `just container test`: runs the tests in the development container
 - `just e2e`: runs the browser-driven end-to-end tests
