@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Query, Request
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 
 from ssrq_editio.entrypoints.app.routers.api import api
@@ -21,6 +21,7 @@ from ssrq_editio.entrypoints.cli.config import VOLUME_SRC
 from ssrq_editio.models.documents import DocumentType
 from ssrq_editio.models.entities import EntityTypes
 from ssrq_editio.models.kantons import KantonName
+from ssrq_editio.models.search import SearchArea
 from ssrq_editio.services.documents import resolve_asset_path
 from ssrq_editio.services.utils import build_project_url, build_schema_url
 from ssrq_editio.services.volumes import get_volume_info
@@ -55,6 +56,7 @@ async def search(
     page: int = 1,
     per_page: int = 25,
     fts: str | None = None,
+    area: list[SearchArea] | None = Query(default=None),
 ):
     return await SearchViewModel(
         request=request,
@@ -63,6 +65,7 @@ async def search(
         query=fts,
         current_page=page,
         per_page=per_page,
+        areas=tuple(area) if area else tuple(SearchArea),
     ).to_html()
 
 

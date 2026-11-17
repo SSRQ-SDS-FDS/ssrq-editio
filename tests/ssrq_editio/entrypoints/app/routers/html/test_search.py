@@ -1,3 +1,5 @@
+import re
+
 import pytest
 from httpx import AsyncClient
 from ssrq_utils.lang.display import Lang
@@ -6,6 +8,17 @@ from starlette.requests import Request
 from ssrq_editio.adapters.db.documents import get_documents_by_ft
 from ssrq_editio.entrypoints.app.views.models.search import SearchViewModel
 from ssrq_editio.models.documents import Document, DocumentFulltextResult
+
+
+@pytest.mark.anyio
+async def test_search_filter_options_reflect_url(app_client: AsyncClient):
+    response = await app_client.get('/search', params={'area': 'title'})
+
+    assert response.status_code == 200
+    options = re.findall(r'<input type="checkbox" name="area"[^>]*>', response.text)
+    assert len(options) == 4
+    assert 'value="title"' in options[0] and 'checked' in options[0]
+    assert all('checked' not in option for option in options[1:])
 
 
 @pytest.mark.anyio
@@ -45,7 +58,7 @@ async def test_search_page_renders_subdocument(app_client: AsyncClient, app_db_s
         update={"idno": "SSRQ-SG-III_4-1.1-1", "is_main": False, "printed_idno": "Teil 1"}
     )
 
-    async def find_subdocument(connection, query):
+    async def find_subdocument(connection, query, areas):
         return [subdocument]
 
     monkeypatch.setattr(
@@ -66,7 +79,7 @@ async def test_search_page_omits_snippet_without_relevance_score(
     result = (await get_documents_by_ft(app_db_setup, search="foo"))[0]
     document = result.model_dump(exclude={"ft_score", "ft_match"})
 
-    async def find_without_fulltext(connection, query):
+    async def find_without_fulltext(connection, query, areas):
         return [Document(**document)]
 
     monkeypatch.setattr(
@@ -77,3 +90,25 @@ async def test_search_page_omits_snippet_without_relevance_score(
     assert response.status_code == 200
     assert "SSRQ SG III/4 1/1" in response.text
     assert "Punteggio:" not in response.text
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize(
+    ("query", "areas", "expected"),
+    [
+        ("foo", ["text"], True),
+        ("foo", ["title"], False),
+        ("foo", ["title", "text"], True),
+        ("foo bar", ["text"], True),
+        ("foo foo", ["text"], True),
+        ("fo*", ["text"], True),
+    ],
+)
+async def test_search_filters_selected_areas(
+    app_client: AsyncClient, query, areas, expected
+):
+    params = [("fts", query), *(("area", area) for area in areas)]
+    response = await app_client.get("/search", params=params)
+
+    assert response.status_code == 200
+    assert ("SSRQ SG III/4 1/1" in response.text) is expected
