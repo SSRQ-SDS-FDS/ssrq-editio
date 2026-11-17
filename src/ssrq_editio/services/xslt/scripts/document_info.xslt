@@ -24,6 +24,7 @@
     <xsl:param name="translations" as="map(xs:string, map(*))"/>
 
     <xsl:output method="json" encoding="utf-8"/>
+    <xsl:mode name="fulltext" on-no-match="shallow-skip"/>
 
     <xsl:template match="/">
         <xsl:variable name="idno" as="text()" select="cutils:get-document-idno(./tei:TEI)/text()"/>
@@ -37,7 +38,10 @@
             <xsl:apply-templates select="(.//tei:msDesc)[1]">
                 <xsl:with-param name="translations" select="$translations" tunnel="yes"/>
             </xsl:apply-templates>
-            <xsl:map-entry key="'text'" select="documents:extract-ft(./tei:TEI)"/>
+            <xsl:map-entry key="'title'" select="documents:extract-ft((.//tei:msDesc)[1]/tei:head)"/>
+            <xsl:map-entry key="'summary'" select="documents:extract-ft(.//tei:summary)"/>
+            <xsl:map-entry key="'text'" select="documents:extract-ft(./tei:TEI/tei:text/tei:body)"/>
+            <xsl:map-entry key="'comment'" select="documents:extract-ft(./tei:TEI/tei:text/tei:back)"/>
             <xsl:map-entry key="'type'" select=".//tei:text/@type/data(.)"/>
             <xsl:map-entry key="'facs_responsible'" select="string-join(
                     .//tei:respStmt[
@@ -195,8 +199,27 @@
 
 
     <xsl:function name="documents:extract-ft" as="xs:string">
-        <xsl:param name="input" as="element(tei:TEI)"/>
-        <xsl:sequence select="$input/string() => normalize-space()"/>
+        <xsl:param name="input" as="element()*"/>
+        <xsl:variable name="text">
+            <xsl:apply-templates select="$input" mode="fulltext"/>
+        </xsl:variable>
+        <xsl:sequence select="normalize-space(string($text))"/>
     </xsl:function>
+
+    <xsl:template match="text()" mode="fulltext">
+        <xsl:value-of select="."/>
+    </xsl:template>
+
+    <xsl:template match="tei:note[not(@type)][ancestor::tei:body]" mode="fulltext"/>
+
+    <xsl:template match="tei:head | tei:summary | tei:body | tei:back | tei:div | tei:p | tei:ab | tei:list | tei:item | tei:table | tei:row | tei:cell | tei:bibl" mode="fulltext">
+        <xsl:text> </xsl:text>
+        <xsl:apply-templates mode="fulltext"/>
+        <xsl:text> </xsl:text>
+    </xsl:template>
+
+    <xsl:template match="tei:lb[not(@break = 'no')] | tei:pb" mode="fulltext">
+        <xsl:text> </xsl:text>
+    </xsl:template>
 
 </xsl:stylesheet>

@@ -1,6 +1,14 @@
+from enum import Enum
 from functools import cached_property
 
 from pydantic import BaseModel, Field, computed_field
+
+
+class SearchArea(str, Enum):
+    TITLE = "title"
+    SUMMARY = "summary"
+    TEXT = "text"
+    COMMENT = "comment"
 
 
 class DocumentSearchHit(BaseModel):

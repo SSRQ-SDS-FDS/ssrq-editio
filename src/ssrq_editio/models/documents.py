@@ -5,6 +5,7 @@ from typing import Annotated, Any, Self
 from pydantic import BaseModel, BeforeValidator, model_validator
 from ssrq_utils.lang.display import Lang
 
+from ssrq_editio.models.search import SearchArea
 from ssrq_editio.services.utils import parse_as_list_or_return, serialize_value
 
 
@@ -159,12 +160,16 @@ class DocumentMCPResponse(DocumentDate, DocumentRelations, DocumentTitle):
 
 class DocumentFulltext(BaseModel):
     uuid: str
+    title: str = ""
+    summary: str = ""
     text: str
+    comment: str = ""
 
 
 class DocumentFulltextResult(Document):
     ft_match: str
     ft_score: float
+    ft_area: SearchArea | None = None
 
 
 class DocumentDisplay(BaseModel):
