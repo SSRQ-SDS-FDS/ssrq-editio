@@ -1,0 +1,15 @@
+{# def
+    text: str,
+    score: float,
+    lang: Lang,
+    translator: Translator
+#}
+
+<section class="mt-3 rounded-md border-l-4 border-ssrq-primary bg-ssrq-greyed-50 px-4 py-3">
+    <div class="mb-2 text-right text-sm text-ssrq-greyed-600">
+        <span title="{{ translator.translate(lang, 'relevance-score-help') }}">
+            {{ translator.translate(lang, 'relevance-score') }}: {{ '%.4g' | format(score) }}
+        </span>
+    </div>
+    <p class="font-serif">{{ text | safe }}</p>
+</section>
