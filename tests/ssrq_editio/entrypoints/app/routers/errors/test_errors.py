@@ -2,6 +2,10 @@ import pytest
 from httpx import AsyncClient
 
 
+async def fail_search(*args, **kwargs):
+    raise ValueError("test error")
+
+
 @pytest.mark.anyio
 @pytest.mark.parametrize(
     ("url", "status_code"),
@@ -11,7 +15,11 @@ from httpx import AsyncClient
         ("/api/v1/kantons/ZH/bla.pdf", 404),
     ],
 )
-async def test_status_code(app_client: AsyncClient, url: str, status_code: int):
+async def test_status_code(app_client: AsyncClient, url: str, status_code: int, monkeypatch):
+    if url.startswith("/search"):
+        monkeypatch.setattr(
+            "ssrq_editio.entrypoints.app.views.models.search.find_documents", fail_search
+        )
     response = await app_client.get(url)
     assert response.status_code == status_code
 
@@ -27,6 +35,10 @@ async def test_status_code(app_client: AsyncClient, url: str, status_code: int):
         ("/a/b/c?lang=en", "Oops! Something went wrong."),
     ],
 )
-async def test_error_text(app_client: AsyncClient, url: str, error_text: str):
+async def test_error_text(app_client: AsyncClient, url: str, error_text: str, monkeypatch):
+    if url.startswith("/search"):
+        monkeypatch.setattr(
+            "ssrq_editio.entrypoints.app.views.models.search.find_documents", fail_search
+        )
     response = await app_client.get(url)
     assert error_text in response.text

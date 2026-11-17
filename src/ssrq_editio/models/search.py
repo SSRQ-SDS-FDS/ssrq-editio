@@ -1,7 +1,27 @@
 from enum import Enum
 from functools import cached_property
+from typing import Protocol
 
 from pydantic import BaseModel, Field, computed_field
+
+
+class SearchFilterOption(BaseModel):
+    """An available filter value and its current selection state."""
+
+    value: str
+    selected: bool
+
+
+class SearchComponent(Protocol):
+    name: str
+    options: list[SearchFilterOption]
+
+
+class SearchFilter(BaseModel):
+    """A named search filter and its available options."""
+
+    name: str
+    options: list[SearchFilterOption]
 
 
 class SearchArea(str, Enum):

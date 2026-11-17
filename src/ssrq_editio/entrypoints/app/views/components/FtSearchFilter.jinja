@@ -1,0 +1,29 @@
+{# def
+    lang: Lang,
+    translator: Translator,
+    filters: list[dict]
+#}
+<div class="relative" @keydown.escape="cancel()" @click.outside="cancel()">
+    <button type="button" class="cursor-pointer rounded-md bg-ssrq-primary px-4 py-2 text-white hover:shadow-sm focus:outline-hidden focus:shadow-sm focus:ring-3 focus:ring-ssrq-primary/40 ml-[-0.25rem]" @click="open = !open" :aria-expanded="open" aria-controls="search-filter" aria-label="{{ translator.translate(lang, 'filter') }}" title="{{ translator.translate(lang, 'filter') }}">
+        <FilterIcon class="h-5 w-5" />
+    </button>
+    <div id="search-filter" x-cloak x-show="open" class="absolute right-0 z-20 mt-2 w-64 rounded-md border border-gray-300 bg-white p-4 shadow-lg">
+        {% for filter in filters %}
+        {% set key = filter.name | tojson | forceescape %}
+        <fieldset>
+            <legend class="mb-2 font-semibold">{{ translator.translate(lang, 'search-' + filter.name + 's') }}</legend>
+            {% for option in filter.options %}
+                {% set value = option.value | tojson | forceescape %}
+                <label class="flex items-center gap-2 py-1">
+                    <input type="checkbox" name="{{ filter.name }}" value="{{ option.value }}" class="rounded border-gray-300 text-ssrq-primary shadow-sm focus:border-ssrq-primary focus:ring-3 focus:ring-offset-0 focus:ring-ssrq-primary/50" x-model="selected[{{ key }}]" @click="preventEmptySelection($event, {{ key }}, {{ value }})" {% if option.selected %}checked{% endif %} />
+                    {{ translator.translate(lang, 'search-' + filter.name + '-' + option.value) }}
+                </label>
+            {% endfor %}
+        </fieldset>
+        {% endfor %}
+        <div class="mt-3 flex justify-between gap-2">
+            <button type="button" class="text-ssrq-primary cursor-pointer" @click="reset()">{{ translator.translate(lang, 'reset') }}</button>
+            <button type="submit" class="rounded-md bg-ssrq-primary px-3 py-1 text-white cursor-pointer" @click="apply()">{{ translator.translate(lang, 'apply') }}</button>
+        </div>
+    </div>
+</div>
