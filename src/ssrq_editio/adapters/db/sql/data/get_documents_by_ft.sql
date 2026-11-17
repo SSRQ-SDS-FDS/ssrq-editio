@@ -15,7 +15,8 @@ SELECT -- noqa
 FROM documents_fulltext AS fts
 INNER JOIN documents AS d ON fts.uuid = d.uuid
 WHERE
-    fts.documents_fulltext MATCH (
+    fts.rank MATCH 'bm25(0.0, 1.7, 1.5, 1.2, 0.5)'
+    AND fts.documents_fulltext MATCH (
         '{'
         || CASE WHEN :search_title THEN 'title ' ELSE '' END
         || CASE WHEN :search_summary THEN 'summary ' ELSE '' END
