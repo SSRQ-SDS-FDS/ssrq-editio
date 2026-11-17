@@ -150,6 +150,8 @@ async def test_get_documents_by_fulltext(db_volume_data, documents, fulltext):
     search_result = await get_documents_by_ft(connection=db_volume_data, search="foo")
     assert len(search_result) == len(documents)
     assert "<mark>foo</mark>" in search_result[0].ft_match
+    assert search_result[0].ft_score > 0
+    assert all(a.ft_score >= b.ft_score for a, b in zip(search_result, search_result[1:]))
 
 
 @pytest.mark.anyio

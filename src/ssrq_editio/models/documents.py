@@ -164,6 +164,7 @@ class DocumentFulltext(BaseModel):
 
 class DocumentFulltextResult(Document):
     ft_match: str
+    ft_score: float
 
 
 class DocumentDisplay(BaseModel):

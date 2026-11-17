@@ -5,7 +5,8 @@ from fastapi import Request
 from ssrq_utils.lang.display import Lang
 
 from ssrq_editio.entrypoints.app.views.models.base import ViewContext, ViewModel
-from ssrq_editio.models.documents import DocumentFulltextResult
+from ssrq_editio.models.documents import Document
+from ssrq_editio.services.documents import resolve_orig_places_for_documents
 from ssrq_editio.services.paginate import create_pages, get_valid_page_number
 from ssrq_editio.services.search import find_documents
 
@@ -61,7 +62,7 @@ class SearchViewModel(ViewModel):
 
     async def _get_documents_by_ft_search(
         self,
-    ) -> None | tuple[int, tuple[Sequence[DocumentFulltextResult], list[int] | None]]:
+    ) -> None | tuple[int, tuple[tuple[tuple[Document, Sequence[str] | None], ...], list[int] | None]]:
         """Load shared search results and apply pagination for the web presentation."""
         search_results = await find_documents(connection=self.connection, query=self.query)
         total = len(search_results)
@@ -74,10 +75,14 @@ class SearchViewModel(ViewModel):
             per_page=self.per_page,
             total_hits=total,
         )
-        paged_results = create_pages(
+        documents, pages = create_pages(
             items=search_results,
             current_page=self.current_page,
             per_page=self.per_page,
         )
 
-        return total, paged_results
+        resolved_documents = await resolve_orig_places_for_documents(
+            documents, self.connection, self.lang
+        )
+
+        return total, (resolved_documents, pages)
