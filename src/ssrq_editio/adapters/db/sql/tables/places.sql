@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS places
     fr_place_types TEXT NOT NULL
 );
 
-CREATE VIRTUAL TABLE IF NOT EXISTS places_fts USING fts5( -- noqa: PRS
+CREATE VIRTUAL TABLE IF NOT EXISTS places_fts USING fts5 ( -- noqa: PRS
     id UNINDEXED,
     cs_name,
     de_name,

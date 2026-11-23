@@ -199,8 +199,7 @@ async def get_documents_by_ft(
         return [
             DocumentFulltextResult(
                 **(
-                    row
-                    | {"ft_area": match[0], "ft_match": match[1]}
+                    row | {"ft_area": match[0], "ft_match": match[1]}
                     if (match := _find_marked_snippet(row))
                     else row
                 )
@@ -211,9 +210,7 @@ async def get_documents_by_ft(
 
 def _find_marked_snippet(row: Mapping[str, str | None]) -> tuple[SearchArea, str] | None:
     """Return the first marked snippet and its area, in SearchArea order."""
-    matches = filter(
-        lambda area: "<mark>" in (row[f"{area.value}_match"] or ""), SearchArea
-    )
+    matches = filter(lambda area: "<mark>" in (row[f"{area.value}_match"] or ""), SearchArea)
     area = next(matches, None)
     if area is None:
         return None

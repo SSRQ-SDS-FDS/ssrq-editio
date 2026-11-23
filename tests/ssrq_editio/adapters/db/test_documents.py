@@ -191,7 +191,12 @@ async def test_get_documents_by_fulltext(db_volume_data, documents, fulltext):
 @pytest.mark.anyio
 @pytest.mark.parametrize(
     ("term", "area"),
-    [("titelwort", "title"), ("regestwort", "summary"), ("textwort", "text"), ("kommentarwort", "comment")],
+    [
+        ("titelwort", "title"),
+        ("regestwort", "summary"),
+        ("textwort", "text"),
+        ("kommentarwort", "comment"),
+    ],
 )
 async def test_fulltext_search_finds_each_indexed_area(db_volume_data, documents, term, area):
     document = documents[0]
@@ -218,12 +223,16 @@ async def test_fulltext_search_finds_each_indexed_area(db_volume_data, documents
 
 
 @pytest.mark.anyio
-async def test_fulltext_search_combines_areas_with_relevance_and_prefixes(db_volume_data, documents):
+async def test_fulltext_search_combines_areas_with_relevance_and_prefixes(
+    db_volume_data, documents
+):
     selected_documents = documents[:3]
     await initialize_document_data(selected_documents, db_volume_data)
     await initialize_document_fulltext(
         (
-            DocumentFulltext(uuid=selected_documents[0].uuid, title="gericht", text="gericht gericht"),
+            DocumentFulltext(
+                uuid=selected_documents[0].uuid, title="gericht", text="gericht gericht"
+            ),
             DocumentFulltext(uuid=selected_documents[1].uuid, text="gericht"),
             DocumentFulltext(uuid=selected_documents[2].uuid, summary="gericht", text=""),
         ),

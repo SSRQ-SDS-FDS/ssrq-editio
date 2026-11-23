@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS persons
     location TEXT NULL
 );
 
-CREATE VIRTUAL TABLE IF NOT EXISTS persons_fts USING fts5( -- noqa: PRS
+CREATE VIRTUAL TABLE IF NOT EXISTS persons_fts USING fts5 ( -- noqa: PRS
     id UNINDEXED,
     de_name,
     fr_name,

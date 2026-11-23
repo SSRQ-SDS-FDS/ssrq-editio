@@ -12,13 +12,13 @@ from ssrq_editio.models.documents import Document, DocumentFulltextResult
 
 @pytest.mark.anyio
 async def test_search_filter_options_reflect_url(app_client: AsyncClient):
-    response = await app_client.get('/search', params={'area': 'title'})
+    response = await app_client.get("/search", params={"area": "title"})
 
     assert response.status_code == 200
     options = re.findall(r'<input type="checkbox" name="area"[^>]*>', response.text)
     assert len(options) == 4
-    assert 'value="title"' in options[0] and 'checked' in options[0]
-    assert all('checked' not in option for option in options[1:])
+    assert 'value="title"' in options[0] and "checked" in options[0]
+    assert all("checked" not in option for option in options[1:])
 
 
 @pytest.mark.anyio
@@ -104,9 +104,7 @@ async def test_search_page_omits_snippet_without_relevance_score(
         ("fo*", ["text"], True),
     ],
 )
-async def test_search_filters_selected_areas(
-    app_client: AsyncClient, query, areas, expected
-):
+async def test_search_filters_selected_areas(app_client: AsyncClient, query, areas, expected):
     params = [("fts", query), *(("area", area) for area in areas)]
     response = await app_client.get("/search", params=params)
 

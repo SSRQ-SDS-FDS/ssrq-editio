@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS organizations
     location TEXT NULL
 );
 
-CREATE VIRTUAL TABLE IF NOT EXISTS organizations_fts USING fts5( -- noqa: PRS
+CREATE VIRTUAL TABLE IF NOT EXISTS organizations_fts USING fts5 ( -- noqa: PRS
     id UNINDEXED,
     de_name,
     fr_name,
@@ -22,7 +22,7 @@ CREATE VIRTUAL TABLE IF NOT EXISTS organizations_fts USING fts5( -- noqa: PRS
     rm_name
 );
 
-CREATE TRIGGER IF NOT EXISTS organizations_ai AFTER INSERT ON organizations BEGIN
+CREATE TRIGGER IF NOT EXISTS organizations_ai AFTER INSERT ON organizations BEGIN  --noqa: LT05
     INSERT INTO organizations_fts (
         rowid,
         id,
