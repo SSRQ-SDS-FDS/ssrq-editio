@@ -328,6 +328,52 @@ async def test_extract_infos_from_xml(
 
 
 @pytest.mark.anyio
+async def test_extract_fulltext_includes_untyped_body_notes_in_comment(
+    tmp_path: Path, transpiled_schema: Path
+):
+    source = tmp_path / "SSRQ-SG-III_4-63-1.xml"
+    source.write_text(
+        """<TEI xmlns="http://www.tei-c.org/ns/1.0">
+            <teiHeader>
+                <fileDesc>
+                    <publicationStmt>
+                        <idno type="uuid">d56f1ce8-cec9-49ed-b54b-09f397adc2d8</idno>
+                    </publicationStmt>
+                    <seriesStmt><idno>SSRQ-SG-III_4-63-1</idno></seriesStmt>
+                    <sourceDesc>
+                        <msDesc><history><origin>
+                            <origDate type="document" when-custom="1473-04-26" calendar="julian"/>
+                        </origin></history></msDesc>
+                    </sourceDesc>
+                </fileDesc>
+            </teiHeader>
+            <text type="transcript">
+                <front><p><note>Vorwortnote</note></p></front>
+                <body>
+                    <p>Editionstext
+                        <note>Erste <ref>Anmerkung</ref><lb/>mit Umbruch
+                            <note>Verschachtelte Anmerkung</note>
+                            <app><note type="text_comparison"><ref>Interner Textvergleich</ref></note></app>
+                        </note><note>Zweite Anmerkung</note>
+                        <note type="text_comparison">Textvergleich</note>
+                    </p>
+                </body>
+                <back><p>Kommentar mit <note>Schlussnote</note></p></back>
+            </text>
+        </TEI>""",
+        encoding="utf-8",
+    )
+
+    ((_, fulltext),) = await extract_infos_from_xml((source,), "foo", transpiled_schema)
+
+    assert fulltext.text == "Editionstext Textvergleich"
+    assert fulltext.comment == (
+        "Erste Anmerkung mit Umbruch Verschachtelte Anmerkung Zweite Anmerkung "
+        "Kommentar mit Schlussnote"
+    )
+
+
+@pytest.mark.anyio
 async def test_extract_infos_reuses_translation_map_for_multiple_documents(
     example_path: Path, transpiled_schema: Path, monkeypatch: pytest.MonkeyPatch
 ):

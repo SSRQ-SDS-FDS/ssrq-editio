@@ -25,9 +25,11 @@
 
     <xsl:output method="json" encoding="utf-8"/>
     <xsl:mode name="fulltext" on-no-match="shallow-skip"/>
+    <xsl:mode name="fulltext-note" on-no-match="shallow-skip"/>
 
     <xsl:template match="/">
         <xsl:variable name="idno" as="text()" select="cutils:get-document-idno(./tei:TEI)/text()"/>
+        <xsl:variable name="text" select="./tei:TEI/tei:text"/>
         <xsl:map>
             <xsl:map-entry key="'uuid'" select="cutils:get-document-uuid(./tei:TEI)/text()"/>
             <xsl:map-entry key="'idno'" select="$idno"/>
@@ -40,8 +42,17 @@
             </xsl:apply-templates>
             <xsl:map-entry key="'title'" select="documents:extract-ft((.//tei:msDesc)[1]/tei:head)"/>
             <xsl:map-entry key="'summary'" select="documents:extract-ft(.//tei:summary)"/>
-            <xsl:map-entry key="'text'" select="documents:extract-ft(./tei:TEI/tei:text/tei:body)"/>
-            <xsl:map-entry key="'comment'" select="documents:extract-ft(./tei:TEI/tei:text/tei:back)"/>
+            <xsl:map-entry key="'text'" select="documents:extract-ft($text/tei:body)"/>
+            <xsl:map-entry key="'comment'">
+                <xsl:variable name="comment">
+                    <xsl:for-each select="$text/tei:body//tei:note[not(@type)]">
+                        <xsl:apply-templates select="node()" mode="fulltext-note"/>
+                        <xsl:text> </xsl:text>
+                    </xsl:for-each>
+                    <xsl:apply-templates select="$text/tei:back" mode="fulltext"/>
+                </xsl:variable>
+                <xsl:sequence select="normalize-space(string($comment))"/>
+            </xsl:map-entry>
             <xsl:map-entry key="'type'" select=".//tei:text/@type/data(.)"/>
             <xsl:map-entry key="'facs_responsible'" select="string-join(
                     .//tei:respStmt[
@@ -206,19 +217,22 @@
         <xsl:sequence select="normalize-space(string($text))"/>
     </xsl:function>
 
-    <xsl:template match="text()" mode="fulltext">
+    <xsl:template match="text()" mode="fulltext fulltext-note">
         <xsl:value-of select="."/>
     </xsl:template>
 
     <xsl:template match="tei:note[not(@type)][ancestor::tei:body]" mode="fulltext"/>
 
-    <xsl:template match="tei:head | tei:summary | tei:body | tei:back | tei:div | tei:p | tei:ab | tei:list | tei:item | tei:table | tei:row | tei:cell | tei:bibl" mode="fulltext">
+    <!-- Each untyped body note is indexed separately. -->
+    <xsl:template match="tei:note" mode="fulltext-note"/>
+
+    <xsl:template match="tei:head | tei:summary | tei:body | tei:back | tei:div | tei:p | tei:ab | tei:list | tei:item | tei:table | tei:row | tei:cell | tei:bibl" mode="fulltext fulltext-note">
         <xsl:text> </xsl:text>
-        <xsl:apply-templates mode="fulltext"/>
+        <xsl:apply-templates mode="#current"/>
         <xsl:text> </xsl:text>
     </xsl:template>
 
-    <xsl:template match="tei:lb[not(@break = 'no')] | tei:pb" mode="fulltext">
+    <xsl:template match="tei:lb[not(@break = 'no')] | tei:pb" mode="fulltext fulltext-note">
         <xsl:text> </xsl:text>
     </xsl:template>
 
