@@ -153,11 +153,14 @@ async def get_volume_info(connection: Connection, kanton_short_name: str, volume
     return volume
 
 
-def check_volume_pdf(base: Path, volume: Volume) -> bool:
-    """Return whether the configured PDF path exists under the volume directory.
+def check_volume_pdf(base: Path, volume: Volume) -> list[Path]:
+    """Return the paths of missing configured PDF, including translated PDF.
 
-    Return True when the volume has no configured PDF.
+    Returns an empty list if all configured PDF exist as files
+    or no PDF are configured.
     """
-    if volume.pdf is None:
-        return True
-    return (base / volume.key / volume.pdf).exists()
+    return [
+        base / volume.key / pdf
+        for pdf in (volume.pdf, volume.translated_pdf)
+        if pdf is not None and not (base / volume.key / pdf).is_file()
+    ]

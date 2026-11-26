@@ -16,14 +16,27 @@ from ssrq_editio.services.volumes import (
 
 
 @pytest.mark.parametrize(
-    ("pdf", "pdf_exists", "expected"),
+    ("pdf", "translated_pdf", "expected"),
     [
-        pytest.param(None, False, True, id="no-pdf-configured"),
-        pytest.param("book/original.pdf", False, False, id="missing-pdf"),
-        pytest.param("book/original.pdf", True, True, id="existing-pdf"),
+        pytest.param(None, None, [], id="no-pdf-configured"),
+        pytest.param("original.pdf", None, [], id="existing-pdf"),
+        pytest.param("original.pdf", None, ["original.pdf"], id="missing-pdf"),
+        pytest.param("original.pdf", "translated.pdf", [], id="both-existing"),
+        pytest.param(
+            "original.pdf", "translated.pdf", ["translated.pdf"], id="missing-translated-pdf"
+        ),
+        pytest.param("original.pdf", "translated.pdf", ["original.pdf"], id="missing-original-pdf"),
+        pytest.param(
+            "original.pdf", "translated.pdf", ["original.pdf", "translated.pdf"], id="both-missing"
+        ),
     ],
 )
-def test_check_volume_pdf(tmp_path: Path, pdf: str | None, pdf_exists: bool, expected: bool):
+def test_check_volume_pdf(
+    tmp_path: Path,
+    pdf: str | None,
+    translated_pdf: str | None,
+    expected: list[str],
+):
     volume = Volume(
         key="SG_III_4",
         sort_key=1,
@@ -31,15 +44,20 @@ def test_check_volume_pdf(tmp_path: Path, pdf: str | None, pdf_exists: bool, exp
         name="III 4",
         prefix="SSRQ",
         pdf=pdf,
+        translated_pdf=translated_pdf,
         literature=None,
         project_page=None,
     )
-    if pdf_exists and pdf is not None:
-        pdf_path = tmp_path / volume.key / pdf
-        pdf_path.parent.mkdir(parents=True)
-        pdf_path.touch()
 
-    assert check_volume_pdf(tmp_path, volume) is expected
+    for filename in (pdf, translated_pdf):
+        if filename is not None and filename not in expected:
+            pdf_path = tmp_path / volume.key / filename
+            pdf_path.parent.mkdir(parents=True, exist_ok=True)
+            pdf_path.touch()
+
+    assert check_volume_pdf(tmp_path, volume) == [
+        tmp_path / volume.key / filename for filename in expected
+    ]
 
 
 def test_create_search_pattern():
