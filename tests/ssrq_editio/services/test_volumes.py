@@ -39,7 +39,7 @@ def test_check_volume_pdf(tmp_path: Path, pdf: str | None, pdf_exists: bool, exp
         pdf_path.parent.mkdir(parents=True)
         pdf_path.touch()
 
-    assert check_volume_pdf(tmp_path, volume) is expected
+    assert check_volume_pdf(tmp_path, volume.key, volume.pdf) is expected
 
 
 def test_create_search_pattern():
