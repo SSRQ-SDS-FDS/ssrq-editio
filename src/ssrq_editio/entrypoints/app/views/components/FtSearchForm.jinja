@@ -3,12 +3,15 @@
     lang: Lang,
     translator: Translator,
     query: str | None,
+    filters: list[dict],
     hx_indicator: str | None = None,
     hx_params: str | None = None,
     hx_target: str | None = None
 #}
 
 <form
+  action="{{ endpoint }}"
+  method="get"
   class="text-sm w-full filter-card horizontal"
   id="ftSearchForm"
   hx-get="{{ endpoint }}"
@@ -17,8 +20,11 @@
   hx-target="{{ hx_target }}"
   hx-push-url="true"
   hx-swap="innerHTML"
-  hx-trigger="input changed delay:500ms from:#ftSearch"
+  hx-trigger="submit, input changed delay:500ms from:#ftSearch"
+  x-data="searchFilters({{ filters | tojson | forceescape }})"
+  x-ref="searchForm"
 >
+    <input type="hidden" name="lang" value="{{ lang.value }}" />
     <div class="filter-section">
         <div class="flex gap-2 rounded-b-lg">
             <input
@@ -39,6 +45,21 @@
               :endpoint="endpoint"
               :icon_size="'w-5 h-5'"
             />
+            <FtSearchFilter :filters="filters" :lang="lang" :translator="translator" />
+        </div>
+        <div class="mt-2 flex flex-col gap-2" x-cloak>
+            {% for filter in filters %}
+                {% set key = filter.name | tojson | forceescape %}
+                <div class="flex flex-wrap items-center gap-2" x-show="applied[{{ key }}].length < defaults[{{ key }}].length">
+                    <span class="text-ssrq-greyed-800">{{ translator.translate(lang, 'search-' + filter.name) }}:</span>
+                    {% for option in filter.options %}
+                        {% set value = option.value | tojson | forceescape %}
+                        <button type="button" x-show="isApplied({{ key }}, {{ value }})" @click="remove({{ key }}, {{ value }})" class="rounded-full bg-ssrq-greyed-100 px-3 py-1 text-sm" aria-label="{{ translator.translate(lang, 'remove-filter') }}: {{ translator.translate(lang, 'search-' + filter.name + '-' + option.value) }}">
+                            {{ translator.translate(lang, 'search-' + filter.name + '-' + option.value) }} <span aria-hidden="true">×</span>
+                        </button>
+                    {% endfor %}
+                </div>
+            {% endfor %}
         </div>
     </div>
 </form>

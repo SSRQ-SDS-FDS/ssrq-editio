@@ -94,9 +94,7 @@ async def resolve_entity(
     async for connection in db_connection():
         entities = await get_entities(connection, entity_type, query=entity_id)
         if len(entities.entities) == 0:
-            raise ValueError(
-                f"No entity found with ID »{entity_id}« in »{entity_type.value}«."
-            )
+            raise ValueError(f"No entity found with ID »{entity_id}« in »{entity_type.value}«.")
 
         return cast(Keyword | Lemma | Person | Place, entities.entities[0])
 
@@ -125,6 +123,7 @@ async def get_document(document_id: str) -> DocumentMCPResponse:
         return DocumentMCPResponse.model_validate(document.model_dump())
 
     raise RuntimeError("The database session did not yield a connection.")
+
 
 # The ASGI application is created once and mounted into the existing FastAPI application.
 # Its lifespan is passed to FastAPI so that FastMCP can initialize its HTTP session manager.

@@ -8,10 +8,38 @@ from ssrq_editio.adapters.db.volumes import initialize_volume_with_editors
 from ssrq_editio.models.kantons import KantonName
 from ssrq_editio.models.volumes import Volume
 from ssrq_editio.services.volumes import (
+    check_volume_pdf,
     create_search_pattern,
     fill_volume_info_from_xml,
     stream_volume_pdf,
 )
+
+
+@pytest.mark.parametrize(
+    ("pdf", "pdf_exists", "expected"),
+    [
+        pytest.param(None, False, True, id="no-pdf-configured"),
+        pytest.param("book/original.pdf", False, False, id="missing-pdf"),
+        pytest.param("book/original.pdf", True, True, id="existing-pdf"),
+    ],
+)
+def test_check_volume_pdf(tmp_path: Path, pdf: str | None, pdf_exists: bool, expected: bool):
+    volume = Volume(
+        key="SG_III_4",
+        sort_key=1,
+        kanton="SG",
+        name="III 4",
+        prefix="SSRQ",
+        pdf=pdf,
+        literature=None,
+        project_page=None,
+    )
+    if pdf_exists and pdf is not None:
+        pdf_path = tmp_path / volume.key / pdf
+        pdf_path.parent.mkdir(parents=True)
+        pdf_path.touch()
+
+    assert check_volume_pdf(tmp_path, volume.key, volume.pdf) is expected
 
 
 def test_create_search_pattern():

@@ -5,6 +5,7 @@ import pytest
 from ssrq_utils.idno.model import IDNO
 
 from ssrq_editio.adapters.db.documents import (
+    get_all_documents,
     get_document,
     get_document_infos,
     get_documents,
@@ -14,6 +15,7 @@ from ssrq_editio.adapters.db.documents import (
     initialize_document_fulltext,
 )
 from ssrq_editio.models.documents import Document, DocumentFulltext, DocumentType
+from ssrq_editio.models.search import SearchArea
 
 
 def create_years():
@@ -133,6 +135,38 @@ async def test_get_documents_returns_keywords(db_volume_data, documents):
 
 
 @pytest.mark.anyio
+async def test_get_all_documents_includes_subdocuments_in_document_order(db_volume_data, documents):
+    subdocument_id = "SSRQ-SG-III_4-2.1-1"
+    subdocument = documents[1].model_copy(
+        update={
+            "uuid": str(uuid4()),
+            "idno": subdocument_id,
+            "is_main": False,
+            "sort_key": IDNO.model_validate_string(subdocument_id).normalized_sort_key,
+        }
+    )
+    await initialize_document_data(
+        documents=(documents[9], subdocument, documents[1], documents[0]),
+        connection=db_volume_data,
+    )
+
+    result = await get_all_documents(connection=db_volume_data)
+
+    assert [document.idno for document in result] == [
+        documents[0].idno,
+        documents[1].idno,
+        subdocument_id,
+        documents[9].idno,
+    ]
+    assert not result[2].is_main
+
+
+@pytest.mark.anyio
+async def test_get_all_documents_returns_empty_list(db_volume_data):
+    assert await get_all_documents(connection=db_volume_data) == []
+
+
+@pytest.mark.anyio
 async def test_get_document(db_volume_data, documents):
     await initialize_document_data(documents=documents, connection=db_volume_data)
     for doc in documents:
@@ -150,6 +184,96 @@ async def test_get_documents_by_fulltext(db_volume_data, documents, fulltext):
     search_result = await get_documents_by_ft(connection=db_volume_data, search="foo")
     assert len(search_result) == len(documents)
     assert "<mark>foo</mark>" in search_result[0].ft_match
+    assert search_result[0].ft_score > 0
+    assert all(a.ft_score >= b.ft_score for a, b in zip(search_result, search_result[1:]))
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize(
+    ("term", "area"),
+    [
+        ("titelwort", "title"),
+        ("regestwort", "summary"),
+        ("textwort", "text"),
+        ("kommentarwort", "comment"),
+    ],
+)
+async def test_fulltext_search_finds_each_indexed_area(db_volume_data, documents, term, area):
+    document = documents[0]
+    await initialize_document_data((document,), db_volume_data)
+    await initialize_document_fulltext(
+        (
+            DocumentFulltext(
+                uuid=document.uuid,
+                title="titelwort",
+                summary="regestwort",
+                text="textwort",
+                comment="kommentarwort",
+            ),
+        ),
+        db_volume_data,
+    )
+
+    result = await get_documents_by_ft(db_volume_data, search=term)
+
+    assert len(result) == 1
+    assert result[0].uuid == document.uuid
+    assert f"<mark>{term}</mark>" in result[0].ft_match
+    assert result[0].ft_area.value == area
+
+
+@pytest.mark.anyio
+async def test_fulltext_search_combines_areas_with_relevance_and_prefixes(
+    db_volume_data, documents
+):
+    selected_documents = documents[:3]
+    await initialize_document_data(selected_documents, db_volume_data)
+    await initialize_document_fulltext(
+        (
+            DocumentFulltext(
+                uuid=selected_documents[0].uuid, title="gericht", text="gericht gericht"
+            ),
+            DocumentFulltext(uuid=selected_documents[1].uuid, text="gericht"),
+            DocumentFulltext(uuid=selected_documents[2].uuid, summary="gericht", text=""),
+        ),
+        db_volume_data,
+    )
+
+    result = await get_documents_by_ft(
+        db_volume_data, search="gerich*", areas=(SearchArea.TITLE, SearchArea.TEXT)
+    )
+    expected = await db_volume_data.execute_fetchall(
+        "SELECT uuid, -rank FROM documents_fulltext "
+        "WHERE documents_fulltext MATCH ? "
+        "AND rank MATCH 'bm25(0.0, 1.7, 1.5, 1.2, 0.5)' ORDER BY rank",
+        ("{title text} : (gerich*)",),
+    )
+
+    assert [document.uuid for document in result] == [row[0] for row in expected]
+    assert [document.ft_score for document in result] == pytest.approx([row[1] for row in expected])
+    assert {document.uuid for document in result} == {doc.uuid for doc in selected_documents[:2]}
+    document_with_multiple_matches = next(
+        document for document in result if document.uuid == selected_documents[0].uuid
+    )
+    assert document_with_multiple_matches.ft_area == SearchArea.TITLE
+
+
+@pytest.mark.anyio
+async def test_fulltext_search_ranks_areas_by_weight(db_volume_data, documents):
+    selected_documents = documents[:4]
+    await initialize_document_data(selected_documents, db_volume_data)
+    await initialize_document_fulltext(
+        tuple(
+            DocumentFulltext(uuid=document.uuid, **({"text": ""} | {area.value: "gericht"}))
+            for document, area in zip(selected_documents, SearchArea)
+        ),
+        db_volume_data,
+    )
+
+    result = await get_documents_by_ft(db_volume_data, search="gericht")
+
+    assert [document.uuid for document in result] == [doc.uuid for doc in selected_documents]
+    assert all(a.ft_score > b.ft_score for a, b in zip(result, result[1:]))
 
 
 @pytest.mark.anyio

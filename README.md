@@ -66,12 +66,50 @@ just dev
 
 This command will start bundle the frontend assets, start the FastAPI-server and watch the `src` folder for any changes. Hot-Module-Replacement (HMR) is not supported, so you need to refresh the page in your browser to see any changes.
 
+### Containerised development
+
+The development service uses the `development` stage of the same Dockerfile as production:
+
+```sh
+git submodule update --init --recursive
+just dev-container
+```
+
+Open <http://127.0.0.1:8000>. Source changes are watched inside the container. Stop it with
+`Ctrl+C` or `just dev-container-down`. The project directory, including an existing
+`ssrq_editio.sqlite3`, is mounted into the container; the database is not rebuilt on startup.
+After checking out the data submodules, populate the database with `just db`. This rebuilds it from
+scratch: it deletes any existing database file and fetches entity data from the configured API
+endpoints. Additional `prepare-db` options can be passed to `just db`, for example
+`just db --no-parallel`.
+The `.venv` and `node_modules` directories use separate Docker volumes and are synchronized at
+startup. `docker compose down` retains these volumes.
+
+Use `just container` followed by a recipe and its arguments to run a one-off task in the
+development container, for example:
+
+```sh
+just container lint
+just container test
+just container test "tests/ssrq_editio/services/test_paginate.py"
+```
+
+This builds the development image if needed and runs the recipe against the mounted project
+directory. Recipe arguments follow the same conventions as when running `just` locally. Keep using
+`just dev-container` for the development server, which also exposes the application port.
+
+The shared Docker base checks that Python uses SQLite 3.46.1. `SQLITE_VERSION` can override the
+expected version when building; it does not install a different SQLite library. If the check fails,
+choose a suitable base image or provide the matching library before changing the expected version.
+
 ### Common tasks
 
 We have a number of common tasks that can be executed using the `just` command. Here are some of the most important ones:
 
 - `just dev`: starts the development server
+- `just db`: rebuilds the database in the development container
 - `just test`: runs the tests
+- `just container test`: runs the tests in the development container
 - `just e2e`: runs the browser-driven end-to-end tests
 - `just lint`: runs the linters
 - `just fmt`: formats the code
@@ -90,6 +128,17 @@ This command runs the linters first and then executes the regular pytest suite. 
 end-to-end tests are marked with `e2e` and are excluded from the default pytest run. They are
 executed separately because they start the FastAPI application with Uvicorn, build the frontend
 assets, and drive the application with Playwright.
+
+To run the same linting and tests with the development container's Python and SQLite versions:
+
+```sh
+just container test
+just container test "tests/ssrq_editio/services"
+```
+
+The command builds the development image if needed and uses the mounted project directory. Like
+`just test`, it runs linting first. Browser-based tests require additional Playwright setup and are
+not included in this command.
 
 Before running the E2E tests for the first time, install the Playwright browser binary:
 

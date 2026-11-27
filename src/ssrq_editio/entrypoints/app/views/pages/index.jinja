@@ -1,16 +1,42 @@
 {% extends "layouts/page.jinja" %}
 {% block content %}
-    <Banner :request="request">
-    <h1 class="title-1">{{ data.page_description }}</h1>
+    <Banner :request="request" class="cover-banner-full intro-banner">
+        <div class="intro">
+            <p class="label">SSRQ · SDS · FDS</p>
+            <h1 class="title">{{ data.page_description }}</h1>
+            <p class="subtitle">
+                <span>{{ data.content.total }}</span>
+                {{ translator.translate(lang, 'articles') }} {{ translator.translate(lang, 'explore') }}
+            </p>
+            <nav class="navigation" aria-label="{{ translator.translate(lang, 'home_navigation') }}" x-data>
+                <div class="actions">
+                    <a href="{{ url_for('search').include_query_params(lang=lang.value) }}" class="action primary">
+                        <SearchIcon class="h-5 w-5 shrink-0" />
+                        {{ translator.translate(lang, 'search') }}
+                    </a>
+                    <button type="button" class="action secondary"
+                        x-data="smoothScrollHandler('cantonlist')"
+                        x-bind="trigger"
+                        aria-controls="cantonlist">
+                        {{ translator.translate(lang, 'browse_cantons') }}
+                        <ArrowDownIcon class="h-4 w-4 shrink-0" />
+                    </button>
+                </div>
+                <a href="{{ url_for('swagger_ui_html') }}" class="api">
+                    <CodeBracketIcon class="h-4 w-4 shrink-0" />
+                    {{ translator.translate(lang, 'api') }}
+                </a>
+            </nav>
+        </div>
     </Banner>
-    <section id="cantonlist" class="max-w-4xl lg:px-12 sm:px-4 mx-auto mt-4 mb-9">
+    <section id="cantonlist" tabindex="-1" aria-labelledby="cantonlist-heading" class="max-w-4xl lg:px-12 sm:px-4 mx-auto mt-4 mb-9 scroll-mt-20 focus:outline-none">
         <div class="flex items-center text-center mb-2.5">
             <hr class="grow border-ssrq-primary mx-2" />
-            <h2 class="title-2 text-ssrq-greyed-800">{{ translator.translate(lang, 'canton_overview') }}</h2>
+            <h2 id="cantonlist-heading" class="title-2 text-ssrq-greyed-800">{{ translator.translate(lang, 'canton_overview') }}</h2>
             <hr class="grow border-ssrq-primary mx-2" />
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 auto-rows-max gap-3 justify-items-center">
-            {% for kanton in data.content.kantons %}
+            {% for kanton in data.content.kantons.kantons %}
                 {% if kanton.docs > 0 %}
                     <a href="{{ url_for('kanton', kanton=kanton.short_name).include_query_params(lang=lang.value) }}" class="flex">
                         <KantonCard :kanton="kanton" :lang="lang" :request="request" :translator="translator" class="kanton-card has-docs" />

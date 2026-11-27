@@ -16,6 +16,13 @@
   }
 }
 
+.cover-banner.cover-banner-full {
+  height: calc(100dvh - 4rem - 30px);
+  max-height: none;
+  grid-template-rows: minmax(0, 1fr);
+  overflow: hidden;
+}
+
 .cover-banner div.cover-image,
 .cover-banner div.cover-overlay,
 .cover-banner div.cover-content {

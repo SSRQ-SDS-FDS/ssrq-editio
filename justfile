@@ -1,5 +1,5 @@
 # CSS input/output pairs: "input_file:output_file"
-css_files := "src/main.css:style.css src/components/popup.css:popup.css src/utilities/transcript.css:transcript.css src/utilities/doc_info.css:doc_info.css"
+css_files := "src/main.css:style.css src/routes/index.css:index.css src/components/popup.css:popup.css src/utilities/transcript.css:transcript.css src/utilities/doc_info.css:doc_info.css"
 css_dir := "./src/ssrq_editio/entrypoints/app/static/css"
 js_build_command := "npx parcel build --dist-dir " + js_output_dir
 js_output_dir := "./src/ssrq_editio/entrypoints/app/static/js/dist"
@@ -29,8 +29,26 @@ css args="":
     cp "{{css_dir}}/src/components/popup_anchors.css" "{{css_dir}}/dist/popup_anchors.css"
 
 # Build CSS / JS and start the development server – files in src will be watched
-dev:
-	uv run watchfiles "sh -c 'pkill -f \"fastapi dev {{web_app}}\" || true; sleep 1; just css && {{js_build_command}} --no-optimize && fastapi dev {{web_app}} --no-reload'" src --ignore-paths {{js_output_dir}},{{css_dir}}/dist
+dev host="127.0.0.1":
+	uv run watchfiles "sh -c 'just css && {{js_build_command}} --no-optimize && exec fastapi dev {{web_app}} --host {{host}} --no-reload'" src --ignore-paths {{js_output_dir}},{{css_dir}}/dist
+
+# Start the containerised development environment
+dev-container:
+  docker compose up --build
+
+# Stop the containerised development environment
+dev-container-down:
+  docker compose down
+
+# Run a just recipe in the development container
+[positional-arguments]
+container +args:
+  docker compose run --rm --build --no-deps web just "$@"
+
+# Populate the shared database using the development container
+[positional-arguments]
+db *args:
+  docker compose run --rm --build --no-deps web uv run editio prepare-db --clean "$@"
 
 # Format the code
 fmt:

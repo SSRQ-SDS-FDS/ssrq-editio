@@ -1,0 +1,17 @@
+{# def
+    text: str,
+    score: float,
+    area: str | None,
+    lang: Lang,
+    translator: Translator
+#}
+
+<section class="mt-3 rounded-md border-l-4 border-ssrq-primary bg-ssrq-greyed-50 px-4 py-3">
+    <div class="mb-2 flex justify-between gap-3 text-sm text-ssrq-greyed-600">
+        <span>{% if area %}{{ translator.translate(lang, 'search-area-' + area) }}{% endif %}</span>
+        <span title="{{ translator.translate(lang, 'relevance-score-help') }}">
+            {{ translator.translate(lang, 'relevance-score') }}: {{ '%.4g' | format(score) }}
+        </span>
+    </div>
+    <p class="font-serif">{{ text | safe }}</p>
+</section>

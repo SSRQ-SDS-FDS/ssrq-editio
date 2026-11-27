@@ -151,3 +151,13 @@ async def get_volume_info(connection: Connection, kanton_short_name: str, volume
         raise ValueError(f"Could not find volume {volume_machine_name} for {kanton_short_name}")
 
     return volume
+
+
+def check_volume_pdf(base: Path, key: str, pdf: str | None) -> bool:
+    """Return whether the configured PDF path exists under the volume directory.
+
+    Return True when the volume has no configured PDF.
+    """
+    if pdf is None:
+        return True
+    return (base / key / pdf).exists()

@@ -17,7 +17,11 @@ from ssrq_editio.models.volumes import Volume, VolumeType
 from ssrq_editio.services.documents import extract_infos_from_xml
 from ssrq_editio.services.logger import SSRQ_LOGGER
 from ssrq_editio.services.schema import transpile_schema_to_translations
-from ssrq_editio.services.volumes import create_search_pattern, fill_volume_info_from_xml
+from ssrq_editio.services.volumes import (
+    check_volume_pdf,
+    create_search_pattern,
+    fill_volume_info_from_xml,
+)
 
 
 async def setup(
@@ -86,6 +90,10 @@ async def setup_volumes(
         if volume.volume_type is VolumeType.REGISTER:
             await setup_register_volume(connection, volume, data_src)
             continue
+
+        for pdf in (volume.pdf, volume.translated_pdf):
+            if not check_volume_pdf(data_src, volume.key, pdf):
+                SSRQ_LOGGER.error(f"Could not find {pdf} for {volume.key}")
 
         files = await list_dir_content(data_src, create_search_pattern(volume))
 

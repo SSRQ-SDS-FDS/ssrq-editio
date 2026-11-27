@@ -24,9 +24,12 @@ CREATE TABLE IF NOT EXISTS documents
     FOREIGN KEY (volume_id) REFERENCES volumes (id)
 );
 
-CREATE VIRTUAL TABLE IF NOT EXISTS documents_fulltext USING fts5( -- noqa: PRS
+CREATE VIRTUAL TABLE IF NOT EXISTS documents_fulltext USING fts5 ( -- noqa: PRS
     uuid UNINDEXED,
-    text
+    title,
+    summary,
+    text,
+    comment
 );
 
 CREATE INDEX idx_documents_volume_id ON documents (volume_id);

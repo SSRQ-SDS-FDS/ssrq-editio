@@ -50,7 +50,7 @@ def test_setup_error_monitoring_initializes_sentry_for_staging(
     assert captured["environment"] == "staging"
     assert captured["release"] == "test-release"
     integration = captured["integrations"][0]
-    assert integration._handler.level == logging.WARNING
+    assert integration._event_handler.level == logging.WARNING
 
 
 def test_setup_error_monitoring_initializes_sentry_for_production(
@@ -72,4 +72,4 @@ def test_setup_error_monitoring_initializes_sentry_for_production(
     )
 
     integration = captured["integrations"][0]
-    assert integration._handler.level == logging.ERROR
+    assert integration._event_handler.level == logging.ERROR

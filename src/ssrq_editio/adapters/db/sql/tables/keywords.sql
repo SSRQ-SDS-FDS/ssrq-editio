@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS keywords
     it_definition TEXT NULL
 );
 
-CREATE VIRTUAL TABLE IF NOT EXISTS keywords_fts USING fts5( -- noqa: PRS
+CREATE VIRTUAL TABLE IF NOT EXISTS keywords_fts USING fts5 ( -- noqa: PRS
     id UNINDEXED,
     de_name,
     fr_name,

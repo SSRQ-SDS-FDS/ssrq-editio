@@ -15,8 +15,9 @@
         :lang="lang"
         :translator="translator"
         :query="data.content.query"
+        :filters="data.content.filters"
         :hx_indicator="'#loading-overlay'"
-        :hx_params="'not per-page,page lang'"
+        :hx_params="'not lang,page,per_page'"
         :hx_target="'#documents'"
     />
 </section>
@@ -41,12 +42,22 @@
                 />
             </Pagination>
         {% for result in data.content.results %}
-            <FtSearchHitCard
+            <DocumentCard
                 :document="result"
                 :lang="lang"
                 :request="request"
                 :translator="translator"
-            />
+            >
+                {% if result[0].ft_score is defined and result[0].ft_score is not none and result[0].ft_match %}
+                    <FulltextSnippet
+                        :text="result[0].ft_match"
+                        :score="result[0].ft_score"
+                        :area="result[0].ft_area.value if result[0].ft_area else none"
+                        :lang="lang"
+                        :translator="translator"
+                    />
+                {% endif %}
+            </DocumentCard>
         {% endfor %}
             <Pagination
             class="bottom"
